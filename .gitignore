@@ -1,0 +1,16 @@
+# NB cache and build output
+**/nbproject/private/
+**/nbproject/Makefile-*.mk
+**/nbproject/Package-*.bash
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Log files
+*.log
+
+# Virtual machine crash logs
+hs_err_pid*
+nbproject/genfiles.properties

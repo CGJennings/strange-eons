@@ -1,0 +1,269 @@
+<html>
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>About Strange Eons</title>
+<style type="text/css">
+body { font-family: sans-serif; font-size: 11pt; text-align: center; margin-right: 4px; margin-left: 4px }
+a.s { text-decoration: none; color: black }
+a { color: black }
+h1 { font-family: Linux Libertine, Serif; font-size: 18pt; font-weight: bold; margin-top: 20px; margin-bottom: 0 }
+p { margin-top: 4px; margin-bottom: 12px; }
+tt { font-size: 8pt; }
+</style>
+</head>
+
+<body>
+<p><img src="res://icons/application/divider.png"><br>&nbsp;<br>
+<a class="s" href="http://www.archive.org/download/horror_003_librivox/nameless_city_lovecraft_mn_64kb.mp3"><img border="0" src="res://icons/application/about-heading.png"></a><br>
+<img src="res://icons/application/divider-turned.png"></p>
+
+<p>{@ab-version} {%version}</p>
+<p>{@ab-purpose}<br>
+<i>{@ab-byline}</i><br>
+<b><a class="s" href="http://cgjennings.ca/feedback/feedback.html">Christopher G. Jennings</a></b></p>
+
+<h1>{@ab-trans-title}</h1>
+<p>{@ab-trans-text}</p>
+<table border="0" align="center" width="80%">
+	<tr><td><b>{%bg}</b><td>"The Ink"</tr>
+	<tr><td><b>{%cs}</b><td>Ondřej Mysliveček</tr>
+	<tr><td><b>{%fr}</b><td>Damien Riegel, Emmanuel d'Orso, Marc Bélanger, Marc Lafon, "Matteo", "Vlad"</tr>
+	<tr><td><b>{%de}</b><td>Christian Woditschka, "Raoul"</tr>
+	<tr><td><b>{%it}</b><td>Michele Bellinazzo, Paolo Frigato</tr>
+	<tr><td><b>{%pl}</b><td>Michał Choroszy, Michał Hordejuk, "poooq", "sirafin", "Wagnard"</tr>
+	<tr><td><b>{%ru}</b><td>Артем Назаров (Artyom Nazarov)</tr>
+	<tr><td><b>{%es}</b><td>David Castro, Franz Rogar, Germán Carro Fernández, Joaquín Ruiz, Miguel Angel González</tr>
+</table>
+<p><a href="https://cgjennings.github.io/se3docs/tm-index.html">{@ab-trans-volunteer}</a></p>
+
+<h1>{@ab-alpha-testers}</h1>
+Thanks to Guillaume Achaz, Eric Endres, Jim Keifer, and Jon New<br>
+for helping to test the earliest versions of Strange Eons 3.
+
+<h1>{@ab-supporters}</h1>
+<p>{@ab-supporters-info}<br>
+{%supporter-list} {%anon-count}
+
+<h1>{@ab-third-party}</h1>
+
+<p>Strange Eons makes use of code from the following libraries, or of code
+	derived from them:</p>
+	<p>JavaScript interpretation is performed using the
+	<a href="http://developer.mozilla.org/En/Rhino">Mozilla Rhino</a>
+	interpreter under the <a href="http://www.mozilla.org/MPL/2.0/">MPL</a>.
+	The bridge to the Java scripting API is copyright © 2006, Sun Microsystems,
+	Inc. and is released under a BSD license: </p>
+	<p><tt>Copyright (C) 2006 Sun Microsystems, Inc. All rights
+	reserved. Use is subject to license terms. </tt></p>
+	<p><tt>Redistribution and use in source and binary forms,
+	with or without modification, are permitted provided that the following
+	conditions are met: Redistributions of source code must retain the above
+	copyright notice, this list of conditions and the following disclaimer.
+	Redistributions in binary form must reproduce the above copyright notice,
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution. Neither the name of
+	the Sun Microsystems nor the names of is contributors may be used to endorse
+	or promote products derived from this software without specific prior
+	written permission. </tt></p>
+	<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
+	AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+	OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </tt></p>
+
+      <p>Support for reading the JPEG2000 image format is provided using code
+	  from the <a href="https://jai-imageio.dev.java.net/">Java Advanced Imaging
+	  Image I/O</a> project, which in turn uses the
+	  <a href="http://jj2000.epfl.ch/jj_download/index.html">JJ2000 library</a>
+	  by Raphaël Grosbois and Diego Santa Cruz (Swiss Federal Institute of
+	  Technology-EPFL); Joel Askelöf (Ericsson Radio Systems AB); and Bertrand
+	  Berthelot, David Bouchard, Félix Henry, Gerard Mozelle and Patrice Onno
+	  (Canon Research Centre France S.A). The JAI I/O library is released under
+	  a BSD license: </p>
+	<p><tt>Copyright © 2005 Sun Microsystems, Inc. All Rights
+	Reserved. </tt></p>
+	<p><tt>Redistribution and use in source and binary forms,
+	with or without modification, are permitted provided that the following
+	conditions are met: </tt></p>
+	<p><tt>- Redistribution of source code must retain the
+	above copyright notice, this list of conditions and the following
+	disclaimer. </tt></p>
+	<p><tt>- Redistribution in binary form must reproduce the
+	above copyright notice, this list of conditions and the following disclaimer
+	in the documentation and/or other materials provided with the distribution.
+	</tt></p>
+	<p><tt>Neither the name of Sun Microsystems, Inc. or the
+	names of contributors may be used to endorse or promote products derived
+	from this software without specific prior written permission. </tt>
+	</p>
+	<p><tt>This software is provided &quot;AS IS,&quot; without a
+	warranty of any kind. ALL EXPRESS OR IMPLIED CONDITIONS, REPRESENTATIONS AND
+	WARRANTIES, INCLUDING ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A
+	PARTICULAR PURPOSE OR NON-INFRINGEMENT, ARE HEREBY EXCLUDED. SUN
+	MIDROSYSTEMS, INC. (&quot;SUN&quot;) AND ITS LICENSORS SHALL NOT BE LIABLE FOR ANY
+	DAMAGES SUFFERED BY LICENSEE AS A RESULT OF USING, MODIFYING OR DISTRIBUTING
+	THIS SOFTWARE OR ITS DERIVATIVES. IN NO EVENT WILL SUN OR ITS LICENSORS BE
+	LIABLE FOR ANY LOST REVENUE, PROFIT OR DATA, OR FOR DIRECT, INDIRECT,
+	SPECIAL, CONSEQUENTIAL, INCIDENTAL OR PUNITIVE DAMAGES, HOWEVER CAUSED AND
+	REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF THE USE OF OR
+	INABILITY TO USE THIS SOFTWARE, EVEN IF SUN HAS BEEN ADVISED OF THE
+	POSSIBILITY OF SUCH DAMAGES. </tt></p>
+	<p><tt>You acknowledge that this software is not designed
+	or intended for use in the design, construction, operation or maintenance of
+	any nuclear facility. </tt></p>
+
+      <p>Some plug-ins use the <a href="http://www.miglayout.com/">MiG Layout</a>
+	  library . For convenience, it has been included with the main application.
+	  The MiG Layout library is released under a BSD license: </p>
+	<p><tt>Copyright © 2004, Mikael Grev, MiG InfoCom AB. (miglayout
+	(at) miginfocom (dot) com) All rights reserved. </tt></p>
+	<p><tt>Redistribution and use in source and binary forms,
+	with or without modification, are permitted provided that the following
+	conditions are met: Redistributions of source code must retain the above
+	copyright notice, this list of conditions and the following disclaimer.
+	Redistributions in binary form must reproduce the above copyright notice,
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution. Neither the name of
+	the MiG InfoCom AB nor the names of its contributors may be used to endorse
+	or promote products derived from this software without specific prior
+	written permission. </tt></p>
+	<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
+	AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+	OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </tt></p>
+
+      <p>Some plug-ins use the <a href="http://www.datadosen.se/riverlayout/">
+	  River Layout</a> library by David Ekholm. For convenience, it has been
+	  included with the main application. The River Layout library is released
+	  under an <a href="http://www.gnu.org/licenses/lgpl.html">LGPL license</a>.
+	</p>
+
+	<p><tt>Ant BZip2 library is licensed under the Apache
+	License, version 1.1<br>
+	Version 1.1<br>
+	</tt></p>
+	<p><tt>The Apache Software License, Version 1.1
+	</tt></p>
+	<p><tt>Copyright (c) 2001 The Apache Software Foundation.
+	All rights reserved. </tt></p>
+	<p><tt>Redistribution and use in source and binary forms,
+	with or without modification, are permitted provided that the following
+	conditions are met: </tt></p>
+	<ol>
+		<li><tt>Redistributions of source code must retain the
+		above copyright notice, this list of conditions and the following
+		disclaimer. </tt></li>
+		<li><tt>Redistributions in binary form must reproduce
+		the above copyright notice, this list of conditions and the following
+		disclaimer in the documentation and/or other materials provided with the
+		distribution. </tt></li>
+		<li><tt>The end-user documentation included with the
+		redistribution, if any, must include the following acknowlegement: &quot;This
+		product includes software developed by the Apache Software Foundation
+		(http://www.apache.org/).&quot; Alternately, this acknowlegement may appear
+		in the software itself, if and wherever such third-party acknowlegements
+		normally appear. </tt></li>
+		<li><tt>The names &quot;Ant&quot; and &quot;Apache Software
+		Foundation&quot; must not be used to endorse or promote products derived from
+		this software without prior written permission. For written permission,
+		please contact apache@apache.org. </tt></li>
+		<li><tt>Products derived from this software may not be
+		called &quot;Apache&quot; nor may &quot;Apache&quot; appear in their names without prior
+		written permission of the Apache Group. </tt></li>
+	</ol>
+	<p><tt>THIS SOFTWARE IS PROVIDED ``AS IS&#39;&#39; AND ANY
+	EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+	WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+	DISCLAIMED. IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR ITS
+	CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+	OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt> </p>
+
+<p>LZMA compression was adapted from code placed in the public domain by
+   Lasse Collin and Igor Pavlov.
+
+<p>Method parameter name reverse engineering uses code adapted from the
+Paranamer library, which is released under a BSD license:
+	<p><tt>Portions Copyright © 2007 Paul Hammant.<br>
+    Portions Copyright © 2000-2007 INRIA, France Telecom.<br>
+    All rights reserved.</tt></p>
+	<p><tt>Redistribution and use in source and binary forms,
+	with or without modification, are permitted provided that the following
+	conditions are met: Redistributions of source code must retain the above
+	copyright notice, this list of conditions and the following disclaimer.
+	Redistributions in binary form must reproduce the above copyright notice,
+	this list of conditions and the following disclaimer in the documentation
+	and/or other materials provided with the distribution. Neither the name of
+	the copyright holders nor the names of is contributors may be used to endorse
+	or promote products derived from this software without specific prior
+	written permission.</tt></p>
+	<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
+	AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+	OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt></p>
+
+<p><tt>Some code for JavaScript language assistance adapted from code by Andy
+Clement and Andrew Eisenberg, Copyright © 2012 VMware, Inc. Used under the
+Eclipse Public License. Some code for JavaScript language assistance adapted
+from code by Ariya Hidayat et al, and Copyright © 2012 by Ariya Hidayat and
+others. Used under the MIT license. Some code for JavaScript language assistance
+adapted from code by Yusuke Suzuki, Dan Tao, and Andrew Eisenberg and used under
+MIT license. See included source code for details.</tt></p>
+
+
+<p>Some icons in Strange Eons are taken or adapted from the
+<i><a href="http://www.famfamfam.com/lab/icons/silk/">Silk</a></i>
+icon set designed by
+Mark James
+and released under a
+<a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
+The international <a href="http://www.famfamfam.com/lab/icons/flags/">flag icons</a> in Strange Eons
+were also designed by Mark James, and released with no restrictions on their use.
+</p>
+
+
+<p>Some icons in Strange Eons are taken or adapted from the
+<i><a href="http://p.yusukekamiyamane.com/">Fugue</a></i>
+icon set designed by Yusuke Kamiyamane and released under a
+<a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
+Attribution 3.0 License</a>.
+</p>
+
+<h1>{@ab-acknowledge}</h1>
+<p><i>{@ab-alpha-order}</i><br>
+Miguel Angel González,
+Fantasy Flight Games,
+Sarah Jennings,<br>
+Ted Kirkpatrick,
+Mark Nelson,
+Jon New,
+Slava Pestov,
+Kevin Wilson
+</p>
+
+</body>
+</html>

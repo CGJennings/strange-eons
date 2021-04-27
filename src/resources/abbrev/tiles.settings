@@ -1,0 +1,20 @@
+#
+# Default abbreviations for deck tile files
+#
+
+pp = ppi \= $|150|$
+pp1 = ppi \= 150\n
+pp2 = ppi \= 200\n
+pp3 = ppi \= 300\n
+cl = class \= $|tile|$
+clt = class \= tile\n
+cli = class \= inlay\n
+clo = class \= overlay\n
+cls = class \= spinnable\n
+cr = credit \= $|designer|$
+ga = game \= $|*|$
+st = set \= $|other|$
+stt = set \= tiles\n
+stb = set \= bits\n
+std = set \= decorations\n
+sto = set \= other\n

@@ -1,0 +1,56 @@
+const useLibrary = (function () {
+  let engine = ENGINE_OBJECT;
+  let monkey = SCRIPT_MONKEY_OBJECT;
+  delete ENGINE_OBJECT;
+  delete SCRIPT_MONKEY_OBJECT;
+  let libs = new java.util.HashSet();
+  let dontEnumMethod = java.lang.Class.forName('ca.cgjennings.script.mozilla.javascript.ScriptableObject')
+    .getMethod('setAttributes', java.lang.String, java.lang.Integer.TYPE);
+  let DONTENUM = new java.lang.Integer(Packages.ca.cgjennings.script.mozilla.javascript.ScriptableObject.DONTENUM);
+  let uselibrary = function useLibrary(library) {
+    if (!libs.contains(library)) {
+      monkey.includeLibrary(engine, library);
+      libs.add(library);
+    }
+  };
+  uselibrary.compatibilityMode = false;
+  uselibrary.__engine = engine;
+  uselibrary.__$ = monkey;
+  uselibrary.__threadassert = function threadassert() {
+    if (!java.awt.EventQueue.isDispatchThread()) {
+      throw new Error('UI code can only be run in the event dispatch thread: use Thread.invokeLater()');
+    }
+  };
+  uselibrary.defaultDialogTitle = function defaultDialogTitle() {
+    let title;
+    try {
+      let plugin = PluginContext.plugin;
+      if (plugin != null) {
+        title = 'Strange Eons (' + plugin.getPluginName() + ')';
+      } else {
+        title = 'Strange Eons (' + sourcefile + ')';
+      }
+    } catch (ex) { }
+    if (title == null) {
+      title = 'Strange Eons';
+    }
+    return title;
+  };
+  Object.freeze(uselibrary);
+  Object.prototype.dontEnum = function () {
+    for (let i = 0; i < arguments.length; ++i) {
+      dontEnumMethod.invoke(this, arguments[i], DONTENUM);
+    }
+  };
+  Function.prototype.subclass = function subclass(superConstructor) {
+    function proxy() {}
+    proxy.prototype = superConstructor.prototype;
+    let proxyObject = new proxy();
+    proxyObject.constructor = this;
+    this.prototype = proxyObject;
+  };
+  Object.prototype.dontEnum('dontEnum');
+  Function.prototype.dontEnum('subclass');
+  return uselibrary;
+})();
+useLibrary('common');

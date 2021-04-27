@@ -1,0 +1,102 @@
+# Tiles are prefabricated graphical elements that can be placed on a deck to
+# quickly lay out an expansion board. Each tile is described by a sequence of
+# lines and separated from the next tile description by one or more blank lines.
+# The first line is always the tile's name, and the second is always
+# the location of the tile's image.
+#
+# If the tile name begins with "@" then the actual tile name is determined
+# by looking up the given value (without the "@") using the UI Language.
+# Furthermore, @-names that end in /d (where d is a digit) will format the
+# UI string with the value of d. For example, @key/1 would look for "key" in
+# the UI resources. If the value of "key" was "Tile %d", then the final
+# tile name would be "Tile 1" after replacing the %d with the formatting digit.
+#
+# The location is the resource identifier of an image file or resource creation
+# script that contains the graphics for the tile. Tile images may include an
+# alpha channel to achieve non-rectangular shapes.
+#
+# After the name and location you may include a number of optional settings
+# in the form of key and value pairs separated by an equals sign (=).
+# The following is a list of the possible keys and the values they allow:
+#
+# ppi
+#       Sets the resolution of the tile, in pixels per inch.
+#       The ppi value determines the physical size of the tile. If no
+#       value is given, 150 ppi is used as the default. For example, if
+#       an image is 300 by 600 pixels, its physical size would be
+#       2 inches by 4 inches (5.08 cm by 10.16 cm) at a resolution of 150 ppi.
+#
+# class
+#       Affects how the tile behaves in the deck editor.
+#       The available classes are:
+#
+#       tile : This is the default class. Tiles with this class will snap
+#           to each other but not to other items (like component faces).
+#
+#       inlay : Inlays snap to other inlays normally. When snapped to tiles,
+#           they snap to the inside of the snapping edge rather than the
+#           outside.
+#
+#       overlay : Overlays do not snap to other objects.
+#
+#       spinnable : Spinnables behave as overlays but also include a draggable
+#           rotation handle so that they can be rotated to any angle. Spinnable
+#           tiles work best using small images as arbitrary rotation is
+#           computationally expensive on some platforms.
+#
+# outline
+#       Describes a rectangular outline stroke that to be drawn around the tile.
+#       The value consists of the following sequence of attributes, separated by
+#       semicolons (;):
+#
+#       width; colour; end cap type; line join type; dash pattern
+#
+#       Where: width is a non-negative number (measured in points); colour is
+#       a colour description using the same format as in Settings; end cap type
+#       is one of the arkham.deck.item.LineCap enum values; line join type is
+#       one of the arkham.deck.item.LineJoin enum values; dash pattern is one of
+#       the one of the arkham.deck.item.DashPattern enum values. The attribute
+#       list can end at any point after the width to fill in the unlisted values
+#       from the following defaults: colour 000000 (black); cap SQUARE; join
+#       MITRE; dash pattern SOLID.
+#
+# credit
+#       Allows you to give credit to the person who created the tile.
+#       The value may be any string, but it should be kept short (50 characters
+#       or less).
+#
+# set
+#       Controls which category of tiles this tile should be included in.
+#       A tile's set determines which deck editor tab the tile will appear
+#       in. The valid tile sets are:
+#
+#       tiles : The set of map tiles. (Do not confuse this with the tile class.
+#               The class determines how the tile will behave, the set determines
+#               which list it appears in.) Tiles are large, typically rectangular
+#               graphics that are meant to build up the background graphics for
+#               a board.
+#
+#       decorations : Decorative elements that do not affect gameplay. These
+#               are typically placed over tiles like decals, to customize
+#               the board graphics.
+#
+#       bits : The set of board "bits"; these are elements that affect gameplay
+#              but which are simple images and so don't need to be created in
+#              a game component editor and added with the Add Components button.
+#
+#       other : A miscellaneous category.
+#
+#       If no set is specified, the default set of "other" will be used.
+#
+# game
+#       This lists the code of the game that the tiles relate to. The default
+#       code is *, which is means that the tile is for all games. A tile
+#       that is associated with a particular game will only be shown when the
+#       deck is for that game.
+#
+
+My Custom Tile
+folder/imagefile.jpg
+class = overlay
+set = other
+ppi = 150

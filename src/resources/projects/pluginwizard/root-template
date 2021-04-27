@@ -1,0 +1,10 @@
+#
+# {%name} Root File
+#
+
+id = {%catid}
+{?isLibrary}name = {%name}
+description = {%description}{?hasIcon}
+image = {%iconres}{/?hasIcon}
+{/?isLibrary}{!isLibrary}{%pluginclass}
+{/!isLibrary}

@@ -1,0 +1,66 @@
+#
+# A class map file adds new component types to the New Component dialog.
+# It consists of a list of keys, with optional values separated from their
+# key by an equals sign (=).
+#
+# If a key has a value, then the key provides a human-readable description
+# of a kind of component editor. Either the key is the literal name to use,
+# or, if the key begins with an at sign (@), then the key is looked up
+# in the user interface resources (without the @ prefix) to determine the name.
+# The value describes an editor that will be created when this
+# option is chosen in the New... dialog. If the value begins with "script:",
+# then it points to a script that will create and display an appropriate editor
+# when evaluated. If the value begins with "diy:", then it points to a script
+# that defines the needed functions for a DIY component (and a new DIY component
+# will be created using the script). Otherwise, it is taken to be the name
+# of a class that implements ca.cgjennings.apps.arkham.component.GameComponent.
+# A package name is optional; if no package is specified,
+# ca.cgjennings.apps.arkham.component is assumed.
+#
+# Keys that do not have a value define the start of a category.
+# All the keys following that key will be placed in that category,
+# until a new category begins. Categories are used to organize
+# the available editors in the New... dialog box. Every editor
+# must belong to a catgeory; if one is defined before the first
+# category is declared, a runtime error will occur.
+#
+# Each editor may also specify an icon to be shown with the option.
+# By default, an icon is looked for in the /editors folder with a name
+# equal to the key name, less any initial @, concatenated with ".png".
+# For example, the default icon for @app-new-inv is
+# "resources/editors/app-new-inv.png".
+#
+# You may specify an alternative location for the icon's image file
+# by appending a pipe (|) and the relative URL of the file, e.g.:
+#     My Editor = script:/custom/myed.js | custom/myed.png
+# or, for categories:
+#     My Category | custom/mycat.png
+# If the custom icon cannot be found (or is not defined),
+# a default icon will be substituted automatically.
+#
+# You may specify the game that a component belongs to by adding a
+# second pipe (|) and the code for the game. For example, the following
+# would create the same entry as above, but mark the editor as being specific
+# to Arkham Horror (code AH):
+#     My Editor = script:/custom/myed.js | custom/myed.png | AH
+# To use the default icon, leave the second field blank:
+#    My Editor = script:/custom/myed.js | | AH
+# A single asterisk (*) can be used for components that are not tied to any
+# particular game. If no game code is specified, the component is considered
+# to be game-specific (but the game is unknown). This provides backwards
+# compatibility with older classmap files, but these older files should be
+# upgraded so that the game filter on the new component dialog works as
+# expected.
+#
+# For categories, in addition to a custom icon you can also specify
+# a custom banner to appear on the left side of the dialog. To do
+# this, add a semicolon (;) after the category icon and then
+# insert the location of the banner image. Spaces around the
+# semicolon are ignored.
+#
+# You will find a blank icon you can use to help you create your own icons
+# in the plug-in authoring kit's graphics templates folder.
+#
+
+@cat-custom
+  My Custom Component = script:yourname/custom-component-script.js

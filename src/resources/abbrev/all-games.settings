@@ -1,0 +1,14 @@
+# Default table for the "All Games" game;
+# the abbreviations for tables from other games
+# inherit from the "All Games" table.
+at = <top>
+am = <middle>
+ab = <bottom>
+bgclr = <bgcolour #$|000000|$></bgcolour>
+clr = <colour #$|000000|$></colour>
+def = <define $|tagname|$ "replacement">
+fn = <fullname>\u0020
+im = <image "$|url|$" 12pt center>
+inf = <infinity>\u0020
+tw = <tabwidth $|36pt|$>
+uc = <u+$|0021|$>

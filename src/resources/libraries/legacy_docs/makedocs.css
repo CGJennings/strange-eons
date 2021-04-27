@@ -1,0 +1,65 @@
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-size: 14px;
+    line-height: 1.5;
+    color:#24292e;
+}
+
+h1, h2, h3 { font-weight: bold }
+h1 { font-size: 18px; margin-top: 4px; margin-bottom: 4px; }
+h2 { font-size: 16px; margin-top: 28px; margin-bottom: 2px; }
+h3 { font-size: 14px; margin-top: 18px; margin-bottom: 2px;  }
+
+a { color: #000077 }
+a:active { color: #770000 }
+
+tt, code {
+    font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,Monospaced,monospace;
+    font-size: 14px;
+    color: #000077
+}
+pre {
+    font-family: "SFMono-Regular",Consolas,"Liberation Mono",Menlo,Courier,Monospaced,monospace;
+    font-size: 14px;
+    margin: 2px 48px 10px 2px;
+    padding: 6px;
+    background-color: #F9F9F9;
+    border-top: dashed 1px #777777;
+    border-bottom: dashed 1px #777777;
+}
+table { border-width: 0px; border-collapse: collapse; padding: 0; margin: 8px; margin-top: 2px; margin-bottom: 10px; }
+table.arglist { margin-left: 24px; margin-right: 12px }
+p { margin-top: 2px; margin-bottom: 10px; }
+
+div.indent { margin-left: 48px; }
+
+div.toc { font-size: 90%; margin: 16px 16px 16px 16px; padding: 8px; background-color: #f7f7f7; border: #f7f7f7 solid 4px; border-radius: 8px; }
+
+td.arg { border-bottom-width: 1px; border-bottom-style: dotted; border-bottom-color: #dddddd }
+td.argdesc { padding-left: 6px; border-bottom-width: 1px; border-bottom-style: dotted; border-bottom-color: #dddddd }
+
+.PARAMLIST { font-weight: normal }
+.OPTIONAL { color: #888888; font-weight: normal }
+.CLASS, .STATIC, .RESTRICTED
+      { font-size: 80%; font-weight: normal; font-style: italic; margin-left: 8px; padding-left: 4px; border-left: dotted 1px #007700 }
+.CLASS { color: #000099; border-left-color: #000099 }
+.STATIC { color: #009900; border-left-color: #009900 }
+.RESTRICTED { color: #990000; border-left-color: #990000 }
+
+.COMMENT1 { color: #737373 }
+.COMMENT2 { color: #737373; font-style: italic }
+.LITERAL1 { color: #ce7b00 }
+.LITERAL2 { color: #ce7b00 }
+.LITERAL3 { color: #ce7b00 }
+.LABEL { color: #000000 }
+.KEYWORD1 { color: #000099; font-weight: bold }
+.KEYWORD2 { color: #009900 }
+.KEYWORD3 { color: #0000da }
+.OPERATOR { color: #000000 }
+.INVALID { color: #b20000; font-style: italic }
+.SPECIAL1 { color: #000000; font-weight: bold }
+.SPECIAL2 { color: #000000; font-weight: bold }
+.SPECIAL3 { color: #000000; font-weight: bold }
+.SPECIAL4 { color: #000000; font-weight: bold }
+.SPECIAL5 { color: #000000; font-weight: bold }
+.SPECIAL6 { color: #000000; font-weight: bold }

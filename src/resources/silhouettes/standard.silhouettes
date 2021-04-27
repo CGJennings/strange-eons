@@ -1,0 +1,48 @@
+#
+# This file matches human-readable labels with
+# shapes that can be used to make markers.
+# Labels that begin with '@' will be looked up
+# as UI strings (without the '@') to localize the
+# name.
+#
+# To create additional shapes, see the documentation
+# for gamedata.Silhouette.
+#
+
+@sil-smcircle = silhouettes/small-circle.png
+@sil-circle = silhouettes/circle.png
+@sil-lgcircle = silhouettes/large-circle.png
+
+@sil-smoval = silhouettes/small-oval.png
+@sil-medoval = silhouettes/oval.png
+@sil-oval = silhouettes/large-oval.png
+
+@sil-rect = silhouettes/rectangle.png
+@sil-lgrect = silhouettes/large-rect.png
+@sil-shrect = silhouettes/short-rect.png
+@sil-smrndrect = silhouettes/small-round-rect.png
+@sil-rndrect = silhouettes/round-rect.png
+
+@sil-square = silhouettes/square.png
+@sil-lgsquare = silhouettes/large-square.png
+@sil-rndsquare = silhouettes/round-square.png
+@sil-lgrndsquare = silhouettes/large-round-square.png
+
+@sil-triangle = silhouettes/triangle.png
+@sil-diamond = silhouettes/diamond.png
+@sil-parallel = silhouettes/parallelogram.png
+@sil-rhombus = silhouettes/rhombus.png
+@sil-pent = silhouettes/pentagon.png
+@sil-hex = silhouettes/hex.png
+@sil-octagon = silhouettes/octagon.png
+
+@sil-smcapsule = silhouettes/small-capsule.png
+@sil-capsule = silhouettes/large-capsule.png
+@sil-bowtie = silhouettes/bowtie.png
+@sil-coffin = silhouettes/coffin.png
+@sil-chevron = silhouettes/chevron.png
+@sil-cross = silhouettes/cross.png
+@sil-pointer = silhouettes/pointer.png
+@sil-arrow = silhouettes/arrow.png
+@sil-splatter = silhouettes/splatter.png
+@sil-char-marker = silhouettes/character-stand.png

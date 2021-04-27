@@ -1,0 +1,272 @@
+package ca.cgjennings.ui;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EventListener;
+import java.util.List;
+import java.util.regex.Pattern;
+import javax.swing.AbstractListModel;
+import javax.swing.Icon;
+import javax.swing.JList;
+import javax.swing.event.DocumentEvent;
+
+/**
+ * A model for <code>JList</code>s that supports filtering. The
+ * <code>ListModel</code> methods <code>getElementAt</code> and
+ * <code>getSize</code> return values appropriate for the applied filter. It is
+ * recommended that you get and set the selection using values rather than
+ * indices.
+ *
+ * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.0
+ */
+@SuppressWarnings("serial")
+public class FilteredListModel extends AbstractListModel {
+
+    private List<Object> filtered = new ArrayList<>();
+    private List<Object> list = new ArrayList<>();
+
+    public FilteredListModel() {
+    }
+
+    public FilteredListModel(Object[] items) {
+        this();
+        for (int i = 0; i < items.length; ++i) {
+            add(items[i]);
+        }
+    }
+
+    public FilteredListModel(Collection<? extends Object> items) {
+        this();
+        for (Object it : items) {
+            add(it);
+        }
+    }
+
+    public void add(Object item) {
+        list.add(item);
+        if (test(item)) {
+            int index = filtered.size();
+            filtered.add(item);
+            fireIntervalAdded(this, index, index);
+        }
+    }
+
+    public void add(int index, Object item) {
+        list.add(index, item);
+        if (test(item)) {
+            index = getFilteredIndex(index);
+            filtered.add(index, item);
+            fireIntervalAdded(this, index, index);
+        }
+    }
+
+    /**
+     * Returns the item at the <i>unfiltered</i> index.
+     *
+     * @param index the model index
+     * @return the item at the specified index
+     */
+    public Object getItem(int index) {
+        return list.get(index);
+    }
+
+    /**
+     * Returns the size of the <i>unfiltered</i> list.
+     *
+     * @return the unfiltered model size
+     */
+    public int getItemCount() {
+        return list.size();
+    }
+
+    /**
+     * Removes all elements from the list.
+     */
+    public void clear() {
+        int index1 = filtered.size();
+        filtered.clear();
+        list.clear();
+        if (index1 > 0) {
+            fireIntervalRemoved(this, 0, index1 - 1);
+        }
+    }
+
+    /**
+     * Returns the index of the first object equal to <code>o</code>, ignoring
+     * the current filter. This is useful when the list is an index into a list
+     * of objects and the indexed object must be retrieved.
+     *
+     * @param o the object to find the index of
+     * @return the unfiltered index of the first such object, or -1
+     */
+    public int getUnfilteredIndex(Object o) {
+        return list.indexOf(o);
+    }
+
+    private int getFilteredIndex(int unfilteredIndex) {
+        if (!test(list.get(unfilteredIndex))) {
+            return -1;
+        }
+        int findex = 0;
+        for (int i = 0; i < unfilteredIndex; ++i) {
+            if (test(list.get(i))) {
+                ++findex;
+            }
+        }
+        return findex;
+    }
+
+    public void setFilter(ListFilter f) {
+        filter = f;
+        if (list.size() == 0) {
+            return;
+        }
+        int fsize = filtered.size();
+        if (fsize > 0) {
+            fireIntervalRemoved(this, 0, fsize - 1);
+        }
+        filtered.clear();
+        int size = list.size();
+        for (int i = 0; i < size; ++i) {
+            Object item = list.get(i);
+            if (test(item)) {
+                filtered.add(item);
+            }
+        }
+        fsize = filtered.size();
+        if (fsize > 0) {
+            fireIntervalAdded(this, 0, fsize - 1);
+        }
+    }
+
+    /**
+     * Returns true if the item is allowed by the current filter.
+     */
+    private boolean test(Object o) {
+        if (filter == null) {
+            return true;
+        }
+        return filter.include(this, o);
+    }
+
+    private ListFilter filter;
+
+    public interface ListFilter {
+
+        public boolean include(FilteredListModel model, Object item);
+    }
+
+    /**
+     * A list filter that can be selected from a list of filters.
+     */
+    public static abstract class ChoosableListFilter implements IconProvider {
+
+        private Icon icon;
+        private String name;
+
+        public ChoosableListFilter(String name, Icon icon) {
+            this.name = name;
+            this.icon = icon;
+        }
+
+        @Override
+        public Icon getIcon() {
+            return icon;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
+
+    public static ListFilter createRegexFilter(final String regex) {
+        return new ListFilter() {
+            Pattern p = Pattern.compile(regex);
+
+            @Override
+            public boolean include(FilteredListModel model, Object item) {
+                if (item == null) {
+                    return false;
+                }
+                return p.matcher(item.toString()).find();
+            }
+        };
+    }
+
+    public static ListFilter createStringFilter(String substring) {
+        return createRegexFilter("(?i)(?u)" + Pattern.quote(substring));
+    }
+
+    /**
+     * This is a convenience method that attaches this model to the current
+     * document of the specified search field. When the text in the document
+     * changes, the text from the field will be used to create a string filter,
+     * which will then be applied to the list.
+     *
+     * @param field the field to link this model to
+     */
+    public void linkTo(final JFilterField field, final JList list, final boolean restoreSelection) {
+        field.getDocument().addDocumentListener(new DocumentEventAdapter() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                Object[] selValues = list.getSelectedValues();
+                setFilter(createStringFilter(field.getText()));
+                if (selValues.length > 0 && restoreSelection) {
+                    for (Object sel : selValues) {
+                        for (int i = 0; i < getSize(); ++i) {
+                            if (sel.equals(getElementAt(i))) {
+                                list.addSelectionInterval(i, i);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public Object getElementAt(int index) {
+        return filtered.get(index);
+    }
+
+    @Override
+    public int getSize() {
+        return filtered.size();
+    }
+
+    public static final ListFilter ACCEPT_ALL_FILTER = (FilteredListModel mode, Object item) -> true;
+
+//	public static void main( String[] args ) {
+//		EventQueue.invokeLater( new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				JFrame f = new JFrame();
+//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//				JList l = new JList();
+//				f.getContentPane().setLayout( new FlowLayout( ) );
+//				final FilteredListModel model = new FilteredListModel( new String[] { "Chris", "Sarah", "Abigail", "Tony", "Henry" } );
+//				l.setModel( model );
+//				f.add( l );
+//				final JTextField t = new JTextField(10);
+//				t.getDocument().addDocumentListener( new DocumentEventAdapter() {
+//					@Override
+//					public void changedUpdate( DocumentEvent e ) {
+//						model.setFilter( FilteredListModel.createRegexFilter( t.getText() ) );
+//					}
+//				});
+//				f.add( t );
+//				f.pack();
+//				f.setLocationRelativeTo( null );
+//				f.setVisible( true );
+//			}
+//
+//		});
+//	}
+    public interface FilterChangeListener extends EventListener {
+
+        void filterChanged(Object source);
+    }
+}

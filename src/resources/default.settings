@@ -1,0 +1,691 @@
+##
+## Default Settings File [ISO-8859-15]
+##
+#
+# This file defines the default values for the various application settings.
+# Note that not all of these settings are exposed as user-editable options
+# in the preferences dialog. Generally speaking, this file should not be
+# edited directly. Instead, change the value of the appropriate key in
+# the user preferences file.
+#
+
+
+###########################################################
+##
+## Design Support
+##
+
+show-consequence-displays = yes
+
+# If false, invalid characters are not marked.
+use-validation = yes
+
+# If yes, most "suggestions" are treated as rule violations
+use-strict-validation = no
+
+
+
+
+
+###########################################################
+##
+## Paper Sizes
+##
+
+# These settings control the default margins and grid displayed on pages
+# of the deck editor. The margin size is a visual margin shown
+# around the edge of all pages (it does not prevent card placement).
+# The grid size determines the spacing of a grid of equidistant lines.
+# Cards that are dragged over empty space will snap to the nearest
+# 1/2 grid unit. The values below correspond to ~1 cm. Individual paper
+# types can override these defaults (see below).
+
+paper-margin-size = 28.346472
+paper-grid-size = 28.346472
+
+# These define the standard paper sizes the user may choose from for a deck.
+# All measurements are in points (1/72 inch). Separate portrait and landscape
+# options for each size will be generated automatically by the user interface.
+# Paper names that start with @ are localized strings (the name is determined
+# by looking up the localized string with that name---less the @--- as a key).
+#
+# NOTE: This list is only for standard (built-in) paper sizes. To add a custom
+#       paper size, see below.
+#
+
+paper-name-1   = @paper-letter
+paper-width-1  = 612
+paper-height-1 = 792
+paper-grid-size-1 = 36
+paper-margin-size-1 = 18
+
+paper-name-2   = @paper-legal
+paper-width-2  = 612
+paper-height-2 = 1008
+paper-grid-size-2 = 36
+paper-margin-size-2 = 18
+
+paper-name-3   = @paper-a3
+paper-width-3  = 841.8897399902344
+paper-height-3 = 1190.5511627197266
+
+paper-name-4   = @paper-a4
+paper-width-4  = 595.2755813598633
+paper-height-4 = 841.8897399902344
+
+paper-name-5   = @paper-pa4
+paper-width-5  = 595.2755905511811
+paper-height-5 = 793.7007874015748
+
+# Custom Paper Sizes: These are defined using the custom paper size dialog
+# the format of the keys is the same, but the key names start with "custom-"
+
+# If you prefer to use Imperial units, the following lines will define
+# a 1/4" margin and 1/2" grid spacing:
+#
+#paper-margin-size = 18
+#paper-grid-size = 36
+
+# if true, the non-native print dialog is displayed to offer all available
+# print services and not just native ones
+print-enable-all-print-services = no
+
+
+
+
+
+############################################################
+##
+## Deck View Options
+##
+
+# controls whether drag handles, the margins, and the grid are drawn
+deck-show-handles = yes
+deck-show-margins = yes
+deck-show-grid = yes
+# if yes, the context bar floats over the selection instead of over
+# the entire page view
+show-context-bar-over-deck-selection = yes
+
+
+
+
+
+
+# If set to yes, then a workaround for a specific bug in the font registration
+# code of Apple's Java 6 implementation will be used (see above).
+# This workaround is activated when one of the settings above specifies a
+# list of fonts and the entries in the list have different family names.
+bug-osx-font-registration-workaround = yes
+# if set to yes, an informational dialog is shown when the bug is detected
+bug-osx-font-registration-dialog = yes
+
+# List of typefaces to look for in order to replace the body-font family
+# when the above bug is detected.
+bug-osx-font-registration-families = Linux Libertine,Times New Roman,Serif
+
+
+
+
+
+###########################################################
+##
+## Spelling
+##
+
+# For the spelling system to work, you must also install the
+# spelling dictionary library and set the game locale to a
+# supported language.
+spelling-enabled = yes
+
+
+
+
+
+
+###########################################################
+##
+## Rendering
+##
+
+# This setting controls how often previews are updated.
+#
+# Basic use pattern: If the preview is not being updated as often as
+# you would like, reduce this value. If the editing controls are
+# not responding as quickly or as smoothly as you would like,
+# increase this value. To do both, decrease this value and choose
+# faster (lower quality) preview options.
+#
+# Details: The update-rate is the minimum number of milliseconds
+# between checks for changes to a component. When the update delay
+# elapses, components are checked to see if they have changed.
+# Once an edit is detected (so that the preview image is out of date),
+# a preview update is said to be "pending". Pending updates do not cause
+# the preview to be drawn immediately. Instead, the component will continue
+# to be checked to see if it has changed every update period.
+# This will continue until the component STOPS changing, that is, until no edits
+# have taken place since the last check. It is only at this point that the
+# preview image will be redrawn. This prevents slowing the user down with
+# redraws while they are in the middle of typing, assuming that they type
+# quickly enough.
+update-rate = 200
+
+# If yes, sheets render in prototype mode by default. This means that only
+# text and shapes are drawn (no images), and sheets have are given a solid
+# white background.
+render-as-prototype = no
+
+# If yes, low- and high-resolution renderings will have more similar text layouts
+# (so there should be little or no difference between preview and printed output),
+# but low resolution renderings of small text will tend to "smush" letters together.
+# Setting this to "no" is not generally recommended.
+use-fractional-glyph-metrics = yes
+
+# If yes, text is anti-aliased when rendering at high quality (this includes
+# high quality previews, exporting, and printing).
+use-antialiased-text-on-highquality = yes
+
+# If yes, then page views in the deck editor are always anti-aliased;
+# otherwise, anti-aliasing may be disabled during drag and scroll operations
+# and at low quality settings.
+always-anti-alias-page-views = yes
+
+# If yes, exports at less than export-oversampling-threshold DPI will be
+# drawn at twice the requested resolution and scaled down. Generally,
+# enabling this will result in smoother graphics and somewhat more legible
+# text when exporting to low resolution. If the card uses typefaces with
+# extensive hinting, then the higher resolution source can prevent the hinting
+# from being triggered, which results in more consistent images across
+# resolutions.
+use-export-oversampling = yes
+export-oversampling-threshold = 200
+
+# basic image export options
+export-task = general
+export-container = folder
+
+# These are the default settings for the "Custom Settings" export option
+imexport-format = jpg
+imexport-quality = 0.80
+imexport-progressive = yes
+imexport-dpi = 300
+imexport-combine = no
+imexport-suppress-backs = no
+
+# If yes then the program will either launch the application registered for
+# exported file types or display their location in the file system.
+# Originally this meant only zip files, but other types are produced now as well.
+open-zip-after-export = yes
+
+# If true, the source navigator is visible by default in code windows
+show-source-navigator = yes
+source-navigator-size = 200
+
+# The backdrop for component previews: 0=dark, 1=light, 2=checker
+preview-backdrop = 0
+
+# The following settings are combined to create the four quality settings in the
+# preview menu:
+#
+# setting   fastest-possible    high-quality    upsampled
+# low       yes                 no              no
+# medium    no                  no              no
+# high      no                  yes             no
+# ultra     no                  yes             yes
+#
+
+# If yes, preview images are rendered with slower but higher quality algorithms.
+use-high-quality-previews = yes
+
+# If yes, a minimum upsample factor is applied to previews; cards with an
+# upsample value less than the minimum will use the minimum instead. The hint
+# value suggests the desired minimum upsample factor. Some views may ignore or
+# scale the hint; it will always be ignored if less than or equal to 1.
+use-upsampled-previews = no
+
+# If yes, then low quality previews will be even lower in quality, to update
+# at the fastest possible rate. If has no effect if use-high-quality-previews
+# is true. When active, previews are realized at lower resolution and scaled
+# with lower quality (but fast) algorithms.
+use-fastest-possible-previews = no
+
+# The sheet view normally uses bilinear interpolation to zoom preview images
+# (or nearest neighbour if fastest-possible is true). If this is set to true,
+# it will attempt bicubic interpolation instead. Bicubic interpolation will
+# generally give little noticeable improvement in quality, but you may wish to
+# set it if bicubic interpolation is accelerated.
+request-bicubic-preview-scaling = no
+
+# These keys affect how the previewer processes cards that are scaled to
+# less than 1/2 their true size in the preview window. If
+# use-downsample-preservation is yes, then the scaling algorithm will
+# preserve more of the sample information from the source image.
+# If use-downsample-sharpening is yes, then a light sharpening filter
+# will be applied to the scaled image.
+use-downsample-preservation = yes
+use-downsample-sharpening = no
+
+# If yes, then the "UNBALANCED" text will be written in a smaller font at the
+# bottom of the sheet instead of in large text across the entire face.
+less-obvious-balance-warning = no
+
+# If yes, then images with transparency will have their pixels
+# pre-multiplied by their alpha channel values.
+premultiply-image-alpha = no
+
+# If true, markup boxes will use a line breaker that caches break positions,
+# which can give a small performance boost during text layout. The only reason
+# to set this to no is if line breaking errors or exceptions appear and you
+# wish to determine if they are due to a bug with the cache mechanism.
+use-fast-line-breaker = yes
+
+# If true, markup boxes and some other component regions are highlighted.
+show-debug-boxes = no
+
+# Comma separated list of language codes from locales for which the body
+# font should not be used, and the platform-specific serif font used instead.
+#   - ru: Cyrillic characters incomplete in bold+italic
+use-generic-serif-body-for-languages = ru
+
+
+
+###########################################################
+##
+## Interface, Look and Feel
+##
+
+# Specify the interface theme to install, assuming it is available.
+# The following theme classes are built in:
+#     ca.cgjennings.ui.theme.DagonTheme       [green Nimbus variant]
+#     ca.cgjennings.ui.theme.HydraTheme       [blue Nimbus variant]
+#     ca.cgjennings.ui.theme.TchoTchoTheme    [emulate native platform look and feel]
+#     ca.cgjennings.ui.theme.PluginTestTheme  [used when running in bundle test mode]
+#
+theme = ca.cgjennings.ui.theme.HydraTheme
+
+# Specify the default look-and-feel to use if nothing is specified on
+# the command line. The "auto" value will use the Nimbus cross-platform
+# L&F if it is available; otherwise it has the same effect as "patched".
+#
+# Possible values:
+#   auto           : use the automatic L&F selection mechanism
+#   patched        : use the native platform L&F, but apply fixes if available
+#   platform       : use the native platform L&F, without fixes
+#   cross-platform : use the cross-platform L&F
+#   classname      : use the class "classname"
+#
+default-look-and-feel = auto
+
+# When restoring window settings, this setting controls how windows that extend
+# offscreen are handled. If true, then the lower-right corner is clipped to the
+# screen bounds, changing the window size.
+clip-window-extents = no
+
+# If yes, when run on OS X and not using the Aqua L&F, attempt to set the
+# menu UI implementations to the Aqua versions so that the menu bar appears
+# at the top of the screen.
+use-osx-menu-delegates = yes
+
+# If yes, enables animation and special effects in the user interface.
+# If no, special effects are disabled. Set to no if you experience
+# compatibilty or performance issues due to interface effects.
+advanced-ui-effects = yes
+
+# If no, zoomable views zoom in when turning the mouse wheel away from the user
+# (or, on compatible touch pads, when pinching outward with two fingers)
+# and out when turning it towards the user; if yes, the relationship is reversed.
+invert-wheel-zoom = no
+
+# Experimental builds of Strange Eons may contain incomplete or broken features
+# that are not ready for general use. Normally such features are hidden or
+# or disabled, but they will be available if this is set to yes.
+enable-experimental-features = no
+
+# This describes the font to be used in the text entry components of the
+# component editors. If commented out or the family is "default", the standard
+# text control font is used.
+edit-font-family = default
+#edit-font-family = Monospaced
+# edit-font-family = Consolas,Inconsolata,Bitstream Vera Sans Mono,Lucida Sans Typewriter,Monospaced
+edit-font-pointsize = 12
+edit-font-bold = no
+edit-font-italic = no
+
+# If yes, insert chars/font previewer shows entire Unicode range by default
+insert-chars-full-unicode = no
+
+# Context Bar Settings
+show-context-bar = yes
+context-bar = BOLD,ITALIC,UNDERLINE,|,H1,|,LEFT,CENTRE,RIGHT,|,TO_FRONT,TO_BACK,|,GROUP,UNGROUP,|,TURN_LEFT,TURN_RIGHT,MIRROR
+
+
+
+
+
+# The maximum number of recent files to list under the Open Recent menu item.
+# Set to 0 or less to hide the Open Recent command. The maximum value is 25.
+recent-file-menu-length = 10
+
+# If this is greater than 0, files will be monitored for changes; decks
+# will update their contents if a card they contain is saved.
+# The period is the approximate maximum time, in milliseconds, before a
+# changed file will be detected.
+file-monitoring-period = 3000
+
+# If yes, then the contents of the Quickscript window will be retained
+# between program runs.
+keep-quickscript = yes
+
+# Deck packing default settings
+deck-pack-twoside = yes
+deck-pack-group = yes
+deck-pack-layout-quality = 2
+
+# If yes, plays factory audio clip while processing a factory data table
+play-factory-audio = no
+
+# Default settings for Find/Replace
+find-incremental = yes
+find-case-sensitive = no
+find-regular-expression = no
+
+# Default compression options for image conversion
+image-compression-png-compress = yes
+image-compression-png-quality = 100
+image-compression-png-progressive = no
+image-compression-jpg-compress = yes
+image-compression-jpg-quality = 75
+image-compression-jpg-progressive = yes
+image-compression-jp2-compress = yes
+image-compression-jp2-quality = 30
+image-compression-jp2-progressive = yes
+
+
+###########################################################
+##
+## Projects
+##
+
+# Excluded files
+#
+# A comma separated list of strings. File names that match any of these strings
+# will not be included as part of a project. (That is, the project system will
+# ignore matching files.) The wildcards * (match 0 or more characters) and ?
+# (match any one character) can be used.
+#
+# Note that the "seproject" files that contain project settings and hidden files
+# (files starting with '.' or with the Windows hidden attribute) are hidden by
+# the project system (they do not appear in project views and do not appear as
+# children of the containing project member) but *not* excluded (they are still
+# considered part of the project for the purposes of, say, creating a project
+# package file).
+exclude-from-projects = Thumbs.db,_vti_cnf,.hg*,.svn*,.git*
+
+# If yes, a special dialog is presented when opening projects or selecting
+# project parent folders. However, the dialog has to use FileSystemView in ways
+# not intended. If there are problems with the dialog on your system, set this
+# to no for a basic directory chooser.
+use-project-folder-selector = yes
+
+# If true, Make Bundle will automatically touch catalogue ID timestamps
+make-bundle-autotouch = yes
+
+# If true, strip out JAR metadata when publishing bundles (META-INF and contents)
+pack-bundle-strip-meta = yes
+
+# Default settings for bundle testing
+test-bundle-log = ALL
+test-bundle-jvm = java -Xmx1024m -cp "%j" strangeeons
+test-bundle-args =
+# if yes, a special testing theme will override the user-selected theme
+# to make it easy to tell which instance of SE is the test version
+test-bundle-use-testing-theme = yes
+
+# If a subprocess is created with the command name "java", then the following
+# will be substituted as the path to the command. This allows you to name a specific
+# Java runtime (for example, if the default version is too low to run
+# Strange Eons). If this value is also "java", then a platform-specific value
+# may be substituted.
+invoke-java-cmd = java
+
+# Catalogue URLs: the -1 entry is the location of the master SE catalogue
+# Other unique URLs that are entered in the catalogue dialogue will be stored
+# in user settings at -2, -3, etc.
+catalog-url-1 = http://strangeeons.cgjennings.ca/plugins3/
+# If yes, show additional details in the catalog listing window; these may
+# be useful for writing or debugging catalogues
+catalog-show-expert-info = no
+# If yes, installed plug-ins with an update available are selected automatically
+catalog-autoselect-updated = yes
+# If yes, uninstalled core components are selected automatically
+catalog-autoselect-core = yes
+# If the above is set to yes, only cores of the following types are included
+# (that is, their catalogue listing includes the line core = XX, and XX is
+# on this list). You may use * as a wildcard.
+catalog-autoselect-core-types = SE*
+
+# Required plug-in download options
+# if no, the core plug-in dialog has never been shown
+core-dialog-shown = no
+# if yes, core plug-ins should autoinstall without displaying a dialog
+# (core-dialog-shown must be yes for this to take effect)
+core-dialog-autoinstall = no
+
+# Automatic update options
+# Frequency of update checks: 0=Never, 1=Monthly, 2=Weekly, 3=Daily, 4=Always
+core-autoupdate-frequency = 0
+# Moment of last update (milliseconds since Jan 1 1970)
+core-last-update-check = 0
+# The catalog ID of the newest plug-in that has been observed, so SE can
+# figure out which plug-ins are new (whichever ones have a newer date than this)
+core-newest-observed-id
+# If yes, when doing automatic updates, include all catalogs in the history
+core-update-all-catalogs = no
+# The action that SE should take when detecting updates automatically:
+# 0 = Show a message; 1 = open catalog; 2 = install immediately.
+core-update-action = 0
+# If yes, show a message when a new version of SE is released
+core-show-app-updates = yes
+# If yes, show a message when new plug-ins are available
+core-show-new-plugins = yes
+
+# If yes, debugging information will be printed at runtime.
+# If the --debug option is set on the command line, it will override the setting
+# here (forcing it on).
+# The output produced from this feature is independent of the output produced
+# by debug() in the scripting system, although if this is set to yes then
+# debug() will also be activated by default.
+debug = no
+
+
+
+###########################################################
+##
+## Plug-ins and Scripting Support
+##
+
+# If true, the default when the user chooses to run a script is to clear the
+# current contents of the script console
+clear-script-console = true
+
+#
+# Comma-separated lists of (a) classes on the classpath that implement
+# implement the ca.cgjennings.apps.arkham.plugins.Plugin interface or
+# (b) ECMAScript (JavaScript) files that define equivalent functions.
+# These represent plug-ins that can be included in the list of tools in
+# the Toolbox menu. Entries are assumed to be classes unless they begin
+# with "script:".
+#
+
+# System plug-ins: these may change from version to version
+system-plugins = ca.cgjennings.apps.arkham.plugins.QuickScript,\
+                 ca.cgjennings.apps.arkham.plugins.ComponentViewer
+
+# User plug-ins: these are usually added using the catalogue feature.
+plugins =
+
+# These plug-ins will not appear in the menu but are still "installed";
+#     they can still be viewed, enabled, and uninstalled from the manager.
+inactive-plugins =
+
+# These plug-ins have been explicitly uninstalled by the user. Plug-ins
+#     on this list will not be listed even when they are discovered
+#     by scanning the dynamic plug-in folders.
+uninstalled-plugins =
+
+# These are plug-ins from previous versions that are no longer compatible
+#     and/or needed. Plug-ins on this list will not be loaded, as if they
+#     were on the uninstalled list. You are advised not to add or remove
+#     entries from this list, or to override it with a user setting.
+deprecated-bundles = ui-grid.selibrary,core-StrangeEonsAPIDocs.selibrary,\
+                     HPLCollection.seext,JavaScriptDocs.seplugin
+
+# A folder that dynamic plug-ins may be installed to in addition to the
+# standard location. This can be used, for example, to share plug-ins between
+# multiple users.
+#plugin-folder =
+
+# If yes, plug-ins may add buttons to a tool bar of custom components on the
+# main application window. If no, plug-ins may still create custom components
+# (to prevent exceptions when they attempt to do so). However, the components
+# are not made visible to the user.
+allow-custom-components = yes
+
+# If yes, then the representative image of plug-ins is used to create icons for
+# for the Toolbox menu's menu items.
+use-plugin-icons = yes
+
+# The default optimization level for executing script code. Ranges from -1
+# (interpret only) to 9. The optimization level is limited to 0 if debugging
+# information is generated. Setting a value higher results in faster execution
+# of scripts, but more time spent compiling scripts. Currently, levels from
+# 2-9 are equivalent to level 1. The Preferences dialog converts this to a
+# number from 0 to 3 as follows: -1 -> 0, 0 -> 1, 1 -> 2, 2..9 -> 3
+script-optimization-level = 0
+# Enables warning messages from the script parser.
+script-warnings = no
+
+# If yes, a complete stack trace is dumped to the console window when a script
+# error occurs, and not just a trace of the the JavaScript system.
+script-full-exception-trace = no
+
+# If yes, the script debug server will be started automatically
+enable-script-debugger = no
+
+# If yes, the script debug server will allow clients from other machines;
+# otherwise the server will use the loopback address.
+enable-remote-debugging = no
+
+# The preferred server port used by the script debug server. (If the port
+# listed here is in use, an arbitrary available port will be used instead.)
+script-debug-port = 8888
+
+# Autolaunch client when debugging is enabled
+script-debug-client-autostart = yes
+
+# Command to launch the debugger client
+script-debug-client-jvm = java -Xms64m -cp "%j" debugger
+
+
+
+
+
+
+
+##
+## Layout Defaults
+##
+
+# If this key is defined, it will override the text fitting setting for
+# all of the individual card keys in the next section.
+
+
+# This setting defines the default text fitting method to use when markup
+# text is too long to fit in its region as is. It can be one of:
+#   none     disable fitting
+#	spacing  fit text by reducing line spacing
+#	scaling  fit text by scaling the text size down
+#	both     use both fitting methods, first reducing space, then reducing size
+#
+default-text-fitting = both
+
+# This places a limit on how much text will be scaled when scaling text to
+# fit in a space. It is a fraction of the "true" size of the text. So,
+# if the factor is 0.6 and the normal text size in the paragraph is 10 points,
+# then the scaling algorithm will scale the text to no less than about
+# 10 * 0.6 = 6 points.
+min-text-scaling-factor = 0.4
+
+# When fitting text by scaling, the layout system must try laying out the
+# text at various scales to find the best one. This value allows you to
+# set a trade-off between the precision of the scaling and how long it takes
+# to find the best size (within the limits of that precision).
+# Text will be scaled in increments no smaller than 1/text-scaling-precision.
+# Increasing this value allows more precise scaling at the cost of additional
+# processing time. Multiplying the value by n will require at most ceil(log2(n))
+# additional layout attempts in order to choose a scale.
+# That is, each time the precision is doubled, up to one extra pass is needed;
+# each time it is halved, the maximum number of passes is reduced by 1.
+#
+# Since the minimum scale is determined by min-text-scaling-factor, the chosen
+# scale for a text box will lie between 1 and
+#
+#              floor(min-text-scaling-factor * text-scaling-precision)
+#              -------------------------------------------------------
+#                             text-scaling-precision
+#
+text-scaling-precision = 100
+
+# This places a limit on how much line spacing can be reduced when changing
+# spacing to fit text. Set to 0 to allow descenders and ascenders to just
+# touch. Setting the value to 1.0 effectively disables spacing-based fitting.
+# Setting it to more than 1.0 would be pretty stupid, but I won't stop you.
+min-text-spacing-factor = 0.3
+
+# If yes, draws a dotted red line around text entered in the editor that
+# is too long to fit in its text region.
+highlight-bad-boxes = yes
+
+# When printing card images, cards will be rendered somewhere between the
+# two target resolutions below. If the actual print job resolution falls
+# between these values, cards will be rendered at that resolution. Otherwise,
+# it will be rendered at the minimum value (if the print job is below that
+# resolution), or at the maximum value (if the print job is above it).
+target-print-dpi-min = 300
+target-print-dpi-max = 600
+
+
+## Markers/Tokens
+
+marker-sheet-template = silhouettes/large-square.png
+marker-pointsize = 18
+
+## DIY Default Template
+
+diy-front-sheet-template = templates/diy-default.png
+
+
+## Prefab Library Default Configuration
+
+prefab-front-template = templates/diy-default.png
+prefab-title-region = 14,17,212,40
+prefab-content-region = 14,60,212,303
+
+
+
+## Documentation
+# The URL that describes where to find the base location for the API
+# documentation for the version of Java required by this build of Strange Eons.
+# The token %d, if present, will be replaced by the current API level, e.g.,
+# 7 for Java 7.
+java-api-base = http://docs.oracle.com/javase/%d/docs/api/
+
+# The URL used to perform Web searches (requires JavaFX or another non-default
+# view provider for BrowserPanel). A Web search is performed if a string with
+# no colons or slashes is entered in the address bar. A %s parameter will be
+# replaced with encoded search terms.
+browser-search = http://www.google.com/search?q=%s
+
+# If true, the documents are listed in a tree by default; otherwise in a list
+# (The tree view is only available for collections with packages.)
+browser-use-tree-view = true

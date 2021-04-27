@@ -1,0 +1,56 @@
+#
+# Keys that can be migrated from SE 1.x and 2.x:
+#
+# key-name            : copy the key as written
+# key-prefix-*        : copy all keys that start with key-prefix-
+# old-key -> new-key  : copy the value of old-key to new-key
+#
+
+catalog-autoselect-core
+catalog-autoselect-updated
+clear
+default-game-language -> default-game-locale
+default-image-folder
+default-open-folder
+default-project-folder
+default-resource-id
+default-ui-locale
+enable-script-debugger
+export-join-images
+export-jpeg-images
+export-progressive-scan
+export-resolution
+export-task
+find-case-sensitive
+find-incremental
+find-regular-expression
+image-viewer-dpi
+insert-chars-full-unicode
+keep-quickscript
+last-run-microversion
+less-obvious-balance-warning
+limit-to-single-instance
+measurement-unit
+new-component-class
+open-zip-after-export
+preview-backdrop
+project-divider-pos
+project-notes-tab-index
+proxy-*
+recent-colour-*
+recent-file-*
+recent-project
+script-debug-client-autostart
+script-debug-client-jvm
+script-debug-port
+script-full-exception-trace
+script-optimization-level
+script-warnings
+show-consequence-displays
+show-exhibit-item-cost
+show-spell-cost
+use-ah-footnotes
+use-antialiased-text-on-highquality
+use-downsample-sharpening
+use-strict-validation
+use-validation

@@ -1,0 +1,31 @@
+##
+## minimal.classmap
+##
+
+#
+# See /resources/projects/new-classmap.txt for format notes.
+#
+# This is the minimal classmap for the components available when no games
+# have been installed. It establishes the built-in categories and registers
+# the card deck and marker components.
+#
+
+@cat-example
+
+@cat-decks-and-boards | editors/cat-board.png; editors/board-banner.jpg
+  @app-new-deck = script:editors/plain-deck.js||*
+
+@cat-markers
+  @app-new-marker = Marker||*
+
+@cat-rules
+
+@cat-characters
+
+@cat-enemies
+
+@cat-effects
+
+@cat-inventory
+
+@cat-misc

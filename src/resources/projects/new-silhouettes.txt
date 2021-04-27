@@ -1,0 +1,22 @@
+#
+# This file matches human-readable labels with
+# shapes that can be used to make markers.
+# Labels that begin with '@' will be looked up
+# as UI strings (without the '@') to localize the
+# name. The value assigned to each label (the part
+# after the '=') identifies a resource file that
+# defines the silhouette shape. These are greyscale
+# images: black pixels are part of the shape and
+# white pixels are outside of the shape. (Grey
+# pixels will be proportionally translucent.)
+# The images should be created at a resolution
+# of 150 dots (pixels) per inch.
+#
+# Package the new shape images in an extension
+# along with this file and an extension script
+# that calls:
+#
+#     GameData.parseSilhouettes( "this-file.silhouettes" );
+#
+
+My Silhouette = yourname/silhouette-image.png

@@ -1,0 +1,156 @@
+/*
+ * {%filename}
+ */
+
+{?isExtension}useLibrary( 'extension' );
+
+{/?isExtension}{?isActivated}
+/**
+ * Returns a short name for the plug-in. This will also be the label
+ * of the plug-in's Toolbox menu item.
+ */{/?isActivated}{!isActivated}
+/**
+ * Returns a short name for the plug-in.
+ */{/!isActivated}
+function getName() {
+	return {%name};
+}
+
+{?isActivated}
+/**
+ * Returns a brief description of the plug-in. This will also be the
+ * popup tooltip used for the plug-in's Toolbox menu item.
+ */{/?isActivated}{!isActivated}
+/**
+ * Returns a brief description of the plug-in.
+ */{/!isActivated}
+function getDescription() {
+	return {%description};
+}
+
+
+/**
+ * Returns a version number for the plug-in.
+ */
+function getVersion() {
+	return 1.0;
+}
+{?isInjected}
+
+/**
+ * Returns the type of plug-in. (This must be defined explicitly for
+ * INJECTED plug-ins.)
+ */
+function getPluginType() {
+	return arkham.plugins.Plugin.INJECTED;
+}
+{/?isInjected}
+
+{?isExtension}
+/**
+ * Called when the plug-in is loaded. This is the entry point for
+ * extension plug-ins; whatever you want the plug-in to do should
+ * be included here.
+ */{/?isExtension}{!isExtension}
+/**
+ * Called when the plug-in is first loaded to provide an opportunity to do
+ * one-time setup tasks. This function is called before anything else,
+ * include getName() and getDescription(), so if you want to localize the
+ * plug-in name you should load your string table at this time.
+ *
+ * If this function is empty, you can safely delete it from your script.
+ */{/!isExtension}
+function initialize() {
+	// Note that if this returns false, Strange Eons will stop loading
+	// the plug-in. You might do this, for example, if your plug-in
+	// requires a game that is not currently installed.
+}
+
+{?isActivated}
+/**
+ * This function is called when the plug-in is being unloaded.
+ * You can use this function to free any special resources required by
+ * the plug-in. (ACTIVATED plug-ins rarely need to use this function.)
+ *
+ * If this function is empty, you can safely delete it from your script.
+ */{/?isActivated}{?isInjected}
+/**
+ * This function is called when the plug-in is being unloaded.
+ * INJECTED plug-ins should unregister any new features that the plug-in
+ * has registered (export containers, new project actions, and so on).
+ *
+ * If this function is empty, you can safely delete it from your script.
+ */{/?isInjected}{?isExtension}
+/**
+ * This function is called when the plug-in is being unloaded.
+ * (Extension plug-ins are unloaded during application shutdown.)
+ *
+ * If this function is empty, you can safely delete it from your script.
+ */{/?isExtension}
+function unload() {
+}
+
+{?isInjected}
+/**
+ * This is the entry point for INJECTED plug-ins. It is called after
+ * the initialize() function (if any). Typically, an INJECTED plug-in
+ * registers extensions for existing application features, such as
+ * adding new project actions, in this function.
+ */
+function run() {
+	println( 'Plug-in ' + getName() + ' started' );
+}{/?isInjected}{?isActivated}
+/**
+ * This function is called when the user activates the plug-in by selecting
+ * the plug-in's menu item in the Toolbox. The following variables may be
+ * useful when carrying out the plug-in action:
+ *
+ * Eons : the application (an instance of the StrangeEons class)
+ * Editor : the active editor tab (or null if no editor is active)
+ * PluginContext : an instance of the PluginContext class
+ */
+function run() {
+	println( 'Plug-in ' + getName() + ' activated' );
+}
+
+
+/**
+ * This function is called instead of run() if the user activates the plug-in
+ * while isShowing() returns true. By using this function in combination with
+ * isShowing(), you can create a plug-in that can be turned on and off. If
+ * isShowing() is missing or always returns false, then this function will
+ * never be called. In this case, or if the function is empty, you can delete
+ * it from the script.
+ */
+function hide() {
+}
+
+
+/**
+ * This function is called before the plug-in's Toolbox menu item is displayed.
+ * It can be used along with hide() to create a plug-in that can be turned on
+ * and off. If this function returns false, then the menu item will be shown
+ * normally and the run() function will be called to activate the plug-in.
+ * If this function returns true, then the menu item will have a checkmark next
+ * to it and the hide() function will be called to activate the plug-in.
+ *
+ * If you do not want to create a plug-in that can be turned on and off, then
+ * you can delete this function along with hide().
+ */
+function isShowing() {
+	return false;
+}
+
+
+/**
+ * Returns true if the plug-in can currently be activated. When this
+ * returns false, the plug-in's Toolbox menu item will be disabled
+ * so that the user cannot activate the plug-in. If this function is deleted
+ * from the plug-in script, then the plug-in will behave as if it
+ * always returns true. That is, the plug-in's menu item will never
+ * be disabled.
+ */
+function isUsable() {
+	return true;
+}
+{/?isActivated}

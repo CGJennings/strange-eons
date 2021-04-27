@@ -1,0 +1,184 @@
+package {%package};
+
+import ca.cgjennings.apps.arkham.plugins.AbstractPlugin;
+import ca.cgjennings.apps.arkham.plugins.PluginContext;
+
+
+/**
+ * The {%plainname} plug-in.
+ */
+public class {%classname} extends AbstractPlugin {
+	/**
+	 * The plug-in class must have a public "no-arg" constructor so that the
+	 * plug-in system can instantiate it.
+	 */
+	public {%classname}() {
+	}
+
+    /**
+     * Returns the name that should be shown to the user for this plug-in, ideally
+     * in the UI locale. It should be a short name that describes the plug-in's
+	 * purpose in three words or less.{?isActivated} This string is used as the
+	 * label for the plug-in's Toolbox menu item.{/?isActivated}
+     *
+     * @return a string that identifies this plug-in for end users
+     */
+	@Override
+	public String getPluginName() {
+		return {%name};
+	}
+
+    /**
+     * Returns a description that can be shown to the user for this plug-in.
+	 * This should be a short sentence with no final punctuation, such as
+	 * "Selects all lines on the current deck page".{?isActivated}
+	 * This string is used as the tool tip text for the
+	 * plug-in's Toolbox menu item.{/?isActivated}
+     *
+     * @return a string that describes the purpose of this plug-in for end users
+     */
+	@Override
+	public String getPluginDescription() {
+		return {%description};
+	}
+
+    /**
+     * Returns a number representing the version or release number
+     * of the plug-in. This is primarily for the user's information;
+	 * the application only compares versions using the date of the
+	 * CatalogID.
+	 *
+	 * @return a number that corresponds to the plug-in's internal version number
+	 */
+	@Override
+    public float getPluginVersion() {
+		return 1.0f;
+	}
+
+{?isInjected}
+	/**
+	 * Returns the <code>INJECTED</code> plug-in type value.
+	 * @return the plug-in type
+	 */
+	@Override
+	public int getPluginType() {
+		return INJECTED;
+	}
+{/?isInjected}{?isExtension}
+	/**
+	 * Returns the <code>EXTENSION</code> plug-in type value.
+	 * @return the plug-in type
+	 */
+	@Override
+	public int getPluginType() {
+		return EXTENSION;
+	}
+{/?isExtension}
+
+    /**{!isExtension}
+     * This method will be called once for each registered plug-in before any
+     * other methods are called.
+     * It allows the plug-in to perform any required initialization prior to
+     * the plug-in being shown.
+     * If initialization succeeds, it should return <code>true</code>.
+     * Otherwise, the plug-in will not be made available to the user.
+     * If this method returns <code>false</code>, a warning is logged but
+     * no other action is taken.
+     * This allows the plug-in the opportunity to display its own error message.
+     * If this method throws an exception, a dialog is displayed that
+     * will include the message text of the exception (if any).
+	 * <p>
+	 * Sometimes a plug-in is instantiated only in order to determine its name,
+	 * description, version, and type. In such cases, the plug-in's
+	 * <code>initializePlugin</code> method is still called, so that a localized
+	 * plug-in can provide a name and description in the appropriate language.
+	 * Plug-ins that do not wish to perform a complete initialization in such cases
+	 * can detect when the plug-in
+	 * is being created for information purposes only by calling the
+	 * {@link PluginContext#isInformationProbe()} method of the provided
+	 * <code>context</code>.
+     * <p>
+     * <b>Note:</b> This method will never be called more than once for a given
+     * <i>instance</i> of a plug-in class.
+     * However, multiple instances of the same plug-in class are often created.
+     * Therefore, you should not assume that this method will only be called
+     * once per session.{/!isExtension}{?isExtension}
+	 * This method is called to allow an extension plug-in to perform
+	 * whatever actions it is meant to carry out, typically the registration
+	 * of new game-related content. It is called before the name and description
+	 * are queried, so you can use this method to load any strings that
+	 * are needed to localize those values.{/?isExtension}
+     *
+     * @param context a {@link PluginContext} instance that can be accessed during initialization
+     * @return <code>true</code> if the plug-in was initialized; <code>false</code> if
+     *     initialization failed
+     */
+	@Override
+    public boolean initializePlugin( PluginContext context ) {
+		return true;
+	}
+
+    /**
+     * This method is called when the plug-in is about to be unloaded to give
+     * the plug-in the chance to release any resources it may be holding.
+     */
+	@Override
+    public void unloadPlugin() {
+	}{!isExtension}
+
+    /**{?isInjected}
+	 * This method is called after the plug-in is initialized so that it can
+	 * perform whatever registration or other changes the plug-in is meant to
+	 * carry out. (For INJECTED plug-ins, the <code>show</code> parameter will
+	 * always be <code>true</code>.){/?isInjected}{?isActivated}
+	 * This method is called whenever the user activates the plug-in using
+	 * its Toolbox menu item. The <code>show</code> parameter indicates whether
+	 * the plug-in should be shown (turned on) or hidden (turned off). (It
+	 * is always <code>true</code> unless you override {@link #isPluginShowing}.){/?isActivated}
+     *
+     * @param context a valid PluginContext
+     * @param show if <code>true</code>, show/start the plug-in; otherwise,
+	 *        hide/cancel it
+	 * @see #isPluginShowing()
+     */
+	public void showPlugin( PluginContext context, boolean show ) {
+		javax.swing.JOptionPane.showMessageDialog(
+				ca.cgjennings.apps.arkham.StrangeEons.getWindow(),
+				"Hello, Other World!"
+		);
+	}{/!isExtension}{?isActivated}
+
+    /**
+     * Returns <code>true</code> if this plug-in is currently "on", "showing",
+	 * or "active". This is used by plug-ins that wish to be toggled on and
+	 * off when the user selects their Toolbox menu item. When this method
+	 * returns <code>true</code>, the plug-in's menu item will have a checkmark
+	 * next to it and activating the plug-in will cause its {@link #showPlugin}
+	 * to be called with a value of <code>false</code> for the
+	 * <code>show</code> parameter. For plug-ins that simply execute the same
+	 * action each time they are activated, or which display a modal dialog
+	 * (which blocks the application until it is closed), this can simply
+	 * return <code>false</code>. In fact, since the base class already does this,
+	 * you can delete this method entirely.
+	 *
+     * @return <code>true</code> to indicate that the plug-in is "on" or "visible"
+     */
+	public boolean isPluginShowing() {
+		return false;
+	}
+
+	/**
+	 * Returns <code>true</code> if it is currently valid to activate this
+	 * plug-in by calling {@link #showPlugin}. For example, a plug-in that
+	 * only works on components from a certain game might return <code>false</code>
+	 * if the currently edited component is not from that game. When this
+	 * method returns <code>false</code>, the plug-in's Toolbox menu item will
+	 * be disabled.
+	 *
+	 * @return <code>true</code> if the plug-in can be successfully and
+	 *         meaningfully activated
+	 */
+	public boolean isPluginUsable() {
+		return true;
+	}{/?isActivated}
+}

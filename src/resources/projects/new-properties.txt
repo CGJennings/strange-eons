@@ -1,0 +1,27 @@
+#
+# A string table consists of a list of string keys and their associated text
+# values. They are used to create a language-independent way to refer to
+# strings so that the content of those strings can be translated.
+# The file for the default translation (this file) contains the "fallback" text
+# to use when a translation for the user's language is not available. The
+# fallback file is normally English. (Of the languages commonly found in a
+# Strange Eons plug-in, English is the language that a user is most likely to
+# be able to read if their preferred language is not available.) To translate
+# the strings in this table, right click on the file in project pane and
+# choose the "Add Locale" command. It is a good idea to add files
+# for the language used in the default translation (even though it will be
+# empty since there are no strings to replace). This shows at a glance what
+# languages are available, and makes it easier to add variants should someone
+# wish to do so (such as adding support for Australian English to a plug-in
+# that already supports US English.)
+#
+# Each string appears on its own line and is separated by an equals sign (=).
+# Like a settings file, long lines can be split into multiple lines
+# by ending each line but the last with a backslash (\). The backslash can
+# also be used to escape special characters; for example, a key name can include
+# an equals sign if it is escaped (\=). If the first non-blank character in a
+# line is a number sign (#), then the entire line is treated as a comment and
+# will be ignored.
+#
+
+translate-me = A string to translate

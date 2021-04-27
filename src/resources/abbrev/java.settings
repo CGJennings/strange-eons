@@ -1,0 +1,68 @@
+#
+# Default abbreviations for Java files
+#
+
+ir = import\u0020
+ab = abstract\u0020
+cl = class\u0020
+ie = interface\u0020
+ex = extends\u0020
+im = implements\u0020
+
+pu = public\u0020
+pr = private\u0020
+pe = protected\u0020
+st = static\u0020
+f = final\u0020
+
+sy = synchronized\u0020
+vo = volatile\u0020
+tt = transient\u0020
+
+th = this
+su = super
+
+bo = boolean\u0020
+fl = float\u0020
+db = double\u0020
+vd = void\u0020
+St = String\u0020
+
+le = length
+eq = equals( $|expression|$ )
+
+tr = true
+fa = false
+
+if = if( $|expression|$ ) {${LINE}\t${LINE}}
+ifel = if( $|expression|$ ) {${LINE}\t${LINE}} else {${LINE}\t${LINE}}
+elif = else if( $|expression|$ ) {${LINE}\t${LINE}}
+el = else {${LINE}\t${LINE}}
+for = for( int i=0; i < $|limit|$; ++i ) {${LINE}\t${LINE}}
+rof = for( int i=$|limit|$-1; i >= 0; --i ) {${LINE}\t${LINE}}
+wh = while( $|expression|$ ) {${LINE}\t${LINE}}
+do = do {${LINE}\t$|statement|$;${LINE}} while( );
+br = break;
+cn = continue;
+iof = instanceof\u0020
+re = return $|value|$;
+rn = return null;
+rt = return true;
+rf = return false;
+sw = switch( $|expression|$ ) {${LINE}\t${LINE}}
+ca = case $|constant|$:${LINE}\tbreak;
+df = default:${LINE}\t$||$
+tw = throw new $|Exception|$();
+try = try {${LINE}\t$|statement|$;${LINE}} catch( Exception ex ) {${LINE}}
+fi = finally {${LINE}\t$|statement|$;${LINE}}
+
+cg = ca.cgjennings.
+ar = ca.cgjennings.apps.arkham.
+
+iae = throw new IllegalArgumentException( "$||$" );
+ise = throw new IllegalStateException( "$||$" );
+npe = throw new NullPointerException( "$||$" );
+
+psvm = public static void main( String[] args ) {${LINE}\t$||$${LINE}}
+serr = System.err.println( "$||$" );
+log = StrangeEons.log.log( Level.WARNING, "$||$" );

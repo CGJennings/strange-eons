@@ -1,0 +1,27 @@
+ah = <a href='$||$'></a>
+ai = <a id='$||$'></a>
+br = <br>\n${INDENT}
+div = <div>$||$</div>
+em = <emph>$||$</emph>
+html = <!doctype html>\n<html>\n\t<head>\n\t\t<title>$||$</title>\n\t</head>\n<body>\n</body>\n</html>
+h1 = <h1>$||$</h1>\n
+h2 = <h2>$||$</h2>\n
+h3 = <h3>$||$</h3>\n
+h4 = <h4>$||$</h4>\n
+h5 = <h5>$||$</h5>\n
+h6 = <h6>$||$</h6>\n
+img = <img src='$||$'>
+pp = <p>$||$</p>
+st = <strong>$||$</strong>
+table = <table>\n${INDENT}\t$||$\n${INDENT}</table>
+tr = <tr>$||$</tr>\n
+td = <td>$||$</td>
+th = <th>$||$</th>
+ol = <ol>\n${INDENT}\t<li>$||$</li>\n${INDENT}</ol>
+ul = <ul>\n${INDENT}\t<li>$||$</li>\n${INDENT}</ul>
+li = <li>$||$</li>
+dl = <dl>\n${INDENT}\t<dt>$||$</dt> <dd></dd>\n${INDENT}</dl>
+dt = <dt>$||$</dt> <dd></dd>
+lt = &lt;
+gt = &gt;
+am = &amp;

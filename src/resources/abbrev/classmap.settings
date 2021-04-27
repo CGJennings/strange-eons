@@ -1,0 +1,10 @@
+cc = @cat-characters\n\u0020\u0020
+cd = @cat-decks-and-boards\n\u0020\u0020
+ce = @cat-enemies\n\u0020\u0020
+cf = @cat-effects\n\u0020\u0020
+ci = @cat-inventory\n\u0020\u0020
+cm = @cat-markers\n\u0020\u0020
+cr = @cat-rules\n\u0020\u0020
+cs = @cat-custom\n\u0020\u0020
+cx = @cat-example\n\u0020\u0020
+cz = @cat-misc\n\u0020\u0020

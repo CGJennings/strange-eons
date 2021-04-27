@@ -1,0 +1,59 @@
+#Abbreviation Table
+#Sun Jun 23 00:37:50 EDT 2013
+th=this
+wh=while( $|expression|$ ) {${LINE}\t${LINE}}
+try=try {${LINE}\t$|statement|$;${LINE}} catch( ex ) {${LINE}}
+ta=task
+ar=arkham.
+ds=__defineSetter__( '$|propertyName|$', function( value ) { this./*value \= value*/; } );
+jv=java.
+log=Eons.log.warning( '$||$' );
+Ob=Object
+ifel=if( $|expression|$ ) {${LINE}\t${LINE}} else {${LINE}\t${LINE}}
+js=new java.lang.String( $|s|$ );
+do=do {${LINE}\t$|statement|$;${LINE}} while( );
+sw=switch( $|expression|$ ) {${LINE}\t${LINE}}
+su=this.super$$|methodname|$()
+pr=println( $||$ );
+dg=__defineGetter__( '$|propertyName|$', function() { return this./*value*/; } );
+df=default\:${LINE}\t$||$
+Nu=Number
+pj=project
+gc=Component
+ja=new JavaAdapter( $|Interface, AbstractClass, ...|$, {${LINE}\t${LINE}});
+mb=member
+yi=yield $|expression|$;
+thp=this.prototype
+rof=for( let i\=$|limit|$-1; i >\= 0; --i ) {${LINE}\t${LINE}}
+co=const 
+ir=importPackage( $|&{COMPLETE-CODE}|$ );
+cn=continue;
+iof=instanceof 
+fn=function $|name|$() {${LINE}\t${LINE}}
+rt=return true;
+fi=finally {${LINE}\t$|statement|$;${LINE}}
+cg=ca.cgjennings.
+elif=else if( $|expression|$ ) {${LINE}\t${LINE}}
+rn=return null;
+un=undefined
+if=if( $|expression|$ ) {${LINE}\t${LINE}}
+ca=case $|constant|$\:${LINE}\tbreak;
+ul=useLibrary( '$|&{COMPLETE-CODE}|$' );
+St=String
+fa=false
+ic=importClass( $|&{COMPLETE-CODE}|$ );
+le=length
+fori=for( i in Iterator( $|iterable|$ ) ) {${LINE}\t${LINE}}
+rf=return false;
+re=return $|value|$;
+for=for( let i\=0; i < $|limit|$; ++i ) {${LINE}\t${LINE}}
+win=Eons.window
+br=break;
+hu=Error.handleUncaught( $|ex|$ );
+eq=equals( $|expression|$ )
+tw=throw new Error( '$|message|$' );
+err=Console.err.println( '$||$' );
+el=else {${LINE}\t${LINE}}
+tr=true
+nl=null
+ed=Editor
