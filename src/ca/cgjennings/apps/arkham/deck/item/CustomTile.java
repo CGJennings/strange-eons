@@ -440,7 +440,7 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
         String path = getIdentifier();
         if (path != null && path.length() > 0 && !StrangeImage.exists(path)) {
             try {
-                URL url = GraphicStyleFactory.translatePathToImageURL(path);
+                URL url = StrangeImage.identifierToURL(path);
                 File oldFile = new File(url.toURI());
                 File newFile = new File(
                         DeckDeserializationSupport.getShared().getDefaultFallbackFolder(),

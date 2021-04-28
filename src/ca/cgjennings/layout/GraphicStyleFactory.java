@@ -207,17 +207,10 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
     }
 
     /**
-     * Returns a URL for a user image identifier, or <code>null</code>. If the
-     * identifier is <code>null</code> or empty, then <code>null</code> is
-     * returned. (An empty string is typically used to indicate that a default
-     * image should be used.)
+     * @deprecated Use {@link StrangeImage#identifierToURL(java.lang.String)}.
      *
-     * @param identifier an identifier string containing a local file path or
-     * URL
+     * @param identifier an identifier containing a local file path or URL
      * @return a URL that can be used to read the identified content
-     *
-     * @deprecated Replaced by
-     * {@link StrangeImage#identifierToURL(java.lang.String)}.
      */
     public static URL translatePathToImageURL(String identifier) {
         return StrangeImage.identifierToURL(identifier);

@@ -165,7 +165,7 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                         params[0] = GraphicStyleFactory.translateRelativePath(params[0], getBaseFile());
                     }
                     
-                    URL imURL = GraphicStyleFactory.translatePathToImageURL(params[0]);
+                    URL imURL = StrangeImage.identifierToURL(params[0]);
                     if (imURL == null) {
                         url = params[0];
                     } else {
