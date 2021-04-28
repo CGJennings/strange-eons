@@ -537,6 +537,19 @@ public abstract class StrangeImage {
     }
 
     /**
+     * Returns whether or not an identifier refers to a valid image.
+     * For example, passing a file identifier for a file that does not exist
+     * would return false. Note that this will load (and cache) the image
+     * if it is not already loaded.
+     *
+     * @param identifier the identifier to use to locate the file
+     * @return true if the identifier points to a valid image, false otherwise
+     */
+    public static boolean exists(String identifier) {
+        return get(identifier) != getMissingImage();
+    }
+
+    /**
      * Returns a URL for a user image identifier, or <code>null</code>. If the
      * identifier is <code>null</code> or empty, then <code>null</code> is
      * returned. (An empty string is typically used to indicate that a default
