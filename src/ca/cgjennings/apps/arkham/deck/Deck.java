@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.deck;
 
-import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.GameComponent;

@@ -15,7 +15,6 @@ import ca.cgjennings.ui.JUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;

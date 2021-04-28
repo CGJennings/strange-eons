@@ -2,7 +2,6 @@ package ca.cgjennings.ui;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;

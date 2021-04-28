@@ -2,7 +2,6 @@ package ca.cgjennings.ui;
 
 import gamedata.Expansion;
 import gamedata.Game;
-import gamedata.RegistrationListener;
 import java.util.List;
 import javax.swing.DefaultListModel;
 

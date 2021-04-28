@@ -2,7 +2,6 @@ package ca.cgjennings.ui;
 
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Action;
@@ -11,7 +10,6 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * A button that generates action events as long as it is held down.

@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JCloseableTabbedPane;
 import ca.cgjennings.ui.StyleUtilities;
-import ca.cgjennings.ui.TabClosingListener;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -23,7 +22,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPopupMenu;
 import javax.swing.JWindow;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import resources.ResourceKit;
 
 /**

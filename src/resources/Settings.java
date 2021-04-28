@@ -10,7 +10,6 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.filters.TintFilter;
 import ca.cgjennings.graphics.filters.TintingFilter;
 import ca.cgjennings.io.NewerVersionException;
-import ca.cgjennings.layout.GraphicStyleFactory;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.layout.TextStyle;

@@ -41,7 +41,6 @@ import java.awt.PointerInfo;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Locale;
 import javax.swing.JComponent;

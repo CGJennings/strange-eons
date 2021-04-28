@@ -11,7 +11,6 @@ import ca.cgjennings.io.CountingInputStream;
 import ca.cgjennings.io.EscapedTextCodec;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;

@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;

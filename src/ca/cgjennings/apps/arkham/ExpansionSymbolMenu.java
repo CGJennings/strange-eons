@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import gamedata.Expansion;
 import gamedata.Game;
-import gamedata.RegistrationListener;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -13,7 +13,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher;
 import static ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher.*;
 import ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher.CompressionMethod;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;

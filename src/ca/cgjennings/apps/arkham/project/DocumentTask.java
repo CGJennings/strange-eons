@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.project;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;

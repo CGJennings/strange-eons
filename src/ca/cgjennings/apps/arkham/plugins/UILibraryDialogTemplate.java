@@ -5,7 +5,6 @@ import ca.cgjennings.platform.PlatformSupport;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import static resources.Language.string;

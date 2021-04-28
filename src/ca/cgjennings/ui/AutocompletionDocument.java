@@ -2,7 +2,6 @@ package ca.cgjennings.ui;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.Collator;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;

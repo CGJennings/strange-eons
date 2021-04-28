@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.dialog.prefs;
 
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
 import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 /**
  * Creates a slider that implements the {@link SettingBackedControl} interface

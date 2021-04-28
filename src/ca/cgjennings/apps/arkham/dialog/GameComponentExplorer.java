@@ -16,7 +16,6 @@ import java.util.EnumSet;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import static resources.Language.string;
 import resources.Settings;
 

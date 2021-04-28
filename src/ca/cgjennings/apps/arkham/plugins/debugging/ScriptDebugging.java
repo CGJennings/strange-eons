@@ -8,7 +8,6 @@ import ca.cgjennings.apps.arkham.project.Open;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.io.StreamPump;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Level;
