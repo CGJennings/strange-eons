@@ -566,7 +566,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
                 standardQualities = new float[]{
                     0f, 0.22f, 0.74f, 1f
                 };
-                lossless = compressionQuality == 1f ? true : false;
+                lossless = compressionQuality == 1f;
             } else {
                 standardQualityNames = iwp.getCompressionQualityDescriptions();
                 standardQualities = iwp.getCompressionQualityValues();
@@ -587,7 +587,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
                         rate = MIN_BPP + (q * (MAX_BPP - MIN_BPP));
                     }
                     j2k.setEncodingRate(rate);
-                    lossless = compressionQuality == 1f ? true : false;
+                    lossless = compressionQuality == 1f;
                 } else {
                     iwp.setCompressionQuality(q);
                 }
