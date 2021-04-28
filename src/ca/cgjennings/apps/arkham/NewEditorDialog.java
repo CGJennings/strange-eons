@@ -87,7 +87,6 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
         DefaultListCellRenderer renderer = new JIconList.IconRenderer();
         categoryList.setCellRenderer(renderer);
-//		componentList.setCellRenderer( renderer );
 
         if (shared == null) {
             shared = this;
@@ -123,7 +122,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
             Object filter = gameFilter.getFilterValue();
             // get the current selection, which we will try to recreate
             // after filtering
-            Object[] selection = componentList.getSelectedValues();
+            List<ComponentListItem> selection = componentList.getSelectedValuesList();
             // determine which filter to use
             ListFilter catFilter = null;
             if (filter instanceof String) {
@@ -418,9 +417,9 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         okBtn = new javax.swing.JButton();
         banner = new javax.swing.JLabel();
         componentScroll = new javax.swing.JScrollPane();
-        componentList = new javax.swing.JList();
+        componentList = new javax.swing.JList<>();
         catScroll = new javax.swing.JScrollPane();
-        categoryList = new javax.swing.JList();
+        categoryList = new javax.swing.JList<>();
         javax.swing.JLabel catLabel = new javax.swing.JLabel();
         javax.swing.JLabel componentLabel = new javax.swing.JLabel();
         createInProjectBtn = new javax.swing.JButton();
@@ -717,8 +716,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel banner;
     private javax.swing.JScrollPane catScroll;
-    private javax.swing.JList categoryList;
-    private javax.swing.JList componentList;
+    private javax.swing.JList<ComponentListItem> categoryList;
+    private javax.swing.JList<ComponentListItem> componentList;
     private javax.swing.JScrollPane componentScroll;
     private javax.swing.JButton createInProjectBtn;
     private ca.cgjennings.ui.JGameFilterField gameFilter;
