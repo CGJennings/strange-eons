@@ -866,7 +866,7 @@ public class BundleInstaller {
                             // for libs, pluginSet should be null
                             throw new IllegalArgumentException();
                     }
-                    pluginSet.add(ibo); // correct type always passed in
+                    ((Set) pluginSet).add(ibo); // correct type always passed in
                 }
             } else {
                 installedLibraries.add(new InstalledLibrary(pluginBundle));
