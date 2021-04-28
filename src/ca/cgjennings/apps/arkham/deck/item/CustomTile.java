@@ -438,7 +438,7 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
 
         // see if we can read the image in, and if not try to find a replacement
         String path = getIdentifier();
-        if (path != null && path.length() > 0 && !GraphicStyleFactory.imageExists(path)) {
+        if (path != null && path.length() > 0 && !StrangeImage.exists(path)) {
             try {
                 URL url = GraphicStyleFactory.translatePathToImageURL(path);
                 File oldFile = new File(url.toURI());
@@ -447,7 +447,7 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
                         oldFile.getName()
                 );
                 path = newFile.getAbsolutePath();
-                if (GraphicStyleFactory.imageExists(path)) {
+                if (StrangeImage.exists(path)) {
                     setIdentifier(path);
                 }
             } catch (Exception e) {

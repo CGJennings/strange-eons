@@ -205,20 +205,9 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
         }
         return bi;
     }
-
-    /**
-     * Returns <code>true</code> if the specified identifier refers to an image
-     * resource that exists and can be loaded.
-     *
-     * @param identifier the identifier to check
-     * @return <code>true</code> if the identifier refers to a real image
-     *
-     * @deprecated Use {@link StrangeImage} to load user images. To check if an
-     * image exists, use the test
-     * <code>StrangeImage.get( identifier ) != StrangeImage.getMissingImage()</code>.
-     */
+    /** @deprecated Use {@link StrangeImage#exists}. */
     public static boolean imageExists(String identifier) {
-        return StrangeImage.get(identifier) != StrangeImage.getMissingImage();
+        return StrangeImage.exists(identifier);
     }
 
     /**
