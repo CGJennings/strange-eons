@@ -2174,8 +2174,8 @@ private void commentFieldsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:
 
 private void tilesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tilesListMouseClicked
     if (evt.getClickCount() >= 2) {
-        if (evt.getSource() instanceof JList) {
-            addCards(((JList) evt.getSource()).getSelectedValues());
+        if (evt.getSource() instanceof PageItemList) {
+            addCards(((PageItemList) evt.getSource()).getSelectedValuesList());
         }
     }
 }//GEN-LAST:event_tilesListMouseClicked
