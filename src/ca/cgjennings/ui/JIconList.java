@@ -14,18 +14,18 @@ import javax.swing.ListModel;
  * @since 3.00
  */
 @SuppressWarnings("serial")
-public class JIconList extends JList {
+public class JIconList<T> extends JList<T> {
 
     public JIconList() {
         setCellRenderer(new IconRenderer());
     }
 
-    public JIconList(Object[] listData) {
+    public JIconList(T[] listData) {
         super(listData);
         setCellRenderer(new IconRenderer());
     }
 
-    public JIconList(ListModel dataModel) {
+    public JIconList(ListModel<T> dataModel) {
         super(dataModel);
         setCellRenderer(new IconRenderer());
     }

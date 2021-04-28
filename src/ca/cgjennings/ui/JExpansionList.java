@@ -3,6 +3,7 @@ package ca.cgjennings.ui;
 import gamedata.Expansion;
 import gamedata.Game;
 import gamedata.RegistrationListener;
+import java.util.List;
 import javax.swing.DefaultListModel;
 
 /**
@@ -11,7 +12,7 @@ import javax.swing.DefaultListModel;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public class JExpansionList extends JIconList {
+public class JExpansionList extends JIconList<Expansion> {
 
     public JExpansionList() {
         this("AH");
@@ -70,21 +71,17 @@ public class JExpansionList extends JIconList {
     }
 
     public String[] getSelectedExpansionCodes() {
-        Object[] sel = getSelectedValues();
-        String[] exp = new String[sel.length];
-        for (int i = 0; i < sel.length; ++i) {
-            exp[i] = ((Expansion) sel[i]).getCode();
+        List<Expansion> sel = getSelectedValuesList();
+        String[] exp = new String[sel.size()];
+        for (int i = 0; i < sel.size(); ++i) {
+            exp[i] = sel.get(i).getCode();
         }
         return exp;
     }
 
     public Expansion[] getSelectedExpansions() {
-        Object[] sel = getSelectedValues();
-        Expansion[] exp = new Expansion[sel.length];
-        for (int i = 0; i < sel.length; ++i) {
-            exp[i] = (Expansion) sel[i];
-        }
-        return exp;
+        List<Expansion> sel = getSelectedValuesList();
+        return sel.toArray(new Expansion[sel.size()]);
     }
 
     public void setSelectedExpansionCodes(String[] selection) {
