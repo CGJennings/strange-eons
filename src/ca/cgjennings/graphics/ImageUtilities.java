@@ -460,7 +460,7 @@ public final class ImageUtilities {
      * @param source the image to invert
      * @return the inverted image
      */
-    public static final BufferedImage invert(BufferedImage source) {
+    public static BufferedImage invert(BufferedImage source) {
         synchronized (ImageUtilities.class) {
             if (invFilter == null) {
                 invFilter = new InversionFilter();
@@ -819,7 +819,7 @@ public final class ImageUtilities {
      * @param right the number of pixels to add to the right edge
      * @return a padded copy of the image
      */
-    public static final BufferedImage pad(BufferedImage source, int top, int left, int bottom, int right) {
+    public static BufferedImage pad(BufferedImage source, int top, int left, int bottom, int right) {
         if (top == 0 && bottom == 0 && left == 0 && right == 0 && source.getType() == BufferedImage.TYPE_INT_ARGB) {
             return source;
         }

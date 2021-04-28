@@ -80,7 +80,7 @@ public final class UILibraryDialogTemplate extends javax.swing.JDialog implement
         setLocationRelativeTo(parent);
     }
 
-    public static final Icon getDefaultIcon() {
+    public static Icon getDefaultIcon() {
         if (defaultIcon == null) {
             defaultIcon = resources.ResourceKit.getIcon("application/64.png");
         }

@@ -517,7 +517,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * of the captured style classes in this capture will replace the properties
      * of the same classes in the capture.
      */
-    public final void copy() {
+    public void copy() {
         if (props.isEmpty()) {
             return;
         }
