@@ -41,8 +41,8 @@ public enum LineJoin implements IconProvider {
     }
 
     private Icon icon;
-    private int join;
-    private String name;
+    private final int join;
+    private final String name;
 
     static LineJoin fromInt(int icap) {
         LineJoin ojoin;
@@ -80,7 +80,7 @@ public enum LineJoin implements IconProvider {
 
     public static class LineJoinIcon implements Icon {
 
-        private int join;
+        private final int join;
 
         public LineJoinIcon(LineJoin join) {
             this.join = join.toInt();

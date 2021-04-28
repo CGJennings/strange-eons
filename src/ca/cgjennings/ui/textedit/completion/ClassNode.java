@@ -170,7 +170,7 @@ public class ClassNode extends APINode {
             return staticFields;
         }
 
-        private Class klass;
+        private final Class klass;
         private Constructor[] ctors;
         private Method[] methods;
         private Method[] staticMethods;

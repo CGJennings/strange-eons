@@ -43,7 +43,7 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticDialog {
 
-    private boolean markupMode;
+    private final boolean markupMode;
 
     /**
      * Creates a new abbreviation editor.
@@ -481,9 +481,9 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
     private static class ATModel extends AbstractTableModel {
 
         private boolean modified = false;
-        private ArrayList<String> abrvs = new ArrayList<>(30);
-        private ArrayList<String> exps = new ArrayList<>(30);
-        private AbbreviationTable at;
+        private final ArrayList<String> abrvs = new ArrayList<>(30);
+        private final ArrayList<String> exps = new ArrayList<>(30);
+        private final AbbreviationTable at;
 
         public ATModel(AbbreviationTable at) {
             this.at = at;
@@ -623,7 +623,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         codeTypeCombo.setSelectedItem(sel);
     }
 
-    private DefaultListCellRenderer listRenderer = new DefaultListCellRenderer() {
+    private final DefaultListCellRenderer listRenderer = new DefaultListCellRenderer() {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             CodeType t = (CodeType) value;

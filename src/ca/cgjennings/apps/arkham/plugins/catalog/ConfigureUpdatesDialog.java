@@ -41,7 +41,7 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
         doneInit = true;
     }
 
-    private boolean doneInit;
+    private final boolean doneInit;
 
     /**
      * This method is called from within the constructor to initialize the form.

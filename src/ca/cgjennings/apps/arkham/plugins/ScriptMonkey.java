@@ -41,7 +41,7 @@ public final class ScriptMonkey {
 
     private static ScriptConsole console;
 
-    private ScriptEngine engine;
+    private final ScriptEngine engine;
 
     /**
      * If a component's private settings set this key, then the script it
@@ -864,7 +864,7 @@ public final class ScriptMonkey {
             throw new FileNotFoundException("missing library: " + name);
         }
     }
-    private static HashMap<String, String> libraryCache = new HashMap<>();
+    private static final HashMap<String, String> libraryCache = new HashMap<>();
 
     /**
      * Returns a string composed of the characters in an input stream. The

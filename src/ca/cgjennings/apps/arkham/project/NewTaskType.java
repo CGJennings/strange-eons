@@ -245,7 +245,7 @@ public abstract class NewTaskType {
     private static Set<NewTaskType> types = new HashSet<>();
 
     static final Comparator<NewTaskType> TYPE_ORDER = new Comparator<NewTaskType>() {
-        private Collator coll = Language.getInterface().getCollator();
+        private final Collator coll = Language.getInterface().getCollator();
 
         /**
          * {@inheritDoc}

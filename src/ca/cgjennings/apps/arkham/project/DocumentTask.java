@@ -56,7 +56,7 @@ public class DocumentTask extends NewTaskType {
         types.remove(ta);
     }
 
-    private static Set<TaskAction> types = new TreeSet<>((TaskAction o1, TaskAction o2) -> o1.getLabel().compareTo(o2.getLabel()));
+    private static final Set<TaskAction> types = new TreeSet<>((TaskAction o1, TaskAction o2) -> o1.getLabel().compareTo(o2.getLabel()));
 
     /**
      * Returns an array of the registered document types.

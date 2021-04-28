@@ -17,7 +17,7 @@ public final class LibImpl {
     private LibImpl() {}
 
     /** Regular expression that matches format specifiers. */
-    private static Pattern formatSpecPattern = Pattern.compile(
+    private static final Pattern formatSpecPattern = Pattern.compile(
             "%(\\d+\\$)?([-#+ 0,(\\<]*)?(\\d+)?(\\.\\d+)?([tT])?([a-zA-Z%])"
     );
     /** Group containing the index "n$". */

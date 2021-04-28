@@ -15,7 +15,7 @@ import java.util.LinkedList;
  */
 public abstract class TaskActionTree extends TaskAction implements Iterable<TaskAction> {
 
-    private LinkedList<TaskAction> actions = new LinkedList<>();
+    private final LinkedList<TaskAction> actions = new LinkedList<>();
 
 //	private HashMap<Integer,List<TaskAction>> actionMap = new HashMap<Integer,List<TaskAction>>();
 //	private HashMap<TaskAction,Integer> priorityMap = new HashMap<TaskAction,Integer>();

@@ -380,7 +380,7 @@ public class ImageExporter {
         }
         return ResourceKit.makeStringFileSafe(fileName).replaceAll("\\s+", "-") + "." + formatSuffix;
     }
-    private HashMap<String, Integer> usedSheetSuffixes = new HashMap<>();
+    private final HashMap<String, Integer> usedSheetSuffixes = new HashMap<>();
 
     private void makeReadme() throws IOException {
         Locale loc = Language.getGameLocale();

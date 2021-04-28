@@ -28,10 +28,10 @@ import static resources.Language.string;
 final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     private TuckBox item;
-    private NumberFormat formatter;
+    private final NumberFormat formatter;
     private double[] dimensions = new double[]{1d, 1d, 1d};
     private double sleeveThickness = 0d;
-    private TuckBoxPreview tuckBoxPreview;
+    private final TuckBoxPreview tuckBoxPreview;
 
     /**
      * Creates new form LineStyle
@@ -814,7 +814,7 @@ private void sleeveComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
         updatePreview();
     }//GEN-LAST:event_thicknessSpinnerStateChanged
 
-    private BoxSizer[] sizers;
+    private final BoxSizer[] sizers;
 
     private void applyHelperSize() {
         int type = cardTypeCombo.getSelectedIndex();

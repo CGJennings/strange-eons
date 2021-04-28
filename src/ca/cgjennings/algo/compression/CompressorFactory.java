@@ -30,8 +30,8 @@ public enum CompressorFactory {
         this.className = className;
         this.extensions = extensions;
     }
-    private Class className;
-    private String[] extensions;
+    private final Class className;
+    private final String[] extensions;
 
     /**
      * Returns a {@link Compressor} for this algorithm.

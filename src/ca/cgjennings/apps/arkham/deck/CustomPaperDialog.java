@@ -33,8 +33,8 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDialog {
 
-    private NumberFormat formatter;
-    private PaperProperties paperDefaults;
+    private final NumberFormat formatter;
+    private final PaperProperties paperDefaults;
     // sizes for the paper currently being edited
     private double width, height, margin, grid;
     private boolean physicalOnly;
@@ -586,7 +586,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
         }
     }
 
-    private ListCellRenderer wrapperRenderer = new JIconList.IconRenderer() {
+    private final ListCellRenderer wrapperRenderer = new JIconList.IconRenderer() {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);

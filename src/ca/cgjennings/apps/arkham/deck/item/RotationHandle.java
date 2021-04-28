@@ -141,5 +141,5 @@ class RotationHandle extends DragHandle {
     private static final double DEFAULT_HANDLE_SIZE = 6d;
     private double handleSize;
     // this is used for hit detection; we add a small margin to make it easier to grab
-    private double handleSizeSq;
+    private final double handleSizeSq;
 }

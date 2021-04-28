@@ -39,9 +39,9 @@ public enum LineCap implements IconProvider {
         name = string(key);
     }
 
-    private int cap;
+    private final int cap;
     private Icon icon;
-    private String name;
+    private final String name;
 
     static LineCap fromInt(int icap) {
         LineCap ocap;
@@ -106,7 +106,7 @@ public enum LineCap implements IconProvider {
 
     static class LineCapIcon implements Icon {
 
-        private int cap;
+        private final int cap;
 
         public LineCapIcon(LineCap cap) {
             this.cap = cap.toInt();

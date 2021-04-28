@@ -461,9 +461,10 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             this.source = source;
             this.dest = destination;
         }
-        private BufferedImage source;
-        private int[] dest;
-        private int y0, y1;
+        private final BufferedImage source;
+        private final int[] dest;
+        private final int y0;
+        private int y1;
 
         @Override
         public void run() {
@@ -515,9 +516,10 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             this.source = source;
             this.dest = destination;
         }
-        private BufferedImage dest;
-        private int[] source;
-        private int y0, y1;
+        private final BufferedImage dest;
+        private final int[] source;
+        private final int y0;
+        private int y1;
 
         @Override
         public void run() {
@@ -596,8 +598,10 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             this.source = source;
             this.dest = destination;
         }
-        private BufferedImage source, dest;
-        private int y0, y1;
+        private final BufferedImage source;
+        private BufferedImage dest;
+        private final int y0;
+        private int y1;
 
         @Override
         public void run() {

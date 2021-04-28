@@ -166,8 +166,8 @@ public class FilteredListModel extends AbstractListModel {
      */
     public static abstract class ChoosableListFilter implements IconProvider {
 
-        private Icon icon;
-        private String name;
+        private final Icon icon;
+        private final String name;
 
         public ChoosableListFilter(String name, Icon icon) {
             this.name = name;

@@ -239,7 +239,7 @@ public class TabCloseComponent extends JPanel {
 
         boolean isRolledOver = false;
         private boolean dirty = false;
-        private Icon[] buttonImages = new Icon[ICON_COUNT];
+        private final Icon[] buttonImages = new Icon[ICON_COUNT];
 
         public boolean isDirty() {
             return dirty;

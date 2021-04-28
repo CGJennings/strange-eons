@@ -93,7 +93,7 @@ class HBundleCommand extends AbstractCommand {
         }
         return null;
     }
-    private String nameKey;
-    private TaskAction action;
+    private final String nameKey;
+    private final TaskAction action;
 
 }

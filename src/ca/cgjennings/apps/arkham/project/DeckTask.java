@@ -189,7 +189,7 @@ public class DeckTask extends NewTaskType {
 
     static class CopiesFileDropListener implements FileDrop.Listener {
 
-        private JSourceCodeEditor ed;
+        private final JSourceCodeEditor ed;
 
         public CopiesFileDropListener(CodeEditor editor) {
             ed = editor.getEditor();

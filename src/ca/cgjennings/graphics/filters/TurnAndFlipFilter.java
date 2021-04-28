@@ -245,9 +245,11 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
 
     private static class FlipUnit implements Runnable {
 
-        private int orientation;
-        private BufferedImage source, dest;
-        private int y0, rows;
+        private final int orientation;
+        private final BufferedImage source;
+        private BufferedImage dest;
+        private final int y0;
+        private int rows;
 
         public FlipUnit(BufferedImage source, BufferedImage dest, int y0, int rows, int orientation) {
             this.source = source;

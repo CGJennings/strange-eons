@@ -95,7 +95,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private static class DictLoader implements Runnable {
 
         private SpellingChecker sc;
-        private Locale loc;
+        private final Locale loc;
 
         public DictLoader(Locale loc) {
             this.loc = loc;

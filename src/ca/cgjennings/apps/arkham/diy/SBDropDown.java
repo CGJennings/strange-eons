@@ -13,7 +13,7 @@ import javax.swing.JComboBox;
 @SuppressWarnings("serial")
 public class SBDropDown<E> extends JComboBox<E> implements SettingBackedControl {
 
-    private String[] values;
+    private final String[] values;
 
     public SBDropDown(E[] items, String[] values) {
         super(items);

@@ -211,7 +211,7 @@ public class LineSorter {
 //	}
     private static class ReverseComparator implements Comparator {
 
-        private Comparator cmp;
+        private final Comparator cmp;
 
         public ReverseComparator(Comparator c) {
             cmp = c;

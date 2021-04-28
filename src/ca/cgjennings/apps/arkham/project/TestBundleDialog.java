@@ -28,7 +28,7 @@ import resources.Settings;
 class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     private File bundle;
-    private boolean copyBundle;
+    private final boolean copyBundle;
 
     /**
      * Creates new form TestBundleDialog

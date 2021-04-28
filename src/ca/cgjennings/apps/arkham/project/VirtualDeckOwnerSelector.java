@@ -14,7 +14,7 @@ import static resources.Language.string;
 @SuppressWarnings("serial")
 class VirtualDeckOwnerSelector extends javax.swing.JDialog {
 
-    private VirtualDeckDialog parent;
+    private final VirtualDeckDialog parent;
 
     /**
      * Creates new form VirtualDeckOwnerSelector

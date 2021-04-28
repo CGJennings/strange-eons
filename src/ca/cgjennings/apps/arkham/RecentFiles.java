@@ -253,8 +253,8 @@ public class RecentFiles {
             super.fireMenuSelected();
         }
 
-        private JMenuItem clearItem;
-        private JPopupMenu.Separator separator = new JPopupMenu.Separator();
+        private final JMenuItem clearItem;
+        private final JPopupMenu.Separator separator = new JPopupMenu.Separator();
     }
 
     @SuppressWarnings("serial")

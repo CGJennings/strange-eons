@@ -180,10 +180,10 @@ class ScriptCodeCompleter1 implements CodeCompleter {
         private String dotexpr;
         private String prefix;
 
-        private State parent;
-        private JSourceCodeEditor editor;
-        private String document;
-        private int offset;
+        private final State parent;
+        private final JSourceCodeEditor editor;
+        private final String document;
+        private final int offset;
         private int stateFlags;
 
         private TreeSet<CodeAlternative> alternatives;
@@ -1114,5 +1114,5 @@ class ScriptCodeCompleter1 implements CodeCompleter {
             return true;
         }
     }
-    private ParserBridge bridge = new ParserBridge();
+    private final ParserBridge bridge = new ParserBridge();
 }

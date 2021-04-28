@@ -23,8 +23,9 @@ import javax.swing.JWindow;
 @SuppressWarnings("serial")
 final class DragWindow extends JWindow {
 
-    private JLabel label;
-    private int xOff, yOff;
+    private final JLabel label;
+    private final int xOff;
+    private int yOff;
 
     private static GraphicsConfiguration gc(JComponent source) {
         return source == null ? GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration()

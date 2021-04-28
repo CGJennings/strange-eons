@@ -23,7 +23,7 @@ import java.util.HashMap;
  */
 final class ScriptableNamedObjectDatabase implements Scriptable, NamedObjectDatabase {
 
-    private HashMap<String, Object> db = new HashMap<>();
+    private final HashMap<String, Object> db = new HashMap<>();
 
     /**
      * Creates a new, empty named object database.

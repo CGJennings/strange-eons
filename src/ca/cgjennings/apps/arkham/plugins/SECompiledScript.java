@@ -33,8 +33,8 @@ import javax.script.*;
 
 final class SECompiledScript extends CompiledScript {
 
-    private SEScriptEngine engine;
-    private Script script;
+    private final SEScriptEngine engine;
+    private final Script script;
 
     SECompiledScript(SEScriptEngine engine, Script script) {
         this.engine = engine;

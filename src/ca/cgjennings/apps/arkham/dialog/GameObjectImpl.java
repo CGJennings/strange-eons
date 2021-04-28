@@ -351,7 +351,7 @@ class GameObjectImpl implements GameObject {
 
     private static class ArrayGameComponent extends GameObjectImpl implements GameObjectCollection {
 
-        private Object[] wrappedArray;
+        private final Object[] wrappedArray;
 
         public ArrayGameComponent(GameObjectImpl parent, Object[] array) {
             methodNames = METHOD_NAMES;

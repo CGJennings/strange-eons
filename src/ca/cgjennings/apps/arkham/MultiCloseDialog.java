@@ -93,8 +93,8 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     }
 
     private boolean cancel;
-    private TabInfo[] masterList;
-    private DefaultListModel<TabInfo> model;
+    private final TabInfo[] masterList;
+    private final DefaultListModel<TabInfo> model;
 
     /**
      * Creates new form MultiCloseDialog

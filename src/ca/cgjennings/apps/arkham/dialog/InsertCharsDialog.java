@@ -222,7 +222,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
         cpBuff[0] = cp;
         return new String(cpBuff, 0, 1);
     }
-    private static int[] cpBuff = new int[1];
+    private static final int[] cpBuff = new int[1];
 
     public String getUnicodeName(int cp) {
         String name = Character.getName(cp);

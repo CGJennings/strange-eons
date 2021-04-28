@@ -85,8 +85,8 @@ public enum ViewQuality {
         upsample = sheetUpsample;
     }
 
-    private RenderTarget q;
-    private double upsample;
+    private final RenderTarget q;
+    private final double upsample;
 
     /**
      * Returns an appropriate rendering target to use when rendering sheets at

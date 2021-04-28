@@ -169,8 +169,8 @@ public class InstanceController implements Runnable {
     private static ServerSocket server;
     private static InstanceControllerListener listener;
     private static String programName;
-    private static String MAGIC = "InstanceController.makeExclusive";
-    private static String OK = "OK. Please die now.";
+    private static final String MAGIC = "InstanceController.makeExclusive";
+    private static final String OK = "OK. Please die now.";
 
 //    public static void main( String[] args ) {
 //	InstanceControllerListener ic = new InstanceControllerListener() {

@@ -14,7 +14,7 @@ import java.util.Arrays;
  */
 public final class FastBreakIterator extends BreakIterator {
 
-    private BreakIterator bi;
+    private final BreakIterator bi;
     private int[] buffer;
     int last;
     int current;

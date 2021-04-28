@@ -22,8 +22,8 @@ import javax.swing.tree.TreeModel;
  */
 public abstract class TreeBuilder<C, L> {
 
-    private HashMap<C, Container<C>> map = new HashMap<>();
-    private Container<C> root;
+    private final HashMap<C, Container<C>> map = new HashMap<>();
+    private final Container<C> root;
 
     /**
      * Creates a tree builder that will build on a root node for the specified

@@ -16,9 +16,11 @@ import resources.StrangeImage;
  */
 final class StrangeImageAttribute extends GraphicAttribute {
 
-    private StrangeImage image;
-    private float fImageWidth, fImageHeight;
-    private float fOriginX, fOriginY;
+    private final StrangeImage image;
+    private final float fImageWidth;
+    private float fImageHeight;
+    private final float fOriginX;
+    private float fOriginY;
 
     /**
      * Constructs a graphic attribute for a {@link StrangeImage}, to be rendered

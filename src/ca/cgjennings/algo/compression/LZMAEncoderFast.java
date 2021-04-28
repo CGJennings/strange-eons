@@ -11,8 +11,8 @@ package ca.cgjennings.algo.compression;
 
 class LZMAEncoderFast extends LZMAEncoder {
 
-    private static int EXTRA_SIZE_BEFORE = 1;
-    private static int EXTRA_SIZE_AFTER = MATCH_LEN_MAX - 1;
+    private static final int EXTRA_SIZE_BEFORE = 1;
+    private static final int EXTRA_SIZE_AFTER = MATCH_LEN_MAX - 1;
 
     private Matches matches = null;
 

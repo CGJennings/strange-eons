@@ -306,7 +306,7 @@ public final class Subprocess {
      */
     private static class IOStreamManager extends Thread {
 
-        private Process proc;
+        private final Process proc;
 
         public IOStreamManager(Process proc) {
             super("Subprocess I/O pipe");

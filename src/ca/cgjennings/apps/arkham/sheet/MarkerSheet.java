@@ -23,8 +23,8 @@ import resources.Settings;
  */
 public final class MarkerSheet extends Sheet<Marker> {
 
-    private boolean isBack;
-    private MarkupRenderer textLayout;
+    private final boolean isBack;
+    private final MarkupRenderer textLayout;
 
     public MarkerSheet(Marker marker, boolean isBack) {
         super(marker, "marker-sheet-template");

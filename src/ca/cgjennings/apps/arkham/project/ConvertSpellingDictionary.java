@@ -32,7 +32,8 @@ public class ConvertSpellingDictionary extends TaskActionTree {
 
     public static class Converter extends TaskAction {
 
-        private String desc, ext;
+        private final String desc;
+        private String ext;
 
         public Converter(String description, String extension) {
             desc = description;

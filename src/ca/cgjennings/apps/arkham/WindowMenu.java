@@ -143,7 +143,7 @@ final class WindowMenu extends JMenu implements MenuListener {
 
     private HashMap<TrackedWindow, JMenuItem> trackedWindows = new HashMap<>();
 
-    private Comparator<JMenuItem> sorter = new Comparator<JMenuItem>() {
+    private final Comparator<JMenuItem> sorter = new Comparator<JMenuItem>() {
         @Override
         public int compare(JMenuItem o1, JMenuItem o2) {
             String s1 = o1.getText(), s2 = o2.getText();
@@ -163,7 +163,7 @@ final class WindowMenu extends JMenu implements MenuListener {
                 return s1.compareTo(s2);
             }
         }
-        private Collator c = Language.getInterface().getCollator();
+        private final Collator c = Language.getInterface().getCollator();
     };
     private static boolean comparatorExWarned = false;
 

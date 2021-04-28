@@ -87,7 +87,7 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
     private PanelKit[] kits;
     private StyleCapture[] cancelCaptures;
 
-    private Timer updateDelay = new Timer(500, new ActionListener() {
+    private final Timer updateDelay = new Timer(500, new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (updateTimeDrawn < updateTimeLatest) {
@@ -111,7 +111,7 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
             this.conflicted = composite.isStyleInConflict(style);
         }
         private StylePanel<? extends Style> panel;
-        private Class<? extends Style> style;
+        private final Class<? extends Style> style;
         private boolean conflicted;
 
         @Override
@@ -125,7 +125,7 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
         }
     }
 
-    private StylePanel.StyleEditorCallback callback = this::handleStyleChange;
+    private final StylePanel.StyleEditorCallback callback = this::handleStyleChange;
 
     private void handleStyleChange() {
         updateTimeLatest = System.currentTimeMillis();

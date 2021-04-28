@@ -275,7 +275,7 @@ public abstract class AbstractViewer extends JPanel {
     private static final int LABEL_MARGIN = 6;
     private static final int LABEL_ARC = 6;
 
-    private NumberFormat zoomFormatter = NumberFormat.getPercentInstance();
+    private final NumberFormat zoomFormatter = NumberFormat.getPercentInstance();
 
     class EventHandler implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -414,7 +414,7 @@ public abstract class AbstractViewer extends JPanel {
     }
 
     private static final int ZOOM_1_INDEX = 3; // index of 100% in the zoom array
-    private static double[] zoomLevels = {
+    private static final double[] zoomLevels = {
         //		0.125, 0.167, 0.25, 0.33, 0.5, 0.667, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0, 10.0, 12.0, 14.0, 16.0, 20.0, 24.0, 28.0, 32.0
         18.75 / 150d, 37.5d / 150d, 75d / 150d, 150d / 150d, 225d / 150d, 300d / 150d, 450d / 150d, 600d / 150d, 750d / 150d, 900d / 150d, 1100d / 150d
     };

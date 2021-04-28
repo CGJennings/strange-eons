@@ -56,7 +56,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         setLocationRelativeTo(StrangeEons.getWindow());
     }
 
-    private int categoryWidth;
+    private final int categoryWidth;
 
     /**
      * Sets the selected category in this preferences dialog.
@@ -173,7 +173,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         }
     }
 
-    private Comparator<PreferenceCategory> catSorter = (PreferenceCategory lhs, PreferenceCategory rhs) -> {
+    private final Comparator<PreferenceCategory> catSorter = (PreferenceCategory lhs, PreferenceCategory rhs) -> {
         if (rhs == null) {
             return -1;
         }
@@ -481,5 +481,5 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         }
     }
 
-    private static LinkedList<PreferenceUpdateListener> puls = new LinkedList<>();
+    private static final LinkedList<PreferenceUpdateListener> puls = new LinkedList<>();
 }

@@ -50,8 +50,8 @@ public class MergeStrings extends TaskActionTree {
 
     private static class MergeAction extends TaskAction {
 
-        private Language lang;
-        private String label;
+        private final Language lang;
+        private final String label;
 
         public MergeAction(Language lang, String label) {
             this.lang = lang;

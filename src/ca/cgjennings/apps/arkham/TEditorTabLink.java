@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 class TEditorTabLink extends JPanel {
 
-    private TAttachedEditor frame;
+    private final TAttachedEditor frame;
 
     public TEditorTabLink(TAttachedEditor linkedFrame) {
         setBackground(Color.BLACK);

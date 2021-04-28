@@ -19,7 +19,7 @@ import static resources.Language.string;
 class PackagingDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     private boolean currentFormatIsFolder;
-    private Project proj;
+    private final Project proj;
 
     /**
      * Creates new form PackagingDialog

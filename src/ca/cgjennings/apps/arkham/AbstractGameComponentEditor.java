@@ -80,7 +80,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         AppFrame.getApp().addPropertyChangeListener(StrangeEonsAppWindow.VIEW_BACKDROP_PROPERTY, pcl);
     }
 
-    private PropertyChangeListener pcl = new PropertyChangeListener() {
+    private final PropertyChangeListener pcl = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             // respond to changes in the selected preview background

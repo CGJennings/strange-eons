@@ -19,7 +19,7 @@ public class StrangeEonsEvaluatorFactory implements EvaluatorFactory {
     private static class SEEvaluator implements Evaluator {
 
         private ScriptMonkey monkey;
-        private MarkupRenderer renderer;
+        private final MarkupRenderer renderer;
 
         public SEEvaluator(MarkupRenderer renderer) {
             this.renderer = renderer;

@@ -103,7 +103,7 @@ public class ImagePreviewer extends JPanel {
 
     private class LoaderThread extends Thread {
 
-        private Object f;
+        private final Object f;
 
         public LoaderThread(Object f) {
             this.f = f;

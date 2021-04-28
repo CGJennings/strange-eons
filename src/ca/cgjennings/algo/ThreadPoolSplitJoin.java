@@ -98,7 +98,7 @@ class ThreadPoolSplitJoin extends SplitJoin {
         return results;
     }
 
-    private ThreadPoolExecutor threadPool;
+    private final ThreadPoolExecutor threadPool;
 
     private static final long KEEP_ALIVE_TIME = 1_000L * 60L * 15L;
 

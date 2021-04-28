@@ -650,7 +650,7 @@ public class JUtilities {
         c.removePropertyChangeListener(disabledHTMLFix);
     }
 
-    private static PropertyChangeListener disabledHTMLFix = new PropertyChangeListener() {
+    private static final PropertyChangeListener disabledHTMLFix = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if (ENABLED_PROPERTY.equals(evt.getPropertyName())) {

@@ -251,7 +251,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
 
         private CatalogID id;
         private int mode;
-        private InstalledBundleObject ibo;
+        private final InstalledBundleObject ibo;
 
         public CatalogIDLine(CatalogID id) {
             this.id = id;

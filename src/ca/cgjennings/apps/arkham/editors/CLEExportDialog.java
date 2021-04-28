@@ -13,7 +13,7 @@ import resources.Settings;
 @SuppressWarnings("serial")
 class CLEExportDialog extends javax.swing.JDialog {
 
-    private CardLayoutEditor ed;
+    private final CardLayoutEditor ed;
 
     /**
      * Creates new form CLEExportDialog

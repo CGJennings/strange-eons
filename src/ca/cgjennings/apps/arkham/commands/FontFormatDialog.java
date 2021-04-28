@@ -110,8 +110,8 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 }
             }
 
-            private BasicStroke dividerStroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10f, new float[]{6f, 6f}, 0f);
-            private Color dividerColor = Color.GRAY;
+            private final BasicStroke dividerStroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10f, new float[]{6f, 6f}, 0f);
+            private final Color dividerColor = Color.GRAY;
             private boolean dividerFlag;
         });
 
@@ -142,7 +142,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                     dncFamily.setEnabled(true);
                 });
             }
-            private Comparator<String> fontSorter = new Comparator<String>() {
+            private final Comparator<String> fontSorter = new Comparator<String>() {
                 @Override
                 public int compare(String o1, String o2) {
                     if (ResourceKit.isFamilyRegistered(o1)) {

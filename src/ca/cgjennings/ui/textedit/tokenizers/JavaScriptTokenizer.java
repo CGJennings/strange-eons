@@ -329,7 +329,7 @@ public class JavaScriptTokenizer extends Tokenizer {
 
         return token;
     }
-    private KeywordMap keywords;
+    private final KeywordMap keywords;
     private int lastOffset;
     private int lastKeyword;
 

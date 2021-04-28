@@ -831,7 +831,7 @@ public class ProjectUtilities {
         " KiB", " MiB", " GiB", " TiB", " PiB", " EiB" //, " ZiB", " YiB"
     };
 
-    private static NumberFormat formatter;
+    private static final NumberFormat formatter;
 
     static {
         formatter = NumberFormat.getNumberInstance();

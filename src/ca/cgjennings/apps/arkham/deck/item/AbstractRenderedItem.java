@@ -310,7 +310,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
         }
 
         @SuppressWarnings("unchecked")
-        private SoftReference<BufferedImage>[] cache = new SoftReference[MIP_MAP_RESOLUTIONS.length];
+        private final SoftReference<BufferedImage>[] cache = new SoftReference[MIP_MAP_RESOLUTIONS.length];
 
         public void clear() {
             for (int i = 0; i < cache.length; ++i) {

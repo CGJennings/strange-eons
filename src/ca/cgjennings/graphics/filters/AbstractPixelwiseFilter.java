@@ -132,8 +132,9 @@ public abstract class AbstractPixelwiseFilter extends AbstractImageFilter {
      */
     private class InlineWorkUnit implements Runnable {
 
-        private int[] data;
-        private int start, end;
+        private final int[] data;
+        private final int start;
+        private int end;
 
         public InlineWorkUnit(int[] data, int start, int end) {
             this.data = data;

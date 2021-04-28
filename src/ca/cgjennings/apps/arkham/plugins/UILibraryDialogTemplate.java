@@ -245,5 +245,5 @@ public final class UILibraryDialogTemplate extends javax.swing.JDialog implement
     public Component getContent() {
         return content;
     }
-    private Component content;
+    private final Component content;
 }

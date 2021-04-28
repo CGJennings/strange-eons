@@ -25,7 +25,7 @@ final class ScopeParser extends AbstractUtilityParser {
 
     int offset;
     private ScopeID root;
-    private HashSet<String> scopeTable = new HashSet<>();
+    private final HashSet<String> scopeTable = new HashSet<>();
     private ScriptCompletionContext scc;
 
     public ScopeParser() {
@@ -221,7 +221,7 @@ final class ScopeParser extends AbstractUtilityParser {
 
     private class Visitor implements NodeVisitor {
 
-        private ScopeID root;
+        private final ScopeID root;
 
         public Visitor(ScopeID root, AstNode startNode) {
             this.root = root;

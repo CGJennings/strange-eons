@@ -157,7 +157,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
                 }
                 return false;
             }
-            private AtomicInteger failures = new AtomicInteger();
+            private final AtomicInteger failures = new AtomicInteger();
         });
 
         Authenticator.setDefault(new Authenticator() {

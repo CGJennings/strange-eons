@@ -25,10 +25,10 @@ import static resources.Language.string;
 @SuppressWarnings("serial")
 final class BusyDialogImpl extends javax.swing.JDialog {
 
-    private Runnable operation;
+    private final Runnable operation;
     private ActionListener cancelAction;
-    private AtomicInteger maximum = new AtomicInteger(0);
-    private AtomicInteger current = new AtomicInteger(0);
+    private final AtomicInteger maximum = new AtomicInteger(0);
+    private final AtomicInteger current = new AtomicInteger(0);
     private boolean visible;
 
     private static final LinkedList<BusyDialogImpl> stack = new LinkedList<>();

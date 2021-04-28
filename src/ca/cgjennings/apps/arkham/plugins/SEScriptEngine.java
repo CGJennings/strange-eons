@@ -62,7 +62,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
     private Map indexedProps;
 
     private SEScriptEngineFactory factory;
-    private InterfaceImplementor implementor;
+    private final InterfaceImplementor implementor;
     /**
      * Creates a new instance of SEScriptEngine
      */

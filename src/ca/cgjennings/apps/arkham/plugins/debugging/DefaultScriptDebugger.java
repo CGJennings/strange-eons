@@ -733,7 +733,7 @@ public final class DefaultScriptDebugger {
      */
     private class IsolatedServerThread extends Thread {
 
-        private Socket client;
+        private final Socket client;
         private IOException ioe;
 
         public IsolatedServerThread(Socket client) {

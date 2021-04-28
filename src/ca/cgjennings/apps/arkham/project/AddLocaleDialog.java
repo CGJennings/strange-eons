@@ -560,7 +560,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
         }
     };
 
-    private static DefaultListCellRenderer countryRenderer = new DefaultListCellRenderer() {
+    private static final DefaultListCellRenderer countryRenderer = new DefaultListCellRenderer() {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Locale loc = new Locale("", value.toString());

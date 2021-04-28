@@ -248,10 +248,10 @@ public abstract class StrangeImage {
 
     private static final class Bitmap extends StrangeImage {
 
-        private BufferedImage bi;
+        private final BufferedImage bi;
         private VectorImage vi;
-        private int w;
-        private int h;
+        private final int w;
+        private final int h;
 
         public Bitmap(BufferedImage bi) {
             this.bi = ResourceKit.prepareNewImage(bi);
@@ -330,11 +330,11 @@ public abstract class StrangeImage {
 
     private static final class Vector extends StrangeImage {
 
-        private VectorImage vi;
-        private int w;
-        private int h;
-        private double dw;
-        private double dh;
+        private final VectorImage vi;
+        private final int w;
+        private final int h;
+        private final double dw;
+        private final double dh;
 
         private SoftReference<BufferedImage> bitmapCache;
 
@@ -634,13 +634,13 @@ public abstract class StrangeImage {
     public static synchronized StrangeImage getInvisibleImage() {
         if (ZDS == null) {
             ZDS = new StrangeImage() {
-                private BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+                private final BufferedImage bi = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
 
                 {
                     bi.setRGB(0, 0, 0x00ff0000);
                 }
 
-                private VectorImage vi = new AbstractVectorImage() {
+                private final VectorImage vi = new AbstractVectorImage() {
                     {
                         tx = ty = 0d;
                         iw = ih = 1d;

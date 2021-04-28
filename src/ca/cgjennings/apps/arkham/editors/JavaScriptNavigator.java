@@ -36,7 +36,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
     }
 
     JSourceCodeEditor editor;
-    private Highlighter highlighter = new Highlighter();
+    private final Highlighter highlighter = new Highlighter();
 
     @Override
     public void install(CodeEditor editor) {

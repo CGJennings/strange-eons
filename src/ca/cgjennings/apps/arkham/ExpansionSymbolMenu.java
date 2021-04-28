@@ -172,7 +172,7 @@ final class ExpansionSymbolMenu extends JMenu {
         }
     };
 
-    private ActionListener expansionSelected = new ActionListener() {
+    private final ActionListener expansionSelected = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             final boolean multiSelect = (modifiers & (InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0;

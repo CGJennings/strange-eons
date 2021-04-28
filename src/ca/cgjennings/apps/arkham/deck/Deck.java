@@ -353,9 +353,11 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     @SuppressWarnings("serial")
     private class SelectionGroupEdit extends DeckUndoable {
 
-        private int g;
-        private Page oPage, nPage;
-        private LinkedHashSet oSel, nSel;
+        private final int g;
+        private final Page oPage;
+        private Page nPage;
+        private final LinkedHashSet oSel;
+        private LinkedHashSet nSel;
 
         public SelectionGroupEdit(int group, Page newPage, LinkedHashSet newSel) {
             super(Deck.this);

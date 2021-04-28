@@ -55,7 +55,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     // needed for form serialization
 
     private static final long serialVersionUID = -3_518_230_129_696_936_527L;
-    private NumberFormat formatter;
+    private final NumberFormat formatter;
 
     /**
      * Creates new form HSBPanel
@@ -960,8 +960,8 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     private static Painter thumbPainter;
 
     private Tintable tintable;
-    private float[] hsb = new float[3];
-    private Color sourceColor = Color.RED;
+    private final float[] hsb = new float[3];
+    private final Color sourceColor = Color.RED;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField BField;
     private javax.swing.JSlider BSlider;

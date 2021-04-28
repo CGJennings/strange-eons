@@ -32,7 +32,7 @@ public class KeyStrokeCellEditor extends DefaultCellEditor {
         setClickCountToStart(1);
     }
 
-    private JKeyStrokeField field = new JKeyStrokeField() {
+    private final JKeyStrokeField field = new JKeyStrokeField() {
         @Override
         protected KeyStroke filterKeyStroke(KeyStroke ks) {
             KeyStroke filtered = super.filterKeyStroke(ks);

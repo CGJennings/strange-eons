@@ -238,10 +238,11 @@ class SearchResults extends javax.swing.JDialog implements Searcher.ResultReceiv
     private static class Result {
 
         private Member member;
-        private int line, start, end;
+        private final int line;
+        private int start, end;
         private Icon icon;
         private String label;
-        private String context;
+        private final String context;
 
         public Result(Member member, int line, String context, int start, int end) {
             this.member = member;

@@ -63,8 +63,8 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
         setLocationRelativeTo(parent);
     }
     // formatters used by the default metadata impl to fill in modification times
-    private DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.MEDIUM);
-    private DateFormat timeFormatter = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+    private final DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.MEDIUM);
+    private final DateFormat timeFormatter = DateFormat.getTimeInstance(DateFormat.MEDIUM);
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -103,7 +103,7 @@ final class ExpansionVariantMenu extends JMenu {
 
     private static class VariantItem extends JRadioButtonMenuItem {
 
-        private int varNum;
+        private final int varNum;
 
         VariantItem(String text, Icon icon, int variantIndex) {
             super(text, icon);

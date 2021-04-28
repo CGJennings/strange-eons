@@ -26,7 +26,7 @@ public class Lock {
     }
     private static boolean locked;
     private static boolean everLocked;
-    private static LinkedList<Runnable> lockTasks = new LinkedList<>();
+    private static final LinkedList<Runnable> lockTasks = new LinkedList<>();
 
     /**
      * Returns <code>true</code> if the game data has been locked.

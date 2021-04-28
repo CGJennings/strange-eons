@@ -30,7 +30,7 @@ import resources.Settings;
 @SuppressWarnings("serial")
 class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
 
-    private TaskGroup parent;
+    private final TaskGroup parent;
 
     /**
      * Creates new form NewTaskDialog

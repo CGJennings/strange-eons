@@ -311,7 +311,7 @@ public class New extends TaskActionTree {
      */
     private static class NewGenericGameComponent extends TaskAction {
 
-        private boolean nonPluginVersion;
+        private final boolean nonPluginVersion;
 
         NewGenericGameComponent(boolean nonPluginVersion) {
             this.nonPluginVersion = nonPluginVersion;

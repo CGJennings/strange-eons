@@ -122,10 +122,13 @@ public abstract class AbstractCompositeContext implements CompositeContext {
 
     private class CompositingUnit implements Runnable {
 
-        private WritableRaster dest;
-        private Raster top, bottom;
-        private int y1, y2, x, w, aFactor;
-        private int sBands, dBands;
+        private final WritableRaster dest;
+        private final Raster top;
+        private Raster bottom;
+        private final int y1;
+        private int y2, x, w, aFactor;
+        private final int sBands;
+        private int dBands;
 
         public CompositingUnit(WritableRaster dest, Raster top, Raster bottom, int y1, int y2, int x, int w, int aFactor, int sBands, int dBands) {
             this.dest = dest;

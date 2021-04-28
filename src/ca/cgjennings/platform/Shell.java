@@ -25,8 +25,8 @@ public class Shell {
 
     private int timeout;
     private LinkedList<File> dirStack;
-    private LinkedList<String> command = new LinkedList<>();
-    private ProcessBuilder pb = new ProcessBuilder(command);
+    private final LinkedList<String> command = new LinkedList<>();
+    private final ProcessBuilder pb = new ProcessBuilder(command);
 
     /**
      * Creates a new Shell for executing commands.
@@ -324,9 +324,9 @@ public class Shell {
      */
     public static final class Result {
 
-        private String[] tokens;
-        private int code;
-        private String output;
+        private final String[] tokens;
+        private final int code;
+        private final String output;
 
         private Result(String[] tokens, int exitCode, String output) {
             this.tokens = tokens;

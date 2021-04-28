@@ -83,6 +83,6 @@ class CompilerImpl implements Compile.Compiler {
         con.getWriter().printf(string("retval", retval));
         return retval == 0;
     }
-    private JavaCompiler javac;
+    private final JavaCompiler javac;
     private String[] argBase;
 }
