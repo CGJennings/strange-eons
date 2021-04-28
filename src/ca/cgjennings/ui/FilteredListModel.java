@@ -123,7 +123,7 @@ public class FilteredListModel extends AbstractListModel {
 
     public void setFilter(ListFilter f) {
         filter = f;
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return;
         }
         int fsize = filtered.size();

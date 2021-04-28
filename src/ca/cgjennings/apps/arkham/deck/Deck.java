@@ -399,7 +399,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
             throw new IndexOutOfBoundsException("invalid group: " + group);
         }
 
-        if (selectionPage == null || selection.size() == 0) {
+        if (selectionPage == null || selection.isEmpty()) {
             return;
         }
 

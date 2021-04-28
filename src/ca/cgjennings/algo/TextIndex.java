@@ -170,7 +170,7 @@ public class TextIndex implements Iterable<String> {
 
     // used internally during execute implementations to optimize processing
     private Result simplify(Set<String> s) {
-        if (s.size() == 0) {
+        if (s.isEmpty()) {
             return NOTHING;
         }
         if (s.size() == ids.length) {

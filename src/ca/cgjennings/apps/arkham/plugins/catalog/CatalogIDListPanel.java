@@ -444,7 +444,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
      * @return a string suitable for setting in a catalog listing
      */
     public String toCatalogString() {
-        if (ids.size() == 0) {
+        if (ids.isEmpty()) {
             return null;
         }
         String s = toString();

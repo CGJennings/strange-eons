@@ -2414,7 +2414,7 @@ public final class Client extends javax.swing.JFrame {
                 return results.toArray(new String[results.size()]);
             }
 
-            if (results.size() == 0 || !results.get(0).equals("SEDP3 OK")) {
+            if (results.isEmpty() || !results.get(0).equals("SEDP3 OK")) {
                 System.err.println("Strange Eons Debugger Client: Protocol Exception");
                 for (String v : results) {
                     System.err.println(v);

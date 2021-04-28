@@ -1704,7 +1704,7 @@ public final class StrangeEons {
                     allAccepted = false;
                 }
             }
-            if(bundles.size()==0) {
+            if(bundles.isEmpty()) {
                 System.err.println("no test bundles listed");
                 allAccepted = false;
             }

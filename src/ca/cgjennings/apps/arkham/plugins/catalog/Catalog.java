@@ -1239,7 +1239,7 @@ public class Catalog {
                 return;
             }
             hooks.remove(h);
-            if (hooks.size() == 0) {
+            if (hooks.isEmpty()) {
                 hooks = null;
             }
         }
