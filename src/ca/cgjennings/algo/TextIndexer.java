@@ -420,7 +420,7 @@ public class TextIndexer implements MonitoredAlgorithm {
                 }
                 b.append(li);
             }
-            return li.toString();
+            return li;
         }
 
         private boolean isHTML(String sourceID) {
