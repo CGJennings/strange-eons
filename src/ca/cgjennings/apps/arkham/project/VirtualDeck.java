@@ -26,32 +26,16 @@ public class VirtualDeck extends TaskAction {
 
     @Override
     public boolean perform(final Project project, final Task task, final Member member) {
-//		project.getView().moveToLocusOfAttention( d );
-//		final DeckPacker packer = d.showDialog();
-//		if( packer == null ) return false;
 
-//		new BusyDialog( StrangeEons.getWindow(), string( "pa-vdeck-busy" ), new Runnable() {
-//			@Override
-//			public void run() {
         CopiesList copies;
         try {
             copies = new CopiesList(task);
         } catch (IOException e) {
             copies = new CopiesList();
-            e.printStackTrace();
         }
-        //File deckFile = new File( task.getFile(), d.getSelectedFileName() );
         List<Member> list = ProjectUtilities.listMatchingMembers(task, true, "eon");
         VirtualDeckDialog d = new VirtualDeckDialog(StrangeEons.getWindow(), list, copies);
         d.setVisible(true);
-//			}
-//		}, new ActionListener() {
-//			@Override
-//			public void actionPerformed( ActionEvent e ) {
-//				packer.cancel();
-//			}
-//		});
-//		task.synchronize();
         return true;
     }
 
