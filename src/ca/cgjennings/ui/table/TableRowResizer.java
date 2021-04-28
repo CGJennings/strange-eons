@@ -13,7 +13,7 @@ class TableRowResizer extends MouseInputAdapter {
 
     private int mouseYOffset, resizingRow;
     private Cursor otherCursor = resizeCursor;
-    private JTable table;
+    private final JTable table;
 
     public TableRowResizer(JTable table) {
         this.table = table;

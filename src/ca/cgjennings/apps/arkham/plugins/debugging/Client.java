@@ -559,7 +559,7 @@ public final class Client extends javax.swing.JFrame {
     private final Painter NO_OP_PAINTER = (Graphics2D g, Object object, int width1, int height1) -> {
     };
     private final Border linkBorder = new MatteBorder(0, 2, 2, 2, Color.LIGHT_GRAY) {
-        private MatteBorder disabled = new MatteBorder(0, 2, 2, 2, new Color(72, 72, 72));
+        private final MatteBorder disabled = new MatteBorder(0, 2, 2, 2, new Color(72, 72, 72));
 
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -596,7 +596,7 @@ public final class Client extends javax.swing.JFrame {
     private static Icon icon(String res) {
         return icon(res, 14);
     }
-    private Icon debugIcon;
+    private final Icon debugIcon;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -2649,8 +2649,8 @@ public final class Client extends javax.swing.JFrame {
 
         private String file;
         private LineInfo[] lines = EMPTY_TABLE;
-        private JavaScriptTokenizer tokenizer = new JavaScriptTokenizer();
-        private HTMLStyler codeStyler = new HTMLStyler(tokenizer);
+        private final JavaScriptTokenizer tokenizer = new JavaScriptTokenizer();
+        private final HTMLStyler codeStyler = new HTMLStyler(tokenizer);
 
         public void setSource(String url) {
             waitCursor(true);
@@ -2873,7 +2873,7 @@ public final class Client extends javax.swing.JFrame {
             return expression;
         }
         private final JTextField idLookupField = new JTextField();
-        private TokenType[] acceptedIDs = new TokenType[]{
+        private final TokenType[] acceptedIDs = new TokenType[]{
             TokenType.PLAIN, TokenType.KEYWORD2, TokenType.LITERAL3, TokenType.LITERAL5
         };
     };
@@ -2883,21 +2883,21 @@ public final class Client extends javax.swing.JFrame {
      */
     private DefaultTableCellRenderer sourceRenderer = new DefaultTableCellRenderer() {
 
-        private Border lineBorder = BorderFactory.createEmptyBorder(0, 4, 0, 1);
-        private Border numberBorder = BorderFactory.createCompoundBorder(
+        private final Border lineBorder = BorderFactory.createEmptyBorder(0, 4, 0, 1);
+        private final Border numberBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 0, 1, Color.DARK_GRAY),
                 BorderFactory.createEmptyBorder(0, 1, 0, 4));
-        private Border lastLineBorder = BorderFactory.createCompoundBorder(
+        private final Border lastLineBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY),
                 lineBorder);
-        private Border lastNumberBorder = BorderFactory.createCompoundBorder(
+        private final Border lastNumberBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY),
                 numberBorder);
-        private Color selectionBkg = new Color(0xB9_DBFD);
-        private Color numberBkg = new Color(0xf2_f2f2);
-        private Color breakBkg = new Color(0xFD_B9D4);
-        private Color stackTopBkg = new Color(0xD4_FDB9);
-        private Color stackTopUninterruptedBkg = new Color(0xB9_D4FD);
+        private final Color selectionBkg = new Color(0xB9_DBFD);
+        private final Color numberBkg = new Color(0xf2_f2f2);
+        private final Color breakBkg = new Color(0xFD_B9D4);
+        private final Color stackTopBkg = new Color(0xD4_FDB9);
+        private final Color stackTopUninterruptedBkg = new Color(0xB9_D4FD);
         private Font linkFont;
 
         @Override
@@ -3051,7 +3051,7 @@ public final class Client extends javax.swing.JFrame {
      */
     private class WatchModel extends AbstractTableModel {
 
-        private ArrayList<String> expr = new ArrayList<>();
+        private final ArrayList<String> expr = new ArrayList<>();
         private ArrayList<String> eval = new ArrayList<>();
 
         @Override
@@ -3128,8 +3128,8 @@ public final class Client extends javax.swing.JFrame {
             }
         }
 
-        private String RUNNING_EVALUATION = string("watch-not-interrupted");
-        private String[] DUMMY_EVALUATION = {string("watch-cant-eval")};
+        private final String RUNNING_EVALUATION = string("watch-not-interrupted");
+        private final String[] DUMMY_EVALUATION = {string("watch-cant-eval")};
 
         public void updateValue(int row, int frame) {
             String evaluation;
@@ -3444,7 +3444,7 @@ public final class Client extends javax.swing.JFrame {
         private String name;
         private String type;
         private String toolTip;
-        private boolean hasKids;
+        private final boolean hasKids;
 
         public ScopeDesc(String name, String typeDesc, boolean hasKids) {
             this.name = name;

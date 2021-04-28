@@ -466,7 +466,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     }
 
     private Button fakeSeparatorButton = new Button() {
-        private Icon icon = new ImageIcon(getClass().getResource("/resources/icons/toolbar/separator.png"));
+        private final Icon icon = new ImageIcon(getClass().getResource("/resources/icons/toolbar/separator.png"));
 
         @Override
         public String getName() {

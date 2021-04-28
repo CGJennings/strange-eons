@@ -95,7 +95,7 @@ public class MergeSettings extends TaskActionTree {
 
     private static class MergeAction extends TaskAction {
 
-        private Game game;
+        private final Game game;
 
         public MergeAction(Game g) {
             game = g;

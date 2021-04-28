@@ -13,7 +13,7 @@ import static resources.Language.string;
  */
 @SuppressWarnings("serial")
 public final class CodeFormatPage extends javax.swing.JPanel {
-	private boolean compilerAvailable;
+	private final boolean compilerAvailable;
 
 	/**
 	 * Creates new page for selecting the code format for

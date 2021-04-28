@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 final class HAbbrevTable extends AbstractCommand {
 
-    private boolean markup;
+    private final boolean markup;
 
     public HAbbrevTable(boolean markup) {
         super("app-markup-abbreviations");

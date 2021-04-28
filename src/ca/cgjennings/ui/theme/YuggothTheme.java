@@ -112,7 +112,7 @@ MenuBar[Enabled].borderPainter
     }
 
     private static class SolidPainter implements Painter<Component> {
-        private Paint paint;
+        private final Paint paint;
         public SolidPainter(final Paint paint) {
             this.paint = Objects.requireNonNull(paint);
         }

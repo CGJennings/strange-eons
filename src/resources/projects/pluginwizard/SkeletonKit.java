@@ -46,9 +46,9 @@ public class SkeletonKit implements PluginWizardDialog.WizardKit {
 	}
 
 	private class SkeletonModel extends DefaultWizardModel {
-		private ContentTypePage tp;
-		private CodeFormatPage cp;
-		private NamePage np;
+		private final ContentTypePage tp;
+		private final CodeFormatPage cp;
+		private final NamePage np;
 
 		public SkeletonModel( Task task ) {
 			tp = new ContentTypePage( true, true, this );

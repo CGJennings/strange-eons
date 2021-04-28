@@ -10,7 +10,7 @@ import javax.swing.JProgressBar;
  */
 public class ProgressBarAdapter implements ProgressListener {
 
-    private JProgressBar bar;
+    private final JProgressBar bar;
 
     /**
      * Creates a new progress bar adapter that listens for progress updates and

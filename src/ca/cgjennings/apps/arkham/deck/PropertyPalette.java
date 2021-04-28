@@ -31,7 +31,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
 
     private Deck deck;
     private DeckEditor ed;
-    private NumberFormat formatter;
+    private final NumberFormat formatter;
     private JTextField[] selFields;
     private Rectangle2D.Double lastSelectionRectangle;
 
@@ -116,7 +116,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
         }
     });
 
-    private Deck.SelectionChangeListener selectionListener = new Deck.SelectionChangeListener() {
+    private final Deck.SelectionChangeListener selectionListener = new Deck.SelectionChangeListener() {
         @Override
         public void deckSelectionChanged(Deck source) {
             if (source != deck) {
@@ -419,7 +419,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
     private javax.swing.JLabel yLabel;
     // End of variables declaration//GEN-END:variables
 
-    private StrangeEonsEditor.EditorListener editorListener = new StrangeEonsEditor.EditorListener() {
+    private final StrangeEonsEditor.EditorListener editorListener = new StrangeEonsEditor.EditorListener() {
         @Override
         public void editorSelected(StrangeEonsEditor editor) {
             if (editor instanceof DeckEditor) {

@@ -111,7 +111,7 @@ class C1Handle extends DragHandle {
     }
     private static final double HANDLE_RADIUS = 3d;
 
-    private QuadCurve2D.Double curve = new QuadCurve2D.Double();
+    private final QuadCurve2D.Double curve = new QuadCurve2D.Double();
     Line2D.Double controlLine = new Line2D.Double();
-    private static BasicStroke controlStroke = new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1f, new float[]{0.5f, 0.5f}, 0);
+    private static final BasicStroke controlStroke = new BasicStroke(1.5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1f, new float[]{0.5f, 0.5f}, 0);
 }

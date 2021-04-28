@@ -39,7 +39,7 @@ import resources.projects.pluginwizard.SkeletonKit;
 @SuppressWarnings("serial")
 public class PluginWizardDialog extends javax.swing.JDialog {
 
-    private Task task;
+    private final Task task;
     private Controller controller;
     private WizardModel model;
 
@@ -576,9 +576,9 @@ public class PluginWizardDialog extends javax.swing.JDialog {
     /**
      * A sorted set of the registered kits.
      */
-    private static Set<WizardKit> kits = new HashSet<>();
+    private static final Set<WizardKit> kits = new HashSet<>();
 
-    private Comparator<PluginWizardDialog.WizardKit> sorter = (WizardKit o1, WizardKit o2) -> Language.getInterface().getCollator().compare(o1.getName(), o2.getName());
+    private final Comparator<PluginWizardDialog.WizardKit> sorter = (WizardKit o1, WizardKit o2) -> Language.getInterface().getCollator().compare(o1.getName(), o2.getName());
 
     static {
         registerWizardKit(new SkeletonKit());

@@ -32,7 +32,7 @@ import resources.Settings;
 @SuppressWarnings("serial")
 class ConvertImageDialog extends javax.swing.JDialog implements AgnosticDialog {
 
-    private String format;
+    private final String format;
 
     /**
      * Creates new form ConvertImageDialog

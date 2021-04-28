@@ -27,8 +27,8 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 final class PrintSetupDialog extends javax.swing.JDialog implements ActionListener, AgnosticDialog {
 
-    private DeckEditor editor;
-    private NumberFormat formatter;
+    private final DeckEditor editor;
+    private final NumberFormat formatter;
 
     public PrintSetupDialog(DeckEditor editor) {
         super((JFrame) SwingUtilities.getWindowAncestor(editor), true);

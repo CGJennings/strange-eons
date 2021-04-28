@@ -25,10 +25,10 @@ import java.util.zip.InflaterInputStream;
  * @since 3.0
  */
 public class TextIndex implements Iterable<String> {
-    private String[] stopWords;
-    private String[] words;
+    private final String[] stopWords;
+    private final String[] words;
     private String[] ids;
-    private BitSet map;
+    private final BitSet map;
 
     TextIndex(String[] stopWords, String[] words, String[] ids, BitSet map) {
         this.stopWords = stopWords;
@@ -156,7 +156,7 @@ public class TextIndex implements Iterable<String> {
 
     private static class ResultSet implements Result {
 
-        private Set<String> s;
+        private final Set<String> s;
 
         public ResultSet(Set<String> s) {
             this.s = s;

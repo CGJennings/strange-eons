@@ -363,9 +363,9 @@ public class FileDrop {
      */
     public static final class DropEvent {
 
-        private List<File> files;
-        private Component target;
-        private Point location;
+        private final List<File> files;
+        private final Component target;
+        private final Point location;
 
         private DropEvent(List<File> files, Component target, Point location) {
             this.files = Collections.unmodifiableList(files);

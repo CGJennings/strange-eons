@@ -19,8 +19,8 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 public class TextIndexViewer extends javax.swing.JDialog {
 
-    private TextIndex ti;
-    private DefaultListModel docModel = new DefaultListModel();
+    private final TextIndex ti;
+    private final DefaultListModel docModel = new DefaultListModel();
 
     /**
      * Creates new form TextIndexViewer

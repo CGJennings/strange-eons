@@ -238,7 +238,7 @@ public class Rename extends TaskAction {
         public void fileRenamed(Project p, Member newMember, File oldFile, File newFile);
     }
 
-    private static LinkedList<RenameListener> listeners = new LinkedList<>();
+    private static final LinkedList<RenameListener> listeners = new LinkedList<>();
 
     /**
      * Adds a new listener for file rename events. All instances of the rename

@@ -111,7 +111,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         shuffleBtnActionPerformed(null);
     }
 
-    private VirtualDeckOwnerSelector ownerPicker;
+    private final VirtualDeckOwnerSelector ownerPicker;
     private Icon backIcon;
 
     private DefaultListModel deck = new DefaultListModel();
@@ -1498,7 +1498,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     };
 
     private class CardTransferable implements Transferable {
-        private CardTransferData data;
+        private final CardTransferData data;
 
         public CardTransferable(DefaultListModel source, List<Card> cards) {
             data = new CardTransferData(VirtualDeckDialog.this, source, cards);

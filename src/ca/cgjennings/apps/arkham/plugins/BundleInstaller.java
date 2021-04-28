@@ -335,7 +335,7 @@ public class BundleInstaller {
     /**
      * Keeps track of all of the .seplugin plug-ins we have discovered so far.
      */
-    private static Set<InstalledPlugin> installedPlugins = new HashSet<>();
+    private static final Set<InstalledPlugin> installedPlugins = new HashSet<>();
 
     /**
      * Returns an array of the installed plug-ins (from .seplugin bundles and
@@ -381,7 +381,7 @@ public class BundleInstaller {
         Arrays.sort(libs);
         return libs;
     }
-    private static TreeSet<InstalledLibrary> installedLibraries = new TreeSet<>();
+    private static final TreeSet<InstalledLibrary> installedLibraries = new TreeSet<>();
 
     /**
      * Searches for theme bundles (<code>.setheme</code> files) in the plug-in
@@ -592,7 +592,7 @@ public class BundleInstaller {
         }
     }
 
-    private static List<InstalledExtension> installedExtensions = new LinkedList<>();
+    private static final List<InstalledExtension> installedExtensions = new LinkedList<>();
 
     /**
      * Returns the installed libraries, themes, plug-ins, etc. with the given
@@ -1058,12 +1058,12 @@ public class BundleInstaller {
             return keys.toArray(new File[keys.size()]);
         }
     }
-    private static HashMap<File, PluginBundle> discoveredBundles = new HashMap<>();
+    private static final HashMap<File, PluginBundle> discoveredBundles = new HashMap<>();
 
-    private static Map<UUID, CatalogID> catalogIDMap = new HashMap<>();
-    private static Map<UUID, File> uuidToFileMap = new HashMap<>();
-    private static Map<String, File> pluginToFileMap = new HashMap<>();
-    private static Set<String> missingCatalogID = new HashSet<>();
+    private static final Map<UUID, CatalogID> catalogIDMap = new HashMap<>();
+    private static final Map<UUID, File> uuidToFileMap = new HashMap<>();
+    private static final Map<String, File> pluginToFileMap = new HashMap<>();
+    private static final Set<String> missingCatalogID = new HashSet<>();
 
     /**
      * Returns the class loader for the plug-in system.

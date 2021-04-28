@@ -62,8 +62,9 @@ public class FileRecoveryException extends IOException {
         return fail;
     }
 
-    private File tempFile;
-    private String title, body, fail;
+    private final File tempFile;
+    private final String title;
+    private String body, fail;
 }
 
 /*

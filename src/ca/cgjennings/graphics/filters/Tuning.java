@@ -253,7 +253,7 @@ public final class Tuning {
 
     private static class GetIntTest extends Test {
 
-        private int t;
+        private final int t;
 
         public GetIntTest(int type) {
             t = type;
@@ -273,7 +273,7 @@ public final class Tuning {
 
     private static class SetIntTest extends Test {
 
-        private int t;
+        private final int t;
         private int[] data;
 
         public SetIntTest(int type) {

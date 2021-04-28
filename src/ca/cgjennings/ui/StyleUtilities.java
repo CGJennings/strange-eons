@@ -24,7 +24,7 @@ public class StyleUtilities {
     public static String REGULAR = "regular";
     public static String LARGE = "large";
 
-    private static String SIZE = "JComponent.sizeVariant";
+    private static final String SIZE = "JComponent.sizeVariant";
 
 //	private static String[] SEARCH_FIELD_KEYS = new String[] {
 //		"Quaqua.TextField.style",

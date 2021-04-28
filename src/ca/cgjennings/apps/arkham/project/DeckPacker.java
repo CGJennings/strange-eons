@@ -41,7 +41,7 @@ import resources.ResourceKit;
 public class DeckPacker {
 
     private boolean doubleSided;
-    private List<Card> cardList = new LinkedList<>();
+    private final List<Card> cardList = new LinkedList<>();
     private PaperProperties paper;
     private PaperProperties[] paperSizes;
     private boolean groupCardPairs = true;

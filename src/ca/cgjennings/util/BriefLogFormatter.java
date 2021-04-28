@@ -17,13 +17,13 @@ import java.util.logging.LogRecord;
  */
 public class BriefLogFormatter extends Formatter {
 
-    private Date eventTime = new Date();
+    private final Date eventTime = new Date();
     private final static String format = "{0,date} {0,time}";
     private MessageFormat formatter;
-    private Object args[] = new Object[1];
+    private final Object args[] = new Object[1];
     private String lastClass, lastMethod;
     private static final String UNKNOWN_SOURCE = "<?>"; // cannot be null
-    private StringBuilder sb = new StringBuilder(256);
+    private final StringBuilder sb = new StringBuilder(256);
 
     /**
      * Format the given LogRecord.

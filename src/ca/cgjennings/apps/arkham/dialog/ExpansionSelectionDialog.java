@@ -37,10 +37,10 @@ import resources.Settings;
 @SuppressWarnings("serial")
 public class ExpansionSelectionDialog extends javax.swing.JDialog {
 
-    private AbstractGameComponentEditor ed;
-    private Settings settings;
-    private Game game;
-    private JExpansionList expList;
+    private final AbstractGameComponentEditor ed;
+    private final Settings settings;
+    private final Game game;
+    private final JExpansionList expList;
     private Expansion[] selection;
     private StrangeEonsEditor.EditorListener editorListener;
 

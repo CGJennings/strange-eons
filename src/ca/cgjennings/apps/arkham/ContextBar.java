@@ -1489,8 +1489,8 @@ public final class ContextBar {
 
     private static final class ToggleIcon implements Icon {
 
-        private Icon i;
-        private AbstractToggleCommand c;
+        private final Icon i;
+        private final AbstractToggleCommand c;
 
         public ToggleIcon(AbstractToggleCommand command, Icon toWrap) {
             c = command;
@@ -1794,7 +1794,9 @@ public final class ContextBar {
 
     private static class ParagraphButton extends AbstractButton {
 
-        private int hsel, vsel, jsel;
+        private final int hsel;
+
+        private int vsel, jsel;
 
         public ParagraphButton(String id, String descKey, String icon, int hsel, int vsel, int jsel) {
             super(id, descKey.replace("&", ""), icon);

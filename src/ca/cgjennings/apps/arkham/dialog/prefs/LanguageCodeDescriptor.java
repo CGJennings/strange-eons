@@ -117,7 +117,7 @@ public class LanguageCodeDescriptor implements IconProvider {
 
     private static class IndentedIcon implements Icon {
 
-        private Icon icon;
+        private final Icon icon;
 
         public IndentedIcon(Icon i) {
             this.icon = i;

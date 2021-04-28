@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 class HRunScriptCommand extends DelegatedCommand {
 
-    private boolean debug;
+    private final boolean debug;
 
     HRunScriptCommand(boolean debug) {
         super(debug ? "app-debug-file" : "app-run-file", debug ? null : "toolbar/script-run.png");

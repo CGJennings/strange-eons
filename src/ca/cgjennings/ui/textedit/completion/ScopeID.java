@@ -495,7 +495,7 @@ class ScopeID {
 
     static class ConstructorID extends ScopeID {
 
-        private Constructor c;
+        private final Constructor c;
 
         public ConstructorID(String name, ClassNode of, Constructor c) {
             super(name, METHOD, c.getParameterTypes().length, of);

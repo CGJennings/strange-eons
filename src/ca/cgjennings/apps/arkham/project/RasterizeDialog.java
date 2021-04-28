@@ -19,7 +19,8 @@ import resources.ResourceKit;
 class RasterizeDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     private VectorImage image;
-    private double wh, hw;
+    private final double wh;
+    private double hw;
 
     public RasterizeDialog(VectorImage image) {
         super(StrangeEons.getWindow(), true);

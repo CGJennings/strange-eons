@@ -15,7 +15,7 @@ import static resources.Language.string;
  */
 public class Run extends TaskAction {
 
-    private boolean debug;
+    private final boolean debug;
 
     /**
      * Creates a new run or debug action, depending on the specified parameter.

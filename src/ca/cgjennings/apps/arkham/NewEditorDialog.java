@@ -731,7 +731,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     private final class ComponentListItem implements Comparable<ComponentListItem>, IconProvider {
 
         private ClassMap.Entry entry;
-        private Icon gameIcon;
+        private final Icon gameIcon;
 
         public ComponentListItem(ClassMap.Entry entry) {
             this.entry = entry;
@@ -799,9 +799,9 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
     private static class Renderer extends JPanel implements ListCellRenderer<ComponentListItem> {
 
-        private DefaultListCellRenderer lhs = new DefaultListCellRenderer();
-        private DefaultListCellRenderer rhs = new DefaultListCellRenderer();
-        private Border empty = BorderFactory.createEmptyBorder();
+        private final DefaultListCellRenderer lhs = new DefaultListCellRenderer();
+        private final DefaultListCellRenderer rhs = new DefaultListCellRenderer();
+        private final Border empty = BorderFactory.createEmptyBorder();
 
         Renderer() {
             setLayout(new GridBagLayout());

@@ -75,7 +75,7 @@ public class MnemonicInstaller {
     public static final int ALL = 15;
 
     private static int mask = 0;
-    private static boolean installed = false;
+    private static final boolean installed = false;
     private static boolean hideMnem = false;
 
     /**

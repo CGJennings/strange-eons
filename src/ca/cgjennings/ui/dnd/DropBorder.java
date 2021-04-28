@@ -22,9 +22,9 @@ import javax.swing.border.Border;
  */
 public class DropBorder implements Border {
 
-    private Border b;
-    private JComponent t;
-    private Insets i;
+    private final Border b;
+    private final JComponent t;
+    private final Insets i;
     private int depth;
     private static final Color DROP_COLOR;
 

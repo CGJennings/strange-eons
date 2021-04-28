@@ -1183,7 +1183,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      */
     static final class MemberTreeNode implements TreeNode {
 
-        private Member m;
+        private final Member m;
 
         public MemberTreeNode(Member memberToWrap) {
             m = memberToWrap;

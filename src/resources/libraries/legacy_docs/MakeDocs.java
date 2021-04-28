@@ -158,7 +158,7 @@ public class MakeDocs {
         return w.toString();
     }
 
-    private static CSSStyler styler = new CSSStyler(new JavaScriptTokenizer());
+    private static final CSSStyler styler = new CSSStyler(new JavaScriptTokenizer());
 
     protected static void createHelpFile(String title, EscapedLineReader in, Writer out, boolean isInternal, boolean writeTOC) throws IOException {
         writeHTMLHeader(out, title, isInternal);

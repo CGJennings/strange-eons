@@ -348,7 +348,7 @@ class SettingBindings implements Bindings {
      */
     public final class LiveSetting {
 
-        private String key;
+        private final String key;
 
         private LiveSetting(String key) {
             this.key = key;

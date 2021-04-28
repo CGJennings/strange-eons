@@ -265,7 +265,7 @@ public enum CoreComponents {
         private boolean restartRequired;
     }
 
-    private CatalogID id;
+    private final CatalogID id;
     private boolean knownUpToDate = false;
 
     /**

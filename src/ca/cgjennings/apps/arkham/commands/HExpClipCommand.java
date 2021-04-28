@@ -17,7 +17,7 @@ import resources.Settings;
 @SuppressWarnings("serial")
 final class HExpClipCommand extends DelegatedCommand {
 
-    private boolean isCopy;
+    private final boolean isCopy;
 
     public HExpClipCommand(boolean isCopy) {
         super(isCopy ? "app-copy-exp" : "app-paste-exp");

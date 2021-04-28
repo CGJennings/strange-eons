@@ -31,7 +31,7 @@ public class JGlyphViewer extends JLabel {
         setText("A");
     }
 
-    private Paint transparencyPaint = new CheckeredPaint();
+    private final Paint transparencyPaint = new CheckeredPaint();
 
     @Override
     protected void paintComponent(Graphics g1) {

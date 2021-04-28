@@ -72,7 +72,7 @@ class TAttachedEditor extends JInternalFrame {
     public final Border getBorder() {
         return none;
     }
-    private static Border none = BorderFactory.createEmptyBorder();
+    private static final Border none = BorderFactory.createEmptyBorder();
 
     /**
      * Set the title used to describe this document in the tab strip or document

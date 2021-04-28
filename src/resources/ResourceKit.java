@@ -652,10 +652,10 @@ public class ResourceKit {
 
     private static final class ParallelImageLoader implements Runnable {
 
-        private int i;
-        private String[] in;
-        private BufferedImage[] out;
-        private boolean[] cache;
+        private final int i;
+        private final String[] in;
+        private final BufferedImage[] out;
+        private final boolean[] cache;
 
         public ParallelImageLoader(int i, String[] in, BufferedImage[] out, boolean[] cache) {
             this.i = i;
@@ -1550,7 +1550,7 @@ public class ResourceKit {
     private static FileFilter bitmapVectorFileFilter = new FileNameExtensionFilter(string("rk-filter-image"), "jp2", "png", "jpg", "jpeg", "svg", "svgz", "gif", "bmp");
     private static FileFilter scriptFileFilter = new FileNameExtensionFilter(string("rk-filter-script"), "js");
     private static FileFilter pluginFileFilter = new FileNameExtensionFilter(string("rk-filter-plugin"), "seplugin", "seext");
-    private static FileFilter projectFileFilter = new FileFilter() {
+    private static final FileFilter projectFileFilter = new FileFilter() {
         @Override
         public boolean accept(File f) {
             if (f.isDirectory()) {

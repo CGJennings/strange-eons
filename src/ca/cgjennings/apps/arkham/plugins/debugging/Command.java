@@ -141,7 +141,7 @@ public enum Command {
      */
     CACHEMETRICS(1),;
 
-    private int argCount;
+    private final int argCount;
 
     private Command(int argCount) {
         this.argCount = argCount;

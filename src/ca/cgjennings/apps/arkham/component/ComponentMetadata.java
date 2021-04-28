@@ -32,7 +32,7 @@ import java.util.logging.Level;
  */
 public class ComponentMetadata {
 
-    private String[] data;
+    private final String[] data;
     private static final int VERSION = 0;
     private static final int CLASS = 1;
     private static final int NAME = 2;

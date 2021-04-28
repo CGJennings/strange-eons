@@ -25,7 +25,7 @@ class TableColumnResizer extends MouseInputAdapter {
     private int mouseXOffset;
     private Cursor otherCursor = resizeCursor;
 
-    private JTable table;
+    private final JTable table;
 
     public TableColumnResizer(JTable table) {
         this.table = table;

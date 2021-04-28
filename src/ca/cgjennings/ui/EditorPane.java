@@ -146,7 +146,7 @@ public class EditorPane extends JEditorPane {
 
     private static class UParagraphView extends javax.swing.text.html.ParagraphView {
 
-        private static int MAX_FRAGMENT_SIZE = 100;
+        private static final int MAX_FRAGMENT_SIZE = 100;
 
         public UParagraphView(Element elem) {
             super(elem);

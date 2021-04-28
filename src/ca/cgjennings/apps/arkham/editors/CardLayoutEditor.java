@@ -2176,7 +2176,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
             this.hasImageRes = hasImageRes;
         }
 
-        private boolean hasImageRes;
+        private final boolean hasImageRes;
 
         public boolean hasImageResource() {
             return hasImageRes;

@@ -34,7 +34,7 @@ public class TreeLabelExposer {
     private int row;
     private Rectangle rowBounds;
     private Rectangle treeBounds;
-    private MouseInputAdapter mouseListener = new MouseInputAdapter() {
+    private final MouseInputAdapter mouseListener = new MouseInputAdapter() {
         @Override
         public void mouseExited(MouseEvent e) {
             resetGlassPane();
@@ -45,7 +45,7 @@ public class TreeLabelExposer {
             exposePath(tree.getPathForLocation(e.getX(), e.getY()));
         }
     };
-    private TreeSelectionListener selectionListener = new TreeSelectionListener() {
+    private final TreeSelectionListener selectionListener = new TreeSelectionListener() {
         @Override
         public void valueChanged(TreeSelectionEvent e) {
             exposePath(path); // redraw row when selection state changes

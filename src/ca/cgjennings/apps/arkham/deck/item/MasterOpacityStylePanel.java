@@ -16,7 +16,7 @@ import static resources.Language.string;
 @SuppressWarnings("serial")
 class MasterOpacityStylePanel extends AbstractStylePanel<MasterOpacityStylePanel> implements MasterOpacityStyle {
 
-    private NumberFormat formatter;
+    private final NumberFormat formatter;
 
     public MasterOpacityStylePanel() {
         initComponents();

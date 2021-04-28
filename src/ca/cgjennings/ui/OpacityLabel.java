@@ -21,7 +21,7 @@ public class OpacityLabel extends JLabel {
         setOpaque(true);
     }
 
-    private CheckeredPaint bgPaint = new CheckeredPaint(2);
+    private final CheckeredPaint bgPaint = new CheckeredPaint(2);
 
     @Override
     public void paintComponent(Graphics g1) {

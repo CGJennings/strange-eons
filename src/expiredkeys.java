@@ -83,7 +83,7 @@ public final class expiredkeys extends CommandLineParser {
         }
     }
 
-    private String[] ext;
+    private final String[] ext;
 
     public File base;
     public File strings;

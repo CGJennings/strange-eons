@@ -46,9 +46,9 @@ import javax.swing.text.html.HTMLEditorKit;
  */
 public class TextIndexer implements MonitoredAlgorithm {
 
-    private boolean enableCache = false;
+    private final boolean enableCache = false;
     private TextMapper tmap;
-    private Set<String> stopWords = new HashSet<>();
+    private final Set<String> stopWords = new HashSet<>();
     private BreakIterator it = null;
 
     /**
@@ -445,7 +445,7 @@ public class TextIndexer implements MonitoredAlgorithm {
     private static class CachingTextMapper implements TextMapper {
 
         private TextMapper source;
-        private HashMap<String, SoftReference<String>> cache = new HashMap<>();
+        private final HashMap<String, SoftReference<String>> cache = new HashMap<>();
 
         public CachingTextMapper(TextMapper source) {
             if (source == null) {
@@ -484,9 +484,9 @@ public class TextIndexer implements MonitoredAlgorithm {
      */
     private static class WordIterator implements Iterator<String>, Iterable<String> {
 
-        private String s;
+        private final String s;
         private String nextToken;
-        private BreakIterator bi;
+        private final BreakIterator bi;
         private int start, end;
 
         public WordIterator(String s, BreakIterator bi) {

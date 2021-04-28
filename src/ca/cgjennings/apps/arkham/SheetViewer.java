@@ -93,9 +93,9 @@ public class SheetViewer extends AbstractViewer {
         static ViewQuality autoDefault = ViewQuality.HIGH;
         ViewQuality current = autoDefault;
         boolean measureNext = true;
-        private int[] sums = new int[4];
-        private int[] renders = new int[4];
-        private int[] rollovers = new int[4];
+        private final int[] sums = new int[4];
+        private final int[] renders = new int[4];
+        private final int[] rollovers = new int[4];
 
         public ViewQuality chooseNext() {
             ViewQuality next = current;

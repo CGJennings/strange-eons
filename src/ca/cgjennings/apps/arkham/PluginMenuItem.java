@@ -27,8 +27,8 @@ import resources.Settings;
 @SuppressWarnings("serial")
 final class PluginMenuItem extends JCheckBoxMenuItem {
 
-    private Plugin plugin;
-    private InstalledPlugin installedPlugin;
+    private final Plugin plugin;
+    private final InstalledPlugin installedPlugin;
 
     public PluginMenuItem(JMenuBar menuBar, InstalledPlugin installedPlugin, Plugin plugin) {
         super(plugin.getPluginName().replace("...", "\u2026"));

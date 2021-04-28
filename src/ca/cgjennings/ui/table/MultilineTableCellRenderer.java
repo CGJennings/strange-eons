@@ -58,5 +58,5 @@ public class MultilineTableCellRenderer extends JTextArea implements TableCellRe
         return this;
     }
 
-    private EmptyBorder unfocusedBorder = new EmptyBorder(1, 2, 1, 2);
+    private final EmptyBorder unfocusedBorder = new EmptyBorder(1, 2, 1, 2);
 }

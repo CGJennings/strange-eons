@@ -154,7 +154,7 @@ class CatPlugins extends FillInPreferenceCategory {
 
     static class ServerRestarter implements Runnable {
 
-        private boolean install;
+        private final boolean install;
 
         public ServerRestarter(boolean install) {
             this.install = install;

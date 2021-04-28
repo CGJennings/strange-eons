@@ -9,13 +9,13 @@ import java.awt.font.TextAttribute;
  */
 public class WeightStyleFactory implements ParametricStyleFactory {
 
-    private static String[] standardWidthNames = {
+    private static final String[] standardWidthNames = {
         "regular", "bold", "light",
         "extralight", "demilight", "semibold",
         "medium", "demibold", "heavy", "extrabold", "ultrabold"
 
     };
-    private static Float[] standardWidthValues = {
+    private static final Float[] standardWidthValues = {
         TextAttribute.WEIGHT_REGULAR,
         TextAttribute.WEIGHT_BOLD,
         TextAttribute.WEIGHT_LIGHT,

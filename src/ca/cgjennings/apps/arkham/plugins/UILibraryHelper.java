@@ -50,7 +50,7 @@ public final class UILibraryHelper {
     public static class TintableBinding implements Tintable {
 
         public float h, s, b;
-        private Runnable callAfterWrite;
+        private final Runnable callAfterWrite;
 
         public TintableBinding(Runnable callAfterWrite) {
             this.callAfterWrite = callAfterWrite;
@@ -287,7 +287,7 @@ public final class UILibraryHelper {
             throw new IllegalStateException("no button in group is selected");
         }
 
-        private EventListenerList listenerList = new EventListenerList();
+        private final EventListenerList listenerList = new EventListenerList();
 
         /**
          * Adds a listener for changes to the selected button. This is only

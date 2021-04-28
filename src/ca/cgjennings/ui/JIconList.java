@@ -79,8 +79,8 @@ public class JIconList<T> extends JList<T> {
      */
     public static class IconItem implements IconProvider {
 
-        private String name;
-        private Icon icon;
+        private final String name;
+        private final Icon icon;
 
         /**
          * Creates a new item that will display the specified label and icon

@@ -63,8 +63,9 @@ public class LayoutSegment {
         yOffset += dy;
     }
 
-    private TextLayout layout;
-    private float xOffset, yOffset, yBottom;
-    private boolean startOfLine;
-    private int sourceParagraph;
+    private final TextLayout layout;
+    private float xOffset;
+    private float yOffset, yBottom;
+    private final boolean startOfLine;
+    private final int sourceParagraph;
 }

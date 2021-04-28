@@ -9,10 +9,10 @@ import java.awt.font.TextAttribute;
  */
 public class WidthStyleFactory implements ParametricStyleFactory {
 
-    private static String[] standardWidthNames = {
+    private static final String[] standardWidthNames = {
         "regular", "semicondensed", "semiextended", "condensed", "extended"
     };
-    private static Float[] standardWidthValues = {
+    private static final Float[] standardWidthValues = {
         TextAttribute.WIDTH_REGULAR,
         TextAttribute.WIDTH_SEMI_CONDENSED,
         TextAttribute.WIDTH_SEMI_EXTENDED,

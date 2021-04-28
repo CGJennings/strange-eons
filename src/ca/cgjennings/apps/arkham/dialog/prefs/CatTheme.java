@@ -258,7 +258,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     public Icon getIcon() {
         return catIcon;
     }
-    private Icon catIcon = ResourceKit.getIcon("application/prefs-theme.png");
+    private final Icon catIcon = ResourceKit.getIcon("application/prefs-theme.png");
 
     @Override
     public JPanel getPanel() {
@@ -275,7 +275,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         "edit-font-family", "edit-font-pointsize",
         "edit-font-bold", "edit-font-italic"
     };
-    private String[] restartValues = new String[restartKeys.length];
+    private final String[] restartValues = new String[restartKeys.length];
 
     @Override
     public boolean isRestartRequired() {

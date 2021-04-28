@@ -44,5 +44,5 @@ public class ToolCloseButton extends JButton {
     }
 
     private static Icon NORMAL, ROLLOVER, SELECTED;
-    private static Insets MARGIN = new Insets(0, 4, 0, 4);
+    private static final Insets MARGIN = new Insets(0, 4, 0, 4);
 }

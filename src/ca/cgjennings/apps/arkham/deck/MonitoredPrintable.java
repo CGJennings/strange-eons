@@ -16,8 +16,8 @@ import java.awt.print.PrinterException;
  */
 public class MonitoredPrintable implements Printable {
 
-    private Printable monitoredPrintable;
-    private int totalPageCount;
+    private final Printable monitoredPrintable;
+    private final int totalPageCount;
     private int maxPage = -1;
 
     /**

@@ -346,7 +346,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      */
     private class CommandWrapper implements ActionListener {
 
-        private AbstractCommand c;
+        private final AbstractCommand c;
 
         CommandWrapper(AbstractCommand c) {
             this.c = c;

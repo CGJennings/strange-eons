@@ -32,12 +32,12 @@ import resources.Settings;
 public final class Expansion implements Comparable<Expansion>, IconProvider {
 
     private Game forGame;
-    private String code;
-    private String uiName;
-    private String gameName;
+    private final String code;
+    private final String uiName;
+    private final String gameName;
     private int number = -1;
-    private Icon icon;
-    private BufferedImage[] symbols;
+    private final Icon icon;
+    private final BufferedImage[] symbols;
 
     private Expansion(Game forGame, String code, String uiName, String gameName, Icon icon, BufferedImage[] symbols) {
         this.forGame = forGame;

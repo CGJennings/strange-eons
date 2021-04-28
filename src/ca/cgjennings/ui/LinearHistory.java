@@ -15,7 +15,7 @@ public class LinearHistory<P> {
 
     private int index = 0;
     private boolean forwardBias = true;
-    private List<P> list = new LinkedList<>();
+    private final List<P> list = new LinkedList<>();
 
     /**
      * Creates a new linear history that tracks state objects (URL, location,

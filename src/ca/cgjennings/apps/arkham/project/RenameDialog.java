@@ -27,9 +27,9 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 class RenameDialog extends javax.swing.JDialog implements AgnosticDialog {
 
-    private Member member;
+    private final Member member;
     private String name, ext;
-    private File parent;
+    private final File parent;
 
     /**
      * Creates new form RenameDialog

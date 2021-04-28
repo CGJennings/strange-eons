@@ -170,8 +170,8 @@ public class JIconSelector<S> extends JComponent {
         return (JToggleButton) getComponent(index * 2);
     }
 
-    private LinkedList<S> objects = new LinkedList<>();
-    private ButtonGroup group = new ButtonGroup();
+    private final LinkedList<S> objects = new LinkedList<>();
+    private final ButtonGroup group = new ButtonGroup();
 
     /**
      * Adds an <code>ActionListener</code> to the list.
@@ -216,7 +216,7 @@ public class JIconSelector<S> extends JComponent {
         }
     }
 
-    private ActionListener proxyListener = this::fireActionPerformed;
+    private final ActionListener proxyListener = this::fireActionPerformed;
 
 //	public static void main(String[] args) {
 //		EventQueue.invokeLater( new Runnable() {

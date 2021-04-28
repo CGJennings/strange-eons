@@ -198,7 +198,7 @@ public final class register extends CommandLineParser {
         }
     }
 
-    private Shell sh;
+    private final Shell sh;
     private File javaBin;
     private String mode;
     private String rootpwd;

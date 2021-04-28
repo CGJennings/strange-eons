@@ -94,10 +94,10 @@ public final class PageView extends JComponent {
      */
     public static final String PAGE_VIEW_ACTION_KEY = "se#pageviewkey";
 
-    private CropMarkManager cropMarks;
+    private final CropMarkManager cropMarks;
     private boolean editable = true;
     // turning off anti-aliasing will slow things down if using quartz renderer
-    private boolean alwaysAntiAliasView = Settings.getShared().getYesNo("always-anti-alias-page-views") || PlatformSupport.PLATFORM_IS_MAC;
+    private final boolean alwaysAntiAliasView = Settings.getShared().getYesNo("always-anti-alias-page-views") || PlatformSupport.PLATFORM_IS_MAC;
 
     private static final String[] DROPPABLE_IMAGE_TYPES = new String[]{"jpg", "jpeg", "png", "jp2"};
 
@@ -358,7 +358,7 @@ public final class PageView extends JComponent {
     private static final Composite alphaComposite40 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.40f);
     private static final Composite alphaComposite67 = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.67f);
 
-    private Rectangle2D.Double viewClip = new Rectangle2D.Double();
+    private final Rectangle2D.Double viewClip = new Rectangle2D.Double();
 
     @Override
     protected void paintComponent(Graphics g1) {
@@ -602,7 +602,7 @@ public final class PageView extends JComponent {
         }
     }
 
-    private LinkedHashSet<Group> deferredPaintGroup = new LinkedHashSet<>();
+    private final LinkedHashSet<Group> deferredPaintGroup = new LinkedHashSet<>();
 
     private void paintDragAndDropCards(Graphics2D g, double viewDPI, RenderTarget quality, Composite alphaComposite, Composite composite) {
         // if drag-dropping a card(s) over the page,
@@ -1085,7 +1085,7 @@ public final class PageView extends JComponent {
         }
     }
     private Point2D selectDragStart;
-    private Rectangle2D.Double selectDragRect = new Rectangle2D.Double();
+    private final Rectangle2D.Double selectDragRect = new Rectangle2D.Double();
 
     private void mouseClicked(MouseEvent e) {
         boolean command = e.isControlDown() || e.isMetaDown();

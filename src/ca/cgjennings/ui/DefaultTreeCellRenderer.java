@@ -36,6 +36,6 @@ public class DefaultTreeCellRenderer extends javax.swing.tree.DefaultTreeCellRen
         setBackground(null);
     }
 
-    private boolean nimbus = UIManager.getLookAndFeel().getName().equals("Nimbus");
-    private Color invis = new Color(0, true);
+    private final boolean nimbus = UIManager.getLookAndFeel().getName().equals("Nimbus");
+    private final Color invis = new Color(0, true);
 }

@@ -62,7 +62,7 @@ class PreviewBackgroundMenu extends JMenu {
         return null;
     }
 
-    private ActionListener li = (ActionEvent e) -> {
+    private final ActionListener li = (ActionEvent e) -> {
         int i = 0;
         for (; i < getMenuComponentCount(); ++i) {
             if (getMenuComponent(i) == e.getSource()) {

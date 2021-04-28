@@ -30,13 +30,13 @@ public final class PaperSplitter {
 
     private double[] xOffsets;
     private double[] yOffsets;
-    private PaperProperties virtual;
-    private PaperProperties physical;
+    private final PaperProperties virtual;
+    private final PaperProperties physical;
 
     private boolean printableBounded;
     private float printableFrameWidth;
     private Color printableFrameColor;
-    private boolean printableNumbered;
+    private final boolean printableNumbered;
     private int lastPhysicalPage;
 
     /**

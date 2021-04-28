@@ -19,7 +19,7 @@ import java.util.Arrays;
 public class Histogram {
 
     private int area = 0;
-    private int count[] = new int[256];
+    private final int count[] = new int[256];
     private boolean ignoreZeroAlpha = true;
     private int channelMask = 0xff_ffff;
 

@@ -2168,7 +2168,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         return editor;
     }
 
-    private static BlockingQueue<String> fileOpenQueue = new LinkedBlockingQueue<>();
+    private static final BlockingQueue<String> fileOpenQueue = new LinkedBlockingQueue<>();
 
     /**
      * Adds a file specification to a threadsafe list of files to open. This is

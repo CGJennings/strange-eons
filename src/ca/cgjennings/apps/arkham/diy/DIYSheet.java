@@ -22,9 +22,9 @@ import resources.Settings;
  */
 public final class DIYSheet extends Sheet<DIY> {
 
-    private DIY diy;
-    private int index;
-    private int diyFlags;
+    private final DIY diy;
+    private final int index;
+    private final int diyFlags;
 
     /**
      * Creates a new sheet for a DIY component. A sheet is not normally created

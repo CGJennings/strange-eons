@@ -91,5 +91,5 @@ final class ViewQualityMenu extends JMenu {
             super.fireActionPerformed(event);
         }
     }
-    private ButtonGroup group = new ButtonGroup();
+    private final ButtonGroup group = new ButtonGroup();
 }
