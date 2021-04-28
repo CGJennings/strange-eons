@@ -1465,7 +1465,6 @@ public class BundleInstaller {
 
         if (script.startsWith(PluginRoot.SCRIPT_PREFIX)) {
             ScriptMonkey sm = new ScriptMonkey(script.substring("script:".length()));
-//			sm.bind( new PluginContextImpl() );
             try {
                 script = script.substring("script:".length());
                 sm.eval(new URL(script));
@@ -1499,30 +1498,6 @@ public class BundleInstaller {
         }
     }
 
-//    /**
-//     * Adds an arbitrary external path or JAR to the class path.
-//     *
-//     * @param url the URL of the path or JAR to link
-//     */
-//    private static void loadDynamicLibrary(URL url) {
-//        if (url == null) {
-//            throw new NullPointerException("url");
-//        }
-//        if (addURL == null) {
-//            init();
-//        }
-//        if (addURL != null) {
-//            try {
-//                addURL.invoke(classLoader, url);
-//                StrangeEons.log.log(Level.CONFIG, "dynamically linked to external library {0}", url.getFile());
-//                return;
-//            } catch (Throwable t) {
-//                throw new Error("unexpected link failure", t);
-//            }
-//        }
-//        throw new InternalError("wrong class loader: unable to dynamically link bundles");
-//    }
-
     /**
      * Returns <code>true</code> if the JavaFX runtime is available. This method
      * will attempt to locate, dynamically load, and start the runtime
@@ -1533,76 +1508,5 @@ public class BundleInstaller {
      */
     public static boolean isFXRuntimeAvailable() {
         return false;
-
-//        // Since Java 8 is required now, we don't need to load JFX manually
-//        // However, the user may be using a runtime that doesn't include JFX
-//        if (fxState == 0) {
-//            try {
-//                Class Platform = Class.forName("javafx.application.Platform", false, ClassLoader.getSystemClassLoader());
-//                fxState = 1;
-//            } catch (Throwable t) {
-//                fxState = -1;
-//            }
-//        }
-//        return fxState == 1;
-
-//		synchronized( BundleInstaller.class ) {
-//			if( fxState == 0 ) try {
-//				if( StrangeEons.getApplication().getCommandLineArguments().xDisableFX ) {
-//					fxState = -1;
-//				} else if( fxCheck( false ) ) {
-//					fxState = 1;
-//					StrangeEons.log.config( "found integrated JavaFX runtime" );
-//				} else {
-//					fxState = -1;
-//					final String javaHome = System.getProperty( "java.home" );
-//					if( javaHome != null && !javaHome.isEmpty() ) {
-//						File fxJar = new File( javaHome, "lib" + File.separatorChar + "jfxrt.jar" );
-//						if( fxJar.exists() ) {
-//							try {
-//								loadDynamicLibrary( fxJar.toURI().toURL() );
-//								if( fxCheck( true ) ) fxState = 1;
-//							} catch( Throwable t ) {
-//								StrangeEons.log.log( Level.WARNING, null, t );
-//							}
-//						} else {
-//							StrangeEons.log.warning( "did not find lib/jfxrt.jar" );
-//						}
-//					} else {
-//						StrangeEons.log.warning( "no java.home" );
-//					}
-//					if( fxState < 0 ) {
-//						StrangeEons.log.config( "no JavaFX runtime is available" );
-//					} else {
-//						StrangeEons.log.config( "loaded JavaFX runtime" );
-//					}
-//				}
-//			} catch( Throwable t ) {
-//				// if any uncaught exceptions escape when trying to find JFX,
-//				// we assume that it is not available; this is necessary to load
-//				// some UI components in the IDE
-//				fxState = -1;
-//			}
-//			return fxState == 1;
-//		}
     }
-
-//	private static boolean fxCheck( boolean log ) {
-//		try {
-//			Class Platform = Class.forName( "javafx.application.Platform", true, classLoader );
-//			// init the FX environemnt and toolkit if possible
-//			if( EventQueue.isDispatchThread() ) {
-//				Class.forName( "javafx.embed.swing.JFXPanel" ).newInstance();
-//			}
-//			Platform.getMethod( "setImplicitExit", boolean.class ).invoke( null, false );
-//			return true;
-//		} catch( Throwable t ) {
-//			if( log ) {
-//				StrangeEons.log.log( Level.INFO, "failed to load JavaFX Platform", t );
-//			}
-//		}
-//		return false;
-//	}
-//
-//    private static int fxState = 0; // 0 = unknown, -1 = not avail, 1 = available
 }

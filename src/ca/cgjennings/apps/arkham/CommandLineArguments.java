@@ -147,12 +147,6 @@ public class CommandLineArguments implements Cloneable {
 
     /**
      * Non-standard debugging option. <br>
-     * This option disables optional application features that rely on Java FX.
-     */
-    public boolean xDisableFX = false;
-
-    /**
-     * Non-standard debugging option. <br>
      * This option disables use of the system menu bar on OS X. It has no effect
      * on other platforms.
      */
@@ -237,7 +231,6 @@ public class CommandLineArguments implements Cloneable {
 + "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
 + "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
 + "  --XDisableAnimation       Do not use animation effects\n"
-+ "  --XDisableFX              Do not use optional features that use JavaFX\n"
 + "  --XDisableSystemMenu      Do not use system menu bar on OS X\n"
 + "  --XOpenGL                 If possible use OpenGL instead of default renderer\n"
             );
