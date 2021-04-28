@@ -22,6 +22,9 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import javax.swing.BorderFactory;
@@ -80,7 +83,6 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             setLocationRelativeTo(parent);
         }
 
-//		try {
         for (Member m : cards) {
             final File f = m.getFile();
             if (!Deck.isDeckLayoutSupported(f)) {
@@ -101,19 +103,11 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 backIcon = card.createBackThumbnail();
             }
         }
-//		} catch( IOException e ) {
-//			System.err.println( e );
-//		}
-
         viewer.setBackground(deckPanel.getBackground());
 
         ownerPicker = new VirtualDeckOwnerSelector(this);
-
-//		deckList.setTransferHandler( new ListTransferHandler() );
-//		playList.setTransferHandler( new ListTransferHandler() );
-//		discardList.setTransferHandler( new ListTransferHandler() );
         // move 0 cards to init deck size counters
-        moveCards(deck, play, 0);
+        moveCards(deck, play, 0, Collections.emptyList());
         shuffleBtnActionPerformed(null);
     }
 
@@ -129,24 +123,32 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private int playSelections[][] = new int[PLAYERS][];
     private int playScrollPos[] = new int[PLAYERS];
 
-    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, Object... cards) {
+    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, Card card) {
+        moveCards(from, to, pos, Collections.singletonList(card));
+    }
+
+    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, Card[] cards) {
+        moveCards(from, to, pos, Arrays.asList(cards));
+    }
+
+    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, List<Card> cards) {
         if (from == to) {
             throw new IllegalArgumentException("from deck cannot be to deck");
         }
 
-        if (cards.length > 0) {
+        if (!cards.isEmpty()) {
             int selHand = getPlayerNumberOfShowingHand();
             if (pos < 0 && to != null) {
                 pos = to.getSize();
             }
 
-            for (int i = 0; i < cards.length; ++i) {
-                Card c = (Card) cards[i];
+            for (int i = 0; i < cards.size(); ++i) {
+                Card c = (Card) cards.get(i);
 
                 from.removeElement(c);
 
                 c.faceUp = (deck != to);
-                c.drawDivider = (to == play && i == cards.length - 1);
+                c.drawDivider = (to == play && i == cards.size() - 1);
                 if (play != to) {
                     c.owner = 0;
                 } else {
@@ -163,7 +165,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 ListSelectionModel m = t.getSelectionModel();
                 m.clearSelection();
                 int start = pos;
-                int end = pos + cards.length - 1;
+                int end = pos + cards.size() - 1;
                 m.addSelectionInterval(start, end);
                 t.ensureIndexIsVisible(end);
                 t.ensureIndexIsVisible(start);
@@ -234,7 +236,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         deckPanel = new javax.swing.JPanel();
         deckLabel = new javax.swing.JLabel();
         deckScroll = new javax.swing.JScrollPane();
-        deckList = new javax.swing.JList();
+        deckList = new javax.swing.JList<>();
         jPanel2 = new javax.swing.JPanel();
         drawLabel = new javax.swing.JLabel();
         draw4 = new javax.swing.JButton();
@@ -274,9 +276,9 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         discardToBottom = new javax.swing.JButton();
         spacerDV = new javax.swing.JLabel();
         playScroll = new javax.swing.JScrollPane();
-        playList = new javax.swing.JList();
+        playList = new javax.swing.JList<>();
         discardScroll = new javax.swing.JScrollPane();
-        discardList = new javax.swing.JList();
+        discardList = new javax.swing.JList<>();
         discardLabel = new javax.swing.JLabel();
         playLabel = new javax.swing.JLabel();
         midColumnSpacer = new javax.swing.JLabel();
@@ -984,35 +986,35 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void drawToPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawToPlayActionPerformed
-            moveCards(deck, play, 0, deckList.getSelectedValues());
+            moveCards(deck, play, 0, deckList.getSelectedValuesList());
 	}//GEN-LAST:event_drawToPlayActionPerformed
 
 	private void drawToDiscardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drawToDiscardActionPerformed
-            moveCards(deck, discard, 0, deckList.getSelectedValues());
+            moveCards(deck, discard, 0, deckList.getSelectedValuesList());
 	}//GEN-LAST:event_drawToDiscardActionPerformed
 
 	private void playToDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToDrawActionPerformed
-            moveCards(play, deck, 0, playList.getSelectedValues());
+            moveCards(play, deck, 0, playList.getSelectedValuesList());
 	}//GEN-LAST:event_playToDrawActionPerformed
 
 	private void playToBottomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToBottomActionPerformed
-            moveCards(play, deck, -1, playList.getSelectedValues());
+            moveCards(play, deck, -1, playList.getSelectedValuesList());
 	}//GEN-LAST:event_playToBottomActionPerformed
 
 	private void discardToDrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardToDrawActionPerformed
-            moveCards(discard, deck, 0, discardList.getSelectedValues());
+            moveCards(discard, deck, 0, discardList.getSelectedValuesList());
 	}//GEN-LAST:event_discardToDrawActionPerformed
 
 	private void discardToBottomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardToBottomActionPerformed
-            moveCards(discard, deck, -1, discardList.getSelectedValues());
+            moveCards(discard, deck, -1, discardList.getSelectedValuesList());
 	}//GEN-LAST:event_discardToBottomActionPerformed
 
 	private void playToDiscardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playToDiscardActionPerformed
-            moveCards(play, discard, 0, playList.getSelectedValues());
+            moveCards(play, discard, 0, playList.getSelectedValuesList());
 	}//GEN-LAST:event_playToDiscardActionPerformed
 
 	private void discardToPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discardToPlayActionPerformed
-            moveCards(discard, play, 0, discardList.getSelectedValues());
+            moveCards(discard, play, 0, discardList.getSelectedValuesList());
 	}//GEN-LAST:event_discardToPlayActionPerformed
 
 	private void draw1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_draw1ActionPerformed
@@ -1039,11 +1041,11 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             }
 	}//GEN-LAST:event_draw3ActionPerformed
 
-    private Object[] top(DefaultListModel model, int count) {
+    private List<Card> top(DefaultListModel<Card> model, int count) {
         count = Math.min(count, model.getSize());
-        Object[] top = new Object[count];
-        for (int i = 0; i < top.length; ++i) {
-            top[i] = model.get(i);
+        ArrayList<Card> top = new ArrayList<>(count);
+        for (int i = 0; i < count; ++i) {
+            top.add(model.get(i));
         }
         return top;
     }
@@ -1077,7 +1079,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             }
             shuffleBtnActionPerformed(null);
             // update deck size label
-            moveCards(deck, play, 0);
+            moveCards(deck, play, 0, Collections.emptyList());
 	}//GEN-LAST:event_resetBtnActionPerformed
 
 	private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
@@ -1183,11 +1185,9 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 Rectangle r = sourceList.getCellBounds(i, i);
                 r.x += sp.x + r.getWidth() / 2;
                 r.y += sp.y + r.getHeight() / 2;
-                Object[] untyped = sourceList.getSelectedValues();
-                Card[] cards = new Card[untyped.length];
-                for (int c = 0; c < cards.length; ++c) {
-                    cards[c] = (Card) untyped[c];
-                }
+
+                List<Card> cardList = sourceList.getSelectedValuesList();
+                Card[] cards = cardList.toArray(new Card[cardList.size()]);
                 if (ownerPicker.setOwner(cards, r.x, r.y)) {
                     int newOwner = cards[0].owner;
                     // "Other" uses same list as "Nobody"
@@ -1376,11 +1376,11 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private javax.swing.JButton closeBtn;
     private javax.swing.JPanel deckAndPlayMasterContainer;
     private javax.swing.JLabel deckLabel;
-    private javax.swing.JList deckList;
+    private javax.swing.JList<Card> deckList;
     private javax.swing.JPanel deckPanel;
     private javax.swing.JScrollPane deckScroll;
     private javax.swing.JLabel discardLabel;
-    private javax.swing.JList discardList;
+    private javax.swing.JList<Card> discardList;
     private javax.swing.JPanel discardPanel;
     private javax.swing.JScrollPane discardScroll;
     private javax.swing.JButton discardToBottom;
@@ -1417,7 +1417,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private javax.swing.JPanel moveUpDownPanel;
     private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
     private javax.swing.JLabel playLabel;
-    private javax.swing.JList playList;
+    private javax.swing.JList<Card> playList;
     private javax.swing.JPanel playPanel;
     private javax.swing.JScrollPane playScroll;
     private javax.swing.JButton playToBottom;
@@ -1461,7 +1461,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         @Override
         protected Transferable createTransferable(JComponent c) {
             JList li = (JList) c;
-            return new CardTransferable(listToModel(li), li.getSelectedValues());
+            return new CardTransferable(listToModel(li), li.getSelectedValuesList());
         }
 
         @Override
@@ -1503,10 +1503,9 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     };
 
     private class CardTransferable implements Transferable {
-
         private CardTransferData data;
 
-        public CardTransferable(DefaultListModel source, Object[] cards) {
+        public CardTransferable(DefaultListModel source, List<Card> cards) {
             data = new CardTransferData(VirtualDeckDialog.this, source, cards);
         }
 
@@ -1533,12 +1532,12 @@ class VirtualDeckDialog extends javax.swing.JDialog {
 
         VirtualDeckDialog instance;
         DefaultListModel source;
-        Object[] cards;
+        Card[] cards;
 
-        public CardTransferData(VirtualDeckDialog instance, DefaultListModel source, Object[] cards) {
+        public CardTransferData(VirtualDeckDialog instance, DefaultListModel source, List<Card> cards) {
             this.instance = instance;
             this.source = source;
-            this.cards = cards;
+            this.cards = cards.toArray(new Card[cards.size()]);
         }
     };
 
