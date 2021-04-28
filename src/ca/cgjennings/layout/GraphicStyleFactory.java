@@ -185,27 +185,23 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
     }
 
     /**
-     * Returns the specified image as a bitmap. If the identifier refers to a
-     * vector image, it will be converted to a bitmap.
-     *
-     * @param identifier the identifier of the image to load
-     * @return the image, as a bitmap, or the missing image
-     *
      * @deprecated Use {@link StrangeImage#get(java.lang.String)} to load user
      * images so that you can work with both bitmap and vector images
      * transparently.
+     *
+     * @param identifier the portrait identifier to load
+     * @return the image as a bitmap
      */
     public static BufferedImage fetchImage(String identifier) {
-        BufferedImage bi;
-        StrangeImage si = StrangeImage.get(identifier);
-        if (si == StrangeImage.getMissingImage()) {
-            bi = ResourceKit.getMissingImage();
-        } else {
-            bi = si.asBufferedImage();
-        }
-        return bi;
+        return StrangeImage.getAsBufferedImage(identifier);
     }
-    /** @deprecated Use {@link StrangeImage#exists}. */
+
+    /**
+     * @deprecated Use {@link StrangeImage#exists}.
+     * 
+     * @param identifier the portrait identifier to test
+     * @return true if the image exists
+     */
     public static boolean imageExists(String identifier) {
         return StrangeImage.exists(identifier);
     }

@@ -7,6 +7,7 @@ import java.awt.font.TextAttribute;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.AttributedCharacterIterator;
+import resources.StrangeImage;
 
 /**
  * Converts markup written for a <code>MarkupRenderer</code> into simple HTML.
@@ -184,7 +185,7 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                         length = parseMeasurement(params[2]);
                     } else {
                         try {
-                            Image im = GraphicStyleFactory.fetchImage(params[0]);
+                            Image im = StrangeImage.getAsBufferedImage(params[0]);
                             double width = im.getWidth(null);
                             double height = im.getHeight(null);
                             length = height / width * length;

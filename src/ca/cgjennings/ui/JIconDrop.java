@@ -20,6 +20,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import resources.ResourceKit;
+import resources.StrangeImage;
 
 /**
  * A box to drop image files on in order to fetch the image or image file. The
@@ -144,7 +145,7 @@ public class JIconDrop extends JLabel {
             setImage(null);
             this.file = null;
         } else {
-            setImage(GraphicStyleFactory.fetchImage(file.getAbsolutePath()));
+            setImage(StrangeImage.getAsBufferedImage(file.getAbsolutePath()));
             // set this after calling setImage because setImage nulls it out
             this.file = file;
         }

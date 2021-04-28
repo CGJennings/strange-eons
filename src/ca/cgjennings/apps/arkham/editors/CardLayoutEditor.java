@@ -63,6 +63,7 @@ import resources.Language;
 import static resources.Language.string;
 import resources.ResourceKit;
 import resources.Settings;
+import resources.StrangeImage;
 
 /**
  * A support editor for the construction of cards as an ordered list of layers.
@@ -1963,7 +1964,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
                     }
                 }
                 if (image == null) {
-                    image = GraphicStyleFactory.fetchImage("res://" + imageResource);
+                    image = StrangeImage.getAsBufferedImage("res://" + imageResource);
                 }
             }
             return image;
