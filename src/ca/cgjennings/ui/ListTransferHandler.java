@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -234,14 +235,11 @@ public class ListTransferHandler extends TransferHandler {
         if (c instanceof JList) {
             JList source = (JList) c;
             indices = source.getSelectedIndices();
-            Object[] values = source.getSelectedValues();
-            if (values == null || values.length == 0) {
+            List values = source.getSelectedValuesList();
+            if (values.size() == 0) {
                 return null;
             }
-            ArrayList alist = new ArrayList(values.length);
-            for (int i = 0; i < values.length; ++i) {
-                alist.add(values[i]);
-            }
+            ArrayList alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList(values);
             return new ListTransferable(alist);
         }
         return null;
