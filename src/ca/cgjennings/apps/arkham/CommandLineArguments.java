@@ -75,6 +75,27 @@ public class CommandLineArguments implements Cloneable {
      */
     public boolean x = false;
 
+
+    /**
+     * Non-standard quality-tuning option. <br>
+     * This option forces the method used to antialias (AA) text.
+     * Java attempts to read system-wide AA settings, but this often fails on
+     * Linux. So by default Strange Eons uses the default settings on
+     * Windows and macOS but will enforce LCD antialiasing otherwise.
+     * Setting this option forces a different method:
+     *
+     * <dl>
+     *   <dt>auto</dt> <dd>use the value found in system settings</dd>
+     *   <dt>off</dt>  <dd>disable antialiasing</dd>
+     *   <dt>on</dt>   <dd>greyscale antialiasing for all fonts</dd>
+     *   <dt>gasp</dt> <dd>greyscale antialiasing based on the font's GASP table</dd>
+     *   <dt>lcd</dt>  <dd>subpixel antialiasing for the most common LCD layout (same as lcd_hrgb)</dd>
+     *   <dt>lcd_hbgr, lcd_vrgb, lcd_vbgr</dt>
+     *                 <dd>subpixel antialiasing for other LCD layouts</dd>
+     * </dl>
+     */
+    public String xAAText = null;
+   
     /**
      * Non-standard debugging option. <br>
      * This option causes an exception to be thrown during startup. It is used
@@ -207,16 +228,18 @@ public class CommandLineArguments implements Cloneable {
 
         if (cla.x) {
             System.out.println(
-                    "Non-standard options:\n"
-                    + "  --XDebugException         Throws a test exception during startup.\n"
-                    + "  --XDisableFileRestore     Do not re-open files in use at the last exit.\n"
-                    + "  --XDisableFilterThreads   Do not use threads to accelerate image filters.\n"
-                    + "  --XDisableProjectRestore  Do not re-open the project in use at the last exit.\n"
-                    + "  --XDisableStartupThreads  Do not use threads to speed application startup.\n"
-                    + "  --XDisableAnimation       Do not use animation effects.\n"
-                    + "  --XDisableFX              Do not use optional features that use JavaFX.\n"
-                    + "  --XDisableSystemMenu      Do not use system menu bar on OS X.\n"
-                    + "  --XOpenGL                 If possible use OpenGL instead of default renderer.\n"
+"Non-standard options:\n"
++ "  --XAAText                 Force method of antialiasing onscreen text:\n"
++ "                              auto|off|on|gasp|lcd|lcd_hbgr|lcd_vrgb|lcd_vbgr\n"
++ "  --XDebugException         Throws a test exception during startup\n"
++ "  --XDisableFileRestore     Do not re-open files in use at the last exit\n"
++ "  --XDisableFilterThreads   Do not use threads to accelerate image filters\n"
++ "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
++ "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
++ "  --XDisableAnimation       Do not use animation effects\n"
++ "  --XDisableFX              Do not use optional features that use JavaFX\n"
++ "  --XDisableSystemMenu      Do not use system menu bar on OS X\n"
++ "  --XOpenGL                 If possible use OpenGL instead of default renderer\n"
             );
             System.exit(0);
         }

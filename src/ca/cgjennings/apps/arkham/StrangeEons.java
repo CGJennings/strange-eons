@@ -377,6 +377,8 @@ public final class StrangeEons {
             System.exit(0);
         }
 
+        applyTextAntialiasingSettings(commandLineArguments.xAAText);
+
         if (commandLineArguments.xOpenGL) {
             System.setProperty("sun.java2d.opengl", "True");
             System.setProperty("sun.java2d.opengl.fbobject", "false");
@@ -402,6 +404,44 @@ public final class StrangeEons {
 
                 ErrorDialog.displayFatalError(message, t);
             });
+        }
+    }
+
+    /**
+     * Apply default or user-specified text antialiasing settings.
+     * This must be called before the AWT/Swing is initialized.
+     *
+     * @param textAA the user-specified setting, or null for a platform default
+     */
+    private static void applyTextAntialiasingSettings(String textAA) {
+        if(textAA == null) {
+            textAA = PlatformSupport.PLATFORM_IS_OTHER ? "lcd" : "auto";
+        }
+
+        // stick with Java's detected settings
+        if(textAA.equals("auto")) return;
+
+        switch(textAA) {
+            case "auto":
+            case "off":
+            case "on":
+            case "gasp":
+            case "lcd":
+            case "lcd_hrgb":
+            case "lcd_hbgr":
+            case "lcd_vrgb":
+            case "lcd_vbgr":
+                break;
+            default:
+                System.err.println("invalid text antialiasing option: " + textAA);
+                System.exit(20);
+                break;
+        }
+
+        // enforce requested settings
+        System.setProperty("awt.useSystemAAFontSettings", textAA);
+        if(System.getProperty("swing.aatext") == null) {
+            System.setProperty("swing.aatext", "true");
         }
     }
 
