@@ -309,14 +309,20 @@ public class PlatformSupport {
         return actualKey;
     }
 
+    /** True if the JVM is running on an Apple macOS operating system. */
+    public static final boolean PLATFORM_IS_OSX;
+    /** True if the JVM is running on a Windows operating system. */
+    public static final boolean PLATFORM_IS_WINDOWS;
     /**
-     * True if and only if the JVM is running on an Apple OS X-based operating
-     * system.
+     * True if running on a non-Windows, non-maxOS operating system.
+     * Typically this means a Unix-like operating system such as Linux.
      */
-    public static final boolean PLATFORM_IS_OSX = System.getProperty("os.name").toLowerCase(Locale.ENGLISH).startsWith("mac os x");
-    /**
-     * True if and only if the JVM is running on a Windows-based operating
-     * system.
-     */
-    public static final boolean PLATFORM_IS_WINDOWS = System.getProperty("os.name").toLowerCase(Locale.ENGLISH).startsWith("windows");
+    public static final boolean PLATFORM_IS_OTHER;
+
+    static {
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        PLATFORM_IS_WINDOWS = os.contains("windows");
+        PLATFORM_IS_OSX = os.contains("mac") || os.contains("darwin");
+        PLATFORM_IS_OTHER = !(PLATFORM_IS_WINDOWS || PLATFORM_IS_OSX);
+    }
 }
