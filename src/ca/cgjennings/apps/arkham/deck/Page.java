@@ -161,11 +161,12 @@ public final class Page implements Serializable, Cloneable {
     private void fitCard(PageItem card) {
         Point2D p = card.getLocation();
         PageItem precedent;
-        while ((precedent = getOverlappedCard(card)) != null) {
-            card.setX(precedent.getX() + precedent.getWidth());
+        int emergencyBrake = 0; // prevent infinite loop in any case
+        while ((precedent = getOverlappedCard(card)) != null && (emergencyBrake++ < FIT_LOOP_LIMIT)) {
+            card.setX(precedent.getRectangle().getMaxX() + 0.00001d);
             if (card.getX() + card.getWidth() > pageWidth()) {
                 card.setX(p.getX());
-                card.setY(precedent.getY() + precedent.getHeight());
+                card.setY(precedent.getRectangle().getMaxY() + 0.00001d);
                 if (card.getY() + card.getHeight() > pageHeight()) {
                     // give up and use original location
                     card.setLocation(p);
@@ -173,10 +174,15 @@ public final class Page implements Serializable, Cloneable {
                 }
             }
         }
+        if(emergencyBrake >= FIT_LOOP_LIMIT) {
+            card.setLocation(p);
+        }
 
         refreshView();
         getDeck().markUnsavedChanges();
     }
+
+    private static final int FIT_LOOP_LIMIT = 10000;
 
     /**
      * Snap an item into place relative to the highest intersecting item, if
@@ -374,13 +380,19 @@ public final class Page implements Serializable, Cloneable {
     }
 
     /**
-     * Return the card that overlaps with this card, or {@code null} if the card
-     * does not overlap with any other card. If more than one card overlaps,
-     * return the one whose center is closest to this center. If some are
-     * equally distant, return the one with the highest Z-order.
+     * Returns the card with the highest Z-index that overlaps with this card,
+     * or {@code null} if the card does not overlap with any other card.
      */
     public PageItem getOverlappedCard(PageItem card) {
-        return getCardToSnapTo(card, PageItem.SnapClass.SNAP_SET_ANY);
+        Rectangle2D r = card.getRectangle();
+        for (int i = cards.size() - 1; i >= 0; --i) {
+            PageItem candidate = cards.get(i);
+            if(candidate == card) continue;
+            if(r.intersects(candidate.getRectangle())) {
+                return candidate;
+            }
+        }
+        return null;
     }
 
     public PageItem getCardToSnapTo(PageItem card, EnumSet<PageItem.SnapClass> snapToClass) {
@@ -392,20 +404,20 @@ public final class Page implements Serializable, Cloneable {
         double cx = card.getX() + card.getWidth() / 2;
         double cy = card.getY() + card.getHeight() / 2;
         for (int i = cards.size() - 1; i >= 0; --i) {
-            PageItem testee = cards.get(i);
+            PageItem candidate = cards.get(i);
 
             // objects in the same group shouldn't snap to each other
-            if (g != null && testee.getGroup() == g) {
+            if (g != null && candidate.getGroup() == g) {
                 continue;
             }
 
-            if (card != testee && snapToClass.contains(testee.getSnapClass()) && testee.getRectangle().intersects(r)) {
-                double dx = cx - (testee.getX() + testee.getWidth() / 2);
-                double dy = cy - (testee.getY() + testee.getHeight() / 2);
+            if (card != candidate && snapToClass.contains(candidate.getSnapClass()) && candidate.getRectangle().intersects(r)) {
+                double dx = cx - (candidate.getX() + candidate.getWidth() / 2);
+                double dy = cy - (candidate.getY() + candidate.getHeight() / 2);
                 double sqDist = (dx * dx) + (dy * dy);
                 if (sqDist < shortestSqDist) {
                     shortestSqDist = sqDist;
-                    overlapping = testee;
+                    overlapping = candidate;
                 }
             }
         }
