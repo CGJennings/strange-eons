@@ -13,6 +13,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -247,6 +248,7 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconList()"/>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;LanguageCodeDescriptor&gt;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
@@ -265,7 +267,7 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="localeFilter.getDocument().addDocumentListener( new DocumentEventAdapter() {&#xa;&#x9;@Override&#xa;&#x9;public void changedUpdate( DocumentEvent e ) {&#xa;&#x9;&#x9;Object[] selValues = locList.getSelectedValues();&#xa;&#x9;&#x9;final Pattern p = Pattern.compile( &quot;(?i)(?u)&quot; + Pattern.quote( localeFilter.getText() ) );&#xa;&#x9;&#x9;((FilteredListModel) locList.getModel()).setFilter( new FilteredListModel.ListFilter() {&#xa;&#x9;&#x9;&#x9;@Override&#xa;&#x9;&#x9;&#x9;public boolean include( FilteredListModel model, Object item ) {&#xa;&#x9;&#x9;&#x9;&#x9;if( item == null ) return false;&#xa;&#x9;&#x9;&#x9;&#x9;Locale loc = ((LanguageCodeDescriptor) item).getLocale();&#xa;&#x9;&#x9;&#x9;&#x9;return p.matcher( loc.getLanguage() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getCountry() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayLanguage() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayCountry() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayLanguage( loc ) ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayCountry( loc ) ).find()&#xa;&#x9;&#x9;&#x9;&#x9;;&#xa;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;});&#xa;&#x9;&#x9;if( selValues.length &gt; 0 ) {&#xa;&#x9;&#x9;&#x9;ListModel m = locList.getModel();&#xa;&#x9;&#x9;&#x9;for( Object sel : selValues ) {&#xa;&#x9;&#x9;&#x9;&#x9;for( int i=0; i&lt;m.getSize(); ++i ) {&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;if( sel.equals( m.getElementAt( i ) ) ) {&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;locList.addSelectionInterval( i, i );&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;}&#xa;&#x9;}&#xa;});"/>
+                <AuxValue name="JavaCodeGenerator_allCodePost" type="java.lang.String" value="localeFilter.getDocument().addDocumentListener( new DocumentEventAdapter() {&#xa;&#x9;@Override&#xa;&#x9;public void changedUpdate( DocumentEvent e ) {&#xa;                List&lt;LanguageCodeDescriptor&gt; selValues = locList.getSelectedValuesList();&#xa;&#x9;&#x9;final Pattern p = Pattern.compile( &quot;(?i)(?u)&quot; + Pattern.quote( localeFilter.getText() ) );&#xa;&#x9;&#x9;((FilteredListModel) locList.getModel()).setFilter( new FilteredListModel.ListFilter() {&#xa;&#x9;&#x9;&#x9;@Override&#xa;&#x9;&#x9;&#x9;public boolean include( FilteredListModel model, Object item ) {&#xa;&#x9;&#x9;&#x9;&#x9;if( item == null ) return false;&#xa;&#x9;&#x9;&#x9;&#x9;Locale loc = ((LanguageCodeDescriptor) item).getLocale();&#xa;&#x9;&#x9;&#x9;&#x9;return p.matcher( loc.getLanguage() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getCountry() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayLanguage() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayCountry() ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayLanguage( loc ) ).find()&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;|| p.matcher( loc.getDisplayCountry( loc ) ).find()&#xa;&#x9;&#x9;&#x9;&#x9;;&#xa;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;});&#xa;&#x9;&#x9;if( selValues.size() &gt; 0 ) {&#xa;&#x9;&#x9;&#x9;ListModel m = locList.getModel();&#xa;&#x9;&#x9;&#x9;for( LanguageCodeDescriptor sel : selValues ) {&#xa;&#x9;&#x9;&#x9;&#x9;for( int i=0; i&lt;m.getSize(); ++i ) {&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;if( sel.equals( m.getElementAt( i ) ) ) {&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;locList.addSelectionInterval( i, i );&#xa;&#x9;&#x9;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;&#x9;}&#xa;&#x9;&#x9;}&#xa;&#x9;}&#xa;});"/>
               </AuxValues>
             </Component>
           </SubComponents>
