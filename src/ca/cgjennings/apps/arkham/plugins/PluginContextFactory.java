@@ -1,7 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import resources.Settings;
-
 /**
  * A factory for {@link PluginContext} instances.
  *

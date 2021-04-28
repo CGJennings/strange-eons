@@ -359,10 +359,10 @@ public final class register extends CommandLineParser {
         StringBuilder b = new StringBuilder(256);
         b.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         b.append("<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>\n");
-        b.append("\t<mime-type type=\"" + mimeType + "\">\n");
-        b.append("\t\t<comment>" + comment + "</comment>\n");
+        b.append("\t<mime-type type=\"").append(mimeType).append("\">\n");
+        b.append("\t\t<comment>").append(comment).append("</comment>\n");
         for (String extension : extensions) {
-            b.append("\t\t<glob pattern=\"*." + extension + "\"/>\n");
+            b.append("\t\t<glob pattern=\"*.").append(extension).append("\"/>\n");
         }
         b.append("\t</mime-type>\n");
         b.append("</mime-info>");

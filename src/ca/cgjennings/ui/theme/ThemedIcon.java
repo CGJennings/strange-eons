@@ -75,14 +75,16 @@ public class ThemedIcon implements Icon {
      * @return the image drawn by the icon
      */
     public final BufferedImage getImage() {
+        BufferedImage im = this.im;
         if (im == null) {
             synchronized (this) {
+                im = this.im;
                 if (im == null) {
                     Theme th = ThemeInstaller.getInstalledTheme();
                     if (th == null) {
-                        im = ResourceKit.getImageQuietly(getResource());
+                        this.im = im = ResourceKit.getImageQuietly(getResource());
                     } else {
-                        im = th.applyThemeToImage(getResource());
+                        this.im = im = th.applyThemeToImage(getResource());
                     }
                 }
             }

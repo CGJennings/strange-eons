@@ -5,7 +5,6 @@ import ca.cgjennings.ui.JUtilities;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;

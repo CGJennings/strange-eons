@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.commands;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.platform.DesktopIntegration;
 import ca.cgjennings.ui.JHelpButton;
 import java.awt.Component;

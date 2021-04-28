@@ -2,7 +2,6 @@ package ca.cgjennings.ui;
 
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.paints.CheckeredPaint;
-import ca.cgjennings.layout.GraphicStyleFactory;
 import ca.cgjennings.ui.dnd.FileDrop;
 import java.awt.Color;
 import java.awt.Cursor;

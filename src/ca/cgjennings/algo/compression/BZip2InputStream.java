@@ -973,7 +973,7 @@ class BZip2InputStream extends InputStream implements BZip2Constants {
          * I don't initialize it at construction time to avoid unneccessary
          * memory allocation when compressing small files.
          */
-        final int[] initTT(int length) {
+        int[] initTT(int length) {
             int[] ttShadow = this.tt;
 
             // tt.length should always be >= length, but theoretically

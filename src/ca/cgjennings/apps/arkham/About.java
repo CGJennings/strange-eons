@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
 import ca.cgjennings.i18n.IntegerPluralizer;
 import ca.cgjennings.platform.DesktopIntegration;
@@ -30,7 +29,6 @@ import javax.swing.JScrollBar;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 import resources.Language;

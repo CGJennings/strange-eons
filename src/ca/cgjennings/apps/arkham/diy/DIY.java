@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.diy;
 
-import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.PortraitPanel;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.AbstractPortrait;

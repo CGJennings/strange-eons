@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.io.EscapedLineWriter;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.textedit.BindingInstaller;
 import ca.cgjennings.ui.textedit.InputHandler;
 import java.io.File;
 import java.io.FileInputStream;

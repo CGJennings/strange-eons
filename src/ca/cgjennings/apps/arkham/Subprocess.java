@@ -7,7 +7,6 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.JUtilities;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

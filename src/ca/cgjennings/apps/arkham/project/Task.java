@@ -5,7 +5,6 @@ import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.io.EscapedLineWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.logging.Level;

@@ -61,7 +61,7 @@ public final class DIYSheet extends Sheet<DIY> {
     }
 
     @Override
-    protected final void paintSheet(RenderTarget target) {
+    protected void paintSheet(RenderTarget target) {
         Graphics2D g = null;
         try {
             g = createGraphics();
@@ -90,7 +90,7 @@ public final class DIYSheet extends Sheet<DIY> {
      *
      * @return the current render target
      */
-    public final RenderTarget getRenderTarget() {
+    public RenderTarget getRenderTarget() {
         return activeRenderTarget;
     }
     private RenderTarget activeRenderTarget;
@@ -103,7 +103,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param g the graphics context to modify
      */
     @Override
-    public final void applyContextHints(Graphics2D g) {
+    public void applyContextHints(Graphics2D g) {
         super.applyContextHints(g);
     }
 
@@ -127,7 +127,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @return <code>true</code> if in "high resolution" mode
      * @since 2.1a11
      */
-    public final boolean isHighResolutionRendering() {
+    public boolean isHighResolutionRendering() {
         if (hiResModeCache < 0) {
             DIY.HighResolutionMode mode = diy.getHighResolutionSubstitutionMode();
             if (mode == DIY.HighResolutionMode.DISABLE) {
@@ -157,7 +157,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param x the horizontal offset from the left side of the template image
      * @param y the vertical offset from the top edge of the template image
      */
-    public final void paintImage(Graphics2D g, String imageKey, int x, int y) {
+    public void paintImage(Graphics2D g, String imageKey, int x, int y) {
         Settings s = diy.getSettings();
         BufferedImage image = ResourceKit.getImage(s.get(imageKey));
         if (isHighResolutionRendering()) {
@@ -182,7 +182,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param regionKey the settings key of the region where the image should be
      * drawn, without the <tt>"-region"</tt> suffix
      */
-    public final void paintImage(Graphics2D g, String imageKey, String regionKey) {
+    public void paintImage(Graphics2D g, String imageKey, String regionKey) {
         Rectangle r = diy.getSettings().getRegion(regionKey);
         paintImage(g, imageKey, r.x, r.y, r.width, r.height);
     }
@@ -199,7 +199,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param sharedKey the settings key of the image, and base name of the
      * region key
      */
-    public final void paintImage(Graphics2D g, String sharedKey) {
+    public void paintImage(Graphics2D g, String sharedKey) {
         paintImage(g, sharedKey, sharedKey);
     }
 
@@ -216,7 +216,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param width the width of the image
      * @param height the height of the image
      */
-    public final void paintImage(Graphics2D g, String imageKey, int x, int y, int width, int height) {
+    public void paintImage(Graphics2D g, String imageKey, int x, int y, int width, int height) {
         Settings s = diy.getSettings();
         BufferedImage image = ResourceKit.getImage(s.get(imageKey));
         if (isHighResolutionRendering()) {
@@ -248,7 +248,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * region key
      * @param number the number of the image to load
      */
-    public final void paintNumberedImage(Graphics2D g, String sharedKey, int number) {
+    public void paintNumberedImage(Graphics2D g, String sharedKey, int number) {
         Settings s = diy.getSettings();
         BufferedImage bi = null;
         if (isHighResolutionRendering()) {
@@ -271,7 +271,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param regionKey the settings key of the region where the image should be
      * drawn, without the <tt>"-region"</tt> suffix
      */
-    public final void paintImage(Graphics2D g, BufferedImage image, String regionKey) {
+    public void paintImage(Graphics2D g, BufferedImage image, String regionKey) {
         paintImage(g, image, diy.getSettings().getRegion(regionKey));
     }
 
@@ -282,7 +282,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * @param image the image to draw
      * @param region the region in which to draw the image
      */
-    public final void paintImage(Graphics2D g, BufferedImage image, Rectangle region) {
+    public void paintImage(Graphics2D g, BufferedImage image, Rectangle region) {
         g.drawImage(image, region.x, region.y, region.width, region.height, null);
     }
 
@@ -294,7 +294,7 @@ public final class DIYSheet extends Sheet<DIY> {
      *
      * @param g the graphics context to use for painting
      */
-    public final void paintTemplateImage(Graphics2D g) {
+    public void paintTemplateImage(Graphics2D g) {
         BufferedImage template = getTemplateImage();
         if (isHighResolutionRendering()) {
             String value = diy.getSettings().get(getTemplateKey() + "-hires");

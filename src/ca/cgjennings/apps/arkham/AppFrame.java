@@ -1723,7 +1723,7 @@ final class AppFrame extends StrangeEonsAppWindow {
      * @deprecated Replaced by {@link #redrawPreviews()}.
      */
     @Deprecated
-    public final void forceRerender() {
+    public void forceRerender() {
         redrawPreviews();
     }
 

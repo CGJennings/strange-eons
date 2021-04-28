@@ -137,7 +137,7 @@ public class SimpleGroup implements Group {
     @Override
     public Rectangle2D.Double getRectangle() {
 //		if( rect != null ) return rect;
-        if (members.size() == 0) {
+        if (members.isEmpty()) {
             return null;
         }
         Rectangle2D.Double rect = null;

@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.component;
 import java.awt.Dimension;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.EnumSet;
 
 /**

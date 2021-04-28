@@ -545,7 +545,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
 
         if (expansions.size() > 1) {
             expansions.remove(getBaseGameExpansion());
-        } else if (expansions.size() == 0) {
+        } else if (expansions.isEmpty()) {
             expansions.add(getBaseGameExpansion());
         }
 

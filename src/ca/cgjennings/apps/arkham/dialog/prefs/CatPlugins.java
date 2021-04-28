@@ -8,7 +8,6 @@ import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.JTextField;

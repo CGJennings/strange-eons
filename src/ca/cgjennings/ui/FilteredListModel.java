@@ -1,7 +1,5 @@
 package ca.cgjennings.ui;
 
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
@@ -9,9 +7,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.AbstractListModel;
 import javax.swing.Icon;
-import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -123,7 +119,7 @@ public class FilteredListModel extends AbstractListModel {
 
     public void setFilter(ListFilter f) {
         filter = f;
-        if (list.size() == 0) {
+        if (list.isEmpty()) {
             return;
         }
         int fsize = filtered.size();

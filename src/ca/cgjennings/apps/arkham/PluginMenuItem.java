@@ -10,7 +10,6 @@ import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.JUtilities;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import javax.swing.Icon;

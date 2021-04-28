@@ -228,7 +228,7 @@ public class ListTransferHandler extends TransferHandler {
             JList source = (JList) c;
             indices = source.getSelectedIndices();
             List values = source.getSelectedValuesList();
-            if (values.size() == 0) {
+            if (values.isEmpty()) {
                 return null;
             }
             ArrayList alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList(values);

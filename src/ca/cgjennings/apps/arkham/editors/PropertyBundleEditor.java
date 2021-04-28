@@ -15,7 +15,6 @@ import ca.cgjennings.ui.JUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
@@ -160,7 +159,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         if (ip.isFallbackPluralizer()) {
             pluralHelp.append(string("dt-l-plural-no-pluralizer"));
         } else {
-            pluralHelp.append("<b>" + string("dt-l-plural-title", locale.getDisplayLanguage()) + "</b><br><table border=0>");
+            pluralHelp.append("<b>").append(string("dt-l-plural-title", locale.getDisplayLanguage())).append("</b><br><table border=0>");
             for (String row : ip.getPluralFormDescription().split("\n")) {
                 int colon = row.indexOf(':');
                 if (colon < 0) {

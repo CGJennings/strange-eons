@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.project;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.Icon;
@@ -64,7 +63,7 @@ public class DocumentTask extends NewTaskType {
      * @return an array of task actions that create supported document types
      */
     public static TaskAction[] getDocumentTypes() {
-        return types.toArray(new New.NewAction[types.size()]);
+        return types.toArray(new TaskAction[types.size()]);
     }
 
     static {

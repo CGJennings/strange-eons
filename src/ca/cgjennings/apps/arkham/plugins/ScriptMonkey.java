@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.plugins;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import ca.cgjennings.apps.arkham.dialog.prefs.PreferenceUpdateListener;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.script.mozilla.javascript.JavaScriptException;

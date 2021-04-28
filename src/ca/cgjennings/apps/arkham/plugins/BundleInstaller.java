@@ -506,7 +506,7 @@ public class BundleInstaller {
                 if (dot >= 0) {
                     name = name.substring(0, dot);
                 }
-                pl.progressUpdate(name + "...", (float) extNum / (float) extensions.size());
+                pl.progressUpdate(name + "...", extNum / (float) extensions.size());
             }
 
             try {

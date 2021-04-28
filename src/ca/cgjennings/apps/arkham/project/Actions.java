@@ -159,7 +159,7 @@ public final class Actions {
         List<TaskAction> plist = actionMap.get(p);
         plist.remove(action);
 
-        if (plist.size() == 0) {
+        if (plist.isEmpty()) {
             actionMap.remove(p);
         }
     }

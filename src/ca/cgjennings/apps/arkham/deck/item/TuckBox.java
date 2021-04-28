@@ -449,7 +449,7 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         return type;
     }
 
-    private final double calcFlapCutInset(double length) {
+    private double calcFlapCutInset(double length) {
         double inset = Math.max(FLAP_CUT_INSET, length / 4d);
         if (inset > length / 3d) {
             inset = length / 3d;

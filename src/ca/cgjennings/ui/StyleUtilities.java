@@ -1,6 +1,5 @@
 package ca.cgjennings.ui;
 
-import ca.cgjennings.platform.PlatformSupport;
 import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Font;

@@ -8,7 +8,6 @@ import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.ProjectFolderDialog;
 import ca.cgjennings.ui.dnd.FileDrop;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.URL;
 import javax.swing.JTextField;

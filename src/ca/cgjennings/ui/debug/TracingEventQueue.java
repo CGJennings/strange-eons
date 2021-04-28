@@ -38,9 +38,9 @@ public class TracingEventQueue extends EventQueue {
             StackTraceElement[] stack = tracer.getStackTrace();
             for (int i = 0; i < stack.length && i < maxTrace; ++i) {
                 b.append('\t');
-                b.append(stack[i].getClassName() + ".");
-                b.append(stack[i].getMethodName() + " [");
-                b.append(stack[i].getLineNumber() + "]");
+                b.append(stack[i].getClassName()).append(".");
+                b.append(stack[i].getMethodName()).append(" [");
+                b.append(stack[i].getLineNumber()).append("]");
                 b.append('\n');
             }
             System.err.println(b.toString());

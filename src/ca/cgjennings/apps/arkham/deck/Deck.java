@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.deck;
 
-import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.GameComponent;
@@ -399,7 +398,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
             throw new IndexOutOfBoundsException("invalid group: " + group);
         }
 
-        if (selectionPage == null || selection.size() == 0) {
+        if (selectionPage == null || selection.isEmpty()) {
             return;
         }
 
@@ -1522,7 +1521,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
             if (!pastingCardsToTheirOwnPage) {
                 copy();
             }
-        };
+        }
     }
 
     /**

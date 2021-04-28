@@ -1,7 +1,5 @@
 package ca.cgjennings.platform;
 
-import java.awt.AWTEvent;
-import java.awt.Event;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

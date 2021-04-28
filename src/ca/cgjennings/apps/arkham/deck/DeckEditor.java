@@ -63,9 +63,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,7 +91,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
-import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -2041,7 +2038,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         // create an array of editable items, removing them from the model
         final PageItem[] items = new PageItem[model.getSize()];
         for (int i = 0; i < items.length; ++i) {
-            items[i] = (PageItem) model.get(0);
+            items[i] = model.get(0);
             model.remove(0);
         }
 
@@ -2350,7 +2347,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
                     int updates = 0, result;
                     // check card list
                     for (int i = 0; i < facesList.getModel().getSize(); ++i) {
-                        PageItem c = (PageItem) facesList.getModel().getElementAt(i);
+                        PageItem c = facesList.getModel().getElementAt(i);
                         if ((result = possiblyRefreshCard(f, c, gc1)) == REFRESH_INCOMPATIBLE) {
                             // delete this entry and decrement counter so next card not missed
                             ((DefaultListModel) facesList.getModel()).remove(i--);

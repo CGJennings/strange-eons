@@ -43,7 +43,7 @@ public class CompileAll extends TaskAction {
         LinkedList<File> sources = new LinkedList<>();
         ProjectUtilities.saveAllOpenProjectFiles(false);
         addSources(sources, task.getFile());
-        if (sources.size() == 0) {
+        if (sources.isEmpty()) {
             return true;
         }
 

@@ -5,7 +5,6 @@ import ca.cgjennings.platform.PlatformSupport;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import static resources.Language.string;
@@ -80,7 +79,7 @@ public final class UILibraryDialogTemplate extends javax.swing.JDialog implement
         setLocationRelativeTo(parent);
     }
 
-    public static final Icon getDefaultIcon() {
+    public static Icon getDefaultIcon() {
         if (defaultIcon == null) {
             defaultIcon = resources.ResourceKit.getIcon("application/64.png");
         }
