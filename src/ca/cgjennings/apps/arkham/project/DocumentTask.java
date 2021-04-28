@@ -64,7 +64,7 @@ public class DocumentTask extends NewTaskType {
      * @return an array of task actions that create supported document types
      */
     public static TaskAction[] getDocumentTypes() {
-        return types.toArray(new New.NewAction[types.size()]);
+        return types.toArray(new TaskAction[types.size()]);
     }
 
     static {

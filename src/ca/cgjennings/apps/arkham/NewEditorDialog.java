@@ -148,7 +148,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
                 }
             }
             // apply category filter and restore selection
-            ComponentListItem selectedCat = (ComponentListItem) categoryList.getSelectedValue();
+            ComponentListItem selectedCat = categoryList.getSelectedValue();
             categoryModel.setFilter(categoryFilter);
             if (!hiddenCategories.contains(selectedCat)) {
                 categoryList.setSelectedValue(selectedCat, false);
@@ -258,7 +258,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     private static Icon[] defaultIcons = null;
 
     private void updateComponentList() {
-        ComponentListItem sel = (ComponentListItem) categoryList.getSelectedValue();
+        ComponentListItem sel = categoryList.getSelectedValue();
         if (sel == null) {
             return;
         }

@@ -143,7 +143,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             }
 
             for (int i = 0; i < cards.size(); ++i) {
-                Card c = (Card) cards.get(i);
+                Card c = cards.get(i);
 
                 from.removeElement(c);
 
