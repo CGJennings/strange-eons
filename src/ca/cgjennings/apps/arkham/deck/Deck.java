@@ -1522,7 +1522,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
             if (!pastingCardsToTheirOwnPage) {
                 copy();
             }
-        };
+        }
     }
 
     /**

@@ -2014,7 +2014,6 @@ public class MarkupRenderer {
         // skip tag name
         int i = 0;
         for (; i < currentTag.length() && !Character.isWhitespace(currentTag.charAt(i)); ++i) {
-            ;
         }
 
         // process remainder of string in finite state machine
