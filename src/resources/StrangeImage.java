@@ -536,6 +536,34 @@ public abstract class StrangeImage {
         }
     }
 
+
+    /**
+     * Returns a {@code BufferedImage} for the given identifier. The
+     * identifier can be a local file path or a <code>file:</code>,
+     * <code>http:</code>, <code>res:</code>, or <code>project:</code> URL. Any
+     * string that is valid in a portrait panel will produce the same image
+     * here, except for the empty string that produce's the component-specific
+     * default portrait.
+     *
+     * <p>This method is similar to {@link #get}, but ensures that the returned
+     * image is a {@code BufferedImage} bitmap. Vector images will be converted
+     * to bitmaps automatically. Where possible, prefer code that works
+     * with both bitmaps and vectors transparently by using {@link #get} instead.
+     *
+     * @param identifier the identifier to use to locate the file
+     * @return the identified image, or a "missing image" stand-in
+     */
+    public static BufferedImage getAsBufferedImage(String identifier) {
+        BufferedImage bi;
+        StrangeImage si = StrangeImage.get(identifier);
+        if (si == StrangeImage.getMissingImage()) {
+            bi = ResourceKit.getMissingImage();
+        } else {
+            bi = si.asBufferedImage();
+        }
+        return bi;
+    }
+
     /**
      * Returns whether or not an identifier refers to a valid image.
      * For example, passing a file identifier for a file that does not exist
