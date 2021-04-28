@@ -204,7 +204,7 @@ if (cb.getMaximumRowCount() < 12) {
     private static final boolean USE_POPUP_BORDER_HACK;
 
     static {
-        USE_POPUP_BORDER_HACK = PlatformSupport.PLATFORM_IS_OSX && "true".equals(System.getProperty("apple.laf.useScreenMenuBar"));
+        USE_POPUP_BORDER_HACK = PlatformSupport.PLATFORM_IS_MAC && "true".equals(System.getProperty("apple.laf.useScreenMenuBar"));
     }
 
     private static void installDefaultMenu(final JTextComponent comp) {

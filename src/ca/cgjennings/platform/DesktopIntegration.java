@@ -274,7 +274,7 @@ public class DesktopIntegration {
                     });
                     showFeedback(feedbackComponent);
                     return true;
-                } else if (PlatformSupport.PLATFORM_IS_OSX) {
+                } else if (PlatformSupport.PLATFORM_IS_MAC) {
                     Runtime.getRuntime().exec(new String[]{
                         "open", "-R", f.getAbsolutePath()
                     });

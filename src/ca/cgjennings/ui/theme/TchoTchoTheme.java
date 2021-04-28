@@ -30,7 +30,7 @@ public class TchoTchoTheme extends Theme {
         try {
             if (PlatformSupport.PLATFORM_IS_WINDOWS) {
                 return ImageIO.read(getClass().getResource("TchoTchoWindows.png"));
-            } else if (PlatformSupport.PLATFORM_IS_OSX) {
+            } else if (PlatformSupport.PLATFORM_IS_MAC) {
                 return ImageIO.read(getClass().getResource("TchoTchoOSX.png"));
             }
         } catch (Throwable t) {
@@ -81,7 +81,7 @@ public class TchoTchoTheme extends Theme {
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             patchOSX();
         } else if (PlatformSupport.PLATFORM_IS_WINDOWS) {
             patchWindows();

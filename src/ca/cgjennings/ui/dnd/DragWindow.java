@@ -47,7 +47,7 @@ final class DragWindow extends JWindow {
         if (getGraphicsConfiguration().isTranslucencyCapable()) {
             setOpacity(0.8f);
         }
-        if (!PlatformSupport.PLATFORM_IS_OSX) {
+        if (!PlatformSupport.PLATFORM_IS_MAC) {
             // prevents RELEASED event on OS X if always on top
             setAlwaysOnTop(true);
         }

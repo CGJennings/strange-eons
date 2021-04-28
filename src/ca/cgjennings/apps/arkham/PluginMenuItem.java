@@ -41,7 +41,7 @@ final class PluginMenuItem extends JCheckBoxMenuItem {
         // so <html> in the tool tips won't work---we can fix most problems
         // by just filtering out the tags
         String toolTip = plugin.getPluginDescription();
-        if (PlatformSupport.PLATFORM_IS_OSX && toolTip != null) {
+        if (PlatformSupport.PLATFORM_IS_MAC && toolTip != null) {
             if (toolTip.length() >= 6 && toolTip.charAt(0) == '<' && toolTip.substring(0, 6).equalsIgnoreCase("<html>")) {
                 toolTip = toolTip.replaceAll("\\<br\\>(?i)", " ")
                         .replaceAll("\\&nbsp\\;(?i)", " ")

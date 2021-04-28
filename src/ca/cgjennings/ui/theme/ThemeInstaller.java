@@ -71,7 +71,7 @@ public class ThemeInstaller {
     private static void loadPlatformHelper() {
         try {
             String name;
-            if (PlatformSupport.PLATFORM_IS_OSX) {
+            if (PlatformSupport.PLATFORM_IS_MAC) {
                 name = "OSX";
             } else if (PlatformSupport.PLATFORM_IS_WINDOWS) {
                 name = "Windows";

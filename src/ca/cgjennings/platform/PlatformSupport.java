@@ -212,7 +212,7 @@ public class PlatformSupport {
      * if it comes after
      */
     public static boolean isAgnosticOKInFirstPosition() {
-        return !PLATFORM_IS_OSX;
+        return !PLATFORM_IS_MAC;
     }
 
     /**
@@ -310,6 +310,8 @@ public class PlatformSupport {
     }
 
     /** True if the JVM is running on an Apple macOS operating system. */
+    public static final boolean PLATFORM_IS_MAC;
+    /** @deprecated Alias for {@link #PLATFORM_IS_MAC}. */
     public static final boolean PLATFORM_IS_OSX;
     /** True if the JVM is running on a Windows operating system. */
     public static final boolean PLATFORM_IS_WINDOWS;
@@ -322,7 +324,7 @@ public class PlatformSupport {
     static {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         PLATFORM_IS_WINDOWS = os.contains("windows");
-        PLATFORM_IS_OSX = os.contains("mac") || os.contains("darwin");
-        PLATFORM_IS_OTHER = !(PLATFORM_IS_WINDOWS || PLATFORM_IS_OSX);
+        PLATFORM_IS_MAC = PLATFORM_IS_OSX = os.contains("mac") || os.contains("darwin");
+        PLATFORM_IS_OTHER = !(PLATFORM_IS_WINDOWS || PLATFORM_IS_MAC);
     }
 }

@@ -73,7 +73,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
 
         getRootPane().setDefaultButton(okBtn);
 
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             cancelBtn.setVisible(false);
         } else {
             cancelBtn2.setVisible(false);

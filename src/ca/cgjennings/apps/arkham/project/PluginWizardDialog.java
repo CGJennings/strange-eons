@@ -62,7 +62,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
         backBtn.setIcon(ResourceKit.getIcon("ui/go-back.png"));
         nextBtn.setIcon(ResourceKit.getIcon("ui/continue.png"));
 
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             cancelBtn.setVisible(false);
         } else {
             cancelBtn2.setVisible(false);

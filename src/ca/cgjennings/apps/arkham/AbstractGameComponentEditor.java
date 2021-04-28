@@ -105,7 +105,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     public static void localizeComponentTree(JComponent root) {
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             localizeComponentForOSX(root);
         } else {
             localizeComponentGeneric(root);
@@ -823,7 +823,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         for (int i = 0; i < sheets.length; ++i) {
             viewers[i] = new SheetViewer();
             viewers[i].setSheet(sheets[i]);
-            if (PlatformSupport.PLATFORM_IS_OSX || i >= 9) {
+            if (PlatformSupport.PLATFORM_IS_MAC || i >= 9) {
                 // OS X doesn't support mnemonics on tabs
                 container.add(labels[i], viewers[i]);
             } else {

@@ -41,7 +41,7 @@ final class HFileBugReport extends AbstractCommand {
                         string("rk-err-update-ok"), string("rk-err-update-cancel")
                     };
                     int defIndex = 0;
-                    if (PlatformSupport.PLATFORM_IS_OSX) {
+                    if (PlatformSupport.PLATFORM_IS_MAC) {
                         Object o = options[0];
                         options[0] = options[1];
                         options[1] = o;

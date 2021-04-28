@@ -288,7 +288,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
         // set title, close btn text
         if (isFatal) {
             ed.heading.setText(string("rk-err-fatal-title"));
-            ed.closeBtn.setText(string(PlatformSupport.PLATFORM_IS_OSX ? "exit-osx" : "exit"));
+            ed.closeBtn.setText(string(PlatformSupport.PLATFORM_IS_MAC ? "exit-osx" : "exit"));
         } else {
             ed.heading.setText(string("rk-err-nonfatal-title"));
             ed.closeBtn.setText(string("resume"));

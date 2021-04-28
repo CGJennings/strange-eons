@@ -575,7 +575,7 @@ public class ProjectUtilities {
     }
 
     static void mixOptions(Object[] options) {
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             Object t = options[0];
             options[0] = options[1];
             options[1] = t;
@@ -583,7 +583,7 @@ public class ProjectUtilities {
     }
 
     static int unmixChoice(Object[] options, int choice) {
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             if (choice == 0) {
                 choice = 1;
             } else {

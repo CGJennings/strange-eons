@@ -54,10 +54,10 @@ public final class DragManager<T> {
     // user configurable properties
     private Cursor dropCursor = DragSource.DefaultMoveDrop;
     private Cursor noDropCursor = Cursor.getDefaultCursor();
-    private boolean tokenVisible = !PlatformSupport.PLATFORM_IS_OSX;
+    private boolean tokenVisible = !PlatformSupport.PLATFORM_IS_MAC;
 
     {
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             dropCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
             noDropCursor = dropCursor;
         }
@@ -211,7 +211,7 @@ public final class DragManager<T> {
      */
     public void setTokenVisible(boolean visible) {
         // On OS X, monkeying with the visibility can affect whether we get a RELEASED event
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             return;
         }
 

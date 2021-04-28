@@ -72,7 +72,7 @@ public class ConvertSpellingDictionary extends TaskActionTree {
                         string("pa-l-freq-warn"), string("cancel")
                     };
                     int okOpt = 0;
-                    if (PlatformSupport.PLATFORM_IS_OSX) {
+                    if (PlatformSupport.PLATFORM_IS_MAC) {
                         okOpt = 1;
                         options[1] = options[0];
                         options[0] = string("cancel");

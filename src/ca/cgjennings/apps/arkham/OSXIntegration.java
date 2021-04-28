@@ -17,7 +17,7 @@ import java.util.logging.Level;
 public final class OSXIntegration {
 
     private OSXIntegration(Component exitSeparator, Component exitItem, Component aboutSeparator, Component aboutItem, Component preferencesSeparator, Component preferencesItem) {
-        if (!PlatformSupport.PLATFORM_IS_OSX) {
+        if (!PlatformSupport.PLATFORM_IS_MAC) {
             throw new IllegalStateException();
         }
 

@@ -95,7 +95,7 @@ public final class AcceleratorTable {
         addAcceleratorsImpl(prefix, suffix);
         if (PlatformSupport.PLATFORM_IS_WINDOWS) {
             addAcceleratorsImpl(prefix + "-win", suffix);
-        } else if (PlatformSupport.PLATFORM_IS_OSX) {
+        } else if (PlatformSupport.PLATFORM_IS_MAC) {
             addAcceleratorsImpl(prefix + "-mac", suffix);
         } else {
             addAcceleratorsImpl(prefix + "-other", suffix);

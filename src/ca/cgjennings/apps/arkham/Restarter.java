@@ -98,7 +98,7 @@ final class Restarter {
                 StrangeEons.log.log(Level.WARNING, "failed to build Windows restart command", t);
             }
         } // OS X: find .app; check for Snow Leopard, which is when the --args option was added
-        else if (PlatformSupport.PLATFORM_IS_OSX) {
+        else if (PlatformSupport.PLATFORM_IS_MAC) {
             try {
                 // try to find an .app bundle that the library is embedded in
                 final File installLocation = BundleInstaller.getApplicationLibrary().getParentFile();

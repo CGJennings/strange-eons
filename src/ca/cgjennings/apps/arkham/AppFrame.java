@@ -68,7 +68,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         initComponents();
         localizeTitle();
 
-        if (PlatformSupport.PLATFORM_IS_OSX) {
+        if (PlatformSupport.PLATFORM_IS_MAC) {
             OSXIntegration.install(exitSeparator, exitItem, aboutSeparator, aboutItem, preferencesSeparator, preferencesItem);
         }
 

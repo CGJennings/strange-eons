@@ -837,7 +837,7 @@ public final class ProjectView extends javax.swing.JPanel {
             imap.put(winKey, name);
             KeyStroke osxKey = KeyStroke.getKeyStroke("meta " + keystroke);
             imap.put(osxKey, name);
-            accel = PlatformSupport.PLATFORM_IS_OSX ? osxKey : winKey;
+            accel = PlatformSupport.PLATFORM_IS_MAC ? osxKey : winKey;
         } else {
             accel = KeyStroke.getKeyStroke(keystroke);
             imap.put(accel, name);

@@ -97,7 +97,7 @@ public final class PageView extends JComponent {
     private CropMarkManager cropMarks;
     private boolean editable = true;
     // turning off anti-aliasing will slow things down if using quartz renderer
-    private boolean alwaysAntiAliasView = Settings.getShared().getYesNo("always-anti-alias-page-views") || PlatformSupport.PLATFORM_IS_OSX;
+    private boolean alwaysAntiAliasView = Settings.getShared().getYesNo("always-anti-alias-page-views") || PlatformSupport.PLATFORM_IS_MAC;
 
     private static final String[] DROPPABLE_IMAGE_TYPES = new String[]{"jpg", "jpeg", "png", "jp2"};
 

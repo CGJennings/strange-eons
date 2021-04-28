@@ -1386,7 +1386,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
             if (pluginRoot.getCatalogID() != null) {
                 String[] options = new String[]{string("prj-re-id-generate"), string("cancel")};
                 int GEN_OPT = 0;
-                if (PlatformSupport.PLATFORM_IS_OSX) {
+                if (PlatformSupport.PLATFORM_IS_MAC) {
                     String t = options[0];
                     options[0] = options[1];
                     options[1] = t;

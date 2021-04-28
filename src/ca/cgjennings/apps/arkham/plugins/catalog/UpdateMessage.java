@@ -167,7 +167,7 @@ class UpdateMessage {
         URI appURI = null;
         try {
             String os = PlatformSupport.PLATFORM_IS_WINDOWS ? "win"
-                    : (PlatformSupport.PLATFORM_IS_OSX ? "osx" : "nix");
+                    : (PlatformSupport.PLATFORM_IS_MAC ? "osx" : "nix");
             String version = String.valueOf(StrangeEons.getBuildNumber());
             appURI = new URI(
                     "http://cgjennings.ca/eons/download/update.html?platform=" + os + "&version=" + version

@@ -177,7 +177,7 @@ public abstract class AbstractCommand extends AbstractAction {
             if (ui.isKeyDefined(nameKey + "-win")) {
                 nameKey += "-win";
             }
-        } else if (PlatformSupport.PLATFORM_IS_OSX) {
+        } else if (PlatformSupport.PLATFORM_IS_MAC) {
             if (ui.isKeyDefined(nameKey + "-mac")) {
                 nameKey += "-mac";
             }
