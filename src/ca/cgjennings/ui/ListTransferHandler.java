@@ -141,17 +141,9 @@ public class ListTransferHandler extends TransferHandler {
             }
         }
 
-//		//Prevent the user from dropping data back on itself.
-//		if( source != null && source == target ) {
-//			if( indices != null && index >= indices[0] - 1
-//					&& index <= indices[indices.length - 1] ) {
-//				indices = null;
-//				return true;
-//			}
-//		}
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         int max = listModel.getSize();
-//		System.out.printf( "index = %d  max = %d%n", index, max );
+
         if (index < -1) {
             index = -1;
         }
