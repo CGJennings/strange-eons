@@ -190,7 +190,7 @@ public class Base64 {
      * Returns one of the _SOMETHING_ALPHABET byte arrays depending on the
      * options specified.
      */
-    private final static byte[] getAlphabet(int options) {
+    private static byte[] getAlphabet(int options) {
         if ((options & URL_SAFE) == URL_SAFE) {
             return _URL_SAFE_ALPHABET;
         } else {
@@ -202,7 +202,7 @@ public class Base64 {
      * Returns one of the _SOMETHING_DECODABET byte arrays depending on the
      * options specified.
      */
-    private final static byte[] getDecodabet(int options) {
+    private static byte[] getDecodabet(int options) {
         if ((options & URL_SAFE) == URL_SAFE) {
             return _URL_SAFE_DECODABET;
         } else {
