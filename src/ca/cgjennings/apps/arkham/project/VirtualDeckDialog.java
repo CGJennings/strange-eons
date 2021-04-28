@@ -1210,9 +1210,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
 
     private void listValueChangedImpl(Object list) {
         JList li = (JList) list;
-//		if( li.isFocusOwner() ) {
         showCard((Card) li.getSelectedValue());
-//		}
     }
 
 	private void listValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_listValueChanged
@@ -1434,8 +1432,6 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private ListCellRenderer renderer = new DefaultListCellRenderer() {
-//		private Card card;
-//		private boolean selected;
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -1447,7 +1443,6 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 setText("??? (" + owners[card.owner] + ")");
                 setIcon(backIcon);
             }
-//			selected = isSelected;
             return this;
         }
     };
