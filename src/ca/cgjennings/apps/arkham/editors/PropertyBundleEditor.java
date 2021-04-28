@@ -160,7 +160,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         if (ip.isFallbackPluralizer()) {
             pluralHelp.append(string("dt-l-plural-no-pluralizer"));
         } else {
-            pluralHelp.append("<b>" + string("dt-l-plural-title", locale.getDisplayLanguage()) + "</b><br><table border=0>");
+            pluralHelp.append("<b>").append(string("dt-l-plural-title", locale.getDisplayLanguage())).append("</b><br><table border=0>");
             for (String row : ip.getPluralFormDescription().split("\n")) {
                 int colon = row.indexOf(':');
                 if (colon < 0) {
