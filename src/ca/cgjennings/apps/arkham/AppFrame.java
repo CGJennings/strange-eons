@@ -2150,6 +2150,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         });
     }
 
+    @SuppressWarnings("deprecation")
     private AbstractGameComponentEditor<? extends GameComponent> openGameComponentImpl(File f) {
         GameComponent gameComponent = ResourceKit.getGameComponentFromFile(f);
         if (gameComponent == null) {
