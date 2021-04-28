@@ -63,9 +63,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.print.PrintException;
@@ -90,6 +93,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
 import javax.swing.KeyStroke;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
@@ -123,17 +127,13 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     private Deck deck;
 
-    // the number of special tabs that are not used to display tiles
-    // (i.e., the Tools and Faces tabs, which must be at tab index 0 and 1)
+    /**
+     * Number of special item tabs not used to display tiles,
+     * i.e., tools and faces at positions 0 and 1.
+     */
     private static final int RESERVED_TABS = 2;
 
-    private boolean[] tileSetLoaded = new boolean[]{
-        false, false, false, false, false
-    };
-    private String[] tileSetNames = new String[]{
-        "tools", "cards", "tiles", "bits", "decorations", "other"
-    };
-    private JList[] tileSetLists;
+    private PageItemList[] tileSetLists;
 
     /**
      * Creates a new deck editor with a new, empty {@link Deck} attached.
@@ -141,8 +141,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     public DeckEditor() {
         this(new Deck());
     }
-
-    private JSplitPane previewSplitPane = null;
 
     /**
      * Creates a new deck editor for the specified {@link Deck}.
@@ -179,15 +177,11 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         DefaultComboBoxModel paperList = new DefaultComboBoxModel();
         paperSizeCombo.setModel(paperList);
 
-        tileSetLists = new JList[]{
-            toolsList, facesList, tilesList, boardBitsList, decorationsList, otherList
+        tileSetLists = new PageItemList[] {
+            (PageItemList) toolsList, (PageItemList) facesList,
+            (PageItemList) tilesList, (PageItemList) boardBitsList,
+            (PageItemList) decorationsList, (PageItemList) otherList
         };
-
-        for (JList list : tileSetLists) {
-            list.setCellRenderer(new PageItemRenderer());
-            list.setModel(new DefaultListModel());
-            dragManager.addDragSource(list);
-        }
         facesListValueChanged(null); // disable the remove faces btn
 
         getRootPane().putClientProperty(Commands.HELP_CONTEXT_PROPERTY, "deck-intro");
@@ -241,6 +235,8 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     /**
      * Return the deck instance the editor controls for non-interactive editing.
+     * 
+     * @return the edited deck
      */
     public Deck getDeck() {
         return deck;
@@ -665,6 +661,15 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         Page p = v.getPage();
         for (int i = 0; i < cards.length; ++i) {
             p.addCardFromTemplate((PageItem) cards[i]);
+        }
+    }
+
+    public void addCards(List<PageItem> cards) {
+        tc();
+        final PageView v = (PageView) pageTab.getSelectedComponent();
+        final Page p = v.getPage();
+        for(PageItem pi : cards) {
+            p.addCardFromTemplate(pi);
         }
     }
 
@@ -1264,68 +1269,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     };
 
-//	@Override
-//    public void dragGestureRecognized( DragGestureEvent dge ) {
-//        JList list = (JList) dge.getComponent();
-//        if( !list.isSelectionEmpty() ) {
-//            final Object[] cards = (Object[]) list.getSelectedValues();
-//
-//			for( int i=0; i<cards.length; ++i ) {
-//				cards[i] = ((PageItem) cards[i]).clone();
-//				getDeck().getDefaultStyleApplicator().apply( cards[i] );
-//			}
-//
-//            //Image image = ((Card) cards[0]).getThumbnailIcon().getImage();
-//            dge.startDrag(
-//                    DragSource.DefaultCopyNoDrop,
-//					new Transferable() {
-//						@Override
-//						public DataFlavor[] getTransferDataFlavors() {
-//							return new DataFlavor[] { Deck.getDataFlavor() };
-//						}
-//
-//						@Override
-//						public boolean isDataFlavorSupported( DataFlavor flavor ) {
-//							return flavor.equals( Deck.getDataFlavor() );
-//						}
-//
-//						@Override
-//						public Object getTransferData( DataFlavor flavor ) throws UnsupportedFlavorException, IOException {
-//							if( !flavor.equals( Deck.getDataFlavor() ) )
-//								throw new UnsupportedFlavorException( flavor );
-//							return cards;
-//						}
-//					},
-//                    this
-//			);
-//        }
-//    }
-//
-//	@Override
-//    public void dragDropEnd( DragSourceDropEvent dsde ) {
-//    }
-//
-//	@Override
-//    public void dropActionChanged( DragSourceDragEvent dsde ) {
-//    }
-//
-//	@Override
-//    public void dragOver( DragSourceDragEvent dsde ) {
-//    }
-//
-//	@Override
-//    public void dragEnter( DragSourceDragEvent dsde ) {
-//        DragSourceContext c = dsde.getDragSourceContext();
-//        if( (dsde.getDropAction() & DnDConstants.ACTION_COPY) != 0 ) {
-//            c.setCursor( DragSource.DefaultCopyDrop );
-//        } else {
-//            c.setCursor( DragSource.DefaultCopyNoDrop );
-//        }
-//    }
-//
-//	@Override
-//    public void dragExit( DragSourceEvent dse ) {
-//    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1378,77 +1321,17 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         remCardsBtn = new javax.swing.JButton();
         cardTileTab = new javax.swing.JTabbedPane();
         toolsScroll = new javax.swing.JScrollPane();
-        toolsList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        toolsList = new PageItemList();
         facesScroll = new javax.swing.JScrollPane();
-        facesList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        facesList = new PageItemList();
         tilesScroll = new javax.swing.JScrollPane();
-        tilesList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        tilesList = new PageItemList();
         decorationsScroll = new javax.swing.JScrollPane();
-        decorationsList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        decorationsList = new PageItemList();
         boardBitsScroll = new javax.swing.JScrollPane();
-        boardBitsList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        boardBitsList = new PageItemList();
         otherScroll = new javax.swing.JScrollPane();
-        otherList = new JList() {
-            public String getToolTipText( MouseEvent event ) {
-                int i = locationToIndex( event.getPoint() );
-                if( i >= 0 ) {
-                    PageItem c = (PageItem) getModel().getElementAt(i);
-                    if( c instanceof DependentPageItem )
-                    return ((DependentPageItem) c).getPath();
-                }
-                return null;
-            }
-        };
+        otherList = new PageItemList();
         findPanel = new javax.swing.JPanel();
         javax.swing.JLabel findLabel = new javax.swing.JLabel();
         StyleUtilities.small( findLabel );
@@ -2152,8 +2035,8 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         }
     }//GEN-LAST:event_pageTabMouseClicked
 
-    private void sortCardList(JList list, Comparator<PageItem> sortComparator) {
-        final DefaultListModel model = (DefaultListModel) list.getModel();
+    private void sortCardList(PageItemList list, Comparator<PageItem> sortComparator) {
+        final DefaultListModel<PageItem> model = list.getModel();
 
         // create an array of editable items, removing them from the model
         final PageItem[] items = new PageItem[model.getSize()];
@@ -2240,12 +2123,12 @@ private void findFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     // gray out non-matching entries
     for (int i = 0; i < tileSetLists.length; ++i) {
-        ((PageItemRenderer) tileSetLists[i].getCellRenderer()).setSearchTerm(criteria);
+        tileSetLists[i].getPageItemRenderer().setSearchTerm(criteria);
     }
 
-    JList list = tileSetLists[currentList];
+    PageItemList list = tileSetLists[currentList];
     int selected = list.getSelectedIndex();
-    DefaultListModel model = (DefaultListModel) list.getModel();
+    DefaultListModel<PageItem> model = list.getModel();
 
     // search the current list (tab) from the selected index to the end
     if (searchListIndices(criteria, list, model, selected + 1, model.size())) {
@@ -2258,12 +2141,12 @@ private void findFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     for (int i = (currentList + 1) % tileSetLists.length;
             i != currentList;
             i = (i + 1) % tileSetLists.length) {
-        JList nextList = tileSetLists[i];
+        PageItemList nextList = tileSetLists[i];
         if (!nextList.isVisible()) {
             continue;
         }
 
-        DefaultListModel nextModel = (DefaultListModel) nextList.getModel();
+        DefaultListModel<PageItem> nextModel = nextList.getModel();
         if (searchListIndices(criteria, nextList, nextModel, 0, nextModel.size())) {
             cardTileTab.setSelectedIndex(i);
             return;
@@ -2314,7 +2197,7 @@ private void findFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_f
         // gray out non-matching entries
         String criteria = findField.getText().trim().toLowerCase();
         for (int i = 0; i < tileSetLists.length; ++i) {
-            ((PageItemRenderer) tileSetLists[i].getCellRenderer()).setSearchTerm(criteria);
+            tileSetLists[i].getPageItemRenderer().setSearchTerm(criteria);
         }
         cardTileTab.getSelectedComponent().repaint();
     });
@@ -2523,16 +2406,6 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
             }
             return REFRESH_NOT_CHANGED;
         }
-//		if( !(c instanceof ResizeableCard) && f.equals(new File(c.getSheetPath())) ) {
-//			if( c.getSheetIndex() < sheets.length ) {
-//				c.refresh(c.getName(), sheets[c.getSheetIndex()]);
-//				ResourceKit.debug("detected updated card file: " + f + "; card refreshed");
-//				return REFRESH_CHANGED;
-//			} else {
-//				ResourceKit.debug("detected updated card file: " + f + "; deleting old face not used in new card [" + c.getSheetIndex() + "]");
-//				return REFRESH_INCOMPATIBLE;
-//			}
-//		}
         return REFRESH_NOT_CHANGED;
     }
     private static int REFRESH_NOT_CHANGED = 0;
@@ -2545,37 +2418,10 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         FileChangeMonitor.getSharedInstance().removeFileChangeListener(this);
     }
 
-    /*
-    private void turnTabs() {
-        Font font = cardTileTab.getFont();
-        FontMetrics fm = cardTileTab.getFontMetrics( font );
-
-        for( int i = 0; i < cardTileTab.getTabCount(); ++i ) {
-            String label = cardTileTab.getTitleAt( i );
-            final int gap = 2; // gap between top of tab and longest title
-
-            int width = fm.stringWidth( label );
-            int height = fm.getAscent() + fm.getDescent();
-            BufferedImage bi = new BufferedImage( height, gap + width + gap + gap, BufferedImage.TYPE_INT_ARGB );
-            Graphics2D g = bi.createGraphics();
-            g.setFont( font );
-            g.setColor( cardTileTab.getForegroundAt( i ) );
-            g.rotate( Math.PI / 2 );
-			Map hints = (Map) Toolkit.getDefaultToolkit().getDesktopProperty( "awt.font.desktophints" );
-			if( hints != null )
-				g.addRenderingHints( hints );
-            g.drawString( label, gap, -fm.getDescent() );
-            g.dispose();
-            cardTileTab.setTitleAt( i, null );
-            cardTileTab.setIconAt( i, new ImageIcon( bi ) );
-        }
-        cardTileTab.setTabPlacement( JTabbedPane.RIGHT );
-    }
-     */
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCardsBtn;
     private javax.swing.JMenuItem addCardsItem;
-    private javax.swing.JList boardBitsList;
+    private javax.swing.JList<PageItem> boardBitsList;
     private javax.swing.JScrollPane boardBitsScroll;
     private javax.swing.JPopupMenu cardListMenu;
     private javax.swing.JTabbedPane cardTileTab;
@@ -2590,9 +2436,9 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JSpinner cropWeightField;
     private javax.swing.JButton customPaperBtn;
     private javax.swing.JPanel deckPanel;
-    private javax.swing.JList decorationsList;
+    private javax.swing.JList<PageItem> decorationsList;
     private javax.swing.JScrollPane decorationsScroll;
-    private javax.swing.JList facesList;
+    private javax.swing.JList<PageItem> facesList;
     private javax.swing.JScrollPane facesScroll;
     private javax.swing.JCheckBox fakeBleedCheck;
     private javax.swing.JTextField findField;
@@ -2612,7 +2458,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JTabbedPane mainControlTab;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel optionLabel;
-    private javax.swing.JList otherList;
+    private javax.swing.JList<PageItem> otherList;
     private javax.swing.JScrollPane otherScroll;
     private ca.cgjennings.ui.JReorderableTabbedPane pageTab;
     private javax.swing.JComboBox paperSizeCombo;
@@ -2623,9 +2469,9 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JMenuItem sortAreaItem;
     private javax.swing.JMenuItem sortFileNameItem;
     private javax.swing.JMenuItem sortNameItem;
-    private javax.swing.JList tilesList;
+    private javax.swing.JList<PageItem> tilesList;
     private javax.swing.JScrollPane tilesScroll;
-    private javax.swing.JList toolsList;
+    private javax.swing.JList<PageItem> toolsList;
     private javax.swing.JScrollPane toolsScroll;
     // End of variables declaration//GEN-END:variables
 
@@ -2936,40 +2782,32 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     };
     private DragManager<PageItem> dragManager = new DragManager<>(dragAndDropHandler);
 
-//	private TransferHandler componentListHandler = new TransferHandler() {
-//		@Override
-//		public boolean importData( TransferHandler.TransferSupport support ) {
-//			return false;
-//		}
-//		@Override
-//		public boolean canImport( TransferHandler.TransferSupport support ) {
-//			return false;
-//		}
-//		@Override
-//		public int getSourceActions( JComponent c ) {
-//			return COPY;
-//		}
-//		@Override
-//		protected Transferable createTransferable( JComponent c ) {
-//			Object[] osel = ((JList) c).getSelectedValues();
-//			PageItem[] psel = new PageItem[ osel.length ];
-//			for( int i=0; i<osel.length; ++i ) {
-//				psel[i] = (PageItem) osel[i];
-//			}
-//			// this makes a separate copy for repainting, so we don't need to
-//			// clone these for each repaint
-//			PageView.droppableCards = PageItemTransferable.copy( psel );
-//			// prevent default drag image
-//			setDragImage( BLANK_DRAG_IMAGE );
-//			return new PageItemTransferable( psel );
-//		}
-//		@Override
-//		protected void exportDone( JComponent source, Transferable data, int action ) {
-//			PageView.droppableCards = null;
-//			PageView pv = getDeck().getActivePage().getView();
-//			pv.clearOptionText();
-//			pv.repaint();
-//		}
-//	};
-//	private static BufferedImage BLANK_DRAG_IMAGE = new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB );
+    private class PageItemList extends JList<PageItem> {
+        public PageItemList() {
+            super(new DefaultListModel<>());
+            setCellRenderer(new PageItemRenderer());
+            dragManager.addDragSource(this);
+        }
+
+        @Override
+        public DefaultListModel<PageItem> getModel() {
+            return (DefaultListModel<PageItem>) super.getModel();
+        }
+
+        public PageItemRenderer getPageItemRenderer() {
+            // safely returns correct type after constructor completes
+            return (PageItemRenderer) getCellRenderer();
+        }
+
+        @Override
+        public String getToolTipText( MouseEvent event ) {
+            int i = locationToIndex( event.getPoint() );
+            if( i >= 0 ) {
+                PageItem c = getModel().getElementAt(i);
+                if( c instanceof DependentPageItem )
+                return ((DependentPageItem) c).getPath();
+            }
+            return super.getToolTipText(event);
+        }
+    }
 }

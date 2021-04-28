@@ -748,7 +748,8 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tilesListMouseClicked"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -795,7 +796,8 @@
                             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="facesListValueChanged"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -842,7 +844,8 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tilesListMouseClicked"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -889,7 +892,8 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tilesListMouseClicked"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -936,7 +940,8 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tilesListMouseClicked"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
@@ -983,7 +988,8 @@
                             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tilesListMouseClicked"/>
                           </Events>
                           <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;    public String getToolTipText( MouseEvent event ) {&#xd;&#xa;&#x9;int i = locationToIndex( event.getPoint() );&#xd;&#xa;&#x9;if( i &gt;= 0 ) {&#xd;&#xa;&#x9;    PageItem c = (PageItem) getModel().getElementAt(i);&#xd;&#xa;&#x9;    if( c instanceof DependentPageItem )&#xd;&#xa;&#x9;&#x9;&#x9;return ((DependentPageItem) c).getPath();&#xd;&#xa;&#x9;}&#xd;&#xa;&#x9;return null;&#xd;&#xa;    }&#xd;&#xa;};"/>
+                            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new PageItemList()"/>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;PageItem&gt;"/>
                           </AuxValues>
                         </Component>
                       </SubComponents>
