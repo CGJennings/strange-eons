@@ -17,7 +17,7 @@ import java.io.InputStream;
  * While this allows setting the LZMA2 compression options in detail, often you
  * only need <code>LZMA2Options()</code> or <code>LZMA2Options(int)</code>.
  */
-class LZMA2Options {
+class LZMA2Options implements Cloneable {
 
     /**
      * Minimum valid compression preset level is 0.
