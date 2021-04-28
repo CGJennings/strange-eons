@@ -36,8 +36,6 @@ public class InstanceController implements Runnable {
     }
 
     public static boolean makeExclusive(String programName, int port, String[] args, InstanceControllerListener listener) {
-//	if( thread != null ) throw new IllegalStateException( "Must call stopExclusion before calling makeExclusive again" );
-
         try {
             server = new ServerSocket(port, 50, InetAddress.getLoopbackAddress());
             server.setSoTimeout(250);
@@ -47,16 +45,16 @@ public class InstanceController implements Runnable {
                 String response;
                 try (Socket client = new Socket(InetAddress.getLoopbackAddress(), port)) {
                     client.setSoTimeout(60 * 1_000);
-                    DataOutputStream out = new DataOutputStream(client.getOutputStream());
-                    DataInputStream in = new DataInputStream(client.getInputStream());
-                    out.writeUTF(MAGIC);
-                    out.writeUTF(programName);
-                    out.writeInt(args.length);
-                    for (String arg : args) {
-                        out.writeUTF(arg);
-                    }   response = in.readUTF();
-                    in.close();
-                    out.close();
+                    try (DataOutputStream out = new DataOutputStream(client.getOutputStream())) {
+                        DataInputStream in = new DataInputStream(client.getInputStream());
+                        out.writeUTF(MAGIC);
+                        out.writeUTF(programName);
+                        out.writeInt(args.length);
+                        for (String arg : args) {
+                            out.writeUTF(arg);
+                        }   response = in.readUTF();
+                        in.close();
+                    }
                 }
 
                 if (OK.equals(response)) {
@@ -170,20 +168,5 @@ public class InstanceController implements Runnable {
     private static InstanceControllerListener listener;
     private static String programName;
     private static final String MAGIC = "InstanceController.makeExclusive";
-    private static final String OK = "OK. Please die now.";
-
-//    public static void main( String[] args ) {
-//	InstanceControllerListener ic = new InstanceControllerListener() {
-//	    public boolean parseInstanceArguments( boolean isInitialInstance, String[] args ) {
-//		for( String arg : args ) {
-//		    System.out.println( "argument: " + arg );
-//		}
-//		return true;
-//	    }
-//	};
-//
-//	System.out.println( "Testing:" );
-//	System.out.println( makeExclusive( "test", 8081, args, ic ) );
-//	System.out.println( makeExclusive( "test", 8081, args, ic ) );
-//    }
+    private static final String OK = "OK. Please exit now.";
 }
