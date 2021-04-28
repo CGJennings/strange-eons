@@ -19,6 +19,7 @@ import java.io.StringReader;
 import java.text.Collator;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import javax.swing.DefaultComboBoxModel;
@@ -285,7 +286,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
         localeFilter.getDocument().addDocumentListener( new DocumentEventAdapter() {
             @Override
             public void changedUpdate( DocumentEvent e ) {
-                Object[] selValues = locList.getSelectedValues();
+                List<LanguageCodeDescriptor> selValues = locList.getSelectedValuesList();
                 final Pattern p = Pattern.compile( "(?i)(?u)" + Pattern.quote( localeFilter.getText() ) );
                 ((FilteredListModel) locList.getModel()).setFilter( new FilteredListModel.ListFilter() {
                     @Override
@@ -301,9 +302,9 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         ;
                     }
                 });
-                if( selValues.length > 0 ) {
+                if( selValues.size() > 0 ) {
                     ListModel m = locList.getModel();
-                    for( Object sel : selValues ) {
+                    for( LanguageCodeDescriptor sel : selValues ) {
                         for( int i=0; i<m.getSize(); ++i ) {
                             if( sel.equals( m.getElementAt( i ) ) ) {
                                 locList.addSelectionInterval( i, i );
@@ -394,7 +395,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addComponent(jLabel1)
                         .addComponent(localeField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(syntaxWarnLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
         customPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {localeField, syntaxWarnLabel});
@@ -586,7 +587,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JComboBox langCombo;
-    private javax.swing.JList locList;
+    private javax.swing.JList<LanguageCodeDescriptor> locList;
     private javax.swing.JScrollPane locScroll;
     private javax.swing.JTextField localeField;
     private ca.cgjennings.ui.JFilterField localeFilter;
@@ -618,10 +619,10 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private Locale[] getSelectedLocales() {
         Locale[] result;
         if (localeMethodTab.getSelectedIndex() == 0) {
-            Object[] sel = locList.getSelectedValues();
-            result = new Locale[sel.length];
-            for (int i = 0; i < result.length; ++i) {
-                result[i] = ((LanguageCodeDescriptor) sel[i]).getLocale();
+            List<LanguageCodeDescriptor> sel = locList.getSelectedValuesList();
+            result = new Locale[sel.size()];
+            for(int i=0; i<result.length; ++i) {
+                result[i] = sel.get(i).getLocale();
             }
         } else {
             String loc = localeField.getText();

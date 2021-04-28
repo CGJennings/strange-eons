@@ -5,6 +5,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -140,17 +141,9 @@ public class ListTransferHandler extends TransferHandler {
             }
         }
 
-//		//Prevent the user from dropping data back on itself.
-//		if( source != null && source == target ) {
-//			if( indices != null && index >= indices[0] - 1
-//					&& index <= indices[indices.length - 1] ) {
-//				indices = null;
-//				return true;
-//			}
-//		}
         DefaultListModel listModel = (DefaultListModel) target.getModel();
         int max = listModel.getSize();
-//		System.out.printf( "index = %d  max = %d%n", index, max );
+
         if (index < -1) {
             index = -1;
         }
@@ -234,14 +227,11 @@ public class ListTransferHandler extends TransferHandler {
         if (c instanceof JList) {
             JList source = (JList) c;
             indices = source.getSelectedIndices();
-            Object[] values = source.getSelectedValues();
-            if (values == null || values.length == 0) {
+            List values = source.getSelectedValuesList();
+            if (values.size() == 0) {
                 return null;
             }
-            ArrayList alist = new ArrayList(values.length);
-            for (int i = 0; i < values.length; ++i) {
-                alist.add(values[i]);
-            }
+            ArrayList alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList(values);
             return new ListTransferable(alist);
         }
         return null;

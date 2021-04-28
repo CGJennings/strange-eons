@@ -1,5 +1,7 @@
 package ca.cgjennings.ui;
 
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EventListener;
@@ -7,7 +9,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javax.swing.AbstractListModel;
 import javax.swing.Icon;
+import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -206,14 +210,17 @@ public class FilteredListModel extends AbstractListModel {
      * which will then be applied to the list.
      *
      * @param field the field to link this model to
+     * @param list the list whose items are filtered
+     * @param restoreSelection if true, any selection is restore after updating the list
+     * @param T the item type of the target list
      */
-    public void linkTo(final JFilterField field, final JList list, final boolean restoreSelection) {
+    public <T> void linkTo(final JFilterField field, final JList<T> list, final boolean restoreSelection) {
         field.getDocument().addDocumentListener(new DocumentEventAdapter() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-                Object[] selValues = list.getSelectedValues();
+                List<T> selValues = restoreSelection ? list.getSelectedValuesList() : null;
                 setFilter(createStringFilter(field.getText()));
-                if (selValues.length > 0 && restoreSelection) {
+                if (selValues != null) {
                     for (Object sel : selValues) {
                         for (int i = 0; i < getSize(); ++i) {
                             if (sel.equals(getElementAt(i))) {
@@ -238,35 +245,7 @@ public class FilteredListModel extends AbstractListModel {
 
     public static final ListFilter ACCEPT_ALL_FILTER = (FilteredListModel mode, Object item) -> true;
 
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame();
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				JList l = new JList();
-//				f.getContentPane().setLayout( new FlowLayout( ) );
-//				final FilteredListModel model = new FilteredListModel( new String[] { "Chris", "Sarah", "Abigail", "Tony", "Henry" } );
-//				l.setModel( model );
-//				f.add( l );
-//				final JTextField t = new JTextField(10);
-//				t.getDocument().addDocumentListener( new DocumentEventAdapter() {
-//					@Override
-//					public void changedUpdate( DocumentEvent e ) {
-//						model.setFilter( FilteredListModel.createRegexFilter( t.getText() ) );
-//					}
-//				});
-//				f.add( t );
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//			}
-//
-//		});
-//	}
     public interface FilterChangeListener extends EventListener {
-
         void filterChanged(Object source);
     }
 }

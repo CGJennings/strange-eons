@@ -35,6 +35,7 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
@@ -572,7 +573,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         javax.swing.JPanel classTabPanel = new javax.swing.JPanel();
         javax.swing.JPanel pluginClassPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        scriptList = new javax.swing.JList();
+        scriptList = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         javax.swing.JPanel catalogIDPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -1374,10 +1375,10 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
                 return;
             }
 
-            Object[] sel = scriptList.getSelectedValues();
-            String[] files = new String[sel.length];
-            for (int i = 0; i < sel.length; ++i) {
-                files[i] = ((Entry) sel[i]).getCode();
+            List<Entry> sel = scriptList.getSelectedValuesList();
+            String[] files = new String[sel.size()];
+            for (int i = 0; i < files.length; ++i) {
+                files[i] = sel.get(i).getCode();
             }
             pluginRoot.setPluginIdentifiers(files);
 	}//GEN-LAST:event_scriptListValueChanged
@@ -1618,7 +1619,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JPanel libraryDescPanel;
     private javax.swing.JButton okBtn;
     private javax.swing.JComboBox priorityCombo;
-    private javax.swing.JList scriptList;
+    private javax.swing.JList<Entry> scriptList;
     private javax.swing.JPanel simple;
     private javax.swing.JTabbedPane simpleTabs;
     private javax.swing.JButton switchBtn;

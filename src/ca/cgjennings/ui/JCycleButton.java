@@ -185,7 +185,8 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      * the number of elements in the model does not match the number of proxy
      * setting values
      */
-    public void setCycleModel(M... model) {
+    @SafeVarargs
+    public final void setCycleModel(M... model) {
         if (settingValues != null) {
             if (model == null) {
                 throw new IllegalArgumentException("new model is null but proxy settings are not null");
