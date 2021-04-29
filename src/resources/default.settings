@@ -451,7 +451,7 @@ invoke-java-cmd = java
 # Catalogue URLs: the -1 entry is the location of the master SE catalogue
 # Other unique URLs that are entered in the catalogue dialogue will be stored
 # in user settings at -2, -3, etc.
-catalog-url-1 = http://strangeeons.cgjennings.ca/plugins3/
+catalog-url-1 = https://strangeeons.cgjennings.ca/plugins3/
 # If yes, show additional details in the catalog listing window; these may
 # be useful for writing or debugging catalogues
 catalog-show-expert-info = no
