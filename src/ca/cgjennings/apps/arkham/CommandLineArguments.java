@@ -77,7 +77,7 @@ public class CommandLineArguments implements Cloneable {
 
 
     /**
-     * Non-standard quality-tuning option. <br>
+     * Non-standard quality-tuning option. <p>
      * This option forces the method used to antialias (AA) text.
      * Java attempts to read system-wide AA settings, but this often fails on
      * Linux. So by default Strange Eons uses the default settings on
@@ -97,14 +97,23 @@ public class CommandLineArguments implements Cloneable {
     public String xAAText = null;
    
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard development option. <p>
+     * This option prevents Strange Eons from checking the JRE version at
+     * startup. Normally, Strange Eons checks which version of
+     * Java it is running against and will refuse to start unless it is
+     * a known compatible version.
+     */
+    public boolean xDisableJreCheck = false;
+
+    /**
+     * Non-standard development option. <p>
      * This option causes an exception to be thrown during startup. It is used
      * to test how {@link ErrorDialog} handles uncaught startup exceptions.
      */
     public boolean xDebugException = false;
 
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard debugging option. <p>
      * This option prevents Strange Eons from attempting to re-open the project
      * that was open the last time the application exited. This may be useful if
      * this is preventing the application from starting normally. This option is
@@ -113,7 +122,7 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableProjectRestore = false;
 
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard debugging option. <p>
      * This option prevents Strange Eons from attempting to re-open the same
      * files that were in use the last time the application exited. This may be
      * useful if this is preventing the application from starting normally. This
@@ -122,14 +131,14 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableFileRestore = false;
 
     /**
-     * Non-standard debugging and performance option. <br>
+     * Non-standard debugging and performance option. <p>
      * This option disables animation effects that may not be played correctly
      * on some platforms.
      */
     public boolean xDisableAnimation = false;
 
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard debugging option. <p>
      * If this option is set, certain initialization steps that are normally
      * performed in a separate thread to decrease startup time will instead be
      * performed in the main startup thread. Try setting this option if you
@@ -138,7 +147,7 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableBackgroundInit = false;
 
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard debugging option. <p>
      * Disables the use of threads to accelerate image filters in the package
      * <code>ca.cgjennings.graphics.filters</code> and use of multiple threads
      * by {@link ca.cgjennings.algo.SplitJoin}.
@@ -146,23 +155,23 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableFilterThreads = false;
 
     /**
-     * Non-standard debugging option. <br>
+     * Non-standard debugging option. <p>
      * This option disables use of the system menu bar on OS X. It has no effect
      * on other platforms.
      */
     public boolean xDisableSystemMenu = false;
 
     /**
-     * Non-standard debugging and performance option. <br>
+     * Non-standard debugging and performance option. <p>
      * This option attempts to enable the OpenGL rendering pipeline for graphics
      * instead of using the default pipeline. It may result in improved
-     * performance on some systems, although it may result in rendering errors
-     * if driver support is poor.
+     * performance on some systems, although it may also result in rendering
+     * issues if driver support is poor.
      */
     public boolean xOpenGL = false;
 
     /**
-     * Internal use option. <br>
+     * Internal use option. <p>
      * This option is not meant to be set by the user. It is supplied
      * automatically when the application is attempting to restart itself. The
      * supplied file is a temporary file locked by the application instance that

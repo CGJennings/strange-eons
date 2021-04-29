@@ -391,7 +391,7 @@ public final class StrangeEons {
         try {
             initStage1();
         } catch (final Throwable t) {
-            log.log(Level.SEVERE, "Uncaught Exception at Stage 1: asking EDT to show fatal error", t);
+            log.log(Level.SEVERE, "Uncaught Exception in Stage 1", t);
             EventQueue.invokeLater(() -> {
                 // try to localize the error message, but have a fallback ready
                 String message = "Uncaught exception during initialization";
@@ -399,10 +399,10 @@ public final class StrangeEons {
                     if (Language.getInterface().isKeyDefined("rk-err-uncaught")) {
                         message = string("rk-err-uncaught");
                     }
+                    ErrorDialog.displayFatalError(message, t);
                 } catch (Exception e) {
+                    log.log(Level.SEVERE, "couldn't display error message", e);
                 }
-
-                ErrorDialog.displayFatalError(message, t);
             });
         }
     }
@@ -1276,16 +1276,6 @@ public final class StrangeEons {
     private Object currentTarget; // has focus + valid
     private Object lastTarget; // most recent non-null currentTarget
 
-    void clearMarkupTargets() {
-
-    }
-
-//	/**
-//	 * Returns <code>true</code> if there is a valid markup target.
-//	 */
-//	public boolean canInsertMarkup() {
-//		return getMarkupTarget() != null;
-//	}
     /**
      * Inserts a string into the most recently valid application-wide markup
      * target. The current selection, if any, will be replaced. If there is no
@@ -1320,50 +1310,6 @@ public final class StrangeEons {
         }
     }
 
-//	public boolean canInsertMarkup() {
-//		if( currentTarget == null ) return false;
-//
-//		if( currentTarget.getRootPane() != null ) {
-//			if( currentTarget.getRootPane().getParent() instanceof RelabelDialog ) {
-//				return true;
-//			}
-//		}
-//
-//		if( !currentTarget.isEnabled() ) return false;
-//
-//		Object forceProperty = currentTarget.getClientProperty( FORCE_MARKUP_TARGET_PROPERTY );
-//		if( forceProperty == Boolean.FALSE ) return false;
-//		if( forceProperty == Boolean.TRUE ) return true;
-//
-//		// always allow code editors, even if in other windows, unless explicitly
-//		// disabled by property---useful for plug-ins, IDE stuff
-//		if( currentTarget instanceof JCodeEditor && currentTarget.isShowing() ) {
-//			return ((JCodeEditor) currentTarget).isEditable();
-//		}
-//
-//		if( currentTarget instanceof JTextComponent ) {
-//			if( !((JTextComponent) currentTarget).isEditable() ) return false;
-//		}
-//
-//		// HACK: check for the field that allows entering line numbers in JCodeEditors
-//		if( "JCodeEditorLineNumber".equals( currentTarget.getName() ) ) return false;
-//
-//		// don't allow if it is not in the current editor so we eliminate a lot
-//		// of misc text fields in dialogs and whatnot
-//		JInternalFrame editor = (JInternalFrame) getActiveEditor();
-//		if( editor != null && MarkupTargetHelper.isValidTarget( currentTarget ) && currentTarget.isShowing() ) {
-//			Container parent = currentTarget;
-//			while( parent != null && parent != this ) {
-//				if( parent == editor ) {
-//					return true;
-//				}
-//				if( parent instanceof JSpinner ) return false;
-//				parent = parent.getParent();
-//			}
-//		}
-//
-//		return false;
-//	}
     /**
      * Returns the global named object database for the application. The named
      * object database associates names with objects so that they can be shared
@@ -1735,7 +1681,9 @@ public final class StrangeEons {
         initLanguage();
 
         // check Java version and display localized message if not new enough
-        initCheckJavaVersion();
+        if(!commandLineArguments.xDisableJreCheck) {
+            initCheckJREVersion();
+        }
 
         // Load default global settings:
         // deferred until just after Language is set up since
@@ -1764,11 +1712,11 @@ public final class StrangeEons {
         EventQueue.invokeLater(() -> {
             try {
                 if (commandLineArguments.xDebugException) {
-                    throw new Error("--XDebugException flag was set on command line");
+                    throw new InternalError("--XDebugException flag was set on command line");
                 }
                 initStage2(startTime);
             } catch (Throwable t) {
-                log.log(Level.SEVERE, "Uncaught Exception at Stage 2: showing fatal error", t);
+                log.log(Level.SEVERE, "Uncaught Exception in Stage 2", t);
                 ErrorDialog.displayFatalError(string("rk-err-uncaught"), t);
             }
         });
@@ -1851,8 +1799,6 @@ public final class StrangeEons {
         splash.setActivity("Iä! Iä! Cthulhu F'thagn!");
         splash.setPercent(95);
 
-        // Test rendering speeds to set default quality settings, if required or requested.
-//		SpeedTest.performTest();
         // Finally!
         // The app window was created earlier, so
         // that it was available as a parent window, but it isn't visible yet.
@@ -1870,7 +1816,7 @@ public final class StrangeEons {
                 }
                 if (log.isLoggable(Level.INFO)) {
                     double time = (System.nanoTime() - startTime) * 1e-9;
-                    log.log(Level.INFO, String.format("it took %.2f s to start the application", time));
+                    log.log(Level.INFO, String.format("startup took took %.2f s", time));
                 }
 
                 // Before closing the splash window, check if it has any
@@ -1904,7 +1850,6 @@ public final class StrangeEons {
     }
 
     private static class LingeringStartupWindowPresenter {
-
         int lastCount;
         Window splash;
         boolean moveToFront;
@@ -1967,10 +1912,11 @@ public final class StrangeEons {
             }
             try {
                 if (!commandLineArguments.xDisableAnimation) {
-                    wait(SplashWindow.ANIMATION_TIME_MS + 10_000);
                     // we will be notified when the animation completes
+                    wait(SplashWindow.ANIMATION_TIME_MS + 10_000);
                 }
             } catch (InterruptedException e) {
+                // not a problem
             }
         }
     }
@@ -2018,10 +1964,6 @@ public final class StrangeEons {
         if (checksum < MIN_MEM_IN_BYTES) {
             log.log(Level.WARNING, "the maximum memory setting is less than the recommended value (-Xmx{0}m)", RECOMMENDED_MEMORY_IN_MB);
         }
-
-//		if( !testJavaVersion( 1, 7, 0, 0 ) ) {
-//			log.info( "running under Java 7 or newer enables more features and may improve performance" );
-//		}
     }
 
     /**
@@ -2030,7 +1972,7 @@ public final class StrangeEons {
      * {@link #initCheckSystemConfig()} so that it can display a localized
      * dialog box.
      */
-    private void initCheckJavaVersion() {
+    private void initCheckJREVersion() {
         int[] ver = getJavaVersion();
         if(ver.length < 2 || ver[0] != 1 || ver[1] != 8) {
             try {
@@ -2048,6 +1990,7 @@ public final class StrangeEons {
                     System.exit(20);
                 });
             } catch (Exception e) {
+                log.log(Level.SEVERE, "version check failed", e);
             }
         }
     }
@@ -2336,8 +2279,6 @@ public final class StrangeEons {
 
     private void initBaselineEditors() {
         try {
-            // There currently are no default tiles!
-            // TileSet.add( "board/standard.tiles" );
             ClassMap.add("editors/minimal.classmap");
             splash.setPercent(45);
             Silhouette.add("silhouettes/standard.silhouettes");
