@@ -197,7 +197,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 app.setStartupActivityMessage(string("init-last-proj"));
                 File projectFile = new File(recentProject);
                 if (Project.isProjectFolder(projectFile) || Project.isProjectPackage(projectFile)) {
-                    openProject(projectFile, true);
+                    openProject(projectFile, StrangeEons.getScriptRunningMode() == null);
                 }
             } catch (IOException e) {
             }
@@ -213,7 +213,9 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         TDetachedEditor.installCatalogSearchHandler(this);
 
-        setVisible(true);
+        if (StrangeEons.getScriptRunningMode() == null) {
+            setVisible(true);
+        }
 
         boolean enable = Settings.getShared().getYesNo("show-context-bar");
         if (enable) {
@@ -256,7 +258,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 // load initial editors from command line
                 openFilesInQueue();
                 // OK to use desktopPane since nothing detached yet
-                if (getOpenProject() == null && desktopPane.getAllFrames().length == 0) {
+                if (getOpenProject() == null && StrangeEons.getScriptRunningMode() == null && desktopPane.getAllFrames().length == 0) {
                     SwingUtilities.invokeLater(() -> {
                         Commands.NEW_GAME_COMPONENT.actionPerformed(null);
                     });
@@ -270,6 +272,11 @@ final class AppFrame extends StrangeEonsAppWindow {
                 }
                 // start posting any queued messages
                 Messenger.setQueueProcessingEnabled(true);
+
+                // run script running mode script, if any
+                if (StrangeEons.getScriptRunningMode() != null) {
+                    StrangeEons.getScriptRunningMode().run();
+                }
             } finally {
                 setDefaultCursor();
             }
@@ -293,7 +300,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         if (thisBuild == StrangeEons.INTERNAL_BUILD_NMBER) {
             return;
         }
-        
+
         Settings s = Settings.getUser();
 
         String message = null;
@@ -479,8 +486,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         if (BundleInstaller.hasTestBundles()) {
             title = "Strange Eons [PLUG-IN TEST: ";
             File[] bf = BundleInstaller.getTestBundles();
-            for(int i=0, len=bf.length; i<len; ++i ) {
-                if(i > 0) title += ", ";
+            for (int i = 0, len = bf.length; i < len; ++i) {
+                if (i > 0) {
+                    title += ", ";
+                }
                 title += bf[i].getName();
             }
             title += ']';

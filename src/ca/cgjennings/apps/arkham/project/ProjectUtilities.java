@@ -1052,8 +1052,6 @@ public class ProjectUtilities {
         monkey.bind("member", member);
         monkey.setBreakpoint(debug);
         Object result = monkey.eval(script);
-
-//		context.synchronize();
         return result;
     }
 
