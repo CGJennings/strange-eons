@@ -91,7 +91,7 @@ public final class ScriptRunningModeHelper {
      * @return true if the script has started to load and run, even if it since
      * finished; false otherwise
      */
-    public boolean isScriptStarted() {
+    public boolean isStarted() {
         return runState >= STATE_STARTED;
     }
 
@@ -104,7 +104,7 @@ public final class ScriptRunningModeHelper {
      *
      * @return true if the script file
      */
-    public boolean isScriptFinished() {
+    public boolean isFinished() {
         return runState >= STATE_FINISHED;
     }
 
@@ -113,7 +113,7 @@ public final class ScriptRunningModeHelper {
      *
      * @return the file that was passed as the
      */
-    public File getScriptFile() {
+    public File getFile() {
         return script;
     }
 
