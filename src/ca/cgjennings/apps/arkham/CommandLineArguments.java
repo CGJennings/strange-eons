@@ -70,6 +70,9 @@ public class CommandLineArguments implements Cloneable {
      */
     public File resfolder = null;
 
+    /** Script file to run in script mode; see {@link RunScriptHandler}. */
+    public File run = null;
+
     /**
      * If set, display help for non-standard options and exit.
      */
@@ -219,6 +222,7 @@ public class CommandLineArguments implements Cloneable {
 + "                        to list multiple bundles.\n"
 + "  --resetPrefs          Resets all preferences to their default values.\n"
 + "  --migratePrefs        Forces preference migration from an earlier version.\n"
++ "  --run file            Run the script file non-interactively.\n"
 + "  --X                   Displays help for non-standard options and exits.\n"
 + "\nNotes:\n"
 + "  (1) Locales are defined using a two-letter ISO-639 language code, optionally\n"

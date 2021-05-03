@@ -95,7 +95,10 @@ class SplashWindow extends JFrame {
         }
 
         StyleUtilities.setWindowOpacity(this, 0f);
-        setVisible(true);
+
+        if (StrangeEons.getScriptRunningMode() == null) {
+            setVisible(true);
+        }
 
         blurFilt.setPremultiplied(false);
         new Animation(ANIMATION_TIME_MS / 1000f) {
