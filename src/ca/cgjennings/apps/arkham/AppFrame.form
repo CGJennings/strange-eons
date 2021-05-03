@@ -15,9 +15,6 @@
             </Property>
             <Property name="name" type="java.lang.String" value="fileMenu" noResource="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="updateCommandStates"/>
-          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="newItem">
               <Properties>
@@ -225,9 +222,6 @@
             </Property>
             <Property name="name" type="java.lang.String" value="editMenu" noResource="true"/>
           </Properties>
-          <Events>
-            <EventHandler event="menuSelected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="updateCommandStates"/>
-          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="clearItem">
               <Properties>

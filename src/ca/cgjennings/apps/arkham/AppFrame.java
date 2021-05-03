@@ -955,15 +955,6 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         fileMenu.setText(string("app-file")); // NOI18N
         fileMenu.setName("fileMenu"); // NOI18N
-        fileMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                updateCommandStates(evt);
-            }
-        });
 
         newItem.setAction( Commands.NEW_GAME_COMPONENT );
         newItem.setName("newItem"); // NOI18N
@@ -1039,15 +1030,6 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         editMenu.setText(string("app-edit")); // NOI18N
         editMenu.setName("editMenu"); // NOI18N
-        editMenu.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
-                updateCommandStates(evt);
-            }
-        });
 
         clearItem.setAction( Commands.CLEAR );
         clearItem.setName("clearItem"); // NOI18N
@@ -1812,104 +1794,6 @@ final class AppFrame extends StrangeEonsAppWindow {
         JUtilities.hideWaitCursor(this);
     }
 
-    void updateCommonCommandStates(boolean updateRecentFiles) {
-        try {
-            // items that only work if an editor is open
-/*
-			StrangeEonsEditor ed = getActiveEditor();
-			boolean enable = ed != null;
-
-			JMenuItem[] items = new JMenuItem[] {
-				saveItem, saveAsItem, saveAllItem, exportItem, printItem, closeItem,
-				clearItem, cloneItem, findItem, selectAllItem
-			};
-
-			for( int i = 0; i < items.length; ++i ) {
-				items[i].setSelected( false );
-				items[i].setEnabled( enable );
-			}
-
-			// apply specific rules based on supported editor ops
-			if( ed != null ) {
-				saveItem.setEnabled( ed.isCommandApplicable( Commands.SAVE ) );
-				saveAsItem.setEnabled( ed.isCommandApplicable( Commands.SAVE_AS ) );
-				clearItem.setEnabled( ed.isCommandApplicable( Commands.CLEAR ) );
-				exportItem.setEnabled( ed.isCommandApplicable( Commands.EXPORT ) );
-				printItem.setEnabled( ed.isCommandApplicable( Commands.PRINT ) );
-				cloneItem.setEnabled( ed.isCommandApplicable( Commands.SPIN_OFF ) );
-				findItem.setEnabled( ed.isCommandApplicable( Commands.FIND ) );
-			}
-
-			// project items
-			boolean projectIsOpen = getOpenProjectView() != null;
-			closeProjectItem.setEnabled( projectIsOpen );
-			findInProjectItem.setEnabled( projectIsOpen );
-
-			if( !updateRecentFiles ) return;
-             */
-// RECENT FILE MENU
-
-            // determine max files to list, 0 = none
-//			String value = RawSettings.getSetting( "recent-file-menu-length" );
-//			int maxFiles = 5;
-//			if( value != null ) {
-//				try {
-//					maxFiles = Integer.parseInt( value );
-//				} catch( NumberFormatException e ) {
-//				}
-//			}
-//			if( maxFiles < 0 ) {
-//				maxFiles = 0;
-//			} else if( maxFiles > RECENT_FILE_LIST_SIZE ) {
-//				maxFiles = RECENT_FILE_LIST_SIZE;
-//			}
-//			openRecentMenu.setVisible( maxFiles > 0 );
-//
-//			// clear file list
-//			String[] recentFiles = getRecentFiles();
-//
-//			while( openRecentMenu.getItem( 0 ) != clearRecentItem ) {
-//				openRecentMenu.remove( 0 );
-//			}
-//
-//			// add current file list
-//			boolean containsProject = false;
-//			int i = 0;
-//			for( ; i < recentFiles.length && i < maxFiles; ++i ) {
-//				JMenuItem item = createRecentFileItem( recentFiles[i] );
-//				openRecentMenu.insert( item, i );
-//				containsProject |= item.getIcon() == MetadataSource.ICON_PROJECT;
-//			}
-//			if( recentFiles.length > 0 && maxFiles > 0 ) {
-//				openRecentMenu.insertSeparator( i );
-//				clearRecentItem.setEnabled( true );
-//			} else {
-//				clearRecentItem.setEnabled( false );
-//			}
-//			if( !containsProject ) {
-//				for( i=0; i<recentFiles.length; ++i ) {
-//					Component c = openRecentMenu.getMenuComponent( i );
-//					if( c instanceof JMenuItem ) {
-//						((JMenuItem) c).setIcon( null );
-//					} else {
-//						break;
-//					}
-//				}
-//				clearRecentItem.setIcon( null );
-//			} else {
-//				clearRecentItem.setIcon( MetadataSource.ICON_BLANK );
-//			}
-        } catch (Throwable t) {
-            // BUG: reports of file menu not opening; goal is to prevent an
-            // exception during update from preventing menu from appearing
-            StrangeEons.log.log(Level.SEVERE, "exception while updating command states", t);
-        }
-    }
-
-    private void updateCommandStates(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_updateCommandStates
-        // only update recent files if opening the file menu
-        updateCommonCommandStates(evt != null && evt.getSource() == fileMenu);
-    }//GEN-LAST:event_updateCommandStates
 
     /**
      * Adds a new listener for changes to the current project.
