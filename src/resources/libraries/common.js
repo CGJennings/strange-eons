@@ -413,7 +413,6 @@ Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
 };
 
-//if(Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
-if(true) {
+if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
     useLibrary("backwards-compatibility");
 }
