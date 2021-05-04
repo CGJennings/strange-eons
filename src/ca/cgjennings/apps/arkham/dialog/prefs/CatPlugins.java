@@ -92,6 +92,7 @@ class CatPlugins extends FillInPreferenceCategory {
         unindent();
         addCheckBox("script-warnings", string("sd-l-js-warnings"), false);
         addCheckBox("script-full-exception-trace", string("sd-l-js-stack-trace"), false);
+        addCheckBox("script-compatibility-mode", string("sd-l-js-lib-compat"), false);
 
         subheading(string("sd-l-debugger"));
         addCheckBox("enable-script-debugger", string("sd-l-js-debugger"), false);

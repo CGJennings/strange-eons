@@ -565,6 +565,9 @@ script-optimization-level = 0
 # Enables warning messages from the script parser.
 script-warnings = no
 
+# If yes, enable script compatibility mode; see backwards-compatibility.js
+script-compatibility-mode = no
+
 # If yes, a complete stack trace is dumped to the console window when a script
 # error occurs, and not just a trace of the the JavaScript system.
 script-full-exception-trace = no
