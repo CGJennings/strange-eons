@@ -213,10 +213,10 @@ const useInterfaceLanguage = function useInterfaceLanguage(language) {
 const string = function string(key) {
     let str = useLibrary.__$.getUiLangProvider().str(key);
     if (arguments.length > 1) {
-        return sprintf(
-                useLibrary.__$.getUiLangProvider(),
-                str, Array.prototype.slice.call(arguments, 1)
-                );
+    	str = sprintf.apply(null, [
+    		useLibrary.__$.getUiLangProvider(),
+    		str,
+    	].concat(Array.prototype.slice.call(arguments, 1)));        
     }
     return str;
 };
@@ -229,10 +229,10 @@ function useGameLanguage(language) {
 const gstring = function gstring(key) {
     let str = useLibrary.__$.getGameLangProvider().str(key);
     if (arguments.length > 1) {
-        return sprintf(
-                useLibrary.__$.getGameLangProvider(),
-                str, Array.prototype.slice.call(arguments, 1)
-                );
+    	str = sprintf.apply(null, [
+    		useLibrary.__$.getGameLangProvider(),
+    		str,
+    	].concat(Array.prototype.slice.call(arguments, 1)));
     }
     return str;
 };
