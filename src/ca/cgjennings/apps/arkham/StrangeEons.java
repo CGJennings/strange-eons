@@ -99,7 +99,7 @@ public final class StrangeEons {
      * This build number indicates an "internal development build", not an
      * official release.
      */
-    static final int INTERNAL_BUILD_NMBER = 99_999;
+    static final int INTERNAL_BUILD_NUMBER = 99_999;
 
     static {
         BufferedReader in = null;
@@ -130,7 +130,7 @@ public final class StrangeEons {
     // the field name "logBuffer" is looked up via reflection by dev tools plug-in
     private static final StringBuffer logBuffer = new StringBuffer(16 * 1_024);
 
-    private static ScriptRunningModeHelper scriptRunningMode;
+    private static ScriptRunnerModeHelper scriptRunnerMode;
 
     // the logger has to be initialized very near the top so that it exists
     // for other static initializer sections to use
@@ -395,9 +395,9 @@ public final class StrangeEons {
         }
 
         if (commandLineArguments.run != null) {
-            scriptRunningMode = new ScriptRunningModeHelper(commandLineArguments.run);
+            scriptRunnerMode = new ScriptRunnerModeHelper(commandLineArguments.run);
         } else {
-            scriptRunningMode = null;
+            scriptRunnerMode = null;
         }
 
         try {
@@ -591,9 +591,32 @@ public final class StrangeEons {
     }
 
     /**
-     * If the app is in "script running" mode, returns an object that can be
+     * Returns whether the app is running in non-interactive mode. When running
+     * in non-interactive mode, windows are not shown automatically
+     * (including the splash screen). Non-interactive mode is normally used
+     * to perform some automated task, such as running a script.
+     *
+     * <p>Making the main app window visible will immediately end non-interactive
+     * mode if enabled.
+     *
+     * <p>Note that performing an action that assumes or relies on the app
+     * window may throw an exception when running in non-interactive mode.
+     *
+     * @return true if running in non-interactive mode
+     */
+    public static boolean isNonInteractive() {
+        StrangeEonsAppWindow w = getWindow();
+        if(w != null && w.isVisible()) {
+            return false;
+        }
+        // currently only script runner mode activates the non-interactive state
+        return scriptRunnerMode == null;
+    }
+
+    /**
+     * If the app is in "script runner" mode, returns an object that can be
      * queried for additional information and used to manage the mode's
-     * behaviour. Returns null if the app is running normally. Script running
+     * behaviour. Returns null if the app is running normally. Script runner
      * mode is activated by passing a command line argument {@code -run} (or
      * {@code --run}) and a file path for a script file. When running in run
      * script mode, the app begins in a non-interactive mode without
@@ -603,8 +626,8 @@ public final class StrangeEons {
      *     command line script file, or null
      * @see CommandLineArguments#run
      */
-    public static ScriptRunningModeHelper getScriptRunningMode() {
-        return scriptRunningMode;
+    public static ScriptRunnerState getScriptRunner() {
+        return scriptRunnerMode;
     }
 
     /**

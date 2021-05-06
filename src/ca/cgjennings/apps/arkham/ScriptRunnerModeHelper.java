@@ -9,7 +9,7 @@ import java.util.Objects;
 import javax.swing.SwingUtilities;
 
 /**
- * A support class that helps the app implement script running mode. Script
+ * A support class that helps the app implement script runner mode. Script
  * running mode is activated by passing a command line argument {@code -run} (or
  * {@code --run}) and a file path for a script file. When activated, the app
  * will start without making its windows visible, then attempt to run the script
@@ -22,7 +22,7 @@ import javax.swing.SwingUtilities;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.2
  */
-public final class ScriptRunningModeHelper {
+final class ScriptRunnerModeHelper implements ScriptRunnerState {
     private static final int STATE_NOT_STARTED = -1;
     private static final int STATE_STARTED = 0;
     private static final int STATE_FINISHED = 1;
@@ -31,7 +31,12 @@ public final class ScriptRunningModeHelper {
     private volatile boolean keepAlive;
     private final File script;
 
-    ScriptRunningModeHelper(File scriptFile) {
+    /**
+     * Creates a helper for the specified script file.
+     * @param scriptFile the script file to run; typically that passed as the
+     *    script runner argument
+     */
+    ScriptRunnerModeHelper(File scriptFile) {
         this.script = Objects.requireNonNull(scriptFile);
     }
 
@@ -80,65 +85,27 @@ public final class ScriptRunningModeHelper {
         }
     }
 
-    /**
-     * Returns whether the process of running the script has started. Once true,
-     * it will remain true until the application has terminated. For example,
-     * this would return false while an extension plug-in was being initialized
-     * because the script is not run until the app is ready to start, that is,
-     * after the main app window would normally become visible. If called from
-     * the script file itself, it would always return true.
-     *
-     * @return true if the script has started to load and run, even if it since
-     * finished; false otherwise
-     */
+    @Override
     public boolean isStarted() {
         return runState >= STATE_STARTED;
     }
 
-    /**
-     * Returns whether the main script file has finished running. Note that if
-     * the script installs event handlers or starts new threads, those parts of
-     * the script can continue to run after the script finishes. If you think of
-     * the script as a function, then this method returns true as soon as the
-     * script has "returned."
-     *
-     * @return true if the script file
-     */
+    @Override
     public boolean isFinished() {
         return runState >= STATE_FINISHED;
     }
 
-    /**
-     * Returns the script file to be run.
-     *
-     * @return the file that was passed as the
-     */
+    @Override
     public File getFile() {
         return script;
     }
 
-    /**
-     * Sets whether Strange Eons will exit after the main script completes. By
-     * default, as soon as the specified script runs the app will exit. The
-     * script itself can prevent this by calling this method (for example, using
-     * {@code Eons.scriptRunningMode.keepAlive = true}). Scripts might wish to
-     * do this if they start other threads or install event handlers.
-     *
-     * @param keepAlive if true, the app will not exit when the end of the
-     *     script file is reached
-     */
+    @Override
     public void setKeepAlive(boolean keepAlive) {
         this.keepAlive = keepAlive;
     }
 
-    /**
-     * Returns whether Strange Eons will continue running after the main script
-     * completes.
-     *
-     * @return true if Strange Eons will continue running after the end of the
-     *     script file is reached
-     * @see #setKeepAlive
-     */
+    @Override
     public boolean getKeepAlive() {
         return keepAlive;
     }

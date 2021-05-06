@@ -96,7 +96,7 @@ class SplashWindow extends JFrame {
 
         StyleUtilities.setWindowOpacity(this, 0f);
 
-        if (StrangeEons.getScriptRunningMode() == null) {
+        if (!StrangeEons.isNonInteractive()) {
             setVisible(true);
         }
 
