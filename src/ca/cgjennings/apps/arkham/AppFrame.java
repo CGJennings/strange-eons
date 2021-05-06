@@ -197,7 +197,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 app.setStartupActivityMessage(string("init-last-proj"));
                 File projectFile = new File(recentProject);
                 if (Project.isProjectFolder(projectFile) || Project.isProjectPackage(projectFile)) {
-                    openProject(projectFile, StrangeEons.getScriptRunningMode() == null);
+                    openProject(projectFile, !StrangeEons.isNonInteractive());
                 }
             } catch (IOException e) {
             }
@@ -213,7 +213,7 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         TDetachedEditor.installCatalogSearchHandler(this);
 
-        if (StrangeEons.getScriptRunningMode() == null) {
+        if (!StrangeEons.isNonInteractive()) {
             setVisible(true);
         }
 
@@ -258,7 +258,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 // load initial editors from command line
                 openFilesInQueue();
                 // OK to use desktopPane since nothing detached yet
-                if (getOpenProject() == null && StrangeEons.getScriptRunningMode() == null && desktopPane.getAllFrames().length == 0) {
+                if (getOpenProject() == null && !StrangeEons.isNonInteractive() && desktopPane.getAllFrames().length == 0) {
                     SwingUtilities.invokeLater(() -> {
                         Commands.NEW_GAME_COMPONENT.actionPerformed(null);
                     });
@@ -273,9 +273,9 @@ final class AppFrame extends StrangeEonsAppWindow {
                 // start posting any queued messages
                 Messenger.setQueueProcessingEnabled(true);
 
-                // run script running mode script, if any
-                if (StrangeEons.getScriptRunningMode() != null) {
-                    StrangeEons.getScriptRunningMode().run();
+                // run script runner mode script, if any
+                if (StrangeEons.getScriptRunner() != null) {
+                    ((ScriptRunnerModeHelper) StrangeEons.getScriptRunner()).run();
                 }
             } finally {
                 setDefaultCursor();
@@ -297,7 +297,7 @@ final class AppFrame extends StrangeEonsAppWindow {
      */
     private void checkIfInstallationWasUpdated() {
         final int thisBuild = StrangeEons.getBuildNumber();
-        if (thisBuild == StrangeEons.INTERNAL_BUILD_NMBER) {
+        if (thisBuild == StrangeEons.INTERNAL_BUILD_NUMBER) {
             return;
         }
 
