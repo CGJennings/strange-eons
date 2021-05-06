@@ -24,6 +24,7 @@ import java.util.LinkedList;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.RootPaneContainer;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import se.datadosen.component.RiverLayout;
@@ -154,6 +155,10 @@ class MessageDialog extends javax.swing.JDialog {
 
     private void updateWindowLocation() {
         Container parent = getParent();
+        // fix: force window visibility if non-interactive
+        if(!StrangeEons.getWindow().isVisible()) {
+            StrangeEons.getWindow().setVisible(true);
+        }
         Point screenLoc = parent.getLocationOnScreen();
         int x = (parent.getWidth() - getWidth()) / 2;
         int y = 0;
@@ -255,11 +260,9 @@ class MessageDialog extends javax.swing.JDialog {
 
     @Override
     public void dispose() {
-//		if( !disposing ) {
         removeFromQueue(this);
         getParent().removeComponentListener(parentMovementListener);
         disposing = true;
-//		}
         super.dispose();
     }
 

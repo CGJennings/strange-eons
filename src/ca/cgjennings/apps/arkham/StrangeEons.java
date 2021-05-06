@@ -88,13 +88,17 @@ import resources.Settings;
  * @since 3.0
  */
 public final class StrangeEons {
+
     private static final int VER_MAJOR = 3;
     private static final int VER_MINOR = 1;
     private static final ReleaseType VER_TYPE = ReleaseType.GENERAL;
 
     private static final int VER_BUILD;
 
-    /** This build number indicates an "internal development build", not an official release. */
+    /**
+     * This build number indicates an "internal development build", not an
+     * official release.
+     */
     static final int INTERNAL_BUILD_NMBER = 99_999;
 
     static {
@@ -125,6 +129,8 @@ public final class StrangeEons {
     public static final Logger log;
     // the field name "logBuffer" is looked up via reflection by dev tools plug-in
     private static final StringBuffer logBuffer = new StringBuffer(16 * 1_024);
+
+    private static ScriptRunningModeHelper scriptRunningMode;
 
     // the logger has to be initialized very near the top so that it exists
     // for other static initializer sections to use
@@ -277,7 +283,7 @@ public final class StrangeEons {
          */
         DEVELOPMENT('\u03c0');
 
-	private ReleaseType() {
+        private ReleaseType() {
         }
 
         private ReleaseType(char suffix) {
@@ -388,6 +394,12 @@ public final class StrangeEons {
             System.setProperty("ca.cgjennings.anim.enabled", "false");
         }
 
+        if (commandLineArguments.run != null) {
+            scriptRunningMode = new ScriptRunningModeHelper(commandLineArguments.run);
+        } else {
+            scriptRunningMode = null;
+        }
+
         try {
             initStage1();
         } catch (final Throwable t) {
@@ -408,20 +420,22 @@ public final class StrangeEons {
     }
 
     /**
-     * Apply default or user-specified text antialiasing settings.
-     * This must be called before the AWT/Swing is initialized.
+     * Apply default or user-specified text antialiasing settings. This must be
+     * called before the AWT/Swing is initialized.
      *
      * @param textAA the user-specified setting, or null for a platform default
      */
     private static void applyTextAntialiasingSettings(String textAA) {
-        if(textAA == null) {
+        if (textAA == null) {
             textAA = PlatformSupport.PLATFORM_IS_OTHER ? "lcd" : "auto";
         }
 
         // stick with Java's detected settings
-        if(textAA.equals("auto")) return;
+        if (textAA.equals("auto")) {
+            return;
+        }
 
-        switch(textAA) {
+        switch (textAA) {
             case "auto":
             case "off":
             case "on":
@@ -440,7 +454,7 @@ public final class StrangeEons {
 
         // enforce requested settings
         System.setProperty("awt.useSystemAAFontSettings", textAA);
-        if(System.getProperty("swing.aatext") == null) {
+        if (System.getProperty("swing.aatext") == null) {
             System.setProperty("swing.aatext", "true");
         }
     }
@@ -577,6 +591,23 @@ public final class StrangeEons {
     }
 
     /**
+     * If the app is in "script running" mode, returns an object that can be
+     * queried for additional information and used to manage the mode's
+     * behaviour. Returns null if the app is running normally. Script running
+     * mode is activated by passing a command line argument {@code -run} (or
+     * {@code --run}) and a file path for a script file. When running in run
+     * script mode, the app begins in a non-interactive mode without
+     * automatically showing the app window.
+     *
+     * @return the run script mode helper responsible for running the
+     *     command line script file, or null
+     * @see CommandLineArguments#run
+     */
+    public static ScriptRunningModeHelper getScriptRunningMode() {
+        return scriptRunningMode;
+    }
+
+    /**
      * Reloaded plug-ins that are of the {@link Plugin#ACTIVATED ACTIVATED} or
      * {@link Plugin#INJECTED INJECTED} types. Currently loaded plug-ins of
      * these types will first be {@linkplain #unloadPlugins() unloaded}, and
@@ -585,7 +616,7 @@ public final class StrangeEons {
      * currently {@linkplain InstalledPlugin#setEnabled(boolean) enabled} will
      * be
      * {@linkplain Plugin#initializePlugin(ca.cgjennings.apps.arkham.plugins.PluginContext) started}.
-     * This method has no effect on null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
+     * This method has no effect on null null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
 	 * {@linkplain BundleInstaller#loadThemeBundles themes}, or
      * {@linkplain BundleInstaller#loadExtensionBundles extension plug-ins}.
      *
@@ -667,7 +698,7 @@ public final class StrangeEons {
     /**
      * Causes all currently loaded {@link Plugin#ACTIVATED ACTIVATED} and
      * {@link Plugin#INJECTED INJECTED} plug-ins to be unloaded. This method has
-     * no effect on null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
+     * no effect on null null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
 	 * {@linkplain BundleInstaller#loadThemeBundles themes}, or
      * {@linkplain BundleInstaller#loadExtensionBundles extension plug-ins}.
      *
@@ -853,7 +884,7 @@ public final class StrangeEons {
      * boolean)
      */
     public void activatePlugin(Plugin plugin) {
-        if(plugin.getPluginType() != Plugin.ACTIVATED) {
+        if (plugin.getPluginType() != Plugin.ACTIVATED) {
             throw new IllegalArgumentException("wrong plug-in type: " + plugin);
         }
         if (plugin.isPluginShowing()) {
@@ -1410,17 +1441,17 @@ public final class StrangeEons {
             if (message.length() > BUG_REPORT_CHAR_LIMIT) {
                 description = description.substring(0, BUG_REPORT_CHAR_LIMIT) + "...";
             }
-            
+
             String url;
             do {
                 url = "https://cgjennings.ca/contact/?"
-                       + URLEncoder.encode(message, "utf-8");
-                if(url.length() > BUG_REPORT_CHAR_LIMIT) {
+                        + URLEncoder.encode(message, "utf-8");
+                if (url.length() > BUG_REPORT_CHAR_LIMIT) {
                     url = null;
-                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT, message.length()-16);
+                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT, message.length() - 16);
                     message = message.substring(0, lengthToTry) + "...";
                 }
-            } while(url == null);
+            } while (url == null);
             DesktopIntegration.browse(new URI(url));
         } catch (UnsupportedEncodingException e) {
         } catch (UnsupportedOperationException e) {
@@ -1640,21 +1671,23 @@ public final class StrangeEons {
             // since there is (typically) a parent instance starting us.
             boolean allAccepted = true;
             LinkedList<File> bundles = new LinkedList<>();
-            for(String f : commandLineArguments.plugintest.split(Pattern.quote(File.pathSeparator))) {
-                if(f.isEmpty()) continue;
+            for (String f : commandLineArguments.plugintest.split(Pattern.quote(File.pathSeparator))) {
+                if (f.isEmpty()) {
+                    continue;
+                }
                 File bf = new File(f);
-                if(bf.exists() && !bf.isDirectory()) {
+                if (bf.exists() && !bf.isDirectory()) {
                     bundles.add(bf);
                 } else {
                     System.err.println("test bundle is not a bundle: \"" + f + '"');
                     allAccepted = false;
                 }
             }
-            if(bundles.isEmpty()) {
+            if (bundles.isEmpty()) {
                 System.err.println("no test bundles listed");
                 allAccepted = false;
             }
-            if(!allAccepted) {
+            if (!allAccepted) {
                 System.exit(10);
             }
             BundleInstaller.setTestBundles(bundles.toArray(new File[bundles.size()]));
@@ -1681,7 +1714,7 @@ public final class StrangeEons {
         initLanguage();
 
         // check Java version and display localized message if not new enough
-        if(!commandLineArguments.xDisableJreCheck) {
+        if (!commandLineArguments.xDisableJreCheck) {
             initCheckJREVersion();
         }
 
@@ -1850,6 +1883,7 @@ public final class StrangeEons {
     }
 
     private static class LingeringStartupWindowPresenter {
+
         int lastCount;
         Window splash;
         boolean moveToFront;
@@ -1967,14 +2001,14 @@ public final class StrangeEons {
     }
 
     /**
-     * Checks that installed version of Java is compatible. If it
-     * isn't, displays a dialog and exits. This is separate from the rest of
+     * Checks that installed version of Java is compatible. If it isn't,
+     * displays a dialog and exits. This is separate from the rest of
      * {@link #initCheckSystemConfig()} so that it can display a localized
      * dialog box.
      */
     private void initCheckJREVersion() {
         int[] ver = getJavaVersion();
-        if(ver.length < 2 || ver[0] != 1 || ver[1] != 8) {
+        if (ver.length < 2 || ver[0] != 1 || ver[1] != 8) {
             try {
                 EventQueue.invokeAndWait(() -> {
                     // no L&F installed yet

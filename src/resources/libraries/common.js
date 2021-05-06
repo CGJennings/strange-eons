@@ -213,10 +213,11 @@ const useInterfaceLanguage = function useInterfaceLanguage(language) {
 const string = function string(key) {
     let str = useLibrary.__$.getUiLangProvider().str(key);
     if (arguments.length > 1) {
-        return sprintf(
-                useLibrary.__$.getUiLangProvider(),
-                str, Array.prototype.slice.call(arguments, 1)
-                );
+        str = arkham.plugins.LibImpl.sprintf(
+                useLibrary.__$.getUiLangProvider().locale,
+                str,
+                Array.prototype.slice.call(arguments, 1)
+        );
     }
     return str;
 };
@@ -229,10 +230,11 @@ function useGameLanguage(language) {
 const gstring = function gstring(key) {
     let str = useLibrary.__$.getGameLangProvider().str(key);
     if (arguments.length > 1) {
-        return sprintf(
-                useLibrary.__$.getGameLangProvider(),
-                str, Array.prototype.slice.call(arguments, 1)
-                );
+        str = arkham.plugins.LibImpl.sprintf(
+                useLibrary.__$.getGameLangProvider().locale,
+                str,
+                Array.prototype.slice.call(arguments, 1)
+        );
     }
     return str;
 };
@@ -410,3 +412,7 @@ String.prototype.dontEnum(
 Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
 };
+
+if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
+    useLibrary("backwards-compatibility");
+}

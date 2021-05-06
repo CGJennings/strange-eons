@@ -53,8 +53,6 @@ class TAttachedEditor extends JInternalFrame {
                 if (editorTab.getSelectedIndex() != tab) {
                     editorTab.setSelectedIndex(tab);
                 }
-                // update command enable/disable states (e.g., so Ctrl+F works in new code editor)
-                AppFrame.getApp().updateCommonCommandStates(false);
             }
         });
     }
