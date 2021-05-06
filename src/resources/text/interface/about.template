@@ -199,42 +199,6 @@ for helping to test the earliest versions of Strange Eons 3.
 <p>LZMA compression was adapted from code placed in the public domain by
    Lasse Collin and Igor Pavlov.
 
-<p>Method parameter name reverse engineering uses code adapted from the
-Paranamer library, which is released under a BSD license:
-	<p><tt>Portions Copyright © 2007 Paul Hammant.<br>
-    Portions Copyright © 2000-2007 INRIA, France Telecom.<br>
-    All rights reserved.</tt></p>
-	<p><tt>Redistribution and use in source and binary forms,
-	with or without modification, are permitted provided that the following
-	conditions are met: Redistributions of source code must retain the above
-	copyright notice, this list of conditions and the following disclaimer.
-	Redistributions in binary form must reproduce the above copyright notice,
-	this list of conditions and the following disclaimer in the documentation
-	and/or other materials provided with the distribution. Neither the name of
-	the copyright holders nor the names of is contributors may be used to endorse
-	or promote products derived from this software without specific prior
-	written permission.</tt></p>
-	<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
-	AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
-	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-	OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-	WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt></p>
-
-<p><tt>Some code for JavaScript language assistance adapted from code by Andy
-Clement and Andrew Eisenberg, Copyright © 2012 VMware, Inc. Used under the
-Eclipse Public License. Some code for JavaScript language assistance adapted
-from code by Ariya Hidayat et al, and Copyright © 2012 by Ariya Hidayat and
-others. Used under the MIT license. Some code for JavaScript language assistance
-adapted from code by Yusuke Suzuki, Dan Tao, and Andrew Eisenberg and used under
-MIT license. See included source code for details.</tt></p>
-
-
 <p>Some icons in Strange Eons are taken or adapted from the
 <i><a href="http://www.famfamfam.com/lab/icons/silk/">Silk</a></i>
 icon set designed by
