@@ -16,6 +16,7 @@ import ca.cgjennings.apps.arkham.plugins.catalog.Catalog.VersioningState;
 import ca.cgjennings.apps.arkham.plugins.catalog.NetworkProxy;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.apps.arkham.project.Project;
+import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.util.InstanceController;
 import ca.cgjennings.imageio.JPEG2000;
 import ca.cgjennings.io.FileChangeMonitor;
@@ -57,6 +58,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -105,24 +107,11 @@ public final class StrangeEons {
     static final int INTERNAL_BUILD_NUMBER = 99_999;
 
     static {
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(StrangeEons.class.getResourceAsStream("rev"), "utf-8"));
-            String number = in.readLine().trim();
-            try {
-                VER_BUILD = Integer.parseInt(number);
-            } catch (NumberFormatException e) {
-                throw new Error("invalid build number " + number);
-            }
-        } catch (IOException e) {
-            throw new Error("missing build number");
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                }
-            }
+        try(InputStreamReader in = new InputStreamReader(StrangeEons.class.getResourceAsStream("rev"), StandardCharsets.UTF_8)) {
+            String number = new BufferedReader(in).readLine().trim();
+            VER_BUILD = Integer.parseInt(number);
+        } catch (IOException | NumberFormatException e) {
+            throw new AssertionError("missing or invalid build number");
         }
     }
 
@@ -135,12 +124,17 @@ public final class StrangeEons {
 
     private static ScriptRunnerModeHelper scriptRunnerMode;
 
-    // the logger has to be initialized very near the top so that it exists
-    // for other static initializer sections to use
+    private static void initScriptRunnerMode(File scriptOrNull) {
+        if (scriptOrNull != null) {
+            scriptRunnerMode = new ScriptRunnerModeHelper(scriptOrNull);
+        }
+    }
+
+    // Must be initialized up top so other initializers can access it
     static {
-        // The initial static configuration is meant for standalone testing of
-        // classes during development. When (if) init() is called, it will
-        // drop the log level to the user-requested value.
+        // Note: the initial ALL level supports quick testing of standalone
+        // classes during development. Once init() is called, the level is
+        // reset to the the user-requested value.
         log = Logger.getLogger(StrangeEons.class.getName());
         log.setLevel(Level.ALL);
 
@@ -178,9 +172,6 @@ public final class StrangeEons {
         handler.setFormatter(new BriefLogFormatter());
         handler.setLevel(Level.ALL);
 
-        // make our handler the only handler for the root logger so that
-        // all logging will have consitent formatting and handling
-        // (unless a logger calls setUseParentHandlers( false )).
         Logger root = Logger.getLogger("");
         for (Handler h : root.getHandlers()) {
             root.removeHandler(h);
@@ -330,7 +321,7 @@ public final class StrangeEons {
             for (int i = 0; i < ver.length; ++i) {
                 ver[i] = Integer.MAX_VALUE;
             }
-            log.log(Level.SEVERE, "exception while parsing the Java version string: \"{0}'", v);
+            log.log(Level.SEVERE, "exception parsing Java version string: \"{0}'", v);
         }
         return ver;
     }
@@ -378,32 +369,18 @@ public final class StrangeEons {
      * @param args the command line arguments
      */
     private StrangeEons(String[] arguments) throws Throwable {
-        instance = this;
         commandLineArguments = CommandLineArguments.create(arguments);
+    }
 
-        if (commandLineArguments.version) {
-            System.out.println(getBuildNumber());
-            System.exit(0);
-        }
-
-        applyTextAntialiasingSettings(commandLineArguments.xAAText);
-
-        if (commandLineArguments.xOpenGL) {
-            System.setProperty("sun.java2d.opengl", "True");
-            System.setProperty("sun.java2d.opengl.fbobject", "false");
-        }
-
-        if (commandLineArguments.xDisableAnimation) {
-            System.setProperty("ca.cgjennings.anim.enabled", "false");
-        }
-
-        if (commandLineArguments.run != null) {
-            scriptRunnerMode = new ScriptRunnerModeHelper(commandLineArguments.run);
-        } else {
-            scriptRunnerMode = null;
-        }
-
+    /**
+     * Top-level initialization function, called from {@code main()}
+     * immediately after instance is created.
+     */
+    private void initialize() {
         try {
+            applyGraphicsOptions(commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
+            applyTextAntialiasingSettings(commandLineArguments.xAAText);
+            initScriptRunnerMode(commandLineArguments.run);
             initStage1();
         } catch (final Throwable t) {
             log.log(Level.SEVERE, "Uncaught Exception in Stage 1", t);
@@ -419,6 +396,16 @@ public final class StrangeEons {
                     log.log(Level.SEVERE, "couldn't display error message", e);
                 }
             });
+        }
+    }
+
+    private static void applyGraphicsOptions(boolean preferOpenGl, boolean avoidAnimation) {
+        if (preferOpenGl) {
+            System.setProperty("sun.java2d.opengl", "True");
+            System.setProperty("sun.java2d.opengl.fbobject", "false");
+        }
+        if (avoidAnimation) {
+            System.setProperty("ca.cgjennings.anim.enabled", "false");
         }
     }
 
@@ -1478,8 +1465,8 @@ public final class StrangeEons {
 
     /**
      * Returns the current contents of the application log. The application log
-     * contains the messages posted to the logger (except those filtered out
-     * because of the logging level that was active at the time).
+     * contains the messages posted to the logger except those filtered out
+     * because of the logging level that was active at the time.
      *
      * @return the contents of the application log
      */
@@ -1601,9 +1588,6 @@ public final class StrangeEons {
         return af;
     }
 
-//	public boolean isExperimentalFeatureAllowed() {
-//		return Settings.getUser().getYesNo( "enable-experimental-features" );
-//	}
     /**
      * This method is called when the application first starts as part of
      * passing control of the process to the application. Calling this method
@@ -1621,9 +1605,13 @@ public final class StrangeEons {
         }
         try {
             // The constructor itself records the instance since it is needed during
-            // the initialization process that the constructor starts, so we do nothing
-            // with the return value.
-            new StrangeEons(args);
+            // the initialization process, so we do nothing with the return value.
+            instance = new StrangeEons(args);
+            if (instance.commandLineArguments.version) {
+                System.out.println(StrangeEons.getBuildNumber());
+                System.exit(0);
+            }
+            instance.initialize();
         } catch (Throwable t) {
             // Log the message now, in case fatalError fails
             log.log(Level.SEVERE, "Uncaught exception creating app instance", t);
@@ -1632,7 +1620,7 @@ public final class StrangeEons {
             String message = "Uncaught exception during initialization";
             try {
                 message = string("rk-err-uncaught");
-            } catch (Throwable e) {
+            } catch (Exception ex) {
                 log.log(Level.SEVERE, null, t);
             }
             ErrorDialog.displayFatalError(message, t);
@@ -1891,7 +1879,6 @@ public final class StrangeEons {
     }
 
     private static class LingeringStartupWindowPresenter {
-
         int lastCount;
         Window splash;
         boolean moveToFront;
@@ -1954,7 +1941,9 @@ public final class StrangeEons {
             }
             try {
                 if (!commandLineArguments.xDisableAnimation) {
-                    // we will be notified when the animation completes
+                    // we will be notified when the animation completes;
+                    // won't be interrupted, but if it is won't be a problem;
+                    // just repaints the window
                     wait(SplashWindow.ANIMATION_TIME_MS + 10_000);
                 }
             } catch (InterruptedException e) {
@@ -1964,7 +1953,7 @@ public final class StrangeEons {
     }
 
     /**
-     * Logs basic system configuration: build, Java version, OS, architecture
+     * Checks and logs basic system configuration: build, Java version, OS, architecture
      * and processor count.
      */
     private static void initCheckSystemConfig() {
@@ -2031,7 +2020,7 @@ public final class StrangeEons {
                     );
                     System.exit(20);
                 });
-            } catch (Exception e) {
+            } catch (InterruptedException | InvocationTargetException e) {
                 log.log(Level.SEVERE, "version check failed", e);
             }
         }
@@ -2324,9 +2313,9 @@ public final class StrangeEons {
             ClassMap.add("editors/minimal.classmap");
             splash.setPercent(45);
             Silhouette.add("silhouettes/standard.silhouettes");
-        } catch (Exception e) {
-            e.printStackTrace();
-            ErrorDialog.displayError(string("rk-err-gamedata"), e);
+        } catch (IOException | RuntimeException ex) {
+            log.log(Level.SEVERE, "failed to create built-in editor data", ex);
+            ErrorDialog.displayError(string("rk-err-gamedata"), ex);
         }
     }
 
@@ -2361,46 +2350,45 @@ public final class StrangeEons {
      * extensions are loaded. See {@link #waitForBackgroundInit()}.
      */
     private void startBackgroundInit() {
-        backgroundInitThread = new Thread("Background init thread") {
-            @Override
-            public void run() {
-                try {
-                    // Dicionary loading is expensive and I/O bound, so probably
-                    // a good candidate to do in parallel.
-                    initSpellingDictionaries();
+        final Runnable backgroundInit = () -> {
+            try {
+                // Dicionary loading is expensive and I/O bound, so probably
+                // a good candidate to do in parallel.
+                initSpellingDictionaries();
 
-                    // MetadataSource has a LOT of icons to load. This line of code causes
-                    // the class to be loaded now, because otherwise it loads just as the
-                    // app window is becoming visible and freezes it for several seconds.
-                    Class.forName("ca.cgjennings.apps.arkham.project.MetadataSource", true, getClass().getClassLoader());
+                // MetadataSource has a LOT of icons to load. This line of code causes
+                // the class to be loaded now, because otherwise it loads just as the
+                // app window is becoming visible and freezes it for several seconds.
+                Class.forName(MetadataSource.class.getName(), true, getClass().getClassLoader());
 
-                    initBaselineEditors();
+                initBaselineEditors();
 
-                    // Init the delay for polling open files for changes.
-                    FileChangeMonitor.setDefaultCheckPeriod(Settings.getShared().getInt("file-monitoring-period"));
+                // Init the delay for polling open files for changes.
+                FileChangeMonitor.setDefaultCheckPeriod(Settings.getShared().getInt("file-monitoring-period"));
 
-                    initSpecialEffects();
+                initSpecialEffects();
 
-                    // Allow the SE script system to evaluate <script> tags in markup boxes.
-                    MarkupRenderer.setEvaluatorFactory(new StrangeEonsEvaluatorFactory());
-                } catch (Throwable t) {
-                    log.log(Level.SEVERE, "Uncaught Exception during background initialization: showing fatal error", t);
-                    if (splash != null) {
-                        try {
-                            splash.dispose();
-                        } catch (Throwable t2) {
-                        }
+                // Allow the SE script system to evaluate <script> tags in markup boxes.
+                MarkupRenderer.setEvaluatorFactory(new StrangeEonsEvaluatorFactory());
+            } catch (ClassNotFoundException | RuntimeException ex) {
+                log.log(Level.SEVERE, "Uncaught Exception during background initialization: showing fatal error", ex);
+                if (splash != null) {
+                    try {
+                        splash.dispose();
+                    } catch (Exception disposeEx) {
+                        // just try to show errror
                     }
-                    ErrorDialog.displayFatalError(string("rk-err-uncaught"), t);
                 }
+                ErrorDialog.displayFatalError(string("rk-err-uncaught"), ex);
             }
         };
+
         if (commandLineArguments.xDisableBackgroundInit) {
             log.info("performing \"background\" initialization in main thread");
-            backgroundInitThread.run();
-            backgroundInitThread = null;
+            backgroundInit.run();
         } else {
             log.info("starting background initialization");
+            backgroundInitThread = new Thread(backgroundInit, "Background init thread");
             backgroundInitThread.start();
         }
     }
@@ -2420,11 +2408,12 @@ public final class StrangeEons {
                 try {
                     backgroundInitThread.join();
                     done = true;
-                } catch (InterruptedException e) {
+                } catch (InterruptedException intEx) {
+                    // won't be interrupted, but in any case it must complete
                 }
             }
-            log.log(Level.FINE, "background initialization completed (waited {0}s)", (System.currentTimeMillis() - start) / 1000d);
             backgroundInitThread = null; // allow GC
+            log.log(Level.FINE, "background initialization completed (waited {0}s)", (System.currentTimeMillis() - start) / 1000d);
         }
     }
 
@@ -2464,16 +2453,6 @@ public final class StrangeEons {
     }
 
     /**
-     * Adds a new property change listener that will be notified when property
-     * change events for the named property are fired by the application.
-     *
-     * @param li the listener to add
-     */
-    public void addPropertyChangeListener(String property, PropertyChangeListener li) {
-        pcs.addPropertyChangeListener(property, li);
-    }
-
-    /**
      * Removes a previously added listener that listens for all property change
      * events.
      *
@@ -2484,9 +2463,21 @@ public final class StrangeEons {
     }
 
     /**
+     * Adds a new property change listener that will be notified when property
+     * change events for the named property are fired by the application.
+     *
+     * @param property name of the property to listen for
+     * @param li the listener to add
+     */
+    public void addPropertyChangeListener(String property, PropertyChangeListener li) {
+        pcs.addPropertyChangeListener(property, li);
+    }
+
+    /**
      * Removes a previously added listener that listens for the named property
      * to change.
      *
+     * @param property name of the property to stop listening for
      * @param li the listener to remove
      */
     public void removePropertyChangeListener(String property, PropertyChangeListener li) {
@@ -2502,7 +2493,7 @@ public final class StrangeEons {
      * @throws IllegalArgumentException if a container type with this type's
      * identifier is already registered
      */
-    public synchronized static void registerExportContainer(ExportContainer ec) {
+    public static synchronized void registerExportContainer(ExportContainer ec) {
         if (ec == null) {
             throw new NullPointerException("ec");
         }
@@ -2523,7 +2514,7 @@ public final class StrangeEons {
      *
      * @param ec the container type to unregister
      */
-    public synchronized static void unregisterExportContainer(ExportContainer ec) {
+    public static synchronized void unregisterExportContainer(ExportContainer ec) {
         exportContainers.remove(ec);
     }
 
@@ -2533,15 +2524,15 @@ public final class StrangeEons {
      * @return a (possibly empty) array of all container types that are
      * currently registered
      */
-    public synchronized static ExportContainer[] getRegisteredExportContainers() {
+    public static synchronized ExportContainer[] getRegisteredExportContainers() {
         return exportContainers.toArray(new ExportContainer[exportContainers.size()]);
     }
 
-    private static LinkedHashSet<ExportContainer> exportContainers = new LinkedHashSet<>();
-
+    private static final LinkedHashSet<ExportContainer> exportContainers;
     static {
-        registerExportContainer(new FolderExportContainer());
-        registerExportContainer(new ZIPExportContainer());
+        exportContainers = new LinkedHashSet<>();
+        exportContainers.add(new FolderExportContainer());
+        exportContainers.add(new ZIPExportContainer());
     }
 
     /**
