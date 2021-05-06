@@ -378,9 +378,13 @@ public final class StrangeEons {
      */
     private void initialize() {
         try {
+            if (commandLineArguments.version) {
+                System.out.println(StrangeEons.getBuildNumber());
+                System.exit(0);
+            }
+
             applyGraphicsOptions(commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
-            applyTextAntialiasingSettings(commandLineArguments.xAAText);
-            initScriptRunnerMode(commandLineArguments.run);
+            applyTextAntialiasingOptions(commandLineArguments.xAAText);
             initStage1();
         } catch (final Throwable t) {
             log.log(Level.SEVERE, "Uncaught Exception in Stage 1", t);
@@ -415,7 +419,7 @@ public final class StrangeEons {
      *
      * @param textAA the user-specified setting, or null for a platform default
      */
-    private static void applyTextAntialiasingSettings(String textAA) {
+    private static void applyTextAntialiasingOptions(String textAA) {
         if (textAA == null) {
             textAA = PlatformSupport.PLATFORM_IS_OTHER ? "lcd" : "auto";
         }
@@ -1607,10 +1611,6 @@ public final class StrangeEons {
             // The constructor itself records the instance since it is needed during
             // the initialization process, so we do nothing with the return value.
             instance = new StrangeEons(args);
-            if (instance.commandLineArguments.version) {
-                System.out.println(StrangeEons.getBuildNumber());
-                System.exit(0);
-            }
             instance.initialize();
         } catch (Throwable t) {
             // Log the message now, in case fatalError fails
@@ -1655,6 +1655,9 @@ public final class StrangeEons {
             initAcquireRestartLock(commandLineArguments.xRestartLock);
         }
 
+        // must be done before splash screen is shown
+        initScriptRunnerMode(commandLineArguments.run);
+
         // Read user prefs: needed so that we can check
         // if user wants single instance; has no effect if the --resetprefs
         // flag was set on the command line
@@ -1677,12 +1680,12 @@ public final class StrangeEons {
                 if (bf.exists() && !bf.isDirectory()) {
                     bundles.add(bf);
                 } else {
-                    System.err.println("test bundle is not a bundle: \"" + f + '"');
+                    System.err.println("not a plug-in bundle: \"" + f + '"');
                     allAccepted = false;
                 }
             }
             if (bundles.isEmpty()) {
-                System.err.println("no test bundles listed");
+                System.err.println("no plug-in bundle listed");
                 allAccepted = false;
             }
             if (!allAccepted) {
@@ -2263,7 +2266,7 @@ public final class StrangeEons {
      * installed. If not installed, a listener is installed that will listen for
      * the dictionary plug-in to be installed and load the dictionary then.
      */
-    private synchronized static void initSpellingDictionaries() {
+    private static synchronized void initSpellingDictionaries() {
         if (loadedSpellingDictionaries) {
             return;
         }
@@ -2308,7 +2311,7 @@ public final class StrangeEons {
     }
     private static boolean loadedSpellingDictionaries;
 
-    private void initBaselineEditors() {
+    private void initBuiltinEditors() {
         try {
             ClassMap.add("editors/minimal.classmap");
             splash.setPercent(45);
@@ -2339,11 +2342,13 @@ public final class StrangeEons {
 
     /**
      * Starts running initialization tasks that can be performed in the
-     * background.
+     * background. To function correctly, background initialization must be
+     * started after libraries are loaded and must be completed before
+     * extensions are loaded. These tasks may not actually run in the background,
+     * if disabled by the
+     * {@linkplain CommandLineArguments#xDisableBackgroundInit command line arguments}.
      *
-     * <p>To function correctly, background initialization must be started after
-     * libraries are loaded. Background initialization must be completed before
-     * extensions are loaded. See {@link #waitForBackgroundInit()}.
+     * @see #waitForBackgroundInit()
      */
     private void startBackgroundInit() {
         final Runnable backgroundInit = () -> {
@@ -2357,7 +2362,8 @@ public final class StrangeEons {
                 // app window is becoming visible and freezes it for several seconds.
                 Class.forName(MetadataSource.class.getName(), true, getClass().getClassLoader());
 
-                initBaselineEditors();
+                // Populate GameData for built-in editors
+                initBuiltinEditors();
 
                 // Init the delay for polling open files for changes.
                 FileChangeMonitor.setDefaultCheckPeriod(Settings.getShared().getInt("file-monitoring-period"));
