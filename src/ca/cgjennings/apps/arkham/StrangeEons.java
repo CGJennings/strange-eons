@@ -39,7 +39,9 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -53,6 +55,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.EventListener;
 import java.util.HashSet;
@@ -1418,79 +1421,60 @@ public final class StrangeEons {
      * steps the user must complete are subject to change.
      *
      * @param description text to include with the report, or <code>null</code>
-     * @param t an exception that is relevant to the bug being reported, or
+     * @param ex an exception that is relevant to the bug being reported, or
      * <code>null</code>
      */
-    public void fileBugReport(String description, Throwable t) {
+    public void fileBugReport(String description, Throwable ex) {
         setWaitCursor(true);
+        StringBuilder reportBuff = new StringBuilder(BUG_REPORT_CHAR_LIMIT + 256);
         try {
-            StringBuilder msg = new StringBuilder(512);
-            if (description != null) {
-                msg.append(description.trim());
-            }
-            if (msg.length() == 0) {
-                msg.append("<please describe the problem>");
-            }
-            msg.append("\n\nStrange Eons bug report\n");
+            description = description == null ? "" : description.trim();
+            if(description.isEmpty()) description = "<please describe the problem>";
 
-            Properties p = System.getProperties();
-            msg.append(String.format(
-                    "Platform: %s (%s; %s; %s CPUs)\n",
-                    p.getProperty("os.name"),
-                    p.getProperty("os.version"),
-                    p.getProperty("os.arch"),
-                    Runtime.getRuntime().availableProcessors())
-            );
-            msg.append(String.format(
-                    "JVM:      %s (%s)\n",
-                    p.getProperty("java.version"),
-                    p.getProperty("java.vendor")
-            ));
+            final Properties p = System.getProperties();
+            reportBuff.append(description)
+                    .append("\n\nBug: Strange Eons ").append(getBuildNumber())
+                    .append("\nPlatform: ").append(p.getProperty("os.name"))
+                    .append(" (v").append(p.getProperty("os.version"))
+                    .append('-').append(p.getProperty("os.arch"))
+                    .append('-').append(Runtime.getRuntime().availableProcessors())
+                    .append(" CPUs)\nJRE: ").append(p.getProperty("java.version"))
+                    .append(' ').append(p.getProperty("java.vendor")).append('\n');
 
-            if (t != null) {
-                msg.append("\n\nThe following exception occurred:\n")
-                        .append(t);
-                StackTraceElement[] el = t.getStackTrace();
+            if (ex != null) {
+                reportBuff.append("\nException:\n").append(ex);
+                StackTraceElement[] el = ex.getStackTrace();
                 int i = 0;
-                for (; i < 8 && i < el.length; ++i) {
-                    msg.append('\n').append(el[i].toString());
-                }
-                if (i < el.length) {
-                    msg.append("\n...");
+                for (; i < el.length && reportBuff.length() < BUG_REPORT_CHAR_LIMIT; ++i) {
+                    final String entry = el[i].toString()
+                            .replace("ca.cgjennings.apps.arkham.", "arkham.")
+                            .replace("ca.cgjennings.", "ca...");
+                    reportBuff.append('\n').append(entry);
                 }
             }
 
-            String message = msg.toString();
-
-            // shorten stack traces by using the same shorthand as in scripts
-            message = message.replace("ca.cgjennings.apps.arkham.", "arkham.");
-            if (message.length() > BUG_REPORT_CHAR_LIMIT) {
-                description = description.substring(0, BUG_REPORT_CHAR_LIMIT) + "...";
-            }
-
+            // convert message to URL, then limit encoded URL to max length
             String url;
+            String message = reportBuff.toString();
             do {
                 url = "https://cgjennings.ca/contact/?"
                         + URLEncoder.encode(message, "utf-8");
                 if (url.length() > BUG_REPORT_CHAR_LIMIT) {
                     url = null;
-                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT, message.length() - 16);
+                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT - 32, message.length() - 16);
                     message = message.substring(0, lengthToTry) + "...";
                 }
             } while (url == null);
             DesktopIntegration.browse(new URI(url));
-        } catch (UnsupportedEncodingException e) {
-        } catch (UnsupportedOperationException e) {
+        } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
             UIManager.getLookAndFeel().provideErrorFeedback(null);
-            log.warning("Desktop not supported");
-        } catch (Exception e) {
-            UIManager.getLookAndFeel().provideErrorFeedback(null);
-            log.log(Level.SEVERE, "exception while generating bug report <<<" + description + ">>>", e);
+            log.log(Level.SEVERE, "exception while opening browser, report put on clipboard", e);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(reportBuff.toString()), null);
         } finally {
             setWaitCursor(false);
         }
     }
-    private static final int BUG_REPORT_CHAR_LIMIT = 1500;
+    private static final int BUG_REPORT_CHAR_LIMIT = 2000; // approx limit for IE < 11
 
     /**
      * Returns the current contents of the application log. The application log
