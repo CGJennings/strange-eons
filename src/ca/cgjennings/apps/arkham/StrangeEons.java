@@ -669,47 +669,8 @@ public final class StrangeEons {
             InstalledPlugin[] plugins = BundleInstaller.getInstalledPlugins();
 
             // start 'em up
-            for (int i = 0; i < plugins.length; ++i) {
-                final InstalledPlugin ip = plugins[i];
-
-                // verify that we want to start the plug-in
-                if (!ip.isEnabled()) {
-                    StrangeEons.log.log(Level.FINEST, "skipping disabled plug-in {0}", plugins[i].getPluginClass());
-                    continue;
-                }
-
-                if (ip.getBundle() != null && uninstalledBundles.contains(ip.getBundle().getFile())) {
-                    StrangeEons.log.log(Level.FINEST, "skipping uninstalled plug-in {0}", plugins[i].getPluginClass());
-                    continue;
-                }
-
-                final int type = ip.getPluginType();
-                if (type != Plugin.ACTIVATED && type != Plugin.INJECTED) {
-                    if (type == Plugin.EXTENSION) {
-                        StrangeEons.log.log(Level.WARNING, "skipping EXTENSION plug-in in wrong bundle {0}", plugins[i].getPluginClass());
-                        continue;
-                    }
-                    throw new AssertionError(); // unknown new plug-in type
-                }
-
-                // start it
-                final Plugin p;
-                try {
-                    p = ip.startPlugin();
-                    StrangeEons.log.log(Level.FINE, "started plug-in {0} ({1})", new Object[]{plugins[i].getPluginClass(), plugins[i].getName()});
-                } catch (PluginException t) {
-                    StrangeEons.log.log(Level.WARNING, "plug-in failed to start " + plugins[i].getPluginClass(), t);
-                    continue;
-                }
-
-                // INJECTED plug-ins are shown exactly once, at start time
-                if (type == Plugin.INJECTED) {
-                    try {
-                        p.showPlugin(PluginContextFactory.createContext(plugins[i], 0), true);
-                    } catch (Throwable t) {
-                        ErrorDialog.displayError(string("rk-err-plugin-init", plugins[i].getPluginClass()), t);
-                    }
-                }
+            for(final InstalledPlugin ip : plugins) {
+                startPlugin(ip, uninstalledBundles);
             }
 
             // inform listeners, including the Toolbox menu
@@ -720,10 +681,57 @@ public final class StrangeEons {
     }
 
     /**
+     * Helper that starts an individual non-extension plug-in.
+     * @param ip non-null plug-in to start
+     * @param uninstalledBundles bundle files marked uninstalled in prefs
+     */
+    private void startPlugin(InstalledPlugin ip, Set<File> uninstalledBundles) {
+        // first check if we should ignore the plug-in for various reasons:
+        if (!ip.isEnabled()) {
+            StrangeEons.log.log(Level.FINEST, "skipping disabled plug-in {0}", ip.getPluginClass());
+            return;
+        }
+
+        if (ip.getBundle() != null && uninstalledBundles.contains(ip.getBundle().getFile())) {
+            StrangeEons.log.log(Level.FINEST, "skipping uninstalled plug-in {0}", ip.getPluginClass());
+            return;
+        }
+
+        final int type = ip.getPluginType();
+        if (type != Plugin.ACTIVATED && type != Plugin.INJECTED) {
+            if (type == Plugin.EXTENSION) {
+                StrangeEons.log.log(Level.WARNING, "skipping EXTENSION plug-in in wrong bundle {0}", ip.getPluginClass());
+                return;
+            }
+            StrangeEons.log.log(Level.SEVERE, "skipping plug-in with unknown type {0}", ip.getPluginClass());
+            return;
+        }
+
+        // OK, we really want to start it
+        final Plugin p;
+        try {
+            p = ip.startPlugin();
+            StrangeEons.log.log(Level.FINE, "started plug-in {0} ({1})", new Object[]{ip.getPluginClass(), ip.getName()});
+        } catch (PluginException t) {
+            StrangeEons.log.log(Level.WARNING, "plug-in failed to start " + ip.getPluginClass(), t);
+            return;
+        }
+
+        // injected plug-ins are "shown" exactly once, when they are started
+        if (type == Plugin.INJECTED) {
+            try {
+                p.showPlugin(PluginContextFactory.createContext(ip, 0), true);
+            } catch (PluginException | RuntimeException ex) {
+                ErrorDialog.displayError(string("rk-err-plugin-init", ip.getPluginClass()), ex);
+            }
+        }
+    }
+
+    /**
      * Causes all currently loaded {@link Plugin#ACTIVATED ACTIVATED} and
      * {@link Plugin#INJECTED INJECTED} plug-ins to be unloaded. This method has
-     * no effect on null null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
-	 * {@linkplain BundleInstaller#loadThemeBundles themes}, or
+     * no effect on {@linkplain BundleInstaller#loadLibraryBundles libraries},
+     * {@linkplain BundleInstaller#loadThemeBundles themes}, or
      * {@linkplain BundleInstaller#loadExtensionBundles extension plug-ins}.
      *
      * @see #loadPlugins()
@@ -738,8 +746,8 @@ public final class StrangeEons {
                     try {
                         plugins[i].stopPlugin();
                         log.log(Level.FINEST, "stopped plug-in instance: {0}", plugins[i].getPluginClass());
-                    } catch (Throwable t) {
-                        log.log(Level.WARNING, "uncaught exception while stopping plug-in: " + plugins[i].getPluginClass(), t);
+                    } catch (PluginException | RuntimeException ex) {
+                        log.log(Level.WARNING, "uncaught exception while stopping plug-in: " + plugins[i].getPluginClass(), ex);
                     }
                 }
             }
@@ -772,17 +780,16 @@ public final class StrangeEons {
      * @see #unloadPlugins()
      */
     public interface PluginLoadingListener extends EventListener {
-
         /**
          * Event type code indicating that the application has just loaded (or
          * reloaded) the plug-in set.
          */
-        int PLUGIN_LOAD_EVENT = 1;
+        static int PLUGIN_LOAD_EVENT = 1;
         /**
          * Event type code indicating that the application has just unloaded all
          * loaded plug-ins.
          */
-        int PLUGIN_UNLOAD_EVENT = 2;
+        static int PLUGIN_UNLOAD_EVENT = 2;
 
         /**
          * Called after the application loads, reloads, or unloads plug-ins. The
@@ -834,9 +841,7 @@ public final class StrangeEons {
         if (eventType != PluginLoadingListener.PLUGIN_LOAD_EVENT && eventType != PluginLoadingListener.PLUGIN_UNLOAD_EVENT) {
             throw new IllegalArgumentException("unknown event type: " + eventType);
         }
-        for (PluginLoadingListener li : pluginListeners) {
-            li.pluginsLoaded(eventType);
-        }
+        pluginListeners.forEach(li -> li.pluginsLoaded(eventType));
     }
 
     private Set<PluginLoadingListener> pluginListeners = new LinkedHashSet<>();
