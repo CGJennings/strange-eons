@@ -32,29 +32,21 @@ import resources.Settings;
  * Strange Eons.
  *
  * <p>
- * Bundles are converted to their "published" form in a two-step process. The
- * first step, "packing", converts the bundle into an uncompressed archive with
- * reorganized data that is optimized for compression. Some extraneous
- * information about the structure of the archive and any compiled classes is
- * deleted during packing to reduce download size. The exact details may change
- * from version to version, but examples of possible changes include removing
- * empty directories, using a single timestamp for all files in the archive, and
- * removing information about classes that is used by debugging tools. (However,
- * the line and source file information displayed when an exception is thrown
- * will <i>not</i> be removed.)
+ * A published bundle compresses an existing bundle with a high-efficiency
+ * compression method. For best results, the existing bundle should first
+ * be re-packed so that the underlying ZIP/JAR does not compress any entries
+ * (i.e. all entries are written with {@code STORE}). This will reduce the
+ * overall file size compared to compressing an already compressed bundle.
+ * (The project command to publish a bundle performs this step automatically.)
  *
- * <p>
- * The second step compresses the entire packed archive file. The compression
- * method is generally chosen for maximum compression, without regard to the
- * time required to compress or decompress the archive. A number of compression
- * algorithms are supported.
- *
- * <p>
- * Likewise, to convert a published bundle to a plain bundle, it must first be
- * decompressed by the same method used to compress it, then unpacked to a
- * bundle file. As a convenience, the  {@link #publishedBundleToPluginBundle
- * publishedBundleToPluginBundle} method can perform both steps with a single
- * method call.
+ * <p><b>Note:</b> Previously, a two-process was used in which the original
+ * bundle (a type of JAR file) was compressed with Pack200, then the result
+ * compressed as described above. However, support for Pack200 was removed
+ * from Java. As the required tools are no longer distributed with JREs
+ * starting in Java 14, bundles published with older versions of the app
+ * can no longer be decompressed by newer versions of the app. (They can
+ * be unpacked by an older version, then the bundle installed in the newer
+ * version.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -221,6 +213,7 @@ public class PluginBundlePublisher {
      * @deprecated The Pack200 tools used by this method have been removed
      * from Java. Calling this method will copy the file without changes.
      */
+    @Deprecated
     public static void packBundle(File source, File dest) throws IOException {
         if (source == null) {
             throw new NullPointerException("fin");
@@ -229,7 +222,7 @@ public class PluginBundlePublisher {
             throw new NullPointerException("fout");
         }
 
-        log.info("copying file instead of packing with Pack200");
+        log.warning("copying bundle instead of packing with Pack200");
         ProjectUtilities.copyFile(source, dest);
     }
 
@@ -284,12 +277,6 @@ public class PluginBundlePublisher {
             ProjectUtilities.copyFile(source, dest);
             return;
         }
-
-//        Unpacker u = Pack200.newUnpacker();
-//        try (FileOutputStream fouts = new FileOutputStream(dest)) {
-//            JarOutputStream out = new JarOutputStream(new BufferedOutputStream(fouts));
-//            u.unpack(source, out);
-//        }
     }
 
     /**
