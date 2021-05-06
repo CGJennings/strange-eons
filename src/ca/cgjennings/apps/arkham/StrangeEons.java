@@ -1243,12 +1243,19 @@ public final class StrangeEons {
      * escape
      */
     private static Runnable wrapExitTask(final Runnable task) {
-        return () -> {
-            try {
-                log.log(Level.INFO, "running exit task [{0}]", task);
-                task.run();
-            } catch (Exception ex) {
-                log.log(Level.SEVERE, "uncaught exception in exit task", ex);
+        return new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    log.log(Level.INFO, "running exit task [{0}]", task);
+                    task.run();
+                } catch (Exception ex) {
+                    log.log(Level.SEVERE, "uncaught exception in exit task", ex);
+                }
+            }
+            @Override
+            public String toString() {
+                return task.toString();
             }
         };
     }
