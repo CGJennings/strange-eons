@@ -1,6 +1,0 @@
-This folder exists as a temporary measure while the libraries are rewritten.
-The documentation is being converted and moved to the Web, at which point
-the current system of automatically generating docs will be removed.
-
-In the meantime, this folder contains a copy of the original library code
-so that the old docs can still be generated on the fly as before.
