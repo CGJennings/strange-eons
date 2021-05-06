@@ -2339,13 +2339,9 @@ public final class StrangeEons {
 
     /**
      * Starts running initialization tasks that can be performed in the
-     * background. This includes the following:
-     * <ul>
-     * <li>initialize spelling checking
-     * </ul>
+     * background.
      *
-     * <p>
-     * To function correctly, background initialization must be started after
+     * <p>To function correctly, background initialization must be started after
      * libraries are loaded. Background initialization must be completed before
      * extensions are loaded. See {@link #waitForBackgroundInit()}.
      */
