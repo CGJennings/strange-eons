@@ -1215,52 +1215,42 @@ public final class StrangeEons {
      * Called by AppFrame during shutdown to run registered exit tasks.
      */
     synchronized void runExitTasks() {
-        if (exitTasks.isEmpty()) {
-            return;
-        }
-
+        final long start = System.currentTimeMillis();
         log.info("running exit tasks");
 
-        if (exitTasks.size() == 1 || Runtime.getRuntime().availableProcessors() == 1) {
-            for (Runnable r : exitTasks) {
-                try {
-                    log.log(Level.INFO, "running task [{0}]", r);
-                    r.run();
-                } catch (Throwable t) {
-                    String name = "<unknown>";
-                    try {
-                        name = r.toString();
-                    } catch (Throwable t2) {
-                    }
-                    log.log(Level.SEVERE, "exit task threw an exception: " + name, t);
-                }
+        if (exitTasks.size() <= 1 || Runtime.getRuntime().availableProcessors() == 1) {
+            while (!exitTasks.isEmpty()) {
+                wrapExitTask(exitTasks.removeLast()).run();
             }
-
-            log.info("completed all exit tasks");
-            return;
+        } else {
+            // run concurrently for faster shutdown
+            Runnable[] tasks = new Runnable[exitTasks.size()];
+            for (int i = 0; i < tasks.length; ++i) {
+                tasks[i] = wrapExitTask(exitTasks.removeLast());
+            }
+            SplitJoin.getInstance().runUnchecked(tasks);
         }
 
-        // run concurrently for faster shutdown
-        Runnable[] tasks = new Runnable[exitTasks.size()];
-        int i = 0;
-        for (final Runnable r : exitTasks) {
-            tasks[i++] = () -> {
-                try {
-                    log.log(Level.INFO, "running task [{0}]", r);
-                    r.run();
-                } catch (Throwable t) {
-                    String name = "<unknown>";
-                    try {
-                        name = r.toString();
-                    } catch (Throwable t2) {
-                    }
-                    log.log(Level.SEVERE, "exit task threw an exception: " + name, t);
-                }
-            };
-        }
-        SplitJoin.getInstance().runUnchecked(tasks);
+        log.log(Level.INFO, "completed all exit tasks in {0} ms", System.currentTimeMillis() - start);
+    }
 
-        log.info("completed all exit tasks");
+    /**
+     * Wraps an exit task with another Runnable that prevents exceptions from
+     * escaping and adds logging.
+     *
+     * @param task the task to wrap
+     * @return a wrapped task that performs the task without letting exceptions
+     * escape
+     */
+    private static Runnable wrapExitTask(final Runnable task) {
+        return () -> {
+            try {
+                log.log(Level.INFO, "running exit task [{0}]", task);
+                task.run();
+            } catch (Exception ex) {
+                log.log(Level.SEVERE, "uncaught exception in exit task", ex);
+            }
+        };
     }
 
     /**
@@ -1669,7 +1659,7 @@ public final class StrangeEons {
             throw new AssertionError("must NOT be called from EDT");
         }
 
-        final long startTime = System.nanoTime();
+        final long startTime = System.currentTimeMillis();
 
         // Adjust logger level from ALL to command line level
         log.setLevel(commandLineArguments.loglevel);
@@ -1871,10 +1861,8 @@ public final class StrangeEons {
                 synchronized (SplashWindow.class) {
                     splash = null;
                 }
-                if (log.isLoggable(Level.INFO)) {
-                    double time = (System.nanoTime() - startTime) * 1e-9;
-                    log.log(Level.INFO, String.format("startup took took %.2f s", time));
-                }
+                final double time = (System.currentTimeMillis() - startTime) / 1000d;
+                log.log(Level.INFO, String.format("startup took %.2f s", time));
 
                 // Before closing the splash window, check if it has any
                 // child windows attached via getSafeStartupParentWindow.
