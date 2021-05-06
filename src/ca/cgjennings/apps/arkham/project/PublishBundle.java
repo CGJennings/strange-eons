@@ -119,8 +119,6 @@ public class PublishBundle extends TaskAction {
         BusyDialog.maximumProgress(12);
 
         File unwrapFile = new File(srcBundle + ".unwraptmp");
-        File packFile = new File(srcBundle + ".packtmp");
-        File unpackFile = new File(srcBundle + ".unpacktmp");
         File verifyFile = new File(srcBundle + ".verifytmp");
 
         CompressionMethod method2;
@@ -149,6 +147,8 @@ public class PublishBundle extends TaskAction {
         long installSize;
         try {
             PluginBundle pb = new PluginBundle(srcBundle);
+
+            // unwrap a wrapped bundle to plain format
             if (pb.getFormat() != PluginBundle.FORMAT_PLAIN) {
                 BusyDialog.statusText(string("pa-pub-bundle-s0")); //unwrapping
                 pb.copy(unwrapFile);
@@ -158,30 +158,25 @@ public class PublishBundle extends TaskAction {
             // create a listing, copying relevant properties from the root file
             listing = new Listing(srcBundle);
 
-            // capture the root info now for use after the file is deleted
-            BusyDialog.currentProgress(1);
-            BusyDialog.statusText(string("pa-pub-bundle-s1")); // repacking
-            packBundle(srcFile, packFile);
-            BusyDialog.statusText(string("pa-pub-bundle-s2")); // integrity hash
-            BusyDialog.currentProgress(3);
-
-            unpackBundle(packFile, unpackFile);
+            // enusure bundle itself is uncompressed, then
+            // compute an integrity hash for the uncompressed bundle
+            BusyDialog.statusText(string("pa-pub-bundle-s2"));
             BusyDialog.currentProgress(4);
-            installSize = unpackFile.length();
-            MD5Checksum md5Verify = MD5Checksum.forFile(unpackFile);
+            srcFile = pb.createUncompressedArchive();
+            installSize = srcFile.length();
+            MD5Checksum md5Verify = MD5Checksum.forFile(srcFile);
 
-            // make the .pack.X
+            // compres the bundle
             BusyDialog.currentProgress(5);
-            BusyDialog.statusText(string("pa-pub-bundle-s3")); // compress
-            compress(packFile, outFile, method);
+            BusyDialog.statusText(string("pa-pub-bundle-s3"));
+            compress(srcFile, outFile, method);
             downloadSize = outFile.length();
-
             // if we are detecting the best compression, try
             // the second method, figure out which is best and delete the other
             if (method2 != null) {
-                compress(packFile, outFile2, method2);
+                compress(srcFile, outFile2, method2);
                 long downloadSize2 = outFile2.length();
-                if (downloadSize2 <= downloadSize) { // use <= size LZMA faster than BZIP2
+                if (downloadSize2 <= downloadSize) { // use <= since LZMA faster than BZIP2
                     outFile.delete();
                     method = method2;
                     outFile = outFile2;
@@ -195,16 +190,16 @@ public class PublishBundle extends TaskAction {
                 // the winner
             }
 
+            // compute an integrity hash for the download; this is used for the
+            // catalog, while md5verify is used to verify the publishing process below
             MD5Checksum md5ForDownload = MD5Checksum.forFile(outFile);
 
             // now verify the published bundle
             BusyDialog.currentProgress(8);
             BusyDialog.statusText(string("pa-pub-bundle-s4")); // verify
             decompress(outFile, verifyFile, method);
-            BusyDialog.currentProgress(10);
-            unpackBundle(verifyFile, unpackFile);
             BusyDialog.currentProgress(11);
-            MD5Checksum md5Verify2 = MD5Checksum.forFile(unpackFile);
+            MD5Checksum md5Verify2 = MD5Checksum.forFile(verifyFile);
             BusyDialog.currentProgress(12);
 
             if (!md5Verify.matches(md5Verify2.getChecksumString())) {
@@ -221,6 +216,7 @@ public class PublishBundle extends TaskAction {
 
             // add bundle extension to URL
             listing.set(Listing.URL, listing.get(Listing.URL) + ext);
+
             // if the compression method requires a certain build number,
             // update the listing's minimum build if necessary
             int minVer = method.getMinimumBuildNumber();
@@ -231,6 +227,7 @@ public class PublishBundle extends TaskAction {
                     try {
                         listedVersion = Integer.parseInt(v);
                     } catch (NumberFormatException e) {
+                        // listedVersion = 0;
                     }
                 }
                 if (listedVersion < minVer) {
@@ -244,22 +241,12 @@ public class PublishBundle extends TaskAction {
             return null;
         } finally {
             unwrapFile.delete();
-            packFile.delete();
-            unpackFile.delete();
             verifyFile.delete();
         }
 
         return listing;
     }
 
-    // Steps:
-    // 1. pack bundle
-    // 2. publishedBundleToPluginBundle bundle, taking MD5
-    // 3. compress packed bundle (formats?)
-    // 4. uncompress
-    // 5. publishedBundleToPluginBundle
-    // 6. verify MD5
-    // 7. get root file, extract catalog info, show dialog/console print for user to copy
     private static volatile boolean openOperationCancelled;
 
     static {
@@ -282,6 +269,7 @@ public class PublishBundle extends TaskAction {
                         PluginBundlePublisher.publishedBundleToPluginBundle(f, dest);
                     }catch (IOException e) {
                         StrangeEons.log.log(Level.SEVERE, "uncaught unpack exception", e);
+                        ErrorDialog.displayError(string("prj-err-convert", f.getName()), e);
                     }
                 }, (ActionEvent e) -> {
                     openOperationCancelled = true;

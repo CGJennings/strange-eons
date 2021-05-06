@@ -21,10 +21,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.jar.Manifest;
-import java.util.jar.Pack200;
-import java.util.jar.Pack200.Packer;
-import static java.util.jar.Pack200.Packer.*;
-import java.util.jar.Pack200.Unpacker;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import resources.Settings;
@@ -36,29 +32,21 @@ import resources.Settings;
  * Strange Eons.
  *
  * <p>
- * Bundles are converted to their "published" form in a two-step process. The
- * first step, "packing", converts the bundle into an uncompressed archive with
- * reorganized data that is optimized for compression. Some extraneous
- * information about the structure of the archive and any compiled classes is
- * deleted during packing to reduce download size. The exact details may change
- * from version to version, but examples of possible changes include removing
- * empty directories, using a single timestamp for all files in the archive, and
- * removing information about classes that is used by debugging tools. (However,
- * the line and source file information displayed when an exception is thrown
- * will <i>not</i> be removed.)
+ * A published bundle compresses an existing bundle with a high-efficiency
+ * compression method. For best results, the existing bundle should first
+ * be re-packed so that the underlying ZIP/JAR does not compress any entries
+ * (i.e. all entries are written with {@code STORE}). This will reduce the
+ * overall file size compared to compressing an already compressed bundle.
+ * (The project command to publish a bundle performs this step automatically.)
  *
- * <p>
- * The second step compresses the entire packed archive file. The compression
- * method is generally chosen for maximum compression, without regard to the
- * time required to compress or decompress the archive. A number of compression
- * algorithms are supported.
- *
- * <p>
- * Likewise, to convert a published bundle to a plain bundle, it must first be
- * decompressed by the same method used to compress it, then unpacked to a
- * bundle file. As a convenience, the  {@link #publishedBundleToPluginBundle
- * publishedBundleToPluginBundle} method can perform both steps with a single
- * method call.
+ * <p><b>Note:</b> Previously, a two-process was used in which the original
+ * bundle (a type of JAR file) was compressed with Pack200, then the result
+ * compressed as described above. However, support for Pack200 was removed
+ * from Java. As the required tools are no longer distributed with JREs
+ * starting in Java 14, bundles published with older versions of the app
+ * can no longer be decompressed by newer versions of the app. (They can
+ * be unpacked by an older version, then the bundle installed in the newer
+ * version.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -221,7 +209,11 @@ public class PluginBundlePublisher {
      * @throws IOException if an error occurs
      * @throws NullPointerException if either file is <code>null</code>
      * @see #unpackBundle
+     *
+     * @deprecated The Pack200 tools used by this method have been removed
+     * from Java. Calling this method will copy the file without changes.
      */
+    @Deprecated
     public static void packBundle(File source, File dest) throws IOException {
         if (source == null) {
             throw new NullPointerException("fin");
@@ -230,36 +222,19 @@ public class PluginBundlePublisher {
             throw new NullPointerException("fout");
         }
 
-        log.info("repacking with Pack200");
-
-        Packer packer = Pack200.newPacker();
-        SortedMap<String, String> p = packer.properties();
-
-        p.put(EFFORT, "9");
-        p.put(SEGMENT_LIMIT, "-1");
-        p.put(MODIFICATION_TIME, LATEST);
-        p.put(DEFLATE_HINT, FALSE);
-        p.put(KEEP_FILE_ORDER, FALSE);
-        p.put(CODE_ATTRIBUTE_PFX + "LocalVariableTable", STRIP);
-        p.put(CODE_ATTRIBUTE_PFX + "LocalVariableTypeTable", STRIP);
-
-        OutputStream out = null;
-        try {
-            JarFile jar;
-            if (Settings.getUser().getBoolean(STRIP_JAR_METADATA_SETTING, true)) {
-                jar = new StrippedJar(source);
-            } else {
-                jar = new JarFile(source);
-            }
-            out = new BufferedOutputStream(new FileOutputStream(dest), 128 * 1_024);
-            packer.pack(jar, out);
-        } finally {
-            if (out != null) {
-                out.close();
-            }
-        }
+        log.warning("copying bundle instead of packing with Pack200");
+        ProjectUtilities.copyFile(source, dest);
     }
 
+    /**
+     * Returns whether the specified file appears to be packed with the
+     * Pack200 algorithm by checking for a magic number. Does not rely
+     * on the pack tools being available to the Java runtime.
+     *
+     * @param toTest the file to test
+     * @return true if the file appears to be packed
+     * @throws IOException  if an error occurs while reading the file
+     */
     static boolean isPack200Compressed(File toTest) throws IOException {
         boolean isPacked = false;
         try(FileInputStream magicIns = new FileInputStream(toTest)) {
@@ -282,6 +257,9 @@ public class PluginBundlePublisher {
      * @throws IOException if an error occurs
      * @throws NullPointerException if either file is <code>null</code>
      * @see #packBundle
+     *
+     * @deprecated The Pack200 tools used by this method have been removed
+     * from Java. Calling this method on a packed file will throw an exception.
      */
     public static void unpackBundle(File source, File dest) throws IOException {
         if (source == null) {
@@ -293,25 +271,11 @@ public class PluginBundlePublisher {
 
         // check if the bundle is actually packed with Pack200
         if(isPack200Compressed(source)) {
-            log.info("reconstituting from Pack200");
+            throw new IOException("detected Pack200 compression, which is no longer supported");
         } else {
             log.info("bundle not Pack200 compressed");
             ProjectUtilities.copyFile(source, dest);
             return;
-        }
-
-        Unpacker u = Pack200.newUnpacker();
-        FileOutputStream fouts = null;
-        try {
-            fouts = new FileOutputStream(dest);
-            try (JarOutputStream out = new JarOutputStream(new BufferedOutputStream(fouts))) {
-                u.unpack(source, out);
-            }
-            fouts = null;
-        } finally {
-            if (fouts != null) {
-                fouts.close();
-            }
         }
     }
 
@@ -421,28 +385,13 @@ public class PluginBundlePublisher {
         Compressor c = method.createCompressor();
         c.decompress(source, decompTemp, null);
 
-        // unpack
         if(isPack200Compressed(decompTemp)) {
-            log.info("reconstituting from Pack200");
-            Unpacker u = Pack200.newUnpacker();
-            FileOutputStream fouts = null;
-            try {
-                fouts = new FileOutputStream(dest);
-                try (JarOutputStream out = new JarOutputStream(new BufferedOutputStream(fouts))) {
-                    u.unpack(decompTemp, out);
-                }
-                fouts = null;
-            } finally {
-                decompTemp.delete();
-                if (fouts != null) {
-                    fouts.close();
-                }
-            }
-        } else {
-            log.info("bundle not Pack200 compressed");
-            ProjectUtilities.copyFile(decompTemp, dest);
-            decompTemp.delete();
+            throw new IOException("detected Pack200 compression, which is no longer supported");
         }
+
+        log.info("copying bundle to destination");
+        ProjectUtilities.copyFile(decompTemp, dest);
+        decompTemp.delete();
 
         return dest;
     }
