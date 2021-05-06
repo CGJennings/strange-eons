@@ -605,12 +605,13 @@ public final class StrangeEons {
      * @return true if running in non-interactive mode
      */
     public static boolean isNonInteractive() {
-        StrangeEonsAppWindow w = getWindow();
-        if(w != null && w.isVisible()) {
-            return false;
-        }
         // currently only script runner mode activates the non-interactive state
-        return scriptRunnerMode == null;
+        if(scriptRunnerMode != null) {
+            // started non-interactive, but left if window made visible
+            final AppFrame af = AppFrame.getApp();
+            return af == null ? true : !af.hasEverBeenMadeVisible;
+        }
+        return false;
     }
 
     /**

@@ -1594,9 +1594,10 @@ final class AppFrame extends StrangeEonsAppWindow {
     }
 
     /**
-     * This is a cover method for <code>exitApplication( false )</code>. It is
+     * @deprecated This is a cover method for <code>exitApplication( false )</code>. It is
      * retained for backwards compatibility.
      */
+    @Deprecated
     public void exitApplication() {
         //
         // THIS EXACT SIGNATURE IS REQUIRED BY OS X ADAPTER
@@ -1656,6 +1657,17 @@ final class AppFrame extends StrangeEonsAppWindow {
                 });
             }
         }
+    }
+
+    /** Tracks whether the window has ever been visible, which cancels any non-interactive mode. */
+    boolean hasEverBeenMadeVisible = false;
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void show() {
+        // all calls to setVisible, etc., eventually lead to show()
+        hasEverBeenMadeVisible = true;
+        super.show();
     }
 
     private static final String LAST_PROJECT_KEY = "recent-project";
