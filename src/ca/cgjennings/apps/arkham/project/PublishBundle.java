@@ -158,9 +158,11 @@ public class PublishBundle extends TaskAction {
             // create a listing, copying relevant properties from the root file
             listing = new Listing(srcBundle);
 
+            // enusure bundle itself is uncompressed, then
             // compute an integrity hash for the uncompressed bundle
             BusyDialog.statusText(string("pa-pub-bundle-s2"));
             BusyDialog.currentProgress(4);
+            srcFile = pb.createUncompressedArchive();
             installSize = srcFile.length();
             MD5Checksum md5Verify = MD5Checksum.forFile(srcFile);
 
