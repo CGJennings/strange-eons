@@ -336,7 +336,7 @@ public class PluginManager extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(topLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(listScroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
+                    .addComponent(listScroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                     .addComponent(compoundPluginPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -344,8 +344,6 @@ public class PluginManager extends javax.swing.JDialog {
         getContentPane().add(top, java.awt.BorderLayout.CENTER);
 
         bottom.setLayout(new java.awt.GridBagLayout());
-
-        overlayPanel1.setLayout(new java.awt.FlowLayout());
 
         downloadBtn.setFont(downloadBtn.getFont().deriveFont(downloadBtn.getFont().getSize()-1f));
         downloadBtn.setIcon( ResourceKit.getIcon( "catalog/update-available.png" ) );
@@ -356,7 +354,6 @@ public class PluginManager extends javax.swing.JDialog {
                 downloadBtnActionPerformed(evt);
             }
         });
-        overlayPanel1.add(downloadBtn);
 
         openPluginFolderBtn.setFont(openPluginFolderBtn.getFont().deriveFont(openPluginFolderBtn.getFont().getSize()-1f));
         openPluginFolderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/project/folder.png"))); // NOI18N
@@ -368,7 +365,29 @@ public class PluginManager extends javax.swing.JDialog {
                 openPluginFolderBtnActionPerformed(evt);
             }
         });
-        overlayPanel1.add(openPluginFolderBtn);
+
+        javax.swing.GroupLayout overlayPanel1Layout = new javax.swing.GroupLayout(overlayPanel1);
+        overlayPanel1.setLayout(overlayPanel1Layout);
+        overlayPanel1Layout.setHorizontalGroup(
+            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanel1Layout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(downloadBtn)
+                .addGap(5, 5, 5)
+                .addComponent(openPluginFolderBtn)
+                .addGap(6, 6, 6))
+        );
+        overlayPanel1Layout.setVerticalGroup(
+            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanel1Layout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(downloadBtn)
+                    .addComponent(openPluginFolderBtn))
+                .addGap(6, 6, 6))
+        );
+
+        overlayPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {downloadBtn, openPluginFolderBtn});
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
