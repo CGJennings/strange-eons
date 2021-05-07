@@ -42,7 +42,7 @@ public class ArcBorder extends AbstractBorder {
     }
 
     public ArcBorder(int arcEdges, Color color, int arcSize, int thickness, float hardening) {
-        setColor(color);
+        if(color != null) setColor(color);
         this.arcSize = arcSize;
         this.thickness = thickness;
         setHardening(hardening);
@@ -248,7 +248,7 @@ public class ArcBorder extends AbstractBorder {
     private int arcSize = 24;
     private int thickness = 4;
     private float hardening = 0.2f;
-    private Color color = null;
+    private Color color = Color.GRAY;
 
     private BasicStroke pen;
     private Path2D exterior;
@@ -262,23 +262,4 @@ public class ArcBorder extends AbstractBorder {
         }
         return c;
     }
-
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame( "Yo" );
-//				KeyStrokeField ksf = new KeyStrokeField();
-//				ksf.setBorder( new ArcBorder() );
-//				ksf.setOpaque( true );
-//				ksf.setBackground( Color.RED );
-//
-//				f.add( ksf );
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }
