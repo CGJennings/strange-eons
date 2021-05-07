@@ -20,7 +20,6 @@ import javax.swing.border.AbstractBorder;
  */
 @SuppressWarnings("serial")
 public class ArcBorder extends AbstractBorder {
-
     public static final int ARC_LEFT_TOP = 0;
     public static final int ARC_TOP_RIGHT = 1;
     public static final int ARC_RIGHT_BOTTOM = 2;
@@ -102,23 +101,6 @@ public class ArcBorder extends AbstractBorder {
         this.color = color;
     }
 
-    public void setComponentBackgroundAdjusted(boolean adjust) {
-        snapBackground = adjust;
-    }
-
-    public boolean isComponentBackgroundAdjusted() {
-        return snapBackground;
-    }
-
-    private boolean snapBackground = true;
-
-    private void doSnap(Component c) {
-        if (snapBackground && c != null) {
-            snapBackground = false;
-            c.setBackground(getDefaultPanelBackgroundColor());
-        }
-    }
-
     @Override
     public Insets getBorderInsets(Component c) {
         return getBorderInsets(c, null);
@@ -126,7 +108,6 @@ public class ArcBorder extends AbstractBorder {
 
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
-        doSnap(c);
         int t = 0, l = 0, r = 0, b = 0;
         int i = arcSize / 2;
         switch (arcEdges) {
@@ -173,7 +154,6 @@ public class ArcBorder extends AbstractBorder {
         if (arc != null && cx == x1 && cy == y1 && cw == w && ch == h) {
             return;
         }
-        doSnap(c);
         cx = x1;
         cy = y1;
         cw = w;
@@ -238,6 +218,9 @@ public class ArcBorder extends AbstractBorder {
                 exterior.quadTo(fx1 + hr, fy2 - hr, fx1, fy2 - arcSize);
                 exterior.lineTo(fx1, fy2);
                 exterior.closePath();
+
+            default:
+                throw new AssertionError();
         }
 
         pen = new BasicStroke(thickness);
@@ -253,13 +236,4 @@ public class ArcBorder extends AbstractBorder {
     private BasicStroke pen;
     private Path2D exterior;
     private Path2D arc;
-
-    public static Color getDefaultPanelBackgroundColor() {
-        UIDefaults uid = UIManager.getDefaults();
-        Color c = uid.getColor("nimbusBlueGrey");
-        if (c == null) {
-            c = Color.GRAY;
-        }
-        return c;
-    }
 }
