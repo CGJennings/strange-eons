@@ -155,7 +155,7 @@ public class PluginManager extends javax.swing.JDialog {
         shortcutField = new ca.cgjennings.ui.JKeyStrokeField();
         shortcutTip = new ca.cgjennings.ui.JTip();
         bottom = new javax.swing.JPanel();
-        overlayPanel1 = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
+        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
         downloadBtn = new javax.swing.JButton();
         openPluginFolderBtn = new javax.swing.JButton();
         helpBtn = new ca.cgjennings.ui.JHelpButton();
@@ -336,7 +336,7 @@ public class PluginManager extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, topLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(topLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(listScroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
+                    .addComponent(listScroll, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE)
                     .addComponent(compoundPluginPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -344,8 +344,6 @@ public class PluginManager extends javax.swing.JDialog {
         getContentPane().add(top, java.awt.BorderLayout.CENTER);
 
         bottom.setLayout(new java.awt.GridBagLayout());
-
-        overlayPanel1.setLayout(new java.awt.FlowLayout());
 
         downloadBtn.setFont(downloadBtn.getFont().deriveFont(downloadBtn.getFont().getSize()-1f));
         downloadBtn.setIcon( ResourceKit.getIcon( "catalog/update-available.png" ) );
@@ -356,7 +354,6 @@ public class PluginManager extends javax.swing.JDialog {
                 downloadBtnActionPerformed(evt);
             }
         });
-        overlayPanel1.add(downloadBtn);
 
         openPluginFolderBtn.setFont(openPluginFolderBtn.getFont().deriveFont(openPluginFolderBtn.getFont().getSize()-1f));
         openPluginFolderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/project/folder.png"))); // NOI18N
@@ -368,14 +365,36 @@ public class PluginManager extends javax.swing.JDialog {
                 openPluginFolderBtnActionPerformed(evt);
             }
         });
-        overlayPanel1.add(openPluginFolderBtn);
+
+        javax.swing.GroupLayout overlayPanelLayout = new javax.swing.GroupLayout(overlayPanel);
+        overlayPanel.setLayout(overlayPanelLayout);
+        overlayPanelLayout.setHorizontalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
+                .addGap(5, 5, 5)
+                .addComponent(downloadBtn)
+                .addGap(5, 5, 5)
+                .addComponent(openPluginFolderBtn)
+                .addGap(6, 6, 6))
+        );
+        overlayPanelLayout.setVerticalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addGroup(overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(downloadBtn)
+                    .addComponent(openPluginFolderBtn))
+                .addGap(6, 6, 6))
+        );
+
+        overlayPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {downloadBtn, openPluginFolderBtn});
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
-        bottom.add(overlayPanel1, gridBagConstraints);
+        bottom.add(overlayPanel, gridBagConstraints);
 
         helpBtn.setHelpPage("plugins-manager");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -734,7 +753,7 @@ public class PluginManager extends javax.swing.JDialog {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JScrollPane listScroll;
     private javax.swing.JButton openPluginFolderBtn;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
+    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private javax.swing.JLabel pluginDesc;
     private javax.swing.JLabel pluginIcon;
     private javax.swing.JList pluginList;
