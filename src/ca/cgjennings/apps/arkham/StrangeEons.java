@@ -16,6 +16,7 @@ import ca.cgjennings.apps.arkham.plugins.catalog.Catalog.VersioningState;
 import ca.cgjennings.apps.arkham.plugins.catalog.NetworkProxy;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.apps.arkham.project.Project;
+import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.util.InstanceController;
 import ca.cgjennings.imageio.JPEG2000;
 import ca.cgjennings.io.FileChangeMonitor;
@@ -39,7 +40,9 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.KeyboardFocusManager;
+import java.awt.Toolkit;
 import java.awt.Window;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -53,7 +56,9 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -102,24 +107,11 @@ public final class StrangeEons {
     static final int INTERNAL_BUILD_NUMBER = 99_999;
 
     static {
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(StrangeEons.class.getResourceAsStream("rev"), "utf-8"));
-            String number = in.readLine().trim();
-            try {
-                VER_BUILD = Integer.parseInt(number);
-            } catch (NumberFormatException e) {
-                throw new Error("invalid build number " + number);
-            }
-        } catch (IOException e) {
-            throw new Error("missing build number");
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                }
-            }
+        try(InputStreamReader in = new InputStreamReader(StrangeEons.class.getResourceAsStream("rev"), StandardCharsets.UTF_8)) {
+            String number = new BufferedReader(in).readLine().trim();
+            VER_BUILD = Integer.parseInt(number);
+        } catch (IOException | NumberFormatException e) {
+            throw new AssertionError("missing or invalid build number");
         }
     }
 
@@ -132,12 +124,17 @@ public final class StrangeEons {
 
     private static ScriptRunnerModeHelper scriptRunnerMode;
 
-    // the logger has to be initialized very near the top so that it exists
-    // for other static initializer sections to use
+    private static void initScriptRunnerMode(File scriptOrNull) {
+        if (scriptOrNull != null) {
+            scriptRunnerMode = new ScriptRunnerModeHelper(scriptOrNull);
+        }
+    }
+
+    // Must be initialized up top so other initializers can access it
     static {
-        // The initial static configuration is meant for standalone testing of
-        // classes during development. When (if) init() is called, it will
-        // drop the log level to the user-requested value.
+        // Note: the initial ALL level supports quick testing of standalone
+        // classes during development. Once init() is called, the level is
+        // reset to the the user-requested value.
         log = Logger.getLogger(StrangeEons.class.getName());
         log.setLevel(Level.ALL);
 
@@ -175,9 +172,6 @@ public final class StrangeEons {
         handler.setFormatter(new BriefLogFormatter());
         handler.setLevel(Level.ALL);
 
-        // make our handler the only handler for the root logger so that
-        // all logging will have consitent formatting and handling
-        // (unless a logger calls setUseParentHandlers( false )).
         Logger root = Logger.getLogger("");
         for (Handler h : root.getHandlers()) {
             root.removeHandler(h);
@@ -327,7 +321,7 @@ public final class StrangeEons {
             for (int i = 0; i < ver.length; ++i) {
                 ver[i] = Integer.MAX_VALUE;
             }
-            log.log(Level.SEVERE, "exception while parsing the Java version string: \"{0}'", v);
+            log.log(Level.SEVERE, "exception parsing Java version string: \"{0}'", v);
         }
         return ver;
     }
@@ -375,32 +369,22 @@ public final class StrangeEons {
      * @param args the command line arguments
      */
     private StrangeEons(String[] arguments) throws Throwable {
-        instance = this;
         commandLineArguments = CommandLineArguments.create(arguments);
+    }
 
-        if (commandLineArguments.version) {
-            System.out.println(getBuildNumber());
-            System.exit(0);
-        }
-
-        applyTextAntialiasingSettings(commandLineArguments.xAAText);
-
-        if (commandLineArguments.xOpenGL) {
-            System.setProperty("sun.java2d.opengl", "True");
-            System.setProperty("sun.java2d.opengl.fbobject", "false");
-        }
-
-        if (commandLineArguments.xDisableAnimation) {
-            System.setProperty("ca.cgjennings.anim.enabled", "false");
-        }
-
-        if (commandLineArguments.run != null) {
-            scriptRunnerMode = new ScriptRunnerModeHelper(commandLineArguments.run);
-        } else {
-            scriptRunnerMode = null;
-        }
-
+    /**
+     * Top-level initialization function, called from {@code main()}
+     * immediately after instance is created.
+     */
+    private void initialize() {
         try {
+            if (commandLineArguments.version) {
+                System.out.println(StrangeEons.getBuildNumber());
+                System.exit(0);
+            }
+
+            applyGraphicsOptions(commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
+            applyTextAntialiasingOptions(commandLineArguments.xAAText);
             initStage1();
         } catch (final Throwable t) {
             log.log(Level.SEVERE, "Uncaught Exception in Stage 1", t);
@@ -419,13 +403,23 @@ public final class StrangeEons {
         }
     }
 
+    private static void applyGraphicsOptions(boolean preferOpenGl, boolean avoidAnimation) {
+        if (preferOpenGl) {
+            System.setProperty("sun.java2d.opengl", "True");
+            System.setProperty("sun.java2d.opengl.fbobject", "false");
+        }
+        if (avoidAnimation) {
+            System.setProperty("ca.cgjennings.anim.enabled", "false");
+        }
+    }
+
     /**
      * Apply default or user-specified text antialiasing settings. This must be
      * called before the AWT/Swing is initialized.
      *
      * @param textAA the user-specified setting, or null for a platform default
      */
-    private static void applyTextAntialiasingSettings(String textAA) {
+    private static void applyTextAntialiasingOptions(String textAA) {
         if (textAA == null) {
             textAA = PlatformSupport.PLATFORM_IS_OTHER ? "lcd" : "auto";
         }
@@ -669,47 +663,8 @@ public final class StrangeEons {
             InstalledPlugin[] plugins = BundleInstaller.getInstalledPlugins();
 
             // start 'em up
-            for (int i = 0; i < plugins.length; ++i) {
-                final InstalledPlugin ip = plugins[i];
-
-                // verify that we want to start the plug-in
-                if (!ip.isEnabled()) {
-                    StrangeEons.log.log(Level.FINEST, "skipping disabled plug-in {0}", plugins[i].getPluginClass());
-                    continue;
-                }
-
-                if (ip.getBundle() != null && uninstalledBundles.contains(ip.getBundle().getFile())) {
-                    StrangeEons.log.log(Level.FINEST, "skipping uninstalled plug-in {0}", plugins[i].getPluginClass());
-                    continue;
-                }
-
-                final int type = ip.getPluginType();
-                if (type != Plugin.ACTIVATED && type != Plugin.INJECTED) {
-                    if (type == Plugin.EXTENSION) {
-                        StrangeEons.log.log(Level.WARNING, "skipping EXTENSION plug-in in wrong bundle {0}", plugins[i].getPluginClass());
-                        continue;
-                    }
-                    throw new AssertionError(); // unknown new plug-in type
-                }
-
-                // start it
-                final Plugin p;
-                try {
-                    p = ip.startPlugin();
-                    StrangeEons.log.log(Level.FINE, "started plug-in {0} ({1})", new Object[]{plugins[i].getPluginClass(), plugins[i].getName()});
-                } catch (PluginException t) {
-                    StrangeEons.log.log(Level.WARNING, "plug-in failed to start " + plugins[i].getPluginClass(), t);
-                    continue;
-                }
-
-                // INJECTED plug-ins are shown exactly once, at start time
-                if (type == Plugin.INJECTED) {
-                    try {
-                        p.showPlugin(PluginContextFactory.createContext(plugins[i], 0), true);
-                    } catch (Throwable t) {
-                        ErrorDialog.displayError(string("rk-err-plugin-init", plugins[i].getPluginClass()), t);
-                    }
-                }
+            for(final InstalledPlugin ip : plugins) {
+                startPlugin(ip, uninstalledBundles);
             }
 
             // inform listeners, including the Toolbox menu
@@ -720,10 +675,57 @@ public final class StrangeEons {
     }
 
     /**
+     * Helper that starts an individual non-extension plug-in.
+     * @param ip non-null plug-in to start
+     * @param uninstalledBundles bundle files marked uninstalled in prefs
+     */
+    private void startPlugin(InstalledPlugin ip, Set<File> uninstalledBundles) {
+        // first check if we should ignore the plug-in for various reasons:
+        if (!ip.isEnabled()) {
+            StrangeEons.log.log(Level.FINEST, "skipping disabled plug-in {0}", ip.getPluginClass());
+            return;
+        }
+
+        if (ip.getBundle() != null && uninstalledBundles.contains(ip.getBundle().getFile())) {
+            StrangeEons.log.log(Level.FINEST, "skipping uninstalled plug-in {0}", ip.getPluginClass());
+            return;
+        }
+
+        final int type = ip.getPluginType();
+        if (type != Plugin.ACTIVATED && type != Plugin.INJECTED) {
+            if (type == Plugin.EXTENSION) {
+                StrangeEons.log.log(Level.WARNING, "skipping EXTENSION plug-in in wrong bundle {0}", ip.getPluginClass());
+                return;
+            }
+            StrangeEons.log.log(Level.SEVERE, "skipping plug-in with unknown type {0}", ip.getPluginClass());
+            return;
+        }
+
+        // OK, we really want to start it
+        final Plugin p;
+        try {
+            p = ip.startPlugin();
+            StrangeEons.log.log(Level.FINE, "started plug-in {0} ({1})", new Object[]{ip.getPluginClass(), ip.getName()});
+        } catch (PluginException t) {
+            StrangeEons.log.log(Level.WARNING, "plug-in failed to start " + ip.getPluginClass(), t);
+            return;
+        }
+
+        // injected plug-ins are "shown" exactly once, when they are started
+        if (type == Plugin.INJECTED) {
+            try {
+                p.showPlugin(PluginContextFactory.createContext(ip, 0), true);
+            } catch (PluginException | RuntimeException ex) {
+                ErrorDialog.displayError(string("rk-err-plugin-init", ip.getPluginClass()), ex);
+            }
+        }
+    }
+
+    /**
      * Causes all currently loaded {@link Plugin#ACTIVATED ACTIVATED} and
      * {@link Plugin#INJECTED INJECTED} plug-ins to be unloaded. This method has
-     * no effect on null null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
-	 * {@linkplain BundleInstaller#loadThemeBundles themes}, or
+     * no effect on {@linkplain BundleInstaller#loadLibraryBundles libraries},
+     * {@linkplain BundleInstaller#loadThemeBundles themes}, or
      * {@linkplain BundleInstaller#loadExtensionBundles extension plug-ins}.
      *
      * @see #loadPlugins()
@@ -738,8 +740,8 @@ public final class StrangeEons {
                     try {
                         plugins[i].stopPlugin();
                         log.log(Level.FINEST, "stopped plug-in instance: {0}", plugins[i].getPluginClass());
-                    } catch (Throwable t) {
-                        log.log(Level.WARNING, "uncaught exception while stopping plug-in: " + plugins[i].getPluginClass(), t);
+                    } catch (PluginException | RuntimeException ex) {
+                        log.log(Level.WARNING, "uncaught exception while stopping plug-in: " + plugins[i].getPluginClass(), ex);
                     }
                 }
             }
@@ -772,17 +774,16 @@ public final class StrangeEons {
      * @see #unloadPlugins()
      */
     public interface PluginLoadingListener extends EventListener {
-
         /**
          * Event type code indicating that the application has just loaded (or
          * reloaded) the plug-in set.
          */
-        int PLUGIN_LOAD_EVENT = 1;
+        static int PLUGIN_LOAD_EVENT = 1;
         /**
          * Event type code indicating that the application has just unloaded all
          * loaded plug-ins.
          */
-        int PLUGIN_UNLOAD_EVENT = 2;
+        static int PLUGIN_UNLOAD_EVENT = 2;
 
         /**
          * Called after the application loads, reloads, or unloads plug-ins. The
@@ -834,9 +835,7 @@ public final class StrangeEons {
         if (eventType != PluginLoadingListener.PLUGIN_LOAD_EVENT && eventType != PluginLoadingListener.PLUGIN_UNLOAD_EVENT) {
             throw new IllegalArgumentException("unknown event type: " + eventType);
         }
-        for (PluginLoadingListener li : pluginListeners) {
-            li.pluginsLoaded(eventType);
-        }
+        pluginListeners.forEach(li -> li.pluginsLoaded(eventType));
     }
 
     private Set<PluginLoadingListener> pluginListeners = new LinkedHashSet<>();
@@ -1215,52 +1214,49 @@ public final class StrangeEons {
      * Called by AppFrame during shutdown to run registered exit tasks.
      */
     synchronized void runExitTasks() {
-        if (exitTasks.isEmpty()) {
-            return;
-        }
-
+        final long start = System.currentTimeMillis();
         log.info("running exit tasks");
 
-        if (exitTasks.size() == 1 || Runtime.getRuntime().availableProcessors() == 1) {
-            for (Runnable r : exitTasks) {
+        if (exitTasks.size() <= 1 || Runtime.getRuntime().availableProcessors() == 1) {
+            while (!exitTasks.isEmpty()) {
+                wrapExitTask(exitTasks.removeLast()).run();
+            }
+        } else {
+            // run concurrently for faster shutdown
+            Runnable[] tasks = new Runnable[exitTasks.size()];
+            for (int i = 0; i < tasks.length; ++i) {
+                tasks[i] = wrapExitTask(exitTasks.removeLast());
+            }
+            SplitJoin.getInstance().runUnchecked(tasks);
+        }
+
+        log.log(Level.INFO, "completed all exit tasks in {0} ms", System.currentTimeMillis() - start);
+    }
+
+    /**
+     * Wraps an exit task with another Runnable that prevents exceptions from
+     * escaping and adds logging.
+     *
+     * @param task the task to wrap
+     * @return a wrapped task that performs the task without letting exceptions
+     * escape
+     */
+    private static Runnable wrapExitTask(final Runnable task) {
+        return new Runnable() {
+            @Override
+            public void run() {
                 try {
-                    log.log(Level.INFO, "running task [{0}]", r);
-                    r.run();
-                } catch (Throwable t) {
-                    String name = "<unknown>";
-                    try {
-                        name = r.toString();
-                    } catch (Throwable t2) {
-                    }
-                    log.log(Level.SEVERE, "exit task threw an exception: " + name, t);
+                    log.log(Level.INFO, "running exit task [{0}]", task);
+                    task.run();
+                } catch (Exception ex) {
+                    log.log(Level.SEVERE, "uncaught exception in exit task", ex);
                 }
             }
-
-            log.info("completed all exit tasks");
-            return;
-        }
-
-        // run concurrently for faster shutdown
-        Runnable[] tasks = new Runnable[exitTasks.size()];
-        int i = 0;
-        for (final Runnable r : exitTasks) {
-            tasks[i++] = () -> {
-                try {
-                    log.log(Level.INFO, "running task [{0}]", r);
-                    r.run();
-                } catch (Throwable t) {
-                    String name = "<unknown>";
-                    try {
-                        name = r.toString();
-                    } catch (Throwable t2) {
-                    }
-                    log.log(Level.SEVERE, "exit task threw an exception: " + name, t);
-                }
-            };
-        }
-        SplitJoin.getInstance().runUnchecked(tasks);
-
-        log.info("completed all exit tasks");
+            @Override
+            public String toString() {
+                return task.toString();
+            }
+        };
     }
 
     /**
@@ -1416,84 +1412,65 @@ public final class StrangeEons {
      * steps the user must complete are subject to change.
      *
      * @param description text to include with the report, or <code>null</code>
-     * @param t an exception that is relevant to the bug being reported, or
+     * @param ex an exception that is relevant to the bug being reported, or
      * <code>null</code>
      */
-    public void fileBugReport(String description, Throwable t) {
+    public void fileBugReport(String description, Throwable ex) {
         setWaitCursor(true);
+        StringBuilder reportBuff = new StringBuilder(BUG_REPORT_CHAR_LIMIT + 256);
         try {
-            StringBuilder msg = new StringBuilder(512);
-            if (description != null) {
-                msg.append(description.trim());
-            }
-            if (msg.length() == 0) {
-                msg.append("<please describe the problem>");
-            }
-            msg.append("\n\nStrange Eons bug report\n");
+            description = description == null ? "" : description.trim();
+            if(description.isEmpty()) description = "<please describe the problem>";
 
-            Properties p = System.getProperties();
-            msg.append(String.format(
-                    "Platform: %s (%s; %s; %s CPUs)\n",
-                    p.getProperty("os.name"),
-                    p.getProperty("os.version"),
-                    p.getProperty("os.arch"),
-                    Runtime.getRuntime().availableProcessors())
-            );
-            msg.append(String.format(
-                    "JVM:      %s (%s)\n",
-                    p.getProperty("java.version"),
-                    p.getProperty("java.vendor")
-            ));
+            final Properties p = System.getProperties();
+            reportBuff.append(description)
+                    .append("\n\nBug: Strange Eons ").append(getBuildNumber())
+                    .append("\nPlatform: ").append(p.getProperty("os.name"))
+                    .append(" (v").append(p.getProperty("os.version"))
+                    .append('-').append(p.getProperty("os.arch"))
+                    .append('-').append(Runtime.getRuntime().availableProcessors())
+                    .append(" CPUs)\nJRE: ").append(p.getProperty("java.version"))
+                    .append(' ').append(p.getProperty("java.vendor")).append('\n');
 
-            if (t != null) {
-                msg.append("\n\nThe following exception occurred:\n")
-                        .append(t);
-                StackTraceElement[] el = t.getStackTrace();
+            if (ex != null) {
+                reportBuff.append("\nException:\n").append(ex);
+                StackTraceElement[] el = ex.getStackTrace();
                 int i = 0;
-                for (; i < 8 && i < el.length; ++i) {
-                    msg.append('\n').append(el[i].toString());
-                }
-                if (i < el.length) {
-                    msg.append("\n...");
+                for (; i < el.length && reportBuff.length() < BUG_REPORT_CHAR_LIMIT; ++i) {
+                    final String entry = el[i].toString()
+                            .replace("ca.cgjennings.apps.arkham.", "arkham.")
+                            .replace("ca.cgjennings.", "ca...");
+                    reportBuff.append('\n').append(entry);
                 }
             }
 
-            String message = msg.toString();
-
-            // shorten stack traces by using the same shorthand as in scripts
-            message = message.replace("ca.cgjennings.apps.arkham.", "arkham.");
-            if (message.length() > BUG_REPORT_CHAR_LIMIT) {
-                description = description.substring(0, BUG_REPORT_CHAR_LIMIT) + "...";
-            }
-
+            // convert message to URL, then limit encoded URL to max length
             String url;
+            String message = reportBuff.toString();
             do {
                 url = "https://cgjennings.ca/contact/?"
                         + URLEncoder.encode(message, "utf-8");
                 if (url.length() > BUG_REPORT_CHAR_LIMIT) {
                     url = null;
-                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT, message.length() - 16);
+                    int lengthToTry = Math.min(BUG_REPORT_CHAR_LIMIT - 32, message.length() - 16);
                     message = message.substring(0, lengthToTry) + "...";
                 }
             } while (url == null);
             DesktopIntegration.browse(new URI(url));
-        } catch (UnsupportedEncodingException e) {
-        } catch (UnsupportedOperationException e) {
+        } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
             UIManager.getLookAndFeel().provideErrorFeedback(null);
-            log.warning("Desktop not supported");
-        } catch (Exception e) {
-            UIManager.getLookAndFeel().provideErrorFeedback(null);
-            log.log(Level.SEVERE, "exception while generating bug report <<<" + description + ">>>", e);
+            log.log(Level.SEVERE, "exception while opening browser, report put on clipboard", e);
+            Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(reportBuff.toString()), null);
         } finally {
             setWaitCursor(false);
         }
     }
-    private static final int BUG_REPORT_CHAR_LIMIT = 1500;
+    private static final int BUG_REPORT_CHAR_LIMIT = 2000; // approx limit for IE < 11
 
     /**
      * Returns the current contents of the application log. The application log
-     * contains the messages posted to the logger (except those filtered out
-     * because of the logging level that was active at the time).
+     * contains the messages posted to the logger except those filtered out
+     * because of the logging level that was active at the time.
      *
      * @return the contents of the application log
      */
@@ -1615,9 +1592,6 @@ public final class StrangeEons {
         return af;
     }
 
-//	public boolean isExperimentalFeatureAllowed() {
-//		return Settings.getUser().getYesNo( "enable-experimental-features" );
-//	}
     /**
      * This method is called when the application first starts as part of
      * passing control of the process to the application. Calling this method
@@ -1635,9 +1609,9 @@ public final class StrangeEons {
         }
         try {
             // The constructor itself records the instance since it is needed during
-            // the initialization process that the constructor starts, so we do nothing
-            // with the return value.
-            new StrangeEons(args);
+            // the initialization process, so we do nothing with the return value.
+            instance = new StrangeEons(args);
+            instance.initialize();
         } catch (Throwable t) {
             // Log the message now, in case fatalError fails
             log.log(Level.SEVERE, "Uncaught exception creating app instance", t);
@@ -1646,7 +1620,7 @@ public final class StrangeEons {
             String message = "Uncaught exception during initialization";
             try {
                 message = string("rk-err-uncaught");
-            } catch (Throwable e) {
+            } catch (Exception ex) {
                 log.log(Level.SEVERE, null, t);
             }
             ErrorDialog.displayFatalError(message, t);
@@ -1669,7 +1643,7 @@ public final class StrangeEons {
             throw new AssertionError("must NOT be called from EDT");
         }
 
-        final long startTime = System.nanoTime();
+        final long startTime = System.currentTimeMillis();
 
         // Adjust logger level from ALL to command line level
         log.setLevel(commandLineArguments.loglevel);
@@ -1680,6 +1654,9 @@ public final class StrangeEons {
         if (commandLineArguments.xRestartLock != null) {
             initAcquireRestartLock(commandLineArguments.xRestartLock);
         }
+
+        // must be done before splash screen is shown
+        initScriptRunnerMode(commandLineArguments.run);
 
         // Read user prefs: needed so that we can check
         // if user wants single instance; has no effect if the --resetprefs
@@ -1703,12 +1680,12 @@ public final class StrangeEons {
                 if (bf.exists() && !bf.isDirectory()) {
                     bundles.add(bf);
                 } else {
-                    System.err.println("test bundle is not a bundle: \"" + f + '"');
+                    System.err.println("not a plug-in bundle: \"" + f + '"');
                     allAccepted = false;
                 }
             }
             if (bundles.isEmpty()) {
-                System.err.println("no test bundles listed");
+                System.err.println("no plug-in bundle listed");
                 allAccepted = false;
             }
             if (!allAccepted) {
@@ -1871,10 +1848,8 @@ public final class StrangeEons {
                 synchronized (SplashWindow.class) {
                     splash = null;
                 }
-                if (log.isLoggable(Level.INFO)) {
-                    double time = (System.nanoTime() - startTime) * 1e-9;
-                    log.log(Level.INFO, String.format("startup took took %.2f s", time));
-                }
+                final double time = (System.currentTimeMillis() - startTime) / 1000d;
+                log.log(Level.INFO, String.format("startup took %.2f s", time));
 
                 // Before closing the splash window, check if it has any
                 // child windows attached via getSafeStartupParentWindow.
@@ -1907,7 +1882,6 @@ public final class StrangeEons {
     }
 
     private static class LingeringStartupWindowPresenter {
-
         int lastCount;
         Window splash;
         boolean moveToFront;
@@ -1970,7 +1944,9 @@ public final class StrangeEons {
             }
             try {
                 if (!commandLineArguments.xDisableAnimation) {
-                    // we will be notified when the animation completes
+                    // we will be notified when the animation completes;
+                    // won't be interrupted, but if it is won't be a problem;
+                    // just repaints the window
                     wait(SplashWindow.ANIMATION_TIME_MS + 10_000);
                 }
             } catch (InterruptedException e) {
@@ -1980,7 +1956,7 @@ public final class StrangeEons {
     }
 
     /**
-     * Logs basic system configuration: build, Java version, OS, architecture
+     * Checks and logs basic system configuration: build, Java version, OS, architecture
      * and processor count.
      */
     private static void initCheckSystemConfig() {
@@ -2047,7 +2023,7 @@ public final class StrangeEons {
                     );
                     System.exit(20);
                 });
-            } catch (Exception e) {
+            } catch (InterruptedException | InvocationTargetException e) {
                 log.log(Level.SEVERE, "version check failed", e);
             }
         }
@@ -2290,7 +2266,7 @@ public final class StrangeEons {
      * installed. If not installed, a listener is installed that will listen for
      * the dictionary plug-in to be installed and load the dictionary then.
      */
-    private synchronized static void initSpellingDictionaries() {
+    private static synchronized void initSpellingDictionaries() {
         if (loadedSpellingDictionaries) {
             return;
         }
@@ -2335,14 +2311,14 @@ public final class StrangeEons {
     }
     private static boolean loadedSpellingDictionaries;
 
-    private void initBaselineEditors() {
+    private void initBuiltinEditors() {
         try {
             ClassMap.add("editors/minimal.classmap");
             splash.setPercent(45);
             Silhouette.add("silhouettes/standard.silhouettes");
-        } catch (Exception e) {
-            e.printStackTrace();
-            ErrorDialog.displayError(string("rk-err-gamedata"), e);
+        } catch (IOException | RuntimeException ex) {
+            log.log(Level.SEVERE, "failed to create built-in editor data", ex);
+            ErrorDialog.displayError(string("rk-err-gamedata"), ex);
         }
     }
 
@@ -2366,57 +2342,55 @@ public final class StrangeEons {
 
     /**
      * Starts running initialization tasks that can be performed in the
-     * background. This includes the following:
-     * <ul>
-     * <li>initialize spelling checking
-     * </ul>
+     * background. To function correctly, background initialization must be
+     * started after libraries are loaded and must be completed before
+     * extensions are loaded. These tasks may not actually run in the background,
+     * if disabled by the
+     * {@linkplain CommandLineArguments#xDisableBackgroundInit command line arguments}.
      *
-     * <p>
-     * To function correctly, background initialization must be started after
-     * libraries are loaded. Background initialization must be completed before
-     * extensions are loaded. See {@link #waitForBackgroundInit()}.
+     * @see #waitForBackgroundInit()
      */
     private void startBackgroundInit() {
-        backgroundInitThread = new Thread("Background init thread") {
-            @Override
-            public void run() {
-                try {
-                    // Dicionary loading is expensive and I/O bound, so probably
-                    // a good candidate to do in parallel.
-                    initSpellingDictionaries();
+        final Runnable backgroundInit = () -> {
+            try {
+                // Dicionary loading is expensive and I/O bound, so probably
+                // a good candidate to do in parallel.
+                initSpellingDictionaries();
 
-                    // MetadataSource has a LOT of icons to load. This line of code causes
-                    // the class to be loaded now, because otherwise it loads just as the
-                    // app window is becoming visible and freezes it for several seconds.
-                    Class.forName("ca.cgjennings.apps.arkham.project.MetadataSource", true, getClass().getClassLoader());
+                // MetadataSource has a LOT of icons to load. This line of code causes
+                // the class to be loaded now, because otherwise it loads just as the
+                // app window is becoming visible and freezes it for several seconds.
+                Class.forName(MetadataSource.class.getName(), true, getClass().getClassLoader());
 
-                    initBaselineEditors();
+                // Populate GameData for built-in editors
+                initBuiltinEditors();
 
-                    // Init the delay for polling open files for changes.
-                    FileChangeMonitor.setDefaultCheckPeriod(Settings.getShared().getInt("file-monitoring-period"));
+                // Init the delay for polling open files for changes.
+                FileChangeMonitor.setDefaultCheckPeriod(Settings.getShared().getInt("file-monitoring-period"));
 
-                    initSpecialEffects();
+                initSpecialEffects();
 
-                    // Allow the SE script system to evaluate <script> tags in markup boxes.
-                    MarkupRenderer.setEvaluatorFactory(new StrangeEonsEvaluatorFactory());
-                } catch (Throwable t) {
-                    log.log(Level.SEVERE, "Uncaught Exception during background initialization: showing fatal error", t);
-                    if (splash != null) {
-                        try {
-                            splash.dispose();
-                        } catch (Throwable t2) {
-                        }
+                // Allow the SE script system to evaluate <script> tags in markup boxes.
+                MarkupRenderer.setEvaluatorFactory(new StrangeEonsEvaluatorFactory());
+            } catch (ClassNotFoundException | RuntimeException ex) {
+                log.log(Level.SEVERE, "Uncaught Exception during background initialization: showing fatal error", ex);
+                if (splash != null) {
+                    try {
+                        splash.dispose();
+                    } catch (Exception disposeEx) {
+                        // just try to show errror
                     }
-                    ErrorDialog.displayFatalError(string("rk-err-uncaught"), t);
                 }
+                ErrorDialog.displayFatalError(string("rk-err-uncaught"), ex);
             }
         };
+
         if (commandLineArguments.xDisableBackgroundInit) {
             log.info("performing \"background\" initialization in main thread");
-            backgroundInitThread.run();
-            backgroundInitThread = null;
+            backgroundInit.run();
         } else {
             log.info("starting background initialization");
+            backgroundInitThread = new Thread(backgroundInit, "Background init thread");
             backgroundInitThread.start();
         }
     }
@@ -2436,11 +2410,12 @@ public final class StrangeEons {
                 try {
                     backgroundInitThread.join();
                     done = true;
-                } catch (InterruptedException e) {
+                } catch (InterruptedException intEx) {
+                    // won't be interrupted, but in any case it must complete
                 }
             }
-            log.log(Level.FINE, "background initialization completed (waited {0}s)", (System.currentTimeMillis() - start) / 1000d);
             backgroundInitThread = null; // allow GC
+            log.log(Level.FINE, "background initialization completed (waited {0}s)", (System.currentTimeMillis() - start) / 1000d);
         }
     }
 
@@ -2480,16 +2455,6 @@ public final class StrangeEons {
     }
 
     /**
-     * Adds a new property change listener that will be notified when property
-     * change events for the named property are fired by the application.
-     *
-     * @param li the listener to add
-     */
-    public void addPropertyChangeListener(String property, PropertyChangeListener li) {
-        pcs.addPropertyChangeListener(property, li);
-    }
-
-    /**
      * Removes a previously added listener that listens for all property change
      * events.
      *
@@ -2500,9 +2465,21 @@ public final class StrangeEons {
     }
 
     /**
+     * Adds a new property change listener that will be notified when property
+     * change events for the named property are fired by the application.
+     *
+     * @param property name of the property to listen for
+     * @param li the listener to add
+     */
+    public void addPropertyChangeListener(String property, PropertyChangeListener li) {
+        pcs.addPropertyChangeListener(property, li);
+    }
+
+    /**
      * Removes a previously added listener that listens for the named property
      * to change.
      *
+     * @param property name of the property to stop listening for
      * @param li the listener to remove
      */
     public void removePropertyChangeListener(String property, PropertyChangeListener li) {
@@ -2518,7 +2495,7 @@ public final class StrangeEons {
      * @throws IllegalArgumentException if a container type with this type's
      * identifier is already registered
      */
-    public synchronized static void registerExportContainer(ExportContainer ec) {
+    public static synchronized void registerExportContainer(ExportContainer ec) {
         if (ec == null) {
             throw new NullPointerException("ec");
         }
@@ -2539,7 +2516,7 @@ public final class StrangeEons {
      *
      * @param ec the container type to unregister
      */
-    public synchronized static void unregisterExportContainer(ExportContainer ec) {
+    public static synchronized void unregisterExportContainer(ExportContainer ec) {
         exportContainers.remove(ec);
     }
 
@@ -2549,15 +2526,15 @@ public final class StrangeEons {
      * @return a (possibly empty) array of all container types that are
      * currently registered
      */
-    public synchronized static ExportContainer[] getRegisteredExportContainers() {
+    public static synchronized ExportContainer[] getRegisteredExportContainers() {
         return exportContainers.toArray(new ExportContainer[exportContainers.size()]);
     }
 
-    private static LinkedHashSet<ExportContainer> exportContainers = new LinkedHashSet<>();
-
+    private static final LinkedHashSet<ExportContainer> exportContainers;
     static {
-        registerExportContainer(new FolderExportContainer());
-        registerExportContainer(new ZIPExportContainer());
+        exportContainers = new LinkedHashSet<>();
+        exportContainers.add(new FolderExportContainer());
+        exportContainers.add(new ZIPExportContainer());
     }
 
     /**
