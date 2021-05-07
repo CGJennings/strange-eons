@@ -2,7 +2,7 @@
 
 [Strange Eons](https://strangeeons.cgjennings.ca) is a popular tool for creating and customizing components for paper-based games.
 
-Currently runs only under Java 1.8 (support for later versions is in progress).
+Running under Java 1.8 is recommended at this time, [though it should also run under Java 9 to 16 with the right command line arguments](http://se3docs.cgjennings.ca/um-install-other.html). (If the Windows, macOS or Linux `.deb` installation package is used, a suitable private Java JRE is included.)
 
 User documentation is managed in a [separate repository](https://github.com/CGJennings/se3docs).
 
