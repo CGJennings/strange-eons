@@ -192,7 +192,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         familyPanel = new javax.swing.JPanel();
         dncFamily = new javax.swing.JCheckBox();
@@ -221,13 +220,12 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         okCancelPanel = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
-        overlayPanel1 = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
         sampleLabel = new FontSampleLabel() ;
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string( "ffd-l-title" )); // NOI18N
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        setResizable(false);
 
         familyPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-family" ))); // NOI18N
 
@@ -283,10 +281,10 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(familyPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(familyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(loadingPanel, javax.swing.GroupLayout.Alignment.LEADING, 0, 312, Short.MAX_VALUE)
+                    .addComponent(loadingPanel, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, familyPanelLayout.createSequentialGroup()
                         .addComponent(dncFamily)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 192, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(glyphsBtn)))
                 .addContainerGap())
         );
@@ -298,19 +296,9 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addComponent(dncFamily)
                     .addComponent(glyphsBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 354, Short.MAX_VALUE)
+                .addComponent(loadingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 4;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(4, 8, 8, 8);
-        getContentPane().add(familyPanel, gridBagConstraints);
 
         sizePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-size" ))); // NOI18N
 
@@ -349,7 +337,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(sizeTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(dncSize))
-                .addContainerGap(26, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         sizePanelLayout.setVerticalGroup(
             sizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,14 +350,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addComponent(sizeTypeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 8);
-        getContentPane().add(sizePanel, gridBagConstraints);
 
         stylePanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-style" ))); // NOI18N
 
@@ -452,14 +432,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 8);
-        getContentPane().add(stylePanel, gridBagConstraints);
-
         widthPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-width" ))); // NOI18N
 
         widthCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ffd-cb-width-0", "ffd-cb-width-1", "ffd-cb-width-2", "ffd-cb-width-3", "ffd-cb-width-4" }));
@@ -487,7 +459,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(widthPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(widthPanelLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
-                        .addComponent(widthCombo, 0, 155, Short.MAX_VALUE))
+                        .addComponent(widthCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(dncWidth))
                 .addContainerGap())
         );
@@ -500,14 +472,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(widthCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 4, 8);
-        getContentPane().add(widthPanel, gridBagConstraints);
 
         trackingPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-tracking" ))); // NOI18N
 
@@ -537,7 +501,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addGap(21, 21, 21)
                         .addComponent(trackingField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(dncTracking))
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         trackingPanelLayout.setVerticalGroup(
             trackingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -549,14 +513,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(4, 0, 8, 8);
-        getContentPane().add(trackingPanel, gridBagConstraints);
-
         okBtn.setText(string( "ffd-b-ok" )); // NOI18N
 
         cancelBtn.setText(string( "cancel" )); // NOI18N
@@ -566,7 +522,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         okCancelPanelLayout.setHorizontalGroup(
             okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(okCancelPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(okBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cancelBtn)
@@ -575,43 +531,71 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         okCancelPanelLayout.setVerticalGroup(
             okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(okCancelPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(okCancelPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
                     .addComponent(okBtn))
                 .addContainerGap())
         );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHEAST;
-        getContentPane().add(okCancelPanel, gridBagConstraints);
-
-        overlayPanel1.setBackground(java.awt.Color.lightGray);
-        overlayPanel1.setLayout(new javax.swing.BoxLayout(overlayPanel1, javax.swing.BoxLayout.LINE_AXIS));
-
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8));
-        jScrollPane2.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-        sampleLabel.setBackground(overlayPanel1.getBackground());
-        sampleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         sampleLabel.setText(string( "ffd-l-sample-text" )); // NOI18N
-        sampleLabel.setOpaque(true);
-        jScrollPane2.setViewportView(sampleLabel);
+        sampleLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
 
-        overlayPanel1.add(jScrollPane2);
+        javax.swing.GroupLayout overlayPanelLayout = new javax.swing.GroupLayout(overlayPanel);
+        overlayPanel.setLayout(overlayPanelLayout);
+        overlayPanelLayout.setHorizontalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(sampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10))
+        );
+        overlayPanelLayout.setVerticalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
+                .addGap(6, 6, 6)
+                .addComponent(sampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(6, 6, 6))
+        );
 
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridheight = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.ipady = 32;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        getContentPane().add(overlayPanel1, gridBagConstraints);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(familyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(overlayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(sizePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(widthPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(stylePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(trackingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(okCancelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(sizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(widthPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(stylePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(trackingPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(familyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(overlayPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(okCancelPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -856,12 +840,11 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JScrollPane familyScroll;
     private javax.swing.JButton glyphsBtn;
     private javax.swing.JCheckBox iCheck;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel loadingLabel;
     private javax.swing.JPanel loadingPanel;
     private javax.swing.JButton okBtn;
     private javax.swing.JPanel okCancelPanel;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
+    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private javax.swing.JCheckBox sCheck;
     private javax.swing.JLabel sampleLabel;
     private javax.swing.JSpinner sizeField;
