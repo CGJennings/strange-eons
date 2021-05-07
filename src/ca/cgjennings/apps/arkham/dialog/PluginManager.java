@@ -155,7 +155,7 @@ public class PluginManager extends javax.swing.JDialog {
         shortcutField = new ca.cgjennings.ui.JKeyStrokeField();
         shortcutTip = new ca.cgjennings.ui.JTip();
         bottom = new javax.swing.JPanel();
-        overlayPanel1 = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
+        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
         downloadBtn = new javax.swing.JButton();
         openPluginFolderBtn = new javax.swing.JButton();
         helpBtn = new ca.cgjennings.ui.JHelpButton();
@@ -366,35 +366,35 @@ public class PluginManager extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout overlayPanel1Layout = new javax.swing.GroupLayout(overlayPanel1);
-        overlayPanel1.setLayout(overlayPanel1Layout);
-        overlayPanel1Layout.setHorizontalGroup(
-            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(overlayPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout overlayPanelLayout = new javax.swing.GroupLayout(overlayPanel);
+        overlayPanel.setLayout(overlayPanelLayout);
+        overlayPanelLayout.setHorizontalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
                 .addGap(5, 5, 5)
                 .addComponent(downloadBtn)
                 .addGap(5, 5, 5)
                 .addComponent(openPluginFolderBtn)
                 .addGap(6, 6, 6))
         );
-        overlayPanel1Layout.setVerticalGroup(
-            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(overlayPanel1Layout.createSequentialGroup()
+        overlayPanelLayout.setVerticalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(downloadBtn)
                     .addComponent(openPluginFolderBtn))
                 .addGap(6, 6, 6))
         );
 
-        overlayPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {downloadBtn, openPluginFolderBtn});
+        overlayPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {downloadBtn, openPluginFolderBtn});
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 0, 8);
-        bottom.add(overlayPanel1, gridBagConstraints);
+        bottom.add(overlayPanel, gridBagConstraints);
 
         helpBtn.setHelpPage("plugins-manager");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -753,7 +753,7 @@ public class PluginManager extends javax.swing.JDialog {
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JScrollPane listScroll;
     private javax.swing.JButton openPluginFolderBtn;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
+    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private javax.swing.JLabel pluginDesc;
     private javax.swing.JLabel pluginIcon;
     private javax.swing.JList pluginList;
