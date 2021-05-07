@@ -3,7 +3,6 @@
 <Form version="1.6" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
-    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -40,7 +39,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <Component id="overlayPanel1" min="-2" max="-2" attributes="0"/>
+                  <Component id="overlayPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="179" max="-2" attributes="0"/>
                   <Component id="filterField" pref="179" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -52,7 +51,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="filterField" min="-2" max="-2" attributes="0"/>
-                      <Component id="overlayPanel1" min="-2" max="-2" attributes="0"/>
+                      <Component id="overlayPanel" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -60,11 +59,12 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Container class="ca.cgjennings.apps.arkham.dialog.OverlayPanel" name="overlayPanel1">
+        <Container class="ca.cgjennings.apps.arkham.dialog.OverlayPanel" name="overlayPanel">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <PropertyBean type="ca.cgjennings.ui.ArcBorder">
                 <Property name="arcEdges" type="int" value="2"/>
+                <Property name="thickness" type="int" value="1"/>
               </PropertyBean>
             </Property>
           </Properties>
@@ -77,9 +77,6 @@
                   <FontInfo relative="true">
                     <Font component="jLabel2" property="font" relativeSize="true" size="-1"/>
                   </FontInfo>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="resources/text/interface/eons-text.properties" key="dt-l-leg-new-key" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -178,9 +175,6 @@
                     <Font component="jLabel7" property="font" relativeSize="true" size="-1"/>
                   </FontInfo>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
-                </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="resources/text/interface/eons-text.properties" key="dt-l-leg-translated" replaceFormat="string( &quot;{key}&quot; )"/>
                 </Property>
@@ -215,9 +209,6 @@
                     <Font component="jLabel5" property="font" relativeSize="true" size="-1"/>
                   </FontInfo>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
-                </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="resources/text/interface/eons-text.properties" key="dt-l-leg-untranslated" replaceFormat="string( &quot;{key}&quot; )"/>
                 </Property>
@@ -234,9 +225,6 @@
                   <FontInfo relative="true">
                     <Font component="translatedInParentTextLabel" property="font" relativeSize="true" size="-1"/>
                   </FontInfo>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="resources/text/interface/eons-text.properties" key="dt-l-leg-translated-parent" replaceFormat="string( &quot;{key}&quot; )"/>

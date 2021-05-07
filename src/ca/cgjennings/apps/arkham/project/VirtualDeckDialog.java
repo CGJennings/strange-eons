@@ -283,7 +283,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         playLabel = new javax.swing.JLabel();
         midColumnSpacer = new javax.swing.JLabel();
         sheetPanel = new javax.swing.JPanel();
-        overlayPanel1 = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
+        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
         shuffleBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
         jTip1 = new ca.cgjennings.ui.JTip();
@@ -913,7 +913,9 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         sheetPanel.setLayout(new java.awt.BorderLayout());
         jSplitPane2.setRightComponent(sheetPanel);
 
-        overlayPanel1.setBorder(new ca.cgjennings.ui.ArcBorder());
+        ca.cgjennings.ui.ArcBorder arcBorder1 = new ca.cgjennings.ui.ArcBorder();
+        arcBorder1.setThickness(1);
+        overlayPanel.setBorder(arcBorder1);
 
         shuffleBtn.setFont(shuffleBtn.getFont().deriveFont(shuffleBtn.getFont().getSize()-1f));
         shuffleBtn.setText(string( "vdeck-b-shuffle" )); // NOI18N
@@ -931,22 +933,22 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             }
         });
 
-        javax.swing.GroupLayout overlayPanel1Layout = new javax.swing.GroupLayout(overlayPanel1);
-        overlayPanel1.setLayout(overlayPanel1Layout);
-        overlayPanel1Layout.setHorizontalGroup(
-            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(overlayPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout overlayPanelLayout = new javax.swing.GroupLayout(overlayPanel);
+        overlayPanel.setLayout(overlayPanelLayout);
+        overlayPanelLayout.setHorizontalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(overlayPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(shuffleBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(resetBtn)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        overlayPanel1Layout.setVerticalGroup(
-            overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, overlayPanel1Layout.createSequentialGroup()
+        overlayPanelLayout.setVerticalGroup(
+            overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, overlayPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(overlayPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(overlayPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(shuffleBtn)
                     .addComponent(resetBtn))
                 .addContainerGap())
@@ -959,7 +961,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(overlayPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jTip1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 503, Short.MAX_VALUE)
@@ -973,7 +975,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 .addComponent(jSplitPane2)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(overlayPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(closeBtn)
@@ -1413,7 +1415,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private javax.swing.JPanel listContainer;
     private javax.swing.JLabel midColumnSpacer;
     private javax.swing.JPanel moveUpDownPanel;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
+    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private javax.swing.JLabel playLabel;
     private javax.swing.JList<Card> playList;
     private javax.swing.JPanel playPanel;

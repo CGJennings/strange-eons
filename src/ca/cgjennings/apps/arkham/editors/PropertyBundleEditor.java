@@ -413,7 +413,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         java.awt.GridBagConstraints gridBagConstraints;
 
         northPanel = new javax.swing.JPanel();
-        overlayPanel1 = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
+        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
         jLabel2 = new javax.swing.JLabel();
         translatedInParentLabel = new javax.swing.JLabel();
         notInDefaultLabel = new javax.swing.JLabel();
@@ -461,17 +461,17 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
 
         ca.cgjennings.ui.ArcBorder arcBorder1 = new ca.cgjennings.ui.ArcBorder();
         arcBorder1.setArcEdges(2);
-        overlayPanel1.setBorder(arcBorder1);
-        overlayPanel1.setLayout(new java.awt.GridBagLayout());
+        arcBorder1.setThickness(1);
+        overlayPanel.setBorder(arcBorder1);
+        overlayPanel.setLayout(new java.awt.GridBagLayout());
 
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
-        jLabel2.setForeground(java.awt.Color.white);
         jLabel2.setText(string( "dt-l-leg-new-key" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 22);
-        overlayPanel1.add(jLabel2, gridBagConstraints);
+        overlayPanel.add(jLabel2, gridBagConstraints);
 
         translatedInParentLabel.setBackground(java.awt.Color.blue);
         translatedInParentLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
@@ -482,7 +482,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.ipadx = 12;
         gridBagConstraints.ipady = 12;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel1.add(translatedInParentLabel, gridBagConstraints);
+        overlayPanel.add(translatedInParentLabel, gridBagConstraints);
 
         notInDefaultLabel.setBackground(new java.awt.Color(204, 102, 0));
         notInDefaultLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
@@ -493,7 +493,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.ipadx = 12;
         gridBagConstraints.ipady = 12;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel1.add(notInDefaultLabel, gridBagConstraints);
+        overlayPanel.add(notInDefaultLabel, gridBagConstraints);
 
         translatedLabel.setBackground(java.awt.Color.black);
         translatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
@@ -504,7 +504,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.ipadx = 12;
         gridBagConstraints.ipady = 12;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel1.add(translatedLabel, gridBagConstraints);
+        overlayPanel.add(translatedLabel, gridBagConstraints);
 
         untranslatedLabel.setBackground(java.awt.Color.gray);
         untranslatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
@@ -515,16 +515,15 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.ipadx = 12;
         gridBagConstraints.ipady = 12;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel1.add(untranslatedLabel, gridBagConstraints);
+        overlayPanel.add(untranslatedLabel, gridBagConstraints);
 
         jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getSize()-1f));
-        jLabel7.setForeground(java.awt.Color.white);
         jLabel7.setText(string( "dt-l-leg-translated" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel1.add(jLabel7, gridBagConstraints);
+        overlayPanel.add(jLabel7, gridBagConstraints);
 
         jLabel8.setFont(jLabel8.getFont().deriveFont(jLabel8.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel8.setText(string( "dt-l-legend" )); // NOI18N
@@ -532,25 +531,23 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(12, 16, 16, 18);
-        overlayPanel1.add(jLabel8, gridBagConstraints);
+        overlayPanel.add(jLabel8, gridBagConstraints);
 
         jLabel5.setFont(jLabel5.getFont().deriveFont(jLabel5.getFont().getSize()-1f));
-        jLabel5.setForeground(java.awt.Color.white);
         jLabel5.setText(string( "dt-l-leg-untranslated" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel1.add(jLabel5, gridBagConstraints);
+        overlayPanel.add(jLabel5, gridBagConstraints);
 
         translatedInParentTextLabel.setFont(translatedInParentTextLabel.getFont().deriveFont(translatedInParentTextLabel.getFont().getSize()-1f));
-        translatedInParentTextLabel.setForeground(java.awt.Color.white);
         translatedInParentTextLabel.setText(string( "dt-l-leg-translated-parent" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel1.add(translatedInParentTextLabel, gridBagConstraints);
+        overlayPanel.add(translatedInParentTextLabel, gridBagConstraints);
 
         filterField.setColumns(20);
         filterField.setLabel(string("search")); // NOI18N
@@ -565,7 +562,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         northPanelLayout.setHorizontalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(northPanelLayout.createSequentialGroup()
-                .addComponent(overlayPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(179, 179, 179)
                 .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
                 .addContainerGap())
@@ -575,7 +572,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
             .addGroup(northPanelLayout.createSequentialGroup()
                 .addGroup(northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(overlayPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1137,7 +1134,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private javax.swing.JButton nextUntransKeyBtn;
     private javax.swing.JPanel northPanel;
     private javax.swing.JLabel notInDefaultLabel;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel1;
+    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private ca.cgjennings.ui.JTip pluralTip;
     private javax.swing.JLabel regionLabel;
     private javax.swing.JLabel translatedInParentLabel;
