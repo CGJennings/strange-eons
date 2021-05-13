@@ -901,14 +901,13 @@ final class AppFrame extends StrangeEonsAppWindow {
         helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem helpItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem userManualItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem bugReportItem = new javax.swing.JMenuItem();
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenu developerHelpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem devManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem translatorManualItem = new javax.swing.JMenuItem();
-        jSeparator25 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem devJsApiItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devJavaApiItem = new javax.swing.JMenuItem();
+        javax.swing.JMenuItem devJsApiItem = new javax.swing.JMenuItem();
+        jSeparator25 = new javax.swing.JPopupMenu.Separator();
+        javax.swing.JMenuItem bugReportItem = new javax.swing.JMenuItem();
         aboutSeparator = new javax.swing.JPopupMenu.Separator();
         aboutItem = new javax.swing.JMenuItem();
 
@@ -1498,36 +1497,31 @@ final class AppFrame extends StrangeEonsAppWindow {
         userManualItem.setName("userManualItem"); // NOI18N
         helpMenu.add(userManualItem);
 
-        bugReportItem.setAction( Commands.FILE_BUG_REPORT );
-        bugReportItem.setName("bugReportItem"); // NOI18N
-        helpMenu.add(bugReportItem);
-
         jSeparator11.setName("jSeparator11"); // NOI18N
         helpMenu.add(jSeparator11);
 
-        developerHelpMenu.setText(string("app-help-devs")); // NOI18N
-        developerHelpMenu.setName("developerHelpMenu"); // NOI18N
-
         devManualItem.setAction( Commands.HELP_DEV_MANUAL );
         devManualItem.setName("devManualItem"); // NOI18N
-        developerHelpMenu.add(devManualItem);
+        helpMenu.add(devManualItem);
 
         translatorManualItem.setAction( Commands.HELP_TRANSLATOR_MANUAL );
         translatorManualItem.setName("translatorManualItem"); // NOI18N
-        developerHelpMenu.add(translatorManualItem);
-
-        jSeparator25.setName("jSeparator25"); // NOI18N
-        developerHelpMenu.add(jSeparator25);
-
-        devJsApiItem.setAction( Commands.HELP_DEV_JS_API);
-        devJsApiItem.setName("devJsApiItem"); // NOI18N
-        developerHelpMenu.add(devJsApiItem);
+        helpMenu.add(translatorManualItem);
 
         devJavaApiItem.setAction( Commands.HELP_DEV_JAVA_API);
         devJavaApiItem.setName("devJavaApiItem"); // NOI18N
-        developerHelpMenu.add(devJavaApiItem);
+        helpMenu.add(devJavaApiItem);
 
-        helpMenu.add(developerHelpMenu);
+        devJsApiItem.setAction( Commands.HELP_DEV_JS_API);
+        devJsApiItem.setName("devJsApiItem"); // NOI18N
+        helpMenu.add(devJsApiItem);
+
+        jSeparator25.setName("jSeparator25"); // NOI18N
+        helpMenu.add(jSeparator25);
+
+        bugReportItem.setAction( Commands.FILE_BUG_REPORT );
+        bugReportItem.setName("bugReportItem"); // NOI18N
+        helpMenu.add(bugReportItem);
 
         aboutSeparator.setName("aboutSeparator"); // NOI18N
         helpMenu.add(aboutSeparator);
