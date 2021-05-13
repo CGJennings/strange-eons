@@ -53,7 +53,8 @@ var GameData = {
         if (!(invCardImage instanceof BI)) {
             invCardImage = ImageUtils.get(invCardImage.toString());
         }
-        gamedata.Expansion.register(null, code, name, name, iconImage, [cardImage, invCardImage]);
+        const game = gamedata.Game.allGamesInstance;
+        gamedata.Expansion.register(game, code, name, name, iconImage, [cardImage, invCardImage]);
     },
 
     setGameForExpansion(exp, game) {
