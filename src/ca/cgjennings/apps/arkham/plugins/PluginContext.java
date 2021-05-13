@@ -2,6 +2,8 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import java.awt.event.InputEvent;
 import java.awt.Toolkit;
+import java.util.Locale;
+import resources.Language;
 import resources.Settings;
 
 /**
@@ -144,4 +146,26 @@ public interface PluginContext {
      * Windows and Command on Mac.)
      */
     public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+
+    // Backwards compatibility
+
+    @Deprecated
+    default Locale getUILocale() {
+        return Language.getInterfaceLocale();
+    }
+
+    @Deprecated
+    default Locale getGameLocale() {
+        return Language.getGameLocale();
+    }
+
+    @Deprecated
+    default void addUIText(Locale locale, String resource) {
+        Language.getInterface().addStrings(resource);
+    }
+
+    @Deprecated
+    default void addGameText(Locale locale, String resource) {
+        Language.getGame().addStrings(resource);
+    }
 }
