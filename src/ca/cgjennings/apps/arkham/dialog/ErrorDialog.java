@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.plugins.catalog.AutomaticUpdater;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.script.mozilla.javascript.RhinoException;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.EventQueue;
@@ -100,6 +101,9 @@ public final class ErrorDialog extends javax.swing.JDialog {
             b = null;
         } else {
             StrangeEons.log.log(Level.WARNING, message, t);
+            if(t instanceof RhinoException) {
+                StrangeEons.log.warning("script trace:\n" + ((RhinoException)t).getScriptStackTrace());
+            }
         }
 
         StringBuilder buffer = new StringBuilder(128);
