@@ -112,27 +112,6 @@ public final class ErrorDialog extends javax.swing.JDialog {
             buffer.append('\n').append(messageForThrowable(t));
         }
         Messenger.displayErrorMessage(null, buffer.toString());
-
-//		final Object completeMessage = messageObject;
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				ThemeInstaller.ensureBaselineLookAndFeelInstalled();
-//				final Window parent = StrangeEons.getSafeStartupParentWindow();
-//				if( parent != null ) {
-//					if( parent.isAlwaysOnTop() ) {
-//						parent.setAlwaysOnTop( false );
-//					}
-//					parent.toFront();
-//				}
-//				JOptionPane.showMessageDialog(
-//						parent,
-//						completeMessage,
-//						string( "rk-err-nonfatal-title" ),
-//						JOptionPane.ERROR_MESSAGE
-//				);
-//			}
-//		});
     }
 
     private static String messageForThrowable(Throwable t) {
