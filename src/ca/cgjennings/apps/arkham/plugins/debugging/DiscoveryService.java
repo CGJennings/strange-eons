@@ -17,6 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Searches for available debug servers.
@@ -108,16 +109,41 @@ public final class DiscoveryService {
 
     private Set<InetAddress> local;
     private Set<InetAddress> hostsToTest;
+    private Consumer<ServerInfo> callback;
 
     private static final int MIN_PORT = 1024;
     private static final int MAX_PORT = 65535;
+    private static final int NUM_SEARCH_THREADS = 20;
+    private static final int SOCKET_TIMEOUT = 150;
 
     /**
      * Returns the hosts to be searched.
+     *
      * @return non-null array of hosts, possibly empty
      */
     public InetAddress[] getHosts() {
         return hostsToTest.toArray(new InetAddress[hostsToTest.size()]);
+    }
+
+    /**
+     * Sets an optional consumer that will be called for each discovered server
+     * Note that the callback may be called from any thread.
+     * The callback set at the start of any search will be used for the entire search.
+     *
+     * @param consumer a server information consumer, or null for none
+     */
+    public void setDiscoveryConsumer(Consumer<ServerInfo> consumer) {
+        this.callback = consumer;
+    }
+
+    /**
+     * Returns the current consumer that will be called for each discovered server
+     * as it is found.
+     *
+     * @return the current consumer, or null if none
+     */
+    public Consumer<ServerInfo> getDiscoveryConsumer() {
+        return callback;
     }
 
     /**
@@ -186,6 +212,8 @@ public final class DiscoveryService {
         final int PORTS_PER_HOST = MAX_PORT - MIN_PORT + 1;
         Runnable[] jobs = new Runnable[PORTS_PER_HOST * hostsToTest.size()];
 
+        final Consumer<ServerInfo> callback = this.callback;
+
         int i=0;
         for(InetAddress host : hostsToTest) {
             final InetAddress theHost = host;
@@ -193,12 +221,19 @@ public final class DiscoveryService {
                 final int thePort = port;
                 jobs[i++] = () -> {
                     ServerInfo hit = testPort(theHost, thePort);
-                    if(hit != null) synchHits.add(hit);
+                    if(hit != null) {
+                        synchHits.add(hit);
+                        if(callback != null) {
+                            callback.accept(hit);
+                        }
+                    }
                 };
             }
         }
 
-        SplitJoin.getInstance().runUnchecked(jobs);
+        SplitJoin sj = SplitJoin.createInstance(NUM_SEARCH_THREADS);
+        sj.runUnchecked(jobs);
+        sj.dispose();
         return hits;
     }
 
@@ -217,7 +252,7 @@ public final class DiscoveryService {
             }
 
             s = new Socket(host, port);
-            s.setSoTimeout(100);
+            s.setSoTimeout(SOCKET_TIMEOUT);
             sendProbe(s);
             ServerInfo info = readServerInfo(s);
             s.close();
@@ -255,12 +290,4 @@ public final class DiscoveryService {
     }
 
     private static final byte[] PROBE_BYTES = "SEDP3\nSERVERINFO\n".getBytes(StandardCharsets.UTF_8);
-
-    public static void main(String args[]) throws Exception {
-        DiscoveryService ds = new DiscoveryService();
-        List<ServerInfo> results = ds.search();
-        for(ServerInfo inf : results) {
-            System.out.println(inf);
-        }
-    }
 }
