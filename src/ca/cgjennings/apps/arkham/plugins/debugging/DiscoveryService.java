@@ -87,12 +87,12 @@ public final class DiscoveryService {
      * @param hosts Non-null array of hosts to test.
      */
     public DiscoveryService(InetAddress... hosts) {
-        if(hosts == null) {
+        if (hosts == null) {
             throw new IllegalArgumentException("null hosts");
         }
         hostsToTest = new LinkedHashSet<>();
-        for(InetAddress host : hosts) {
-            if(host == null) {
+        for (InetAddress host : hosts) {
+            if (host == null) {
                 throw new IllegalArgumentException("null host");
             }
             hostsToTest.add(host);
@@ -102,7 +102,7 @@ public final class DiscoveryService {
 
         // check if they are equivalent, and if so use the same ref for both
         // to short circuit some checks later
-        if(local != hostsToTest && local.size() == hostsToTest.size() && local.containsAll(hostsToTest)) {
+        if (local != hostsToTest && local.size() == hostsToTest.size() && local.containsAll(hostsToTest)) {
             hostsToTest = local;
         }
     }
@@ -159,17 +159,17 @@ public final class DiscoveryService {
         try {
             Enumeration<NetworkInterface> netFaces = NetworkInterface.getNetworkInterfaces();
             for (NetworkInterface iface : Collections.list(netFaces)) {
-                if(!iface.isUp() || iface.isVirtual()) {
+                if (!iface.isUp() || iface.isVirtual()) {
                     continue;
                 }
                 Enumeration<InetAddress> netAddr = iface.getInetAddresses();
-                if(allAdapterAddresses) {
+                if (allAdapterAddresses) {
                     localAddr.addAll(Collections.list(netAddr));
-                } else if(netAddr.hasMoreElements()) {
+                } else if (netAddr.hasMoreElements()) {
                     localAddr.add(netAddr.nextElement());
                 }
             }
-        } catch(SocketException ex) {
+        } catch (SocketException ex) {
             // could not get list of interfaces, no network stack?
         }
         return localAddr;
@@ -186,13 +186,13 @@ public final class DiscoveryService {
      */
     private boolean canRuleOutQuickly(InetAddress host, int port) {
         // if host is local...
-        if(local == hostsToTest || local.contains(host)) {
+        if (local == hostsToTest || local.contains(host)) {
             // ...see if the port is available
             try {
                 ServerSocket ss = new ServerSocket(port, 0, host);
                 ss.close();
                 return true;
-            } catch(IOException ex) {
+            } catch (IOException ex) {
                 // will return false
             }
         }
@@ -214,16 +214,16 @@ public final class DiscoveryService {
 
         final Consumer<ServerInfo> callback = this.callback;
 
-        int i=0;
-        for(InetAddress host : hostsToTest) {
+        int i = 0;
+        for (InetAddress host : hostsToTest) {
             final InetAddress theHost = host;
-            for(int port = MIN_PORT; port <= MAX_PORT; ++port) {
+            for (int port = MIN_PORT; port <= MAX_PORT; ++port) {
                 final int thePort = port;
                 jobs[i++] = () -> {
                     ServerInfo hit = testPort(theHost, thePort);
-                    if(hit != null) {
+                    if (hit != null) {
                         synchHits.add(hit);
-                        if(callback != null) {
+                        if (callback != null) {
                             callback.accept(hit);
                         }
                     }
@@ -247,22 +247,22 @@ public final class DiscoveryService {
     private ServerInfo testPort(InetAddress host, int port) {
         Socket s = null;
         try {
-            if(canRuleOutQuickly(host, port)) {
+            if (canRuleOutQuickly(host, port)) {
                 return null;
             }
 
             s = new Socket(host, port);
             s.setSoTimeout(SOCKET_TIMEOUT);
             sendProbe(s);
-            ServerInfo info = readServerInfo(s);
+            ServerInfo info = readProbeReply(s);
             s.close();
             return info;
-        } catch(IOException badPort) {
+        } catch (IOException badPort) {
             return null;
         } finally {
-            if(s != null) try {
+            if (s != null) try {
                 s.close();
-            } catch(IOException ce) {
+            } catch (IOException ce) {
                 return null;
             }
         }
@@ -280,10 +280,10 @@ public final class DiscoveryService {
      * @return returns null if the server does not reply or does not send
      *   a proper debug server reply, or the server information if one is detected
      */
-    private static ServerInfo readServerInfo(Socket s) throws IOException {
+    private static ServerInfo readProbeReply(Socket s) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
         String magic = in.readLine();
-        if("SEDP3 OK".equals(magic)) {
+        if ("SEDP3 OK".equals(magic)) {
             return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
         }
         throw new IOException(); // found something but not a debug server
