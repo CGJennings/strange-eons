@@ -235,7 +235,7 @@ public class CommandLineParser {
             message = "The command line arguments are incorrect";
         }
         System.err.println(message);
-        System.err.println("Use --help option for more information");
+        System.err.println("Use --help for more information");
         System.exit(20);
     }
 

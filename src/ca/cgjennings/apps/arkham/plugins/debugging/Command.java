@@ -18,6 +18,11 @@ public enum Command {
      */
     PROBE(0),
     /**
+     * Returns a description of the server to help tell multiple servers on the
+     * same device apart.
+     */
+    SERVERINFO(0),
+    /**
      * Stop the running script.
      */
     STOP(0),

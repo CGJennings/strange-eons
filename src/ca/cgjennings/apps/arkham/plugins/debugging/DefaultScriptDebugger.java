@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -465,6 +466,16 @@ public final class DefaultScriptDebugger {
             case PROBE:
                 return String.valueOf(frameUpdates.get());
 
+            case SERVERINFO: {
+                String testBundles = StrangeEons.getApplication().getCommandLineArguments().plugintest;
+                return guessProcessId() + '\n' +
+                        Integer.toHexString(StrangeEons.getApplication().hashCode()) + '\n' +
+                        StrangeEons.getBuildNumber() + '\n' +
+                        StrangeEons.getVersionString() + '\n' +
+                        (testBundles == null ? "" : testBundles) + '\n'
+                ;
+            }
+
             case INTERRUPTED:
                 synchronized (interruptMonitor) {
                     if (dc.isInterrupted()) {
@@ -860,4 +871,12 @@ public final class DefaultScriptDebugger {
         return Command.escapeHTML(name); // still?
     }
 
+    private static String guessProcessId() {
+        try {
+            String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+            return jvmName.split("@")[0];
+        } catch (Exception ex) {
+            return "?";
+        }
+    }
 }

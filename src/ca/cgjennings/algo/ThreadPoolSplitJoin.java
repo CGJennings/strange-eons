@@ -22,9 +22,12 @@ import java.util.logging.Level;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 class ThreadPoolSplitJoin extends SplitJoin {
-
     public ThreadPoolSplitJoin() {
-        final int cpus = getIdealSplitCount();
+        this(-1);
+    }  
+
+    public ThreadPoolSplitJoin(int splitCount) {
+        final int cpus = splitCount < 1 ? getIdealSplitCount() : splitCount;
         BlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>(Integer.MAX_VALUE);
         threadPool = new ThreadPoolExecutor(cpus, cpus, KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, workQueue, THREAD_FACTORY);
         threadPool.allowCoreThreadTimeOut(true);
@@ -96,6 +99,13 @@ class ThreadPoolSplitJoin extends SplitJoin {
             }
         }
         return results;
+    }
+
+    @Override
+    public void dispose() {
+        if(this != SplitJoin.getInstance()) {
+            threadPool.shutdown();
+        }
     }
 
     private final ThreadPoolExecutor threadPool;

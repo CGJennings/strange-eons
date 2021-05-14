@@ -73,13 +73,33 @@ public abstract class SplitJoin {
      * Returns a new <code>SplitJoin</code> instance suited to the platform.
      * This instance is guaranteed not to be shared.
      *
-     * @return a new suitable instance
+     * @return a new instance suitable for parallelizing CPU bound tasks
      */
     public static SplitJoin createInstance() {
         if (cpus == 1 || !allowThreads) {
             return new SerialSplitJoin();
+        }
+        return new ThreadPoolSplitJoin();
+    }
+
+    /**
+     * Returns a new <code>SplitJoin</code> instance that will use the specified
+     * number of threads. This instance is guaranteed not to be shared, and
+     * is guaranteed to employ up to the specified number of threads
+     * (depending on the number of subproblems).
+     *
+     * @param nThreads the number of threads to be used
+     * @return a new instance that uses the specified number of threads
+     * @throws IllegalArgumentException if the number of threads is not positive
+     */
+    public static SplitJoin createInstance(int nThreads) {
+        if(nThreads < 1) {
+            throw new IllegalArgumentException("nThreads " + nThreads);
+        }
+        if (nThreads == 1) {
+            return new SerialSplitJoin();
         } else {
-            return new ThreadPoolSplitJoin();
+            return new ThreadPoolSplitJoin(nThreads);
         }
     }
 
@@ -192,6 +212,15 @@ public abstract class SplitJoin {
      * @param task the task to run in another thread
      */
     public abstract void execute(Runnable task);
+
+    /**
+     * Provides a hint to this instance that it will no longer be used.
+     * Calling this is not required, but may free up resources sooner than
+     * not calling it would. The effect of continuing to use this
+     * {@code SplitJoin} after disposing of it is undefined.
+     */
+    public void dispose() {
+    }
 
     /**
      * Returns the ideal number of evenly divided subproblems to break problems
