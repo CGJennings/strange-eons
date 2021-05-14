@@ -61,6 +61,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -2460,49 +2461,51 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Starts the debugger client application. Note that this should be started
      * as a separate process from the main application so that the debugger and
-     * the application have separate event dispatch threads. Accepted command
-     * line arguments (each line represents a pair of entries in
-     * <code>args</code>):
-     * <table>
-     * <caption>Arguments</caption>
-     * <tr><th>Name            <th>Parameter            <th>Effect                                 <th>Default</tr>
-     * <tr><td><tt>--host</tt> <td><tt><i>name</i></tt> <td>connect to debug
-     * server on host 'name' <td><tt>localhost</tt></tr>
-     * <tr><td><tt>--port</tt> <td><tt><i>n</i></tt>    <td>connect to debug server
-     * at port 'n'    <td><tt>8888</tt></tr>
-     * </table>
+     * the application have separate event dispatch threads.
      *
      * @param args the command line arguments
      */
     public static void main(final String args[]) {
+        ClientArguments arguments = new ClientArguments();
+        arguments.parse(null, args);
+        if(arguments.search) {
+            searchForClients(arguments.host);
+            System.exit(0);
+        }
+
         java.awt.EventQueue.invokeLater(() -> {
             try {
                 UIManager.setLookAndFeel(new NimbusLookAndFeel());
             } catch (Exception e) {
             }
             Client client = new Client();
-            
-            for (int i = 0; i < args.length - 1; ++i) {
-                if (args[i].equalsIgnoreCase("--host")) {
-                    client.host = args[i + 1].trim();
-                } else if (args[i].equalsIgnoreCase("--port")) {
-                    try {
-                        client.port = Integer.parseInt(args[i + 1]);
-                        ++i;
-                    } catch (NumberFormatException e) {
-                        System.err.println("Invalid port number: " + args[i + 1]);
-                        System.exit(10);
-                    }
-                } else {
-                    System.out.println("Strange Eons Debugger Client");
-                    System.out.println("Options:");
-                    System.out.println("   --host name   connect to debug server on host 'name' (default: localhost)");
-                    System.out.println("   --port n      connect to debug server at port 'n'    (default: 8888)");
-                    System.exit(0);
-                }
+            if(arguments.host != null) {
+                client.host = arguments.host.trim();
+            }
+            if(arguments.port >= 1 && arguments.port <= 65535) {
+                client.port = arguments.port;
             }
             client.setVisible(true);
         });
+    }
+
+    private static void searchForClients(String host) {
+        try {
+            DiscoveryService ds = host == null ? new DiscoveryService() : new DiscoveryService(InetAddress.getByName(host));
+            ds.setDiscoveryConsumer(info -> {
+                // since multi-threaded, entire description must use just one println
+                System.out.println(
+                        "Host:         " + info.address.getHostName() + ", port " + info.port + '\n' +
+                        "ID:           " + info.pid + '.' + info.hash + '\n' +
+                        "Version:      build " + info.buildNumber + " (" + info.version + ")\n" +
+                        "Test bundles: " + info.testBundle + "\n"
+                );
+            });
+            ds.search();
+        } catch(Exception e) {
+            System.err.println(e.getLocalizedMessage());
+            System.exit(20);
+        }
     }
 
     /**
