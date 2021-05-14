@@ -103,7 +103,9 @@ class ThreadPoolSplitJoin extends SplitJoin {
 
     @Override
     public void dispose() {
-        threadPool.shutdown();
+        if(this != SplitJoin.getInstance()) {
+            threadPool.shutdown();
+        }
     }
 
     private final ThreadPoolExecutor threadPool;
