@@ -3,11 +3,8 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.algo.SplitJoin;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.lang.management.ManagementFactory;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -92,7 +89,7 @@ public final class DiscoveryService {
         if(hosts == null) {
             throw new IllegalArgumentException("null hosts");
         }
-        hostsToTest = new LinkedHashSet<InetAddress>();
+        hostsToTest = new LinkedHashSet<>();
         for(InetAddress host : hosts) {
             if(host == null) {
                 throw new IllegalArgumentException("null host");
@@ -104,7 +101,7 @@ public final class DiscoveryService {
 
         // check if they are equivalent, and if so use the same ref for both
         // to short circuit some checks later
-        if(local != hostsToTest && local.size() == hostsToTest.size() && local.contains(hostsToTest)) {
+        if(local != hostsToTest && local.size() == hostsToTest.size() && local.containsAll(hostsToTest)) {
             hostsToTest = local;
         }
     }
