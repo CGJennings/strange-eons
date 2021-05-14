@@ -410,22 +410,6 @@ public final class Client extends javax.swing.JFrame {
         installToolTip("on-top", onTopBtn);
         installToolTip("force-exit", stopBtn);
 
-//		Color stopRed = new Color( 0x330707 );
-//		breakEnterBtn.setBackground( stopRed );
-//		breakExitBtn.setBackground( stopRed );
-//		breakThrowBtn.setBackground( stopRed );
-//		breakDebuggerBtn.setBackground( stopRed );
-//		stopBtn.setBackground( stopRed );
-//		breakBtn.setBackground( stopRed );
-//		
-//		Color goGreen = new Color( 0x073307 );
-//		walkBtn.setBackground( goGreen );
-//		runBtn.setBackground( goGreen );
-//		
-//		Color stepYellow = new Color( 0x333307 );
-//		stepOverBtn.setBackground( stepYellow );
-//		stepIntoBtn.setBackground( stepYellow );
-//		stepOutBtn.setBackground( stepYellow );
         if (settings.getBoolean("on-top")) {
             onTopBtn.setSelected(true);
         }
