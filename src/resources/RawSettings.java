@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 
 /**
@@ -268,6 +269,22 @@ public class RawSettings {
                 }
             }
         }
+    }
+
+    /**
+     * Returns the value of a setting key in the default setting data.
+     *
+     * @param key the setting key to search for in the default setting data
+     * @return the default value of the key, or null
+     */
+    public static String getDefaultSettingValue(String key) {
+        Properties def = new Properties();
+        try (InputStream in = RawSettings.class.getResourceAsStream("default.settings")) {
+            def.load(in);
+        } catch (IOException ex) {
+            StrangeEons.log.log(Level.SEVERE, ex, null);
+        }
+        return def.getProperty(key);
     }
 
     /**

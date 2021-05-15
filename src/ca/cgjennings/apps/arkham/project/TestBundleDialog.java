@@ -17,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import resources.Language;
 import static resources.Language.string;
+import resources.RawSettings;
 import resources.Settings;
 
 /**
@@ -81,8 +82,8 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         String loglevel = s.get("test-bundle-log", "ALL");
         logLevelCombo.setSelectedItem(loglevel.toUpperCase(Locale.CANADA));
-
-        jvmField.setText(s.get("test-bundle-jvm", "java -Xmx1024m -cp \"%j\" StrangeEons"));
+        doNotLoadPluginsCheck.setSelected(s.getYesNo("test-bundle-no-plugins"));
+        jvmField.setText(s.get("test-bundle-jvm", ""));
         argsField.setText(s.get("test-bundle-args", ""));
         jvmField.select(0, 0);
         argsField.select(0, 0);
@@ -103,6 +104,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         jLabel2 = new javax.swing.JLabel();
         jvmField = new javax.swing.JTextField();
         argsField = new javax.swing.JTextField();
+        resetJvmCommandBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -112,6 +114,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         logLevelCombo = new javax.swing.JComboBox();
         gameLocField = new javax.swing.JTextField();
         uiLocField = new javax.swing.JTextField();
+        doNotLoadPluginsCheck = new javax.swing.JCheckBox();
         jLabel3 = new javax.swing.JLabel();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
@@ -129,6 +132,13 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         argsField.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
 
+        resetJvmCommandBtn.setText(string("reset")); // NOI18N
+        resetJvmCommandBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                resetJvmCommandBtnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -142,7 +152,10 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(argsField, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-                            .addComponent(jvmField))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jvmField)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(resetJvmCommandBtn)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -150,7 +163,9 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jvmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jvmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(resetJvmCommandBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -186,6 +201,8 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         uiLocField.setColumns(5);
 
+        doNotLoadPluginsCheck.setText(string("pa-test-bundle-no-plugins")); // NOI18N
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -193,9 +210,6 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(logLevelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -210,7 +224,11 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                                 .addComponent(uiCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(uiLocField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(logLevelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(doNotLoadPluginsCheck))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -232,6 +250,8 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(logLevelCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(doNotLoadPluginsCheck)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -297,9 +317,15 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         }
     }//GEN-LAST:event_uiComboActionPerformed
 
+    private void resetJvmCommandBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJvmCommandBtnActionPerformed
+        String defVal = RawSettings.getDefaultSettingValue("test-bundle-jvm");
+        jvmField.setText(defVal);
+    }//GEN-LAST:event_resetJvmCommandBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField argsField;
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JCheckBox doNotLoadPluginsCheck;
     private javax.swing.JComboBox gameCombo;
     private javax.swing.JTextField gameLocField;
     private javax.swing.JLabel jLabel1;
@@ -313,6 +339,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JTextField jvmField;
     private javax.swing.JComboBox logLevelCombo;
     private javax.swing.JButton okBtn;
+    private javax.swing.JButton resetJvmCommandBtn;
     private javax.swing.JComboBox uiCombo;
     private javax.swing.JTextField uiLocField;
     // End of variables declaration//GEN-END:variables
@@ -342,6 +369,8 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     public void handleOKAction(ActionEvent evt) {
         Settings s = Settings.getUser();
         s.set("test-bundle-log", logLevelCombo.getSelectedItem().toString());
+
+        s.setYesNo("test-bundle-no-plugins", doNotLoadPluginsCheck.isSelected());
 
         // only set a user settings for the JVM args if it is different from
         // the default; that way if we update the default it is picked up automatically
@@ -379,10 +408,13 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 StrangeEons.log.log(Level.WARNING, null, e);
             }
 
+            String noPluginsOption = doNotLoadPluginsCheck.isSelected() ? " --xDisablePluginLoading" : "";
+
             String command = jvmFieldText
                     + " --glang " + gLang
                     + " --ulang " + iLang
                     + " --loglevel " + loglevel
+                    + noPluginsOption
                     + " --plugintest \"" + bundle.getAbsolutePath() + "\" "
                     + argsField.getText();
             command = command.trim();
