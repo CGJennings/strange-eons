@@ -128,7 +128,7 @@ final class Restarter {
         // If for any reason a platform-specific version could not be generated,
         // we fall back on a cross-platform launch command.
         if (command.isEmpty()) {
-            command.add(Subprocess.getDefaultJavaCommand());
+            command.add(Subprocess.getJavaRuntimeExecutable());
 
             // append jvm args that were passed to this jvm instance (e.g. -Xmx)
             RuntimeMXBean rmx = ManagementFactory.getRuntimeMXBean();
