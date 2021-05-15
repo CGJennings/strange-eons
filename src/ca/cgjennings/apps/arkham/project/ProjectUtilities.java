@@ -1089,6 +1089,30 @@ public class ProjectUtilities {
     }
 
     /**
+     * Executes a shell command on the local system. The first string passed in
+     * is the command name, and each subsequent string is an argument to pass to
+     * the command. Any output from the command will appear in the script
+     * console. This method will return immediately; the command will run in
+     * the background.
+     *
+     * @param commandArray the command and arguments to use
+     * @throws NullPointerException if the command array is <code>null</code>
+     * @throws IllegalArgumentException if the command array is empty
+     * @since 3.2
+     */
+    public static void execAsync(String... commandArray) {
+        if (commandArray == null) {
+            throw new NullPointerException("command");
+        }
+        if (commandArray.length == 0) {
+            throw new IllegalArgumentException("empty command");
+        }
+        Subprocess p = new Subprocess(commandArray);
+        p.setExitCodeShown(false);
+        p.start();
+    }
+
+    /**
      * If there is a support editor that is being used to edit this file, and
      * the editor supports the <b>Save</b> command, and the editor has unsaved
      * changes, the editor will be asked to save the file.
