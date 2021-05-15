@@ -673,6 +673,10 @@ public class BundleInstaller {
             scanBundle(pluginSet, tb, pluginType);
         }
 
+        if (disablePluginLoading) {
+            return;
+        }
+
         // scan the folder pointed to by the extra folder setting
         String folder = RawSettings.getUserSetting(USER_PLUGIN_FOLDER_KEY);
         if (folder != null) {
@@ -695,6 +699,16 @@ public class BundleInstaller {
         if (pluginFolder.isDirectory()) {
             scanFolder(pluginSet, pluginFolder, pluginType);
         }
+    }
+
+    private static boolean disablePluginLoading = false;
+
+    /**
+     * Calling this method will prevent plug-ins bundles from being loaded, except for
+     * any test bundles specified on the command line.
+     */
+    public static void disablePluginLoading() {
+        disablePluginLoading = true;
     }
 
     /**

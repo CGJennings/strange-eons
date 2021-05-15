@@ -158,6 +158,13 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableFilterThreads = false;
 
     /**
+     * Non-standard debugging and development option. <p>
+     * Prevents plug-ins from being loaded. This can be used to facilitate
+     * building an <em>application class-data sharing archive</em>.
+     */
+    public boolean xDisablePluginLoading = true;
+
+    /**
      * Non-standard debugging option. <p>
      * This option disables use of the system menu bar on OS X. It has no effect
      * on other platforms.
@@ -241,6 +248,7 @@ public class CommandLineArguments implements Cloneable {
 + "  --XDebugException         Throws a test exception during startup\n"
 + "  --XDisableFileRestore     Do not re-open files in use at the last exit\n"
 + "  --XDisableFilterThreads   Do not use threads to accelerate image filters\n"
++ "  --XDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
 + "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
 + "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
 + "  --XDisableAnimation       Do not use animation effects\n"
