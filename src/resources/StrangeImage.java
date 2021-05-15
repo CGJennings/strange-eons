@@ -552,6 +552,7 @@ public abstract class StrangeImage {
      *
      * @param identifier the identifier to use to locate the file
      * @return the identified image, or a "missing image" stand-in
+     * @since 3.2
      */
     public static BufferedImage getAsBufferedImage(String identifier) {
         BufferedImage bi;
@@ -572,6 +573,7 @@ public abstract class StrangeImage {
      *
      * @param identifier the identifier to use to locate the file
      * @return true if the identifier points to a valid image, false otherwise
+     * @since 3.2
      */
     public static boolean exists(String identifier) {
         return get(identifier) != getMissingImage();
