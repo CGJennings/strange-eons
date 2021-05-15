@@ -446,6 +446,9 @@ test-bundle-use-testing-theme = yes
 # Java runtime (for example, if the default version is too low to run
 # Strange Eons). If this value is also "java", then a platform-specific value
 # may be substituted.
+#
+# This only needs to be set in extreme situations, as the executable is normally
+# located automatically.
 invoke-java-cmd = java
 
 # Catalogue URLs: the -1 entry is the location of the master SE catalogue
