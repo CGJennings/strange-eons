@@ -435,7 +435,8 @@ pack-bundle-strip-meta = yes
 
 # Default settings for bundle testing
 test-bundle-log = ALL
-test-bundle-jvm = java -Xmx1024m -cp "%j" strangeeons
+test-bundle-no-plugins = yes
+test-bundle-jvm = java -Xmx2g -cp "%j" strangeeons
 test-bundle-args =
 # if yes, a special testing theme will override the user-selected theme
 # to make it easy to tell which instance of SE is the test version
