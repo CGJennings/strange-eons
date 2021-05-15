@@ -162,7 +162,7 @@ public class CommandLineArguments implements Cloneable {
      * Prevents plug-ins from being loaded. This can be used to facilitate
      * building an <em>application class-data sharing archive</em>.
      */
-    public boolean xDisablePluginLoading = true;
+    public boolean xDisablePluginLoading = false;
 
     /**
      * Non-standard debugging option. <p>
