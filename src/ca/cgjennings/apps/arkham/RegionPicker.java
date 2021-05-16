@@ -596,33 +596,6 @@ public class RegionPicker extends javax.swing.JDialog {
         editor.setRegion(r);
     }
 
-//
-//    /**
-//    * @param args the command line arguments
-//    */
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//				int size = 512;
-//				BufferedImage testImage = new BufferedImage( size, size, BufferedImage.TYPE_INT_RGB );
-//				for( int y=0; y<size; ++y ) {
-//					for( int x=0; x<size; ++x ) {
-//						int c = (int) (Math.random()*255);
-//						c = c|c<<8|c<<16;
-//						testImage.setRGB( x, y, c );
-//					}
-//				}
-//                RegionPicker dialog = new RegionPicker(new javax.swing.JFrame(), true);
-//				dialog.setImage( testImage );
-//                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-//                    public void windowClosing(java.awt.event.WindowEvent e) {
-//                        System.exit(0);
-//                    }
-//                });
-//                dialog.setVisible(true);
-//            }
-//        });
-//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox autocopyCheck;
     private javax.swing.JPanel controlPanel;
