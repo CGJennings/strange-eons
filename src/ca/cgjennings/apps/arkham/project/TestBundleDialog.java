@@ -343,16 +343,6 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JComboBox uiCombo;
     private javax.swing.JTextField uiLocField;
     // End of variables declaration//GEN-END:variables
-
-    private String additionalClassPath;
-
-    public void setAdditionalClassPath(String path) {
-        additionalClassPath = path;
-    }
-
-    public String getAdditionalClassPath() {
-        return additionalClassPath;
-    }
     
     private String determineLocaleCode(JComboBox picker, JTextField manual) {
         // if there is a valid value in the text field, use that
@@ -393,12 +383,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 bundle = temp;
             }
 
-            String sejar;
-            if (additionalClassPath != null) {
-                sejar = Subprocess.getClasspath(new File(additionalClassPath));
-            } else {
-                sejar = Subprocess.getClasspath();
-            }
+            String sejar = Subprocess.getClasspath();
 
             String loglevel = logLevelCombo.getSelectedItem().toString();
             try {
@@ -423,7 +408,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             String[] tokens = f.formatCommand(command);
 
             if (tokens.length > 0 && tokens[0].equals("java")) {
-                tokens[0] = Subprocess.getDefaultJavaCommand();
+                tokens[0] = Subprocess.getJavaRuntimeExecutable();
             }
 
             Subprocess process = new Subprocess(tokens);
