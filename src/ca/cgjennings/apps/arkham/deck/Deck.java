@@ -1912,23 +1912,6 @@ public class Deck implements Serializable, GameComponent, Cloneable {
         });
     }
 
-//	public void addUndoableEditListener( UndoableEditListener li ) {
-//		undoSupport.addUndoableEditListener( li );
-//	}
-//
-//	public void removeUndoableEditListener( UndoableEditListener li ) {
-//		undoSupport.removeUndoableEditListener( li );
-//	}
-//
-//	/**
-//	 * Manages the posting of undoable events from the deck.
-//	 */
-//	UndoableEditSupport undoSupport = new UndoableEditSupport();
-//	/**
-//	 * Set to true when an edit is being undone/redone so that additional
-//	 * undo events are not generated.
-//	 */
-//	int undoIsActive;
     @Override
     public Settings getSettings() {
         return privateSettings;
