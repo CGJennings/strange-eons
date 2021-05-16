@@ -192,22 +192,4 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
     }
 
     private static final String[] EMPTY_EXPORT = new String[0];
-
-//	/**
-//	 * This method is called during construction. If it returns <code>null</code>,
-//	 * there is no effect. Otherwise it may return an array of pairs of
-//	 * {@link Command}s. When the default implementations of
-//	 * {@link Commandable} are called, they will check the incoming command
-//	 * against the first of each of these pairs. If any command matches,
-//	 * then the second command of the pair will be substituted. So if this
-//	 * method returns [A,B], then when command A is performed through this
-//	 * editor, <code>B.perform()</code> will be called instead of <code>A.perform()</code>.
-//	 * This allows subclasses to easily override standard actions using custom
-//	 * actions of their own.
-//	 * @return an array of (original, replacement) command pairs, or <code>null</code>
-//	 */
-//	@Override
-//	protected Command[] initReplacementCommands() {
-//		return null;
-//	}
 }
