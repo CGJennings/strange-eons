@@ -142,6 +142,7 @@ public final class Subprocess {
     private ProcessBuilder pb;
     private ExecutionManager em;
     private JButton killBtn;
+    private boolean redirectStreams = true;
     private volatile int state = 0;
     private volatile boolean survives;
     private volatile boolean showRetVal = true;
@@ -196,6 +197,32 @@ public final class Subprocess {
      */
     public synchronized boolean isSurvivor() {
         return survives;
+    }
+
+    /**
+     * Sets whether the subprocess will redirect the standard
+     * I/O streams to the script console. The default is to redirect streams.
+     *
+     * @param redirect <code>true</code> if the streams will be redirected
+     * @throws IllegalStateException if the subprocess has already been started
+     * @since 3.2
+     */
+    public synchronized void setStreamIORedirected(boolean redirect) {
+        if (isStarted()) {
+            throw new IllegalStateException("already started");
+        }
+        redirectStreams = redirect;
+    }
+
+    /**
+     * Returns <code>true</code> if this subprocess will redirect the standard
+     * I/O streams to the script console.
+     *
+     * @return <code>true</code> if the streams will be redirected
+     * @since 3.2
+     */
+    public synchronized boolean isStreamIORedirected() {
+        return redirectStreams;
     }
 
     /**
@@ -329,7 +356,7 @@ public final class Subprocess {
     private class ExecutionManager extends Thread {
 
         public ExecutionManager() {
-            super("Subprocess instance");
+            super("Subprocess [" + pb.command().get(0) + ']');
         }
 
         @Override
@@ -339,9 +366,12 @@ public final class Subprocess {
                 beginMonitoring(this);
             }
             try {
+                if (!redirectStreams) {
+                    pb.inheritIO();
+                }
                 Process proc = pb.start();
-                Thread io = new IOStreamManager(proc);
-                io.start();
+                Thread io = redirectStreams ? new IOStreamManager(proc) : null;
+                if (io != null) io.start();
                 if (killBtn != null) {
                     EventQueue.invokeLater(() -> {
                         StrangeEons.getWindow().addCustomComponent(killBtn);
@@ -359,7 +389,7 @@ public final class Subprocess {
                         sc.getErrorWriter().println(string("killps"));
                     }
                 }
-                io.interrupt();
+                if (io != null) io.interrupt();
             } catch (IOException e) {
                 e.printStackTrace(sc.getErrorWriter());
             } finally {
