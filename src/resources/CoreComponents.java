@@ -36,12 +36,6 @@ public enum CoreComponents {
      * Resources required to perform live spelling checking.
      */
     SPELLING_COMPONENTS("CATALOGUEID{38698844-2654-46a8-b791-36e5d454a7ec:2010-0-24-10-42-7-24}"),
-//    /**
-//     * @deprecated Documentation is now housed online on the se3docs site.
-//     *
-//     * Resources needed to display documentation for Strange Eons classes.
-//     */
-//    API_DOCUMENTATION("CATALOGUEID{dd933618-9372-4579-b8c0-dcada8e89e1c:2011-4-22-10-15-55-459}"),
     /**
      * Library needed to enable PDF output via {@link PDFPrintSupport}.
      */
