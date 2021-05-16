@@ -13,9 +13,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.management.ManagementFactory;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
-import java.util.regex.Pattern;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingConstants;
@@ -29,14 +33,19 @@ import resources.Settings;
  * the application. The output and error streams of the subprocess are connected
  * to the script console.
  *
+ * <p>While {@code Subprocess} can be used to run any shell command, it has
+ * {@linkplain #launch special support} for starting Java apps, and in
+ * particular for starting Java apps included with this app, such as the script
+ * debugger client.
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
 public final class Subprocess {
 
     /**
-     * Creates a new <code>Subprocess</code> that will execute the command
-     * specified by <code>command</code>.
+     * Creates a new Subprocess that will execute the
+     * specified command.
      *
      * @param command an array of command tokens to execute
      * @throws NullPointerException if <code>command</code> is <code>null</code>
@@ -45,22 +54,95 @@ public final class Subprocess {
      * created yet
      */
     public Subprocess(String... command) {
-        if (command == null) {
-            throw new NullPointerException("command");
-        }
+        Objects.requireNonNull(command, "command");
         if (command.length < 1) {
             throw new IllegalArgumentException("empty command");
         }
         if (StrangeEons.getWindow() == null) {
             throw new IllegalStateException("console not avilable yet");
         }
-        command = command.clone();
-        pb = new ProcessBuilder(command);
+
+        pb = new ProcessBuilder(command.clone());
+
+        if(StrangeEons.log.isLoggable(Level.INFO)) {
+            StrangeEons.log.info("created subprocess " + String.join(" ", command));
+        }
+    }
+
+    /**
+     * Creates a new Subprocess that will execute the
+     * specified command.
+     *
+     * @param command an list of command tokens to execute
+     * @throws NullPointerException if <code>command</code> is <code>null</code>
+     * @throws IllegalArgumentException if <code>command.length == 0</code>
+     * @throws IllegalStateException if the application window has not been
+     * created yet
+     */
+    public Subprocess(List<String> command) {
+        this(command.toArray(new String[Objects.requireNonNull(command.size(), "command")]));
+    }
+
+    /**
+     * Returns a new Subprocess that will launch an app that is part of this
+     * app's main library or JAR file. For example, {@code launch("debugger")}
+     * would launch the debugger client by starting a new runtime with the
+     * same classpath as this app and passing it the {@link debugger} class.
+     *
+     * <p>If necessary, additional or replacement JVM arguments may be
+     * specified <em>before</em> the class name (which is otherwise the
+     * first argument).
+     *
+     * @param appClassNameAndArguments the name of the app, followed by any
+     *   additional command line arguments to pass to the app
+     * @return the new Subprocess controlling the launched app
+     * @throws IllegalArgumentException if argument list is null or empty
+     * @throws IllegalStateException if the application window has not been
+     *   created yet
+     * @since 3.2
+     */
+    public static Subprocess launch(String... appClassNameAndArguments) {
+        if(appClassNameAndArguments == null || appClassNameAndArguments.length == 0) {
+            throw new IllegalArgumentException("no app class specified");
+        }
+        return launch(Arrays.asList(appClassNameAndArguments));
+    }
+
+    /**
+     * Returns a new Subprocess that will launch an app that is part of this
+     * app's main library or JAR file. For example, {@code launch("debugger")}
+     * would launch the debugger client by starting a new runtime with the
+     * same classpath as this app and passing it the {@link debugger} class.
+     *
+     * <p>If necessary, additional or replacement JVM arguments may be
+     * specified <em>before</em> the class name (which is otherwise the
+     * first argument).
+     *
+     * @param appClassNameAndArguments the name of the app, followed by any
+     *   additional command line arguments to pass to the app
+     * @return the new Subprocess controlling the launched app
+     * @throws IllegalArgumentException if argument list is null or empty
+     * @throws IllegalStateException if the application window has not been
+     *   created yet
+     * @since 3.2
+     */
+    public static Subprocess launch(List<String> appClassNameAndArguments) {
+        if(appClassNameAndArguments == null || appClassNameAndArguments.isEmpty()) {
+            throw new IllegalArgumentException("no app class specified");
+        }
+        LinkedList<String> tokens = new LinkedList<>();
+        tokens.add(getJavaRuntimeExecutable());
+        tokens.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
+        tokens.add("-cp");
+        tokens.add(getClasspath());
+        tokens.addAll(appClassNameAndArguments);
+        return new Subprocess(tokens);
     }
 
     private ProcessBuilder pb;
     private ExecutionManager em;
     private JButton killBtn;
+    private boolean redirectStreams = true;
     private volatile int state = 0;
     private volatile boolean survives;
     private volatile boolean showRetVal = true;
@@ -115,6 +197,32 @@ public final class Subprocess {
      */
     public synchronized boolean isSurvivor() {
         return survives;
+    }
+
+    /**
+     * Sets whether the subprocess will redirect the standard
+     * I/O streams to the script console. The default is to redirect streams.
+     *
+     * @param redirect <code>true</code> if the streams will be redirected
+     * @throws IllegalStateException if the subprocess has already been started
+     * @since 3.2
+     */
+    public synchronized void setStreamIORedirected(boolean redirect) {
+        if (isStarted()) {
+            throw new IllegalStateException("already started");
+        }
+        redirectStreams = redirect;
+    }
+
+    /**
+     * Returns <code>true</code> if this subprocess will redirect the standard
+     * I/O streams to the script console.
+     *
+     * @return <code>true</code> if the streams will be redirected
+     * @since 3.2
+     */
+    public synchronized boolean isStreamIORedirected() {
+        return redirectStreams;
     }
 
     /**
@@ -248,7 +356,7 @@ public final class Subprocess {
     private class ExecutionManager extends Thread {
 
         public ExecutionManager() {
-            super("Subprocess instance");
+            super("Subprocess [" + pb.command().get(0) + ']');
         }
 
         @Override
@@ -258,9 +366,12 @@ public final class Subprocess {
                 beginMonitoring(this);
             }
             try {
+                if (!redirectStreams) {
+                    pb.inheritIO();
+                }
                 Process proc = pb.start();
-                Thread io = new IOStreamManager(proc);
-                io.start();
+                Thread io = redirectStreams ? new IOStreamManager(proc) : null;
+                if (io != null) io.start();
                 if (killBtn != null) {
                     EventQueue.invokeLater(() -> {
                         StrangeEons.getWindow().addCustomComponent(killBtn);
@@ -278,7 +389,7 @@ public final class Subprocess {
                         sc.getErrorWriter().println(string("killps"));
                     }
                 }
-                io.interrupt();
+                if (io != null) io.interrupt();
             } catch (IOException e) {
                 e.printStackTrace(sc.getErrorWriter());
             } finally {
@@ -418,62 +529,34 @@ public final class Subprocess {
     private static LinkedHashSet<ExecutionManager> activeProcesses;
 
     /**
-     * Returns a string that contains a suitable classpath for launching a
-     * subprocess that runs one of the executable Strange Eons components. The
-     * classpath string will be in a suitable format for use as a command-line
-     * parameter, including the use of a system-specific path separator if there
-     * are multiple search paths defined.
+     * Returns the application's class path.
      *
-     * @param additionalPaths optional additional paths that will also be
-     * included in the returned classpath
-     * @return a suitable classpath for invoking an application from the main
-     * Strange Eons application library
+     * @return a list of one or more paths separated by the platform path separator
      */
-    public static String getClasspath(File... additionalPaths) {
-        final LinkedHashSet<File> components = new LinkedHashSet<>();
-
-        // add the known location of the main library
-        components.add(BundleInstaller.getApplicationLibrary());
-
-        // check for additional libraries on original classpath, if available
-        final String path = System.getProperty("java.class.path");
-        if (path != null) {
-            String[] tokens = path.split(Pattern.quote(File.pathSeparator));
-            for (String t : tokens) {
-                components.add(new File(t));
-            }
+    public static String getClasspath() {
+        String cp = System.getProperty("java.class.path");
+        if(cp == null) {
+            StrangeEons.log.warning("no classpath property, using fallback");
+            cp = BundleInstaller.getApplicationLibrary().getAbsolutePath();
         }
-
-        // now add any additional paths requested by the caller
-        if (additionalPaths != null) {
-            for (File f : additionalPaths) {
-                components.add(f);
-            }
-        }
-
-        // compose the combined classpath
-        final StringBuilder b = new StringBuilder(128);
-        for (File c : components) {
-            if (b.length() > 0) {
-                b.append(File.pathSeparatorChar);
-            }
-            b.append(c.getAbsolutePath());
-        }
-        return b.toString();
+        return cp;
     }
 
     /**
-     * Returns the path to a command that can be used to launch a Java runtime.
-     * If the user setting <code>invoke-java-cmd</code> is set, then this value
-     * will be used. If it is not set, or it is set to "java", then the method
-     * will attempt to locate a runtime using a platform-specific algorithm. If
-     * no valid platform-specific path is found, then "java" will indeed be
-     * returned (which should work if the system's path environment variable is
-     * is set appropriately).
+     * Returns a command that can be used to launch a Java runtime.
+     * Where possible, this will be the full path to the specific Java runtime
+     * used to start this app. The path is normally detected correctly
+     * automatically, but if for some reason detection fails, the user setting
+     * {@code invoke-java-cmd} can be set to a suitable path.
      *
-     * @return a command that is expected to launch a separate JVM process
+     * <p>For example, on a Windows device on which the app itself was launched
+     * with a version of AdoptOpenJDK 8, this might return:
+     *
+     * <pre>C:\Program Files\AdoptOpenJDK\jdk-8.0.292.10-openj9\jre\bin\java.exe</pre>
+     *
+     * @return path to an executable that is expected to launch a separate JVM process
      */
-    public static String getDefaultJavaCommand() {
+    public static String getJavaRuntimeExecutable() {
         String command = Settings.getUser().get("invoke-java-cmd");
         if (command == null || command.equals("java")) {
             command = "java";
@@ -499,5 +582,4 @@ public final class Subprocess {
         }
         return command;
     }
-
 }

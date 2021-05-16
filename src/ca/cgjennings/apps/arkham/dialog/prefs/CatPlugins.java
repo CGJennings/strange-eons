@@ -105,13 +105,9 @@ class CatPlugins extends FillInPreferenceCategory {
         subheading(string("sd-l-debug-client"));
         addCheckBox("script-debug-client-autostart", string("sd-b-debug-client-autostart"), false);
         indent();
-
-        final JTextField launchField = addField("script-debug-client-jvm", string("sd-l-debug-client-cmd"), 40);
-        launchField.setFont(fieldFont);
-        join();
         addButton(string("sd-b-debug-client"), (ActionEvent e) -> {
             try {
-                ScriptDebugging.getInstaller().startClient(launchField.getText());
+                ScriptDebugging.getInstaller().startClient();
             } catch (Throwable ioe) {
                 ErrorDialog.displayError(string("killps"), ioe);
             }

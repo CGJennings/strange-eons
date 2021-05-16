@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.project;
 
+import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
@@ -11,6 +12,9 @@ import ca.cgjennings.util.CommandFormatter;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.JComboBox;
@@ -83,7 +87,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         String loglevel = s.get("test-bundle-log", "ALL");
         logLevelCombo.setSelectedItem(loglevel.toUpperCase(Locale.CANADA));
         doNotLoadPluginsCheck.setSelected(s.getYesNo("test-bundle-no-plugins"));
-        jvmField.setText(s.get("test-bundle-jvm", ""));
+        jvmField.setText(s.get("test-bundle-vm-args", ""));
         argsField.setText(s.get("test-bundle-args", ""));
         jvmField.select(0, 0);
         argsField.select(0, 0);
@@ -104,7 +108,6 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         jLabel2 = new javax.swing.JLabel();
         jvmField = new javax.swing.JTextField();
         argsField = new javax.swing.JTextField();
-        resetJvmCommandBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -132,13 +135,6 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         argsField.setFont(new java.awt.Font("Monospaced", 0, 11)); // NOI18N
 
-        resetJvmCommandBtn.setText(string("reset")); // NOI18N
-        resetJvmCommandBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                resetJvmCommandBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,10 +148,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addGap(10, 10, 10)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(argsField, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jvmField)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(resetJvmCommandBtn)))))
+                            .addComponent(jvmField))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,9 +156,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jvmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(resetJvmCommandBtn))
+                .addComponent(jvmField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -317,11 +308,6 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         }
     }//GEN-LAST:event_uiComboActionPerformed
 
-    private void resetJvmCommandBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetJvmCommandBtnActionPerformed
-        String defVal = RawSettings.getDefaultSettingValue("test-bundle-jvm");
-        jvmField.setText(defVal);
-    }//GEN-LAST:event_resetJvmCommandBtnActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField argsField;
     private javax.swing.JButton cancelBtn;
@@ -339,20 +325,9 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JTextField jvmField;
     private javax.swing.JComboBox logLevelCombo;
     private javax.swing.JButton okBtn;
-    private javax.swing.JButton resetJvmCommandBtn;
     private javax.swing.JComboBox uiCombo;
     private javax.swing.JTextField uiLocField;
     // End of variables declaration//GEN-END:variables
-
-    private String additionalClassPath;
-
-    public void setAdditionalClassPath(String path) {
-        additionalClassPath = path;
-    }
-
-    public String getAdditionalClassPath() {
-        return additionalClassPath;
-    }
     
     private String determineLocaleCode(JComboBox picker, JTextField manual) {
         // if there is a valid value in the text field, use that
@@ -369,20 +344,11 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     public void handleOKAction(ActionEvent evt) {
         Settings s = Settings.getUser();
         s.set("test-bundle-log", logLevelCombo.getSelectedItem().toString());
-
         s.setYesNo("test-bundle-no-plugins", doNotLoadPluginsCheck.isSelected());
-
-        // only set a user settings for the JVM args if it is different from
-        // the default; that way if we update the default it is picked up automatically
-        String jvmFieldText = jvmField.getText();
-        if (!jvmFieldText.equals(s.get("test-bundle-jvm"))) {
-            s.set("test-bundle-jvm", jvmFieldText);
-        }
-
+        s.set("test-bundle-vm-args", jvmField.getText());
         s.set("test-bundle-args", argsField.getText());
-
-        String gLang = determineLocaleCode(gameCombo, gameLocField);
-        String iLang = determineLocaleCode(uiCombo, uiLocField);
+        final String gLang = determineLocaleCode(gameCombo, gameLocField);
+        final String uLang = determineLocaleCode(uiCombo, uiLocField);
 
         try {
             String name = bundle.getName();
@@ -393,12 +359,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 bundle = temp;
             }
 
-            String sejar;
-            if (additionalClassPath != null) {
-                sejar = Subprocess.getClasspath(new File(additionalClassPath));
-            } else {
-                sejar = Subprocess.getClasspath();
-            }
+            String sejar = Subprocess.getClasspath();
 
             String loglevel = logLevelCombo.getSelectedItem().toString();
             try {
@@ -410,29 +371,55 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
             String noPluginsOption = doNotLoadPluginsCheck.isSelected() ? " --xDisablePluginLoading" : "";
 
-            String command = jvmFieldText
-                    + " --glang " + gLang
-                    + " --ulang " + iLang
-                    + " --loglevel " + loglevel
-                    + noPluginsOption
-                    + " --plugintest \"" + bundle.getAbsolutePath() + "\" "
-                    + argsField.getText();
-            command = command.trim();
+            LinkedList<String> testArgs = new LinkedList<>();
 
-            CommandFormatter f = new CommandFormatter("j", sejar);
-            String[] tokens = f.formatCommand(command);
-
-            if (tokens.length > 0 && tokens[0].equals("java")) {
-                tokens[0] = Subprocess.getDefaultJavaCommand();
+            // start with the custom launch string, if any
+            boolean isOverriden = false;
+            String userOverride = s.get("test-bundle-launch");
+            if(userOverride != null && !userOverride.isEmpty()) {
+                isOverriden = true;
+                CommandFormatter cf = new DefaultCommandFormatter();
+                testArgs.addAll(Arrays.asList(cf.formatCommand(userOverride)));
             }
 
-            Subprocess process = new Subprocess(tokens);
+            // add the VM arguments
+            appendArgField(testArgs, "test-bundle-vm-args", jvmField.getText());
+
+            // add the command and dialog arguments
+            testArgs.addAll(Arrays.asList(new String[]{
+                "strangeeons",
+                "--glang", gLang,
+                "--ulang", uLang,
+                "--loglevel", loglevel,
+                "--plugintest",  bundle.getAbsolutePath(),
+            }));
+            if(doNotLoadPluginsCheck.isSelected()) {
+                testArgs.add("--xDisablePluginLoading");
+            }
+
+            // add the user's extra arguments
+            appendArgField(testArgs, "test-bundle-args", argsField.getText());
+
+            // launch the app
+            Subprocess process = isOverriden
+                    ? new Subprocess(testArgs)
+                    : Subprocess.launch(testArgs);
             process.createStopButton(name);
             process.start();
-
             dispose();
         } catch (IOException e) {
             ErrorDialog.displayError(string("prj-err-open", bundle.getName()), e);
+        }
+    }
+
+    /** Adds the contents of an argument field to the arg list, and updates the setting. */
+    private static void appendArgField(List<String> args, String key, String field) {
+        field = field.trim();
+        Settings.getUser().set(key, field);
+        if(!field.isEmpty()) {
+            CommandFormatter cf = new CommandFormatter();
+            String[] tokens = cf.formatCommand(field);
+            args.addAll(Arrays.asList(tokens));
         }
     }
 
