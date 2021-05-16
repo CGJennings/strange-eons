@@ -99,8 +99,8 @@ final class AppFrame extends StrangeEonsAppWindow {
             public boolean dispatchKeyEvent(KeyEvent e) {
                 // only check unconsumed events where a modifier and non-modifier
                 // are down, e.g. Ctrl + S
-                if ((!e.isConsumed()) && (e.getKeyCode() != KeyEvent.VK_UNDEFINED) && ((e.getModifiers() & (KeyEvent.ALT_MASK | KeyEvent.CTRL_MASK | KeyEvent.META_MASK)) != 0)) {
-                    final KeyStroke ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers());
+                if ((!e.isConsumed()) && (e.getKeyCode() != KeyEvent.VK_UNDEFINED) && ((e.getModifiersEx() & (KeyEvent.ALT_DOWN_MASK | KeyEvent.CTRL_DOWN_MASK | KeyEvent.META_DOWN_MASK)) != 0)) {
+                    final KeyStroke ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiersEx());
                     final JMenuItem match = findItem(getJMenuBar(), ks);
                     if (match != null) {
                         if (match.getAction() instanceof AbstractCommand) {
