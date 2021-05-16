@@ -395,12 +395,13 @@ public class BundleInstaller {
         if (installedThemes == null) {
             installedThemes = new TreeSet<>();
 
-            // Only add built-in themes on the first scan:
-            //  - add built-in themes if J6u10 is available
+            // Only add built-in themes on the first scan
             try {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+                if (StrangeEons.getBuildNumber() == 99999) {
+                    installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+                }
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
