@@ -45,15 +45,13 @@ public class InstanceController implements Runnable {
                 String response;
                 try (Socket client = new Socket(InetAddress.getLoopbackAddress(), port)) {
                     client.setSoTimeout(60 * 1_000);
-                    try (DataOutputStream out = new DataOutputStream(client.getOutputStream())) {
-                        DataInputStream in = new DataInputStream(client.getInputStream());
+                    try (DataOutputStream out = new DataOutputStream(client.getOutputStream()); DataInputStream in = new DataInputStream(client.getInputStream())) {
                         out.writeUTF(MAGIC);
                         out.writeUTF(programName);
                         out.writeInt(args.length);
                         for (String arg : args) {
                             out.writeUTF(arg);
                         }   response = in.readUTF();
-                        in.close();
                     }
                 }
 
