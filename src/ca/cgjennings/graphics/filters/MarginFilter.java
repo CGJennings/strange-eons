@@ -84,7 +84,7 @@ public final class MarginFilter extends AbstractImageFilter {
      *
      * @param edgeMode the edge handling mode
      * @throws NullPointerException if the edge handling mode is
-     * <code>null</code>
+     * {@code null}
      */
     public void setEdgeHandling(EdgeHandling edgeMode) {
         if (edgeMode == null) {

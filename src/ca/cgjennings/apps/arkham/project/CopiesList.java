@@ -111,7 +111,7 @@ public class CopiesList {
      *
      * @param file the file to modify the copy count for
      * @param copies the new copy count
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      * @throws IllegalArgumentException if the number of copies is negative
      */
     public void setCopyCount(File file, int copies) {
@@ -123,7 +123,7 @@ public class CopiesList {
      *
      * @param name the file name to modify the copy count for
      * @param copies the new copy count
-     * @throws NullPointerException if the name is <code>null</code>
+     * @throws NullPointerException if the name is {@code null}
      * @throws IllegalArgumentException if the number of copies is negative
      */
     public void setCopyCount(String name, int copies) {

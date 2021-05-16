@@ -37,7 +37,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
     /**
      * Creates a new panel for configuring image writing options.
      *
-     * @param fullComplexityMode if <code>true</code>, compression mode options
+     * @param fullComplexityMode if {@code true}, compression mode options
      * will be shown
      */
     public IIOWritePanel(boolean fullComplexityMode) {
@@ -134,7 +134,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
     }
 
     /**
-     * Returns <code>true</code> if the progressive scan option is selected.
+     * Returns {@code true} if the progressive scan option is selected.
      *
      * @return whether progressive scan is enabled
      */
@@ -155,7 +155,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
     }
 
     /**
-     * Returns <code>true</code> if the compression option is selcted.
+     * Returns {@code true} if the compression option is selcted.
      *
      * @return whether compression is enabled
      */
@@ -214,7 +214,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
 
     /**
      * Use this panel to configure the features of an image writer. The writers
-     * <code>IOWriteParam</code> will replace the one currently being edited, if
+     * {@code IOWriteParam} will replace the one currently being edited, if
      * any.
      *
      * @param iw the writer to configure
@@ -436,7 +436,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
 
     /**
      * This package private class implements a thin abstraction layer over an
-     * <code>ImageWriteParam</code> instance. It is used by classes in this
+     * {@code ImageWriteParam} instance. It is used by classes in this
      * package to manage compression options when writing images.
      *
      * @author Chris Jennings <https://cgjennings.ca/contact>

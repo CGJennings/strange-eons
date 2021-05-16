@@ -227,7 +227,7 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     }
 
     /**
-     * Returns a <code>PrintWriter</code> that can be used to write to the
+     * Returns a {@code PrintWriter} that can be used to write to the
      * stdout stream of the console.
      *
      * @return a print writer for {@link #getOutputStream()}
@@ -237,7 +237,7 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     }
 
     /**
-     * Returns a <code>PrintWriter</code> that can be used to write to the
+     * Returns a {@code PrintWriter} that can be used to write to the
      * stderr stream of the console.
      *
      * @return a print writer for {@link #getErrorStream()}
@@ -863,12 +863,12 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     /**
      * Returns a description of the error at the offset into the console text
      * under the specified point in the console window. Returns
-     * <code>null</code> if the line at that point does not represent a valid
+     * {@code null} if the line at that point does not represent a valid
      * stack trace entry.
      *
      * @param p the point over the script console
      * @return a description of the stack trace element at that line, or
-     * <code>null</code>
+     * {@code null}
      * @see #getErrorAtOffset(int)
      */
     public ConsoleErrorLocation getErrorAtPoint(Point p) {
@@ -880,8 +880,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     }
 
     /**
-     * Returns a description of the error at the line at offset <code>pos</code>
-     * in the script console's text, or <code>null</code> if that line is not a
+     * Returns a description of the error at the line at offset {@code pos}
+     * in the script console's text, or {@code null} if that line is not a
      * stack trace line. The script console does not remember which lines are
      * produced from a script stack trace. Rather, it attempts to parse lines on
      * demand to extract the needed information. Therefore it can be fooled by
@@ -894,7 +894,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
      *
      * @param pos the offset into the console text
      * @return a description of the stack trace element at that line, or
-     * <code>null</code>
+     * {@code null}
      */
     public ConsoleErrorLocation getErrorAtOffset(int pos) {
         // find paragraph element for pos

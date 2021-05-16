@@ -52,7 +52,7 @@ public final class AcceleratorTable {
     /**
      * Creates a new accelerator table that reads its content from the specified
      * resource file. The table will also check for a file with the same name in
-     * the <code>keys</code> subfolder of the user storage folder, and load any
+     * the {@code keys} subfolder of the user storage folder, and load any
      * definitions found there. Tables created using this constructor can null     {@linkplain #set(java.lang.String, javax.swing.KeyStroke) modify the
 	 * key mappings} and {@linkplain #update save changes back again}.
      *
@@ -137,7 +137,7 @@ public final class AcceleratorTable {
      * Returns the key stroke associated with an arbitrary key.
      *
      * @param key the key name
-     * @return the key stroke associated with the key, or <code>null</code>
+     * @return the key stroke associated with the key, or {@code null}
      */
     public KeyStroke get(String key) {
         KeyStroke k;
@@ -160,7 +160,7 @@ public final class AcceleratorTable {
      *
      * @param key the key name
      * @param accelerator the key stroke to associated with the key (may be
-     * <code>null</code>)
+     * {@code null})
      */
     public void set(String key, KeyStroke accelerator) {
         if (userFile == null) {
@@ -186,35 +186,35 @@ public final class AcceleratorTable {
      * Converts a string to a single key stroke. The string may use one of two
      * formats: the verbose format use by the {@link KeyStroke} class, or a
      * compact format that requires less typing. The compact format uses the
-     * form <code>[modifiers*+]key</code>. Here,<code>modifiers</code>
+     * form {@code [modifiers*+]key}. Here,{@code modifiers}
      * represents a sequence of one or more modifier keys. Each modifier is
      * represented by a single letter:
      *
      * <table border=0>
      * <caption>Modifier letter codes</caption>
-     * <tr valign=top><th><code>P</code> <td>Platform-specific menu accelerator
+     * <tr valign=top><th>{@code P} <td>Platform-specific menu accelerator
      * key (Control on most platforms; Command on OS X)
-     * <tr valign=top><th><code>M</code> <td>Meta (Command)
-     * <tr valign=top><th><code>C</code> <td>Control
-     * <tr valign=top><th><code>A</code> <td>Alt
-     * <tr valign=top><th><code>S</code> <td>Shift
-     * <tr valign=top><th><code>G</code> <td>AltGr (not recommended for shortcut
+     * <tr valign=top><th>{@code M} <td>Meta (Command)
+     * <tr valign=top><th>{@code C} <td>Control
+     * <tr valign=top><th>{@code A} <td>Alt
+     * <tr valign=top><th>{@code S} <td>Shift
+     * <tr valign=top><th>{@code G} <td>AltGr (not recommended for shortcut
      * keys)
      * </table>
      *
      * <p>
      * <b>Examples:</b><br>
-     * <code>HOME</code><br>
-     * <code>ctrl X</code><br>
-     * <code>ctrl alt DELETE</code><br>
-     * <code>C+X</code><br>
-     * <code>CA+DELETE</code><br>
-     * <code>C + A + Delete</code>
+     * {@code HOME}<br>
+     * {@code ctrl X}<br>
+     * {@code ctrl alt DELETE}<br>
+     * {@code C+X}<br>
+     * {@code CA+DELETE}<br>
+     * {@code C + A + Delete}
      *
      * @param description the string description of the key stroke, in one of the
      * two supported formats
-     * @return a <code>KeyStroke</code> for the string description, or
-     * <code>null</code>
+     * @return a {@code KeyStroke} for the string description, or
+     * {@code null}
      */
     public static KeyStroke acceleratorFromString(String description) {
         if (description == null || description.isEmpty()) {
@@ -227,7 +227,7 @@ public final class AcceleratorTable {
      * Returns a string that can be
      * {@linkplain #acceleratorFromString(java.lang.String) converted back} into
      * the specified key stroke. Returns an empty string if the key stroke is
-     * <code>null</code>. The string will use the compact form if possible.
+     * {@code null}. The string will use the compact form if possible.
      *
      * @param accelerator the accelerator to convert
      * @return a string representation of the key stroke

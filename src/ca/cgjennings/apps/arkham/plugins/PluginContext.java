@@ -16,7 +16,7 @@ import resources.Settings;
  * window the script will be provided with a <i>dummy context instance</i>. A
  * dummy context is mostly compatible with a true context, but its
  * {@link #getPlugin} and {@link #getInstalledPlugin} methods will both return
- * <code>null</code>. Also, all dummy contexts share a single setting namespace,
+ * {@code null}. Also, all dummy contexts share a single setting namespace,
  * so any plug-in settings that you create may vary depending on whether the
  * script is running from an installed plug-in or is being tested by running it
  * from a script editor.
@@ -40,7 +40,7 @@ public interface PluginContext {
 
     /**
      * Returns the plug-in instance that this context was created for. Returns
-     * <code>null</code> if this is a script running with a dummy context.
+     * {@code null} if this is a script running with a dummy context.
      *
      * @return the plug-in instance that this context was passed to
      */
@@ -50,7 +50,7 @@ public interface PluginContext {
      * Returns an {@link AbstractInstalledPlugin} instance that is managing the
      * plug-in instance returned by {@link #getPlugin()}. This will either be an
      * instance of {@link InstalledPlugin} or {@link InstalledExtension},
-     * depending on the type of plug-in. Returns <code>null</code> if this is a
+     * depending on the type of plug-in. Returns {@code null} if this is a
      * script running with a dummy context.
      *
      * @return the installed plug-in created by the {@link BundleInstaller} for
@@ -60,13 +60,13 @@ public interface PluginContext {
 
     /**
      * Provides a hint about whether the plug-in should perform optional
-     * initialization steps. If this method returns <code>true</code>, then the
+     * initialization steps. If this method returns {@code true}, then the
      * plug-in is only being initialized to determine its name, version,
      * description, and/or type. The plug-in may use this as a hint that it need
      * only perform enough initialization to provide these services. This
      * instance of the plug-in will never be shown.
      *
-     * @return <code>true</code> if the plug-in will only be queried for
+     * @return {@code true} if the plug-in will only be queried for
      * information
      */
     boolean isInformationProbe();
@@ -80,7 +80,7 @@ public interface PluginContext {
      * clash with the main application settings or the settings of other
      * plug-ins.
      *
-     * @return a <code>Settings</code> instance that uses this plug-in's
+     * @return a {@code Settings} instance that uses this plug-in's
      * namespace
      */
     public Settings getSettings();
@@ -88,7 +88,7 @@ public interface PluginContext {
     /**
      * Returns a bit mask representing the modifier keys that were held down
      * when the plug-in was activated. This method is only useful for
-     * <code>ACTIVATED</code> plug-ins, and only for the context passed in when
+     * {@code ACTIVATED} plug-ins, and only for the context passed in when
      * the plug-in's
      * {@link Plugin#showPlugin(ca.cgjennings.apps.arkham.plugins.PluginContext, boolean)}
      * method is called. In all other cases, it will return 0.

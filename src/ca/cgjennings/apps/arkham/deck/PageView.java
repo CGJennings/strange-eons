@@ -77,9 +77,9 @@ import resources.Settings;
 public final class PageView extends JComponent {
 
     /**
-     * If <code>true</code>, feedback about view performance will be printed at
-     * the top of the view. This is initially <code>true</code> only if the
-     * release type is <code>DEVELOPMENT</code>, but it can be changed at any
+     * If {@code true}, feedback about view performance will be printed at
+     * the top of the view. This is initially {@code true} only if the
+     * release type is {@code DEVELOPMENT}, but it can be changed at any
      * time.
      *
      * @see StrangeEons#getReleaseType()
@@ -234,7 +234,7 @@ public final class PageView extends JComponent {
     /**
      * If the card the pointer is over has drag handles, and the pointer is over
      * one of the handles, return the handle. Otherwise, return
-     * <code>null</code>.
+     * {@code null}.
      */
     private DragHandle getDragHandleUnderPosition(Point pos) {
         if (pos == null) {
@@ -1334,7 +1334,7 @@ public final class PageView extends JComponent {
      *
      * @param x the x-offset from the left edge of the component
      * @param y the y-offset from the top of the component
-     * @return the location of the point <code>(x,y)</code> in the document
+     * @return the location of the point {@code (x,y)} in the document
      * space
      */
     public Point2D.Double viewToDocument(int x, int y) {
@@ -1365,7 +1365,7 @@ public final class PageView extends JComponent {
      *
      * @param x the x-offset from the left edge of the page
      * @param y the y-offset from the top of the page
-     * @return the location of the point <code>(x,y)</code> in the view
+     * @return the location of the point {@code (x,y)} in the view
      */
     public Point documentToView(double x, double y) {
         Point2D dst = new Point2D.Double();

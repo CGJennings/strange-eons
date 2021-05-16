@@ -29,7 +29,7 @@ public class DragToken<T> {
      *
      * @param tokenObject the object to be represented
      * @param tokenImage the image that represents the object
-     * @throws NullPointerException if the image is <code>null</code>
+     * @throws NullPointerException if the image is {@code null}
      */
     public DragToken(T tokenObject, Image tokenImage) {
         if (tokenImage == null) {
@@ -53,7 +53,7 @@ public class DragToken<T> {
      * upper-left corner of the image
      * @param handleOffsetY the y-coordinate of the handle, relative to the
      * upper-left corner of the image
-     * @throws NullPointerException if the image is <code>null</code>
+     * @throws NullPointerException if the image is {@code null}
      */
     public DragToken(T tokenObject, Image tokenImage, int handleOffsetX, int handleOffsetY) {
         if (tokenImage == null) {

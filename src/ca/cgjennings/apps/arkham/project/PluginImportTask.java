@@ -126,7 +126,7 @@ public class PluginImportTask extends NewTaskType {
      *
      * @param parent the parent that holds the new task
      * @param bundleFile the bundle file to convert into a task
-     * @return the task if conversion was a success, or <code>null</code> if it
+     * @return the task if conversion was a success, or {@code null} if it
      * failed
      */
     public static Task createTaskFromBundle(TaskGroup parent, File bundleFile) {

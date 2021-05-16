@@ -74,7 +74,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     /**
      * Creates a new component selection dialog.
      *
-     * @param modal <code>true</code> if the dialog should be modal
+     * @param modal {@code true} if the dialog should be modal
      */
     public NewEditorDialog(boolean modal) {
         super(AppFrame.getApp(), modal);
@@ -179,10 +179,10 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
     /**
      * Searches the component lists for the specified entry and selects the
-     * first instance of it, if any. Returns <code>true</code> if the class was
+     * first instance of it, if any. Returns {@code true} if the class was
      * found (and selected). The name must be a fully qualified class or script
      * identifier, such as
-     * <code>ca.cgjennings.apps.arkham.component.Monster</code>.
+     * {@code ca.cgjennings.apps.arkham.component.Monster}.
      *
      * @param mapping the name of the class or script to select
      * @see gamedata.ClassMap.Entry#getMapping
@@ -210,7 +210,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
     /**
      * Return the class name of the currently selected component type, or
-     * <code>null</code> if no component is selected.
+     * {@code null} if no component is selected.
      *
      * @return the fully qualified class name of the selected component
      */

@@ -11,8 +11,8 @@ import javax.imageio.ImageIO;
 /**
  * An abstract base class for filtering images. While {@code BufferedImageOp}s
  * are generally designed to operate on images that use any storage format or
- * colour model, <code>AbstractImageFilter</code> is optimized to work with
- * 32-bit ARGB image data (<code>BufferedImage.TYPE_INT_ARGB</code>). Images
+ * colour model, {@code AbstractImageFilter} is optimized to work with
+ * 32-bit ARGB image data ({@code BufferedImage.TYPE_INT_ARGB}). Images
  * stored in other formats will typically be converted to and from ARGB data as
  * necessary. This greatly simplifies the task of writing an image filter,
  * though at the cost of conversion (when required).
@@ -27,7 +27,7 @@ import javax.imageio.ImageIO;
  *
  * <p>
  * <b>Performance note:</b> As a side effect of automatic conversion, image
- * types other than <code>TYPE_INT_ARGB</code> and <code>TYPE_INT_RGB</code>
+ * types other than {@code TYPE_INT_ARGB} and {@code TYPE_INT_RGB}
  * will become <i>unmanaged images</i> as a result of the filtering process.
  * Unmanaged images cannot be hardware accelerated, and thus are typically much
  * slower to draw. The best way to maximize performance is to ensure that all
@@ -61,7 +61,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
      * <p>
      * The base implementation returns the bounds of the image in image space;
      * that is, the rectangle defined by
-     * <code>0, 0, source.getWidth(), source.getHeight()</code>.
+     * {@code 0, 0, source.getWidth(), source.getHeight()}.
      */
     @Override
     public Rectangle2D getBounds2D(BufferedImage source) {
@@ -87,7 +87,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
      * {@inheritDoc}
      *
      * <p>
-     * The base implementation returns <code>null</code>.
+     * The base implementation returns {@code null}.
      */
     @Override
     public RenderingHints getRenderingHints() {
@@ -294,7 +294,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
      * @param y the y-offset of the subimage
      * @param width the width of the subimage
      * @param height the height of the subimage
-     * @param pixels an array to use; may be <code>null</code>
+     * @param pixels an array to use; may be {@code null}
      * @return an array of pixel data for the subimage
      */
     public static int[] getARGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
@@ -343,7 +343,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
      * @param y the y-offset of the subimage
      * @param width the width of the subimage
      * @param height the height of the subimage
-     * @param pixels an array to use; may be <code>null</code>
+     * @param pixels an array to use; may be {@code null}
      * @return an array of pixel data for the subimage
      */
     protected static int[] getARGBSynch(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
@@ -646,8 +646,8 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
 
     /**
      * A work unit that performs pre- or post-processing on pixel data in an
-     * array. Override the run method and process <code>this.pixels</code> from
-     * index <code>this.start</code> to index <code>this.end-1</code>.
+     * array. Override the run method and process {@code this.pixels} from
+     * index {@code this.start} to index {@code this.end-1}.
      */
     static abstract class ArrayWorkUnit implements Runnable {
 

@@ -93,10 +93,10 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Adds a <code>PropertyChangeListener</code> to the deck. The listener is
+     * Adds a {@code PropertyChangeListener} to the deck. The listener is
      * registered for all properties. The same listener object may be added more
      * than once, and will be called as many times as it is added. If
-     * <code>listener</code> is null, no exception is thrown and no action is
+     * {@code listener} is null, no exception is thrown and no action is
      * taken.
      *
      * @param pcl the listener to add
@@ -106,10 +106,10 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Removes a <code>PropertyChangeListener</code> from the deck. This removes
+     * Removes a {@code PropertyChangeListener} from the deck. This removes
      * a listener that was registered for all properties. If the listener was
      * added more than once, it will be notified one less time after being
-     * removed. If the listener is <code>null</code>, or was never added, no
+     * removed. If the listener is {@code null}, or was never added, no
      * exception is thrown and no action is taken.
      *
      * @param pcl the listener to remove
@@ -237,7 +237,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
 
     /**
      * Returns the page that containing the currently selected page items, or
-     * <code>null</code> if there is no selection.
+     * {@code null} if there is no selection.
      *
      * @return the page containing
      */
@@ -255,7 +255,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Unselects all currently selected page items, if any.
      *
-     * @param replaceReselectSet if <code>true</code>, the group used to store
+     * @param replaceReselectSet if {@code true}, the group used to store
      * the "reselection" items is replaced
      */
     private void clearSelectionImpl(boolean replaceReselectSet) {
@@ -518,10 +518,10 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Returns <code>true</code> if the specified item is currently selected.
+     * Returns {@code true} if the specified item is currently selected.
      *
      * @param item the item to test
-     * @return <code>true</code> if the item is in the current selection
+     * @return {@code true} if the item is in the current selection
      */
     public boolean isSelected(PageItem item) {
         return selection.contains(item);
@@ -857,7 +857,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * The number of a selection group that is automatically populated with the
      * previous selection when the selection is cleared. This allows the
      * previous selection to be easily restored. This is the last group, and so
-     * is equal to <code>NUM_SELECTION_GROUPS-1</code>.
+     * is equal to {@code NUM_SELECTION_GROUPS-1}.
      */
     public static final int RESELECT_GROUP = 10;
     /**
@@ -912,7 +912,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Returns whether publisher's marks are displayed for the deck.
      *
-     * @return if <code>true</code>, publisher's marks will be generated for
+     * @return if {@code true}, publisher's marks will be generated for
      * objects in the deck
      */
     public boolean getPublishersMarksEnabled() {
@@ -922,7 +922,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Sets whether publisher's marks are displayed for the deck.
      *
-     * @param pubMarksEnabled if <code>true</code>, publisher's marks will be
+     * @param pubMarksEnabled if {@code true}, publisher's marks will be
      * generated for objects in the deck
      */
     public void setPublishersMarksEnabled(boolean pubMarksEnabled) {
@@ -1411,7 +1411,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * editor, the currently visible page and the active page are typically
      * synchronized.
      *
-     * @param pageToActivate the non-<code>null</code> page to activate
+     * @param pageToActivate the non-{@code null} page to activate
      * @see #getActivePage()
      */
     public void setActivePage(Page pageToActivate) {
@@ -1554,7 +1554,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * clipboard is shared by all decks in the current instance of the
      * application.
      *
-     * @return <code>true</code> if the clipboard deck is empty
+     * @return {@code true} if the clipboard deck is empty
      */
     public static boolean isDeckClipboardEmpty() {
         return clippings == null || clippings.length == 0;
@@ -1570,7 +1570,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * set to a format matching the size of the physical object.
      *
      * @param paper the new paper format for deck pages
-     * @throws NullPointerException if the paper format is <code>null</code>
+     * @throws NullPointerException if the paper format is {@code null}
      * @throws IllegalArgumentException if any paper measurement is larger than
      * {@link #MAX_PAPER_SIZE}
      * @see #getPaperProperties()
@@ -1615,7 +1615,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * enabled.
      *
      * @param printerPaper the new paper format for printed pages
-     * @throws NullPointerException if the paper format is <code>null</code>
+     * @throws NullPointerException if the paper format is {@code null}
      * @throws IllegalArgumentException if any paper measurement is larger than
      * {@link #MAX_PAPER_SIZE}
      * @see #getPrinterPaperProperties()
@@ -1702,7 +1702,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Returns whether paper splitting is enabled.
      *
-     * @return <code>true</code> if tiling is enabled
+     * @return {@code true} if tiling is enabled
      * @see #setPaperSplitting
      */
     public boolean isPaperSplitting() {
@@ -1772,7 +1772,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Sets the colour of the border that is drawn around virtual pages.
      *
-     * @param borderColor the split border colour; <code>null</code> is treated
+     * @param borderColor the split border colour; {@code null} is treated
      * as black
      * @see #getSplitBorderColor
      * @see #setPaperSplitting
@@ -1817,10 +1817,10 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Returns <code>true</code> if synthetic bleed margins are the default for
+     * Returns {@code true} if synthetic bleed margins are the default for
      * this deck.
      *
-     * @return <code>true</code> if card faces should use synthetic bleed
+     * @return {@code true} if card faces should use synthetic bleed
      * margins by default
      * @see #setAutoBleedMarginEnabled(boolean)
      */
@@ -1868,7 +1868,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Sets the design rationale comment text associated with this deck.
      *
-     * @param comment the new comment to set; <code>null</code> is treated as an
+     * @param comment the new comment to set; {@code null} is treated as an
      * empty string
      */
     public void setComment(String comment) {
@@ -1912,23 +1912,6 @@ public class Deck implements Serializable, GameComponent, Cloneable {
         });
     }
 
-//	public void addUndoableEditListener( UndoableEditListener li ) {
-//		undoSupport.addUndoableEditListener( li );
-//	}
-//
-//	public void removeUndoableEditListener( UndoableEditListener li ) {
-//		undoSupport.removeUndoableEditListener( li );
-//	}
-//
-//	/**
-//	 * Manages the posting of undoable events from the deck.
-//	 */
-//	UndoableEditSupport undoSupport = new UndoableEditSupport();
-//	/**
-//	 * Set to true when an edit is being undone/redone so that additional
-//	 * undo events are not generated.
-//	 */
-//	int undoIsActive;
     @Override
     public Settings getSettings() {
         return privateSettings;
@@ -1942,14 +1925,14 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Returns <code>true</code> if a given file represents a game component
+     * Returns {@code true} if a given file represents a game component
      * that can be placed in a deck. For recent file format versions, this can
      * be determined without fully opening the file by
      * {@linkplain ComponentMetadata#isDeckLayoutSupported() examining its metadata}.
      * For older files, the component must first be read in. If for any reason
-     * the value cannot be read from the file, <code>false</code> is returned.
+     * the value cannot be read from the file, {@code false} is returned.
      *
-     * @return returns <code>true</code> if the game component in the specified
+     * @return returns {@code true} if the game component in the specified
      * file can be placed in a deck
      * @see GameComponent#isDeckLayoutSupported()
      */

@@ -15,7 +15,7 @@ package ca.cgjennings.apps.arkham.sheet;
  * Embedded tokens are unique in that they consist of a single sheet, but when
  * printed (or when decks are generated that include them) that single sheet may
  * be replicated automatically to create a double-sided token. When a sheet has
- * a non-<code>null</code> <code>MarkerStyle</code>, this both declares that the
+ * a non-{@code null} {@code MarkerStyle}, this both declares that the
  * sheet represents an embedded marker and determines how it is copied for print
  * layouts.
  *

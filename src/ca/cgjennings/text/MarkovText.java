@@ -105,11 +105,11 @@ public class MarkovText {
     }
 
     /**
-     * Generate <code>charCount</code> letters of text.
+     * Generate {@code charCount} letters of text.
      *
      * @param charCount the number of letters to generate.
      * @return the generated text
-     * @throws IllegalArgumentException is <code>n</code> &lt; 0
+     * @throws IllegalArgumentException is {@code n} &lt; 0
      */
     public String generateCharacters(int charCount) {
         if (charCount < 1) {
@@ -132,11 +132,11 @@ public class MarkovText {
     }
 
     /**
-     * Generate <code>wordCount</code> words of text, one letter at a time.
+     * Generate {@code wordCount} words of text, one letter at a time.
      *
      * @param wordCount the number of words to generate.
      * @return the generated text
-     * @throws IllegalArgumentException is <code>words</code> &lt; 0
+     * @throws IllegalArgumentException is {@code words} &lt; 0
      */
     public String generatePseudowords(int wordCount) {
         if (wordCount < 1) {
@@ -168,11 +168,11 @@ public class MarkovText {
     }
 
     /**
-     * Generate <code>wordCount</code> words of text, one word at a time.
+     * Generate {@code wordCount} words of text, one word at a time.
      *
      * @param wordCount the number of words to generate.
      * @return the generated text
-     * @throws IllegalArgumentException is <code>words</code> &lt; 0
+     * @throws IllegalArgumentException is {@code words} &lt; 0
      */
     public String generateWords(int wordCount) {
         if (wordCount < 1) {
@@ -195,8 +195,8 @@ public class MarkovText {
     }
 
     /**
-     * Append a random word to <code>b</code>, using the last <code>order</code>
-     * words in <code>b</code> as context.
+     * Append a random word to {@code b}, using the last {@code order}
+     * words in {@code b} as context.
      */
     private void chooseWord(StringBuilder b, int order) {
         if (order == 0) {
@@ -245,8 +245,8 @@ public class MarkovText {
     }
 
     /**
-     * Append the word starting at <code>text[ startIndex ]</code> to
-     * <code>b</code>, including the subsequent space.
+     * Append the word starting at {@code text[ startIndex ]} to
+     * {@code b}, including the subsequent space.
      */
     private void appendWordAt(int startIndex, StringBuilder b) {
         do {
@@ -255,8 +255,8 @@ public class MarkovText {
     }
 
     /**
-     * Append a random letter to <code>b</code>, using the last
-     * <code>order</code> letters in <code>b</code> as context. The selected
+     * Append a random letter to {@code b}, using the last
+     * {@code order} letters in {@code b} as context. The selected
      * letter is also returned so that it can be used by the caller to select a
      * stopping point (for example, after space has been selected a certain
      * number of times).
@@ -302,8 +302,8 @@ public class MarkovText {
     private boolean orderReversion = false;
 
     /**
-     * Find the first entry in <code>suffixArray</code> that starts with the
-     * last <code>charsToMatch</code> characters in <code>b</code>. If no entry
+     * Find the first entry in {@code suffixArray} that starts with the
+     * last {@code charsToMatch} characters in {@code b}. If no entry
      * matches, returns -1.
      */
     private int findFirstPrefix(Integer[] suffixArray, StringBuilder b, int charsToMatch) {
@@ -325,9 +325,9 @@ public class MarkovText {
     }
 
     /**
-     * Compare the last <code>charsToMatch</code> characters in <code>b</code>
-     * to the first <code>charsToMatch</code> characters at
-     * <code>suffixArray[suff]</code>.
+     * Compare the last {@code charsToMatch} characters in {@code b}
+     * to the first {@code charsToMatch} characters at
+     * {@code suffixArray[suff]}.
      */
     private int prefixCompare(Integer[] suffixArray, StringBuilder b, int charsToMatch, int suff) {
         int s = suffixArray[suff];
@@ -380,28 +380,6 @@ public class MarkovText {
         return lhs == len ? -1 : 1;
     }
 
-//    /** Debugging: print a suffix array entry. */
-//    private void printSuffix( Integer[] suffixArray, int s ) {
-//        System.out.format( "%4d: ", s );
-//        for( int i = suffixArray[s]; i < text.length; ++i ) {
-//            System.out.print( text[i] );
-//        }
-//        System.out.println();
-//    }
-//
-//    /** Debugging: print the letter-level suffix array. */
-//    private void printCharSuffixArray() {
-//        for( int i = 0; i < letterSuffixes.length; ++i ) {
-//            printSuffix( letterSuffixes, i );
-//        }
-//    }
-//
-//    /** Debugging: print the word-level suffix array. */
-//    private void printWordSuffixArray() {
-//        for( int i = 0; i < wordSuffixes.length; ++i ) {
-//            printSuffix( wordSuffixes, i );
-//        }
-//    }
     /**
      * The model text to use, with each word separated by exactly one space.
      */

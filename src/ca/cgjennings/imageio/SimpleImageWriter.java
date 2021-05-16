@@ -39,7 +39,7 @@ import org.w3c.dom.Node;
 /**
  * A simple image writer writes images to output streams and files. It provides
  * a simplified mechanism for configuring basic format, compression, and
- * metadata options compared to the <code>imageio</code> library.
+ * metadata options compared to the {@code imageio} library.
  * <p>
  * <b>Note:</b><br> it is important to {@code dispose()} of instances of this
  * class when finished with them, as many of the underlying image encoders
@@ -107,7 +107,7 @@ public class SimpleImageWriter {
      * Create a {@code SimpleImageWriter} that will produce images in the format
      * specified by {@code fileFormat}. The {@code fileFormat} parameter must
      * either be the name or file extension of a format registered with the
-     * <code>imageio</code> library.
+     * {@code imageio} library.
      *
      * @param fileFormat name of file format to be produced by this writer
      * @param locale the preferred locale for labels and messages
@@ -171,19 +171,19 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns <code>true</code> if one or more compression methods are
+     * Returns {@code true} if one or more compression methods are
      * supported.
      *
-     * @return <code>true</code> if compression is supported
+     * @return {@code true} if compression is supported
      */
     public boolean isCompressionSupported() {
         return iioparam.canCompress;
     }
 
     /**
-     * Returns <code>true</code> if disabling compression has any effect.
+     * Returns {@code true} if disabling compression has any effect.
      *
-     * @return <code>true</code> if compression can be disabled
+     * @return {@code true} if compression can be disabled
      */
     public boolean isCompressionOptional() {
         return iioparam.canDisableCompress;
@@ -200,7 +200,7 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns <code>true</code> if compression is enabled.
+     * Returns {@code true} if compression is enabled.
      *
      * @return whether compression is enabled
      */
@@ -212,7 +212,7 @@ public class SimpleImageWriter {
      * Returns an array of the supported compression methods. Most formats
      * support at most one compression method.
      *
-     * @return an array of supported compression methods, or <code>null</code>
+     * @return an array of supported compression methods, or {@code null}
      */
     public String[] getCompressionTypes() {
         String[] types = iioparam.compressionTypes;
@@ -220,7 +220,7 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Sets the compression type to use. If the type is <code>null</code>, a
+     * Sets the compression type to use. If the type is {@code null}, a
      * default type is selected. Otherwise, the type must be one of the types
      * specified by {@link #getCompressionTypes()}. Changing the compression
      * type may alter the quality descriptions and values.
@@ -233,8 +233,8 @@ public class SimpleImageWriter {
 
     /**
      * Return an array of locale-dependent descriptions of the available
-     * compression quality settings. This method may return <code>null</code>,
-     * and must return <code>null</code> if {@link #getCompressionValues()}
+     * compression quality settings. This method may return {@code null},
+     * and must return {@code null} if {@link #getCompressionValues()}
      * does.
      *
      * @return an array of description {@code String}s, or {@code} null if there
@@ -347,20 +347,20 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns <code>true</code> if progressive encoding is enabled.
+     * Returns {@code true} if progressive encoding is enabled.
      *
-     * @return <code>true</code> is progressive scan is enabled
+     * @return {@code true} is progressive scan is enabled
      */
     public boolean isProgressiveScan() {
         return iioparam.isProgressive;
     }
 
     /**
-     * Returns <code>true</code> if the progressive scan setting can be changed.
+     * Returns {@code true} if the progressive scan setting can be changed.
      * Some formats do not support progressive scans, while other formats
      * support it inherently.
      *
-     * @return <code>true</code> if the progressive scan setting is alterable
+     * @return {@code true} if the progressive scan setting is alterable
      */
     public boolean isProgressiveScanConfigurable() {
         return iioparam.isProgressive;
@@ -455,7 +455,7 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns <code>true</code> if comment and resolution metadata will be
+     * Returns {@code true} if comment and resolution metadata will be
      * written to output files. Metadata writing may not be supported for all
      * file types.
      *
@@ -469,7 +469,7 @@ public class SimpleImageWriter {
      * Sets whether comment and resolution metadata should be written to output
      * files, if supported by the writer and image format.
      *
-     * @param enable if <code>true</code>, metadata will be written if supported
+     * @param enable if {@code true}, metadata will be written if supported
      */
     public void setMetadataEnabled(boolean enable) {
         writeMetadata = enable;
@@ -818,7 +818,7 @@ public class SimpleImageWriter {
      * {@link SimpleImageWriter}.
      *
      * @param wif a descriptor for the image format
-     * @throws NullPointerException if the format is <code>null</code>
+     * @throws NullPointerException if the format is {@code null}
      */
     public static void registerImageFormat(WritableImageFormat wif) {
         if (wif == null) {

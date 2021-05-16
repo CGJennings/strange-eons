@@ -29,14 +29,14 @@ import javax.imageio.ImageIO;
  * and vector images transparently.
  *
  * <p>
- * For drawing purposes, a <code>StrangeImage</code> can be treated as either a
+ * For drawing purposes, a {@code StrangeImage} can be treated as either a
  * {@linkplain #asBufferedImage() bitmap} or
  * {@linkplain #asVectorImage() vector} image regardless of the original format.
  * It can also be
  * {@linkplain #paint(java.awt.Graphics2D, int, int, int, int, boolean) painted directly}.
  *
  * <p>
- * A <code>StrangeImage</code> must have a positive width and height. Breaking
+ * A {@code StrangeImage} must have a positive width and height. Breaking
  * this condition will lead to bugs that may be hard to detect. If you must
  * return a representation of an image with a zero width or height, return an
  * {@linkplain #getInvisibleImage() invisible image} instead.
@@ -50,7 +50,7 @@ public abstract class StrangeImage {
     private long timestamp;
 
     /**
-     * Constructs a new <code>StrangeImage</code>.
+     * Constructs a new {@code StrangeImage}.
      */
     public StrangeImage() {
     }
@@ -64,7 +64,7 @@ public abstract class StrangeImage {
      * @param y the y-coordinate of the upper-left corner of the image
      * @param width the width of the image
      * @param height the height of the image
-     * @param fitToSize if <code>true</code>, the image's original aspect ratio
+     * @param fitToSize if {@code true}, the image's original aspect ratio
      * will be maintained
      */
     public abstract void paint(Graphics2D g, int x, int y, int width, int height, boolean fitToSize);
@@ -80,7 +80,7 @@ public abstract class StrangeImage {
      * @param y the y-coordinate of the upper-left corner of the image
      * @param width the width of the image
      * @param height the height of the image
-     * @param fitToSize if <code>true</code>, the image's original aspect ratio
+     * @param fitToSize if {@code true}, the image's original aspect ratio
      * will be maintained
      */
     public void paint(Graphics2D g, double x, double y, double width, double height, boolean fitToSize) {
@@ -94,7 +94,7 @@ public abstract class StrangeImage {
      * @param g the graphics context
      * @param rect the rectangle defining the upper-left corner and dimensions
      * of the image
-     * @param fitToSize if <code>true</code>, the image's original aspect ratio
+     * @param fitToSize if {@code true}, the image's original aspect ratio
      * will be maintained
      */
     public final void paint(Graphics2D g, Rectangle2D rect, boolean fitToSize) {
@@ -129,13 +129,13 @@ public abstract class StrangeImage {
     /**
      * Returns a new buffered image representing the image content. The image
      * will be resized, if necessary, to the specified size. If
-     * <code>fitToSize</code> is <code>true</code>, then the original aspect
+     * {@code fitToSize} is {@code true}, then the original aspect
      * ratio of the image will be maintained. The returned image is guaranteed
      * to use an RGB or ARGB pixel format.
      *
      * @param width the image width
      * @param height the image height
-     * @param fitToSize if <code>true</code>, the original aspect ratio will be
+     * @param fitToSize if {@code true}, the original aspect ratio will be
      * maintained
      * @return a version of the image as a bitmap
      */
@@ -173,7 +173,7 @@ public abstract class StrangeImage {
     public abstract int getHeight();
 
     /**
-     * Returns the image width as a <code>double</code> value. Depending on the
+     * Returns the image width as a {@code double} value. Depending on the
      * underlying image, this may return a more accurate measure of the true
      * image width than {@link #getWidth()}.
      *
@@ -182,7 +182,7 @@ public abstract class StrangeImage {
     public abstract double getWidth2D();
 
     /**
-     * Returns the image height as a <code>double</code> value. Depending on the
+     * Returns the image height as a {@code double} value. Depending on the
      * underlying image, this may return a more accurate measure of the true
      * image height than {@link #getHeight()}.
      *
@@ -209,16 +209,16 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns <code>true</code> if some parts of the image may not be opaque.
-     * If this returns <code>false</code>, then it is guaranteed that the image
+     * Returns {@code true} if some parts of the image may not be opaque.
+     * If this returns {@code false}, then it is guaranteed that the image
      * completely covers a rectangular area described by the specified width and
      * height when
      * {@linkplain #paint(java.awt.Graphics2D, int, int, int, int, boolean) painted}.
-     * If this method returns <code>true</code>, then some parts of the painted
+     * If this method returns {@code true}, then some parts of the painted
      * area <i>may</i> not be completely covered.
      *
-     * @return <code>true</code> if the image may have transparent areas;
-     * <code>false</code> if the image is known with certainly to be completely
+     * @return {@code true} if the image may have transparent areas;
+     * {@code false} if the image is known with certainly to be completely
      * opaque
      */
     public boolean isTransparent() {
@@ -226,7 +226,7 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns <code>true</code> if the underlying image is a vector image. If
+     * Returns {@code true} if the underlying image is a vector image. If
      * you wish to work with the original image in its underlying form, you can
      * use code like the following:
      * <pre>
@@ -239,8 +239,8 @@ public abstract class StrangeImage {
      * }
      * </pre>
      *
-     * @return <code>true</code> if the underlying image is a vector image;
-     * <code>false</code> if it is a bitmap image
+     * @return {@code true} if the underlying image is a vector image;
+     * {@code false} if it is a bitmap image
      */
     public boolean isVectorFormat() {
         return true;
@@ -408,11 +408,11 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Creates a new <code>StrangeImage</code> from the specified bitmap image
+     * Creates a new {@code StrangeImage} from the specified bitmap image
      * source.
      *
      * @param source the source image
-     * @return a view of the source image as a <code>StrangeImage</code>
+     * @return a view of the source image as a {@code StrangeImage}
      * instance
      */
     public static StrangeImage create(Image source) {
@@ -424,11 +424,11 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Creates a new <code>StrangeImage</code> from the specified vector image
+     * Creates a new {@code StrangeImage} from the specified vector image
      * source.
      *
      * @param source the source image
-     * @return a view of the source image as a <code>StrangeImage</code>
+     * @return a view of the source image as a {@code StrangeImage}
      * instance
      */
     public static StrangeImage create(VectorImage source) {
@@ -443,9 +443,9 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns a <code>StrangeImage</code> for the given identifier. The
-     * identifier can be a local file path or a <code>file:</code>,
-     * <code>http:</code>, <code>res:</code>, or <code>project:</code> URL. Any
+     * Returns a {@code StrangeImage} for the given identifier. The
+     * identifier can be a local file path or a {@code file:},
+     * {@code http:}, {@code res:}, or {@code project:} URL. Any
      * string that is valid in a portrait panel will produce the same image
      * here, except for the empty string that produce's the component-specific
      * default portrait.
@@ -539,8 +539,8 @@ public abstract class StrangeImage {
 
     /**
      * Returns a {@code BufferedImage} for the given identifier. The
-     * identifier can be a local file path or a <code>file:</code>,
-     * <code>http:</code>, <code>res:</code>, or <code>project:</code> URL. Any
+     * identifier can be a local file path or a {@code file:},
+     * {@code http:}, {@code res:}, or {@code project:} URL. Any
      * string that is valid in a portrait panel will produce the same image
      * here, except for the empty string that produce's the component-specific
      * default portrait.
@@ -580,8 +580,8 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns a URL for a user image identifier, or <code>null</code>. If the
-     * identifier is <code>null</code> or empty, then <code>null</code> is
+     * Returns a URL for a user image identifier, or {@code null}. If the
+     * identifier is {@code null} or empty, then {@code null} is
      * returned. (An empty string is typically used to indicate that a default
      * image should be used.)
      *
@@ -610,11 +610,11 @@ public abstract class StrangeImage {
     private static final HashMap<String, SoftReference<StrangeImage>> imageCache = new HashMap<>();
 
     /**
-     * Returns <code>true</code> if the image identifier names a local file, as
+     * Returns {@code true} if the image identifier names a local file, as
      * opposed to a special URL.
      *
      * @param identifier the identifier to locate
-     * @return <code>true</code> if the identifier is for a local file
+     * @return {@code true} if the identifier is for a local file
      * @see #get
      */
     public static boolean isFileIdentifier(String identifier) {
@@ -627,9 +627,9 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns a <code>StrangeImage</code> that is completely invisible. This
+     * Returns a {@code StrangeImage} that is completely invisible. This
      * can be used as a stand-in image for an image with a zero width or height,
-     * since <code>StrangeImage</code>s must have a non-zero area.
+     * since {@code StrangeImage}s must have a non-zero area.
      *
      * @return a completely transparent image
      */

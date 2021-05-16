@@ -36,12 +36,6 @@ public enum CoreComponents {
      * Resources required to perform live spelling checking.
      */
     SPELLING_COMPONENTS("CATALOGUEID{38698844-2654-46a8-b791-36e5d454a7ec:2010-0-24-10-42-7-24}"),
-//    /**
-//     * @deprecated Documentation is now housed online on the se3docs site.
-//     *
-//     * Resources needed to display documentation for Strange Eons classes.
-//     */
-//    API_DOCUMENTATION("CATALOGUEID{dd933618-9372-4579-b8c0-dcada8e89e1c:2011-4-22-10-15-55-459}"),
     /**
      * Library needed to enable PDF output via {@link PDFPrintSupport}.
      */
@@ -132,8 +126,8 @@ public enum CoreComponents {
 
     /**
      * Check for the presence of core or other required plug-ins, and install
-     * them if required. If <code>descriptor</code> is a
-     * <code>CoreComponents</code> identifier, that component is checked for.
+     * them if required. If {@code descriptor} is a
+     * {@code CoreComponents} identifier, that component is checked for.
      * Otherwise the value is converted to a string and parsed as follows:
      * <ol>
      * <li> The string is split into tokens by breaking at newlines; each token
@@ -146,10 +140,10 @@ public enum CoreComponents {
      * <tt>http://somewhere.tld/CATALOGUEID{...}</tt>.
      * </ol>
      *
-     * @param descriptor a <code>CoreComponent</code> or an object describing
+     * @param descriptor a {@code CoreComponent} or an object describing
      * the component to install (see above)
-     * @throws NullPointerException if <code>descriptor</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code descriptor} is
+     * {@code null}
      * @throws MissingCoreComponentException if any component is missing or out
      * of date and the user refuses to install it, or if installation fails
      */

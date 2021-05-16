@@ -227,7 +227,7 @@ class GameObjectImpl implements GameObject {
         }
     }
     /**
-     * The object to be returned from <code>call</code>.
+     * The object to be returned from {@code call}.
      */
     private Object retval;
     /**
@@ -321,7 +321,7 @@ class GameObjectImpl implements GameObject {
     }
 
     /**
-     * Returns true if a type must be wrapped in a <code>GameComponent</code>.
+     * Returns true if a type must be wrapped in a {@code GameComponent}.
      *
      * @param type
      * @return whether to wrap the

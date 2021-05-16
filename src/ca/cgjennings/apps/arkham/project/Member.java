@@ -68,8 +68,8 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * Note that this constructor can be used to explicitly create a member that
      * is not actually in a project. This is sometimes useful (for example, to
      * obtain a {@link MetadataSource} for an arbitrary file), but it will
-     * invalidate some parts of the <code>Member</code> contract (such as
-     * {@link #getProject()} always returning a non-<code>null</code> value).
+     * invalidate some parts of the {@code Member} contract (such as
+     * {@link #getProject()} always returning a non-{@code null} value).
      *
      * @param parent the member that will be the new member's parent
      * @param file the file that the member represents
@@ -91,11 +91,11 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns the member that is this member's parent, or <code>null</code> if
+     * Returns the member that is this member's parent, or {@code null} if
      * this is the member representing the {@link Project} (or if it was
-     * explicitly created with a <code>null</code> parent).
+     * explicitly created with a {@code null} parent).
      *
-     * @return this member's parent, or <code>null</code>
+     * @return this member's parent, or {@code null}
      */
     public final Member getParent() {
         return parent;
@@ -108,8 +108,8 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      *
      * <p>
      * In the event that the member is not actually in a project, returns
-     * <code>null</code> (this is only possible when a member is explicitly
-     * created with a <code>null</code> parent).
+     * {@code null} (this is only possible when a member is explicitly
+     * created with a {@code null} parent).
      *
      * @return the task that owns this member
      */
@@ -126,8 +126,8 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      *
      * <p>
      * In the event that the member is not actually in a project, returns
-     * <code>null</code> (this is only possible when a member is explicitly
-     * created with a <code>null</code> parent).
+     * {@code null} (this is only possible when a member is explicitly
+     * created with a {@code null} parent).
      *
      * @return the project that owns this member
      */
@@ -144,7 +144,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Returns the file represented by this project member. The result will
-     * never be <code>null</code>, although the returned file may not exist if
+     * never be {@code null}, although the returned file may not exist if
      * changes have been made to the filesystem that have not yet been detected
      * by the project system.
      *
@@ -157,7 +157,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Returns a <tt>project:</tt> URL that can be used to access this member
-     * whenever this project is the main open project. Returns <code>null</code>
+     * whenever this project is the main open project. Returns {@code null}
      * if the file has been deleted.
      *
      * @return a project URL for the file.
@@ -235,7 +235,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Returns an icon that is appropriate for this member. This is essentially
-     * a cover method for <code>getMetadataSource().getIcon( this )</code>.
+     * a cover method for {@code getMetadataSource().getIcon( this )}.
      *
      * @return an icon for this member
      */
@@ -258,10 +258,10 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if this member is a folder rather than a file.
+     * Returns {@code true} if this member is a folder rather than a file.
      * (All {@link Task}s and {@link Project}s are also folders.)
      *
-     * @return <code>true</code> if this member represents a folder rather than
+     * @return {@code true} if this member represents a folder rather than
      * a regular file
      * @see #hasChildren()
      */
@@ -270,10 +270,10 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if this member has children.
+     * Returns {@code true} if this member has children.
      *
-     * @return <code>true</code> if the member has any children;
-     * <code>false</code> otherwise
+     * @return {@code true} if the member has any children;
+     * {@code false} otherwise
      */
     public boolean hasChildren() {
         if (children == null) {
@@ -302,12 +302,12 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Returns the child member at the specified index. The index must be from 0
-     * to <code>getChildCount()</code>-1, inclusive.
+     * to {@code getChildCount()}-1, inclusive.
      *
      * @param childIndex the index of the child being requested
      * @return the child at the requested index
-     * @throws IndexOutOfBoundsException if <code>childIndex</code> &lt; 0 or
-     * <code>childIndex</code> &gt;= <code>getChildCount()</code>
+     * @throws IndexOutOfBoundsException if {@code childIndex} &lt; 0 or
+     * {@code childIndex} &gt;= {@code getChildCount()}
      */
     public Member getChildAt(int childIndex) {
         Member[] kids = getChildrenImpl();
@@ -450,12 +450,12 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Returns the child of this member whose file is equal to the specified
-     * file, or <code>null</code> if there is no such child. The file must be an
+     * file, or {@code null} if there is no such child. The file must be an
      * immediate child of this child, not simply a descendant.
      *
      * @param file the child to find
      * @return the child that represents the specified file, or
-     * <code>null</code>
+     * {@code null}
      * @see #findChild(java.lang.String)
      */
     public Member findChild(File file) {
@@ -471,17 +471,17 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Finds a child of this member by name. Returns <code>null</code> if there
+     * Finds a child of this member by name. Returns {@code null} if there
      * is no such child. If the specified name contains one or more slashes
      * ('/'), then the find operation will be repeated recursively for each path
-     * segment. For example, <code>findChild( "nested/folder/file.png" )</code>
+     * segment. For example, {@code findChild( "nested/folder/file.png" )}
      * is equivalent to calling
-     * <code>findChild( "nested" ).findChild( "folder" ).findChild( "file.png" )</code>,
-     * except that if any of the calls returns <code>null</code>, the process
-     * stops immediately and the method returns <code>null</code>.
+     * {@code findChild( "nested" ).findChild( "folder" ).findChild( "file.png" )},
+     * except that if any of the calls returns {@code null}, the process
+     * stops immediately and the method returns {@code null}.
      *
      * @param name the member name to search for
-     * @return the child with this name, or <code>null</code>
+     * @return the child with this name, or {@code null}
      */
     public Member findChild(String name) {
         if (name == null) {
@@ -519,7 +519,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      *
      * @param potentialChild the member to search for
      * @return the index of the specified member in the immediate children of
-     * this member, or <code>null</code>
+     * this member, or {@code null}
      * @see #getChildAt(int)
      * @see #findChild(java.lang.String)
      */
@@ -538,9 +538,9 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
 
     /**
      * Renames the file associated with this member. Calling this method is
-     * preferable to calling <code>getFile().renameTo</code> because this method
+     * preferable to calling {@code getFile().renameTo} because this method
      * correctly handles additional details and special cases that the
-     * <code>File</code> method is unaware of, such as updating any editors
+     * {@code File} method is unaware of, such as updating any editors
      * displaying the file and informing
      * {@link ca.cgjennings.apps.arkham.project.Rename.RenameListener RenameListener}s.
      *
@@ -555,8 +555,8 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * Deletes the file associated with this member. <i>If this member is a
      * folder, then any children it may have will also be deleted.</i>
      * Calling this method is preferable to calling
-     * <code>getFile().delete()</code> because this method correctly handles
-     * additional details and special cases that the <code>File</code> method is
+     * {@code getFile().delete()} because this method correctly handles
+     * additional details and special cases that the {@code File} method is
      * unaware of, such as updating any editors displaying the file and
      * informing
      * {@link ca.cgjennings.apps.arkham.project.Rename.RenameListener RenameListener}s.
@@ -640,7 +640,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * system. Any file name that matches one of the specified patterns will be
      * ignored. It will not be returned as one of the children of its parent
      * member and it will not appear in project views. Each pattern in the array
-     * is a string (empty or <code>null</code> strings in the array will be
+     * is a string (empty or {@code null} strings in the array will be
      * ignored). The patterns can either specify an exact name to match or they
      * can include wildcards: the * wildcard matches 0 or more characters, while
      * the ? wildcard matches any one character. For example, the pattern
@@ -668,8 +668,8 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * copying project files from one place to another, you should leave out
      * excluded files but copy hidden files. To do this, you could get a list of
      * files from the parent member using
-     * <code>member.getFile().listFiles()</code>, then skip any files for which
-     * {@link #isFileExcluded(java.io.File)} returns <code>true</code>.
+     * {@code member.getFile().listFiles()}, then skip any files for which
+     * {@link #isFileExcluded(java.io.File)} returns {@code true}.
      *
      * @param patterns an array of pattern strings
      * @see #getExcludedFilePatterns()
@@ -718,11 +718,11 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if file exclusion patterns have been set and
-     * <code>f</code> matches one of the patterns.
+     * Returns {@code true} if file exclusion patterns have been set and
+     * {@code f} matches one of the patterns.
      *
      * @param f the file to test
-     * @return <code>true</code> if the file matches an active exclusion pattern
+     * @return {@code true} if the file matches an active exclusion pattern
      */
     public static boolean isFileExcluded(File f) {
         if (f == null) {
@@ -732,7 +732,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if file exclusion patterns have been set and
+     * Returns {@code true} if file exclusion patterns have been set and
      * the specified file name matches one of the patterns. Note that the
      * project system may exclude files for other reasons as well. In
      * particular, it will exclude files that start with '.', have the hidden
@@ -740,7 +740,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * folder settings (seproject).
      *
      * @param f the file to test
-     * @return <code>true</code> if the file matches an active exclusion pattern
+     * @return {@code true} if the file matches an active exclusion pattern
      */
     static boolean isFileExcluded(String name) {
         if (excludePatternsRegex == null) {
@@ -801,7 +801,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if and only if the specified object is a
+     * Returns {@code true} if and only if the specified object is a
      * project member for the same file as this project member.
      *
      * @param obj the object to compare this object to
@@ -992,7 +992,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * dispatch thread, you can safely update the project from that thread by
      * calling this method. However, it is not safe in general to work with
      * project members from outside of the EDT. Instead, keep a reference to the
-     * member that requires updating, and work only with <code>File</code>
+     * member that requires updating, and work only with {@code File}
      * objects within the other thread (except for calling this method).
      */
     public void synchronize() {
@@ -1080,10 +1080,10 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * Returns <code>true</code> if this is an ancestor of <code>child</code>.
+     * Returns {@code true} if this is an ancestor of {@code child}.
      *
      * @param child the member to test
-     * @return <code>true</code> if and only if <code>child</code> is a direct
+     * @return {@code true} if and only if {@code child} is a direct
      * or indirect child of this member
      */
     public boolean isAncestorOf(Member child) {
@@ -1104,7 +1104,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * Get the tree model that is informed of changes to the project. A tree
      * model may be set on the containing {@link Project}. This method is a
      * convenience that queries the project (if any) and returns the current
-     * model. It returns <code>null</code> if there is no project or if the
+     * model. It returns {@code null} if there is no project or if the
      * project has no model set.
      *
      * @return a tree model that should be updated when the project structure
@@ -1176,9 +1176,9 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     }
 
     /**
-     * This class is an adapter that bridges between <code>TreeNode</code>s and
-     * <code>Member</code>s, allowing projects to be displayed in a
-     * <code>JTree</code> without polluting the <code>Member</code> API with
+     * This class is an adapter that bridges between {@code TreeNode}s and
+     * {@code Member}s, allowing projects to be displayed in a
+     * {@code JTree} without polluting the {@code Member} API with
      * tree node methods.
      */
     static final class MemberTreeNode implements TreeNode {

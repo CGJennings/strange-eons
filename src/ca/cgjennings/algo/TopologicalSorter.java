@@ -36,10 +36,10 @@ public class TopologicalSorter<T extends DependencyRelation> {
     private Comparator<T> comparator;
 
     /**
-     * Returns <code>true</code> if this sorter will assume that all required
+     * Returns {@code true} if this sorter will assume that all required
      * elements are present in all collections that are to be sorted.
      *
-     * @return <code>true</code> if all required objects are to be included in
+     * @return {@code true} if all required objects are to be included in
      * the input to {@link #topSort}
      * @see #setAllPresent(boolean)
      */
@@ -49,17 +49,17 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Sets whether this sorter will assume that all possible elements are
-     * included in collections that it sorts. Setting this to <code>true</code>
+     * included in collections that it sorts. Setting this to {@code true}
      * makes a guarantee that when sorting a collection, for all elements E in
      * the collection, if E depends on F then F is also in the collection. In
      * other words, everything that is required is already included in the
-     * collection passed to {@link #topSort}. Setting this to <code>true</code>
+     * collection passed to {@link #topSort}. Setting this to {@code true}
      * may result in more efficient sorting, but if it is set to
-     * <code>true</code> when the condition does not hold then the sorted output
+     * {@code true} when the condition does not hold then the sorted output
      * will be incomplete.
      *
      * <p>
-     * When this is set to <code>false</code>, the sorter will detect the
+     * When this is set to {@code false}, the sorter will detect the
      * presence of required objects that were not part of the original
      * collection and include them in the sorted output. Thus, the size of the
      * sorted list may be larger than that of the unsorted list. A useful side
@@ -67,7 +67,7 @@ public class TopologicalSorter<T extends DependencyRelation> {
      * will be a list of all of the elements that are required (directly or
      * indirectly) by that element.
      *
-     * @param assumesAllPresent <code>true</code> if all required objects are to
+     * @param assumesAllPresent {@code true} if all required objects are to
      * be included in the input to {@link #topSort}
      */
     public void setAllPresent(boolean assumesAllPresent) {
@@ -75,10 +75,10 @@ public class TopologicalSorter<T extends DependencyRelation> {
     }
 
     /**
-     * If <code>true</code>, then the sort order will also be ordered according
+     * If {@code true}, then the sort order will also be ordered according
      * to a lexicographic sort.
      *
-     * @return <code>true</code>
+     * @return {@code true}
      * @see #setLexicographicallySorted(boolean)
      */
     public boolean isLexicographicallySorted() {
@@ -87,7 +87,7 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Sets whether collections will also be lexicographically sorted. When set
-     * to <code>true</code>, then at any point in the sorted list, the element
+     * to {@code true}, then at any point in the sorted list, the element
      * at that position is the one that is lexicographically least of all of the
      * elements that could be placed there without violating the topological
      * ordering. For example, a topological sort of a collection of courses
@@ -104,7 +104,7 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Returns the comparator that will be used for lexicographic sorting. If
-     * <code>null</code>, the natural order is used.
+     * {@code null}, the natural order is used.
      *
      * @return the sorting comparator
      */
@@ -114,10 +114,10 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Sets the comparator that will be used if lexicographic sorting is
-     * enabled. If <code>null</code>, which is the default, the natural order is
+     * enabled. If {@code null}, which is the default, the natural order is
      * used.
      *
-     * @param comparator the sorting comparator, or <code>null</code> for
+     * @param comparator the sorting comparator, or {@code null} for
      * natural order
      */
     public void setComparator(Comparator<T> comparator) {

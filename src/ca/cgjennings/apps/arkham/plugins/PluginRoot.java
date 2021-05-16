@@ -35,7 +35,7 @@ import resources.Settings;
  * Represents the information stored in a plug-in bundle's root file. This
  * includes the bundle's {@link CatalogID}, the plug-in objects contained in the
  * bundle, the bundle's startup priority, and other properties. If the bundle is
- * not stored in a plain format, creating a <code>PluginRoot</code> for the
+ * not stored in a plain format, creating a {@code PluginRoot} for the
  * bundle will convert it in place.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -355,7 +355,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
 
     /**
      * Returns the plug-in bundle that this root belongs to, or
-     * <code>null</code> if this root object was not created from a bundle.
+     * {@code null} if this root object was not created from a bundle.
      *
      * @return the bundle associated with this root
      */
@@ -369,7 +369,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * '!').
      *
      * @return the content of the comment block at the top of the file, or
-     * <code>null</code>
+     * {@code null}
      * @see #setComments(java.lang.String)
      */
     public String getComments() {
@@ -381,9 +381,9 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * file. Any existing comment block will be replaced. Lines in the comment
      * string should be separated by a newline character. Any lines that do not
      * already start with a comment marker ('#' or '!') will cause an
-     * <code>IllegalArgumentException</code> to be thrown.
+     * {@code IllegalArgumentException} to be thrown.
      *
-     * @param comments the comment text to set, or <code>null</code> to clear
+     * @param comments the comment text to set, or {@code null} to clear
      * the comment block
      * @see #getComments()
      */
@@ -444,7 +444,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the catalog ID for this root file, or <code>null</code> if none
+     * Returns the catalog ID for this root file, or {@code null} if none
      * is defined.
      *
      * @return the ID for the bundle that this root file is (or will be) for
@@ -470,7 +470,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * Returns the identifier of the {@linkplain InstallationActions installer
      * class or script} for this root file.
      *
-     * @return the installation script resource, or <code>null</code>
+     * @return the installation script resource, or {@code null}
      * @see #setInstallerIdentifier(java.lang.String)
      */
     public String getInstallerIdentifier() {
@@ -480,7 +480,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
     /**
      * Sets the identifier of the {@linkplain InstallationActions installer
      * class or script} to run during installation or uninstallation of the
-     * associated plug-in bundle. Setting this to <code>null</code> will clear
+     * associated plug-in bundle. Setting this to {@code null} will clear
      * the current installer, if any.
      *
      * @param install the installation script identifier
@@ -517,7 +517,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      *
      * @param ids an array of plug-in identifiers
      * @throws NullPointerException if the array or any of its elements is
-     * <code>null</code>
+     * {@code null}
      */
     public void setPluginIdentifiers(String[] ids) {
         if (ids == null) {
@@ -549,7 +549,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * the plug-in is already listed.
      *
      * @param id the identifier to add
-     * @throws NullPointerException if the identifier is <code>null</code>
+     * @throws NullPointerException if the identifier is {@code null}
      */
     public void addPluginIdentifier(String id) {
         if (id == null) {
@@ -572,7 +572,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * nothing if the plug-in is not listed.
      *
      * @param id the identifier to remove
-     * @throws NullPointerException if the identifier is <code>null</code>
+     * @throws NullPointerException if the identifier is {@code null}
      */
     public void removePluginIdentifier(String id) {
         if (id == null) {
@@ -586,7 +586,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
 
     /**
      * Sets the value of a client property, or removes the property if
-     * <code>value</code> is <code>null</code>.
+     * {@code value} is {@code null}.
      *
      * @param key the name of the client key
      * @param value the value of the client key
@@ -608,11 +608,11 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the value of a client property, or <code>null</code> if the
+     * Returns the value of a client property, or {@code null} if the
      * property is not defined.
      *
      * @param key the name of the client property
-     * @return the value of the named property, or <code>null</code>
+     * @return the value of the named property, or {@code null}
      */
     public String getClientProperty(String key) {
         if (key == null) {
@@ -627,13 +627,13 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the value of a client property, or <code>null</code> if the
+     * Returns the value of a client property, or {@code null} if the
      * property is not defined. The property will be localized for the
      * {@linkplain Language#getInterface() user interface language}, if
      * possible.
      *
      * @param key the name of the client property
-     * @return the value of the named property, or <code>null</code>
+     * @return the value of the named property, or {@code null}
      */
     public String getLocalizedClientProperty(String key) {
         if (key == null) {
@@ -662,11 +662,11 @@ public class PluginRoot implements Comparable<PluginRoot> {
 
     /**
      * If this root file contains any special property defining keys, returns a
-     * set of these keys, otherwise returns <code>null</code>. In most cases,
+     * set of these keys, otherwise returns {@code null}. In most cases,
      * this avoids having to create a copy of the client keys for the
-     * <code>BundleInstaller</code>. Special definition keys start with a hyphen
+     * {@code BundleInstaller}. Special definition keys start with a hyphen
      * followed by a capital letter. They are used like -D arguments on the
-     * <code>java</code> command line. Keys that start with -D will define
+     * {@code java} command line. Keys that start with -D will define
      * system properties. Keys that start with -S will define temporary
      * settings.
      *
@@ -795,7 +795,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      *
      * @param root the plug-in root to compare this one with
      * @return a comparison value that compares the priorities of both
-     * <code>PluginRoot</code>s
+     * {@code PluginRoot}s
      */
     @Override
     public int compareTo(PluginRoot root) {
@@ -1007,11 +1007,11 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns <code>true</code> if and only if the specified object is a root
+     * Returns {@code true} if and only if the specified object is a root
      * file with the same {@linkplain #toString() string representation}.
      *
      * @param obj the object to compare this object to
-     * @return <code>true</code> if the object represents a root file with the
+     * @return {@code true} if the object represents a root file with the
      * same properties
      */
     @Override

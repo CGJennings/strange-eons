@@ -27,7 +27,7 @@ public class MissingPluginException extends IOException {
      * cross a package barrier.
      *
      * @param c code
-     * @param n if <code>null</code>, the value of <code>c</code> will be used
+     * @param n if {@code null}, the value of {@code c} will be used
      * as the message for the exception
      */
     public MissingPluginException(String c, String n) {

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 /**
- * A grouping of <code>PageItem</code>s that are selected and unselected as a
+ * A grouping of {@code PageItem}s that are selected and unselected as a
  * unit.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 /**
  * Proxy class that reflectively installs handlers through Apple's
- * <code>com.apple.eawt.Application</code> class. Adapted from Apple's
+ * {@code com.apple.eawt.Application} class. Adapted from Apple's
  * OSXAdapter, which allows redistribution and modification.
  */
 public class OSXAdapter implements InvocationHandler {

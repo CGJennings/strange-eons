@@ -16,11 +16,11 @@ public final class SupportPreferences {
     }
 
     /**
-     * Returns <code>true</code> if the user has requested that game component
+     * Returns {@code true} if the user has requested that game component
      * editors show design support information for components with design
      * support.
      *
-     * @return <code>true</code> if editors should show design support
+     * @return {@code true} if editors should show design support
      */
     public static boolean isDesignSupportEnabled() {
         return Settings.getUser().getBoolean("show-consequence-displays");
@@ -49,13 +49,13 @@ public final class SupportPreferences {
     }
 
     /**
-     * Returns <code>true</code> if the user has requested that components
+     * Returns {@code true} if the user has requested that components
      * should be validated more strictly. The exact interpretation of this is
      * left up to the design support, but generally it means that borderline
      * cases that may have simply been noted in the design support view ought to
      * invalidate the component.
      *
-     * @return <code>true</code> if validation is enabled and the user has
+     * @return {@code true} if validation is enabled and the user has
      * requested strict validation mode
      */
     public static boolean isStrictValidationEnabled() {

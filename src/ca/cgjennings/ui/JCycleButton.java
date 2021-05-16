@@ -82,7 +82,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      *
      * @param model an array of the possible selections
      * @param settingValues an array of matching setting proxies, or
-     * <code>null</code>
+     * {@code null}
      * @see #setCycleModel
      * @see #toSetting
      * @see #fromSetting
@@ -119,7 +119,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
     /**
      * Returns the index of the selected item in the model. Returns -1 if the
-     * model is <code>null</code> or empty.
+     * model is {@code null} or empty.
      *
      * @return the index of the selected item
      */
@@ -170,7 +170,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      * Returns the currently selected item, as displayed on the face of the
      * button.
      *
-     * @return the selected item, or <code>null</code> if there is no model set
+     * @return the selected item, or {@code null} if there is no model set
      */
     public M getSelectedItem() {
         return sel;
@@ -211,7 +211,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      * Returns a copy of the current model.
      *
      * @return an array of the values that the button will cycle through;
-     * <code>null</code> if no model has been set
+     * {@code null} if no model has been set
      */
     public Object[] getCycleModel() {
         return cycleModel == null ? null : cycleModel.clone();
@@ -283,7 +283,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      * Selects the item that matches the specified setting value. If this button
      * was created with setting proxies, the index of the proxy that equals the
      * specified value will become the selected index. Otherwise, the element in
-     * the model whose <code>toString</code> value matches the specified value
+     * the model whose {@code toString} value matches the specified value
      * is selected.
      *
      * @param v the setting value that represents the value to select
@@ -312,7 +312,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
     /**
      * Returns a setting value to represent the selected item. If this button
      * was created with setting proxies, the proxy for the selected item is
-     * returned. Otherwise, the <code>toString()</code> value of the selected
+     * returned. Otherwise, the {@code toString()} value of the selected
      * item is returned.
      *
      * @return a setting value for the selected item

@@ -20,7 +20,7 @@ public interface MarkupTarget {
     /**
      * If set in a component's client properties, forces whether a component is
      * or is not considered to be a markup target. Set to
-     * <code>Boolean.TRUE</code> or <code>Boolean.FALSE</code>. Otherwise,
+     * {@code Boolean.TRUE} or {@code Boolean.FALSE}. Otherwise,
      * markup target candidates are evaluated using heuristics. To be valid, the
      * component must still be an acceptable type of control, and (in strict
      * validation mode) showing, enabled, and editable.
@@ -68,17 +68,17 @@ public interface MarkupTarget {
      *
      * @param start the start index of the substring
      * @param length the number of characters to include
-     * @return the text of the markup target from <code>start</code> to
-     * <code>end-1</code>, inclusive
+     * @return the text of the markup target from {@code start} to
+     * {@code end-1}, inclusive
      * @throws IllegalArgumentException if start or length is negative
      */
     String getText(int start, int length);
 
     /**
      * Changes the selection in the markup target. Invalid selections will be
-     * clamped to the valid range of the document. Note that <code>start</code>
-     * does not need to be less than <code>end</code>; the cursor will be
-     * located at the <code>end</code> offset.
+     * clamped to the valid range of the document. Note that {@code start}
+     * does not need to be less than {@code end}; the cursor will be
+     * located at the {@code end} offset.
      *
      * @param start the start offset of the new selection
      * @param end the end offset of the new selection
@@ -135,11 +135,11 @@ public interface MarkupTarget {
      * Inserts text at the cursor position. If there is an active selection, it
      * will be replaced. The inserted text may be modified before insertion, so
      * the actual number of characters inserted may not be the same as
-     * <code>text.length()</code>.
+     * {@code text.length()}.
      *
      * @param text the text to insert
      * @return the number of characters inserted
-     * @throws NullPointerException if text is <code>null</code>
+     * @throws NullPointerException if text is {@code null}
      */
     int setSelectedText(String text);
 
@@ -149,13 +149,13 @@ public interface MarkupTarget {
      * will be removed. This is a simple way to add or remove modal markup tags
      * around the selection. For example, to bold the selected text (or unbold
      * if it is surround by a bold tag pair):<br>
-     * <code>tagSelection( "&lt;b&gt;", "&lt;/b&gt;" )</code>
+     * {@code tagSelection( "&lt;b&gt;", "&lt;/b&gt;" )}
      *
      * @param prefix the prefix to insert (or remove) at the start of the
      * selection
      * @param suffix the suffix to insert (or remove) at the end of the
      * selection
-     * @param caseSensitive if <code>true</code>, the prefix and suffix are
+     * @param caseSensitive if {@code true}, the prefix and suffix are
      * case-sensitive
      */
     void tagSelectedText(String prefix, String suffix, boolean caseSensitive);
@@ -176,7 +176,7 @@ public interface MarkupTarget {
     void paste();
 
     /**
-     * Returns the actual target wrapped by this <code>MarkupTarget</code>.
+     * Returns the actual target wrapped by this {@code MarkupTarget}.
      *
      * @return the underlying object that is manipulated by this markup target
      * instance
@@ -186,92 +186,5 @@ public interface MarkupTarget {
     /**
      * If the target is a component, then it will request input focus.
      */
-    void requestFocus();
-
-//	/**
-//	 * Add a new <code>MarkupTargetListener</code> to this editor.
-//	 *
-//	 * @param mtl the listener to add
-//	 * @since 2.00.9
-//	 */
-//	@Override
-//	public void addMarkupTargetListener( MarkupTargetListener mtl ) {
-//		listenerList.add( MarkupTargetListener.class, mtl );
-//	}
-//
-//	/**
-//	 * Remove a <code>MarkupTargetListener</code> from this editor.
-//	 *
-//	 * @param mtl the listener to remove
-//	 * @since 2.00.9
-//	 */
-//	@Override
-//	public void removeMarkupTargetListener( MarkupTargetListener mtl ) {
-//		listenerList.remove( MarkupTargetListener.class, mtl );
-//	}
-//
-//	public boolean canInsertMarkup() {
-//		if( markupTarget == null ) return false;
-//
-//
-//
-//		
-//
-//		Object forceProperty = markupTarget.getClientProperty( FORCE_MARKUP_TARGET_PROPERTY );
-//		if( forceProperty == Boolean.FALSE ) return false;
-//		if( forceProperty == Boolean.TRUE ) return true;
-//
-//		// always allow code editors, even if in other windows, unless explicitly
-//		// disabled by property---useful for plug-ins, IDE stuff
-//		if( markupTarget instanceof JCodeEditor && markupTarget.isShowing() ) {
-//			return ((JCodeEditor) markupTarget).isEditable();
-//		}
-//
-//		if( markupTarget instanceof JTextComponent ) {
-//			if( !((JTextComponent) markupTarget).isEditable() ) return false;
-//		}
-//
-//		// HACK: check for the field that allows entering line numbers in JCodeEditors
-//		if( "JCodeEditorLineNumber".equals( markupTarget.getName() ) ) return false;
-//
-//		// don't allow if it is not in the current editor so we eliminate a lot
-//		// of misc text fields in dialogs and whatnot
-//		JInternalFrame editor = (JInternalFrame) getActiveEditor();
-//		if( editor != null && MarkupTargetHelper.isValidTarget( markupTarget ) && markupTarget.isShowing() ) {
-//			Container parent = markupTarget;
-//			while( parent != null && parent != this ) {
-//				if( parent == editor ) {
-//					return true;
-//				}
-//				if( parent instanceof JSpinner ) return false;
-//				parent = parent.getParent();
-//			}
-//		}
-//
-//		return false;
-//	}
-//
-//	@Override
-//	public JComponent getMarkupTarget() {
-//		return canInsertMarkup() ? markupTarget : null;
-//	}
-//
-//	@Override
-//	public void insertMarkup( String insert ) {
-//		if( canInsertMarkup() ) {
-//			MarkupTargetHelper.insertMarkup( markupTarget, insert );
-//		}
-//	}
-//
-//	@Override
-//	public void insertMarkupTags( String prefix, String suffix ) {
-//		if( canInsertMarkup() ) {
-//			MarkupTargetHelper.insertMarkupTags( markupTarget, prefix, suffix );
-//		}
-//	}
-//
-//	public String getMarkupTargetSelection() {
-//		return MarkupTargetHelper.getMarkupTargetSelection();
-//	}
-//	
+    void requestFocus();	
 }

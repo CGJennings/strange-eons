@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 import resources.ResourceKit;
 
 /**
- * The <code>Messenger</code> manages the display of information and error
+ * The {@code Messenger} manages the display of information and error
  * messages for top-level windows. A queue of messages is maintained for each
  * window. If a message is already displayed and a new message is posted, it
  * will be added to a queue and shown after the current message and all queued
@@ -42,9 +42,9 @@ public class Messenger {
      * {@link #displayErrorMessage(java.awt.Component, java.lang.String)}.)
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param message the text of the message
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayWarningMessage(Component parent, String message) {
         Icon icon = null;
@@ -63,9 +63,9 @@ public class Messenger {
      * {@link #displayWarningMessage(java.awt.Component, java.lang.String)}.)
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param message the text of the message
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayErrorMessage(Component parent, String message) {
         Icon icon = null;
@@ -82,12 +82,12 @@ public class Messenger {
      * Displays a message to the user.
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param iconResource an optional image resource to display beside the
      * message; this will be loaded using
      * {@link ResourceKit#getIcon(java.lang.String)}
      * @param message the text of the message
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayMessage(Component parent, String iconResource, String message) {
         if (message == null) {
@@ -101,9 +101,9 @@ public class Messenger {
      * Displays a message to the user.
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param message the text of the message
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayMessage(Component parent, String message) {
         if (message == null) {
@@ -116,10 +116,10 @@ public class Messenger {
      * Displays a message to the user.
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param icon an optional icon to display beside the message
      * @param message the text of the message
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayMessage(Component parent, Icon icon, String message) {
         if (message == null) {
@@ -132,13 +132,13 @@ public class Messenger {
      * Displays a message to the user.
      *
      * @param parent the component or window that this message relates to; if
-     * <code>null</code>, then the main application window will be the parent
+     * {@code null}, then the main application window will be the parent
      * @param icon an optional icon to display beside the message
      * @param message the text of the message
      * @param inlineComponents an array of interface components that will be
      * included as part of the message by stacking them, one per row, under the
      * main message text
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     public static void displayMessage(Component parent, Icon icon, String message, JComponent[] inlineComponents) {
         if (message == null) {
@@ -236,7 +236,7 @@ public class Messenger {
      * will resume.
      *
      * @param enable whether queued messages should be displayed
-     * (<code>true</code>) or held for future display (<code>false</code>)
+     * ({@code true}) or held for future display ({@code false})
      * @see #isQueueProcessingEnabled()
      */
     public static void setQueueProcessingEnabled(boolean enable) {
@@ -259,10 +259,10 @@ public class Messenger {
     }
 
     /**
-     * Returns <code>true</code> if the messages in message queues are actively
+     * Returns {@code true} if the messages in message queues are actively
      * being displayed.
      *
-     * @return <code>true</code> if queue processing is enabled
+     * @return {@code true} if queue processing is enabled
      */
     public static boolean isQueueProcessingEnabled() {
         return processQueue;

@@ -16,8 +16,8 @@ import resources.Settings;
  * plug-ins that it contains. It is not the plug-in itself, but it creates and
  * manages instances of the plug-in on demand. This is an abstract base class
  * for the two basic types of plug-in in Strange Eons: extensions and "regular"
- * plug-ins (which encompasses both the <code>INJECTED</code> and
- * <code>ACTIVATED</code> plug-in types). These two types are similar except
+ * plug-ins (which encompasses both the {@code INJECTED} and
+ * {@code ACTIVATED} plug-in types). These two types are similar except
  * that extensions can only be started once (during startup), while regular
  * plug-ins are stopped and started on demand.
  *
@@ -98,10 +98,10 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
 
     /**
      * Returns the plug-in instance managed by this InstalledPlugin, or
-     * <code>null</code> if no instance currently exists. To create an instance,
+     * {@code null} if no instance currently exists. To create an instance,
      * call {@link #startPlugin()}.
      *
-     * @return the current plug-in instance, or <code>null</code>
+     * @return the current plug-in instance, or {@code null}
      */
     public Plugin getPlugin() {
         return plugin;
@@ -134,7 +134,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      * information.
      *
      * @return the representative name reported by the plug-in (may be
-     * <code>null</code>)
+     * {@code null})
      */
     @Override
     public BufferedImage getRepresentativeImage() {
@@ -180,11 +180,11 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     /**
-     * Returns <code>true</code> if the plug-in represented by this object is
+     * Returns {@code true} if the plug-in represented by this object is
      * currently started.
      *
-     * @return <code>true</code> if {@link #getPlugin} would return a
-     * non-<code>null</code> value
+     * @return {@code true} if {@link #getPlugin} would return a
+     * non-{@code null} value
      */
     public synchronized boolean isStarted() {
         return plugin != null;
@@ -209,7 +209,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
 
     /**
      * Shuts down the plug-in instance, if any. After this call returns,
-     * {@link #getPlugin()} will return <code>null</code> unless the plug-in is
+     * {@link #getPlugin()} will return {@code null} unless the plug-in is
      * started again.
      *
      * @throws PluginException if an exception occurs while stopping the plug-in
@@ -324,11 +324,11 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     /**
-     * Returns <code>true</code> if the two installed plug-ins are equal. Two
+     * Returns {@code true} if the two installed plug-ins are equal. Two
      * installed plug-ins are equal if they have the same class identifier.
      *
      * @param obj object to compare with
-     * @return true if <code>obj</code> is an installed plug-in with the same
+     * @return true if {@code obj} is an installed plug-in with the same
      * plug-in class
      */
     @Override
@@ -354,12 +354,12 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     /**
-     * Returns <code>true</code> if this plug-in is a reloadable type, or false
+     * Returns {@code true} if this plug-in is a reloadable type, or false
      * if it is only run once (and thus should be run at the same time as the
      * plug-in info is collected).
      *
-     * @return <code>false</code> if the plug-in is an extension,
-     * <code>true</code> otherwise
+     * @return {@code false} if the plug-in is an extension,
+     * {@code true} otherwise
      */
     protected boolean isReloadable() {
         return true;

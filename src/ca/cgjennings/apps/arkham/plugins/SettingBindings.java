@@ -311,8 +311,8 @@ class SettingBindings implements Bindings {
 
     /**
      * A magic variable is a function for producing the value of a variable. For
-     * example, the <code>Editor</code> magic variable is a function that
-     * returns the active editor (or <code>null</code>). Magic variables are
+     * example, the {@code Editor} magic variable is a function that
+     * returns the active editor (or {@code null}). Magic variables are
      * stored in a secondary map that is consulted after the primary map fails.
      * (If the name of a magic variable is assigned a normal value, that value
      * will thus supercede the magic variable.)
@@ -327,7 +327,7 @@ class SettingBindings implements Bindings {
      *
      * @param name the magic variable name
      * @param variable the magic variable; when the variable name is looked up,
-     * its value will be returned as <code>variable.unwrap()</code>.
+     * its value will be returned as {@code variable.unwrap()}.
      */
     private void defineMagicVariable(String name, MagicVariable variable) {
         if (name == null) {
@@ -562,9 +562,9 @@ class SettingBindings implements Bindings {
 
     /**
      * Sets whether the bindings will report $-notation variables that have a
-     * <code>null</code> value are undefined.
+     * {@code null} value are undefined.
      *
-     * @param enable if <code>true</code>, <code>null</code> setting variables
+     * @param enable if {@code true}, {@code null} setting variables
      * will not be "contained" by the map, resulting in additional warnings when
      * script warnings are enabled
      * @see #containsKey(java.lang.Object)

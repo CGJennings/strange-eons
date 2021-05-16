@@ -74,7 +74,7 @@ public class TintCache {
     }
 
     /**
-     * Update the source image to use for tinting. If <code>im</code> is
+     * Update the source image to use for tinting. If {@code im} is
      * different from the current image, it replaces the current image and
      * invalidates the cache.
      *

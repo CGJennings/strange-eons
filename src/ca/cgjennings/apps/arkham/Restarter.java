@@ -33,7 +33,7 @@ final class Restarter {
 
     /**
      * Display a message that offers to restart the application; if the message
-     * is <code>null</code>, a default message is displayed.
+     * is {@code null}, a default message is displayed.
      *
      * @param message the restart message
      */

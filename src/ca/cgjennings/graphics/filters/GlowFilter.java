@@ -39,7 +39,7 @@ public final class GlowFilter extends AbstractImageFilter {
      *
      * @param color the color, specified as an sRGB integer
      * @param blurRadius the blur radius for the glow
-     * @param outerGlow if <code>true</code>, the filter produces an outer glow
+     * @param outerGlow if {@code true}, the filter produces an outer glow
      * @param strength the strength of the glow effect
      */
     public GlowFilter(int color, int blurRadius, boolean outerGlow, int strength) {
@@ -51,7 +51,7 @@ public final class GlowFilter extends AbstractImageFilter {
      *
      * @param color the color, specified as an sRGB integer
      * @param blurRadius the blur radius for the glow
-     * @param outerGlow if <code>true</code>, the filter produces an outer glow
+     * @param outerGlow if {@code true}, the filter produces an outer glow
      * @param strength the strength of the glow effect
      */
     public GlowFilter(Color color, int blurRadius, boolean outerGlow, int strength) {
@@ -65,7 +65,7 @@ public final class GlowFilter extends AbstractImageFilter {
      * @param strokeWidth the width of the glow, exclusive of blurring
      * @param blurRadius the blur radius for the glow
      * @param iterations the number of iterations of the blurring effect
-     * @param outerGlow if <code>true</code>, the filter produces an outer glow
+     * @param outerGlow if {@code true}, the filter produces an outer glow
      * @param strength the strength of the glow effect
      */
     public GlowFilter(int color, int strokeWidth, int blurRadius, int iterations, boolean outerGlow, int strength) {
@@ -84,7 +84,7 @@ public final class GlowFilter extends AbstractImageFilter {
      * @param strokeWidth the width of the glow, exclusive of blurring
      * @param blurRadius the blur radius for the glow
      * @param iterations the number of iterations of the blurring effect
-     * @param outerGlow if <code>true</code>, the filter produces an outer glow
+     * @param outerGlow if {@code true}, the filter produces an outer glow
      * @param strength the strength of the glow effect
      */
     public GlowFilter(Color color, int strokeWidth, int blurRadius, int iterations, boolean outerGlow, int strength) {
@@ -128,7 +128,7 @@ public final class GlowFilter extends AbstractImageFilter {
     }
 
     /**
-     * Sets the current glow colour using a <code>Color</code> instance.
+     * Sets the current glow colour using a {@code Color} instance.
      *
      * @param color the glow color
      */
@@ -196,10 +196,10 @@ public final class GlowFilter extends AbstractImageFilter {
     }
 
     /**
-     * Returns <code>true</code> if the filter will produce an outer glow, or
-     * <code>false</code> if the filter will produce an inner glow.
+     * Returns {@code true} if the filter will produce an outer glow, or
+     * {@code false} if the filter will produce an inner glow.
      *
-     * @return  <code>true</code> for an outer glow type; <code>false</code> for
+     * @return  {@code true} for an outer glow type; {@code false} for
      * an inner glow type
      */
     public boolean isOuterGlow() {
@@ -210,8 +210,8 @@ public final class GlowFilter extends AbstractImageFilter {
      * Sets the type of glow effect to grow inward from the edge, outward from
      * the edge, or both.
      *
-     * @param outerGlow <code>true</code> for an outer glow type;
-     * <code>false</code> for an inner glow type
+     * @param outerGlow {@code true} for an outer glow type;
+     * {@code false} for an inner glow type
      */
     public void setOuterGlow(boolean outerGlow) {
         outer = outerGlow;
@@ -275,22 +275,22 @@ public final class GlowFilter extends AbstractImageFilter {
 
     /**
      * Sets whether the original image will be included in the output. If
-     * <code>true</code>, the glow effect will be combined with the original
+     * {@code true}, the glow effect will be combined with the original
      * image.
      *
-     * @param paintSource <code>true</code> to include the image the effect
-     * applies to, <code>false</code> to produce the glow effect only
+     * @param paintSource {@code true} to include the image the effect
+     * applies to, {@code false} to produce the glow effect only
      */
     public void setSourceImagePainted(boolean paintSource) {
         paintSourceImage = paintSource;
     }
 
     /**
-     * Returns <code>true</code> if the original source image appears in the
+     * Returns {@code true} if the original source image appears in the
      * destination.
      *
-     * @return <code>true</code> to include the image the effect applies to,
-     * <code>false</code> to produce the glow effect only
+     * @return {@code true} to include the image the effect applies to,
+     * {@code false} to produce the glow effect only
      */
     public boolean isSourceImagePainted() {
         return paintSourceImage;

@@ -1,7 +1,7 @@
 package ca.cgjennings.algo;
 
 /**
- * A <code>MonitoredAlgorithm</code> is an algorithm that can report on its
+ * A {@code MonitoredAlgorithm} is an algorithm that can report on its
  * progress as it completes. It supports a single listener (although that
  * listener can chain to other listeners if needed) that will be notified as the
  * algorithm progresses.
@@ -16,8 +16,8 @@ public interface MonitoredAlgorithm {
      * only be set before the algorithm begins executing, not while it is
      * already in progress.
      *
-     * @param li the listener to set (may be <code>null</code>)
-     * @return the previous listener, or <code>null</code>
+     * @param li the listener to set (may be {@code null})
+     * @return the previous listener, or {@code null}
      */
     ProgressListener setProgressListener(ProgressListener li);
 

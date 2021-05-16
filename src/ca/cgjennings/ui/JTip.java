@@ -23,10 +23,10 @@ import resources.ResourceKit;
  * is set via {@link #setTipText}.
  *
  * <p>
- * <b>Note:</b> This class uses a <code>JLabel</code> to display the pop-up tip
+ * <b>Note:</b> This class uses a {@code JLabel} to display the pop-up tip
  * text. Subclasses may substitute a different component by overriding
  * {@link #getTipComponent()}. If the returned component is not an instance of
- * <code>JLabel</code>, then the methods for getting and setting the tip
+ * {@code JLabel}, then the methods for getting and setting the tip
  * properties must also be overridden.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -152,7 +152,7 @@ public class JTip extends JLabel {
     private static final int VERTCIAL_GAP_TO_POPUP = 12;
 
     /**
-     * Creates a new <code>JTip</code> using the specified tip text.
+     * Creates a new {@code JTip} using the specified tip text.
      *
      * @param tipText the pop-up tip text to display
      */
@@ -195,7 +195,7 @@ public class JTip extends JLabel {
 //	}
     /**
      * Returns the component used to display the tip's pop-up text. If this
-     * returns <code>null</code>, then no pop-up will be shown.
+     * returns {@code null}, then no pop-up will be shown.
      *
      * @return the tip label
      */

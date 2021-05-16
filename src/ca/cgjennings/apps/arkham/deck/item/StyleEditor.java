@@ -134,11 +134,11 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
     }
 
     /**
-     * Returns <code>true</code> if the specified selection of items contains at
+     * Returns {@code true} if the specified selection of items contains at
      * least one item with editable style information.
      *
      * @param sel the selection to test
-     * @return <code>true</code> if at least one item can be edited by this
+     * @return {@code true} if at least one item can be edited by this
      * dialog
      */
     public static boolean selectionHasStyledItems(PageItem[] sel) {

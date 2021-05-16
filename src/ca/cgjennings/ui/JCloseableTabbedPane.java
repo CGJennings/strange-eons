@@ -92,7 +92,7 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
      * @param component the cxontents of the tested tab
      * @param tip the tool tip text of the tested tab
      * @param index the index of the tested tab
-     * @return <code>true</code> if the tab should be closable
+     * @return {@code true} if the tab should be closable
      */
     protected boolean isTabClosable(String title, Icon icon, Component component, String tip, int index) {
         return true;
@@ -155,7 +155,7 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
 
     /**
      * Fire a tab closing event for each tab in reverse order, except the tab at
-     * <code>index</code>. If autoclosing is enabled, each tab will be closed
+     * {@code index}. If autoclosing is enabled, each tab will be closed
      * after its event fires.
      *
      * @param index
@@ -177,7 +177,7 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
 
     /**
      * Close a tab without firing an event, as long as {@link #isTabClosable}
-     * returns <code>true</code>. This allows you to close a tab voluntarily in
+     * returns {@code true}. This allows you to close a tab voluntarily in
      * response to a tab closing event.
      *
      * @param index the tab to close

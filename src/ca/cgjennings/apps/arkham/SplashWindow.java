@@ -58,7 +58,7 @@ class SplashWindow extends JFrame {
 
     /**
      * Creates a new splash window. The splash window performs a brief animation
-     * on opening, then passes control to <code>callback</code>.
+     * on opening, then passes control to {@code callback}.
      *
      * @param callback the code to execute once the window is visible
      */

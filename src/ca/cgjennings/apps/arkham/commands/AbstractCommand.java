@@ -18,10 +18,10 @@ import resources.ResourceKit;
  * The abstract base class for main application commands in Strange Eons.
  *
  * <p>
- * Because this class is descended from Swing <code>Action</code>s, it includes
+ * Because this class is descended from Swing {@code Action}s, it includes
  * a property map that can be used to set its name, icon, and so forth. However,
  * this class also defines several convenience methods for setting these
- * properties (all of which are <code>final</code>). Some of these perform
+ * properties (all of which are {@code final}). Some of these perform
  * additional processing on the input before setting it as the value for the
  * relevant property (see, for example, {@link #setName(java.lang.String)}. In
  * these cases you can bypass the additional processing by setting the relevant
@@ -143,7 +143,7 @@ public abstract class AbstractCommand extends AbstractAction {
      * added to a {@link ContextBar}. The ID is generated automatically by:
      * removing "app-" from the start of the key if present, replacing hyphens
      * with underscores, and converting the key to uppercase. To change the
-     * default ID, use <code>putValue( BUTTON_ID_KEY, customID )</code>.
+     * default ID, use {@code putValue( BUTTON_ID_KEY, customID )}.
      *
      * @param nameKey the name of the string key to use to set the name
      */
@@ -189,7 +189,7 @@ public abstract class AbstractCommand extends AbstractAction {
     }
 
     /**
-     * Returns the name of the command, or <code>null</code>.
+     * Returns the name of the command, or {@code null}.
      *
      * @return the command name
      */
@@ -240,7 +240,7 @@ public abstract class AbstractCommand extends AbstractAction {
     }
 
     /**
-     * Sets the accelerator key for this command. If <code>null</code>, no
+     * Sets the accelerator key for this command. If {@code null}, no
      * accelerator key is assigned.
      *
      * @param ks the key stroke to use as the accelerator for this action
@@ -250,10 +250,10 @@ public abstract class AbstractCommand extends AbstractAction {
     }
 
     /**
-     * Returns the accelerator key for this command, or <code>null</code> if the
+     * Returns the accelerator key for this command, or {@code null} if the
      * command has no accelerator key.
      *
-     * @return the accelerator key for the command, or <code>null</code>
+     * @return the accelerator key for the command, or {@code null}
      */
     public final KeyStroke getAccelerator() {
         return (KeyStroke) getValue(ACCELERATOR_KEY);
@@ -261,8 +261,8 @@ public abstract class AbstractCommand extends AbstractAction {
 
     /**
      * The key used for storing the ID string to use for this command when it is
-     * added to a context bar using <code>ContextBar.CommandButton</code>. If
-     * this is <code>null</code>, then a non-<code>null</code> ID must be
+     * added to a context bar using {@code ContextBar.CommandButton}. If
+     * this is {@code null}, then a non-{@code null} ID must be
      * provided when creating the button.
      */
     public static final String BUTTON_ID_KEY = "se#buttonID";
@@ -280,11 +280,11 @@ public abstract class AbstractCommand extends AbstractAction {
 
     /**
      * If the action event contains a special command string, returns that
-     * string. Otherwise, returns <code>null</code>.
+     * string. Otherwise, returns {@code null}.
      *
      * @param e the action event that fired the command
-     * @return <code>null</code> if the event's action command is
-     * <code>null</code>, empty, or the default value for this command;
+     * @return {@code null} if the event's action command is
+     * {@code null}, empty, or the default value for this command;
      * otherwise, the value of the action command
      */
     protected String getCommandString(ActionEvent e) {

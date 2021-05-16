@@ -141,10 +141,10 @@ public class EscapedLineReader extends LineNumberReader {
      * stream has been reached.The next logical line may consist of several
      * "natural" lines in the original file.Natural lines are concatenated into
      * a single logical line when a backslash character occurs immediately
-     * before the line separator between them. For example:      <code>
+     * before the line separator between them. For example:      {@code 
      * These two natural lines will \
      * form a single logical line.
-     * </code>
+     * }
      *
      * <p>
      * A backslash is also used to introduce escape sequences. The sequences \n,
@@ -196,9 +196,9 @@ public class EscapedLineReader extends LineNumberReader {
 
     /**
      * Reads a [key,value] pair, skipping empty lines. This is a cover for
-     * <code>readProperty( true )</code>.
+     * {@code readProperty( true )}.
      *
-     * @return a key, value pair or <code>null</code>
+     * @return a key, value pair or {@code null}
      * @throws IOException
      */
     public String[] readProperty() throws IOException {
@@ -214,9 +214,9 @@ public class EscapedLineReader extends LineNumberReader {
      * the line does not have an unescaped equals sign, then the entire line is
      * treated as the key and the value will be an empty string.
      *
-     * @param skipEmptyLines if <code>true</code>, any empty lines will be
+     * @param skipEmptyLines if {@code true}, any empty lines will be
      * silently skipped
-     * @return a key, value pair or <code>null</code>
+     * @return a key, value pair or {@code null}
      * @throws IOException
      */
     public String[] readProperty(boolean skipEmptyLines) throws IOException {
@@ -245,7 +245,7 @@ public class EscapedLineReader extends LineNumberReader {
 
     /**
      * Return the next line which is not a comment and which contains
-     * non-whitespace characters, or <code>null</code> if the end of the stream
+     * non-whitespace characters, or {@code null} if the end of the stream
      * is reached.
      *
      * @return the next non-comment, non-empty line, or null
@@ -306,7 +306,7 @@ public class EscapedLineReader extends LineNumberReader {
     /**
      * If the reader has read past the first contiguous block of comment lines
      * in the stream, this method returns that comment block. Otherwise, it
-     * returns <code>null</code>.
+     * returns {@code null}.
      *
      * @return the first comment block in the file, if it has been read
      */

@@ -195,10 +195,10 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * If the user applies the settings changes, this will be called after the
      * settings are updated to check if a restart is required. The base
      * implementation checks to see if any of the keys registered with
-     * {@link #addResetKey} have changed value, and returns <code>true</code> if
+     * {@link #addResetKey} have changed value, and returns {@code true} if
      * they have.
      *
-     * @return <code>true</code> if the application must be restarted for
+     * @return {@code true} if the application must be restarted for
      * changes to take effect
      */
     @Override
@@ -236,7 +236,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * This method is called when the preferences dialog is about to be
      * displayed in order to initialize the controls with the current settings.
      * The base class will initialize any of the standard controls that have
-     * been added with a non-<code>null</code> key. It also records the initial
+     * been added with a non-{@code null} key. It also records the initial
      * value of any reset keys that have been added so that they can be compared
      * to their new value later on to determine if a reset is required.
      * Subclasses may override this to handle loading of custom controls.
@@ -351,7 +351,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
 
     /**
      * Adds a checkbox at the current indent level that is mapped to key. If
-     * invert is <code>true</code>, then the box will be checked when the
+     * invert is {@code true}, then the box will be checked when the
      * setting is false instead of true.
      *
      * @param key the setting key name
@@ -418,7 +418,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * Adds a text field with an optional label.
      *
      * @param key the settings key to use
-     * @param label the label text to use, or <code>null</code>
+     * @param label the label text to use, or {@code null}
      * @param cols the number of columns for the field
      * @return the text field
      */

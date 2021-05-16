@@ -68,7 +68,7 @@ import static resources.Language.string;
  * Plug-in loading happens primarily in three stages: discovery, linking, and
  * instantiation. During discovery, the plug-in folder is scanned for plug-in
  * bundle files of a particular type. After checking each bundle for validity,
- * and converting the bundle to <code>FORMAT_PLAIN</code> if required (see
+ * and converting the bundle to {@code FORMAT_PLAIN} if required (see
  * {@link PluginBundle}), the bundle's {@link PluginRoot} is obtained and the
  * bundle is linked to the application. For library bundles, information about
  * the bundle is obtained from the root file and an {@link InstalledLibrary} is
@@ -77,7 +77,7 @@ import static resources.Language.string;
  * instantiating the plug-in in information probe mode (see
  * {@link PluginContext#isInformationProbe}). Using this information, an
  * {@link InstalledPlugin} or {@link InstalledTheme} is created. (An
- * <code>InstalledPlugin</code> is not the plug-in itself, but it can be used to
+ * {@code InstalledPlugin} is not the plug-in itself, but it can be used to
  * create an instance of the plug-in.) Extensions are discovered, linked, and
  * instantiated all at once during application startup. Other plug-ins are
  * discovered and linked during start-up, but are started later (see
@@ -167,7 +167,7 @@ public class BundleInstaller {
      * <tt>.selibrary</tt> file or base class directory. The location can be
      * decoded if the application is unpacked to the local file system or if it
      * is stored in a plain plug-in bundle. If not, then an
-     * <code>AssertionError</code> will be thrown.
+     * {@code AssertionError} will be thrown.
      *
      * @return the main application archive, or the root folder for the class
      * path
@@ -299,7 +299,7 @@ public class BundleInstaller {
     }
 
     /**
-     * Searches for plug-in bundles (<code>.seplugin</code> files) in the
+     * Searches for plug-in bundles ({@code .seplugin} files) in the
      * plug-in folders. Newly discovered plug-ins are linked to the application
      * and added to a
      * {@linkplain #getInstalledPlugins() list of installed plug-ins}, but they
@@ -353,7 +353,7 @@ public class BundleInstaller {
     }
 
     /**
-     * Searches for library bundles (<code>.selibrary</code> files) in the
+     * Searches for library bundles ({@code .selibrary} files) in the
      * plug-in folders, and attempts to link the application to any libraries
      * that it finds. This method is not normally called by user code. To
      * install a library bundle, call
@@ -384,7 +384,7 @@ public class BundleInstaller {
     private static final TreeSet<InstalledLibrary> installedLibraries = new TreeSet<>();
 
     /**
-     * Searches for theme bundles (<code>.setheme</code> files) in the plug-in
+     * Searches for theme bundles ({@code .setheme} files) in the plug-in
      * folders, installing any themes that it finds.
      *
      * @see #getInstalledThemes()
@@ -395,12 +395,13 @@ public class BundleInstaller {
         if (installedThemes == null) {
             installedThemes = new TreeSet<>();
 
-            // Only add built-in themes on the first scan:
-            //  - add built-in themes if J6u10 is available
+            // Only add built-in themes on the first scan
             try {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+                if (StrangeEons.getBuildNumber() == 99999) {
+                    installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+                }
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
@@ -440,11 +441,11 @@ public class BundleInstaller {
 
     /**
      * Returns the {@link InstalledTheme} whose {@link Theme} class has the name
-     * className, or <code>null</code> if no such theme is available.
+     * className, or {@code null} if no such theme is available.
      *
      * @param className the class name of the theme to search for
      * @return the {@link InstalledTheme} with the class name, or
-     * <code>null</code>
+     * {@code null}
      */
     public synchronized static InstalledTheme getInstalledThemeForClassName(String className) {
         if (className == null) {
@@ -465,12 +466,12 @@ public class BundleInstaller {
     private static Set<InstalledTheme> installedThemes;
 
     /**
-     * Searches for extension bundles (<code>.seext</code> files) in the plug-in
+     * Searches for extension bundles ({@code .seext} files) in the plug-in
      * folders and attempts to start extension plug-ins that it finds. This is
      * called during application startup. It should never be called by user
      * code.
      *
-     * @param pl if non-<code>null</code>, this listener will be called
+     * @param pl if non-{@code null}, this listener will be called
      * periodically with updates on installation progress
      * @see #unloadExtensions()
      * @see #getInstalledExtensions()
@@ -548,7 +549,7 @@ public class BundleInstaller {
 
     /**
      * Adds the id to the list of failed UUIDs (does nothing if the id is
-     * <code>null</code>).
+     * {@code null}).
      *
      * @param id the id to add
      * @see #getFailedUUIDs()
@@ -657,13 +658,13 @@ public class BundleInstaller {
 
     /**
      * Search the plug-in folders for files with names that end in
-     * <code>extension</code>. For each such file, any plug-ins it contains are
-     * enumerated and added to <code>pluginSet</code>. If it contains at least
-     * one plug-in, or if <code>pluginSet</code> is <code>null</code>, then the
+     * {@code extension}. For each such file, any plug-ins it contains are
+     * enumerated and added to {@code pluginSet}. If it contains at least
+     * one plug-in, or if {@code pluginSet} is {@code null}, then the
      * file is added to the class path.
      *
      * @param pluginSet a set that discovered plug-ins will be added to (may be
-     * <code>null</code> for libraries)
+     * {@code null} for libraries)
      * @param pluginType the type of plug-in to scan for (see
      * {@link PluginBundle})
      */
@@ -721,7 +722,7 @@ public class BundleInstaller {
      * <li>Its root file will be parsed, and if a bundle with its UUID is not
      * already installed then:
      * <li>{@link InstalledPlugin}s will be created for each plug-in listed in
-     * the bundle, and added to pluginSet if it is not <code>null</code>. (No
+     * the bundle, and added to pluginSet if it is not {@code null}. (No
      * actual plug-ins are instantiated, however.)
      * <li>The bundle will be linked to the application (added to the class
      * path).
@@ -974,24 +975,24 @@ public class BundleInstaller {
 
     /**
      * Returns the {@link CatalogID} extracted from a discovered bundle whose
-     * UUID matches <code>uuid</code>, or <code>null</code>.
+     * UUID matches {@code uuid}, or {@code null}.
      *
      * @param uuid the UUID to match against installed catalog IDs
-     * @return the ID associated with the UUID, or <code>null</code>
+     * @return the ID associated with the UUID, or {@code null}
      */
     public static CatalogID getInstalledCatalogID(UUID uuid) {
         return catalogIDMap.get(uuid);
     }
 
     /**
-     * Returns <code>true</code> if a bundle with this file name but no catalog
+     * Returns {@code true} if a bundle with this file name but no catalog
      * information has been installed. It will be assumed by the catalog system
      * then when a catalog is opened that contains a bundle whose name is the
      * same as a bundle with no ID, the new bundle (now with catalog info)
      * updates the old bundle.
      *
      * @param name the name to check against installed bundles
-     * @return <code>true</code> if a bundle with this name and no catalog
+     * @return {@code true} if a bundle with this name and no catalog
      * information is installed
      */
     public static boolean isUncatalogedBundleName(String name) {
@@ -1021,7 +1022,7 @@ public class BundleInstaller {
     }
 
     /**
-     * Returns the file that a plug-in is stored in, or <code>null</code> if the
+     * Returns the file that a plug-in is stored in, or {@code null} if the
      * plug-in is not stored in a bundle.
      *
      * @param identifier the normalized plug-in identifier, such as a class name
@@ -1036,7 +1037,7 @@ public class BundleInstaller {
      * Returns the plug-in bundle file whose catalog ID uses the specified UUID.
      *
      * @param uuid the unique ID of the bundle's catalog ID
-     * @return the file that contains this UUID, or <code>null</code>
+     * @return the file that contains this UUID, or {@code null}
      * @see #getPluginBundle(java.io.File)
      */
     public static File getBundleFileForUUID(UUID uuid) {
@@ -1045,10 +1046,10 @@ public class BundleInstaller {
 
     /**
      * Returns the {@link PluginBundle PluginBundle} associated with a loaded
-     * plug-in bundle, or <code>null</code> if the file is not a loaded bundle.
+     * plug-in bundle, or {@code null} if the file is not a loaded bundle.
      *
      * @param f the bundle file to match
-     * @return the bundle file's plug-in bundle, or <code>null</code>
+     * @return the bundle file's plug-in bundle, or {@code null}
      */
     public static PluginBundle getPluginBundle(File f) {
         synchronized (discoveredBundles) {
@@ -1061,7 +1062,7 @@ public class BundleInstaller {
      * the class path. This set may include bundles that were discovered, but
      * not loaded (for example, if the bundle file was corrupt). In these cases,
      * calling {@link #getPluginBundle(java.io.File) getPluginBundle} for the
-     * unloadable bundle will return <code>null</code>.
+     * unloadable bundle will return {@code null}.
      *
      * @return an array of discovered bundle files
      * @see #getPluginBundle(java.io.File)
@@ -1092,7 +1093,7 @@ public class BundleInstaller {
      * Find the addURL method of a class loader, walking the inheritance tree as
      * needed.
      *
-     * @return the <code>addURL( URL url )</code> method, or <code>null</code>
+     * @return the {@code addURL( URL url )} method, or {@code null}
      * if there is no such method in the class or its superclasses
      */
     @SuppressWarnings("unchecked")
@@ -1256,7 +1257,7 @@ public class BundleInstaller {
      *
      * @param bundleFile the file to install
      * @return a bitmask summarizing the result, or 0
-     * @throws NullPointerException if the bundle file is <code>null</code>
+     * @throws NullPointerException if the bundle file is {@code null}
      * @throws IOException if an I/O error occurs while installing the bundle
      * @see #INSTALL_FLAG_RESTART_REQUIRED
      * @see #INSTALL_FLAG_UPDATED
@@ -1513,12 +1514,12 @@ public class BundleInstaller {
     }
 
     /**
-     * Returns <code>true</code> if the JavaFX runtime is available. This method
+     * Returns {@code true} if the JavaFX runtime is available. This method
      * will attempt to locate, dynamically load, and start the runtime
-     * before returning <code>false</code>.
+     * before returning {@code false}.
      *
-     * @return <code>true</code> if the JavaFX runtime is available
-     * @deprecated This method returns <code>false</code>.
+     * @return {@code true} if the JavaFX runtime is available
+     * @deprecated This method returns {@code false}.
      */
     public static boolean isFXRuntimeAvailable() {
         return false;

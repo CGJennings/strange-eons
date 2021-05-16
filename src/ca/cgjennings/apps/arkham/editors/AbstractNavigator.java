@@ -32,7 +32,7 @@ public abstract class AbstractNavigator implements Navigator {
      *
      * @param t the exception that was thrown
      * @param text the source text being matched against
-     * @param m the matcher that threw <code>t</code>
+     * @param m the matcher that threw {@code t}
      */
     public static void dumpRegExpThrowable(Throwable t, String text, Matcher m) {
         System.err.println("Navigation regexp exception:");

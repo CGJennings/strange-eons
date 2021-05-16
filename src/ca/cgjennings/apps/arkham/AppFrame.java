@@ -578,7 +578,7 @@ final class AppFrame extends StrangeEonsAppWindow {
      * where editor windows are displayed.
      *
      * @param comp the component to add
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
+     * @throws NullPointerException if {@code comp} is {@code null}
      * @since 2.00a13
      */
     @Override
@@ -597,7 +597,7 @@ final class AppFrame extends StrangeEonsAppWindow {
      * @param comp the component to be added
      * @param index the position at which to insert the component, or -1 to
      * append the component to the end
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
+     * @throws NullPointerException if {@code comp} is {@code null}
      * @since 2.00a13
      */
     @Override
@@ -647,8 +647,8 @@ final class AppFrame extends StrangeEonsAppWindow {
      * application window component bar.
      *
      * @param comp the component to remove
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>comp</code> has not been added
+     * @throws NullPointerException if {@code comp} is {@code null}
+     * @throws IllegalArgumentException if {@code comp} has not been added
      * as a custom component
      * @since 2.00a13
      */
@@ -669,12 +669,12 @@ final class AppFrame extends StrangeEonsAppWindow {
     }
 
     /**
-     * Remove the custom component at position <code>index</code> in the custom
+     * Remove the custom component at position {@code index} in the custom
      * component area.
      *
      * @param index the 0-based index into the list of custom components
-     * @throws IndexOutOfBoundsException if <code>index</code> &lt; 0 or
-     * <code>index</code> &gt;= {@link #getCustomComponentCount()}
+     * @throws IndexOutOfBoundsException if {@code index} &lt; 0 or
+     * {@code index} &gt;= {@link #getCustomComponentCount()}
      * @since 2.00a13
      */
     @Override
@@ -710,13 +710,13 @@ final class AppFrame extends StrangeEonsAppWindow {
     }
 
     /**
-     * Return the custom component at position <code>index</code> in the custom
+     * Return the custom component at position {@code index} in the custom
      * component area.
      *
      * @param index the 0-based index into the list of custom components
-     * @return the component at position <code>index</code>
-     * @throws IndexOutOfBoundsException if <code>index</code> &lt; 0 or
-     * <code>index</code> &gt;= {@link #getCustomComponentCount()}
+     * @return the component at position {@code index}
+     * @throws IndexOutOfBoundsException if {@code index} &lt; 0 or
+     * {@code index} &gt;= {@link #getCustomComponentCount()}
      * @since 2.00a13
      */
     @Override
@@ -1588,7 +1588,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     }
 
     /**
-     * @deprecated This is a cover method for <code>exitApplication( false )</code>. It is
+     * @deprecated This is a cover method for {@code exitApplication( false )}. It is
      * retained for backwards compatibility.
      */
     @Deprecated
@@ -2474,7 +2474,7 @@ final class AppFrame extends StrangeEonsAppWindow {
 
     /**
      * Removes a menu item previously added with {@link #addMenuItem}. If you
-     * have added an item to a menu with <code>addMenuItem</code>, you must use
+     * have added an item to a menu with {@code addMenuItem}, you must use
      * this method to remove that item before changing the item's parent or the
      * application menus may be corrupted.
      *
@@ -2539,7 +2539,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     private Object[][] appMenuGrid;
 
     /**
-     * Initializes <code>appMenuGrid</code> with an array that determines where
+     * Initializes {@code appMenuGrid} with an array that determines where
      * new menu items will be added by {@link #addMenuItem}.
      */
     private void initMenuGrid() {

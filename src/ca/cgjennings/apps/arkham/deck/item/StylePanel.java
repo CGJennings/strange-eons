@@ -21,7 +21,7 @@ public interface StylePanel<S extends Style> {
     String getTitle();
 
     /**
-     * Returns the component (typically a <code>JPanel</code>) that contains the
+     * Returns the component (typically a {@code JPanel}) that contains the
      * controls used to edit the style.
      *
      * @return the editing control

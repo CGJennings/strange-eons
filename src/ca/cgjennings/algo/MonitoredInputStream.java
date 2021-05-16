@@ -10,7 +10,7 @@ import java.util.concurrent.CancellationException;
 
 /**
  * An input stream that can be monitored using a {@link ProgressListener}. This
- * is similar to a <code>ProgressMonitorInputStream</code>, except that it is
+ * is similar to a {@code ProgressMonitorInputStream}, except that it is
  * more flexible in how the progress updates are used.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -65,7 +65,7 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides <code>FilterInputStream.read</code> to update progress after
+     * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
      */
     @Override
@@ -79,7 +79,7 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides <code>FilterInputStream.read</code> to update progress after
+     * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
      */
     @Override
@@ -93,7 +93,7 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides <code>FilterInputStream.read</code> to update progress after
+     * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
      */
     @Override
@@ -109,7 +109,7 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides <code>FilterInputStream.skip</code> to update progress after
+     * Overrides {@code FilterInputStream.skip} to update progress after
      * the skip.
      */
     @Override
@@ -123,7 +123,7 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides <code>FilterInputStream.reset</code> to reset progress listener
+     * Overrides {@code FilterInputStream.reset} to reset progress listener
      * as well as the stream.
      */
     @Override

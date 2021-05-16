@@ -106,8 +106,8 @@ public class PublishBundle extends TaskAction {
      * Converts a bundle to published format and returns a {@link Listing}
      * containing any catalog information specified by the bundle's root file.
      * If publication fails, an error is displayed to the user and the method
-     * returns <code>null</code>. The caller can specify a compression method to
-     * use for the bundle; if this is <code>null</code>, then both BZIP2 and
+     * returns {@code null}. The caller can specify a compression method to
+     * use for the bundle; if this is {@code null}, then both BZIP2 and
      * LZMA compression will be tested and the one which yields the smallest
      * published bundle size will be used.
      *

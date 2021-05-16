@@ -37,14 +37,14 @@ public class FileDrop {
     private static final Logger log = Logger.getLogger(FileDrop.class.getPackage().getName());
 
     /**
-     * Creates a new <code>FileDrop</code> on the component. If the component is
-     * a <code>JComponent</code>, a {@link DropBorder} will appear when dragging
+     * Creates a new {@code FileDrop} on the component. If the component is
+     * a {@code JComponent}, a {@link DropBorder} will appear when dragging
      * files over it.
      *
      * @param component the component that will accept files
-     * @param borderOwner if non-<code>null</code>, a component whose border
+     * @param borderOwner if non-{@code null}, a component whose border
      * will change to indicate that files are being dragged over the component
-     * @param attachToDescendants if <code>true</code>, then all of the
+     * @param attachToDescendants if {@code true}, then all of the
      * descendants of the component will also listen for file drops
      */
     public FileDrop(Component component, JComponent borderOwner, boolean attachToDescendants) {
@@ -52,8 +52,8 @@ public class FileDrop {
     }
 
     /**
-     * Creates a new <code>FileDrop</code> on the component. If the component is
-     * a <code>JComponent</code>, a {@link DropBorder} will appear when dragging
+     * Creates a new {@code FileDrop} on the component. If the component is
+     * a {@code JComponent}, a {@link DropBorder} will appear when dragging
      * files over it.
      *
      * @param component the component that will accept files
@@ -64,12 +64,12 @@ public class FileDrop {
     }
 
     /**
-     * Creates a new <code>FileDrop</code> on the component. If
-     * <code>borderOwner</code> is not <code>null</code>, a {@link DropBorder}
+     * Creates a new {@code FileDrop} on the component. If
+     * {@code borderOwner} is not {@code null}, a {@link DropBorder}
      * will appear when dragging files over the component.
      *
      * @param component the component that will accept files
-     * @param borderOwner if non-<code>null</code>, a component whose border
+     * @param borderOwner if non-{@code null}, a component whose border
      * will change to indicate that files are being dragged over the component
      * @param listener the simple listener that will be notified when files are
      * dropped
@@ -79,14 +79,14 @@ public class FileDrop {
     }
 
     /**
-     * Creates a new <code>FileDrop</code> on the component. If the component is
-     * a <code>JComponent</code>, a {@link DropBorder} will appear when dragging
+     * Creates a new {@code FileDrop} on the component. If the component is
+     * a {@code JComponent}, a {@link DropBorder} will appear when dragging
      * files over it.
      *
      * @param component the component that will accept files
-     * @param borderOwner if non-<code>null</code>, a component whose border
+     * @param borderOwner if non-{@code null}, a component whose border
      * will change to indicate that files are being dragged over the component
-     * @param attachToDescendants if <code>true</code>, then all of the
+     * @param attachToDescendants if {@code true}, then all of the
      * descendants of the component will also listen for file drops
      * @param listener an optional simple listener that will be notified when
      * files are dropped
@@ -271,7 +271,7 @@ public class FileDrop {
      * data type (which can't).
      *
      * @param evt the event to check for acceptable incoming data flavors
-     * @return <code>true</code> if files are being dropped
+     * @return {@code true} if files are being dropped
      */
     private boolean canAcceptDrag(final java.awt.dnd.DropTargetDragEvent evt) {
         java.awt.datatransfer.DataFlavor[] flavors = evt.getCurrentDataFlavors();
@@ -306,7 +306,7 @@ public class FileDrop {
      * Sets the file filter for this drop handler. When set, dropped files will
      * be filtered before calling the drop listener.
      *
-     * @param fileFilter the filter to apply, or <code>null</code> to accept all
+     * @param fileFilter the filter to apply, or {@code null} to accept all
      * files
      */
     public void setFileFilter(FileFilter fileFilter) {
@@ -316,7 +316,7 @@ public class FileDrop {
     /**
      * Returns the file filter for this drop handler.
      *
-     * @return the file filter for this drop handler, or <code>null</code>
+     * @return the file filter for this drop handler, or {@code null}
      */
     public FileFilter getFileFilter() {
         return filter;
@@ -327,7 +327,7 @@ public class FileDrop {
      * its descendants.
      *
      * @param component the top-level component to modify
-     * @param recursive if <code>true</code>, apply recursively to all
+     * @param recursive if {@code true}, apply recursively to all
      * descendants
      */
     public static void remove(java.awt.Component component, boolean recursive) {
@@ -349,7 +349,7 @@ public class FileDrop {
 
         /**
          * Called when one or more files are successfully dropped onto a
-         * <code>FileDrop</code> target.
+         * {@code FileDrop} target.
          *
          * @param dropEvent an event object that provides details about the drop
          */
@@ -411,9 +411,9 @@ public class FileDrop {
 
         /**
          * Called when one or more files are successfully dropped onto a
-         * <code>FileDrop</code> target.
+         * {@code FileDrop} target.
          *
-         * @param files a non-<code>null</code> array of one or more files, all
+         * @param files a non-{@code null} array of one or more files, all
          * of which are acceptable to the listener
          */
         void filesDropped(File[] files);

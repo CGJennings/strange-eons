@@ -15,7 +15,7 @@ public abstract class AbstractFilteredComposer implements FrameComposer {
      * Creates a filter for an existing composition.
      *
      * @param composer the composition to filter
-     * @throws NullPointerException if the composer is <code>null</code>
+     * @throws NullPointerException if the composer is {@code null}
      */
     public AbstractFilteredComposer(FrameComposer composer) {
         if (composer == null) {
@@ -30,7 +30,7 @@ public abstract class AbstractFilteredComposer implements FrameComposer {
      * composition with this filter.
      *
      * @param animation the animation whose composer should be filtered
-     * @throws NullPointerException if the animation is <code>null</code>
+     * @throws NullPointerException if the animation is {@code null}
      */
     public AbstractFilteredComposer(Animation animation) {
         if (animation == null) {
@@ -53,7 +53,7 @@ public abstract class AbstractFilteredComposer implements FrameComposer {
      * Sets the composer to be filtered.
      *
      * @param composer the composer to which filtering will be applied
-     * @throws NullPointerException if the composer is <code>null</code>
+     * @throws NullPointerException if the composer is {@code null}
      */
     public void setComposer(FrameComposer composer) {
         if (composer == null) {

@@ -41,7 +41,7 @@ public class VectorImageViewer extends AbstractViewer {
     /**
      * Returns the vector image displayed by this viewer.
      *
-     * @return the displayed image, or <code>null</code>
+     * @return the displayed image, or {@code null}
      */
     public VectorImage getImage() {
         return image;
@@ -50,7 +50,7 @@ public class VectorImageViewer extends AbstractViewer {
     /**
      * Sets the vector image displayed by this viewer.
      *
-     * @param image the image to display, or <code>null</code>
+     * @param image the image to display, or {@code null}
      */
     public void setImage(VectorImage image) {
         this.image = image;
@@ -65,10 +65,10 @@ public class VectorImageViewer extends AbstractViewer {
     private boolean autoReset = true;
 
     /**
-     * Returns <code>true</code> if the zoom and pan will be reset when the
+     * Returns {@code true} if the zoom and pan will be reset when the
      * image is changed.
      *
-     * @return <code>true</code> if the image transform is reset when the image
+     * @return {@code true} if the image transform is reset when the image
      * changes
      */
     public final boolean isScaleResetAutomatically() {
@@ -79,7 +79,7 @@ public class VectorImageViewer extends AbstractViewer {
      * Sets whether the zoom and pan will be reset when the image is changed.
      * This is enabled by default.
      *
-     * @param autoReset if <code>true</code>, calls to {@link #setImage} will
+     * @param autoReset if {@code true}, calls to {@link #setImage} will
      * reset the pan and zoom and settings
      */
     public final void setScaleResetAutomatically(boolean autoReset) {

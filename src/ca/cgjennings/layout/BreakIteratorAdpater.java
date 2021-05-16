@@ -6,14 +6,14 @@ import java.util.Locale;
 
 /**
  * An abstract class that allows subclasses to easily create classes that filter
- * out undesired break points returned by a <code>java.text.BreakIterator</code>
+ * out undesired break points returned by a {@code java.text.BreakIterator}
  * instance.
  * <p>
- * It works by wrapping an existing base <code>BreakIterator</code> that returns
+ * It works by wrapping an existing base {@code BreakIterator} that returns
  * a superset of the desired break points. Before any potential break point is
  * returned from the adaptor, the adapter will validate it by calling
- * {@link #isBreakValidInternal(int)}. If that returns <code>true</code>, then
- * the break is returned to the caller. If it returns <code>false</code>, the
+ * {@link #isBreakValidInternal(int)}. If that returns {@code true}, then
+ * the break is returned to the caller. If it returns {@code false}, the
  * break will be filtered out. The next valid break in the same direction will
  * then be substituted until an acceptable break is found.
  *

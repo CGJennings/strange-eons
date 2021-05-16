@@ -20,12 +20,12 @@ import java.util.regex.Pattern;
  * the variable is undefined.
  * <p>
  * <b>{?<i>condition</i>} ... {/?<i>condition</i>}</b><br>
- * If the condition is set to <code>true</code>, then the text between the start
+ * If the condition is set to {@code true}, then the text between the start
  * and end symbols will be included in the document. Otherwise, it will be left
  * out. Throws an exception if the condition has not been set.
  * <p>
  * <b>{!<i>condition</i>} ... {/!<i>condition</i>}</b><br>
- * If the condition is set to <code>false</code>, then the text between the
+ * If the condition is set to {@code false}, then the text between the
  * start and end symbols will be included in the document. Otherwise, it will be
  * left out. Throws an exception if the condition has not been set.
  *
@@ -80,7 +80,7 @@ public class TemplateProcessor {
     }
 
     /**
-     * Sets the locale used to process format strings. If <code>null</code>, the
+     * Sets the locale used to process format strings. If {@code null}, the
      * default locale is set.
      */
     public void setLocale(Locale locale) {
@@ -129,7 +129,7 @@ public class TemplateProcessor {
      * Sets a group of variable definitions from an array. The elements of the
      * array form pairs of variable names and values, with the names at even
      * array indices. Example:<br>
-     * <code>setAll( "var1", "apple", "var2", "3.14159", "var3", "sun dance" )</code>
+     * {@code setAll( "var1", "apple", "var2", "3.14159", "var3", "sun dance" )}
      *
      * @param nameValuePairs the pairs of variable names and values to set
      * @return this processor, so that the method can be chained
@@ -152,7 +152,7 @@ public class TemplateProcessor {
      *
      * @param name the variable name
      * @return the value of the variable
-     * @throws NullPointerException if the variable name is <code>null</code>
+     * @throws NullPointerException if the variable name is {@code null}
      * @throws IllegalArgumentException if the variable name is undefined
      */
     public String get(String name) {
@@ -170,7 +170,7 @@ public class TemplateProcessor {
      * Sets the value of a condition.
      *
      * @param name the condition name
-     * @param value <code>true</code> if the condition is to be set
+     * @param value {@code true} if the condition is to be set
      * @return this processor, so that the method can be chained
      */
     public TemplateProcessor setCondition(String name, boolean value) {
@@ -182,11 +182,11 @@ public class TemplateProcessor {
     }
 
     /**
-     * Returns <code>true</code> if the named condition is set.
+     * Returns {@code true} if the named condition is set.
      *
      * @param name the name of the condition
-     * @return <code>true</code> if the named condition is set
-     * @throws NullPointerException if the variable name is <code>null</code>
+     * @return {@code true} if the named condition is set
+     * @throws NullPointerException if the variable name is {@code null}
      * @throws IllegalArgumentException if the variable name is undefined
      */
     public boolean isConditionSet(String name) {
@@ -226,11 +226,11 @@ public class TemplateProcessor {
 
     /**
      * Finds the first symbol starting from the start of this string, returning
-     * a matcher with info about the symbol or <code>null</code> if there is no
+     * a matcher with info about the symbol or {@code null} if there is no
      * symbol.
      *
      * @param source the source being filled in
-     * @return a matcher at the first match, or <code>null</code>
+     * @return a matcher at the first match, or {@code null}
      */
     private Matcher findSymbol(String source) {
         Matcher m = SYMPAT.matcher(source);
@@ -270,7 +270,7 @@ public class TemplateProcessor {
      * variable
      * @param remainder the template text that follows the symbol
      * @return the template text that follows the symbol after the symbol is
-     * processed (usually just <code>remainder</code>)
+     * processed (usually just {@code remainder})
      * @throws IllegalArgumentException if there is a syntax error in the
      * template or a runtime error (such as an undefined variable)
      */
@@ -316,7 +316,7 @@ public class TemplateProcessor {
      *
      * @param message the error message to provide
      * @param remainder the remaining unprocessed text (may be
-     * <code>null</code>)
+     * {@code null})
      * @throws IllegalArgumentException
      */
     protected void error(String message, String remainder) throws IllegalArgumentException {

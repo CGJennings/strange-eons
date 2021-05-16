@@ -3,7 +3,7 @@ package ca.cgjennings.apps.arkham.project;
 import static resources.Language.string;
 
 /**
- * Task action to add a new locale based on an existing <code>.properties</code>
+ * Task action to add a new locale based on an existing {@code .properties}
  * file.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

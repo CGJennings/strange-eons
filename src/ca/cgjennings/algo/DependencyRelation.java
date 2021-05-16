@@ -18,7 +18,7 @@ public interface DependencyRelation<T extends DependencyRelation> {
     /**
      * Returns a set of objects that this object depends upon. If this object
      * does not depend on any objects, it is allowed to return either
-     * <code>null</code> or an empty set.
+     * {@code null} or an empty set.
      *
      * @return the set of objects directly required by this object
      */

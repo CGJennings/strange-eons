@@ -13,16 +13,16 @@ import resources.StrangeImage;
 
 /**
  * An abstract base class for {@link Portrait} implementations. This base class
- * implements the <code>Point2D</code>-based pan methods in terms of
- * <code>setPanX</code>, <code>setPanY</code>, <code>getPanX</code>, and
- * <code>getPanY</code>. It also returns a default set of portrait features
+ * implements the {@code Point2D}-based pan methods in terms of
+ * {@code setPanX}, {@code setPanY}, {@code getPanX}, and
+ * {@code getPanY}. It also returns a default set of portrait features
  * supporting source-changing, panning, and scaling, but not rotation.
  * Accordingly, it provides dummy implementations of the rotation getter/setter
  * methods that enforce an immutable angle of 0 degrees. It provides a no-op
  * implementation of {@link #installDefault()}. It implements
- * {@link #getClipStencil()} to return <code>null</code>, but it provides some
+ * {@link #getClipStencil()} to return {@code null}, but it provides some
  * static helper methods for subclasses that wish to provide
- * non-<code>null</code> stencils.
+ * non-{@code null} stencils.
  *
  * @see DefaultPortrait
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -35,7 +35,7 @@ public abstract class AbstractPortrait implements Portrait {
      *
      * <p>
      * The base class calls {@link #setPanX} and {@link #setPanY} using the x
-     * and y values stored in <code>pan</code>.
+     * and y values stored in {@code pan}.
      */
     @Override
     public void setPan(Point2D pan) {
@@ -99,7 +99,7 @@ public abstract class AbstractPortrait implements Portrait {
      * {@inheritDoc}
      *
      * <p>
-     * The base class returns <code>null</code>, indicating that the portrait
+     * The base class returns {@code null}, indicating that the portrait
      * area is unobscured.
      */
     @Override
@@ -122,8 +122,8 @@ public abstract class AbstractPortrait implements Portrait {
      * <p>
      * If the resulting image would have no transparent or translucent pixels
      * (that is, if every pixel would have an alpha value of 255), then this
-     * method returns <code>null</code>. This is consistent with how
-     * <code>null</code> is interpreted when it is returned from
+     * method returns {@code null}. This is consistent with how
+     * {@code null} is interpreted when it is returned from
      * {@link #getClipStencil()}, because if the subimage is completely opaque
      * then the portrait is presumably being drawn over the template rather than
      * under it.
@@ -132,9 +132,9 @@ public abstract class AbstractPortrait implements Portrait {
      * @param portraitRegion the rectangular area covered by the portrait on the
      * template image
      * @return the subimage of the template covered by the portrait rectangle,
-     * or <code>null</code> if the template image is <code>null</code> or
+     * or {@code null} if the template image is {@code null} or
      * completely opaque
-     * @throws NullPointerException if the portrait region is <code>null</code>
+     * @throws NullPointerException if the portrait region is {@code null}
      */
     public static BufferedImage createStencil(BufferedImage template, Rectangle portraitRegion) {
         if (portraitRegion == null) {
@@ -173,8 +173,8 @@ public abstract class AbstractPortrait implements Portrait {
      * @param portraitRegionKey a setting key (without "-region") that describes
      * the clip region
      * @return the subimage of the template image referenced by
-     * <code>templateKey</code> covered by the portrait rectangle described by
-     * <code>portraitRegionKey</code>, or <code>null</code> if the resulting
+     * {@code templateKey} covered by the portrait rectangle described by
+     * {@code portraitRegionKey}, or {@code null} if the resulting
      * image would be completely opaque
      * @see #createStencil(java.awt.image.BufferedImage, java.awt.Rectangle)
      */

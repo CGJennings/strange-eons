@@ -233,7 +233,7 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
     /**
      * Displays the dialog and waits for the user to choose a locale.
      *
-     * @return the selected locale, or <code>null</code> is the user cancels
+     * @return the selected locale, or {@code null} is the user cancels
      */
     public Locale showDialog() {
         sel = null;

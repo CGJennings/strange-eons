@@ -21,7 +21,7 @@ import java.util.Map.Entry;
  *
  * <p>
  * It is guaranteed that every cached object that has no other references to it
- * will be cleared before an <code>OutOfMemory</code> error is thrown. The cache
+ * will be cleared before an {@code OutOfMemory} error is thrown. The cache
  * can also be {@linkplain #clear() cleared on demand}, and individual objects
  * {@linkplain #remove(java.lang.Object) removed}.
  *
@@ -50,11 +50,11 @@ public abstract class AbstractResourceCache<I, R> {
 
     /**
      * Creates a new resource cache with the given name. If the given name is
-     * <code>null</code>, a default name will be generated using the name of the
+     * {@code null}, a default name will be generated using the name of the
      * concrete class.
      *
      * @param name a descriptive name for the resource cache
-     * @throws NullPointerException if the content type is <code>null</code>
+     * @throws NullPointerException if the content type is {@code null}
      */
     public AbstractResourceCache(Class<? extends R> contentType, String name) {
         if (contentType == null) {
@@ -76,12 +76,12 @@ public abstract class AbstractResourceCache<I, R> {
      * <p>
      * If the requested resource does not exist, the result depends on the
      * subclass implementation. Some subclasses may return a default resource to
-     * stand in for the requested resource. Others may return <code>null</code>
+     * stand in for the requested resource. Others may return {@code null}
      * or throw an exception.
      *
      * @param identifier the identifier of the resource to obtain
      * @return the requested resource
-     * @throws NullPointerException if the identifier is <code>null</code>
+     * @throws NullPointerException if the identifier is {@code null}
      */
     public final R get(I identifier) {
         if (identifier == null) {
@@ -114,7 +114,7 @@ public abstract class AbstractResourceCache<I, R> {
      * object will be reloaded the next time it is requested.
      *
      * @param identifier the identifier of the resource to remove from the cache
-     * @throws NullPointerException if the identifier is <code>null</code>
+     * @throws NullPointerException if the identifier is {@code null}
      */
     public final void remove(I identifier) {
         if (identifier == null) {
@@ -200,7 +200,7 @@ public abstract class AbstractResourceCache<I, R> {
      * <p>
      * The base class will return the original identifier without changes.
      *
-     * @param identifier the non-<code>null</code>identifier to convert to
+     * @param identifier the non-{@code null}identifier to convert to
      * canonical form
      * @return the canonical form of the identifier
      */
@@ -209,10 +209,10 @@ public abstract class AbstractResourceCache<I, R> {
     }
 
     /**
-     * Returns <code>true</code> if this resource should be cached.
+     * Returns {@code true} if this resource should be cached.
      *
      * <p>
-     * The base class returns <code>true</code>. Subclasses can override this if
+     * The base class returns {@code true}. Subclasses can override this if
      * they wish to decide whether individual objects should be cached. For
      * example, a subclass might only allow caching of objects if the identifier
      * refers to a read-only storage facility.
@@ -220,7 +220,7 @@ public abstract class AbstractResourceCache<I, R> {
      * @param canonicalIdentifier the identifier of the resource object
      * @param loadedResource the resource object, as returned from
      * {@link #loadResource}
-     * @return <code>true</code> if the object should be cached
+     * @return {@code true} if the object should be cached
      */
     protected boolean allowCaching(I canonicalIdentifier, R loadedResource) {
         return true;
@@ -288,7 +288,7 @@ public abstract class AbstractResourceCache<I, R> {
      * instance is created and it is then registered so it can be looked up by
      * support tools.
      *
-     * @param allowClearing if <code>false</code>, then the returned metrics
+     * @param allowClearing if {@code false}, then the returned metrics
      * instance cannot be used to clear the cache
      * @return a new cache metrics instance that reflects the state of this
      * cache

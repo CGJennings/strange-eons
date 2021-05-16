@@ -60,10 +60,10 @@ public class Project extends TaskGroup {
 
     /**
      * Returns the canonical {@link ProjectView} associated with this project,
-     * or <code>null</code> if no view is associated with it.
+     * or {@code null} if no view is associated with it.
      *
      * @return the canonical project view displaying this project, or
-     * <code>null</code>
+     * {@code null}
      */
     public ProjectView getView() {
         ProjectView view = ProjectView.getCurrentView();
@@ -82,12 +82,12 @@ public class Project extends TaskGroup {
 
     /**
      * Returns the {@link Member} instance pointed to by a URL. The URL protocol
-     * must either be <code>file:</code> or <code>project:</code>. If the file
-     * specified by the URL is not part of the project, <code>null</code> is
+     * must either be {@code file:} or {@code project:}. If the file
+     * specified by the URL is not part of the project, {@code null} is
      * returned.
      *
      * @param url the URL to locate a project member for
-     * @return the project member described by the URL, or <code>null</code>
+     * @return the project member described by the URL, or {@code null}
      * @since 3.0
      */
     @SuppressWarnings("empty-statement")
@@ -115,11 +115,11 @@ public class Project extends TaskGroup {
 
     /**
      * Returns the {@link Member} instance that represents a file in a project.
-     * If the file is not part of the project, then <code>null</code> is
+     * If the file is not part of the project, then {@code null} is
      * returned.
      *
      * @param file the file to locate in the project's member tree
-     * @return the project member for <code>file</code>, or <code>null</code>
+     * @return the project member for {@code file}, or {@code null}
      */
     public Member findMember(File file) {
         if (file == null) {
@@ -191,12 +191,12 @@ public class Project extends TaskGroup {
     }
 
     /**
-     * Returns <code>true</code> if the specified file exists and is a project
+     * Returns {@code true} if the specified file exists and is a project
      * folder.
      *
      * @param file the file to test
-     * @return <code>true</code> if the file is a regular project folder
-     * @throws NullPointerException if the file is <code>null</code>
+     * @return {@code true} if the file is a regular project folder
+     * @throws NullPointerException if the file is {@code null}
      */
     public static final boolean isProjectFolder(File file) throws IOException {
         if (file == null) {
@@ -210,12 +210,12 @@ public class Project extends TaskGroup {
     }
 
     /**
-     * Returns <code>true</code> if the specified file exists and is a packaged
+     * Returns {@code true} if the specified file exists and is a packaged
      * project container.
      *
      * @param file the file to test
-     * @return <code>true</code> if the file is a packaged project
-     * @throws NullPointerException if the file is <code>null</code>
+     * @return {@code true} if the file is a packaged project
+     * @throws NullPointerException if the file is {@code null}
      */
     public static final boolean isProjectPackage(File file) {
         return file.exists() && !file.isDirectory() && file.getName().endsWith(".seproject");
@@ -223,8 +223,8 @@ public class Project extends TaskGroup {
 
     /**
      * Creates a new project folder with the specified project name. The project
-     * will be created as a subfolder of <code>projectFolder</code>. The
-     * returned file can be used to create a <code>Project</code> instance for
+     * will be created as a subfolder of {@code projectFolder}. The
+     * returned file can be used to create a {@code Project} instance for
      * the new project using the {@link #Project(java.io.File)} constructor.
      *
      * @param projectFolder the folder to create the project in
@@ -254,7 +254,7 @@ public class Project extends TaskGroup {
 
     /**
      * Set a tree model that should be informed of changes to the project. May
-     * be <code>null</code>.
+     * be {@code null}.
      *
      * @param model the model to update when changes occur
      */
@@ -299,12 +299,12 @@ public class Project extends TaskGroup {
     /**
      * Writes the contents of this project to a package project ("crate") file.
      * A packaged project is essentially a ZIP archive that uses the file
-     * extension <code>.seproject</code>. When a packaged project is opened in
+     * extension {@code .seproject}. When a packaged project is opened in
      * the application, it will unpack the file to a temporary folder and open
      * that folder as a project. When the project is closed, it will then copy
      * the modified package back to the original package file. If a project was
      * opened from a package file, then {@link #getPackageFile()} will return a
-     * non-<code>null</code> value.
+     * non-{@code null} value.
      *
      * @param pkg the file to write the package archive to
      * @throws IOException if an I/O error occurs while writing the package file
@@ -346,7 +346,7 @@ public class Project extends TaskGroup {
 
     /**
      * Unpack a project package file into a project folder. The project folder
-     * will be a subfolder of <code>targetParent</code>, which must be a folder.
+     * will be a subfolder of {@code targetParent}, which must be a folder.
      *
      * @param pkg the package file
      * @param targetParent the intended parent of the project folder
@@ -464,7 +464,7 @@ public class Project extends TaskGroup {
 
     /**
      * If this project is stored in a package, returns the package file.
-     * Otherwise, returns <code>null</code>.
+     * Otherwise, returns {@code null}.
      *
      * @return returns the package file for this project
      */

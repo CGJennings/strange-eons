@@ -40,7 +40,7 @@ public final class ConnectionSupport {
      *
      * <p>
      * Although the returned stream is guaranteed to be buffered, it is not
-     * guaranteed to be assignable to <code>BufferedInputStream</code>.
+     * guaranteed to be assignable to {@code BufferedInputStream}.
      *
      * @param c the connection to obtain an input stream for
      * @param bufferSizeHint the suggested buffer size, or -1 to use default

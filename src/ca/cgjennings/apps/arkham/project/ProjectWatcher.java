@@ -148,7 +148,7 @@ final class ProjectWatcher {
 
     /**
      * Processes events from the file watcher, bundling them up into a queue of
-     * <code>PendingUpdate</code>s which will be acted on in the EDT after a
+     * {@code PendingUpdate}s which will be acted on in the EDT after a
      * brief delay.
      */
     private void processEvents() {
@@ -206,7 +206,7 @@ final class ProjectWatcher {
     /**
      * Adds an entry to the update queue. This method is a bit smarter than
      * adding an entry explicitly since it can coalesce entries. This reduces
-     * the number of calls to <code>Member.synchronizeImpl</code>, which is
+     * the number of calls to {@code Member.synchronizeImpl}, which is
      * fairly expensive.
      *
      * @param kind the kind of event to add

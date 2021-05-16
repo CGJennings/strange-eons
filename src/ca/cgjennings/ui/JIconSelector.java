@@ -59,8 +59,8 @@ public class JIconSelector<S> extends JComponent {
     /**
      * Adds an item to the list, obtaining an icon and tool tip text from the
      * item itself. The specified item must implement the {@link IconProvider}
-     * interface, or a <code>ClassCastException</code> will be thrown. The tool
-     * tip text will be set to the item's <code>toString()</code> value.
+     * interface, or a {@code ClassCastException} will be thrown. The tool
+     * tip text will be set to the item's {@code toString()} value.
      *
      * @param item the item to add
      */
@@ -71,10 +71,10 @@ public class JIconSelector<S> extends JComponent {
     /**
      * Adds an item to the list, obtaining an icon and tool tip text from the
      * item itself. The specified item must implement the {@link IconProvider}
-     * interface, or a <code>ClassCastException</code> will be thrown.
+     * interface, or a {@code ClassCastException} will be thrown.
      *
      * @param item the item to add
-     * @param toolTipText the tool tip text (may be <code>null</code>)
+     * @param toolTipText the tool tip text (may be {@code null})
      */
     public void addItem(S item, String toolTipText) {
         addItem(item, ((IconProvider) item).getIcon(), toolTipText);
@@ -85,8 +85,8 @@ public class JIconSelector<S> extends JComponent {
      * represent it. If the item is already in the list, this has no effect.
      *
      * @param item the item to add to the list
-     * @param icon the non-<code>null</code> icon for the item
-     * @param toolTipText the tool tip text (may be <code>null</code>)
+     * @param icon the non-{@code null} icon for the item
+     * @param toolTipText the tool tip text (may be {@code null})
      */
     public void addItem(S item, Icon icon, String toolTipText) {
         if (objects.contains(item)) {
@@ -135,7 +135,7 @@ public class JIconSelector<S> extends JComponent {
     }
 
     /**
-     * Returns the selected item in the list, or <code>null</code> if there is
+     * Returns the selected item in the list, or {@code null} if there is
      * no selection.
      *
      * @return the selected item
@@ -151,7 +151,7 @@ public class JIconSelector<S> extends JComponent {
     }
 
     /**
-     * Sets the selected item. If <code>null</code>, the selection is cleared.
+     * Sets the selected item. If {@code null}, the selection is cleared.
      *
      * @param item the item to select
      */
@@ -174,16 +174,16 @@ public class JIconSelector<S> extends JComponent {
     private final ButtonGroup group = new ButtonGroup();
 
     /**
-     * Adds an <code>ActionListener</code> to the list.
+     * Adds an {@code ActionListener} to the list.
      *
-     * @param l the <code>ActionListener</code> to be added
+     * @param l the {@code ActionListener} to be added
      */
     public void addActionListener(ActionListener l) {
         listenerList.add(ActionListener.class, l);
     }
 
     /**
-     * Removes an <code>ActionListener</code> from the list.
+     * Removes an {@code ActionListener} from the list.
      *
      * @param l the listener to be removed
      */
@@ -194,9 +194,9 @@ public class JIconSelector<S> extends JComponent {
     /**
      * Notifies all listeners that have registered interest for notification on
      * this event type. The event instance is lazily created using the
-     * <code>event</code> parameter.
+     * {@code event} parameter.
      *
-     * @param event the <code>ActionEvent</code> object
+     * @param event the {@code ActionEvent} object
      * @see EventListenerList
      */
     protected void fireActionPerformed(ActionEvent event) {

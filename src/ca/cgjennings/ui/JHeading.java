@@ -54,19 +54,19 @@ public class JHeading extends JLabel {
     }
 
     /**
-     * Sets whether this heading is a main heading (<code>false</code>, the
-     * default) or a subheading (<code>true</code>).
+     * Sets whether this heading is a main heading ({@code false}, the
+     * default) or a subheading ({@code true}).
      *
-     * @param isSubhead <code>true</code> to make this a subheading
+     * @param isSubhead {@code true} to make this a subheading
      */
     public void setSubheading(boolean isSubhead) {
         setFont(isSubhead ? SUBHEADING_FONT : HEADING_FONT);
     }
 
     /**
-     * Returns <code>true</code> if this is a subheading.
+     * Returns {@code true} if this is a subheading.
      *
-     * @return <code>true</code> if the font matches the subheading font
+     * @return {@code true} if the font matches the subheading font
      */
     public boolean isSubheading() {
         return getFont().equals(SUBHEADING_FONT);

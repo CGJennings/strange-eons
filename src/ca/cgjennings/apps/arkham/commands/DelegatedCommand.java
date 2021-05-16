@@ -33,7 +33,7 @@ public class DelegatedCommand extends AbstractCommand {
      * {@link #performDefaultAction}.
      *
      * @param e the action event that describes the command activation, or
-     * <code>null</code>
+     * {@code null}
      * @see Commands#findCommandable
      * @see #isDefaultActionApplicable()
      * @see #performDefaultAction(java.awt.event.ActionEvent)
@@ -57,7 +57,7 @@ public class DelegatedCommand extends AbstractCommand {
     /**
      * Performs a default action for this delegated command. If no relevant
      * {@link Commandable} wishes to handle a command, and if
-     * {@link #isDefaultActionApplicable()} returns <code>true</code>, then this
+     * {@link #isDefaultActionApplicable()} returns {@code true}, then this
      * method is called to handle the command. (The base class implementation
      * does nothing.)
      *
@@ -70,10 +70,10 @@ public class DelegatedCommand extends AbstractCommand {
     }
 
     /**
-     * Returns <code>true</code> if a default action is applicable. (The base
-     * class implementation returns <code>false</code>.)
+     * Returns {@code true} if a default action is applicable. (The base
+     * class implementation returns {@code false}.)
      *
-     * @return <code>true</code> if there is a default action and it is
+     * @return {@code true} if there is a default action and it is
      * currently applicable
      */
     public boolean isDefaultActionApplicable() {

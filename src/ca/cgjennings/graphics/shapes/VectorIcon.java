@@ -130,10 +130,10 @@ public class VectorIcon implements Icon {
     }
 
     /**
-     * Returns <code>true</code> if the image's aspect ratio will be maintained
+     * Returns {@code true} if the image's aspect ratio will be maintained
      * by fitting it within the icon width and height.
      *
-     * @return <code>true</code> if the painted area will pad one dimension, if
+     * @return {@code true} if the painted area will pad one dimension, if
      * necessary, to maintain the original image's aspect ratio
      * @see #setImageFittingEnabled(boolean)
      */
@@ -145,7 +145,7 @@ public class VectorIcon implements Icon {
      * Sets whether the image's aspect ratio will be maintained by fitting it
      * within the icon width and height.
      *
-     * @param fit if <code>true</code> the painted area will be padded in one
+     * @param fit if {@code true} the painted area will be padded in one
      * dimension, if necessary, to maintain the original image's aspect ratio
      * @see #setImageFittingEnabled(boolean)
      */

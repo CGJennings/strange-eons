@@ -12,7 +12,7 @@ import javax.swing.Icon;
  * a unique internal value used for the setting value. In order to be displayed
  * correctly, the list or combo box must use a {@link ListItemRenderer} to
  * render the list items. (Lists and combo boxes created using the
- * <code>uicontrols</code> library will use this renderer.)
+ * {@code uicontrols} library will use this renderer.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -32,7 +32,7 @@ public class ListItem implements IconProvider {
      * to the DIY component when the user selects the item
      * @param labelObject an object used to create the label text for the item
      * @throws NullPointerException if the label object or setting value are
-     * <code>null</code>
+     * {@code null}
      */
     public ListItem(String settingValue, Object labelObject) {
         this(settingValue, labelObject, null);
@@ -46,9 +46,9 @@ public class ListItem implements IconProvider {
      * the state of the DIY component to the UI control, or from the UI control
      * to the DIY component when the user selects the item
      * @param labelObject an object used to create the label text for the item
-     * @param icon the item's icon (may be <code>null</code>)
+     * @param icon the item's icon (may be {@code null})
      * @throws NullPointerException if the label object or setting value are
-     * <code>null</code>
+     * {@code null}
      */
     public ListItem(String settingValue, Object labelObject, Icon icon) {
         if (labelObject == null) {
@@ -96,10 +96,10 @@ public class ListItem implements IconProvider {
     }
 
     /**
-     * Returns this item's icon, or <code>null</code> if it doesn't have an
+     * Returns this item's icon, or {@code null} if it doesn't have an
      * icon.
      *
-     * @return this item's icon, or <code>null</code>
+     * @return this item's icon, or {@code null}
      */
     @Override
     public Icon getIcon() {
@@ -128,12 +128,12 @@ public class ListItem implements IconProvider {
     }
 
     /**
-     * Returns <code>true</code> if another object's string representation is
+     * Returns {@code true} if another object's string representation is
      * equal to this item's setting value.
      *
      * @param obj the object to check for equality with this item
-     * @return <code>true</code> if the object is not <code>null</code> and
-     * <code>obj.toString()</code> is equal to this item's setting value
+     * @return {@code true} if the object is not {@code null} and
+     * {@code obj.toString()} is equal to this item's setting value
      */
     @Override
     public boolean equals(Object obj) {

@@ -38,7 +38,7 @@ public final class NamePage extends javax.swing.JPanel {
 	 * Creates new wizard dialog page for gathering basic information about
 	 * a plug-in.
 	 *
-	 * @param task the task that was passed to the {@link WizardKit}, or <code>null</code>
+	 * @param task the task that was passed to the {@link WizardKit}, or {@code null}
 	 * @param model the model that the page will be used in
 	 */
 	public NamePage( Task task, WizardModel model ) {
@@ -127,7 +127,7 @@ public final class NamePage extends javax.swing.JPanel {
 	 * Sets whether the plug-in described by the page will be compiled instead
 	 * of script-based.
 	 *
-	 * @param compiledCodeMode if <code>true</code>, the dialog will be set up
+	 * @param compiledCodeMode if {@code true}, the dialog will be set up
 	 *     to support compiled code
 	 */
 	public void setCompiledClassMode( boolean compiledCodeMode ) {
@@ -145,10 +145,10 @@ public final class NamePage extends javax.swing.JPanel {
 	}
 
 	/**
-	 * Returns <code>true</code> if the dialog is set up to create a compiled
+	 * Returns {@code true} if the dialog is set up to create a compiled
 	 * class plug-in instead of a script-based plug-in.
 	 *
-	 * @return <code>true</code> if the plug-in is based on compiled Java code
+	 * @return {@code true} if the plug-in is based on compiled Java code
 	 */
 	public boolean isCompiledClassMode() {
 		return compiled;
@@ -157,14 +157,14 @@ public final class NamePage extends javax.swing.JPanel {
 	/**
 	 * Updates the controls to represent a particular type of plug-in.
 	 *
-	 * <p>Setting the type to  <code>LIBRARY</code> will hide the
+	 * <p>Setting the type to  {@code LIBRARY} will hide the
 	 * script/class name and location fields since libraries do not include
 	 * plug-in code. You can still query the dialog for these values,
 	 * but they will be useless.
 	 *
 	 * @param type the type of plug-in to format the dialog for
-	 * @throws NullPointerException if the type is <code>null</code>
-	 * @throws IllegalStateException if the type is <code>THEME</code> and
+	 * @throws NullPointerException if the type is {@code null}
+	 * @throws IllegalStateException if the type is {@code THEME} and
 	 *     compiled class mode is not set
 	 */
 	public void setPluginType( ContentType type ) {
@@ -262,7 +262,7 @@ public final class NamePage extends javax.swing.JPanel {
 	 * Sets the image to use as the representative image for the plug-in,
 	 * theme, or library.
 	 *
-	 * @param image an image to use, or <code>null</code>
+	 * @param image an image to use, or {@code null}
 	 */
 	public void setPluginIconImage( BufferedImage image ) {
 		pluginIconDrop.setImage( image );
@@ -270,7 +270,7 @@ public final class NamePage extends javax.swing.JPanel {
 
 	/**
 	 * Returns the selected representative image, or
-	 * <code>null</code> if no image is set.
+	 * {@code null} if no image is set.
 	 *
 	 * @return the selected representative image
 	 */
@@ -437,7 +437,7 @@ public final class NamePage extends javax.swing.JPanel {
 	/**
 	 * Returns a default path to use as the plug-in location.
 	 * The path will use the value of the project's
-	 * <code>Project.KEY_RESOURCE_ID</code> settings, if available,
+	 * {@code Project.KEY_RESOURCE_ID} settings, if available,
 	 * to create the name of a default resources subfolder.
 	 * (If this setting is undefined, a default value is used that
 	 * may be platform and/or user specific.)
@@ -496,14 +496,14 @@ public final class NamePage extends javax.swing.JPanel {
 	 * Returns the location where plug-in files should be stored as a file.
 	 * The returned file will represent the current plug-in path relative to
 	 * the specified parent file. If the parent file is
-	 * <code>null</code>, then the task folder will be used if a non-
-	 * <code>null</code> {@link Task} was provided to the constructor.
+	 * {@code null}, then the task folder will be used if a non-
+	 * {@code null} {@link Task} was provided to the constructor.
 	 *
-	 * @param parent the parent file that the path is relative to, or <code>null</code>
+	 * @param parent the parent file that the path is relative to, or {@code null}
 	 *     to use the task folder
 	 * @return the path as a child of the parent file
-	 * @throws IllegalStateException if the parent is <code>null</code> and
-	 *   a <code>null</code> task was set when the page was constructed
+	 * @throws IllegalStateException if the parent is {@code null} and
+	 *   a {@code null} task was set when the page was constructed
 	 */
 	public File getPathAsFile( File parent ) {
 		if( parent == null ) {
@@ -518,7 +518,7 @@ public final class NamePage extends javax.swing.JPanel {
 	 * Returns the path value as a resource identifier. (If you need this value
 	 * as a URL, prepend res:// to the start of the returned string.)
 	 * <p>Example:<br>
-	 * <code>String imgCode = "ResourceKit.getImage( \"" + page.getPathAsResource() + "/myimage.png\" );"</code>
+	 * {@code String imgCode = "ResourceKit.getImage( \"" + page.getPathAsResource() + "/myimage.png\" );"}
 	 *
 	 * @return the base resource name for resources stored in the plug-in's location
 	 */

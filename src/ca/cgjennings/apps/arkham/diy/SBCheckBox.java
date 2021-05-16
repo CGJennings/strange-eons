@@ -30,7 +30,7 @@ public class SBCheckBox extends JCheckBox implements SettingBackedControl {
     }
 
     /**
-     * Cover for <code>SBCheckBox((text, false )</code>.
+     * Cover for {@code SBCheckBox((text, false )}.
      */
     public SBCheckBox(String text) {
         this(text, false);

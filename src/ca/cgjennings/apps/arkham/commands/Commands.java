@@ -1259,7 +1259,7 @@ public class Commands {
 
     /**
      * A client property that names a Web page that shows help for that part of
-     * the interface. The property value should be a <code>String</code>. The
+     * the interface. The property value should be a {@code String}. The
      * value can either be the name of a page in the Wiki or else the URL of a
      * Web page.
      *
@@ -1324,7 +1324,7 @@ public class Commands {
      * <li> the main application window will be consulted last
      * </ul>
      * The first consulted command handler for which the command is currently
-     * applicable will be returned, or if no handler is found, <code>null</code>
+     * applicable will be returned, or if no handler is found, {@code null}
      * is returned instead.
      *
      * <p>
@@ -1335,8 +1335,8 @@ public class Commands {
      * @param command the command to find a handler for; typically this is an
      * instance of {@link DelegatedCommand}
      * @return a command handler that can currently handle the command, or
-     * <code>null</code> if none can be found
-     * @throws NullPointerException if the command is <code>null</code>
+     * {@code null} if none can be found
+     * @throws NullPointerException if the command is {@code null}
      */
     public static Commandable findCommandable(AbstractCommand command) {
         if (command == null) {
@@ -1373,7 +1373,7 @@ public class Commands {
      * {@link DelegatedCommand}.
      *
      * @param commandable the command handler to consult
-     * @throws NullPointerException if the commandable is <code>null</code>
+     * @throws NullPointerException if the commandable is {@code null}
      * @see #findCommandable
      * @see #unregisterCommandable
      */
@@ -1403,7 +1403,7 @@ public class Commands {
 
     /**
      * Returns the item in a popup menu that will execute the specified command,
-     * or <code>null</code> if the menu does not contain such an item.
+     * or {@code null} if the menu does not contain such an item.
      *
      * @param menu the menu to search
      * @param command the command to search for
@@ -1430,7 +1430,7 @@ public class Commands {
 
     /**
      * Returns the item in a menu that will execute the specified command, or
-     * <code>null</code> if the menu does not contain such an item.
+     * {@code null} if the menu does not contain such an item.
      *
      * @param menu the menu to search
      * @param command the command to search for
@@ -1457,10 +1457,10 @@ public class Commands {
 
     /**
      * Returns the item in a menu bar that will execute the specified command,
-     * or <code>null</code> if the menu does not contain such an item.
+     * or {@code null} if the menu does not contain such an item.
      *
      * @param menu the menu bar whose menus should be searched, or
-     * <code>null</code> to use the main application window
+     * {@code null} to use the main application window
      * @param command the command to search for
      * @return the item within the menu tree that contains the command
      */

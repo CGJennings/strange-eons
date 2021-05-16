@@ -49,7 +49,7 @@ public class ScrapBook {
     }
 
     /**
-     * Returns the current text on the clipboard, or <code>null</code> if the
+     * Returns the current text on the clipboard, or {@code null} if the
      * clipboard content does not include text.
      *
      * @return the current clipboard text
@@ -61,7 +61,7 @@ public class ScrapBook {
     /**
      * Returns whether there is text available on the clipboard.
      *
-     * @return <code>true</code> if the clipboard contains text (or can be
+     * @return {@code true} if the clipboard contains text (or can be
      * converted to text)
      */
     public static boolean isTextAvailable() {
@@ -70,7 +70,7 @@ public class ScrapBook {
 
     /**
      * Returns the text stored in the system selection on platforms that support
-     * this feature. Returns <code>null</code> if the platform does not have a
+     * this feature. Returns {@code null} if the platform does not have a
      * system selection or it does not have any text available.
      *
      * @return the system selection text
@@ -136,10 +136,10 @@ public class ScrapBook {
     }
 
     /**
-     * Returns the image stored on the clipboard, or <code>null</code> if the
+     * Returns the image stored on the clipboard, or {@code null} if the
      * clipboard content does not consist of an image.
      *
-     * @return the image on the clipboard, or <code>null</code>
+     * @return the image on the clipboard, or {@code null}
      */
     public static BufferedImage getImage() {
         Image im = (Image) get(DataFlavor.imageFlavor);
@@ -152,7 +152,7 @@ public class ScrapBook {
     /**
      * Returns whether an image is available on the clipboard.
      *
-     * @return <code>true</code> if an image is available
+     * @return {@code true} if an image is available
      */
     public static boolean isImageAvailable() {
         return available(DataFlavor.imageFlavor);
@@ -192,9 +192,9 @@ public class ScrapBook {
 
     /**
      * Returns the list of files on the clipboard as an array of {@link File}
-     * objects, or <code>null</code>.
+     * objects, or {@code null}.
      *
-     * @return the files on the clipboard, or <code>null</code>
+     * @return the files on the clipboard, or {@code null}
      */
     public static File[] getFiles() {
         Object listObj = get(DataFlavor.javaFileListFlavor);
@@ -237,7 +237,7 @@ public class ScrapBook {
     /**
      * Returns whether one or more files are available on the clipboard.
      *
-     * @return <code>true</code> if files are available
+     * @return {@code true} if files are available
      */
     public static boolean isFileAvailable() {
         return available(DataFlavor.javaFileListFlavor);

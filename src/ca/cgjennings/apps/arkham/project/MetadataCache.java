@@ -41,11 +41,11 @@ public class MetadataCache<T> {
 
     /**
      * Returns the cached object for the member, if available and still valid.
-     * Otherwise, returns <code>null</code>, in which case the cache object
+     * Otherwise, returns {@code null}, in which case the cache object
      * should be regenerated and added with {@link #put}.
      *
      * @param member the member to get a cached object for
-     * @return the cached object, or <code>null</code> if the cached object is
+     * @return the cached object, or {@code null} if the cached object is
      * out of date or not in the cache
      */
     public synchronized T get(Member member) {

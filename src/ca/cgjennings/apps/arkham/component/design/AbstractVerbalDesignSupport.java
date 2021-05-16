@@ -28,7 +28,7 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
      * component.
      *
      * @param gc the game component that the support will analyze
-     * @throws NullPointerException if the component is <code>null</code>
+     * @throws NullPointerException if the component is {@code null}
      */
     public AbstractVerbalDesignSupport(G gc) {
         if (gc == null) {
@@ -41,7 +41,7 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
      * Returns the game component that this design support will analyze.
      *
      * @return the component supported by this design support; cannot be
-     * <code>null</code>
+     * {@code null}
      */
     @Override
     public final G getGameComponent() {
@@ -103,8 +103,8 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
      * {@link #getGameComponent()})
      * @param b a string builder that must be used to build the verbal design
      * report
-     * @return <code>true</code> if the design is considered valid,
-     * <code>false</code> otherwise
+     * @return {@code true} if the design is considered valid,
+     * {@code false} otherwise
      */
     protected abstract boolean analyze(G gc, StringBuilder b);
 

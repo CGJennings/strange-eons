@@ -52,7 +52,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
 
     /**
      * Returns a list of images suitable for use as the icons of a
-     * <code>JFrame</code>. Plug-ins that create their own windows may use these
+     * {@code JFrame}. Plug-ins that create their own windows may use these
      * images to get the same window icons as the main application window.
      *
      * @return a list of frame icons at various sizes
@@ -86,7 +86,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * to be made visible and available to the user.
      *
      * @param editor the editor to be added
-     * @throws NullPointerException if <code>editor</code> is <code>null</code>
+     * @throws NullPointerException if {@code editor} is {@code null}
      */
     public abstract void addEditor(StrangeEonsEditor editor);
 
@@ -146,17 +146,17 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * outside of the event dispatch thread.
      *
      * @param file the file to opened
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public abstract void openFile(File file);
 
     /**
      * Sets a wait cursor on the application frame. This method nests, so if a
      * wait cursor is set multiple times, the normal interaction cursor will not
-     * be restored until <code>setDefaultCursor()</code> is called a number of
+     * be restored until {@code setDefaultCursor()} is called a number of
      * times equal to the number of times this method was called. This method
-     * should be paired with <code>setDefaultCursor()</code> using a
-     * <code>try ... finally</code> block to ensure that the cursor is properly
+     * should be paired with {@code setDefaultCursor()} using a
+     * {@code try ... finally} block to ensure that the cursor is properly
      * restored even if an exception is thrown.:
      * <pre>
      * app.setWaitCursor();
@@ -179,9 +179,9 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * Displays the application preferences dialog.
      *
      * @param parent a component used to position the preferences dialog (may be
-     * <code>null</code>)
+     * {@code null})
      * @param displayCategory the category that should be selected initially
-     * (may be <code>null</code>)
+     * (may be {@code null})
      * @since 3.0
      */
     public abstract void showPreferencesDialog(Component parent, PreferenceCategory displayCategory);
@@ -196,7 +196,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * files with unsaved changes. This method will only return if the user
      * cancels the exit action.
      * <p>
-     * If <code>restart</code> is <code>true</code>, then an attempt is made to
+     * If {@code restart} is {@code true}, then an attempt is made to
      * relaunch the application after exiting. This may be useful, for example,
      * when a plug-in update is pending.
      *
@@ -210,17 +210,17 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * restarted for optimal performance. The user will be allowed to choose
      * whether or not to restart.
      *
-     * @param message the reason for the restart; if <code>null</code>, a
+     * @param message the reason for the restart; if {@code null}, a
      * default message is displayed
      * @since 2.1a8
      */
     public abstract void suggestRestart(String message);
 
     /**
-     * Returns the view of the open project, or <code>null</code> if no project
+     * Returns the view of the open project, or {@code null} if no project
      * is open.
      *
-     * @return the open project's view, or <code>null</code>
+     * @return the open project's view, or {@code null}
      */
     public abstract ProjectView getOpenProjectView();
 
@@ -231,7 +231,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * displayed.
      *
      * @param comp the component to add
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
+     * @throws NullPointerException if {@code comp} is {@code null}
      * @since 2.00a13
      */
     public abstract void addCustomComponent(Component comp);
@@ -239,14 +239,14 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     /**
      * Adds a custom component to the top of the application window. The
      * component is added at a specific position with respect to the existing
-     * components. If <code>index</code> is -1, <code>comp</code> will be added
+     * components. If {@code index} is -1, {@code comp} will be added
      * to the end of the custom component bar. This is equivalent to
-     * <code>addCustomComponent( comp )</code>.
+     * {@code addCustomComponent( comp )}.
      *
      * @param comp the component to be added
      * @param index the position at which to insert the component, or -1 to
      * append the component to the end
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
+     * @throws NullPointerException if {@code comp} is {@code null}
      * @since 2.00a13
      */
     public abstract void addCustomComponent(Component comp, int index);
@@ -266,20 +266,20 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * application window.
      *
      * @param comp the component to remove
-     * @throws NullPointerException if <code>comp</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>comp</code> has not been added
+     * @throws NullPointerException if {@code comp} is {@code null}
+     * @throws IllegalArgumentException if {@code comp} has not been added
      * as a custom component
      * @since 2.00a13
      */
     public abstract void removeCustomComponent(Component comp);
 
     /**
-     * Removes the custom component at position <code>index</code> in the custom
+     * Removes the custom component at position {@code index} in the custom
      * component area. Nearby separators are not affected.
      *
      * @param index the 0-based index into the list of custom components
-     * @throws IndexOutOfBoundsException if <code>index</code> &lt; 0 or
-     * <code>index</code> &gt;= {@link #getCustomComponentCount()}
+     * @throws IndexOutOfBoundsException if {@code index} &lt; 0 or
+     * {@code index} &gt;= {@link #getCustomComponentCount()}
      * @since 2.00a13
      */
     public abstract void removeCustomComponent(int index);
@@ -294,13 +294,13 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract int getCustomComponentCount();
 
     /**
-     * Returns the custom component at position <code>index</code> in the custom
+     * Returns the custom component at position {@code index} in the custom
      * component area.
      *
      * @param index the 0-based index into the list of custom components
-     * @return the component at position <code>index</code>
-     * @throws IndexOutOfBoundsException if <code>index</code> &lt; 0 or
-     * <code>index</code> &gt;= {@link #getCustomComponentCount()}
+     * @return the component at position {@code index}
+     * @throws IndexOutOfBoundsException if {@code index} &lt; 0 or
+     * {@code index} &gt;= {@link #getCustomComponentCount()}
      * @since 2.00a13
      */
     public abstract Component getCustomComponent(int index);
@@ -361,7 +361,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract void removeEditorListener(EditorListener el);
 
     /**
-     * Returns the current open {@link Project}, or <code>null</code> if no
+     * Returns the current open {@link Project}, or {@code null} if no
      * project is open.
      *
      * @return the project currently open in the application window
@@ -370,7 +370,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract Project getOpenProject();
 
     /**
-     * Opens the project contained in the folder <code>projectFolder</code>. If
+     * Opens the project contained in the folder {@code projectFolder}. If
      * the project can be opened and there is already a project open in the
      * editor, the current project is closed automatically before opening the
      * new project. If the project cannot be opened, an error message is
@@ -378,7 +378,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      *
      * @param projectFolderOrCrateFile the base folder of a project or an
      * <tt>.seproject</tt> file containing a project
-     * @return <code>true</code> if the project is opened successfully
+     * @return {@code true} if the project is opened successfully
      * @since 2.1a2
      */
     public abstract boolean setOpenProject(File projectFolderOrCrateFile);
@@ -436,7 +436,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * even if momentarily hidden.
      *
      * @param window the window to track (or stop tracking)
-     * @throws NullPointerException if the window is <code>null</code>
+     * @throws NullPointerException if the window is {@code null}
      * @since 3.0
      * @see #stopTracking
      */
@@ -464,7 +464,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      *
      * @param parent identifies the menu you wish to insert an item into
      * @param item the item you wish to insert; this should be a
-     * <code>JMenuItem</code> of some kind
+     * {@code JMenuItem} of some kind
      * @since 2.1a8
      */
     public abstract void addMenuItem(AppMenu parent, JComponent item);
@@ -582,7 +582,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
          * and the item will be enabled or disabled accordingly.
          *
          * @param application a reference to Strange Eons
-         * @return <code>true</code> if the item should be enabled
+         * @return {@code true} if the item should be enabled
          */
         public boolean isUsable(StrangeEons application) {
             return true;
@@ -636,8 +636,8 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * window.
      *
      * @param name the property name to fire
-     * @param oldValue the old value, or <code>null</code>
-     * @param newValue the new value, or <code>null</code>
+     * @param oldValue the old value, or {@code null}
+     * @param newValue the new value, or {@code null}
      */
     void propertyChange(String name, Object oldValue, Object newValue) {
         firePropertyChange(name, oldValue, newValue);

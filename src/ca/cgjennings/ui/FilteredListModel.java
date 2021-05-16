@@ -11,9 +11,9 @@ import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 
 /**
- * A model for <code>JList</code>s that supports filtering. The
- * <code>ListModel</code> methods <code>getElementAt</code> and
- * <code>getSize</code> return values appropriate for the applied filter. It is
+ * A model for {@code JList}s that supports filtering. The
+ * {@code ListModel} methods {@code getElementAt} and
+ * {@code getSize} return values appropriate for the applied filter. It is
  * recommended that you get and set the selection using values rather than
  * indices.
  *
@@ -93,7 +93,7 @@ public class FilteredListModel extends AbstractListModel {
     }
 
     /**
-     * Returns the index of the first object equal to <code>o</code>, ignoring
+     * Returns the index of the first object equal to {@code o}, ignoring
      * the current filter. This is useful when the list is an index into a list
      * of objects and the indexed object must be retrieved.
      *

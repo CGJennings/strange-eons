@@ -64,7 +64,7 @@ public class Tile extends AbstractRenderedItem {
     /**
      * Sets the user-friendly tile name.
      *
-     * @param name the new, non-<code>null</code> name
+     * @param name the new, non-{@code null} name
      */
     public void setName(String name) {
         if (name == null) {
@@ -207,10 +207,10 @@ public class Tile extends AbstractRenderedItem {
     private transient BufferedImage cachedTileImage;
 
     /**
-     * Returns <code>true</code> if the tile can be painted as a simple outline
+     * Returns {@code true} if the tile can be painted as a simple outline
      * when drawing a low quality preview.
      *
-     * @return <code>true</code> if the tile can be draw as an outline
+     * @return {@code true} if the tile can be draw as an outline
      */
     public boolean isFastOutlineAllowed() {
         return allowsOutlineDrawing;
@@ -219,9 +219,9 @@ public class Tile extends AbstractRenderedItem {
     /**
      * Sets whether the tile can be painted as a simple outline when drawing at
      * low quality. Typically, only items in the TILE tile class will set this
-     * to <code>true</code>.
+     * to {@code true}.
      *
-     * @param allowsOutlineDrawing <code>true</code> to allow drawing as an
+     * @param allowsOutlineDrawing {@code true} to allow drawing as an
      * outline
      */
     public void setFastOutlineAllowed(boolean allowsOutlineDrawing) {

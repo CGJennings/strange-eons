@@ -27,7 +27,7 @@ public class DefaultWizardModel extends AbstractWizardModel {
      * Creates a default wizard model with an initial set of pages.
      *
      * @param pages the page list
-     * @throws NullPointerException if <code>pages</code> is <code>null</code>
+     * @throws NullPointerException if {@code pages} is {@code null}
      */
     public DefaultWizardModel(JComponent[] pages) {
         if (pages == null) {
@@ -43,7 +43,7 @@ public class DefaultWizardModel extends AbstractWizardModel {
      * set an alternate page order that diverges after the current page.
      *
      * @param pages the page list
-     * @throws NullPointerException if <code>pages</code> is <code>null</code>
+     * @throws NullPointerException if {@code pages} is {@code null}
      */
     public void setPages(JComponent[] pages) {
         if (pages == null) {
@@ -60,7 +60,7 @@ public class DefaultWizardModel extends AbstractWizardModel {
      * {@link #getPageOrder()}; this method is provided for symmetry with
      * {@link #setPages}.
      *
-     * @return the current page order, or <code>null</code> if no pages have
+     * @return the current page order, or {@code null} if no pages have
      * been set
      */
     public final JComponent[] getPages() {

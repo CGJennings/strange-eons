@@ -111,11 +111,11 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * Returns a symbol that is associated with this expansion.
      *
      * @deprecated This method is provided to ease migration from SE 2.x. It is
-     * equivalent to calling <code>getSymbol( inverse ? 1 : 0 )</code>.
+     * equivalent to calling {@code getSymbol( inverse ? 1 : 0 )}.
      *
-     * @param inverse if <code>true</code>, return the symbol for dark
+     * @param inverse if {@code true}, return the symbol for dark
      * backgrounds
-     * @return the 0th (if <code>false</code>) or 1st (if <code>true</code>)
+     * @return the 0th (if {@code false}) or 1st (if {@code true})
      * symbol for the expansion
      * @see #getSymbol(int)
      */
@@ -140,9 +140,9 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      *
      * @param customSymbolIndex the index into the passed in array of custom
      * symbols
-     * @return the requested symbol, or <code>null</code> if there is no symbol
+     * @return the requested symbol, or {@code null} if there is no symbol
      * at that index
-     * @throws IllegalArgumentException if <code>customSymbolIndex</code> is
+     * @throws IllegalArgumentException if {@code customSymbolIndex} is
      * less than 0
      */
     public BufferedImage getSymbol(int customSymbolIndex) {
@@ -193,13 +193,13 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
 
     /**
      * Returns an array of the expansions that have been registered for a
-     * specific game. If <code>includeGenerics</code> is <code>true</code>, then
+     * specific game. If {@code includeGenerics} is {@code true}, then
      * expansions registered for all games will also be included.
      *
      * @param game the game to find expansions for
      * @param includeGenerics whether to include generic "all games" expansions
      * @return an array of matching expansions
-     * @throws NullPointerException if the game is <code>null</code>
+     * @throws NullPointerException if the game is {@code null}
      * @see Game#getAllGamesInstance()
      */
     public static Expansion[] getExpansionsForGame(Game game, boolean includeGenerics) {
@@ -275,7 +275,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
     /**
      * Returns the base game "expansion". This is an expansions code that is
      * used to represent no expansion. It is registered for all games, has a
-     * blank icon, and <code>null</code> expansion symbol images.
+     * blank icon, and {@code null} expansion symbol images.
      *
      * @return the shared base game expansion that represents the base version
      * of any game with no expansions
@@ -295,12 +295,12 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
     }
 
     /**
-     * Return the expansion with the requested identifier, or <code>null</code>
+     * Return the expansion with the requested identifier, or {@code null}
      * if there is no such expansion.
      *
      * @param id the identifier to look up
      * @return the expansion registered with that identifier, or
-     * <code>null</code>
+     * {@code null}
      */
     public static synchronized Expansion get(String id) {
         if (id == null) {
@@ -321,7 +321,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * @deprecated This method is provided to ease migration from SE 2.x. It
      * should not be called by plug-in authors.
      *
-     * @param forGame the game to register for, or <code>null</code> for all
+     * @param forGame the game to register for, or {@code null} for all
      * games
      * @param code the expansion code
      * @param nameKey the string table key to use for the name
@@ -329,7 +329,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * @param normalSymbol the location of the normal (dark on light) symbol
      * image
      * @param inverseSymbol the location of the inverse (light on dark) symbol
-     * image, or <code>null</code> to generate one from the normal symbol
+     * image, or {@code null} to generate one from the normal symbol
      * @return the newly registered expansion
      * @see #register(gamedata.Game, java.lang.String, java.lang.String,
      * java.lang.String, java.awt.image.BufferedImage,
@@ -382,17 +382,17 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * to register an expansion for this purpose.
      *
      * @param forGame the game to which the expansion belongs, or all games if
-     * <code>null</code>
+     * {@code null}
      * @param code a short unique code string for the expansion, usually 2-6
      * capital letters
      * @param uiName the name of the expansion, in the user interface locale
      * @param gameName the name of the expansion, in the game locale
      * @param iconImage an image to use to represent the expansion, may be
-     * <code>null</code> in which case a default image is used
+     * {@code null} in which case a default image is used
      * @param symbols an array of symbol images used to represent the expansion
      * on components
      * @return the registered expansion
-     * @throws NullPointerException if the code is <code>null</code>
+     * @throws NullPointerException if the code is {@code null}
      * @throws IllegalArgumentException if the code is empty or contains
      * characters not allowed in a file name, or if an expansion with the same
      * code is already registered and the database is locked
@@ -555,7 +555,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
     /**
      * Sets the expansion symbols associated with a game component by modifying
      * the component's {@link #EXPANSION_SETTING_KEY} private setting. If the
-     * expansion set is <code>null</code> or empty, then the base game expansion
+     * expansion set is {@code null} or empty, then the base game expansion
      * will be used.
      *
      * @param gc the game component to modify

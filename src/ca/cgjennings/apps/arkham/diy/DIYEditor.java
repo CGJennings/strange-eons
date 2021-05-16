@@ -107,11 +107,11 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
      * Sets whether test mode is enabled. When enabled, the editor will never
      * indicate that it has unsaved changes and neither the
      * {@link Commands#SAVE SAVE} nor {@link Commands#SAVE_AS SAVE_AS} commands
-     * will be considered applicable. The <code>diy</code> scripting library's
-     * <code>testDIYScript()</code> function will call this method to enable
+     * will be considered applicable. The {@code diy} scripting library's
+     * {@code testDIYScript()} function will call this method to enable
      * test mode on the editor it creates.
      *
-     * @param enable if <code>true</code>, test mode will be enabled
+     * @param enable if {@code true}, test mode will be enabled
      * @see #isTestModeEnabled()
      * @see #hasUnsavedChanges()
      * @see #isCommandApplicable
@@ -124,9 +124,9 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
     }
 
     /**
-     * Returns <code>true</code> if test mode is enabled.
+     * Returns {@code true} if test mode is enabled.
      *
-     * @return <code>true</code> if the editor's test mode is enabled
+     * @return {@code true} if the editor's test mode is enabled
      */
     public boolean isTestModeEnabled() {
         return testMode;
@@ -305,8 +305,8 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
 
     /**
      * Removes all editor tabs that were added using script code via the
-     * <code>uilayout</code> library's
-     * <code>AbstractContainer.addToEditor</code> method.
+     * {@code uilayout} library's
+     * {@code AbstractContainer.addToEditor} method.
      */
     public void removeCustomTabs() {
         for (int i = controlTabPane.getTabCount() - 1; i >= 0; --i) {
@@ -388,10 +388,10 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
 
     /**
      * Returns the portrait panel for the component's built-in portrait. If
-     * there is no built-in portrait, returns <code>null</code>.
+     * there is no built-in portrait, returns {@code null}.
      *
      * @return the portrait panel for the built-in portrait, or
-     * <code>null</code>
+     * {@code null}
      */
     public PortraitPanel getPortraitPanel() {
         DIY diy = getGameComponent();
@@ -405,9 +405,9 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
 
     /**
      * Returns the portrait panel for the component's built-in marker portrait.
-     * If there is no built-in marker portrait, returns <code>null</code>.
+     * If there is no built-in marker portrait, returns {@code null}.
      *
-     * @return the portrait panel for the built-in marker, or <code>null</code>
+     * @return the portrait panel for the built-in marker, or {@code null}
      */
     public PortraitPanel getMarkerPanel() {
         DIY diy = getGameComponent();

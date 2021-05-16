@@ -149,12 +149,12 @@ public class PluginBundlePublisher {
         /**
          * Returns the compression method associated with the extension part of
          * a file name in a string. For example, given
-         * "OmicronPlugin.seplugin.pbz", returns <code>BZIP2</code>. If no
-         * extension is recognized, returns <code>null</code>.
+         * "OmicronPlugin.seplugin.pbz", returns {@code BZIP2}. If no
+         * extension is recognized, returns {@code null}.
          *
          * @param name the file name to examine
          * @return the correct compression method for the extension, or
-         * <code>null</code>
+         * {@code null}
          */
         public static CompressionMethod forExtension(String name) {
             if (name == null) {
@@ -183,13 +183,13 @@ public class PluginBundlePublisher {
 
     /**
      * If this boolean {@linkplain Settings#getUser() user setting} is
-     * <code>true</code>, then irrelevant JAR file metadata will be stripped out
+     * {@code true}, then irrelevant JAR file metadata will be stripped out
      * when packing the file. This data, consisting of one or more files in the
      * META-INF archive directory, is sometimes added as a byproduct of building
      * class-based plug-ins with a Java development environment. It is not
      * needed by normal plug-in bundles, but is relevant in the rare case that a
      * plug-in bundle is meant to be used as either a plug-in or a Java
-     * application. The default is <code>true</code>, that is, to strip out such
+     * application. The default is {@code true}, that is, to strip out such
      * metadata during publishing.
      */
     public static final String STRIP_JAR_METADATA_SETTING = "pack-bundle-strip-meta";
@@ -207,7 +207,7 @@ public class PluginBundlePublisher {
      * @param source the bundle file to convert
      * @param dest the packed file to create
      * @throws IOException if an error occurs
-     * @throws NullPointerException if either file is <code>null</code>
+     * @throws NullPointerException if either file is {@code null}
      * @see #unpackBundle
      *
      * @deprecated The Pack200 tools used by this method have been removed
@@ -255,7 +255,7 @@ public class PluginBundlePublisher {
      * @param source the packed file to convert
      * @param dest the bundle file to create
      * @throws IOException if an error occurs
-     * @throws NullPointerException if either file is <code>null</code>
+     * @throws NullPointerException if either file is {@code null}
      * @see #packBundle
      *
      * @deprecated The Pack200 tools used by this method have been removed
@@ -289,10 +289,10 @@ public class PluginBundlePublisher {
      *
      * @param source the uncompressed source file
      * @param dest the compressed file to create
-     * @param method the compression method to use; if <code>null</code>, the
+     * @param method the compression method to use; if {@code null}, the
      * default method is selected
      * @throws IOException if an error occurs
-     * @throws NullPointerException if either file is <code>null</code>
+     * @throws NullPointerException if either file is {@code null}
      */
     public static void compress(File source, File dest, CompressionMethod method) throws IOException {
         if (source == null) {
@@ -314,16 +314,16 @@ public class PluginBundlePublisher {
 
     /**
      * Decompresses a file previously compressed with the specified compression
-     * method. If the method is <code>null</code>, then a compression method
+     * method. If the method is {@code null}, then a compression method
      * will be chosen based on the input file name. If no method can be detected
-     * from the file name, an <code>IOException</code> will be thrown.
+     * from the file name, an {@code IOException} will be thrown.
      *
      * @param source the compressed source file
      * @param dest the uncompressed file to create
      * @param method the compression method used to compress the file, or
-     * <code>null</code> to choose based on the input file name
+     * {@code null} to choose based on the input file name
      * @throws IOException if an error occurs
-     * @throws NullPointerException if either file is <code>null</code>
+     * @throws NullPointerException if either file is {@code null}
      */
     public static void decompress(File source, File dest, CompressionMethod method) throws IOException {
         if (source == null) {
@@ -352,17 +352,17 @@ public class PluginBundlePublisher {
      *
      * <p>
      * The compression method is detected automatically from the file name. If
-     * the destination is <code>null</code>, a file in the same folder with the
-     * publication extension (such as <code>.pbz</code>) removed will be used.
+     * the destination is {@code null}, a file in the same folder with the
+     * publication extension (such as {@code .pbz}) removed will be used.
      * An optional listener may be supplied that will be notified of the
      * unpacking progress.
      *
      * @param source the source file to convert
-     * @param dest the destination bundle file; may be <code>null</code> to
+     * @param dest the destination bundle file; may be {@code null} to
      * create a destination based on the source
-     * @return the name of the destination file; useful if <code>null</code> was
+     * @return the name of the destination file; useful if {@code null} was
      * specified to determine the name automatically
-     * @throws NullPointerException if the source file is <code>null</code>
+     * @throws NullPointerException if the source file is {@code null}
      * @throws IOException if an I/O error occurs during unpacking
      */
     public static File publishedBundleToPluginBundle(final File source, File dest) throws IOException {

@@ -73,7 +73,7 @@ public final class EscapedTextCodec {
      * escaped back slash.
      *
      * @param s the line to test
-     * @return <code>true</code> if the line ends in a line wrapping
+     * @return {@code true} if the line ends in a line wrapping
      * escapeUnicode
      */
     @SuppressWarnings("empty-statement")
@@ -93,15 +93,15 @@ public final class EscapedTextCodec {
     /**
      * Escape a string by inserting Unicode escapeUnicode sequences for
      * characters outside of the printable ISO 8859-1 range. This is equivalent
-     * to <code>escapeUnicode(&nbsp;s, UNICODE&nbsp;)</code>. If no
+     * to {@code escapeUnicode(&nbsp;s, UNICODE&nbsp;)}. If no
      * escapeUnicode codes are inserted, the original input is returned. (If it
-     * is a <code>String</code>, the same string is returned; otherwise it is
-     * converted to a string by calling its <code>toString()</code> method.)
+     * is a {@code String}, the same string is returned; otherwise it is
+     * converted to a string by calling its {@code toString()} method.)
      *
      * @param s the string to escapeUnicode
-     * @return a string equivalent to <code>s</code> but will appropriate
+     * @return a string equivalent to {@code s} but will appropriate
      * escapes
-     * @throws NullPointerException is <code>s</code> is <code>null</code>
+     * @throws NullPointerException is {@code s} is {@code null}
      * @see #escapeUnicode(java.lang.CharSequence)
      */
     public static String escapeUnicode(CharSequence s) {
@@ -110,26 +110,26 @@ public final class EscapedTextCodec {
 
     /**
      * Escape a string by inserting backslash escapeUnicode sequences similar to
-     * the handling of escapes in <code>.properties</code> files. If no
+     * the handling of escapes in {@code .properties} files. If no
      * escapeUnicode codes are inserted, the original input is returned. (If it
-     * is a <code>String</code>, the same string is returned; otherwise it is
-     * converted to a string by calling its <code>toString()</code> method.)
+     * is a {@code String}, the same string is returned; otherwise it is
+     * converted to a string by calling its {@code toString()} method.)
      *
      * <p>
      * The set of characters to be escaped is controlled by
-     * <code>escapeFlags</code>, which should be a binary or of some combination
+     * {@code escapeFlags}, which should be a binary or of some combination
      * of      {@link #ASSIGNMENT}, {@link #BACKSLASH}, {@link #INITIAL_COMMENT},
 	 * {@link #SPACE}, {@link #USE_S_ESCAPE}, {@link #UNICODE}, and
      * {@link #WHITESPACE}. For example, the combination
-     * <code>UNICODE|WHITESPACE|BACKSLASH</code> would produced escaped output
-     * similar to a <code>.properties</code> file. If <code>escapeFlags</code>
+     * {@code UNICODE|WHITESPACE|BACKSLASH} would produced escaped output
+     * similar to a {@code .properties} file. If {@code escapeFlags}
      * is zero, the original input is returned.
      *
      * @param s the string to escapeUnicode
      * @param escapeFlags optional flags for the escapeUnicode process
-     * @return a string equivalent to <code>s</code> but will appropriate
+     * @return a string equivalent to {@code s} but will appropriate
      * escapes
-     * @throws NullPointerException is <code>s</code> is <code>null</code>
+     * @throws NullPointerException is {@code s} is {@code null}
      */
     @SuppressWarnings("empty-statement")
     public static String escape(CharSequence s, int escapeFlags) {
@@ -298,20 +298,20 @@ public final class EscapedTextCodec {
      *
      * @param s the string to convert
      * @return the unescaped string
-     * @throws NullPointerException if <code>s</code> is <code>null</code>
+     * @throws NullPointerException if {@code s} is {@code null}
      */
     public static String unescapeUnicode(CharSequence s) {
         return unescapeImpl(s, true);
     }
 
     /**
-     * Returns a string equivalent to <code>s</code>, but with all escapeUnicode
+     * Returns a string equivalent to {@code s}, but with all escapeUnicode
      * sequences converted back to regular (unescaped) characters. If the input
      * does not contain any escapeUnicode sequences, it is returned unchanged.
      *
      * @param s the string to convert
      * @return the unescaped string
-     * @throws NullPointerException if <code>s</code> is <code>null</code>
+     * @throws NullPointerException if {@code s} is {@code null}
      */
     public static String unescape(CharSequence s) {
         return unescapeImpl(s, false);

@@ -18,8 +18,8 @@ import javax.sound.sampled.Clip;
  *
  * <p>
  * New clip players are constructed by providing a reference to the audio file
- * that contains the clip to play. This is either a <code>File</code> or a
- * <code>URL</code>. The constructor also specifies whether a clip should be
+ * that contains the clip to play. This is either a {@code File} or a
+ * {@code URL}. The constructor also specifies whether a clip should be
  * looped. An unlooped clip will play once each time {@link #play()} is called.
  * A looped clip will continue to play, repeating as necessary, until it is
  * explicitly stopped.
@@ -33,10 +33,10 @@ public class ClipPlayer {
     private Clip clip;
 
     /**
-     * Create a <code>ClipPlayer</code> for an audio clip stored in a file. If
+     * Create a {@code ClipPlayer} for an audio clip stored in a file. If
      * the clip cannot be read from the file, the player will do nothing when
      * {@link #play()} is called and {@link #isClipValid()} will return
-     * <code>false</code>.
+     * {@code false}.
      *
      * @param audioClip the location of the clip to load
      * @param looped whether to play the clip in a loop
@@ -51,9 +51,9 @@ public class ClipPlayer {
     }
 
     /**
-     * Create a <code>ClipPlayer</code> for a an audio clip stored at a URL. If
+     * Create a {@code ClipPlayer} for a an audio clip stored at a URL. If
      * the clip cannot be read, the player will do nothing when {@link #play()}
-     * is called and {@link #isClipValid()} will return <code>false</code>.
+     * is called and {@link #isClipValid()} will return {@code false}.
      *
      * @param audioClip the location of the clip to load
      * @param looped whether to play the clip in a loop
@@ -124,10 +124,10 @@ public class ClipPlayer {
     }
 
     /**
-     * Returns <code>true</code> if the clip was loaded successfully and the
+     * Returns {@code true} if the clip was loaded successfully and the
      * system is able to play it.
      *
-     * @return <code>true</code> if playing the clip will produce audio
+     * @return {@code true} if playing the clip will produce audio
      */
     public boolean isClipValid() {
         return clip != null;

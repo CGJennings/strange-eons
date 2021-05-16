@@ -112,7 +112,7 @@ public class SpellingHighlighter extends ErrorHighlighter {
      * highlighter to be more lax about spelling errors than a typical
      * spelling-checked component would be. The default implementation ignores
      * words that use CamelCase or that are connected to other words by any of
-     * <code>.:/\</code>.
+     * {@code .:/\}.
      *
      * @param text a segment containing the contents of the current token
      * @param offset the offset to the start of the match

@@ -101,8 +101,8 @@ import static resources.Language.string;
  * <ol>
  * <li>The first part is the least used and most technical:<br>
  * If the first character is a slash (/), then the identifier is absolute;
- * otherwise the rest of the name is relative to <code>/resources</code>.
- * (Resources are normally stored in the <code>resources</code> folder of the
+ * otherwise the rest of the name is relative to {@code /resources}.
+ * (Resources are normally stored in the {@code resources} folder of the
  * file system; however, sometimes it is useful to access a resource that is in
  * the classpath of the application or a plug-in bundle. This can be done using
  * an absolute identifier.)
@@ -116,21 +116,21 @@ import static resources.Language.string;
  *
  * In order to locate the actual resource file for a resource name, call
  * {@link #composeResourceURL} with the identifier. This will return a URL that
- * can be used to access the resource, or <code>null</code> if the resource
+ * can be used to access the resource, or {@code null} if the resource
  * cannot be found.
  *
  * <p>
  * Alternatively, you can create a URL object for a resource using the special
- * protocol <code>res:</code>, for example:<br>
- * <code>URL u = new URL( "res://icons/application/256.png" );</code>
+ * protocol {@code res:}, for example:<br>
+ * {@code URL u = new URL( "res://icons/application/256.png" );}
  *
  * <p>
  * Note that the URLs produced with these two different methods are <b>not</b>
- * the same. A <code>res:</code> URL is a URL for the virtual file system, while
- * <code>composeResourceURL</code> returns a URL for the actual location of the
- * file. In fact, when you try to access a <code>res:</code> URL's data using a
- * method like <code>openStream</code>, the protocol handler will itself call
- * <code>composeResourceURL</code> to find the file in question.
+ * the same. A {@code res:} URL is a URL for the virtual file system, while
+ * {@code composeResourceURL} returns a URL for the actual location of the
+ * file. In fact, when you try to access a {@code res:} URL's data using a
+ * method like {@code openStream}, the protocol handler will itself call
+ * {@code composeResourceURL} to find the file in question.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 1.0
@@ -151,7 +151,7 @@ public class ResourceKit {
      * {@link StrangeEons#getBuildNumber}.
      *
      * @return the microversion string for this build (the build number as a
-     * <code>String</code>)
+     * {@code String})
      */
     @Deprecated
     public static String getMicroversionString() {
@@ -169,7 +169,7 @@ public class ResourceKit {
      * conceptual resources folder. The conceptual resources folder typically
      * represents many different virtual folders, including the resources folder
      * of the main application and that of any installed plug-in bundles. If the
-     * requested file cannot be found, <code>null</code> will be returned.
+     * requested file cannot be found, {@code null} will be returned.
      *
      * <p>
      * The contents of the virtual resources folder are determined by searching
@@ -177,14 +177,14 @@ public class ResourceKit {
      * is found):
      * <ol>
      * <li>If the resource path is actually an absolute URL then it is converted
-     * to a URL object and returned, except that if it is a <code>res://</code>
-     * URL the procedure continues as if the <code>res://</code> prefix was not
+     * to a URL object and returned, except that if it is a {@code res://}
+     * URL the procedure continues as if the {@code res://} prefix was not
      * present. Absolute URLs are indicated by the presence of a colon (:) in
      * the identifier.
      * <li>The contents of the user resource folder, if any.
-     * <li>The <code>resources</code> folders of the main application and all
+     * <li>The {@code resources} folders of the main application and all
      * installed plug-in bundles, in the order of installation.
-     * <li>The <code>resources</code> folder (if any) of all task folders in the
+     * <li>The {@code resources} folder (if any) of all task folders in the
      * open project. Note that this URL is typically only valid while the
      * project is open.
      * </ol>
@@ -204,7 +204,7 @@ public class ResourceKit {
      *
      * @param resource a file path relative to the virtual resources folder
      * @return a URL that can be used to access the named resource, or
-     * <code>null</code>
+     * {@code null}
      */
     public static URL composeResourceURL(String resource) {
 
@@ -323,7 +323,7 @@ public class ResourceKit {
      * The precise effect of this method may change from version to version, but
      * the following three conditions are guaranteed:
      * <ol>
-     * <li>If the identifier is <code>null</code>, it will be returned
+     * <li>If the identifier is {@code null}, it will be returned
      * unchanged.
      * <li>If the identifier is a virtual resource path rather than an absolute
      * URL, it will be returned unchanged and the method will return very
@@ -362,7 +362,7 @@ public class ResourceKit {
     }
 
     /**
-     * Returns <code>true</code> if a resource file is not expected to change
+     * Returns {@code true} if a resource file is not expected to change
      * during the lifetime of the application. This can be used as a hint to
      * caching mechanisms that the resource is safe to cache. For example,
      * resources that come from an installed plug-in bundle can be cached
@@ -371,7 +371,7 @@ public class ResourceKit {
      * carefully because the user might modify them at any time.
      *
      * @param composedResourceURL the URL of the resource in question
-     * @return <code>true</code> if the resource cannot change while the
+     * @return {@code true} if the resource cannot change while the
      * application is running
      * @since 3.0
      */
@@ -418,7 +418,7 @@ public class ResourceKit {
      * @throws FileNotFoundException if the resource does not exist
      * @throws IOException if an I/O error occurs while opening the stream
      * @throws NullPointerException if the specified resource is
-     * <code>null</code>
+     * {@code null}
      */
     public static InputStream getInputStream(String resource) throws IOException {
         if (resource == null) {
@@ -448,8 +448,8 @@ public class ResourceKit {
      * @param iconResource the resource identifier for the icon
      * @return an icon consisting of the requested image or a theme-dependent
      * substitute
-     * @throws NullPointerException if <code>iconResource</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code iconResource} is
+     * {@code null}
      * @see Theme#applyThemeToImage
      */
     public static ThemedIcon getIcon(String iconResource) {
@@ -496,7 +496,7 @@ public class ResourceKit {
      * Given the path to a resource file containing an image, returns the image.
      * If it exists and the file is valid, the returned image will use either
      * the <tt>INT_RGB</tt> or <tt>INT_ARGB</tt> formats. (Or, if the setting
-     * <tt>premultiply-image-alpha</tt> is <code>true</code>, then a
+     * <tt>premultiply-image-alpha</tt> is {@code true}, then a
      * premultiplied equivalent.)
      *
      * <p>
@@ -519,7 +519,7 @@ public class ResourceKit {
      * @return the image stored at the named resource, or a substitute missing
      * image symbol
      * @throws NullPointerException if the resource identifier is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if the resource identifier is empty
      * @see #isResourceStatic
      */
@@ -551,7 +551,7 @@ public class ResourceKit {
      * @param resource the image resource path
      * @return an image for the resource path
      * @throws NullPointerException if the resource identifier is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if the resource identifier is empty
      */
     public static BufferedImage getImageQuietly(String resource) {
@@ -579,15 +579,15 @@ public class ResourceKit {
      * concurrently if the system has multiple processors (CPUs or cores).
      *
      * <p>
-     * The supplied output array may be <code>null</code>, in which case a new
-     * array will be created. If a non-<code>null</code> output array is given,
+     * The supplied output array may be {@code null}, in which case a new
+     * array will be created. If a non-{@code null} output array is given,
      * it must be at least as long as the number of names provided.
      *
      * @param inputResources image resources to load
      * @param outputImages an array to be filled in with the resulting images
      * @return the output array that holds the images
      * @throws NullPointerException if any resource identifier is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if any resource identifier is empty
      */
     public static BufferedImage[] getImagesQuietly(String[] inputResources, BufferedImage[] outputImages) {
@@ -692,10 +692,10 @@ public class ResourceKit {
      * higher-level method.
      *
      * @param name the image resource to load
-     * @param checkCache if <code>true</code>, check in the cache first
-     * @param allowCaching if <code>true</code>, then the result can be cached
+     * @param checkCache if {@code true}, check in the cache first
+     * @param allowCaching if {@code true}, then the result can be cached
      * @return the image, or if the image can't be loaded, the missing image (or
-     * <code>null</code>)
+     * {@code null})
      * @throws IOException if an I/O error occurs while reading the image
      */
     private static BufferedImage fetchImageUnsafe(String name, boolean checkCache, boolean allowCaching) throws IOException {
@@ -757,7 +757,7 @@ public class ResourceKit {
 
     /**
      * Returns an image if it is in the image cache; otherwise returns
-     * <code>null</code>. This method does not lock the image cache, so it must
+     * {@code null}. This method does not lock the image cache, so it must
      * already be locked by a higher-level method.
      */
     private static BufferedImage fetchCachedImageUnsafe(String name) {
@@ -795,8 +795,8 @@ public class ResourceKit {
      *
      * @param image the image to prepare
      * @return an image in the correct format; either the original or a
-     * converted one, or <code>null</code> if <code>image</code> was
-     * <code>null</code>
+     * converted one, or {@code null} if {@code image} was
+     * {@code null}
      */
     public static BufferedImage prepareNewImage(Image image) {
         if (image == null) {
@@ -1009,10 +1009,10 @@ public class ResourceKit {
     }
 
     /**
-     * Returns a <code>Font</code> instance for the <i>standard body font</i>:
+     * Returns a {@code Font} instance for the <i>standard body font</i>:
      * this is the default Times-like serif font that is the default font for
      * markup on game components. It is normally accessed by its family name via
-     * {@link #getBodyFamily()} rather than by <code>Font</code>. Please see the
+     * {@link #getBodyFamily()} rather than by {@code Font}. Please see the
      * documentation for that method for further details.
      *
      * @return an instance of the standard body font
@@ -1132,7 +1132,7 @@ public class ResourceKit {
      *
      * @param resource the font resource file
      * @return an instance of the font at the requested point size
-     * @throws NullPointerException if the resource is <code>null</code>
+     * @throws NullPointerException if the resource is {@code null}
      * @throws InvalidFileFormatException if the resource is not a supported
      * font file format or the font is corrupt
      * @throws FileNotFoundException if the resource file does not exist
@@ -1201,7 +1201,7 @@ public class ResourceKit {
      * then an attempt is made to register the font. A registered font can be
      * created by its family name just as if it were installed in the user's
      * operating system. For example, it can be used in markup boxes with the
-     * <code>&lt;family&gt;</code> tag or the font family text attribute. (If
+     * {@code &lt;family&gt;} tag or the font family text attribute. (If
      * registration fails, it is usually because a font with the same
      * name&mdash;possibly the same font&mdash;is installed on the user's
      * system.)
@@ -1209,7 +1209,7 @@ public class ResourceKit {
      * @param resourceFile the font resource file to register
      * @return an object that provides access to the font, its family name, and
      * the result of registration
-     * @throws NullPointerException if the resource is <code>null</code>
+     * @throws NullPointerException if the resource is {@code null}
      * @throws InvalidFileFormatException if the resource is not a supported
      * font file format or the font is corrupt
      * @throws FileNotFoundException if the resource file does not exist
@@ -1263,7 +1263,7 @@ public class ResourceKit {
      * {@link #registerFont(java.lang.String)}, and an array of registration
      * results is returned. Typically, the caller will want to get the name of
      * the font to use for {@link TextStyle}s by calling
-     * <code>ResourceKit.registerFontList( families )[0].getFamily()</code>.
+     * {@code ResourceKit.registerFontList( families )[0].getFamily()}.
      *
      * <p>
      * After the first entry in the list, subsequent entries will be assumed to
@@ -1275,7 +1275,7 @@ public class ResourceKit {
      * @param commaSeparatedList the list of resource files to register
      * @return an array of results, one for each registered resource in the same
      * order as listed by the caller
-     * @throws NullPointerException if the list is <code>null</code>
+     * @throws NullPointerException if the list is {@code null}
      * @throws InvalidFileFormatException if any resource is not a supported
      * font file format or the font is corrupt
      * @throws FileNotFoundException if any resource file does not exist
@@ -1313,13 +1313,13 @@ public class ResourceKit {
     }
 
     /**
-     * Returns <code>true</code> if one or more fonts with the specified family
+     * Returns {@code true} if one or more fonts with the specified family
      * name have been registered through {@link #registerFont}.
      *
      * @param familyName the family name of the font to check
-     * @return <code>true</code> if at least one font with that family name has
+     * @return {@code true} if at least one font with that family name has
      * been registered successfully
-     * @throws NullPointerException if the family name is <code>null</code>
+     * @throws NullPointerException if the family name is {@code null}
      */
     public static boolean isFamilyRegistered(String familyName) {
         if (familyName == null) {
@@ -1329,17 +1329,17 @@ public class ResourceKit {
     }
 
     /**
-     * Returns a font instance that is equivalent to <code>font</code> but which
+     * Returns a font instance that is equivalent to {@code font} but which
      * will default to using kerning and ligatures (if available for the font
      * and if supported by the particular rendering method). Note that this
      * method is not needed for markup text drawn on components, as the markup
      * system already provides its own support for kerning and ligatures, and it
-     * looks up fonts by family name rather than <code>Font</code> instance.
+     * looks up fonts by family name rather than {@code Font} instance.
      *
      * @param font the font to modify
-     * @return a font instance that is equivalent to <code>font</code> but will
+     * @return a font instance that is equivalent to {@code font} but will
      * use kerning and ligatures when possible
-     * @throws NullPointerException if the font is <code>null</code>
+     * @throws NullPointerException if the font is {@code null}
      */
     @SuppressWarnings("unchecked")
     public static Font enableKerningAndLigatures(Font font) {
@@ -1367,7 +1367,7 @@ public class ResourceKit {
      * Registers a cache's metrics instance to make it available for lookup.
      *
      * @param cm the metrics instance to register
-     * @throws NullPointerException if the metrics instance is <code>null</code>
+     * @throws NullPointerException if the metrics instance is {@code null}
      */
     public static void registerCacheMetrics(CacheMetrics cm) {
         if (cm == null) {
@@ -1392,7 +1392,7 @@ public class ResourceKit {
 
     /**
      * Returns an array of the currently registered cache metrics instances,
-     * sorted by name (that is, their <code>toString()</code> value).
+     * sorted by name (that is, their {@code toString()} value).
      *
      * @return an array of registered cache metrics instances
      */
@@ -1608,9 +1608,9 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a single game component.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showOpenDialog(Component parent) {
         initializeFileDialogs();
@@ -1634,7 +1634,7 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening multiple game components.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @return the selected files (empty if no file was selected)
      */
@@ -1663,10 +1663,10 @@ public class ResourceKit {
      * selected file exists, the user must confirm whether they wish to replace
      * the existing file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @param baseName an optional suggested file name
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showSaveDialog(Component parent, String baseName) {
         initializeFileDialogs();
@@ -1707,9 +1707,9 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a single image file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      * @since 1.5
      */
     public static File showImageFileDialog(Component parent) {
@@ -1734,9 +1734,9 @@ public class ResourceKit {
      * only bitmap image formats (such as JPEG) and not vector image formats
      * (such as SVG).
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      * @since 3.0
      */
     public static File showBitmapImageFileDialog(Component parent) {
@@ -1761,10 +1761,10 @@ public class ResourceKit {
      * selected file exists, the user must confirm whether they wish to replace
      * the existing file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @param baseName an optional suggested file name
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showZipFileDialog(Component parent, String baseName) {
         initializeFileDialogs();
@@ -1805,12 +1805,12 @@ public class ResourceKit {
      * Displays a file dialog for saving a file. If the selected file exists,
      * the user must confirm whether they wish to replace the existing file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @param base the base location or file
      * @param fileTypeDescription a description of the file type
      * @param fileNameExtensions typical file extensions for this file type
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showGenericSaveDialog(Component parent, File base, String fileTypeDescription, String... fileNameExtensions) {
         initializeFileDialogs();
@@ -1858,12 +1858,12 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @param base the base location or file
      * @param fileType a description of the file type
      * @param fileExtensions typical file extensions for this file type
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showGenericOpenDialog(Component parent, File base, String fileType, String... fileExtensions) {
         initializeFileDialogs();
@@ -1888,12 +1888,12 @@ public class ResourceKit {
      * Displays a file dialog for exporting a file. If the selected file exists,
      * the user must confirm whether they wish to replace the existing file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
      * @param basename the base location or file
      * @param fileType a description of the file type
      * @param fileExtension typical file extension for this file type
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showGenericExportFileDialog(Component parent, String basename, String fileType, String fileExtension) {
         initializeFileDialogs();
@@ -1933,9 +1933,9 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a script file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showScriptFileDialog(Component parent) {
         initializeFileDialogs();
@@ -1957,9 +1957,9 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a plug-in bundle file.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showPluginFileDialog(Component parent) {
         initializeFileDialogs();
@@ -1981,9 +1981,9 @@ public class ResourceKit {
     /**
      * Displays a file dialog for opening a project folder.
      *
-     * @param parent a parent component for the dialog; may be <code>null</code>
+     * @param parent a parent component for the dialog; may be {@code null}
      * in which case the main application window is used
-     * @return the selected file, or <code>null</code> if no file was selected
+     * @return the selected file, or {@code null} if no file was selected
      */
     public static File showProjectFolderDialog(Component parent) {
         initializeFileDialogs();
@@ -2046,7 +2046,7 @@ public class ResourceKit {
      * depending on application preference settings.
      *
      * @param job the printer job to be used for printing
-     * @return <code>true</code> if the user confirms that printing should
+     * @return {@code true} if the user confirms that printing should
      * proceed
      */
     public static boolean showPrintDialog(PrinterJob job) {
@@ -2058,7 +2058,7 @@ public class ResourceKit {
      * application preference settings.
      *
      * @param job the printer job to create an attribute set for; may be
-     * <code>null</code>
+     * {@code null}
      * @return a print attribute set that reflects user preferences
      * @since 3.0
      */
@@ -2109,7 +2109,7 @@ public class ResourceKit {
     /**
      * Given one of the resource kit file choosers, return its settings key.
      *
-     * @param d a file chooser known to <code>ResourceKit</code>
+     * @param d a file chooser known to {@code ResourceKit}
      * @return that chooser's settings key
      */
     private static String getFolderKey(JFileChooser d) {
@@ -2247,7 +2247,7 @@ public class ResourceKit {
 
     /**
      * Strips illegal characters out of a potential file name. If no characters
-     * are stripped, <code>name</code> is returned unchanged.
+     * are stripped, {@code name} is returned unchanged.
      *
      * @param string the potential file name
      * @return a copy of name with any illegal characters stripped out
@@ -2272,10 +2272,10 @@ public class ResourceKit {
      * Makes a string safe for inclusion as literal HTML by escaping ampersands,
      * less than symbols, and greater than symbols with their HTML entity
      * expressions. If the string contains none of these characters, the
-     * original string is returned (including if it is <code>null</code>).
+     * original string is returned (including if it is {@code null}).
      *
      * @param string the string to make safe for HTML display (may be
-     * <code>null</code>)
+     * {@code null})
      * @return an HTML-safe version with escaped characters where needed, or the
      * original string
      */
@@ -2320,7 +2320,7 @@ public class ResourceKit {
      * @param familyList a comma-separated list of family names
      * @param defaultFamily the value to return if none of the listed families
      * is available
-     * @return the first available font family, or <code>defaultFamily</code>
+     * @return the first available font family, or {@code defaultFamily}
      */
     public static String findAvailableFontFamily(String familyList, String defaultFamily) {
         if (familyList == null) {
@@ -2345,10 +2345,10 @@ public class ResourceKit {
      * Reads a {@link GameComponent} from a file. If an error occurs while
      * reading or creating the component, an error message will be displayed to
      * the user as if the component was opened using the <b>File|Open</b>
-     * command, and <code>null</code> will be returned.
+     * command, and {@code null} will be returned.
      *
      * @param file the file to load the component from
-     * @return the game component stored in the file, or <code>null</code>
+     * @return the game component stored in the file, or {@code null}
      * @see #getGameComponentFromFile(java.io.File, boolean)
      */
     public static GameComponent getGameComponentFromFile(File file) {
@@ -2357,16 +2357,16 @@ public class ResourceKit {
 
     /**
      * Reads a {@link GameComponent} from a file. If an error occurs while
-     * reading or creating the component, and <code>reportError</code> is
-     * <code>true</code>, then an error message will be displayed to the user as
+     * reading or creating the component, and {@code reportError} is
+     * {@code true}, then an error message will be displayed to the user as
      * if the component was opened using the <b>File|Open</b>
      * command. In any case, if the component cannot be created then
-     * <code>null</code> will be returned.
+     * {@code null} will be returned.
      *
      * @param file the file to load the component from
-     * @param reportError if <code>false</code>, errors will be logged but not
+     * @param reportError if {@code false}, errors will be logged but not
      * displayed
-     * @return the game component stored in the file, or <code>null</code>
+     * @return the game component stored in the file, or {@code null}
      * @see #getGameComponentFromFile(java.io.File, boolean)
      */
     public static GameComponent getGameComponentFromFile(File file, boolean reportError) {
@@ -2395,21 +2395,21 @@ public class ResourceKit {
 
     /**
      * Reads a {@link GameComponent} from an input stream. If an error occurs
-     * while reading or creating the component, and <code>reportError</code> is
-     * <code>true</code>, then an error message will be displayed to the user as
+     * while reading or creating the component, and {@code reportError} is
+     * {@code true}, then an error message will be displayed to the user as
      * if the component was opened using the <b>File|Open</b>
      * command. In any case, if the component cannot be created then
-     * <code>null</code> will be returned.
+     * {@code null} will be returned.
      *
      * @param in the input stream to read from
      * @param sourceDescription a description of the source of the input stream
      * (such as a file or URL); this is displayed as part of an error message,
      * if any
-     * @param reportError if <code>true</code>, any errors will be reported to
+     * @param reportError if {@code true}, any errors will be reported to
      * the user with suitable error messages; otherwise, errors will simply be
      * logged
      * @return a game component deserialized from the input stream, or
-     * <code>null</code>
+     * {@code null}
      * @see SEObjectInputStream
      */
     @SuppressWarnings("deprecation")
@@ -2485,7 +2485,7 @@ public class ResourceKit {
      *
      * @param source the source banner image
      * @return an image with a transparent lower edge
-     * @throws NullPointerException if the source image is <code>null</code>
+     * @throws NullPointerException if the source image is {@code null}
      */
     public static BufferedImage createBleedBanner(Image source) {
         if (source == null) {
@@ -2564,11 +2564,11 @@ public class ResourceKit {
         }
 
         /**
-         * Returns a <code>Font</code> instance for the font that was created
+         * Returns a {@code Font} instance for the font that was created
          * from the resource. The font will have a size of 1 point; a different
-         * size can be created by calling the font's <code>deriveFont</code>
+         * size can be created by calling the font's {@code deriveFont}
          * method or, if registration was successful, by creating a new
-         * <code>Font</code> with this font's family name.
+         * {@code Font} with this font's family name.
          *
          * @return a font created from the stream
          */
@@ -2588,15 +2588,15 @@ public class ResourceKit {
         }
 
         /**
-         * Returns <code>true</code> if the font was registered. Note that if
+         * Returns {@code true} if the font was registered. Note that if
          * the font was not registered, it is usually because there is already a
          * font with the same name installed on the user's system. Therefore,
          * you will probably get <i>some version</i> of the font by using the
          * font's family name. (If there is a problem loading the font, this
          * will result in an exception when registration is attempted.)
          *
-         * @return <code>true</code> if the font was registered;
-         * <code>false</code> otherwise
+         * @return {@code true} if the font was registered;
+         * {@code false} otherwise
          */
         public boolean isRegistrationSuccessful() {
             return ok;

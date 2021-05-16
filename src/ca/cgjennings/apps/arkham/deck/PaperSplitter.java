@@ -117,7 +117,7 @@ public final class PaperSplitter {
     /**
      * Given a physical page number, determine the number of the virtual page
      * being printed (assuming that they are all the same size). Essentially,
-     * this is <code>floor(physicalPage/getPhysicalPagesPerPage())</code>.
+     * this is {@code floor(physicalPage/getPhysicalPagesPerPage())}.
      *
      * @return the virtual page number
      */
@@ -183,7 +183,7 @@ public final class PaperSplitter {
      * Returns the total number of physical pages needed to print a document.
      *
      * @return the number of pages required to print
-     * <code>virtualPageCount</code> virtual pages
+     * {@code virtualPageCount} virtual pages
      */
     public int getTotalPhysicalPagesRequired(int virtualPageCount) {
         if (virtualPageCount < 0) {
@@ -284,7 +284,7 @@ public final class PaperSplitter {
      * Printable instance created with
      * {@link #createPrintable(java.awt.print.Printable)}. This is provided
      * mainly for debugging from within the virtual printable's
-     * <code>print</code> method.
+     * {@code print} method.
      *
      * @return the physical page last printed by a printable created from this
      * splitter

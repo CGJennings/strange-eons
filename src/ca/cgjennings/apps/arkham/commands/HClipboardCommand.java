@@ -52,7 +52,7 @@ class HClipboardCommand extends DelegatedCommand {
      * accelerator uses Command, it will also try looking up the Ctrl key.
      *
      * @return the action mapped to by this command's accelerator, or
-     * <code>null</code>
+     * {@code null}
      */
     private ActionListener getClipAction() {
         ActionListener clipAction = null;

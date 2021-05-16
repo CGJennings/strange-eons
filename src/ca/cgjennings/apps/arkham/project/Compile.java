@@ -75,14 +75,14 @@ public class Compile extends TaskAction {
          * source tree)
          * @param sourceFiles one or more source files located in the base path
          * that should be compiled
-         * @return <code>true</code> if compilation was successful
+         * @return {@code true} if compilation was successful
          */
         public boolean compile(File sourceFileBasePath, File... sourceFiles);
     }
 
     /**
      * Returns a {@link Compiler} that can be used to compile Java source files,
-     * or <code>null</code> if none is available. If a compiler has been set
+     * or {@code null} if none is available. If a compiler has been set
      * explicitly using {@link #setCompiler}, then the most recently set
      * compiler is returned. Otherwise, a default compiler implementation is
      * used. The default implementation should be available on any system with a
@@ -90,10 +90,10 @@ public class Compile extends TaskAction {
      *
      * <p>
      * If no compiler has been explicitly set and the default implementation is
-     * not available, this method returns <code>null</code>.
+     * not available, this method returns {@code null}.
      *
      * @return an interface to a Java compiler installed on the user's system,
-     * or <code>null</code>
+     * or {@code null}
      */
     public static synchronized Compiler getCompiler() {
         if (!loaded) {
@@ -120,7 +120,7 @@ public class Compile extends TaskAction {
      *
      * @param javac the compiler implementation to use when compiling Java
      * source files
-     * @throws NullPointerException if the compiler is <code>null</code>
+     * @throws NullPointerException if the compiler is {@code null}
      */
     public static synchronized void setCompiler(Compiler javac) {
         if (javac == null) {

@@ -53,7 +53,7 @@ import resources.Settings.ParseError;
  * then only after you call either {@link #createGraphics() createGraphics} to
  * get a graphics context for the image buffer, or
  * {@link #getDestinationBuffer() getDestinationBuffer} to access it as a
- * <code>BufferedImage</code>.
+ * {@code BufferedImage}.
  *
  * <p>
  * This class provides a number of static helper methods for drawing tasks that
@@ -140,7 +140,7 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Creates a component face for a game component that will use a template
-     * image defined by the value of the <code>templateKey</code> setting. Note
+     * image defined by the value of the {@code templateKey} setting. Note
      * that the sheet is not required to actually use the template image. For
      * example, the actual template image that gets drawn may be selected from
      * one of several different images depending on settings in the associated
@@ -170,15 +170,15 @@ public abstract class Sheet<G extends GameComponent> {
      * <li> The {@link Settings} of the game component associated with this
      * sheet are fetched to look up the keys below.
      * <li> The template image is loaded using <i>templateKey</i>.
-     * <li> If <i>templateKey</i> ends with <code>-template</code>, this is
+     * <li> If <i>templateKey</i> ends with {@code -template}, this is
      * removed.
      * <li> The default region for drawing expansion symbols, if any, is read
-     * from <code><i>templateKey</i>-expsym</code>.
+     * from {@code <i>templateKey</i>-expsym}.
      * <li> The template image resolution, in pixels per inch, is read from
-     * <code><i>templateKey</i>-ppi</code>; if undefined, the default is 150
-     * ppi. (The suffix <code>-dpi</code> can also be used.)
+     * {@code <i>templateKey</i>-ppi}; if undefined, the default is 150
+     * ppi. (The suffix {@code -dpi} can also be used.)
      * <li> The preferred display upsample factor is read from
-     * <code><i>templateKey</i>-upsample</code>; if undefined, the default is 1;
+     * {@code <i>templateKey</i>-upsample}; if undefined, the default is 1;
      * this is multiplied by the template resolution to determine the default
      * resolution for rendering. The default resolution is used by the preview
      * window; components with extremely small text can be made more legible by
@@ -187,7 +187,7 @@ public abstract class Sheet<G extends GameComponent> {
      *
      * @param templateKey the base key name to use to initialize the template
      * for this sheet
-     * @throws NullPointerException if the template key is <code>null</code>
+     * @throws NullPointerException if the template key is {@code null}
      */
     protected final void initializeTemplate(String templateKey) {
         if (templateKey == null) {
@@ -264,10 +264,10 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * If this sheet represents an embedded marker, returns the layout style of
-     * the marker. For regular sheets, this method returns <code>null</code>.
-     * (The base class returns <code>null</code>.)
+     * the marker. For regular sheets, this method returns {@code null}.
+     * (The base class returns {@code null}.)
      *
-     * @return the token style of the embedded token, or <code>null</code> for
+     * @return the token style of the embedded token, or {@code null} for
      * standard sheets
      */
     public MarkerStyle getMarkerStyle() {
@@ -337,7 +337,7 @@ public abstract class Sheet<G extends GameComponent> {
      * sheet's default resolution
      * @return an image representing the content of the component face
      * represented by this sheet
-     * @throws NullPointerException if target is <code>null</code>
+     * @throws NullPointerException if target is {@code null}
      * @throws IllegalArgumentException if the resolution is less than 1 but not
      * the special default value (-1)
      * @throws ConcurrentModificationException if the sheet is already being
@@ -433,13 +433,13 @@ public abstract class Sheet<G extends GameComponent> {
      * Returns an image of the sheet content as it should appear when printed or
      * exported. If the component has a designed bleed margin (that is, if
      * {@link #getBleedMargin()} returns a positive value), then this is
-     * equivalent to <code>paint( target, resolution )</code>. Otherwise, the
+     * equivalent to {@code paint( target, resolution )}. Otherwise, the
      * image returned by that method will be passed to
      * {@link #synthesizeBleedMargin(java.awt.image.BufferedImage, boolean, double)}
      * as a starting image, and the sheet will be given the opportunity to
      * modify the base image, or not, with a synthetic bleed margin. Note that
      * the method is called even if the parameter
-     * <code>synthesizeBleedMargin</code> is <code>false</code>; some sheet
+     * {@code synthesizeBleedMargin} is {@code false}; some sheet
      * implementations may choose to decorate the image when a bleed margin is
      * not requested, for example, by adding rounded corners.
      *
@@ -448,7 +448,7 @@ public abstract class Sheet<G extends GameComponent> {
      * sheet's default resolution
      * @return an image representing the content of the component face
      * represented by this sheet
-     * @throws NullPointerException if target is <code>null</code>
+     * @throws NullPointerException if target is {@code null}
      * @throws IllegalArgumentException if the resolution is less than 1 but not
      * the special default value (-1)
      * @throws ConcurrentModificationException if the sheet is already being
@@ -617,10 +617,10 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns <code>true</code> if the sheet is currently marked as out of
+     * Returns {@code true} if the sheet is currently marked as out of
      * date.
      *
-     * @return <code>true</code> if the {@link #markChanged()} has been called
+     * @return {@code true} if the {@link #markChanged()} has been called
      * since the last time the card was drawn
      */
     public final boolean hasChanged() {
@@ -637,10 +637,10 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns <code>true</code> if the sheets for this card are transparent.
-     * The base class returns <code>false</code>; subclasses that want to create
+     * Returns {@code true} if the sheets for this card are transparent.
+     * The base class returns {@code false}; subclasses that want to create
      * non-rectangular card faces must override this method. When this method
-     * returns <code>true</code>, the framework guarantees the following:
+     * returns {@code true}, the framework guarantees the following:
      * <ol>
      * <li> the image buffer used for drawing will have an alpha channel (that
      * is, it will keep track of how opaque each pixel is)
@@ -648,7 +648,7 @@ public abstract class Sheet<G extends GameComponent> {
      * (alpha = 0) at the start of each call to {@link #paint}
      * </ol>
      *
-     * @return <code>true</code> if the card face may contain transparent or
+     * @return {@code true} if the card face may contain transparent or
      * translucent areas
      */
     public boolean isTransparent() {
@@ -656,9 +656,9 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns <code>true</code> if the sheets created by this card can vary in
+     * Returns {@code true} if the sheets created by this card can vary in
      * size. Subclasses that wish to create variably-sized sheets must override
-     * this method to return <code>true</code>.
+     * this method to return {@code true}.
      *
      * <p>
      * Typically a variably-sized sheet is also transparent. When this is the
@@ -844,7 +844,7 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Returns a hint describing how this sheet should behave when snapped in a
-     * deck. The default is <code>CARD</code>, meaning that the sheet behaves
+     * deck. The default is {@code CARD}, meaning that the sheet behaves
      * like one face of a playing card.
      *
      * @return a hint describing the default behaviour of this face when it is
@@ -861,7 +861,7 @@ public abstract class Sheet<G extends GameComponent> {
      * that allows for slight misalignment when cutting. The height of the card
      * after cutting will be the height of the card produced by the sheet, less
      * twice this margin. Likewise for the width. If {@link #hasCropMarks()}
-     * returns <code>true</code>, then the automatic crop marks will be moved
+     * returns {@code true}, then the automatic crop marks will be moved
      * toward the inside of this card by an amount equal to the bleed margin.
      * <p>
      * In the example below, the actual card to be cut and kept is indicated by
@@ -899,7 +899,7 @@ public abstract class Sheet<G extends GameComponent> {
     /**
      * Returns true if this sheet should have automatic crop and fold marks
      * added when printed or placed in a deck. If this method returns
-     * <code>true</code>, then crop marks will be created automatically around
+     * {@code true}, then crop marks will be created automatically around
      * the edges of the face; the bleed margin of these marks is determined by
      * {@link #getBleedMargin()}. In certain circumstances, some of these crop
      * marks will be converted automatically into fold marks. Typically, this
@@ -908,17 +908,17 @@ public abstract class Sheet<G extends GameComponent> {
      * produce a complete two-sided card.
      *
      * <p>
-     * The base class implementation returns <code>true</code>.
+     * The base class implementation returns {@code true}.
      *
-     * @return <code>true</code> if the deck should generate crop marks
+     * @return {@code true} if the deck should generate crop marks
      */
     public boolean hasCropMarks() {
         return true;
     }
 
     /**
-     * Returns <code>true</code> if this sheet should have special fold marks
-     * added when printed. When this returns <code>true</code>, one or more fold
+     * Returns {@code true} if this sheet should have special fold marks
+     * added when printed. When this returns {@code true}, one or more fold
      * marks will be shown at locations determined by {@link #getFoldMarks}.
      * This can be used to produce complex 3D components that require assembly
      * before use.
@@ -929,7 +929,7 @@ public abstract class Sheet<G extends GameComponent> {
      * crop marks (see {@link #hasCropMarks()}).
      *
      * <p>
-     * The base class returns <code>false</code>.
+     * The base class returns {@code false}.
      */
     public boolean hasFoldMarks() {
         return false;
@@ -938,7 +938,7 @@ public abstract class Sheet<G extends GameComponent> {
     /**
      * Returns an array that describes the extra fold marks that should appear
      * on this face when it is placed in a deck. This method is only called if
-     * {@link #hasFoldMarks} returns <code>true</code>. It should return an
+     * {@link #hasFoldMarks} returns {@code true}. It should return an
      * array of double values. Each fold mark to be added by the deck is
      * described by a sequence of four doubles in the array. The first pair is
      * the location of a start point for the fold mark (in x, y order). The
@@ -956,7 +956,7 @@ public abstract class Sheet<G extends GameComponent> {
      * <pre>[0.5, 0,  0, -1,     0.5, 1,  0, 1]</pre>
      *
      * <p>
-     * The base class returns <code>null</code>.
+     * The base class returns {@code null}.
      *
      * @return an array of quadruples that describe the location and angle of
      * additional fold marks to be drawn around the component
@@ -1011,7 +1011,7 @@ public abstract class Sheet<G extends GameComponent> {
      * invalidate the internal sheet image buffer.
      *
      * @param newTemplate the new template image
-     * @throws NullPointerException if the new template is <code>null</code>
+     * @throws NullPointerException if the new template is {@code null}
      * @see #createGraphics(java.awt.image.BufferedImage, boolean, boolean)
      */
     protected final void replaceTemplateImage(BufferedImage newTemplate) {
@@ -1054,7 +1054,7 @@ public abstract class Sheet<G extends GameComponent> {
     /**
      * Returns the base resolution of the template image, in pixels per inch
      * (ppi). The base resolution is determined from the value of the
-     * <code><i>templateKey</i>-dpi</code> key. If this key is not defined, the
+     * {@code <i>templateKey</i>-dpi} key. If this key is not defined, the
      * resolution defaults to 150 ppi. The template resolution, together with
      * the its width and height, determine the physical size of the template
      * image. Unless the sheet is variably-sized, this is also the physical size
@@ -1110,7 +1110,7 @@ public abstract class Sheet<G extends GameComponent> {
      * context will be scaled for the current resolution and set up
      * appropriately for the current rendering target. This is a convenience
      * method equivalent to calling
-     * <code>createGraphics( null, true, true )</code>.
+     * {@code createGraphics( null, true, true )}.
      *
      * <p>
      * <b>Safe only when painting</b>
@@ -1123,16 +1123,16 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * This method creates a graphics context for drawing sheet graphics. If the
-     * <code>bufferSource</code> is <code>null</code>, then the returned
+     * {@code bufferSource} is {@code null}, then the returned
      * graphics context will draw to this sheet's internal sheet image buffer.
-     * Alternatively, passing in a <code>BufferedImage</code> of your choice
+     * Alternatively, passing in a {@code BufferedImage} of your choice
      * will create a graphics context for that image as if by calling
-     * <code>bufferSource.createGraphics()</code>, and then apply scaling and
+     * {@code bufferSource.createGraphics()}, and then apply scaling and
      * hints as described below. This allows you to create intermediate images
      * as part of the rendering process.
      *
      * <p>
-     * If <code>scaleForResolution</code> is <code>true</code>, the graphics
+     * If {@code scaleForResolution} is {@code true}, the graphics
      * context will be scaled so that 1 unit in the context is equal to 1 pixel
      * in the template image. This assumes that the passed-in image has been
      * scaled according to the upsample factor. (The internal sheet image buffer
@@ -1141,15 +1141,15 @@ public abstract class Sheet<G extends GameComponent> {
      * scaled now, it can be scaled later by calling {@link #applyContextScale}.
      *
      * <p>
-     * If <code>applyHints</code> is <code>true</code>, then the graphics
+     * If {@code applyHints} is {@code true}, then the graphics
      * context's rendering settings will be initialized for the active target as
      * if by calling {@link #applyContextHints}.
      *
      * <p>
      * The caller is responsible for disposing of the returned graphics context.
      * To ensure that the context is always disposed of properly, the drawing
-     * code should be placed in a <code>try</code> block, and
-     * <code>dispose()</code> called in the <code>finally</code> clause, e.g.:
+     * code should be placed in a {@code try} block, and
+     * {@code dispose()} called in the {@code finally} clause, e.g.:
      * <pre>
      * Graphics2D g = sheet.createGraphics( null, true, true );
      * try {
@@ -1163,10 +1163,10 @@ public abstract class Sheet<G extends GameComponent> {
      * <b>Safe only when painting</b>
      *
      * @param bufferSource the image to create a context for, or
-     * <code>null</code> to draw on the sheet image
-     * @param scaleForResolution if <code>true</code>, the context is scaled to
+     * {@code null} to draw on the sheet image
+     * @param scaleForResolution if {@code true}, the context is scaled to
      * suit the current resolution
-     * @param applyHints if <code>true</code>, rendering hints suited to the
+     * @param applyHints if {@code true}, rendering hints suited to the
      * current target will be applied to the context
      * @return a graphics context for the requested destination, optionally
      * scaled and hinted
@@ -1297,9 +1297,9 @@ public abstract class Sheet<G extends GameComponent> {
      * relative to the template image. The dimensions of the actual image will
      * be scaled for the current drawing resolution. (To get a suitable graphics
      * context for the image, use
-     * <code>createGraphics( tempImage, true, true )</code>.) Passing 0 for
+     * {@code createGraphics( tempImage, true, true )}.) Passing 0 for
      * either the width or height is equivalent to using
-     * <code>getTemplateWidth()</code> or <code>getTemplateHeight()</code>,
+     * {@code getTemplateWidth()} or {@code getTemplateHeight()},
      * respectively.
      *
      * <p>
@@ -1309,11 +1309,11 @@ public abstract class Sheet<G extends GameComponent> {
      * cover, or 0 to cover the entire width
      * @param templateHeight the height of the area of the template image to
      * cover, or 0 to cover the entire height
-     * @param includeAlphaChannel if <code>true</code>, the temporary image will
+     * @param includeAlphaChannel if {@code true}, the temporary image will
      * have an alpha channel (pixels can be translucent or transparent)
      * @return an image that can be used to render temporary results that cover
-     * a region that is <code>templateWidth</code> by
-     * <code>templateHeight</code> pixels on the template image
+     * a region that is {@code templateWidth} by
+     * {@code templateHeight} pixels on the template image
      * @throws IllegalArgumentException if the given width or height is less
      * than one
      */
@@ -1352,13 +1352,13 @@ public abstract class Sheet<G extends GameComponent> {
      * ways: if the relevant game component attributes change, or if the
      * requested target or resolution change. This method tests the second
      * condition: during a call to {@link #paint}, if this method returns
-     * <code>true</code> then the target or resolution have changed since the
+     * {@code true} then the target or resolution have changed since the
      * last call.
      *
      * <p>
      * <b>Safe only when painting</b>
      *
-     * @return <code>true</code> if the target or resolution may have changed
+     * @return {@code true} if the target or resolution may have changed
      * since the last time the sheet was rendered
      */
     public final boolean isCachedTemporaryImageInvalid() {
@@ -1427,8 +1427,8 @@ public abstract class Sheet<G extends GameComponent> {
      * @param sheetImage the image, previously returned from
      * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
      * to synthesize a margin for
-     * @param synthesize if <code>true</code>, then the border should be
-     * synthesized; if <code>false</code>, subclasses may decorate the the image
+     * @param synthesize if {@code true}, then the border should be
+     * synthesized; if {@code false}, subclasses may decorate the the image
      * to accordingly (for example, by painting on rounded corners)
      * @param resolution the resolution, in pixels per inch, of the sheet image
      * @return a new image with the requested margin, or
@@ -1605,7 +1605,7 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Draws a magenta outline of the specified rectangle if layout debugging
-     * has been enabled. If the rectangle is <code>null</code> or has an area of
+     * has been enabled. If the rectangle is {@code null} or has an area of
      * zero, a warning will be logged and nothing will be drawn.
      *
      * @param g the sheet graphics context to draw on
@@ -1760,7 +1760,7 @@ public abstract class Sheet<G extends GameComponent> {
      * @param outlineColor the colour of the outline
      * @param alignment the horizontal alignment of the text within the
      * rectangle
-     * @param outlineUnderneath if <code>true</code>, the outline is drawn
+     * @param outlineUnderneath if {@code true}, the outline is drawn
      * underneath the text, otherwise overtop of it
      */
     public void drawOutlinedTitle(Graphics2D g, String text, Rectangle region, Font font, float maxSize, float outlineSize, Paint textColor, Paint outlineColor, int alignment, boolean outlineUnderneath) {
@@ -1914,7 +1914,7 @@ public abstract class Sheet<G extends GameComponent> {
      * @param r the rectangle to center the text within
      * @param font the font to use to draw the title
      * @param size the point size to draw the title at
-     * @param embolden if <code>true</code>, use a bolder version of the font
+     * @param embolden if {@code true}, use a bolder version of the font
      */
     @Deprecated
     public void centerTitle(Graphics2D g, String text, Rectangle r, Font font, float size, boolean embolden) {
@@ -1940,13 +1940,13 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Returns the symbol to be painted on cards for an expansion. If the
-     * expansion requested is <code>null</code>, then <code>null</code> is
+     * expansion requested is {@code null}, then {@code null} is
      * returned.
      *
      * <p>
-     * If the variant string is <code>null</code> or indicates boolean
-     * <code>false</code>, then the expansion's 0th symbol is returned. If it
-     * indicates boolean <code>true</code>, then the expansion's 1st symbol is
+     * If the variant string is {@code null} or indicates boolean
+     * {@code false}, then the expansion's 0th symbol is returned. If it
+     * indicates boolean {@code true}, then the expansion's 1st symbol is
      * returned. Otherwise, the string is interpreted as an integer indicating
      * the index of the symbol to return. If the string is invalid, the 0th
      * symbol is used.
@@ -1966,7 +1966,7 @@ public abstract class Sheet<G extends GameComponent> {
      * @param targetWidth the desired image width, in actual pixels (i.e., not
      * scaled for the current drawing resolution)
      * @return a variant of the expansion symbol image that is optimized for
-     * <code>targetWidth</code>, or <code>null</code>
+     * {@code targetWidth}, or {@code null}
      * @throws IllegalArgumentException if the target width is not positive
      */
     public static BufferedImage getExpansionSymbol(Expansion expansion, String booleanOrIntegerVariant, int targetWidth) {
@@ -2100,7 +2100,7 @@ public abstract class Sheet<G extends GameComponent> {
      * Given a list of expansion codes separated by commas (the format used to
      * set expansion icons in a game component's private settings), return an
      * array of the expansions represented by the codes. Any undefined
-     * expansions will appear as <code>null</code> values in the array. If
+     * expansions will appear as {@code null} values in the array. If
      * settingValue is null or empty, this method returns null.
      *
      * @param settingValue the setting value to parse

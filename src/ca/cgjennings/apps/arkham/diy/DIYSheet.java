@@ -30,7 +30,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * Creates a new sheet for a DIY component. A sheet is not normally created
      * directly, but is instead created by calling
      * {@link DIY#createDefaultSheets()}. Unlike most sheets, a
-     * <code>DIYSheet</code> does not contain the sheet painting code itself,
+     * {@code DIYSheet} does not contain the sheet painting code itself,
      * but instead defers painting to the component it was created for.
      *
      * @param diy the component for which this sheet is being created
@@ -108,23 +108,23 @@ public final class DIYSheet extends Sheet<DIY> {
     }
 
     /**
-     * Returns <code>true</code> if the current or most recent rendering was
-     * being done in high resolution mode. To return <code>true</code>, one of
+     * Returns {@code true} if the current or most recent rendering was
+     * being done in high resolution mode. To return {@code true}, one of
      * the following statements must hold:
      * <ol>
-     * <li> the high resolution substitution mode is set to <code>FORCE</code>,
+     * <li> the high resolution substitution mode is set to {@code FORCE},
      * or
-     * <li> the high resolution substitution mode is set to <code>ENABLE</code>,
-     * the render target is either <code>PRINT</code> or <code>EXPORT</code>,
+     * <li> the high resolution substitution mode is set to {@code ENABLE},
+     * the render target is either {@code PRINT} or {@code EXPORT},
      * and the requested resolution is greater than the resolution of the
      * template image.
      * </ol>
      *
      * <p>
-     * When this method returns <code>true</code>, painting methods should use
+     * When this method returns {@code true}, painting methods should use
      * the highest resolution source images available.
      *
-     * @return <code>true</code> if in "high resolution" mode
+     * @return {@code true} if in "high resolution" mode
      * @since 2.1a11
      */
     public boolean isHighResolutionRendering() {
@@ -149,8 +149,8 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at its normal size at the specified location. This method
      * will perform automatic high resolution image substitution if there is a
-     * key with same name as <code>imageKey</code> but with
-     * <code>"-hires"</code> appended.
+     * key with same name as {@code imageKey} but with
+     * {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param imageKey the settings key of the image
@@ -174,8 +174,8 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at a location and size that are taken from a region
      * setting. This method will perform automatic high resolution image
-     * substitution if there is a key with same name as <code>imageKey</code>
-     * but with <code>"-hires"</code> appended.
+     * substitution if there is a key with same name as {@code imageKey}
+     * but with {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param imageKey the settings key of the image
@@ -193,7 +193,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * <tt>sharedKey</tt>, while the region is obtained by concatenating
      * <tt>"-region"</tt> to the shared key name. This method will perform
      * automatic high resolution image substitution if there is a key with same
-     * name as <code>sharedKey</code> but with <code>"-hires"</code> appended.
+     * name as {@code sharedKey} but with {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param sharedKey the settings key of the image, and base name of the
@@ -206,7 +206,7 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at the specified location and size. This method will
      * perform automatic high resolution image substitution if there is a key
-     * with same name as <code>imageKey</code> but with <code>"-hires"</code>
+     * with same name as {@code imageKey} but with {@code "-hires"}
      * appended.
      *
      * @param g the graphics context to use for painting
@@ -240,7 +240,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * <tt>sharedKey</tt> and <tt>number</tt>, while the region is obtained by
      * concatenating <tt>"-region"</tt> to the shared key name. This method will
      * perform automatic high resolution image substitution if there is a key
-     * with same name as <code>sharedKey</code> but with <code>"-hires"</code>
+     * with same name as {@code sharedKey} but with {@code "-hires"}
      * appended.
      *
      * @param g the graphics context to use for painting
@@ -290,7 +290,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * Paints the card template image that was set when the card was created.
      * This method can perform automatic high resolution image substitution if
      * there is a key with same name as the template key but with
-     * <code>"-hires"</code> appended.
+     * {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      */
@@ -371,7 +371,7 @@ public final class DIYSheet extends Sheet<DIY> {
      *
      * @param g the graphics context to paint the marker portrait into
      * @throws IllegalStateException if the component is not a
-     * <code>CARD_AND_MARKER</code> type
+     * {@code CARD_AND_MARKER} type
      */
     public void paintMarkerPortrait(Graphics2D g) {
         if (diy.getFaceStyle() != DIY.FaceStyle.CARD_AND_MARKER) {

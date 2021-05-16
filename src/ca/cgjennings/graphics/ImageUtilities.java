@@ -42,7 +42,7 @@ public final class ImageUtilities {
     }
 
     /**
-     * Creates a new image the same size as <code>im</code> which is in either
+     * Creates a new image the same size as {@code im} which is in either
      * <tt>TYPE_INT_RGB</tt> or <tt>TYPE_INT_ARGB</tt> format depending on
      * whether
      * <tt>im</tt> is opaque.
@@ -72,7 +72,7 @@ public final class ImageUtilities {
     }
 
     /**
-     * Creates a new image the same size as <code>im</code> which is in
+     * Creates a new image the same size as {@code im} which is in
      * <tt>TYPE_INT_ARGB</tt> format.
      *
      * @param im the image to create a new image for
@@ -137,7 +137,7 @@ public final class ImageUtilities {
      * specified format, it is returned unchanged.
      *
      * @param im the image to be provided in the specified format
-     * @param type the <code>BufferedImage.TYPE_*</code> value for the desired
+     * @param type the {@code BufferedImage.TYPE_*} value for the desired
      * format
      * @return the original image, or a copy converted to the requested format
      */
@@ -202,13 +202,13 @@ public final class ImageUtilities {
      * specified image.
      *
      * @param toolkit the toolkit on which to define the cursor
-     * (<code>null</code> for default)
+     * ({@code null} for default)
      * @param image the image to use for the cursor
      * @param hotspotX the x-coordinate of the cursor's hotspot (the image
      * offset where clicks occur)
      * @param hotspotY the y-coordinate of the cursor's hotspot
      * @param name the custom cursor name, for accessibility, or
-     * <code>null</code> to generate a name
+     * {@code null} to generate a name
      * @return a custom cursor as close to the requested form as allowed by the
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
@@ -254,13 +254,13 @@ public final class ImageUtilities {
 
     /**
      * Returns a {@link BufferedImage} that is equivalent to a specified
-     * {@link Image}. If the image is already a <code>BufferedImage</code>, it
-     * is returned unmodified. Otherwise, a new <code>BufferedImage</code> will
+     * {@link Image}. If the image is already a {@code BufferedImage}, it
+     * is returned unmodified. Otherwise, a new {@code BufferedImage} will
      * be created and the contents of the image copied into it. If necessary,
      * the method will wait until the image has finished downloading.
      *
      * @param image the image to convert
-     * @return the original image, converted into a <code>BufferedImage</code>
+     * @return the original image, converted into a {@code BufferedImage}
      * if it is not already of that type
      */
     public static BufferedImage imageToBufferedImage(Image image) {
@@ -305,12 +305,12 @@ public final class ImageUtilities {
     }
 
     /**
-     * Creates an icon from <code>image</code> that is constrained to
-     * <code>size</code> by <code>size</code> pixels.
+     * Creates an icon from {@code image} that is constrained to
+     * {@code size} by {@code size} pixels.
      *
      * @param image the image to create an icon from
      * @param size the maximum width and height of the icon
-     * @return an icon created from <code>image</code>
+     * @return an icon created from {@code image}
      */
     public static Icon createIconForSize(BufferedImage image, int size) {
         if (image.getWidth() > size || image.getHeight() > size) {
@@ -325,14 +325,14 @@ public final class ImageUtilities {
 
     /**
      * Ensures that the supplied icon has the specified size. If the source icon
-     * is <code>null</code>, <code>null</code> is returned. Otherwise, if the
+     * is {@code null}, {@code null} is returned. Otherwise, if the
      * icon has the correct dimensions it is returned. If not, a new icon is
      * created as if by calling {@link #createIconForSize} on an image of the
      * icon.
      *
      * @param icon the image to create an icon from
      * @param size the desired width and height of the icon
-     * @return an icon of the requested size, or <code>null</code>
+     * @return an icon of the requested size, or {@code null}
      */
     public static Icon ensureIconHasSize(Icon icon, int size) {
         if (icon == null) {
@@ -517,12 +517,12 @@ public final class ImageUtilities {
     }
 
     /**
-     * Resample an image. If <code>multipass</code> is <code>true</code>, then
+     * Resample an image. If {@code multipass} is {@code true}, then
      * the method <i>may</i> split the resampling into multiple passes in order
      * to increase the quality of the result. The quality of the interpolation
      * is also controlled by the hint values, which must be one of the
-     * <code>RenderingHints.VALUE_INTERPOLATION_*</code> values, or else
-     * <code>null</code>. (If a hint is <code>null</code>, a slow area-averaging
+     * {@code RenderingHints.VALUE_INTERPOLATION_*} values, or else
+     * {@code null}. (If a hint is {@code null}, a slow area-averaging
      * algorithm will be used.) The hints determine the type of interpolation
      * used at each stage; the final pass hint is always used exactly once
      * (unless the image is already the requested size). The intermediate hint
@@ -532,13 +532,13 @@ public final class ImageUtilities {
      * <table>
      * <caption>Suggested resampling combinations</caption>
      * <tr><th>multipass<th>finalPassHint<th>intermediateHint</tr>
-     * <tr><td><code>false</code><td>VALUE_INTERPOLATION_NEAREST_NEIGHBOUR<td><code>null</code>
+     * <tr><td>{@code false}<td>VALUE_INTERPOLATION_NEAREST_NEIGHBOUR<td>{@code null}
      * (ignored)</tr>
-     * <tr><td><code>true</code>
+     * <tr><td>{@code true}
      * <td>VALUE_INTERPOLATION_BILINEAR<td>VALUE_INTERPOLATION_BILINEAR</tr>
-     * <tr><td><code>true</code>
+     * <tr><td>{@code true}
      * <td>VALUE_INTERPOLATION_BILINEAR<td>VALUE_INTERPOLATION_BICUBIC</tr>
-     * <tr><td><code>true</code>
+     * <tr><td>{@code true}
      * <td>VALUE_INTERPOLATION_BICUBIC<td>VALUE_INTERPOLATION_BICUBIC</tr>
      * </table>
      *
@@ -806,7 +806,7 @@ public final class ImageUtilities {
     /**
      * Returns an image that is identical to a source image except that it is
      * padded by blank pixels around the outside. The returned image is always
-     * of type <code>TYPE_INT_ARGB</code>. Margins can be negative, in which
+     * of type {@code TYPE_INT_ARGB}. Margins can be negative, in which
      * case rows or columns are removed from the outside of the image. If the
      * margins are such that the width or height becomes less than 1, a blank 1
      * by 1 pixel image is returned. If the margin is 0 on all sides and the
@@ -861,13 +861,13 @@ public final class ImageUtilities {
 
     /**
      * Returns a mirrored version of the source image. If neither parameter is
-     * <code>true</code>, the original image is returned. Otherwise, a copy is
+     * {@code true}, the original image is returned. Otherwise, a copy is
      * returned that is flipped horizontally and/or vertically.
      *
      * @param source the image to create a mirrored version of
-     * @param horiz if <code>true</code>, the image is mirrored horizontally
+     * @param horiz if {@code true}, the image is mirrored horizontally
      * (i.e., on the y axis)
-     * @param vert if <code>true</code>, the image is mirrored vertically (i.e.,
+     * @param vert if {@code true}, the image is mirrored vertically (i.e.,
      * on the x axis)
      * @return the mirrored version of the image
      * @see TurnAndFlipFilter
@@ -910,15 +910,15 @@ public final class ImageUtilities {
      * the reverse order of the parameters; that is, the first parameter will be
      * drawn overtop of the second, the second over the third and so forth. The
      * images will be drawn directly onto the last image in the list. If this is
-     * <code>null</code>, a new image will be created with a width and height
+     * {@code null}, a new image will be created with a width and height
      * equal to the maximum width and maximum height of all of the other images.
      * The last image in the last (possibly newly created if it was
-     * <code>null</code>) is returned from the method.
+     * {@code null}) is returned from the method.
      *
      * @param images a series of images to paint over each other
      * @return the bottom image, or a new image if the bottom (last) image was
-     * <code>null</code>
-     * @throws NullPointerException if a <code>null</code> array is passed in
+     * {@code null}
+     * @throws NullPointerException if a {@code null} array is passed in
      * @throws IllegalArgumentException if the image array has length 0
      */
     public static BufferedImage merge(BufferedImage... images) {
@@ -991,13 +991,13 @@ public final class ImageUtilities {
     }
 
     /**
-     * Returns <code>true</code> if every pixel in this image is fully opaque.
-     * If the image has no alpha channel, then <code>true</code> is returned
+     * Returns {@code true} if every pixel in this image is fully opaque.
+     * If the image has no alpha channel, then {@code true} is returned
      * immediately. Otherwise, the image is checked pixel-by-pixel.
      *
      * @param bi the image to check
-     * @return <code>true</code> if and only if every pixel is opaque
-     * @throws NullPointerException if the image is <code>null</code>
+     * @return {@code true} if and only if every pixel is opaque
+     * @throws NullPointerException if the image is {@code null}
      */
     public static boolean isOpaque(BufferedImage bi) {
         if (bi == null) {

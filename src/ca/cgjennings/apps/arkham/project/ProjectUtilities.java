@@ -55,9 +55,9 @@ public class ProjectUtilities {
 
     /**
      * Return the current project view, if any, in the application. This is
-     * shorthand for <code>StrangeEons.getWindow().getOpenProjectView()</code>.
+     * shorthand for {@code StrangeEons.getWindow().getOpenProjectView()}.
      *
-     * @return the current project view, or <code>null</code>
+     * @return the current project view, or {@code null}
      */
     private static ProjectView getView() {
         return StrangeEons.getWindow().getOpenProjectView();
@@ -66,18 +66,18 @@ public class ProjectUtilities {
     /**
      * Simplifies a description of the target of an action. Actions are asked
      * whether they apply to a member, along with its task and project. When a
-     * task is selected, the member will be <code>null</code>. Likewise, then a
-     * project is selected, the task will also be <code>null</code>. If a
-     * <code>TaskAction</code> does not wish to alter its behaviour when applied
+     * task is selected, the member will be {@code null}. Likewise, then a
+     * project is selected, the task will also be {@code null}. If a
+     * {@code TaskAction} does not wish to alter its behaviour when applied
      * to these different member types, it can call this method to collapse
      * these three parameters to a single value, the selected member (no matter
      * the type).
      *
      * @param project the project
-     * @param task the task within the project, or <code>null</code>
-     * @param member the member within the task, or <code>null</code>
-     * @return the rightmost non-<code>null</code> parameter, or
-     * <code>null</code> if all parameters are <code>null</code>
+     * @param task the task within the project, or {@code null}
+     * @param member the member within the task, or {@code null}
+     * @return the rightmost non-{@code null} parameter, or
+     * {@code null} if all parameters are {@code null}
      */
     public static Member simplify(Project project, Task task, Member member) {
         Member m = member;
@@ -91,7 +91,7 @@ public class ProjectUtilities {
     }
 
     /**
-     * Simplify an array of non-<code>null</code> members, if possible, by
+     * Simplify an array of non-{@code null} members, if possible, by
      * eliminating duplicates and keeping only the ancestor if an ancestor and a
      * descendent both occur. Given the following members:
      * <pre>
@@ -109,7 +109,7 @@ public class ProjectUtilities {
      * Martha
      * George
      * Jim/Ralph
-     * </pre> The order of elements in <code>members</code> is maintained in the
+     * </pre> The order of elements in {@code members} is maintained in the
      * merged result.
      *
      * @param members an array of members to merge
@@ -166,8 +166,8 @@ public class ProjectUtilities {
      * throw an exception if asked to delete the root folder of a file system.
      *
      * @param target the file to delete
-     * @return <code>true</code> if all of the files were successfully deleted
-     * @throws NullPointerException if the target is <code>null</code>
+     * @return {@code true} if all of the files were successfully deleted
+     * @throws NullPointerException if the target is {@code null}
      * @throws IllegalArgumentException if the specified file is a file system
      * root (such as C: on windows or / on UNIX).
      */
@@ -209,7 +209,7 @@ public class ProjectUtilities {
      *
      * @param original a file or folder to copy
      * @param parent the parent directory where that should contain the copy
-     * @throws IllegalArgumentException if <code>parent</code> is not a folder
+     * @throws IllegalArgumentException if {@code parent} is not a folder
      * @throws IOException if an exception occurs while copying
      */
     public static void copyFolder(File original, File parent) throws IOException {
@@ -273,7 +273,7 @@ public class ProjectUtilities {
      *
      * @param a the first file to consider
      * @param b the second file to consider
-     * @return <code>true</code> if <code>a</code> and <code>b</code> are
+     * @return {@code true} if {@code a} and {@code b} are
      * determined to be the same file
      */
     public static boolean sameFile(File a, File b) {
@@ -441,13 +441,13 @@ public class ProjectUtilities {
     /**
      * Create a ZIP output stream for writing a plug-in bundle or ZIP archive.
      * In order to be a valid plug-in bundle, a valid <tt>eons-plugin</tt> file
-     * must be written into the archive's root folder. If <code>webSafe</code>
-     * is <code>false</code> and the archive contains no
-     * <code>eons-plugin</code> file, then the result will be a plain ZIP file
+     * must be written into the archive's root folder. If {@code webSafe}
+     * is {@code false} and the archive contains no
+     * {@code eons-plugin} file, then the result will be a plain ZIP file
      * that can be used to create a portable archive for other purposes.
      *
      * @param out the stream to write the archive to
-     * @param webSafe if <code>true</code>, a Web-safe bundle archive is created
+     * @param webSafe if {@code true}, a Web-safe bundle archive is created
      * (do not use if creating a plain ZIP archive)
      * @return the archive stream to write file data to
      * @throws IOException if an I/O error occurs while creating the archive
@@ -465,7 +465,7 @@ public class ProjectUtilities {
      * will be written to a file.
      *
      * @param archive the path to the file that the archive will be written to
-     * @param webSafe if <code>true</code>, a Web-safe bundle archive is created
+     * @param webSafe if {@code true}, a Web-safe bundle archive is created
      * (do not use if creating a plain ZIP archive)
      * @return the archive stream to write file data to
      * @throws IOException if an I/O error occurs while creating the archive
@@ -495,8 +495,8 @@ public class ProjectUtilities {
      * @param baseFile the source file to be copied
      * @param baseZIPEntry the folder name to use as the file's parent in the
      * archive
-     * @param recurse if <code>true</code>, recursively copy all children of
-     * <code>baseFile</code> (if any) into the archive
+     * @param recurse if {@code true}, recursively copy all children of
+     * {@code baseFile} (if any) into the archive
      * @param filterFiles if files that match the excluded project file list
      * should be ignored
      * @throws IOException if an I/O error occurs while reading the source file
@@ -594,17 +594,17 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns <code>true</code> if the <code>possibleChild</code> has
-     * <code>container</code> as an ancestor. Returns <code>true</code> if the
-     * two files are equal. If either file is <code>null</code>, returns
-     * <code>false</code>.
+     * Returns {@code true} if the {@code possibleChild} has
+     * {@code container} as an ancestor. Returns {@code true} if the
+     * two files are equal. If either file is {@code null}, returns
+     * {@code false}.
      *
      * @param container the parent file that may contain
-     * <code>possibleChild</code>
+     * {@code possibleChild}
      * @param possibleChild the file to test
-     * @return <code>true</code> if and only if both files are
-     * non-<code>null</code> and <code>container</code> is a parent of
-     * <code>possibleChild</code>
+     * @return {@code true} if and only if both files are
+     * non-{@code null} and {@code container} is a parent of
+     * {@code possibleChild}
      */
     public static boolean contains(File container, File possibleChild) {
         while (possibleChild != null) {
@@ -617,7 +617,7 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns the <code>preferred</code> file name if it is not in use,
+     * Returns the {@code preferred} file name if it is not in use,
      * otherwise generates a numbered variant of the name that does not already
      * exist at the time the method is called. A typical use is to create an
      * alternative target file if the target of a copy operation already exists.
@@ -679,7 +679,7 @@ public class ProjectUtilities {
     /**
      * Matches a file against a list of file extensions. If the file is not a
      * folder and it's file name matches any of the extensions, then this method
-     * returns <code>true</code>, otherwise <code>false</code>. The list of
+     * returns {@code true}, otherwise {@code false}. The list of
      * extensions should be one or more lowercase strings, each of which is a
      * file extension without a '<tt>.</tt>' (e.g., <tt>png</tt>, <tt>eon</tt>,
      * <tt>xml</tt>, etc.). Note that the file does not need to exist in order
@@ -688,7 +688,7 @@ public class ProjectUtilities {
      *
      * @param f the file to be tested
      * @param extensions the candidate file extensions to be tested against
-     * @return <code>true</code> if <code>f</code> is not a folder and its name
+     * @return {@code true} if {@code f} is not a folder and its name
      * matches any of the given extensions
      */
     public static boolean matchExtension(File f, String... extensions) {
@@ -734,15 +734,15 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns a new file with the same name and path as <code>f</code> except
-     * that it will have the extension <code>newExtension</code>. If the name
+     * Returns a new file with the same name and path as {@code f} except
+     * that it will have the extension {@code newExtension}. If the name
      * did not have an extension previously, a period and the new extension are
      * appended. Otherwise, the last extension in the name is removed and the
      * new extension appended to replace it. If the original file has a parent
      * path, the new file will have the same parent.
      *
      * @param f the original file
-     * @param newExtension the extension to use, <code>null</code> to remove the
+     * @param newExtension the extension to use, {@code null} to remove the
      * extension
      * @return a file with the same base name but a different extension
      */
@@ -850,10 +850,10 @@ public class ProjectUtilities {
 
     /**
      * Returns the contents of a text file stored in resources as a string, or
-     * <code>null</code> if there is no such resource.
+     * {@code null} if there is no such resource.
      *
      * @param resource the path to the resource file to read
-     * @param encoding the text encoding, or <code>null</code> to use the
+     * @param encoding the text encoding, or {@code null} to use the
      * default (ISO-8859-15)
      * @return the text content of the file
      * @throws IOException if an I/O error occurs while reading the resource
@@ -879,7 +879,7 @@ public class ProjectUtilities {
 
     /**
      * Returns the contents of a text file stored in resources as a string, or
-     * <code>null</code> if there is no such resource. The text must be encoded
+     * {@code null} if there is no such resource. The text must be encoded
      * in UTF-8.
      *
      * @param resource the path to the resource file to read
@@ -934,7 +934,7 @@ public class ProjectUtilities {
 
     /**
      * Runs a script whose source text is stored in a file. This is a cover for
-     * <code>runScript( script, null, null, null, false )</code>.
+     * {@code runScript( script, null, null, null, false )}.
      *
      * @param script the file that contains the source text to execute
      * @return the script's return value; typically the value of the last
@@ -947,7 +947,7 @@ public class ProjectUtilities {
 
     /**
      * Runs a script file. This is a cover for
-     * <code>runScript( scriptName, script, null, null, null, false )</code>.
+     * {@code runScript( scriptName, script, null, null, null, false )}.
      *
      * @param scriptName the source file name to be used to identify the script
      * @param script the source code of the script
@@ -961,18 +961,18 @@ public class ProjectUtilities {
     /**
      * Runs a script whose source text is stored in a file. The script's return
      * value, if any, is returned by this method. In the script, the variables
-     * <code>project</code>, <code>task</code>, and <code>member</code> will be
+     * {@code project}, {@code task}, and {@code member} will be
      * bound to the values passed to this method. The script will be provided
-     * with a default <code>PluginContext</code> that is not associated with any
+     * with a default {@code PluginContext} that is not associated with any
      * plug-in.
      *
      * @param script the file that contains the source text to execute
      * @param project the project associated with the script, or
-     * <code>null</code>
-     * @param task the task associated with the script, or <code>null</code>
+     * {@code null}
+     * @param task the task associated with the script, or {@code null}
      * @param member the project member associated with the script, or
-     * <code>null</code>
-     * @param debug if <code>true</code>, the script will be executed in debug
+     * {@code null}
+     * @param debug if {@code true}, the script will be executed in debug
      * mode if possible
      * @return the script's return value; typically the value of the last
      * executed statement
@@ -989,19 +989,19 @@ public class ProjectUtilities {
     /**
      * Runs a script whose source text is stored in a string. The script's
      * return value, if any, is returned by this method. In the script, the
-     * variables <code>project</code>, <code>task</code>, and
-     * <code>member</code> will be bound to the values passed to this method.
-     * The script will be provided with a default <code>PluginContext</code>
+     * variables {@code project}, {@code task}, and
+     * {@code member} will be bound to the values passed to this method.
+     * The script will be provided with a default {@code PluginContext}
      * that is not associated with any plug-in.
      *
      * @param scriptName the source file name to be used to identify the script
      * @param script the source code of the script
      * @param project the project associated with the script, or
-     * <code>null</code>
-     * @param task the task associated with the script, or <code>null</code>
+     * {@code null}
+     * @param task the task associated with the script, or {@code null}
      * @param member the project member associated with the script, or
-     * <code>null</code>
-     * @param debug if <code>true</code>, the script will be executed in debug
+     * {@code null}
+     * @param debug if {@code true}, the script will be executed in debug
      * mode if possible
      * @return the script's return value; typically the value of the last
      * executed statement
@@ -1064,7 +1064,7 @@ public class ProjectUtilities {
      * @param commandArray the command and arguments to use
      * @return the exit code from the command, or -1 if this thread was
      * interrupted while waiting for the command to finish
-     * @throws NullPointerException if the command array is <code>null</code>
+     * @throws NullPointerException if the command array is {@code null}
      * @throws IllegalArgumentException if the command array is empty
      */
     public static int exec(String... commandArray) {
@@ -1096,7 +1096,7 @@ public class ProjectUtilities {
      * the background.
      *
      * @param commandArray the command and arguments to use
-     * @throws NullPointerException if the command array is <code>null</code>
+     * @throws NullPointerException if the command array is {@code null}
      * @throws IllegalArgumentException if the command array is empty
      * @since 3.2
      */
@@ -1130,7 +1130,7 @@ public class ProjectUtilities {
     /**
      * Tries to save every open editor that is a member of the current project.
      *
-     * @param closeAfterSave if <code>true</code>, each file is closed after
+     * @param closeAfterSave if {@code true}, each file is closed after
      * being saved
      */
     public static void saveAllOpenProjectFiles(boolean closeAfterSave) {

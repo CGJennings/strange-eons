@@ -32,7 +32,7 @@ public abstract class AbstractBaseTheme extends Theme {
      * Sets whether translucency is used when setting colour values. By default,
      * the alpha bits of the colour values passed to various protected "set"
      * methods are ignored. This method can be used to change this; specifying
-     * <code>true</code> will caused the highest 8 bits of colour values to be
+     * {@code true} will caused the highest 8 bits of colour values to be
      * used for the alpha value.
      *
      * @param obeyAlphaBits if true, colour values are interpreted as ARGB
@@ -256,7 +256,7 @@ public abstract class AbstractBaseTheme extends Theme {
      *
      * @param key the key name of the default to modify
      * @param value the value of the default to modify
-     * @throws IllegalArgumentException if the key is <code>null</code> or empty
+     * @throws IllegalArgumentException if the key is {@code null} or empty
      */
     protected void set(String key, Object value) {
         if (key == null || key.isEmpty()) {
@@ -269,7 +269,7 @@ public abstract class AbstractBaseTheme extends Theme {
      * {@inheritDoc}
      *
      * <p>
-     * <code>AbstractBaseTheme</code> makes this method final, so the underlying
+     * {@code AbstractBaseTheme} makes this method final, so the underlying
      * look and feel cannot be changed.
      */
     @Override

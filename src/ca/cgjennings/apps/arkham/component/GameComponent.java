@@ -83,7 +83,7 @@ public interface GameComponent extends Serializable, Cloneable {
 
     /**
      * Returns the sheets attached to this component to draw its faces, or
-     * <code>null</code> if no sheets are attached. The returned array is owned
+     * {@code null} if no sheets are attached. The returned array is owned
      * by the game component and must not be modified.
      *
      * @return the sheets that will be updated by calls to
@@ -97,7 +97,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * Once set, the array is owned by the component and must not be modified.
      *
      * @param sheets the sheets to associate with the component, or
-     * <code>null</code> to clear the associated sheets
+     * {@code null} to clear the associated sheets
      * @see #getSheets
      * @see #createDefaultSheets
      */
@@ -116,7 +116,7 @@ public interface GameComponent extends Serializable, Cloneable {
     /**
      * Returns human-readable names for the sheets used by this component. A
      * typical result would be something like
-     * <code>["Front Face", "Back Face"]</code>, localized for the user
+     * {@code ["Front Face", "Back Face"]}, localized for the user
      * interface language.
      *
      * <p>
@@ -132,7 +132,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * by the subclass documentation.
      *
      * @return an array of sheet titles matching the assigned sheets, or
-     * <code>null</code> if there are no sheets attached
+     * {@code null} if there are no sheets attached
      * @see #createDefaultSheets
      */
     public String[] getSheetTitles();
@@ -148,8 +148,8 @@ public interface GameComponent extends Serializable, Cloneable {
 
     /**
      * Called to signal that changes have been made that require the
-     * <code>i</code>the sheet to be redrawn. This is typically not called
-     * directly. Instead, calling a method like "<code>setName</code>" should
+     * {@code i}the sheet to be redrawn. This is typically not called
+     * directly. Instead, calling a method like "{@code setName}" should
      * check if the name being set is actually different, and if so then call
      * this method for each sheet that may have changed as a result. Plug-ins
      * that customize an existing component may also call this method as needed
@@ -158,7 +158,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * <p>
      * Implementations of this method will typically call the
      * {@link Sheet#markChanged()} method of the relevant sheet (unless the
-     * sheet set is <code>null</code>), set a flag for use by
+     * sheet set is {@code null}), set a flag for use by
      * {@link #hasChanged()}, and then call {@link #markUnsavedChanges()}.
      *
      * @param i the index of the sheet that needs to be redrawn
@@ -166,10 +166,10 @@ public interface GameComponent extends Serializable, Cloneable {
     public void markChanged(int i);
 
     /**
-     * Returns <code>true</code> if this component has been modified since the
-     * last call to <code>hasChanged()</code>.
+     * Returns {@code true} if this component has been modified since the
+     * last call to {@code hasChanged()}.
      *
-     * @return <code>true</code> if the component has changed since this was
+     * @return {@code true} if the component has changed since this was
      * last called
      */
     public boolean hasChanged();
@@ -177,7 +177,7 @@ public interface GameComponent extends Serializable, Cloneable {
     /**
      * Returns the value of this component's unsaved changes flag.
      *
-     * @return <code>true</code> if this component has unsaved changes
+     * @return {@code true} if this component has unsaved changes
      */
     public boolean hasUnsavedChanges();
 
@@ -194,12 +194,12 @@ public interface GameComponent extends Serializable, Cloneable {
     public void markSaved();
 
     /**
-     * Returns <code>true</code> if components of this type can be placed in a
+     * Returns {@code true} if components of this type can be placed in a
      * deck. Typically, only components that don't have faces return
-     * <code>false</code>. (Decks themselves, for example, cannot be placed
+     * {@code false}. (Decks themselves, for example, cannot be placed
      * inside other decks.)
      *
-     * @return <code>true</code> if and only if this component can be added to a
+     * @return {@code true} if and only if this component can be added to a
      * deck
      * @see #createDefaultSheets()
      * @see Deck#isDeckLayoutSupported(java.io.File)
@@ -208,7 +208,7 @@ public interface GameComponent extends Serializable, Cloneable {
 
     /**
      * Returns a deep copy of this game component. The default clone
-     * implementation provided by <code>super.clone()</code> will return a
+     * implementation provided by {@code super.clone()} will return a
      * <i>shallow</i> copy of the object. This will correctly clone all of this
      * instance's fields that have primitive types. It is then up to you to
      * clone any object fields where the field is not of an immutable type.
@@ -218,7 +218,7 @@ public interface GameComponent extends Serializable, Cloneable {
      *
      * <p>
      * <b>Debugging tip:</b> One operation that makes use of the
-     * <code>clone()</code> method is the <b>Spin Off</b> command. If you apply
+     * {@code clone()} method is the <b>Spin Off</b> command. If you apply
      * this command, make changes to the copied component, redraw the original
      * component, and notice that changes in the copy have carried over to the
      * original, then you are using a shallow copy rather than a deep copy.

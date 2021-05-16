@@ -1,7 +1,7 @@
 package ca.cgjennings.text;
 
 /**
- * A <code>LineWrapper</code> breaks long strings into multiple lines. It is
+ * A {@code LineWrapper} breaks long strings into multiple lines. It is
  * intended for use with fixed-width code-like text rather than natural language
  * text, although it can be used with any string.
  *
@@ -27,12 +27,12 @@ public class LineWrapper {
      * Creates a new line wrapper with the specified wrapper behaviour.
      *
      * @param breakText the text to insert when breaking a line; if
-     * <code>null</code> then a newline character (\n) is used
+     * {@code null} then a newline character (\n) is used
      * @param firstWrap the optimal length for the first line
      * @param afterWrap the optimal length for lines after the first
      * @param tolerance the amount by which the remaining text must exceed the
      * optimal length before a break is inserted (this allows you to avoid
-     * breaking a line when only <code>tolerance</code> or fewer characters
+     * breaking a line when only {@code tolerance} or fewer characters
      * would appear on the following line)
      */
     public LineWrapper(String breakText, int firstWrap, int afterWrap, int tolerance) {

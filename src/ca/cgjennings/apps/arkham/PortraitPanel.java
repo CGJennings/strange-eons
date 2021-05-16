@@ -155,10 +155,10 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     }
 
     /**
-     * Returns <code>true</code> if the invoking an editor application is
+     * Returns {@code true} if the invoking an editor application is
      * supported.
      *
-     * @return <code>true</code> if editing is supported
+     * @return {@code true} if editing is supported
      */
     public static boolean isEditingSupported() {
         return DesktopIntegration.EDIT_SUPPORTED;

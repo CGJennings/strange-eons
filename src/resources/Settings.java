@@ -121,15 +121,15 @@ public class Settings implements Serializable, Iterable<String> {
     private Settings parent;
 
     /**
-     * Creates a new, empty <code>Settings</code> scope whose parent is the
+     * Creates a new, empty {@code Settings} scope whose parent is the
      * shared global scope.
      */
     public Settings() {
     }
 
     /**
-     * Create a new settings scope within the scope of <code>parent</code>.
-     * Passing <code>null</code> or <code>Settings.getShared()</code> for the
+     * Create a new settings scope within the scope of {@code parent}.
+     * Passing {@code null} or {@code Settings.getShared()} for the
      * parent will use the shared global scope.
      *
      * @param parent the parent scope that will be used to look up keys not
@@ -157,12 +157,12 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the <code>Settings</code> instance that represents the shared
+     * Returns the {@code Settings} instance that represents the shared
      * global scope.
      *
      * <p>
      * Currently, attempting to set or reset a setting key in the shared scope
-     * will cause an <code>UnsupportedOperationException</code> to be thrown,
+     * will cause an {@code UnsupportedOperationException} to be thrown,
      * although this may change in the future.
      *
      * @return the shared global settings scope
@@ -172,7 +172,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the <code>Settings</code> instance that represents user settings.
+     * Returns the {@code Settings} instance that represents user settings.
      * User settings are used to store data that must persist between program
      * runs, such as the recent file list and preference choices.
      *
@@ -201,16 +201,16 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a view of an existing <code>java.util.Properties</code> object as
-     * a <code>Settings</code> object. The <code>Settings</code> object is fully
-     * backed by the <code>Properties</code> object: changes to one will affect
+     * Returns a view of an existing {@code java.util.Properties} object as
+     * a {@code Settings} object. The {@code Settings} object is fully
+     * backed by the {@code Properties} object: changes to one will affect
      * the other.
      *
-     * @param toWrap the <code>Properties</code> to be treated as
-     * <code>Settings</code>
+     * @param toWrap the {@code Properties} to be treated as
+     * {@code Settings}
      * @param name a name that will be used to help distinguish the
-     * <code>Settings</code> instance when its {@link #toString()} method is
-     * called; may be <code>null</code>
+     * {@code Settings} instance when its {@link #toString()} method is
+     * called; may be {@code null}
      * @return a view of the properties as settings
      * @since 2.1
      */
@@ -223,7 +223,7 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns a view of these settings within a namespace. All keys accessed
-     * through the returned <code>Settings</code> will add the namespace prefix
+     * through the returned {@code Settings} will add the namespace prefix
      * to their keys. Namespace names always end in a colon (:), a character not
      * normally used in key names. If the supplied name does not end in a colon,
      * a colon will be added to the name automatically. For example, if the
@@ -238,11 +238,11 @@ public class Settings implements Serializable, Iterable<String> {
      * names are followed).
      *
      * @param namespace the space to restrict key names to
-     * @return a view of this <code>Settings</code> instance that is confined to
+     * @return a view of this {@code Settings} instance that is confined to
      * the specified namespace
      * @since 2.1 alpha 1
      * @throws NullPointerException if the specified namespace is
-     * <code>null</code>
+     * {@code null}
      */
     public final Settings createNamespace(String namespace) {
         if (namespace == null) {
@@ -252,8 +252,8 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the parent scope of this <code>Settings</code>, or
-     * <code>null</code> if this is the shared scope.
+     * Returns the parent scope of this {@code Settings}, or
+     * {@code null} if this is the shared scope.
      *
      * @return the parent scope that will be used to look up keys not defined in
      * this scope
@@ -326,7 +326,7 @@ public class Settings implements Serializable, Iterable<String> {
      * Returns the number of keys that are defined at this scope. Additional
      * keys may be visible from this scope if they are defined in a parent
      * scope. If you need to know the total number of unique keys that are
-     * visible from this scope, call <code>getVisibleKeySet().size()</code>.
+     * visible from this scope, call {@code getVisibleKeySet().size()}.
      *
      * @return the number of keys defined at this scope
      * @since 2.00.7
@@ -336,11 +336,11 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a setting value, or <code>null</code> if it is not defined.
+     * Returns a setting value, or {@code null} if it is not defined.
      *
      * @param key the key to fetch the value of
-     * @return the value of key, or <code>null</code>
-     * @throws NullPointerException if the key is <code>null</code>
+     * @return the value of key, or {@code null}
+     * @throws NullPointerException if the key is {@code null}
      */
     public String get(String key) {
         if (key == null) {
@@ -374,9 +374,9 @@ public class Settings implements Serializable, Iterable<String> {
      *
      * @param key the key to fetch the value of
      * @param defaultValue the default value to return if
-     * <code>get(key) == null</code>
+     * {@code get(key) == null}
      * @return the value of the key, or its default
-     * @throws NullPointerException if the key is <code>null</code>
+     * @throws NullPointerException if the key is {@code null}
      */
     public String get(String key, String defaultValue) {
         if (key == null) {
@@ -392,18 +392,18 @@ public class Settings implements Serializable, Iterable<String> {
      * in the order [key_ll_CC, key_ll, key] (where key is the supplied key
      * name, and ll and CC and the language and country codes of the specified
      * locale) and the first key found is returned. If no key is found,
-     * <code>null</code> is returned.
+     * {@code null} is returned.
      *
      * <p>
      * <b>Note:</b> While this method is useful in some situations, in most
      * cases it is preferable to use {@link Language#getResourceChain} to load
-     * an appropriate sequence of <code>.settings</code> files and merge them
+     * an appropriate sequence of {@code .settings} files and merge them
      * using {@link #addSettingsFrom(java.lang.String)}.
      *
      * @param key the key to fetch the value of
      * @param loc the locale to try to find a more specialized value for
-     * @return the value of the key, localized if possible, or <code>null</code>
-     * @throws NullPointerException if the key is <code>null</code>
+     * @return the value of the key, localized if possible, or {@code null}
+     * @throws NullPointerException if the key is {@code null}
      */
     public String getLocalized(String key, Locale loc) {
         if (key == null) {
@@ -426,13 +426,13 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a setting value, or <code>null</code> if it is not defined. This
+     * Returns a setting value, or {@code null} if it is not defined. This
      * method searches only the local scope, without delegating to parent
      * setting scopes.
      *
      * @param key the key to fetch the value of
-     * @return the value of key, or <code>null</code>
-     * @throws NullPointerException if the key is <code>null</code>
+     * @return the value of key, or {@code null}
+     * @throws NullPointerException if the key is {@code null}
      */
     public String getOverride(String key) {
         if (key == null) {
@@ -460,7 +460,7 @@ public class Settings implements Serializable, Iterable<String> {
      *
      * @param key the key to whose value at this scope should be changed
      * @param value the value to set for this scope
-     * @throws NullPointerException if the supplied key is <code>null</code>
+     * @throws NullPointerException if the supplied key is {@code null}
      */
     public void set(String key, String value) {
         if (key == null) {
@@ -505,7 +505,7 @@ public class Settings implements Serializable, Iterable<String> {
      * the default value stored in the parent.
      *
      * @param key the key to be removed
-     * @throws NullPointerException if the key is <code>null</code>
+     * @throws NullPointerException if the key is {@code null}
      */
     public void reset(String key) {
         if (key == null) {
@@ -540,7 +540,7 @@ public class Settings implements Serializable, Iterable<String> {
      * names and elements at odd indices define the value to be associated with
      * the key at the previous index
      * @throws NullPointerException if the array of setting pairs is
-     * <code>null</code>, or if any individual key name is <code>null</code>
+     * {@code null}, or if any individual key name is {@code null}
      * @throws IllegalArgumentException if the array of setting pairs has an odd
      * length
      */
@@ -557,7 +557,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Adds settings stored in a <code>.settings</code> resource file to this
+     * Adds settings stored in a {@code .settings} resource file to this
      * settings object. The resource file defines keys and values using lines
      * with the format
      * <tt>key = value</tt>. Long entries may be broken over multiple physical
@@ -608,7 +608,7 @@ public class Settings implements Serializable, Iterable<String> {
      * Adds entries stored in a map collection to this settings instance.
      *
      * @param settingMap a map of keys and associated values
-     * @throws NullPointerException if the map is <code>null</code>
+     * @throws NullPointerException if the map is {@code null}
      */
     public void addSettingsFrom(Map<String, String> settingMap) {
         if (settingMap == null) {
@@ -624,7 +624,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Adds entries from another <code>Settings</code> instance to this
+     * Adds entries from another {@code Settings} instance to this
      * instance. If a key is defined in both instances, the current value in
      * this instance will be replaced. Keys from the source's parent, if any,
      * are not copied.
@@ -651,17 +651,17 @@ public class Settings implements Serializable, Iterable<String> {
      * Returns the value of a text key. This is essentially the same as
      * {@link #get(java.lang.String)}, with the following exceptions:
      * <ol>
-     * <li> the key name will have <code>-text</code> appended if necessary
-     * <li> if the key is not defined, instead of returning <code>null</code>
-     * the method will return <code>[MISSING: <i>key name</i>]</code>
+     * <li> the key name will have {@code -text} appended if necessary
+     * <li> if the key is not defined, instead of returning {@code null}
+     * the method will return {@code [MISSING: <i>key name</i>]}
      * </ol>
      * This is useful when the contents of a key will be displayed directly on a
      * game component, as a missing or reset key will be immediately obvious to
      * the viewer.
      *
-     * @param key the name of a text key, with or without the <code>-text</code>
+     * @param key the name of a text key, with or without the {@code -text}
      * suffix
-     * @return the value of the key, with the <code>-text</code> suffix, or a
+     * @return the value of the key, with the {@code -text} suffix, or a
      * special undefined string if the key does not exist
      */
     public final String getText(String key) {
@@ -675,7 +675,7 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Sets the value of a text key. This is equivalent to calling
      * {@link #set(java.lang.String, java.lang.String)}, except that the key
-     * will have the suffix <code>-text</code> appended if necessary.
+     * will have the suffix {@code -text} appended if necessary.
      *
      * @param key the text key to change the value of
      * @param value the new value for the key
@@ -685,12 +685,12 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a boolean value based on the value of <code>key</code>. Any of
-     * "yes", "true", or "1" are mapped to <code>true</code>, and all other
-     * values are mapped to <code>false</code> (including <code>null</code>).
+     * Returns a boolean value based on the value of {@code key}. Any of
+     * "yes", "true", or "1" are mapped to {@code true}, and all other
+     * values are mapped to {@code false} (including {@code null}).
      *
      * @param key the name of the setting key
-     * @return <code>true</code> if the value of the setting is "yes", "true",
+     * @return {@code true} if the value of the setting is "yes", "true",
      * or "1"
      * @see #setYesNo
      */
@@ -699,13 +699,13 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a boolean value based on the value of <code>key</code>. Any of
-     * "yes", "true", or "1" are mapped to <code>true</code>, and all other
-     * values are mapped to <code>false</code>.
+     * Returns a boolean value based on the value of {@code key}. Any of
+     * "yes", "true", or "1" are mapped to {@code true}, and all other
+     * values are mapped to {@code false}.
      *
      * @param key the name of the setting key
      * @param defaultValue the default value to return if the key is not defined
-     * @return <code>true</code> if the value of the setting is "yes", "true",
+     * @return {@code true} if the value of the setting is "yes", "true",
      * or "1"
      * @see #setYesNo
      */
@@ -715,7 +715,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Sets the value of a key with a <code>boolean</code> value suitable for
+     * Sets the value of a key with a {@code boolean} value suitable for
      * reading with {@link #getYesNo}.
      *
      * @param key the name of the key to set
@@ -727,11 +727,11 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a boolean value based on the value of <code>key</code>. This is a
+     * Returns a boolean value based on the value of {@code key}. This is a
      * cover for {@link #getYesNo(java.lang.String)}.
      *
      * @param key the name of the setting key
-     * @return <code>true</code> if the value of the setting is "yes", "true",
+     * @return {@code true} if the value of the setting is "yes", "true",
      * or "1"
      */
     public final boolean getBoolean(String key) {
@@ -739,12 +739,12 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a boolean value based on the value of <code>key</code>. This is a
+     * Returns a boolean value based on the value of {@code key}. This is a
      * cover for {@link #getYesNo(java.lang.String, boolean)}.
      *
      * @param key the name of the setting key
      * @param defaultValue the default value to return if the key is not defined
-     * @return <code>true</code> if the value of the setting is "yes", "true",
+     * @return {@code true} if the value of the setting is "yes", "true",
      * or "1"
      */
     public final boolean getBoolean(String key, boolean defaultValue) {
@@ -752,7 +752,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Sets the value of a key with a <code>boolean</code> value. This is a
+     * Sets the value of a key with a {@code boolean} value. This is a
      * cover for {@link #setYesNo}.
      *
      * @param key the name of the key to set
@@ -764,14 +764,14 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a <code>boolean</code> value for an arbitrary string using the
+     * Returns a {@code boolean} value for an arbitrary string using the
      * same rules as those used by {@link #getYesNo(java.lang.String)}. Namely:
-     * any of "yes", "true", or "1" are mapped to <code>true</code>, and all
-     * other values are mapped to <code>false</code> (including
-     * <code>null</code>).
+     * any of "yes", "true", or "1" are mapped to {@code true}, and all
+     * other values are mapped to {@code false} (including
+     * {@code null}).
      *
      * @param value the value to parse
-     * @return <code>true</code> if the value is "yes", "true", or "1" (not case
+     * @return {@code true} if the value is "yes", "true", or "1" (not case
      * sensitive)
      */
     public static boolean yesNo(String value) {
@@ -786,7 +786,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns an integer value based on the value of <code>key</code>. The
+     * Returns an integer value based on the value of {@code key}. The
      * conversion of the value is performed as if by
      * {@link #integer(java.lang.String)}.
      *
@@ -850,7 +850,7 @@ public class Settings implements Serializable, Iterable<String> {
      * {@link ParseError} is thrown.
      *
      * @param value the string to convert to an integer
-     * @return the converted value, or <code>Integer.MIN_VALUE</code>
+     * @return the converted value, or {@code Integer.MIN_VALUE}
      * @throws ParseError if the value is not valid
      */
     public static int integer(String value) {
@@ -877,7 +877,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns the value of the specified key as a <code>float</code> value. The
+     * Returns the value of the specified key as a {@code float} value. The
      * conversion of the value is performed as if by
      * {@link #number(java.lang.String)}, except for being single precision
      * floating point rather than double precision floating point.
@@ -967,7 +967,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Parses a string into a <code>double</code> value. The value is parsed as
+     * Parses a string into a {@code double} value. The value is parsed as
      * if by {@link Double#parseDouble}, except that surrounding whitespace is
      * ignored.
      *
@@ -989,15 +989,15 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
      * The colour must be expressed in one of the formats described under
      * {@link #colour(java.lang.String)}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @return a colour created by interpreting the value of the key
-     * @throws ParseError if the value is <code>null</code> or invalid
+     * @throws ParseError if the value is {@code null} or invalid
      * @see #colour(java.lang.String)
      */
     public final Colour getColour(String key) {
@@ -1007,12 +1007,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
      * If the value is invalid or not defined, the default value is returned.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @param defaultValue the default value for the key
      * @return a colour created by interpreting the value of the key
      * @see #colour(java.lang.String)
@@ -1033,13 +1033,13 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
-     * If the value is invalid or not defined, a <code>Colour</code> is created
-     * for the ARGB value represented by <code>defaultValue</code> and returned.
+     * If the value is invalid or not defined, a {@code Colour} is created
+     * for the ARGB value represented by {@code defaultValue} and returned.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @param defaultValue the default value for the key
      * @return a colour created by interpreting the value of the key
      * @see #colour(java.lang.String)
@@ -1057,11 +1057,11 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Sets the value of the specified key to a suitable value for the specified
-     * colour; <i>the key name will have <code>-colour</code> appended if
+     * colour; <i>the key name will have {@code -colour} appended if
      * necessary. </i>
      *
      * @param key the name of the key to set, with or without
-     * <code>-colour</code>
+     * {@code -colour}
      * @param colour the colour value to write as a setting
      */
     public final void setColour(String key, Color colour) {
@@ -1082,14 +1082,14 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
      * This is a cover for {@link #getColour(java.lang.String)}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @return a colour created by interpreting the value of the key
-     * @throws ParseError if the value is <code>null</code> or invalid
+     * @throws ParseError if the value is {@code null} or invalid
      */
     public final Colour getColor(String key) {
         return getColour(key);
@@ -1097,12 +1097,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
      * This is a cover for {@link #getColour(java.lang.String, java.awt.Color)}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @param defaultValue the default value for the key
      * @return a colour created by interpreting the value of the key
      */
@@ -1112,12 +1112,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a {@link Colour};
-     * <i>the key name will have <code>-colour</code> appended if necessary.
+     * <i>the key name will have {@code -colour} appended if necessary.
      * </i>
      * This is a cover for {@link #getColour(java.lang.String, int)}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-colour</code> suffix
+     * {@code -colour} suffix
      * @param defaultValue the default value for the key
      * @return a colour created by interpreting the value of the key
      */
@@ -1127,12 +1127,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Sets the value of the specified key to a suitable value for the specified
-     * colour; <i>the key name will have <code>-colour</code> appended if
+     * colour; <i>the key name will have {@code -colour} appended if
      * necessary. </i>
      * This is a cover for {@link #setColour(java.lang.String, java.awt.Color)}.
      *
      * @param key the name of the key to set, with or without
-     * <code>-colour</code>
+     * {@code -colour}
      * @param colour the colour value to write as a setting
      */
     public final void setColor(String key, Color colour) {
@@ -1144,7 +1144,7 @@ public class Settings implements Serializable, Iterable<String> {
      * expressed using one of the following formats:
      *
      * <p>
-     * <b>RGB colour value, hexadecimal:</b> <code>[#][AA]RRGGBB</code><br>
+     * <b>RGB colour value, hexadecimal:</b> {@code [#][AA]RRGGBB}<br>
      * A colour in the sRGB colour space defined using either 6 or 8 hexadecimal
      * (base 16) digits. The colour value may optionally start with a '#'
      * character, like colour values in HTML.
@@ -1168,7 +1168,7 @@ public class Settings implements Serializable, Iterable<String> {
      * colour when painted onto a surface.
      *
      * <p>
-     * <b>RGB colour value, decimal:</b> <code>[rgb[a]](R,G,B[,A])</code><br>
+     * <b>RGB colour value, decimal:</b> {@code [rgb[a]](R,G,B[,A])}<br>
      * A colour in the sRGB colour space defined using either 3 or 4 fractional
      * values. This is essentially the same as the above format, but it uses
      * decimal colour components instead of hexadecimal. The colour value must
@@ -1185,7 +1185,7 @@ public class Settings implements Serializable, Iterable<String> {
      * translucent white.
      *
      * <p>
-     * <b>HSB colour value, decimal:</b> <code>hsb[a](H,S,B[,A])</code><br>
+     * <b>HSB colour value, decimal:</b> {@code hsb[a](H,S,B[,A])}<br>
      * A colour in the HSB (HSV) colour space defined using either 3 or four
      * decimal numbers, representing the Hue, Saturation, Brightness, and an
      * optional Alpha value. The hue value is an angle, measured in degrees,
@@ -1221,7 +1221,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns a (possibly cached) <code>Colour</code> for an argb int.
+     * Returns a (possibly cached) {@code Colour} for an argb int.
      */
     private static Colour argbToColour(int argb) {
         if (argb == 0xff00_0000) {
@@ -1298,15 +1298,15 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a tint configuration;
-     * <i>the key name will have <code>-tint</code> appended if necessary. </i>
+     * <i>the key name will have {@code -tint} appended if necessary. </i>
      * The tint must be expressed using the format described under
      * {@link #tint(java.lang.String)}. The returned float array is suitable for
      * use with a {@link TintingFilter}.
      *
-     * @param key the the name of a key, with or without the <code>-tint</code>
+     * @param key the the name of a key, with or without the {@code -tint}
      * suffix
      * @return a tint configuration created by interpreting the value of the key
-     * @throws ParseError if the value is <code>null</code> or invalid
+     * @throws ParseError if the value is {@code null} or invalid
      * @see #tint
      * @see #setTint
      */
@@ -1317,12 +1317,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the value of the specified key as a tint configuration;
-     * <i>the key name will have <code>-tint</code> appended if necessary. </i>
+     * <i>the key name will have {@code -tint} appended if necessary. </i>
      * If the value is invalid or not defined, the default value is returned.
      * Note that it is up to the caller to ensure that if a default is supplied
      * that it is a valid tint configuration (namely, that is has length three).
      *
-     * @param key the key to look up, with or without the <code>-tint</code>
+     * @param key the key to look up, with or without the {@code -tint}
      * suffix
      * @param defaultValue the default value for the key
      * @return the tint configuration extracted from the key, or the default
@@ -1344,11 +1344,11 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Sets the specified key to a suitable value for the given tint
      * configuration;
-     * <i>the key name will have <code>-tint</code> appended if necessary. </i>
+     * <i>the key name will have {@code -tint} appended if necessary. </i>
      * The tint configuration will be taken from the first three elements of the
      * specified array.
      *
-     * @param key the key to modify, with or without the <code>-tint</code>
+     * @param key the key to modify, with or without the {@code -tint}
      * suffix
      * @param tintConfiguration an array of at least three float values
      * containing the tint configuration as the first three elements
@@ -1365,9 +1365,9 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Sets the specified key to a suitable value for the given tint
      * configuration;
-     * <i>the key name will have <code>-tint</code> appended if necessary. </i>
+     * <i>the key name will have {@code -tint} appended if necessary. </i>
      *
-     * @param key the key to modify, with or without the <code>-tint</code>
+     * @param key the key to modify, with or without the {@code -tint}
      * suffix
      * @param hFactor the hue adjustment factor for the tint configuration
      * @param sFactor the saturation adjustment factor for the tint
@@ -1400,7 +1400,7 @@ public class Settings implements Serializable, Iterable<String> {
      * @param value the string to convert into a tint configuration using the
      * format described above
      * @return a tint configuration for the value
-     * @throws ParseError if the value is <code>null</code> or invalid
+     * @throws ParseError if the value is {@code null} or invalid
      * @see #getTint
      * @see TintFilter
      * @see <a href='scriptdoc:tints'>tints scripting library</a>
@@ -1438,30 +1438,30 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the {@link Region} represented by the value of the specified key;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      * The returned region is limited to integer precision. The region value
      * must use one of the following forms:
      *
      * <p>
-     * <code><i>x</i>, <i>y</i>, <i>w</i>, <i>h</i></code><br>
+     * {@code <i>x</i>, <i>y</i>, <i>w</i>, <i>h</i>}<br>
      * A list of four numbers that specify the <i>x</i>-position,
      * <i>y</i>-position, width, and height of the region.
      *
      * <p>
-     * <code>d(<i>parent</i>, <i>dx</i>, <i>dy</i>, <i>dw</i>,
-     * <i>dh</i>)</code><br>
+     * {@code d(<i>parent</i>, <i>dx</i>, <i>dy</i>, <i>dw</i>,
+     * <i>dh</i>)}<br>
      * This form allows you to specify one region in terms of another region.
      * For example, if a region key has the value
-     * <code>d(other,5,-10,0,0)</code>, then the value of the region would be
+     * {@code d(other,5,-10,0,0)}, then the value of the region would be
      * determined by looking up the value of the region with the key name
      * "other-region", and then shifting it to the right by 5 units and up by 10
      * units.
      *
      * @param key the the name of a key, with or without the
-     * <code>-region</code> suffix
+     * {@code -region} suffix
      * @return the region described by the value of the key, or
-     * <code>null</code> if the key is not defined
+     * {@code null} if the key is not defined
      * @throws ParseError if the value does not have the correct syntax, or if
      * any region referenced by the value is missing
      * @see #setRegion
@@ -1507,12 +1507,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns the {@link Region} represented by the value of the specified key;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      * If the value is not defined or is invalid, the default value is returned.
      *
      * @param key the the name of a key, with or without the
-     * <code>-region</code> suffix
+     * {@code -region} suffix
      * @param defaultValue the region to region if the key value is missing or
      * invalid
      * @return the region described by the value of the key
@@ -1531,10 +1531,10 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Sets the specified key to a suitable value for the given region;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      *
-     * @param key the key to modify, with or without the <code>-region</code>
+     * @param key the key to modify, with or without the {@code -region}
      * suffix
      * @param region the region to write as a setting value
      */
@@ -1624,15 +1624,15 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns the {@link Region2D} represented by the value of the specified
      * key;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      * The region value must use one of the forms listed in
      * {@link #getRegion(java.lang.String)}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-region</code> suffix
+     * {@code -region} suffix
      * @return the region described by the value of the key, or
-     * <code>null</code> if the key is undefined
+     * {@code null} if the key is undefined
      * @throws ParseError if the value does not have the correct syntax, or if
      * any region referenced by the value is missing
      * @see #setRegion2D
@@ -1676,12 +1676,12 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns the {@link Region2D} represented by the value of the specified
      * key;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      * If the value is not defined or is invalid, the default value is returned.
      *
      * @param key the the name of a key, with or without the
-     * <code>-region</code> suffix
+     * {@code -region} suffix
      * @param defaultValue the region to region if the key value is missing or
      * invalid
      * @return the region described by the value of the key
@@ -1700,10 +1700,10 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Sets the specified key to a suitable value for the given region;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      *
-     * @param key the key to modify, with or without the <code>-region</code>
+     * @param key the key to modify, with or without the {@code -region}
      * suffix
      * @param region the region to write as a setting value
      */
@@ -1734,7 +1734,7 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns a {@link ca.cgjennings.layout.PageShape.CupShape CupShape} for
      * changing the flow of markup text from the value of the specified key;
-     * <i>the key name will have <code>-region</code> appended if necessary.
+     * <i>the key name will have {@code -region} appended if necessary.
      * </i>
      * The value of the key is a comma-separated list of 5 numbers, specifying
      * the left and right insets at the top of the shape, the y-position at
@@ -1742,7 +1742,7 @@ public class Settings implements Serializable, Iterable<String> {
      * insets at the bottom of the shape.
      *
      * @param key the key whose value will be used to create a cup shape, with
-     * or without the <code>-shape</code> suffix
+     * or without the {@code -shape} suffix
      * @return the cup shape described by the key's value
      * @see #cupShape(java.lang.String)
      * @since 2.1
@@ -1790,11 +1790,11 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns a font point size from the specified key;
-     * <i>the key name will have <code>-pointsize</code> appended if necessary.
+     * <i>the key name will have {@code -pointsize} appended if necessary.
      * </i>
      *
      * @param key the name of the setting key, with or without the
-     * <code>-pointsize</code> suffix
+     * {@code -pointsize} suffix
      * @return the float value of the key
      * @throws ParseError if the value is undefined or invalid
      */
@@ -1809,12 +1809,12 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Returns a font point size from the specified key;
-     * <i>the key name will have <code>-pointsize</code> appended if necessary.
+     * <i>the key name will have {@code -pointsize} appended if necessary.
      * </i>
      * If the value is not defined or invalid, the default value is returned.
      *
      * @param key the name of the setting key, with or without the
-     * <code>-pointsize</code> suffix
+     * {@code -pointsize} suffix
      * @param defaultValue the value to use if the key is not valid
      * @return the float value of the key
      * @since 3.0
@@ -1834,7 +1834,7 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns a font based on the specified font but with the point size given
      * in the the specified key;
-     * <i>the key name will have <code>-pointsize</code> appended if necessary.
+     * <i>the key name will have {@code -pointsize} appended if necessary.
      * </i>
      * If the value is not defined, invalid, or is the same as the source font's
      * point size, the source font will be returned. Otherwise, a new font is
@@ -1842,7 +1842,7 @@ public class Settings implements Serializable, Iterable<String> {
      * matches the size defined by the value of the key.
      *
      * @param key the name of the setting key, with or without the
-     * <code>-pointsize</code> suffix
+     * {@code -pointsize} suffix
      * @param sourceFont the font to use to derive a font at the specified point
      * size
      * @return a version of the source font with the point size given by the
@@ -1867,13 +1867,13 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns an alignment value suitable for use with a markup renderer from
      * the value of the specified key;
-     * <i>the key name will have <code>-alignment</code> appended if necessary.
+     * <i>the key name will have {@code -alignment} appended if necessary.
      * </i>
      * The value will be converted into an alignment value as described under
      * {@link #textAlignment}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-alignment</code> suffix
+     * {@code -alignment} suffix
      * @return a binary or of alignment flags
      * @throws ParseError if the value is invalid
      * @see #getTextAlignment(java.lang.String,
@@ -1896,13 +1896,13 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Sets the text alignment of a markup renderer to match the value of an
      * alignment key;
-     * <i>the key name will have <code>-alignment</code> appended if necessary.
+     * <i>the key name will have {@code -alignment} appended if necessary.
      * </i>
      * The value will be converted into an alignment value as described under
      * {@link #textAlignment}.
      *
      * @param key the the name of a key, with or without the
-     * <code>-alignment</code> suffix
+     * {@code -alignment} suffix
      * @param renderer the markup renderer which will be modified
      * @throws ParseError if the value is invalid
      * @see #textAlignment
@@ -1917,27 +1917,27 @@ public class Settings implements Serializable, Iterable<String> {
      * {@link MarkupRenderer}. The alignment value is a comma-separated list of
      * the following case-insensitive tokens:
      * <dl>
-     * <dt><code>left</code> <dd>sets the horizontal alignment to left-aligned
+     * <dt>{@code left} <dd>sets the horizontal alignment to left-aligned
      *
-     * <dt><code>right</code> <dd>sets the horizontal alignment to right-aligned
-     * <dt><code>center</code> <dd>sets the horizontal alignment to
+     * <dt>{@code right} <dd>sets the horizontal alignment to right-aligned
+     * <dt>{@code center} <dd>sets the horizontal alignment to
      * center-aligned
-     * <dt><code>centre</code> <dd>synonym for <code>center</code>
-     * <dt><code>top</code> <dd>sets the vertical alignment to top-aligned
+     * <dt>{@code centre} <dd>synonym for {@code center}
+     * <dt>{@code top} <dd>sets the vertical alignment to top-aligned
      *
-     * <dt><code>bottom</code> <dd>sets the vertical alignment to bottom-aligned
-     * <dt><code>middle</code> <dd>sets the vertical alignment to center-aligned
-     * <dt><code>justified</code> <dd>sets text justification to justified
-     * <dt><code>unjustified</code> <dd>sets text justification to unjustified
+     * <dt>{@code bottom} <dd>sets the vertical alignment to bottom-aligned
+     * <dt>{@code middle} <dd>sets the vertical alignment to center-aligned
+     * <dt>{@code justified} <dd>sets text justification to justified
+     * <dt>{@code unjustified} <dd>sets text justification to unjustified
      *
-     * <dt><code>ragged</code> <dd>synonym for <code>unjustified</code>
+     * <dt>{@code ragged} <dd>synonym for {@code unjustified}
      * </dl>* default value for category
      *
      * <p>
      * The tokens are divided into three categories: horizontal alignment,
      * vertical alignment, and justification. If more than one token in the same
      * category appears in the list, the rightmost value takes precedence. For
-     * example, the value <code>right, top, left</code> would result in left-
+     * example, the value {@code right, top, left} would result in left-
      * and top-aligned text. If any category is left unspecified, the default
      * value for the category is used.
      *
@@ -1990,13 +1990,13 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns a {@link TextStyle} suitable for use with markup from the value
      * of the specified key;
-     * <i>the key name will have <code>-style</code> appended if necessary. </i>
+     * <i>the key name will have {@code -style} appended if necessary. </i>
      * The value will converted into a text style as described under
      * {@link #textStyle}.
      *
-     * @param key the the name of a key, with or without the <code>-style</code>
+     * @param key the the name of a key, with or without the {@code -style}
      * suffix
-     * @param base a baseline style to modify, or <code>null</code> to create a
+     * @param base a baseline style to modify, or {@code null} to create a
      * new style
      * @return the text style described by the value of the key
      * @throws ParseError if the value is missing or is invalid
@@ -2030,14 +2030,14 @@ public class Settings implements Serializable, Iterable<String> {
      * {@link TextAttribute#UNDERLINE}, and the key name "numeric shaping"
      * matches {@link TextAttribute#NUMERIC_SHAPING}. By default, a value must
      * be the name of one of the predefined values found in
-     * <code>TextAttribute</code>; these names are also case insensitive and
+     * {@code TextAttribute}; these names are also case insensitive and
      * allow the use of spaces for underscores. For example, the following style
      * setting would enable underlined text:<br>
-     * <code>underline: underline on</code>
+     * {@code underline: underline on}
      *
      * <p>
      * Some attribute keys require values that are not predefined. For example,
-     * the <code>FAMILY</code> key requires a string that names the desired
+     * the {@code FAMILY} key requires a string that names the desired
      * font. The parser lets you describe strings, colours, integers and
      * floating point numbers literally. Other values can be set using script
      * expressions.
@@ -2047,10 +2047,10 @@ public class Settings implements Serializable, Iterable<String> {
      * String values must be explicitly marked off with quotes (' or "), or the
      * text will be interpreted as a text attribute constant. When setting a
      * text attribute constant, you can leave off the prefix for the key type.
-     * In this example, the parser infers that <code>oblique</code> means
-     * <code>POSTURE_OBLIQUE</code> from the fact that the key is
-     * <code>POSTURE</code>:<br>
-     * <code>family: 'Helvetica'; posture: oblique</code>
+     * In this example, the parser infers that {@code oblique} means
+     * {@code POSTURE_OBLIQUE} from the fact that the key is
+     * {@code POSTURE}:<br>
+     * {@code family: 'Helvetica'; posture: oblique}
      *
      * <p>
      * Integers and floating point values are written as an optional sign
@@ -2067,13 +2067,13 @@ public class Settings implements Serializable, Iterable<String> {
      * dynamically at runtime or to create appropriate objects for keys that
      * take values not supported by the parser, such as
      * {@link TransformAttribute}:<br>
-     * <code>family: {ResourceKit.bodyFamily}; size: 10; foreground: #ff0000;</code><br>
+     * {@code family: {ResourceKit.bodyFamily}; size: 10; foreground: #ff0000;}<br>
      *
      * @param value the style specification to parse; see above for format
-     * @param base a baseline style to modify, or <code>null</code> to create a
+     * @param base a baseline style to modify, or {@code null} to create a
      * new style
      * @return the modified baseline style, or a new style if the baseline style
-     * was <code>null</code>
+     * was {@code null}
      * @see MarkupRenderer
      * @see TextStyle
      * @see <a href='scriptdoc:markup'>markup scripting library</a>
@@ -2269,7 +2269,7 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns a text-fitting method constant from the value of the specified
      * key;
-     * <i>the key name will have <code>-text-fitting</code> appended if
+     * <i>the key name will have {@code -text-fitting} appended if
      * necessary. </i>
      * The value is mapped to a text-fitting constant as follows:
      * <pre>
@@ -2279,7 +2279,7 @@ public class Settings implements Serializable, Iterable<String> {
      * "both"    MarkupRenderer.FIT_BOTH
      * </pre>
      *
-     * @param key the key, with or without the <code>-text-fitting</code> suffix
+     * @param key the key, with or without the {@code -text-fitting} suffix
      * @return a text fitting constant suitable for use with a
      * {@link MarkupRenderer}.
      */
@@ -2342,13 +2342,13 @@ public class Settings implements Serializable, Iterable<String> {
      *
      * <p>
      * If the settings do not define a value for the variant key
-     * ({@link Expansion#VARIANT_SETTING_KEY}) and a non-<code>null</code>
+     * ({@link Expansion#VARIANT_SETTING_KEY}) and a non-{@code null}
      * {@link Sheet} instance is provided, then a default value will be
      * determined by looking up the value of the key
-     * <code>sheetWithDefaultValue.getExpansionSymbolKey() + "-invert"</code>.
+     * {@code sheetWithDefaultValue.getExpansionSymbolKey() + "-invert"}.
      * This is for backwards compatibility with components from previous
      * versions. To set a default variant for a component, it is recommended
-     * that you set the value of the <code>Expansion.VARIANT_SETTING_KEY</code>
+     * that you set the value of the {@code Expansion.VARIANT_SETTING_KEY}
      * key with the desired default variant when the component is first created.
      *
      * @param sheetWithDefaultValue optional sheet to use to determine a default
@@ -2391,13 +2391,13 @@ public class Settings implements Serializable, Iterable<String> {
     /**
      * Returns the {@link URL} of a resource from the value of the specified
      * key. The value of the key will be looked up using
-     * {@link #get(java.lang.String)}, and if the value is non-<code>null</code>
+     * {@link #get(java.lang.String)}, and if the value is non-{@code null}
      * then it will be converted into a URL as if by
      * {@link ResourceKit#composeResourceURL} using the value of the key. If the
      * key is not defined, a {@link ParseError} will be thrown.
      *
      * @param key a key whose value is a resource URL
-     * @return the location of the resource, if it exists, or <code>null</code>
+     * @return the location of the resource, if it exists, or {@code null}
      * @see ResourceKit#composeResourceURL(java.lang.String)
      * @since 2.1
      */
@@ -2418,7 +2418,7 @@ public class Settings implements Serializable, Iterable<String> {
      * Return an image for the resource identified by the value of the specified
      * key. The value of the key is treated as a resource identifier and loaded
      * as if by {@link ResourceKit#getImage(java.lang.String)}. If the value of
-     * the key is <code>null</code>, a placeholder "missing image" graphic is
+     * the key is {@code null}, a placeholder "missing image" graphic is
      * returned.
      *
      * @param key a key whose value points to an image file
@@ -2436,7 +2436,7 @@ public class Settings implements Serializable, Iterable<String> {
      * by the value of the specified number. If the number is less than 10, it
      * will be preceded by a 0. The value, after the number has been replaced,
      * will be passed to {@link ResourceKit#getImage(java.lang.String)} to load
-     * an appropriate image. If the value of the key is <code>null</code>, a
+     * an appropriate image. If the value of the key is {@code null}, a
      * placeholder "missing image" graphic is returned.
      *
      * <p>
@@ -2445,10 +2445,10 @@ public class Settings implements Serializable, Iterable<String> {
      * resources/xyzzy/sample-00-image.png
      * resources/xyzzy/sample-01-image.png
      * resources/xyzzy/sample-02-image.png
-     * </pre> If the value of the key <code>sample-images</code> is
-     * <code>xyzzy/sample-00-image.png</code>, then calling
-     * <code>getNumberedImageResource( "sample-images", 2 )</code> would return
-     * the <code>sample-02-image.png</code> resource as an image.
+     * </pre> If the value of the key {@code sample-images} is
+     * {@code xyzzy/sample-00-image.png}, then calling
+     * {@code getNumberedImageResource( "sample-images", 2 )} would return
+     * the {@code sample-02-image.png} resource as an image.
      *
      * @param key the key that contains the base name of the image resource
      * @param number the index of the desired image in the sequence
@@ -2478,7 +2478,7 @@ public class Settings implements Serializable, Iterable<String> {
      * Return an icon for the resource identified by the value of the specified
      * key. The value of the key is treated as a resource identifier and loaded
      * as if by {@link ResourceKit#getIcon(java.lang.String)}. If the value of
-     * the key is <code>null</code>, a placeholder "missing image" icon is
+     * the key is {@code null}, a placeholder "missing image" icon is
      * returned.
      *
      * @param key a key whose value points to an image file
@@ -2500,7 +2500,7 @@ public class Settings implements Serializable, Iterable<String> {
      * @param key the name of the family key to register
      * @return the family name to use for the font
      * @see ResourceKit#registerFontFamily(java.lang.String)
-     * @throws NullPointerException if the key is <code>null</code>
+     * @throws NullPointerException if the key is {@code null}
      * @since 3.0
      */
     public final String registerFontFamily(String key) {
@@ -2525,7 +2525,7 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Saves the position of a window for later recall by writing it as a group
-     * of settings. The <code>prefix</code> is a unique prefix for that window.
+     * of settings. The {@code prefix} is a unique prefix for that window.
      * To restore the position later, call {@link #applyWindowSettings} using
      * the same prefix. Usually used with {@linkplain #getUser() user settings}.
      *
@@ -2565,7 +2565,7 @@ public class Settings implements Serializable, Iterable<String> {
      *
      * @param prefix the unique prefix chosen for this window when it was stored
      * @param window the window to be restored
-     * @return <code>true</code> if there were settings to restore; otherwise
+     * @return {@code true} if there were settings to restore; otherwise
      * you should use a default placement algorithm to place the window
      */
     public final boolean applyWindowSettings(String prefix, Window window) {
@@ -2678,7 +2678,7 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * Removes a listener that was previously added to this
-     * <code>Settings</code>.
+     * {@code Settings}.
      *
      * @param listener the listener to remove
      * @since 2.1
@@ -2697,9 +2697,9 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Fire a property change event for the key <code>property</code> to signify
-     * that its value is changing from <code>oldValue</code> to
-     * <code>newValue</code>. If the old and new value are equal, no event will
+     * Fire a property change event for the key {@code property} to signify
+     * that its value is changing from {@code oldValue} to
+     * {@code newValue}. If the old and new value are equal, no event will
      * be fired.
      *
      * @param property the name of the property (key) that is changing
@@ -2721,10 +2721,10 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * Returns <code>true</code> if this <code>Settings</code> has any property
+     * Returns {@code true} if this {@code Settings} has any property
      * change listeners attached.
      *
-     * @return <code>true</code> if and only if there are added listeners
+     * @return {@code true} if and only if there are added listeners
      */
     final boolean hasPropertyChangeListeners() {
         return listeners != null && !listeners.isEmpty();
@@ -2805,7 +2805,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * A specialized <code>Rectangle</code> that is more easily converted to or
+     * A specialized {@code Rectangle} that is more easily converted to or
      * from a setting value.
      */
     public static class Region extends Rectangle {
@@ -2824,9 +2824,9 @@ public class Settings implements Serializable, Iterable<String> {
 
         /**
          * Creates a new region whose upper-left corner is (0,0) and whose width
-         * and height are specified by the <code>Dimension</code> argument.
+         * and height are specified by the {@code Dimension} argument.
          *
-         * @param d a <code>Dimension</code>, specifying width and height
+         * @param d a {@code Dimension}, specifying width and height
          */
         public Region(Dimension d) {
             super(d);
@@ -2834,9 +2834,9 @@ public class Settings implements Serializable, Iterable<String> {
 
         /**
          * Creates a new region whose upper-left corner is the specified
-         * <code>Point</code>, and whose width and height are both zero.
+         * {@code Point}, and whose width and height are both zero.
          *
-         * @param p a <code>Point</code> that is the top left corner of the
+         * @param p a {@code Point} that is the top left corner of the
          * region
          */
         public Region(Point p) {
@@ -2848,9 +2848,9 @@ public class Settings implements Serializable, Iterable<String> {
          * {@link Point} argument, and whose width and height are specified by
          * the {@link Dimension} argument.
          *
-         * @param p a <code>Point</code> that is the upper-left corner of the
+         * @param p a {@code Point} that is the upper-left corner of the
          * region
-         * @param d a <code>Dimension</code>, representing the width and height
+         * @param d a {@code Dimension}, representing the width and height
          * of the region
          */
         public Region(Point p, Dimension d) {
@@ -2909,7 +2909,7 @@ public class Settings implements Serializable, Iterable<String> {
     }
 
     /**
-     * A specialized <code>Rectangle2D</code> that is more easily converted to
+     * A specialized {@code Rectangle2D} that is more easily converted to
      * or from a setting value.
      */
     public static class Region2D extends Rectangle2D.Double {
@@ -2966,7 +2966,7 @@ public class Settings implements Serializable, Iterable<String> {
         /**
          * Returns a string value suitable for storing this region in a setting.
          *
-         * @return a regions string with form <code>x,y,width,height</code>
+         * @return a regions string with form {@code x,y,width,height}
          */
         @Override
         public String toString() {
@@ -2979,9 +2979,9 @@ public class Settings implements Serializable, Iterable<String> {
 
     /**
      * A {@link Color} subclass that is specialized to convert more easily to
-     * and from setting values. This class is identical to <code>Color</code>
+     * and from setting values. This class is identical to {@code Color}
      * except that it provides an additional constructor that takes a setting
-     * value, and its <code>toString()</code> method returns a setting value.
+     * value, and its {@code toString()} method returns a setting value.
      *
      * @since 2.1
      */
@@ -3002,19 +3002,19 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         /**
-         * Creates a colour in the specified <code>ColorSpace</code> with the
-         * colour components specified in the <code>float</code> array and the
+         * Creates a colour in the specified {@code ColorSpace} with the
+         * colour components specified in the {@code float} array and the
          * specified alpha. The number of components is determined by the type
-         * of the <code>ColorSpace</code>. For example, RGB requires 3
+         * of the {@code ColorSpace}. For example, RGB requires 3
          * components, but CMYK requires 4 components.
          *
-         * @param cspace the <code>ColorSpace</code> to be used to interpret the
+         * @param cspace the {@code ColorSpace} to be used to interpret the
          * components
          * @param components an arbitrary number of color components that is
-         * compatible with the <code>ColorSpace</code>
+         * compatible with the {@code ColorSpace}
          * @param alpha alpha value
          * @throws IllegalArgumentException if any of the values in the
-         * <code>components</code> array or <code>alpha</code> is outside of the
+         * {@code components} array or {@code alpha} is outside of the
          * range 0.0 to 1.0
          * @see #getComponents
          * @see #getColorComponents
@@ -3029,8 +3029,8 @@ public class Settings implements Serializable, Iterable<String> {
          * depends on finding the best match given the colour space available
          * for a particular output device.
          *
-         * @throws IllegalArgumentException if <code>r</code>, <code>g</code>
-         * <code>b</code> or <code>a</code> are outside of the range 0.0 to 1.0,
+         * @throws IllegalArgumentException if {@code r}, {@code g}
+         * {@code b} or {@code a} are outside of the range 0.0 to 1.0,
          * inclusive
          * @param r the red component
          * @param g the green component
@@ -3052,8 +3052,8 @@ public class Settings implements Serializable, Iterable<String> {
          * actual colour used in rendering depends on finding the best match
          * given the color space available for a particular output device.
          *
-         * @throws IllegalArgumentException if <code>r</code>, <code>g</code> or
-         * <code>b</code> are outside of the range 0.0 to 1.0, inclusive
+         * @throws IllegalArgumentException if {@code r}, {@code g} or
+         * {@code b} are outside of the range 0.0 to 1.0, inclusive
          * @param r the red component
          * @param g the green component
          * @param b the blue component
@@ -3070,12 +3070,12 @@ public class Settings implements Serializable, Iterable<String> {
          * Creates an sRGB colour with the specified combined ARGB value
          * consisting of the alpha component in bits 24-31, the red component in
          * bits 16-23, the green component in bits 8-15, and the blue component
-         * in bits 0-7. If the <code>hasAlpha</code> argument is
-         * <code>false</code>, alpha is defaulted to 255.
+         * in bits 0-7. If the {@code hasAlpha} argument is
+         * {@code false}, alpha is defaulted to 255.
          *
          * @param argb the combined ARGB components
-         * @param hasAlpha <code>true</code> if the alpha bits are valid;
-         * <code>false</code> otherwise
+         * @param hasAlpha {@code true} if the alpha bits are valid;
+         * {@code false} otherwise
          * @see java.awt.image.ColorModel#getRGBdefault
          * @see #getRed
          * @see #getGreen
@@ -3109,8 +3109,8 @@ public class Settings implements Serializable, Iterable<String> {
          * Creates an sRGB colour with the specified red, green, blue, and alpha
          * values in the range (0 - 255).
          *
-         * @throws IllegalArgumentException if <code>r</code>, <code>g</code>,
-         * <code>b</code> or <code>a</code> are outside of the range 0 to 255,
+         * @throws IllegalArgumentException if {@code r}, {@code g},
+         * {@code b} or {@code a} are outside of the range 0 to 255,
          * inclusive
          * @param r the red component
          * @param g the green component
@@ -3130,8 +3130,8 @@ public class Settings implements Serializable, Iterable<String> {
          * Creates an sRGB colour with the specified red, green, blue, and alpha
          * values in the range (0 - 255).
          *
-         * @throws IllegalArgumentException if <code>r</code>, <code>g</code>,
-         * <code>b</code> or <code>a</code> are outside of the range 0 to 255,
+         * @throws IllegalArgumentException if {@code r}, {@code g},
+         * {@code b} or {@code a} are outside of the range 0 to 255,
          * inclusive
          * @param r the red component
          * @param g the green component
@@ -3147,7 +3147,7 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         /**
-         * Creates a colour from a JavaScript <code>Number</code> object. This
+         * Creates a colour from a JavaScript {@code Number} object. This
          * is equivalent to {@code Colour(int rgb)} for script code.
          *
          * @param argb the combined RGB components
@@ -3157,12 +3157,12 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         /**
-         * Creates a colour from a JavaScript <code>Number</code> object. This
+         * Creates a colour from a JavaScript {@code Number} object. This
          * is equivalent to {@code Colour(int argb, boolean translucent)} for script code.
          *
          * @param argb the combined RGB components
-         * @param hasAlpha  <code>true</code> if the alpha bits are valid;
-         * <code>false</code> otherwise
+         * @param hasAlpha  {@code true} if the alpha bits are valid;
+         * {@code false} otherwise
          */
         public Colour(double argb, boolean hasAlpha) {
             super((int) ((long) argb), hasAlpha);

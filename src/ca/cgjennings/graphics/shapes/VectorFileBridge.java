@@ -27,7 +27,7 @@ interface VectorFileBridge {
      * should be drawn with the area described by {@link bounds()}.
      *
      * @param destination the object that the graphics content is drawing into,
-     * such as a {@link BufferedImage}, if known (may be <code>null</code>)
+     * such as a {@link BufferedImage}, if known (may be {@code null})
      * @param g the graphics context to use for drawing
      */
     void render(Object destination, Graphics2D g);

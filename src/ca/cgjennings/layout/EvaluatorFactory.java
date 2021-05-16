@@ -1,7 +1,7 @@
 package ca.cgjennings.layout;
 
 /**
- * Setting a default <code>EvaluatorFactory</code> for markup renderers allows
+ * Setting a default {@code EvaluatorFactory} for markup renderers allows
  * them to handle script tags.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

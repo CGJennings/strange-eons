@@ -50,7 +50,7 @@ public class EyeDropper extends JLabel {
 
     /**
      * Creates a new eye dropper. If {@link #isSupported()} returns
-     * <code>true</code> and the component is added to a window, the user will
+     * {@code true} and the component is added to a window, the user will
      * be able to drag the eye dropper icon from the panel around the display in
      * order to select colours.
      */
@@ -134,10 +134,10 @@ public class EyeDropper extends JLabel {
     };
 
     /**
-     * Returns <code>true</code> if <i>any</i> <code>EyeDropper</code> is
+     * Returns {@code true} if <i>any</i> {@code EyeDropper} is
      * currently being used to take colour samples.
      *
-     * @return <code>true</code> if an eye dropper instance is being dragged
+     * @return {@code true} if an eye dropper instance is being dragged
      * @since 3.0
      */
     public static boolean isCurrentlySampling() {
@@ -159,7 +159,7 @@ public class EyeDropper extends JLabel {
      * Sets whether the background colour of this control should be updated to
      * reflect the colour under the eye dropper as it is dragged.
      *
-     * @param match if <code>true</code>, the background colour of the control
+     * @param match if {@code true}, the background colour of the control
      * is updated automatically
      */
     public void setBackgroundMatched(boolean match) {
@@ -167,10 +167,10 @@ public class EyeDropper extends JLabel {
     }
 
     /**
-     * Returns <code>true</code> if the background colour of this control is
+     * Returns {@code true} if the background colour of this control is
      * updated to reflect the colour under the eye dropper as it is dragged.
      *
-     * @return <code>true</code> if the background is set to the colour under
+     * @return {@code true} if the background is set to the colour under
      * the dropper
      */
     public boolean isBackgroundMatched() {
@@ -178,11 +178,11 @@ public class EyeDropper extends JLabel {
     }
 
     /**
-     * Returns <code>true</code> if the eye dropper is usable on this platform.
-     * If this returns <code>false</code>, the control can still be added to a
+     * Returns {@code true} if the eye dropper is usable on this platform.
+     * If this returns {@code false}, the control can still be added to a
      * layout but it will be disabled and invisible.
      *
-     * @return <code>true</code> if the dropper is supported on this platform
+     * @return {@code true} if the dropper is supported on this platform
      */
     public static boolean isSupported() {
         initialize();

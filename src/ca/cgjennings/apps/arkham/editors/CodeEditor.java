@@ -97,7 +97,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Creates a code editor with no file, encoding, or file type attached. Note
      * that code editors are designed to edit files within a project, and
-     * therefore expect {@link #getFile()} to return a non-<code>null</code>
+     * therefore expect {@link #getFile()} to return a non-{@code null}
      * value.
      */
     private CodeEditor() {
@@ -283,12 +283,12 @@ public class CodeEditor extends AbstractSupportEditor {
 
     /**
      * Detects a UTF-8/UTF-16/UTF-32 BOM sequence at the start of a text file.
-     * If one exists, returns the <code>Charset</code> indicated by the
-     * sequence. Otherwise, returns <code>null</code>.
+     * If one exists, returns the {@code Charset} indicated by the
+     * sequence. Otherwise, returns {@code null}.
      *
      * @param f the file to check
      * @return the encoding represented by the byte order mark, or
-     * <code>null</code>
+     * {@code null}
      */
     public static Charset checkFileForBOM(File f) throws IOException {
         try (FileInputStream in = new FileInputStream(f)) {
@@ -360,7 +360,7 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * The file types that can be edited by a <code>CodeEditor</code>.
+     * The file types that can be edited by a {@code CodeEditor}.
      */
     public static enum CodeType {
 
@@ -485,8 +485,8 @@ public class CodeEditor extends AbstractSupportEditor {
          * <p>
          * This method performs the following conversions:
          * <ul>
-         * <li> All plain text types are converted to <code>PLAIN</code>.
-         * <li> All script types are converted to <code>JAVASCRIPT</code>.
+         * <li> All plain text types are converted to {@code PLAIN}.
+         * <li> All script types are converted to {@code JAVASCRIPT}.
          * </ul>
          *
          * <p>
@@ -1490,7 +1490,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Called before each line is written to a file to allow the editor to
      * convert the text content. The default implementation checks if
-     * {@link #isCharacterEscapingEnabled()} returns <code>true</code>, and if
+     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if
      * so, {@linkplain EscapedTextCodec#escapeUnicode(java.lang.CharSequence)
      * it applies Unicode escapes to the line}.
      *
@@ -1507,7 +1507,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Called as each line is read to allow the editor to convert the text
      * content. The default implementation checks if
-     * {@link #isCharacterEscapingEnabled()} returns <code>true</code>, and if
+     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if
      * so, {@linkplain EscapedTextCodec#unescapeUnicode
      * it removes Unicode escapes from the line}.
      *
@@ -1522,14 +1522,14 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * Returns <code>true</code> if character escaping is enabled on read and
+     * Returns {@code true} if character escaping is enabled on read and
      * write of the document. When enabled, the default behaviour of
      * {@link #escape} and
      * {@link #unescape} is to automatically convert
      * Java-style Unicode escapeUnicode sequences in the file into their
      * character equivalents when displayed in the editor.
      *
-     * @return <code>true</code> if automatic character escaping is enabled
+     * @return {@code true} if automatic character escaping is enabled
      * @see EscapedTextCodec
      */
     public boolean isCharacterEscapingEnabled() {
@@ -1541,7 +1541,7 @@ public class CodeEditor extends AbstractSupportEditor {
      * Sets whether character escaping is enabled on read and write of the
      * document.
      *
-     * @param characterEscaping if <code>true</code>, automatic character
+     * @param characterEscaping if {@code true}, automatic character
      * escaping is enabled
      * @see #isCharacterEscapingEnabled()
      * @see #escape
@@ -1667,7 +1667,7 @@ public class CodeEditor extends AbstractSupportEditor {
 
     /**
      * Sets the navigator that will be used to populate the navigation panel for
-     * this editor. Setting the navigator to <code>null</code> will disable the
+     * this editor. Setting the navigator to {@code null} will disable the
      * navigator panel.
      *
      * @param nav the new navigator to set
@@ -1711,7 +1711,7 @@ public class CodeEditor extends AbstractSupportEditor {
     private static final int NAV_DIV_SIZE = 8;
 
     /**
-     * Returns the current navigator for this editor, or <code>null</code> if
+     * Returns the current navigator for this editor, or {@code null} if
      * none is set.
      *
      * @return the current navigator
@@ -1722,9 +1722,9 @@ public class CodeEditor extends AbstractSupportEditor {
 
     /**
      * Returns the navigation point selected in the navigation panel, or
-     * <code>null</code> if none is selected.
+     * {@code null} if none is selected.
      *
-     * @return the selected navigation point, or <code>null</code>
+     * @return the selected navigation point, or {@code null}
      */
     public NavigationPoint getSelectedNavigationPoint() {
         if (navigator == null || !navIsVisible) {
@@ -1799,10 +1799,10 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * Returns <code>true</code> if code editors will display a source navigator
+     * Returns {@code true} if code editors will display a source navigator
      * when one has been set. This setting applies to all code editors.
      *
-     * @return <code>true</code> if navigators are visible
+     * @return {@code true} if navigators are visible
      */
     public static boolean isNavigatorVisible() {
         return navIsVisible;
@@ -1811,9 +1811,9 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Sets whether source navigators are hidden. This affects all code editors.
      * To remove the navigator of a specific editor, set is navigator to
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @param navIsVisible if <code>true</code>, the navigator panel will be
+     * @param navIsVisible if {@code true}, the navigator panel will be
      * displayed by code editors; otherwise it will be hidden
      */
     public static void setNavigatorVisible(boolean navIsVisible) {

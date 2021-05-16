@@ -92,11 +92,11 @@ public class SyntaxChecker extends AbstractUtilityParser {
      * Subclasses may use this to filter for specific error messages.
      *
      * @param message the error message
-     * @param warning <code>true</code> if the message is a warning rather than
+     * @param warning {@code true} if the message is a warning rather than
      * an error
      * @param offset the offset into the script
      * @param length the length of code that is affected
-     * @return <code>true</code> if the error should be included in the results
+     * @return {@code true} if the error should be included in the results
      */
     protected boolean acceptError(String message, boolean warning, int offset, int length) {
         // The default implementation ignores "Code has no side effects" warnings
@@ -126,7 +126,7 @@ public class SyntaxChecker extends AbstractUtilityParser {
          * @param offset the offset from the document start at which the error
          * occurs
          * @param length the number of characters affected by the error
-         * @param warning <code>true</code> if the error is a warning rather
+         * @param warning {@code true} if the error is a warning rather
          * than a true error
          */
         public SyntaxError(String message, boolean warning, int offset, int length) {
@@ -147,10 +147,10 @@ public class SyntaxChecker extends AbstractUtilityParser {
         }
 
         /**
-         * Returns <code>true</code> if this error is a warning rather than a
+         * Returns {@code true} if this error is a warning rather than a
          * true error.
          *
-         * @return <code>true</code> for warning messages
+         * @return {@code true} for warning messages
          */
         public boolean isWarning() {
             return warning;
@@ -184,11 +184,11 @@ public class SyntaxChecker extends AbstractUtilityParser {
         }
 
         /**
-         * Returns <code>true</code> if two errors are have identical locations,
+         * Returns {@code true} if two errors are have identical locations,
          * messages, and error types.
          *
          * @param rhs the error to compare this error to
-         * @return <code>true</code> if the errors are equal
+         * @return {@code true} if the errors are equal
          */
         public boolean equals(SyntaxError rhs) {
             return (rhs != null && offset == rhs.offset && length == rhs.length && warning == rhs.warning && message.equals(rhs.message));
@@ -255,7 +255,7 @@ public class SyntaxChecker extends AbstractUtilityParser {
          * from {@link #parse(java.lang.String)}.
          *
          * @param errors the new set of errors to display (may be
-         * <code>null</code>)
+         * {@code null})
          */
         public void update(JSourceCodeEditor editor, SyntaxError[] errors) {
             this.editor = editor;

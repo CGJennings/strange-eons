@@ -51,11 +51,11 @@ class UpdateMessage {
     /**
      * Creates and displays an update message for the built-in update mechanism.
      *
-     * @param applicationUpdate if <code>true</code>, creates a link for an
+     * @param applicationUpdate if {@code true}, creates a link for an
      * application update
-     * @param pluginUpdate if <code>true</code> creates a link for plug-in
+     * @param pluginUpdate if {@code true} creates a link for plug-in
      * updates
-     * @param newPlugins if <code>true</code>, creates a link for newly
+     * @param newPlugins if {@code true}, creates a link for newly
      * available plug-ins
      */
     public UpdateMessage(boolean applicationUpdate, boolean pluginUpdate, boolean newPlugins) {
@@ -116,7 +116,7 @@ class UpdateMessage {
      * @param iconResource an icon resource for the control
      * @param enableText the link text to display when enabled
      * @param disableText the link text to display when disabled
-     * @param updatePage the URI to display when clicked; if <code>null</code>,
+     * @param updatePage the URI to display when clicked; if {@code null},
      * opens the plug-in catalog
      * @param enable whether the control should be enabled
      * @return a new link control with the specified properties

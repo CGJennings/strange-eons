@@ -793,7 +793,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     }
     /**
      * A shared "clipboard" for copying and pasting tint values across editors.
-     * If <code>clipB</code> is set to <code>NaN</code>, then nothing has been
+     * If {@code clipB} is set to {@code NaN}, then nothing has been
      * copied yet during this session. This scheme does not work across virtual
      * machines.
      */

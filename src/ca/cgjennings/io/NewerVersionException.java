@@ -31,14 +31,14 @@ public class NewerVersionException extends IOException {
     }
 
     /**
-     * Throws a newer version exception if <code>currentVersion</code> is less
-     * than <code>formatVersion</code>.
+     * Throws a newer version exception if {@code currentVersion} is less
+     * than {@code formatVersion}.
      *
      * @param currentVersion the format version that the caller knows how to
      * read
      * @param formatVersion the format version that is reported by this object
      * @throws NewerVersionException if the caller doesn't know how to read
-     * <code>formatVersion</code>
+     * {@code formatVersion}
      */
     public static void check(int currentVersion, int formatVersion) throws NewerVersionException {
         if (currentVersion < formatVersion) {

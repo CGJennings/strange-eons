@@ -6,7 +6,7 @@ import javax.swing.KeyStroke;
 import resources.Settings;
 
 /**
- * An <code>InstalledPlugin</code> bridges the gap between a plug-in bundle and
+ * An {@code InstalledPlugin} bridges the gap between a plug-in bundle and
  * the plug-ins that it contains. It is not the plug-in itself, but it creates
  * and manages instances of the plug-in on demand. When a plug-in bundle is
  * installed, an instance is created for each plug-in listed in the bundle's
@@ -30,10 +30,10 @@ public class InstalledPlugin extends AbstractInstalledPlugin {
     }
 
     /**
-     * Returns <code>true</code> if this plug-in is disabled. This state is
+     * Returns {@code true} if this plug-in is disabled. This state is
      * tracked in user {@link Settings}.
      *
-     * @return <code>true</code> if the plug-in is enabled (which it is by
+     * @return {@code true} if the plug-in is enabled (which it is by
      * default)
      */
     public boolean isEnabled() {
@@ -42,10 +42,10 @@ public class InstalledPlugin extends AbstractInstalledPlugin {
 
     /**
      * Sets whether this plug-in is enabled. Note that this state is not
-     * enforced by <code>InstalledPlugin</code>. Rather, higher level code is
+     * enforced by {@code InstalledPlugin}. Rather, higher level code is
      * expected to check whether a plug-in is enabled before starting it.
      *
-     * @param enable <code>true</code> to enable the plug-in
+     * @param enable {@code true} to enable the plug-in
      */
     public void setEnabled(boolean enable) {
         Settings.getUser().set(settingKey("disable"), enable ? "no" : "yes");
@@ -53,9 +53,9 @@ public class InstalledPlugin extends AbstractInstalledPlugin {
 
     /**
      * Returns the accelerator key assigned to the plug-in. Types other than
-     * <code>ACTIVATED</code> will always return <code>null</code>.
+     * {@code ACTIVATED} will always return {@code null}.
      *
-     * @return the accelerator key for the plug-in, or <code>null</code> if none
+     * @return the accelerator key for the plug-in, or {@code null} if none
      */
     public KeyStroke getAcceleratorKey() {
         if (getPluginType() != Plugin.ACTIVATED) {
@@ -75,9 +75,9 @@ public class InstalledPlugin extends AbstractInstalledPlugin {
 
     /**
      * Sets the accelerator key for the plug-in, or assigns no accelerator if
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @param ks the accelerator to assign, or <code>null</code>
+     * @param ks the accelerator to assign, or {@code null}
      */
     public void setAcceleratorKey(KeyStroke ks) {
         final String key = settingKey("accelerator");

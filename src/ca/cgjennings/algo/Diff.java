@@ -16,7 +16,7 @@ package ca.cgjennings.algo;
  *
  * @param <E> the type of the elements that may be inserted, deleted, or
  * changed; for example, in a text file each element might be a
- * <code>String</code> representing a single line
+ * {@code String} representing a single line
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.0
  */
@@ -25,7 +25,7 @@ public class Diff<E> {
     private DiffListener<E> li;
 
     /**
-     * Create a new <code>Diff</code> instance that uses a default listener that
+     * Create a new {@code Diff} instance that uses a default listener that
      * is useful for diagnostic purposes. For each element in the combined
      * collection, this listener prints to the output stream one of the
      * following followed by the string value of the element in question:
@@ -135,9 +135,9 @@ public class Diff<E> {
      *
      * @param a an item from the original collection being compared
      * @param b an item from the changed collection being compared
-     * @param originalIndex the index of <code>a</code> in the original sequence
-     * @param changedIndex the index of <code>b</code> in the changed sequence
-     * @return <code>true</code> if the objects should be considered equal for
+     * @param originalIndex the index of {@code a} in the original sequence
+     * @param changedIndex the index of {@code b} in the changed sequence
+     * @return {@code true} if the objects should be considered equal for
      * the purposes of the diff operation
      */
     public boolean equal(E a, E b, int originalIndex, int changedIndex) {

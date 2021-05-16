@@ -22,7 +22,7 @@ public class WizardPanel extends JPanel {
 
     /**
      * Creates a new panel for viewing the pages of a {@link WizardModel}. The
-     * panel will have a <code>null</code> model.
+     * panel will have a {@code null} model.
      */
     public WizardPanel() {
         this(null);
@@ -67,7 +67,7 @@ public class WizardPanel extends JPanel {
 
     /**
      * Returns the model used to determine which pages to display and to
-     * navigate between pages. May be <code>null</code>.
+     * navigate between pages. May be {@code null}.
      *
      * @return the current page model
      */

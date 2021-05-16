@@ -52,7 +52,7 @@ public class InfoTable {
      * once.
      *
      * @param cols an array of column names
-     * @throws NullPointerException if <code>cols</code> is <code>null</code>
+     * @throws NullPointerException if {@code cols} is {@code null}
      * @throws IllegalArgumentException if the columns
      */
     public void setColumns(String... cols) {
@@ -135,7 +135,7 @@ public class InfoTable {
 
     /**
      * Serializes this table's content by writing a string into a
-     * <code>StringBuilder</code>. This prepares the table for transport to a
+     * {@code StringBuilder}. This prepares the table for transport to a
      * debugging client running in a separate process.
      *
      * @param b the string builder to append the table to
@@ -151,7 +151,7 @@ public class InfoTable {
     }
 
     /**
-     * Install this table's data in a <code>JTable</code>, replacing the
+     * Install this table's data in a {@code JTable}, replacing the
      * existing table model.
      *
      * @param t the table component to use to display the data

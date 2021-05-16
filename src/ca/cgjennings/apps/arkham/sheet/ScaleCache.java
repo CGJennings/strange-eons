@@ -17,7 +17,7 @@ import java.lang.ref.SoftReference;
  *
  * <p>
  * Drawing an image via a scale cache can produce nicer results than drawing the
- * image directly via <code>g.drawImage</code> in a scaled graphics context,
+ * image directly via {@code g.drawImage} in a scaled graphics context,
  * particularly when the image must be scaled to less than half its true size.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -52,9 +52,9 @@ public final class ScaleCache {
      * Creates a scale cache. The source image may have a different resolution
      * than the template image. The specified width and height define the size
      * that image should be drawn at on the template image. For example, if you
-     * have an image <code>im</code> that is 300 ppi, but the template image is
+     * have an image {@code im} that is 300 ppi, but the template image is
      * 150 ppi, then you would use:<br>
-     * <code>new ScaleCache( im, im.getWidth()/2, im.getHeight()/2 )</code>.
+     * {@code new ScaleCache( im, im.getWidth()/2, im.getHeight()/2 )}.
      *
      * @param source the image to scale for drawing
      * @param widthInTemplatePixels the width to draw the image at, measured as

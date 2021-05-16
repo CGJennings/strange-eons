@@ -68,16 +68,16 @@ public interface DesignSupport<G extends GameComponent> {
     public void updateSupportView(Component view);
 
     /**
-     * Returns <code>true</code> if the component's design is valid. The exact
+     * Returns {@code true} if the component's design is valid. The exact
      * meaning of "valid" depends on the component type, but the general intent
      * is that invalid components break the usual design rules for the component
      * type in such a way that the resulting component may be unfair. Strange
      * Eons does not use this value itself, but there are preference settings
      * that allow users to request that their components should be marked if
-     * this returns <code>false</code>. (It is up to the plug-in author to
+     * this returns {@code false}. (It is up to the plug-in author to
      * implement this in the component's {@link Sheet}s.
      *
-     * @return <code>true</code> if the design is valid
+     * @return {@code true} if the design is valid
      */
     public boolean isDesignValid();
 }

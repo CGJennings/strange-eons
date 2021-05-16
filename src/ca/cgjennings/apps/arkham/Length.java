@@ -22,7 +22,7 @@ public class Length implements Comparable<Length> {
 
     /**
      * Creates a new length equivalent to the distance specified by the
-     * <code>measurement</code> and <code>unit</code>.
+     * {@code measurement} and {@code unit}.
      *
      * @param measurement the magnitude of the distance
      * @param unit the unit in which the measurement is expressed
@@ -33,7 +33,7 @@ public class Length implements Comparable<Length> {
 
     /**
      * Sets this length to the distance specified by the
-     * <code>measurement</code> and <code>unit</code>.
+     * {@code measurement} and {@code unit}.
      *
      * @param measurement the magnitude of the distance
      * @param unit the unit in which the measurement is expressed
@@ -45,8 +45,8 @@ public class Length implements Comparable<Length> {
     /**
      * Returns the value of this length measurement in the requested unit.
      *
-     * @param unit the desired unit, such as <code>CM</code>, <code>IN</code>,
-     * or <code>PT</code>
+     * @param unit the desired unit, such as {@code CM}, {@code IN},
+     * or {@code PT}
      * @return this object's length measurement expressed in the specified unit
      */
     public double get(int unit) {
@@ -93,7 +93,7 @@ public class Length implements Comparable<Length> {
      *
      * @param rhs the length to be compared with this length
      * @return an integer whose sign is consistent with the sign of
-     * <code>this.get(PT) - rhs.get(PT)</code>
+     * {@code this.get(PT) - rhs.get(PT)}
      */
     @Override
     public int compareTo(Length rhs) {
@@ -101,11 +101,11 @@ public class Length implements Comparable<Length> {
     }
 
     /**
-     * Returns <code>true</code> if and only if the compared object is a length
+     * Returns {@code true} if and only if the compared object is a length
      * of equal size.
      *
      * @param obj the object to compare this to
-     * @return <code>true</code> if <code>obj</code> is a <code>Length</code>
+     * @return {@code true} if {@code obj} is a {@code Length}
      * that represents the same distance
      */
     @Override

@@ -48,7 +48,7 @@ public abstract class ResourceParser<R> implements Closeable {
      * Creates a parser for the specified resource file.
      *
      * @param resource the location of the desired tile set resource
-     * @param gentle if <code>true</code>, parses in gentle mode
+     * @param gentle if {@code true}, parses in gentle mode
      */
     public ResourceParser(String resource, boolean gentle) throws IOException {
         if (resource == null) {
@@ -74,7 +74,7 @@ public abstract class ResourceParser<R> implements Closeable {
      * Creates a parser for the specified input stream.
      *
      * @param in the input stream to read from
-     * @param gentle if <code>true</code>, parses in gentle mode
+     * @param gentle if {@code true}, parses in gentle mode
      * @throws IOException if an I/O error occurs
      */
     public ResourceParser(InputStream in, boolean gentle) throws IOException {
@@ -83,7 +83,7 @@ public abstract class ResourceParser<R> implements Closeable {
     }
 
     /**
-     * Returns the next resource listed in the file, or <code>null</code> if
+     * Returns the next resource listed in the file, or {@code null} if
      * there are no more resources available.
      *
      * @return the next resource
@@ -98,7 +98,7 @@ public abstract class ResourceParser<R> implements Closeable {
      * Sets the language that the parser will use to look up any localizable
      * values in the resource file.
      *
-     * @param language the language to use; must not be <code>null</code>
+     * @param language the language to use; must not be {@code null}
      */
     public final void setLanguage(Language language) {
         if (language == null) {
@@ -119,9 +119,9 @@ public abstract class ResourceParser<R> implements Closeable {
     }
 
     /**
-     * Returns <code>true</code> if the parser was created in gentle mode.
+     * Returns {@code true} if the parser was created in gentle mode.
      *
-     * @return <code>true</code> if bad entries will be skipped where possible
+     * @return {@code true} if bad entries will be skipped where possible
      */
     public final boolean isParsingGently() {
         return gentle;
@@ -130,23 +130,23 @@ public abstract class ResourceParser<R> implements Closeable {
     /**
      * Returns an identifier that can be used in error messages. If the parser
      * was created with the resource-based constructor, this will default to the
-     * resource name. Otherwise it will default to <code>null</code>, but can be
+     * resource name. Otherwise it will default to {@code null}, but can be
      * changed with {@link #setIdentifier}. If the identifier is
-     * <code>null</code>, then this will return <code>&lt;???&gt;</code>.
+     * {@code null}, then this will return {@code &lt;???&gt;}.
      *
      * @return the identifier, or the "unknown identifier" if the identifier is
-     * <code>null</code>
+     * {@code null}
      */
     public String getIdentifierString() {
         return resource == null ? "<???>" : resource;
     }
 
     /**
-     * Returns the identifier. If <code>null</code>, then <code>null</code> is
+     * Returns the identifier. If {@code null}, then {@code null} is
      * returned. Otherwise, this is exactly the same as
      * {@link #getIdentifierString()}.
      *
-     * @return the identifier, or <code>null</code>
+     * @return the identifier, or {@code null}
      */
     public String getIdentifier() {
         return resource;
@@ -208,7 +208,7 @@ public abstract class ResourceParser<R> implements Closeable {
      * Returns the next non-comment line. This is called by subclasses to
      * implement parsing.
      *
-     * @return the next non-comment line, or <code>null</code> if the end of
+     * @return the next non-comment line, or {@code null} if the end of
      * file was reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
@@ -224,7 +224,7 @@ public abstract class ResourceParser<R> implements Closeable {
      * is a line that contains only whitespace. This is called by subclasses to
      * implement parsing.
      *
-     * @return the next non-empty line, or <code>null</code> if the end of file
+     * @return the next non-empty line, or {@code null} if the end of file
      * was reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
@@ -237,10 +237,10 @@ public abstract class ResourceParser<R> implements Closeable {
 
     /**
      * Parses and returns the next line as a [key, value] pair. This is a cover
-     * for <code>readProperty( true )</code>.
+     * for {@code readProperty( true )}.
      *
      * @return the next non-empty line split into a [key, value] pair, or
-     * <code>null</code> if the end of file was reached
+     * {@code null} if the end of file was reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
     protected final String[] readProperty() throws IOException {
@@ -255,10 +255,10 @@ public abstract class ResourceParser<R> implements Closeable {
      * value, it will be an empty string. If empty lines are not skipped, and an
      * empty line is read, then both the key and value will be empty strings.
      *
-     * @param skipEmptyLines if <code>true</code>, empty lines are skipped and
+     * @param skipEmptyLines if {@code true}, empty lines are skipped and
      * the next non-empty line is parsed
      * @return the next line split into a [key, value] pair, or
-     * <code>null</code> if the end of file was reached
+     * {@code null} if the end of file was reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
     protected final String[] readProperty(boolean skipEmptyLines) throws IOException {

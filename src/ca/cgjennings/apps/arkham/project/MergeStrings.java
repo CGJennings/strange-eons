@@ -41,7 +41,7 @@ public class MergeStrings extends TaskActionTree {
      * This action tree returns true since all of its children apply only to
      * .properties files.
      *
-     * @return <code>true</code>
+     * @return {@code true}
      */
     @Override
     protected boolean isAppliesToShortCircuited() {

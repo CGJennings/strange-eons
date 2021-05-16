@@ -342,7 +342,7 @@ public class TextIndexer implements MonitoredAlgorithm {
         /**
          * Return a URL for the source ID. The default implementation simply
          * returns a new URL using the source ID as if by
-         * <code>new URL(sourceID)</code>.
+         * {@code new URL(sourceID)}.
          *
          * @param sourceID returns a URL for the source ID
          * @return a URL to use to read the source text
@@ -358,7 +358,7 @@ public class TextIndexer implements MonitoredAlgorithm {
          *
          * @param sourceID the identifier of the document
          * @param url the URL to read the document from
-         * @param encodingHint the name of an encoding, or <code>null</code> to
+         * @param encodingHint the name of an encoding, or {@code null} to
          * use a default encoding
          * @return the document text
          * @throws IOException if an error occurs while reading the document
@@ -556,7 +556,7 @@ public class TextIndexer implements MonitoredAlgorithm {
      * @param indexFile the file to write the index to
      * @param sourceURLs an array of source URLs
      * @param indexIDs an array of identifers to use in the index for the source
-     * URL at the same index, or <code>null</code> to use the sourceURLs
+     * URL at the same index, or {@code null} to use the sourceURLs
      * @throws IOException if an error occurs while writing the file
      */
     public static void createIndex(final File indexFile, final String[] sourceURLs, final String[] indexIDs) throws IOException {

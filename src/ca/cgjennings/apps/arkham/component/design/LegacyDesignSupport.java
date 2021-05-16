@@ -27,7 +27,7 @@ public class LegacyDesignSupport extends AbstractVerbalDesignSupport<LegacyDesig
      *
      * @param gc the legacy game component
      * @param b a buffer for the analysis content
-     * @return <code>true</code> if the component is valid
+     * @return {@code true} if the component is valid
      */
     @Override
     protected boolean analyze(Provider gc, StringBuilder b) {
@@ -51,9 +51,9 @@ public class LegacyDesignSupport extends AbstractVerbalDesignSupport<LegacyDesig
         public void validate();
 
         /**
-         * Returns <code>true</code> if the design is valid.
+         * Returns {@code true} if the design is valid.
          *
-         * @return <code>false</code> if the component is considered unbalanced
+         * @return {@code false} if the component is considered unbalanced
          */
         public boolean isValid();
 

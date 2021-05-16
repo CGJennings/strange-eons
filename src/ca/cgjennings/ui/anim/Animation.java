@@ -249,20 +249,20 @@ public class Animation implements FrameComposer {
     }
 
     /**
-     * Returns <code>true</code> if the animation is stopped or stopping.
+     * Returns {@code true} if the animation is stopped or stopping.
      *
-     * @return <code>true</code> if the animation is or will be stopped
+     * @return {@code true} if the animation is or will be stopped
      */
     public boolean isStopped() {
         return stopped;
     }
 
     /**
-     * Returns <code>true</code> if the animation is still playing. (This will
-     * still be <code>true</code> after calling {@link #stop} until the
+     * Returns {@code true} if the animation is still playing. (This will
+     * still be {@code true} after calling {@link #stop} until the
      * animation actually halts.)
      *
-     * @return <code>true</code> if the animation is playing
+     * @return {@code true} if the animation is playing
      */
     public boolean isPlaying() {
         return playing;
@@ -350,7 +350,7 @@ public class Animation implements FrameComposer {
      * playing or is stopped.
      *
      * @param li the listener to call
-     * @throws NullPointerException if the listener is <code>null</code>
+     * @throws NullPointerException if the listener is {@code null}
      */
     public void addFinishAction(ActionListener li) {
         if (li == null) {

@@ -18,7 +18,7 @@ public interface DragHandler<T> {
 
     /**
      * Creates a drag token for a drag that was initiated in the specified drag
-     * source at the specified point. Returns <code>null</code> if the specified
+     * source at the specified point. Returns {@code null} if the specified
      * point is not draggable.
      *
      * @param manager the manager that is managing the drag
@@ -36,7 +36,7 @@ public interface DragHandler<T> {
      * @param dragSource the component being dragged from
      * @param token the token that was dragged
      * @param dropTarget the target that the token was dropped on, or
-     * <code>null</code> if the drag was cancelled
+     * {@code null} if the drag was cancelled
      */
     void dragFinished(DragManager<T> manager, JComponent dragSource, DragToken<T> token, JComponent dropTarget);
 }

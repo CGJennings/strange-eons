@@ -78,11 +78,11 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns the <code>Class</code> instance that represents the original
+         * Returns the {@code Class} instance that represents the original
          * type of the property. For example, if the property being read has
-         * type <code>float</code> then the object returned by {#link
-         * getValue()} will be a <code>Float</code> instance and the type
-         * returned by this method will be <code>float.class</code>.
+         * type {@code float} then the object returned by {#link
+         * getValue()} will be a {@code Float} instance and the type
+         * returned by this method will be {@code float.class}.
          *
          * @return the actual type of the captured property value, as declared
          * in its getter method
@@ -92,7 +92,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns the <code>Class</code> object for the {@link Style} interface
+         * Returns the {@code Class} object for the {@link Style} interface
          * that this property belongs to.
          *
          * @return the style interface that the property is declared in
@@ -102,10 +102,10 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns <code>true</code> if the property has had different values
+         * Returns {@code true} if the property has had different values
          * during the life of this capture.
          *
-         * @return <code>true</code> if different values have been captured for
+         * @return {@code true} if different values have been captured for
          * this property
          */
         public boolean isConflicted() {
@@ -131,13 +131,13 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns <code>true</code> if the specified object is a
-         * <code>Property</code> with the same name and value. (If this returns
-         * <code>true</code> the type and style must match unless the contract
+         * Returns {@code true} if the specified object is a
+         * {@code Property} with the same name and value. (If this returns
+         * {@code true} the type and style must match unless the contract
          * for {@link Style} has been violated.)
          *
          * @param obj the object to compare this property with
-         * @return <code>true</code> if the object represents the same property
+         * @return {@code true} if the object represents the same property
          * and has an equal value
          */
         @Override
@@ -353,10 +353,10 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
     }
 
     /**
-     * Returns <code>true</code> if the specified style has been captured.
+     * Returns {@code true} if the specified style has been captured.
      *
      * @param style the style to test for
-     * @return <code>true</code> if any of the captured items provide this style
+     * @return {@code true} if any of the captured items provide this style
      */
     public boolean isStyleInCapture(Class<? extends Style> style) {
         return captures.contains(style);
@@ -369,7 +369,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * said to have a conflict for that style.
      *
      * @param style the style to check
-     * @return <code>true</code> if the style is in conflict
+     * @return {@code true} if the style is in conflict
      */
     public boolean isStyleInConflict(Class<? extends Style> style) {
         return conflicts.contains(style);
@@ -377,11 +377,11 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
 
     /**
      * Returns a {@link Property} instance representing the captured property
-     * with the given name, or <code>null</code> if the property has not been
+     * with the given name, or {@code null} if the property has not been
      * captured.
      *
-     * @param name the property name, which must be non-<code>null</code>
-     * @return the value of the property, or <code>null</code> if it has not
+     * @param name the property name, which must be non-{@code null}
+     * @return the value of the property, or {@code null} if it has not
      * been captured
      */
     public Property getProperty(String name) {
@@ -405,7 +405,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * method is used primarily to define a capture that represents a set of
      * style defaults.
      *
-     * @param style the <code>Style</code> interface that the property belongs
+     * @param style the {@code Style} interface that the property belongs
      * to
      * @param name the name of the property
      * @param value the property's new value (the type of this object must be
@@ -552,10 +552,10 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
     }
 
     /**
-     * Returns <code>true</code> if the global style clipboard contains style
+     * Returns {@code true} if the global style clipboard contains style
      * information.
      *
-     * @return <code>true</code> if non-empty captures have previously been
+     * @return {@code true} if non-empty captures have previously been
      * copied.
      */
     public static synchronized boolean canPaste() {

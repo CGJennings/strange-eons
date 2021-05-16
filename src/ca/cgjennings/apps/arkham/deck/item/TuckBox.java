@@ -65,7 +65,7 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
 
     /**
      * A sizing tool for a particular type of component. The sizer's
-     * <code>toString</code> method should return a human-readable description
+     * {@code toString} method should return a human-readable description
      * of the type of component(s) that this sizer produces box measurements
      * for.
      */
@@ -74,8 +74,8 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         /**
          * Returns the dimensions for a box of the type represented by this
          * sizer that allows sufficient space to hold a number of cards equal to
-         * <code>cards</code>. The dimensions are returned as an array of three
-         * <code>double</code> values which measure the width, height, and depth
+         * {@code cards}. The dimensions are returned as an array of three
+         * {@code double} values which measure the width, height, and depth
          * in mm (respectively).
          *
          * @param cards the number of objects the box should hold
@@ -87,12 +87,12 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         public double[] size(int cards, double sleeveThicknessInMicrons);
 
         /**
-         * Returns <code>true</code> if this helper uses sleeve thickness as
+         * Returns {@code true} if this helper uses sleeve thickness as
          * part of its sizing algorithm. Non-card components typically don't
          * have a suitable sleeve available, so sizers for such components would
-         * return <code>false</code>.
+         * return {@code false}.
          *
-         * @return <code>true</code> if and only if the user can store this
+         * @return {@code true} if and only if the user can store this
          * component type on plastic sleeves
          */
         public boolean allowSleeves();
@@ -120,7 +120,7 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * sleeves.
          *
          * @param name the name to be returned by the sizer's
-         * <code>name()</code> method
+         * {@code name()} method
          * @param width the width of boxes created by this sizer, in mm
          * @param height the height of boxes created by this sizer, in mm
          * @param depthPadding a padding value added to the depth of every box,
@@ -128,11 +128,11 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * @param depthPerCard the added depth required to hold 1 card, in mm
          * @param minCards a minimum depth for the box, expressed as a card
          * count
-         * @throws NullPointerException if <code>name</code> is
-         * <code>null</code>
+         * @throws NullPointerException if {@code name} is
+         * {@code null}
          * @throws IllegalArgumentException if any dimension or
-         * <code>minCards</code> is less than or equal to 0, or if
-         * <code>depthPadding</code> is negative
+         * {@code minCards} is less than or equal to 0, or if
+         * {@code depthPadding} is negative
          */
         public SimpleDepthwiseSizer(String name, double width, double height, double depthPadding, double depthPerCard, int minCards) {
             this(name, width, height, depthPadding, depthPerCard, minCards, true);
@@ -141,12 +141,12 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         /**
          * Create a {@link BoxSizer} that creates boxes of the given width and
          * height. The depth of the box will be determined using the formula
-         * <code>depthPadding + depthPerCard * numberOfCards</code>, but will
-         * not be less than <code>depthPadding + depthPerCard * minCards</code>.
+         * {@code depthPadding + depthPerCard * numberOfCards}, but will
+         * not be less than {@code depthPadding + depthPerCard * minCards}.
          * All measurements are in millimetres.
          *
          * @param name the name to be returned by the sizer's
-         * <code>name()</code> method
+         * {@code name()} method
          * @param width the width of boxes created by this sizer, in mm
          * @param height the height of boxes created by this sizer, in mm
          * @param depthPadding a padding value added to the depth of every box,
@@ -154,11 +154,11 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * @param depthPerCard the added depth required to hold 1 card, in mm
          * @param minCards a minimum depth for the box, expressed as a card
          * count
-         * @throws NullPointerException if <code>name</code> is
-         * <code>null</code>
+         * @throws NullPointerException if {@code name} is
+         * {@code null}
          * @throws IllegalArgumentException if any dimension or
-         * <code>minCards</code> is less than or equal to 0, or if
-         * <code>depthPadding</code> is negative
+         * {@code minCards} is less than or equal to 0, or if
+         * {@code depthPadding} is negative
          */
         public SimpleDepthwiseSizer(String name, double width, double height, double depthPadding, double depthPerCard, int minCards, boolean allowSleeves) {
             if (name == null) {
@@ -225,7 +225,7 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * thick items like tokens.
          *
          * @param name the name to be returned by the sizer's
-         * <code>name()</code> method
+         * {@code name()} method
          * @param width the width of boxes created by this sizer, in mm
          * @param depth the depth of boxes created by this sizer, in mm
          * @param heightPadding a padding value added to the height of every
@@ -233,11 +233,11 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * @param heightPerCard the added height required to hold 1 card, in mm
          * @param minCards a minimum depth for the box, expressed as a card
          * count
-         * @throws NullPointerException if <code>name</code> is
-         * <code>null</code>
+         * @throws NullPointerException if {@code name} is
+         * {@code null}
          * @throws IllegalArgumentException if any dimension or
-         * <code>minCards</code> is less than or equal to 0, or if
-         * <code>heightPadding</code> is negative
+         * {@code minCards} is less than or equal to 0, or if
+         * {@code heightPadding} is negative
          */
         public SimpleHeightwiseSizer(String name, double width, double depth, double heightPadding, double heightPerCard, int minCards) {
             this(name, width, depth, heightPadding, heightPerCard, minCards, false);
@@ -246,13 +246,13 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         /**
          * Create a {@link BoxSizer} that creates boxes of the given width and
          * depth. The height of the box will be determined using the formula
-         * <code>heightPadding + heightPerCard * numberOfCards</code>, but will
+         * {@code heightPadding + heightPerCard * numberOfCards}, but will
          * not be less than
-         * <code>heightPadding + heightPerCard * minCards</code>. All
+         * {@code heightPadding + heightPerCard * minCards}. All
          * measurements are in millimetres.
          *
          * @param name the name to be returned by the sizer's
-         * <code>name()</code> method
+         * {@code name()} method
          * @param width the width of boxes created by this sizer, in mm
          * @param depth the height of boxes created by this sizer, in mm
          * @param heightPadding a padding value added to the height of every
@@ -260,13 +260,13 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
          * @param heightPerCard the added height required to hold 1 card, in mm
          * @param minCards a minimum depth for the box, expressed as a card
          * count
-         * @param allowSleeves <code>true</code> if the user can select a sleeve
+         * @param allowSleeves {@code true} if the user can select a sleeve
          * thickness when using this sizer
-         * @throws NullPointerException if <code>name</code> is
-         * <code>null</code>
+         * @throws NullPointerException if {@code name} is
+         * {@code null}
          * @throws IllegalArgumentException if any dimension or
-         * <code>minCards</code> is less than or equal to 0, or if
-         * <code>heightPadding</code> is negative
+         * {@code minCards} is less than or equal to 0, or if
+         * {@code heightPadding} is negative
          */
         public SimpleHeightwiseSizer(String name, double width, double depth, double heightPadding, double heightPerCard, int minCards, boolean allowSleeves) {
             if (name == null) {
@@ -329,12 +329,12 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
 
     /**
      * Registers a new sizer, adding it to the set of standard box sizing
-     * helpers. If <code>sizer</code> has already been added, nothing happens.
+     * helpers. If {@code sizer} has already been added, nothing happens.
      * Otherwise, the new sizer is added to the set of helpers that is returned
      * by {@link #getBoxSizers()}.
      *
      * @param sizer a sizing helper to add to the standard list of helpers
-     * @throws NullPointerException if <code>sizer</code> is <code>null</code>
+     * @throws NullPointerException if {@code sizer} is {@code null}
      */
     public static void registerBoxSizer(BoxSizer sizer) {
         if (sizer == null) {

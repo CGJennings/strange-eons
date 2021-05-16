@@ -9,7 +9,7 @@ import java.awt.image.Kernel;
  * <ol>
  * <li> This class offers more complex options for handling image edges.
  * <li> This class makes use of the acceleration framework provided by the
- * {@link AbstractImageFilter} framework. Note that <code>ConvolveOp</code> may
+ * {@link AbstractImageFilter} framework. Note that {@code ConvolveOp} may
  * also provide acceleration; typically this is GPU-based acceleration for small
  * kernel sizes. (Which implementation is faster will depend on a number of
  * platform-specific factors.)
@@ -96,7 +96,7 @@ public class ConvolveFilter extends AbstractConvolver {
      * Sets the convolution kernel. This is a convenience that creates a new
      * {@link Kernel} with the specified width, height, and matrix values.
      *
-     * @param normalize if <code>true</code>, the matrix will be normalized so
+     * @param normalize if {@code true}, the matrix will be normalized so
      * that its elements sum to 1; this prevents the overall image brightness
      * from changing
      * @param width the width of the kernel
@@ -105,8 +105,8 @@ public class ConvolveFilter extends AbstractConvolver {
      * <a href='http://en.wikipedia.org/wiki/Row-major_order'>row-major
      * order</a>
      * @throws IllegalArgumentException if the length of the array is less than
-     * with product of the width and height or if <code>normalize</code> is
-     * <code>true</code> and the kernel elements sum to zero
+     * with product of the width and height or if {@code normalize} is
+     * {@code true} and the kernel elements sum to zero
      */
     public void setKernel(boolean normalize, int width, int height, float... kernelData) {
         if (kernelData == null) {
@@ -139,7 +139,7 @@ public class ConvolveFilter extends AbstractConvolver {
      *
      * @param edgeHandling the edge handling mode
      * @throws NullPointerException if the edge handling mode is
-     * <code>null</code>
+     * {@code null}
      */
     public void setEdgeHandling(EdgeHandling edgeHandling) {
         if (edgeHandling == null) {

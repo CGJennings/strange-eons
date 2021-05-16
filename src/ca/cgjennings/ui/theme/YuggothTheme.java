@@ -57,10 +57,11 @@ public class YuggothTheme extends Theme {
 
         SolidPainter solidBlack = new SolidPainter(Color.BLACK);
         SolidPainter solidWhite = new SolidPainter(Color.WHITE);
+        SolidPainter solidGrey = new SolidPainter(new Color(0x7c7d7f));
 
         defaults.put("MenuBar[Enabled].backgroundPainter", solidBlack);
         defaults.put("MenuBar:Menu[Enabled].textForeground", Color.WHITE);
-        defaults.put("MenuBar:Menu[Selected].backgroundPainter", solidWhite);
+        defaults.put("MenuBar:Menu[Selected].backgroundPainter", solidGrey);
         defaults.put("MenuBar:Menu[Selected].textForeground", Color.BLACK);
         defaults.put("MenuBar.background", Color.BLACK);
         defaults.put("MenuBar.foreground", Color.WHITE);
@@ -68,7 +69,11 @@ public class YuggothTheme extends Theme {
         defaults.put("Menu.background", Color.BLACK);
         defaults.put("Menu.foreground", Color.WHITE);
         defaults.put("Menu[Enabled].textForeground", Color.WHITE);
-        defaults.put("Menu[Enabled].textForeground", Color.WHITE);
+
+        defaults.put("MenuItem.textForeground", Color.WHITE);
+        defaults.put("MenuItem[Enabled].textForeground", Color.WHITE);
+        defaults.put("RadioButtonMenuItem[Enabled].textForeground", Color.WHITE);
+        defaults.put("CheckBoxMenuItem[Enabled].textForeground", Color.WHITE);
 
         defaults.put("menu", Color.BLACK);
         defaults.put("menuText", Color.WHITE);
@@ -117,6 +122,7 @@ MenuBar[Enabled].borderPainter
             this.paint = Objects.requireNonNull(paint);
         }
 
+        @Override
         public void paint(Graphics2D g, Component c, int width, int height) {
             g.setPaint(paint);
             g.fillRect(0, 0, width, height);

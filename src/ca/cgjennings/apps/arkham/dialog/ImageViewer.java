@@ -66,7 +66,7 @@ public class ImageViewer extends javax.swing.JDialog {
      *
      * @param parent the dialog's parent window
      * @param image the image to show in the viewer
-     * @param original the source file of the image, or <code>null</code>
+     * @param original the source file of the image, or {@code null}
      * @param modal whether the dialog should block until closed
      */
     public ImageViewer(java.awt.Window parent, BufferedImage image, File original, boolean modal) {

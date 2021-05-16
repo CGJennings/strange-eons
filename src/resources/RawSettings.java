@@ -53,13 +53,13 @@ public class RawSettings {
     private static final File PREFERENCE_FILE = StrangeEons.getUserStorageFile("preferences");
 
     /**
-     * Returns the inherited value of the setting key, or <code>null</code> if
+     * Returns the inherited value of the setting key, or {@code null} if
      * it is not defined. This method will search both user settings and the
      * global settings table, returning the first hit.
      *
      * @param key the setting key to return the value of
-     * @return the value of the key, or <code>null</code>
-     * @throws NullPointerException if <code>key</code> is <code>null</code>
+     * @return the value of the key, or {@code null}
+     * @throws NullPointerException if {@code key} is {@code null}
      */
     public static String getSetting(String key) {
         if (key == null) {
@@ -74,12 +74,12 @@ public class RawSettings {
 
     /**
      * Returns the value of a user setting. If the key is not defined in the
-     * user settings table, <code>null</code> will be returned. The global
+     * user settings table, {@code null} will be returned. The global
      * settings table is never consulted.
      *
      * @param key the user setting key to return the value of
-     * @return the value of the key, or <code>null</code>
-     * @throws NullPointerException if <code>key</code> is <code>null</code>
+     * @return the value of the key, or {@code null}
+     * @throws NullPointerException if {@code key} is {@code null}
      */
     public static String getUserSetting(String key) {
         if (key == null) {
@@ -93,8 +93,8 @@ public class RawSettings {
      *
      * @param key the key to set
      * @param value the new value to set for the key
-     * @throws NullPointerException if <code>key</code> or <code>value</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code key} or {@code value} is
+     * {@code null}
      */
     public static void setUserSetting(String key, String value) {
         if (key == null) {
@@ -116,7 +116,7 @@ public class RawSettings {
      * revert to that value.
      *
      * @param key the user setting key to remove
-     * @throws NullPointerException if <code>key</code> is <code>null</code>
+     * @throws NullPointerException if {@code key} is {@code null}
      */
     public static void removeUserSetting(String key) {
         if (key == null) {
@@ -240,8 +240,8 @@ public class RawSettings {
      * components (although their value may also be overridden).
      *
      * @param resource the resource file to read settings from
-     * @throws NullPointerException if <code>resource</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code resource} is
+     * {@code null}
      */
     public static void loadGlobalSettings(String resource) {
         if (resource == null) {
@@ -289,11 +289,11 @@ public class RawSettings {
 
     /**
      * Returns the value of the setting key in the global setting table, or
-     * <code>null</code> if it is not defined.
+     * {@code null} if it is not defined.
      *
      * @param key the setting key to return the value of
-     * @return the value of the key, or <code>null</code>
-     * @throws NullPointerException if <code>key</code> is <code>null</code>
+     * @return the value of the key, or {@code null}
+     * @throws NullPointerException if {@code key} is {@code null}
      */
     static String getGlobalSetting(String key) {
         if (key == null) {
@@ -309,8 +309,8 @@ public class RawSettings {
      *
      * @param key the key to set
      * @param value the new value to set for the key
-     * @throws NullPointerException if <code>key</code> or <code>value</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code key} or {@code value} is
+     * {@code null}
      */
     public static void setGlobalSetting(String key, String value) {
         if (key == null) {
@@ -377,11 +377,11 @@ public class RawSettings {
     /**
      * This is called during startup sometime after {@link #readUserSettings()}
      * is called. If there was no user setting file to read settings from, or if
-     * the <code>--migrateprefs</code> option was set on the command line, this
+     * the {@code --migrateprefs} option was set on the command line, this
      * method will attempt to migrate compatible settings from a previous major
      * version of the application.
      *
-     * @return <code>true</code> if settings were migrated
+     * @return {@code true} if settings were migrated
      */
     public static boolean migratePreferences() {
         // Ensure that this is the EDT since we may show a dialog
@@ -498,7 +498,7 @@ public class RawSettings {
      * @param clearText the text to obfuscate
      * @return the obfuscated version of the text
      * @throws NullPointerException if the clear text string is
-     * <code>null</code>
+     * {@code null}
      * @see #unobfuscate
      */
     public static String obfuscate(String clearText) {
@@ -518,7 +518,7 @@ public class RawSettings {
      * @param obfuscatedText the obfuscated string
      * @return the original clear text
      * @throws NullPointerException if the obfuscated string is
-     * <code>null</code>
+     * {@code null}
      * @see #obfuscate
      */
     public static String unobfuscate(String obfuscatedText) {

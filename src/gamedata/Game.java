@@ -150,7 +150,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * Returns the default style applicator used to modify the style of new
      * objects that are added to a deck for this game.
      *
-     * @return the non-<code>null</code> style applicator for this game
+     * @return the non-{@code null} style applicator for this game
      * @see #setDefaultDeckStyleApplicator
      */
     public StyleApplicator getDefaultDeckStyleApplicator() {
@@ -240,11 +240,11 @@ public final class Game implements Comparable<Game>, IconProvider {
     }
 
     /**
-     * Returns the game that was registered using the code, or <code>null</code>
+     * Returns the game that was registered using the code, or {@code null}
      * if no game has been registered with the code.
      *
      * @param code the unique code that identifies the game
-     * @return the game for the requested code, or <code>null</code>
+     * @return the game for the requested code, or {@code null}
      */
     public static Game get(String code) {
         init();
@@ -253,7 +253,7 @@ public final class Game implements Comparable<Game>, IconProvider {
 
     /**
      * Returns an array of all of the registered games. If includeAllGame is
-     * <code>true</code>, then the special all games instance will be included
+     * {@code true}, then the special all games instance will be included
      * at index 0 in the array.
      *
      * @param includeAllGame whether to include the special All Games instance
@@ -298,7 +298,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @throws IllegalArgumentException if a game with this code is already
      * registered, or if the code contains characters that are not legal for
      * file names
-     * @throws NullPointerException if the code or name is <code>null</code>
+     * @throws NullPointerException if the code or name is {@code null}
      * @see #register(java.lang.String, java.lang.String,
      * java.awt.image.BufferedImage)
      * @since 2.1a9
@@ -310,20 +310,20 @@ public final class Game implements Comparable<Game>, IconProvider {
     /**
      * Register a new game with an associated icon. This method looks up the
      * names for the game using a string key and {@link Language}. (The
-     * interface name is determined using <code>Language.string( code )</code>
+     * interface name is determined using {@code Language.string( code )}
      * and the game name is determined using
-     * <code>Language.gstring( code )</code>.)
+     * {@code Language.gstring( code )}.)
      *
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param key the string table key to use when looking up the game name(s)
      * @param iconImage an image to use to represent the game; if
-     * <code>null</code> a default image is used (see
+     * {@code null} a default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @return the registered game
      * @throws IllegalArgumentException if a game with this code is already
      * registered, or if the code contains characters that are not legal for
      * file names
-     * @throws NullPointerException if the code or key is <code>null</code>
+     * @throws NullPointerException if the code or key is {@code null}
      * @see #register(java.lang.String, java.lang.String, java.lang.String,
      * java.awt.image.BufferedImage, gamedata.ExpansionSymbolTemplate)
      */
@@ -348,7 +348,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * game Arkham Horror is registered as <tt>AH</tt>.
      *
      * <p>
-     * When a component is created, a setting named <code>game</code> will be
+     * When a component is created, a setting named {@code game} will be
      * added to it, set to the game code indicated by the class map file. The
      * parent settings for that component will then be the master settings
      * instance for the associated game. Components not associated with a
@@ -369,16 +369,16 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @param uiName the name of the game, in the user interface locale
      * @param gameName the name of the game, in the game locale
      * @param iconImage an image to use to represent the game; if
-     * <code>null</code> a default image is used (see
+     * {@code null} a default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @param template an expansion symbol template that describes the expansion
-     * symbols for this game, or <code>null</code> to use a default template
+     * symbols for this game, or {@code null} to use a default template
      * @return the registered game
      * @throws IllegalArgumentException if a game with this code is already
      * registered, or if the code contains characters that are not legal for
      * file names
      * @throws NullPointerException if the code or either name is
-     * <code>null</code>
+     * {@code null}
      * @see #getMasterSettings()
      * @see #getAllGamesInstance()
      * @see ClassMap

@@ -18,7 +18,7 @@ import javax.imageio.stream.ImageOutputStream;
 import resources.Settings;
 
 /**
- * An <code>ObjectOutputStream</code> with additional features for Strange Eons.
+ * An {@code ObjectOutputStream} with additional features for Strange Eons.
  * This output stream includes special support for serializing images.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

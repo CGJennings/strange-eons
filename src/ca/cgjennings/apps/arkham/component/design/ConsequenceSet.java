@@ -27,7 +27,7 @@ import java.util.LinkedHashSet;
  * <p>
  * Consequences may be divided into categories, with a separate formatter for
  * each category. Because all formatting is written to a
- * <code>StringBuilder</code> provided by the caller, the results from each
+ * {@code StringBuilder} provided by the caller, the results from each
  * category can easily be collected into a single formatted document.
  *
  * <p>
@@ -87,7 +87,7 @@ public class ConsequenceSet implements Iterable<String> {
      * consequence is already in the set, the set will not be modified.
      *
      * @param consequence the consequence to add
-     * @throws NullPointerException if the consequence text is <code>null</code>
+     * @throws NullPointerException if the consequence text is {@code null}
      */
     public void add(String consequence) {
         if (consequence == null) {
@@ -128,7 +128,7 @@ public class ConsequenceSet implements Iterable<String> {
      * category of consequences included in the set, if more than one category
      * is being used.
      *
-     * @return the category name for the formatter, or <code>null</code>
+     * @return the category name for the formatter, or {@code null}
      */
     public String getCategory() {
         return category;
@@ -137,7 +137,7 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets the category name for this formatter. The category name, if any, is
      * typically printed at the top of the consequence list. It may be
-     * <code>null</code> to indicate that categories are not being used.
+     * {@code null} to indicate that categories are not being used.
      *
      * @param category the name of the category that the consequence set is
      * associated with
@@ -151,7 +151,7 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets all of the markup for the list to a set of suitable defaults for
      * writing HTML documents. The list text will use the specified colour, or
-     * black if color is <code>null</code>.
+     * black if color is {@code null}.
      *
      * @param color the colour to use for the list entries
      */
@@ -171,11 +171,11 @@ public class ConsequenceSet implements Iterable<String> {
 
     /**
      * Sets the markup to write before and after the text of a deleted entry.
-     * Typically this will include a <code>&lt;li&gt;</code> tag pair and some
+     * Typically this will include a {@code &lt;li&gt;} tag pair and some
      * style instructions.
      *
      * @param prologue the markup to write before the entry, or
-     * <code>null</code> to suppress the entry
+     * {@code null} to suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setDeletedEntryMarkup(String prologue, String epilogue) {
@@ -186,11 +186,11 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets the markup to write before and after the text of an entry that does
      * not change from the previous consequence set to this one. Typically this
-     * will include a <code>&lt;li&gt;</code> tag pair and some style
+     * will include a {@code &lt;li&gt;} tag pair and some style
      * instructions.
      *
      * @param prologue the markup to write before the entry, or
-     * <code>null</code> to suppress the entry
+     * {@code null} to suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setKeptEntryMarkup(String prologue, String epilogue) {
@@ -201,10 +201,10 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets the markup to write before and after the text of a new entry that
      * was not present in the previous consequence set. Typically this will
-     * include a <code>&lt;li&gt;</code> tag pair and some style instructions.
+     * include a {@code &lt;li&gt;} tag pair and some style instructions.
      *
      * @param prologue the markup to write before the entry, or
-     * <code>null</code> to suppress the entry
+     * {@code null} to suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setNewEntryMarkup(String prologue, String epilogue) {
@@ -215,8 +215,8 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets the markup written to start and the list.
      *
-     * @param prologue the markup to start a list, e.g., <code>&lt;ol&gt;</code>
-     * @param epilogue the markup to end a list, e.g., <code>&lt;/ol&gt;</code>
+     * @param prologue the markup to start a list, e.g., {@code &lt;ol&gt;}
+     * @param epilogue the markup to end a list, e.g., {@code &lt;/ol&gt;}
      */
     public void setListMarkup(String prologue, String epilogue) {
         listHead = prologue;
@@ -240,9 +240,9 @@ public class ConsequenceSet implements Iterable<String> {
      *
      * @param b the buffer to append to
      * @param predecessor the consequence set for the previous design state, or
-     * <code>null</code>
+     * {@code null}
      * @param preamble an optional preamble to write after the category and
-     * before the start of the list (if any), or <code>null</code>
+     * before the start of the list (if any), or {@code null}
      */
     public void formatConsequences(StringBuilder b, ConsequenceSet predecessor, String preamble) {
         if (predecessor == null) {
@@ -325,7 +325,7 @@ public class ConsequenceSet implements Iterable<String> {
 
     /**
      * Writes markup before the start of the list to describe the category.
-     * Typically does nothing if the category is <code>null</code> or an empty
+     * Typically does nothing if the category is {@code null} or an empty
      * stirng.
      *
      * @param b the destination for the markup text
@@ -352,7 +352,7 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Writes a decorated consequence list entry into the string builder. The
      * base class will use the currently set markup for the entry type to
-     * compose the entry, replacing the text <code>@n;</code> with the undeleted
+     * compose the entry, replacing the text {@code @n;} with the undeleted
      * item number.
      *
      * @param b the destination for the markup text

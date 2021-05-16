@@ -61,17 +61,17 @@ public class DesktopIntegration {
     }
 
     /**
-     * This is <code>true</code> if the {@link #browse} method is supported.
+     * This is {@code true} if the {@link #browse} method is supported.
      */
     public static final boolean BROWSE_SUPPORTED = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE);
 
     /**
      * Opens the default mail application to send an email based on the
-     * specified <code>mailto</code> URI. If the URI is <code>null</code>, opens
+     * specified {@code mailto} URI. If the URI is {@code null}, opens
      * the mail application to compose an email, but does not specify any
      * details of the email.
      *
-     * @param uri the <code>mailto</code> URI for the message
+     * @param uri the {@code mailto} URI for the message
      * @throws IOException if an I/O error occurs while starting the application
      */
     public static void mail(URI uri) throws IOException {
@@ -80,7 +80,7 @@ public class DesktopIntegration {
 
     /**
      * Opens the default mail application to send an email based on the
-     * specified <code>mailto</code> URI. If the URI is <code>null</code>, opens
+     * specified {@code mailto} URI. If the URI is {@code null}, opens
      * the mail application to compose an email, but does not specify any
      * details of the email.
      *
@@ -100,7 +100,7 @@ public class DesktopIntegration {
     }
 
     /**
-     * This is <code>true</code> if the {@link #mail} method is supported.
+     * This is {@code true} if the {@link #mail} method is supported.
      */
     public static final boolean MAIL_SUPPORTED = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.MAIL);
 
@@ -129,7 +129,7 @@ public class DesktopIntegration {
     }
 
     /**
-     * This is <code>true</code> if the {@link #open} method is supported.
+     * This is {@code true} if the {@link #open} method is supported.
      */
     public static final boolean OPEN_SUPPORTED = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.OPEN);
 
@@ -179,7 +179,7 @@ public class DesktopIntegration {
     private static final boolean EDIT_SUPPORTED_NATIVELY = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.EDIT);
 
     /**
-     * This is <code>true</code> if the {@link #open} method is supported.
+     * This is {@code true} if the {@link #open} method is supported.
      */
     public static final boolean EDIT_SUPPORTED = EDIT_SUPPORTED_NATIVELY | OPEN_SUPPORTED;
 
@@ -223,7 +223,7 @@ public class DesktopIntegration {
     private static final boolean PRINT_SUPPORTED_NATIVELY = Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.EDIT);
 
     /**
-     * This is <code>true</code> if the {@link #open} method is supported.
+     * This is {@code true} if the {@link #open} method is supported.
      */
     public static final boolean PRINT_SUPPORTED = PRINT_SUPPORTED_NATIVELY | OPEN_SUPPORTED;
 
@@ -233,10 +233,10 @@ public class DesktopIntegration {
      * (e.g., Explorer, Finder). If it is a file, then the parent directory is
      * displayed using the shell. If supported by the host platform, the file
      * will also be selected if possible. If there is an error such that the
-     * folder cannot be shown, this method returns <code>false</code>.
+     * folder cannot be shown, this method returns {@code false}.
      *
      * @param f the file to display and select
-     * @return <code>false</code> if the folder could not be displayed
+     * @return {@code false} if the folder could not be displayed
      */
     public static boolean showInShell(File f) {
         return showInShell(f, null);
@@ -248,11 +248,11 @@ public class DesktopIntegration {
      * (e.g., Explorer, Finder). If it is a file, then the parent directory is
      * displayed using the shell. If supported by the host platform, the file
      * will also be selected if possible. If there is an error such that the
-     * folder cannot be shown, this method returns <code>false</code>.
+     * folder cannot be shown, this method returns {@code false}.
      *
      * @param f the file to display and select
      * @param feedbackComponent an optional component used to display feedback
-     * @return <code>false</code> if the folder could not be displayed
+     * @return {@code false} if the folder could not be displayed
      */
     public static boolean showInShell(File f, Component feedbackComponent) {
         if (f == null) {
@@ -304,7 +304,7 @@ public class DesktopIntegration {
     }
 
     /**
-     * This is <code>true</code> if the {@link #showInShell} method is
+     * This is {@code true} if the {@link #showInShell} method is
      * supported.
      */
     public static final boolean SHOW_IN_SHELL_SUPPORTED = OPEN_SUPPORTED;

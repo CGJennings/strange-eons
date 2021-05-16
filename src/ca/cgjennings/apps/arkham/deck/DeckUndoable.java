@@ -64,7 +64,7 @@ abstract class DeckUndoable extends AbstractUndoableEdit {
 
     /**
      * Returns the editor that is editing this deck. If no editor is editing the
-     * deck, returns <code>null</code>.
+     * deck, returns {@code null}.
      *
      * @return the editing deck
      */

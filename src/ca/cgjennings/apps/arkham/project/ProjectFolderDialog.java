@@ -43,7 +43,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
     public enum Mode {
         /**
          * In this mode, the user can only select a project folder or a
-         * <code>.seproject</code> crate file. The user cannot navigate into an
+         * {@code .seproject} crate file. The user cannot navigate into an
          * existing project.
          */
         SELECT_PROJECT,
@@ -64,7 +64,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
      * the specified mode.
      *
      * @param parent an optional component to use for the dialog's parent; if
-     * <code>null</code> the main application window is used
+     * {@code null} the main application window is used
      * @param mode the type of folder selection to allow
      */
     public ProjectFolderDialog(Component parent, Mode mode) {
@@ -116,7 +116,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
     private String settingKey;
 
     /**
-     * Sets the currently selected folder. If the file is <code>null</code>, the
+     * Sets the currently selected folder. If the file is {@code null}, the
      * folder will be set to a platform-dependent default location. If the
      * specified file does not exist or is not a folder, the selection is
      * unchanged.
@@ -196,9 +196,9 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Sets the initial name to use when the user first creates a new folder. If
-     * set to <code>null</code>, then the default name is used.
+     * set to {@code null}, then the default name is used.
      *
-     * @param suggestion the suggested name, or <code>null</code>
+     * @param suggestion the suggested name, or {@code null}
      * @see #getSuggestedFolderName()
      */
     public void setSuggestedFolderName(String suggestion) {
@@ -207,9 +207,9 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Returns the initial name to use when the user first creates a new folder,
-     * or <code>null</code> if no suggested name has been set.
+     * or {@code null} if no suggested name has been set.
      *
-     * @return the suggested name, or <code>null</code>
+     * @return the suggested name, or {@code null}
      * @see #setSuggestedFolderName(java.lang.String)
      */
     public String getSuggestedFolderName() {
@@ -222,9 +222,9 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
     /**
      * Displays the selection dialog and allows the user to select a file. If
      * the user selects a file, the file is returned. If the user cancels the
-     * dialog, <code>null</code> is returned.
+     * dialog, {@code null} is returned.
      *
-     * @return the selected file, or <code>null</code>
+     * @return the selected file, or {@code null}
      */
     public File showDialog() {
         suggestedNameUsed = (suggestedName == null);

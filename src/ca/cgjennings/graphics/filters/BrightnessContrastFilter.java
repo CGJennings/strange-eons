@@ -31,8 +31,8 @@ public class BrightnessContrastFilter extends AbstractFunctionFilter {
      *
      * @param brightness the brightness adjustment factor to apply
      * @param contrast the contrast adjustment factor to apply
-     * @throws IllegalArgumentException if <code>brightness</code> or
-     * <code>contrast</code> are not in the range -1 to 1 inclusive
+     * @throws IllegalArgumentException if {@code brightness} or
+     * {@code contrast} are not in the range -1 to 1 inclusive
      */
     public BrightnessContrastFilter(double brightness, double contrast) {
         setBrightness(brightness);

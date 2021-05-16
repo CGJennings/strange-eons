@@ -43,7 +43,7 @@ import java.util.*;
 import javax.script.*;
 
 /**
- * Implementation of <code>ScriptEngine</code> for the modified Mozilla Rhino
+ * Implementation of {@code ScriptEngine} for the modified Mozilla Rhino
  * build used for Strange Eons scripts.
  */
 public final class SEScriptEngine extends AbstractScriptEngine implements Invocable, Compilable {
@@ -324,7 +324,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
     /**
      * The sync function creates a synchronized function (in the sense of a Java
      * synchronized method) from an existing function. The new function
-     * synchronizes on the <code>this</code> object of its invocation.
+     * synchronizes on the {@code this} object of its invocation.
      */
     public static Object sync(Context cx, Scriptable thisObj, Object[] args,
             Function funObj) {

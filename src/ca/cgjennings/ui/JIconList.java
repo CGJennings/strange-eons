@@ -33,7 +33,7 @@ public class JIconList<T> extends JList<T> {
     /**
      * Returns the current default icon for this list. The default icon will be
      * used by list items that either do not implement {@link IconProvider} or
-     * return <code>null</code> from {@link IconProvider#getIcon()}.
+     * return {@code null} from {@link IconProvider#getIcon()}.
      *
      * @return the default icon
      */
@@ -43,7 +43,7 @@ public class JIconList<T> extends JList<T> {
 
     /**
      * Change the default icon to use for items that do not provide their own.
-     * The initial value is <code>null</code>, meaning that these items will not
+     * The initial value is {@code null}, meaning that these items will not
      * show an icon.
      *
      * @param defaultIcon the default icon to set
@@ -84,7 +84,7 @@ public class JIconList<T> extends JList<T> {
 
         /**
          * Creates a new item that will display the specified label and icon
-         * when included in a {@link JIconList}. A <code>null</code> label will
+         * when included in a {@link JIconList}. A {@code null} label will
          * be treated as an empty string.
          *
          * @param label the item's label

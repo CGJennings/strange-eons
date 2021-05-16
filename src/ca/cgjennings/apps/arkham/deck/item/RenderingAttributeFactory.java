@@ -20,7 +20,7 @@ public final class RenderingAttributeFactory {
      * Create a stroke for drawing lines and other path elements.
      *
      * @param style the style to create a stroke for
-     * @return a suitable <code>Stroke</code> for drawing
+     * @return a suitable {@code Stroke} for drawing
      */
     public static Stroke createLineStroke(LineStyle style) {
         final float lineWidth = style.getLineWidth();
@@ -40,7 +40,7 @@ public final class RenderingAttributeFactory {
      * Create a stroke for drawing shape outlines.
      *
      * @param style the style to create a stroke for
-     * @return a suitable <code>Stroke</code> for drawing
+     * @return a suitable {@code Stroke} for drawing
      */
     public static Stroke createOutlineStroke(OutlineStyle style) {
         final float lineWidth = style.getOutlineWidth();

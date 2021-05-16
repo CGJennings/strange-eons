@@ -28,8 +28,8 @@ public class UnitSelector extends JComboBox {
     }
 
     /**
-     * Return the currently selected unit, one of <code>Length.CM</code>,
-     * <code>Length.IN</code>, or <code>Length.PT</code>.
+     * Return the currently selected unit, one of {@code Length.CM},
+     * {@code Length.IN}, or {@code Length.PT}.
      *
      * @return the currently selected unit
      */
@@ -38,9 +38,9 @@ public class UnitSelector extends JComboBox {
     }
 
     /**
-     * Sets the currently selected unit. The value of <code>unit</code> must be
-     * one of <code>Length.CM</code>, <code>Length.IN</code>, or
-     * <code>Length.PT</code>.
+     * Sets the currently selected unit. The value of {@code unit} must be
+     * one of {@code Length.CM}, {@code Length.IN}, or
+     * {@code Length.PT}.
      *
      * @param unit the unit to select
      */

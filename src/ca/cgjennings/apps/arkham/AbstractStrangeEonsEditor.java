@@ -153,8 +153,8 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
 
     /**
      * Sets the title of this document. As it shown in the document's tab, the
-     * title text should be kept short. The <code>title</code> value may be
-     * <code>null</code>, which is equivalent to an empty title.
+     * title text should be kept short. The {@code title} value may be
+     * {@code null}, which is equivalent to an empty title.
      *
      * @param title the text of the title to display
      */
@@ -166,7 +166,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
 
     /**
      * Returns the title used to describe this editor. The returned value is
-     * never <code>null</code>; if a <code>null</code> title is set with
+     * never {@code null}; if a {@code null} title is set with
      * {@link #setTitle} then this method returns an empty string.
      *
      * <p>
@@ -177,7 +177,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * returned.
      *
      * @return the current title, which is guaranteed not to be
-     * <code>null</code>
+     * {@code null}
      */
     @Override
     public String getTitle() {
@@ -208,8 +208,8 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
 
     /**
      * Sets the title of this document. As it shown in the document's tab, the
-     * title text should be kept short. The <code>title</code> value may be
-     * <code>null</code>, which is equivalent to an empty title.
+     * title text should be kept short. The {@code title} value may be
+     * {@code null}, which is equivalent to an empty title.
      *
      * @param toolTipText the text of the title to display
      */
@@ -223,10 +223,10 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * Returns the tool tip text displayed for the editor's tab. If no tool tip
      * has been explicitly set, a default tool tip will be returned. The default
      * tool tip will get the name of the file, if {@link #getFile()} returns a
-     * non-<code>null</code> value, or else the localized interface text with
-     * key <code>ae-unsaved</code> ("Untitled").
+     * non-{@code null} value, or else the localized interface text with
+     * key {@code ae-unsaved} ("Untitled").
      *
-     * @return the tool tip text to display, or <code>null</code> to clear the
+     * @return the tool tip text to display, or {@code null} to clear the
      * tool tip
      */
     @Override
@@ -361,8 +361,8 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     /**
      * {@inheritDoc}
      * <p>
-     * The <code>AbstractStrangeEonsEditor</code> implementation always returns
-     * <code>null</code>.
+     * The {@code AbstractStrangeEonsEditor} implementation always returns
+     * {@code null}.
      */
     @Override
     public GameComponent getGameComponent() {
@@ -373,7 +373,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * {@inheritDoc}
      *
      * <p>
-     * The base class will return <code>false</code> for all commands.
+     * The base class will return {@code false} for all commands.
      */
     @Override
     public boolean canPerformCommand(AbstractCommand command) {
@@ -441,22 +441,22 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     }
 
     /**
-     * If {@link #hasUnsavedChanges()} returns  <code>true</code>, this will
+     * If {@link #hasUnsavedChanges()} returns  {@code true}, this will
      * display a dialog box asking the user to confirm whether it is acceptable
-     * to lose unsaved changes. The method returns <code>true</code> if the user
+     * to lose unsaved changes. The method returns {@code true} if the user
      * wants to continue (and lose the unsaved changes), otherwise
-     * <code>false</code>. If <code>hasUnsavedChanges()</code> returns
-     * <code>false</code>, then this method will return <code>true</code>
+     * {@code false}. If {@code hasUnsavedChanges()} returns
+     * {@code false}, then this method will return {@code true}
      * without showing a dialog.
      *
      * <p>
      * <b>Note:</b> If the application is running in bundle test mode, then the
-     * method will return <code>true</code> without showing a dialog box. (This
+     * method will return {@code true} without showing a dialog box. (This
      * makes testing faster since the tester can experiment with the tested
      * plug-in without having to click on confirm buttons when the test finishes
      * and the test application instance is closed.)
      *
-     * @return <code>true</code> if the operation can proceed
+     * @return {@code true} if the operation can proceed
      * @see CommandLineArguments#plugintest
      */
     protected boolean confirmLossOfUnsavedChanges() {
@@ -499,9 +499,9 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
 
     /**
      * Returns true if this document has unsaved changes. calling
-     * <code>{@link #setUnsavedChanges}(&nbsp;true&nbsp;)</code>.
+     * {@code {@link #setUnsavedChanges}(&nbsp;true&nbsp;)}.
      *
-     * @return <code>true</code> if changes would be lost if the document was
+     * @return {@code true} if changes would be lost if the document was
      * closed without saving
      * @see #setUnsavedChanges(boolean)
      */
@@ -516,7 +516,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * update the document's visual state. This flag is cleared whenever the
      * file is saved successfully.
      *
-     * @param isDirty if <code>true</code>, tells the application that this
+     * @param isDirty if {@code true}, tells the application that this
      * editor has unsaved changes
      */
     public void setUnsavedChanges(boolean isDirty) {
@@ -532,7 +532,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      *
      * This implementation handles the details of determining the file to be
      * written and exception handling. If {@link #getFile()} returns
-     * <code>null</code>, this method calls {@link #saveAs()} to determine the
+     * {@code null}, this method calls {@link #saveAs()} to determine the
      * file to save to. Otherwise, it calls {@link #saveImpl} to write the file.
      * To use it, override {@link #saveImpl(java.io.File)}.
      */
@@ -567,7 +567,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      *
      * This implementation handles the details of determining the file to be
      * written and exception handling. It shows a save dialog and, if the user
-     * accepts the dialog, calls <code>setFile</code> to set the save file based
+     * accepts the dialog, calls {@code setFile} to set the save file based
      * on the user's selection. It then calls {@link #save()} to save the file
      * to the new destination. To use it, override
      * {@link #getFileNameExtension()} and {@link #getFileTypeDescription()} to
@@ -610,7 +610,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * {@inheritDoc}
      *
      * This implementation allows the user to cancel the clear operation if
-     * there are unsaved changes, and then calls <code>clearImpl</code> to
+     * there are unsaved changes, and then calls {@code clearImpl} to
      * handle the details of clearing the edited content. To use it, override
      * {@link #clearImpl} to perform the clear operation.
      */
@@ -656,14 +656,14 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     /**
      * {@inheritDoc}
      *
-     * This implementation creates a default <code>PrinterJob</code> and then
+     * This implementation creates a default {@code PrinterJob} and then
      * passes it to {@link #printImpl(java.awt.print.PrinterJob)}. It also
      * performs exception handling, including the
-     * <code>PrinterAbortException</code> that is thrown if the user cancels a
-     * print. To implement printing, override <code>printImpl</code> to print
+     * {@code PrinterAbortException} that is thrown if the user cancels a
+     * print. To implement printing, override {@code printImpl} to print
      * the content using the provided job. Note that this method does not
-     * display a print dialog; you can do this from <code>printImpl</code> using
-     * <code>job.printDialog()</code>.
+     * display a print dialog; you can do this from {@code printImpl} using
+     * {@code job.printDialog()}.
      *
      * @see #printImpl
      */
@@ -770,7 +770,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
 
     /**
      * Creates a heartbeat timer that ticks at the default rate. The default
-     * rate is determined from the setting key <code>update-rate</code>, and can
+     * rate is determined from the setting key {@code update-rate}, and can
      * be changed in the {@link Preferences} dialog.
      *
      * @see #createTimer(int)
@@ -853,8 +853,8 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
      * without calling the super implementation must call this to ensure that
      * registered listeners are correctly notified.
      *
-     * @return <code>true</code> if any registered listener returns
-     * <code>true</code> to indicate content changes
+     * @return {@code true} if any registered listener returns
+     * {@code true} to indicate content changes
      */
     protected final boolean fireHeartbeatEvent() {
         boolean changed = false;
@@ -871,7 +871,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     }
 
     /**
-     * Adds a new <code>HeartbeatListener</code> to this editor.
+     * Adds a new {@code HeartbeatListener} to this editor.
      *
      * @param hl the listener to add
      * @since 2.00 (final)
@@ -881,7 +881,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     }
 
     /**
-     * Removes a <code>HeartbeatListener</code> from this editor.
+     * Removes a {@code HeartbeatListener} from this editor.
      *
      * @param hl the listener to remove
      * @since 2.00 (final)

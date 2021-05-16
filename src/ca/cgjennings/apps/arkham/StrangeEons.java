@@ -289,8 +289,8 @@ public final class StrangeEons {
     /**
      * Returns the type of this release of the application.
      *
-     * @return the kind of release, such as <code>ALPHA</code> or
-     * <code>BETA</code>.
+     * @return the kind of release, such as {@code ALPHA} or
+     * {@code BETA}.
      */
     public static ReleaseType getReleaseType() {
         return VER_TYPE == null ? ReleaseType.DEVELOPMENT : VER_TYPE;
@@ -305,7 +305,7 @@ public final class StrangeEons {
      * If for some reason the version cannot be parsed (for example, if the
      * property is not defined or it uses a non-standard format), then the
      * failure will be logged and every element of the returned array will be
-     * set to <code>Integer.MAX_VALUE</code>.
+     * set to {@code Integer.MAX_VALUE}.
      *
      * @return an array of version information
      */
@@ -327,16 +327,16 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns <code>true</code> if the installed version of Java is equal to or
+     * Returns {@code true} if the installed version of Java is equal to or
      * greater than the version specified. For example, to check if the
      * installed version is Java 6 update 10 or newer, call:
-     * <code>isJavaVersion( 1, 6, 0, 10 )</code>.
+     * {@code isJavaVersion( 1, 6, 0, 10 )}.
      *
      * @param versionTokens the version number tokens to check; index 1 is the
      * major version number, index 2 is the minor version number, and index 3 is
      * the update number (index 0 has never been anything but 1 at the time of
      * this writing)
-     * @return <code>true</code> if the installed version of Java is equal to or
+     * @return {@code true} if the installed version of Java is equal to or
      * greater than the specified version
      */
     public static boolean testJavaVersion(int... versionTokens) {
@@ -357,7 +357,7 @@ public final class StrangeEons {
 
     /**
      * The recommended <b>minimum</b> value for the maximum memory setting
-     * (<code>-Xmx</code>) for the virtual machine, in megabytes. Higher values
+     * ({@code -Xmx}) for the virtual machine, in megabytes. Higher values
      * are better if your system can support it.
      */
     public static final int RECOMMENDED_MEMORY_IN_MB = 1024;
@@ -459,11 +459,11 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns the single instance of <code>StrangeEons</code> once the
+     * Returns the single instance of {@code StrangeEons} once the
      * application has been initialized. (The application becomes initialized
      * after libraries and themes have been loaded, but just before extension
      * plug-ins are loaded.) If the application is not yet initialized, this
-     * method returns <code>null</code>.
+     * method returns {@code null}.
      *
      * @return the application instance
      */
@@ -473,7 +473,7 @@ public final class StrangeEons {
 
     /**
      * Returns the main application window. If called while the application is
-     * starting, the window might not yet exist, in which case <code>null</code>
+     * starting, the window might not yet exist, in which case {@code null}
      * is returned. (The window is guaranteed to exists before extension
      * plug-ins begin to load.)
      *
@@ -485,12 +485,12 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns the active editor, or <code>null</code> if no editor is active.
-     * This is a convenience method that returns <code>null</code> if the
+     * Returns the active editor, or {@code null} if no editor is active.
+     * This is a convenience method that returns {@code null} if the
      * application window has not been created yet, or else forwards the call to
      * the application window.
      *
-     * @return the active editor, or <code>null</code>
+     * @return the active editor, or {@code null}
      */
     public static StrangeEonsEditor getActiveEditor() {
         StrangeEonsAppWindow w = getWindow();
@@ -502,10 +502,10 @@ public final class StrangeEons {
 
     /**
      * Returns the game component edited by the active editor, or
-     * <code>null</code> if there either is no active editor, or if the active
+     * {@code null} if there either is no active editor, or if the active
      * editor is not a game component editor.
      *
-     * @return the actively edited component, or <code>null</code>
+     * @return the actively edited component, or {@code null}
      */
     public static GameComponent getActiveGameComponent() {
         StrangeEonsEditor ed = getActiveEditor();
@@ -528,11 +528,11 @@ public final class StrangeEons {
      * observing whether the active editor changes after running the script. If
      * it does change, then it is assumed that the newly active editor was
      * created by the script; otherwise it is assumed that the script did not
-     * create an editor and <code>null</code> is returned.
+     * create an editor and {@code null} is returned.
      *
      * @param classMapKey a key for an editor specified in a
      * {@linkplain gamedata.ClassMap#add loaded class map file}
-     * @return an editor for the given key, or <code>null</code> if no new
+     * @return an editor for the given key, or {@code null} if no new
      * editor is created
      * @throws IllegalArgumentException if the class map key is not a valid key
      * from an entry that was added this session
@@ -560,7 +560,7 @@ public final class StrangeEons {
      * that forwards the call to the application window.
      *
      * @param editor the editor to be added
-     * @throws NullPointerException if <code>editor</code> is <code>null</code>
+     * @throws NullPointerException if {@code editor} is {@code null}
      * @throws IllegalStateException if the application window doesn't exist
      */
     public static void addEditor(StrangeEonsEditor editor) {
@@ -572,13 +572,13 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns the current open project, or <code>null</code> if no project is
+     * Returns the current open project, or {@code null} if no project is
      * open. (At most one project can be open at any given time.) This is a
-     * convenience method that returns <code>null</code> if the application
+     * convenience method that returns {@code null} if the application
      * window has not been created yet, or else forwards the call to the
      * application window.
      *
-     * @return the current open project, or <code>null</code>
+     * @return the current open project, or {@code null}
      * @see StrangeEonsAppWindow#getOpenProject()
      */
     public static Project getOpenProject() {
@@ -792,10 +792,10 @@ public final class StrangeEons {
 
         /**
          * Called after the application loads, reloads, or unloads plug-ins. The
-         * value of <code>eventType</code> describes the type of load event:<br>
-         * <code>PLUGIN_LOAD_EVENT</code>: plug-ins have been loaded (or
+         * value of {@code eventType} describes the type of load event:<br>
+         * {@code PLUGIN_LOAD_EVENT}: plug-ins have been loaded (or
          * reloaded)<br>
-         * <code>PLUGIN_UNLOAD_EVENT</code>: plug-ins have been unloaded
+         * {@code PLUGIN_UNLOAD_EVENT}: plug-ins have been unloaded
          *
          * @param eventType the type of load event
          */
@@ -806,7 +806,7 @@ public final class StrangeEons {
      * Adds a new listener to be notified when plug-ins are loaded or unloaded.
      *
      * @param listener the listener to add
-     * @throws NullPointerException if the listener is <code>null</code>
+     * @throws NullPointerException if the listener is {@code null}
      * @see PluginLoadingListener
      */
     public void addPluginLoadingListener(PluginLoadingListener listener) {
@@ -850,13 +850,13 @@ public final class StrangeEons {
      * instance if it is currently installed and loaded.If the plug-in class is
      * not installed, is {@linkplain InstalledPlugin#isEnabled() disabled}, or
      * it failed to {@linkplain Plugin#initializePlugin initialize properly},
-     * this method returns <code>null</code>.
+     * this method returns {@code null}.
      *
      * @param pluginIdentifier
-     * @return the <code>Plugin</code> instance for the class, or
-     * <code>null</code>
-     * @throws NullPointerException if <code>pluginClass</code> is
-     * <code>null</code>
+     * @return the {@code Plugin} instance for the class, or
+     * {@code null}
+     * @throws NullPointerException if {@code pluginClass} is
+     * {@code null}
      * @see BundleInstaller#getInstalledPlugins()
      * @see BundleInstaller#getBundleFileForUUID(java.util.UUID)
      * @see PluginBundle#getPluginRoot()
@@ -876,7 +876,7 @@ public final class StrangeEons {
 
     /**
      * Finds a loaded {@link Plugin Plugin} with the specified name.If there is
-     * no matching plug-in, returns <code>null</code>. Plug-ins are not required
+     * no matching plug-in, returns {@code null}. Plug-ins are not required
      * to have unique names: if more than one plug-in matches, this method
      * returns one of them at random. Moreover, some plug-ins are localized and
      * will have a different name depending on the current
@@ -886,10 +886,10 @@ public final class StrangeEons {
      * {@linkplain BundleInstaller#getBundleFileForUUID(java.util.UUID) UUID}.
      *
      * @param name the plug-in name presented to the user
-     * @return the <code>Plugin</code> instance for the class, or
-     * <code>null</code>
-     * @throws NullPointerException if <code>pluginClass</code> is
-     * <code>null</code>
+     * @return the {@code Plugin} instance for the class, or
+     * {@code null}
+     * @throws NullPointerException if {@code pluginClass} is
+     * {@code null}
      */
     public synchronized Plugin getLoadedPluginByName(String name) {
         if (name == null) {
@@ -904,7 +904,7 @@ public final class StrangeEons {
     }
 
     /**
-     * Shows an <code>ACTIVATED</code> plug-in that is currently loaded. If the
+     * Shows an {@code ACTIVATED} plug-in that is currently loaded. If the
      * plug-in is currently showing then it will be hidden first, then re-shown.
      *
      * @param plugin the plug-in to activate
@@ -922,15 +922,15 @@ public final class StrangeEons {
     }
 
     /**
-     * Shows or hides an <code>ACTIVATED</code> plug-in that is currently
+     * Shows or hides an {@code ACTIVATED} plug-in that is currently
      * loaded. A {@link PluginContext} will be created for the plug-in and used
      * to activate it as if the user had selected it from the <b>Toolbox</b>
-     * menu. The value of <code>modifiers</code> is a logical or of modifier key
+     * menu. The value of {@code modifiers} is a logical or of modifier key
      * codes (see
      * {@link ca.cgjennings.apps.arkham.plugins.PluginContext#getModifiers})
      * that will be marked as pressed. To activate the plug-in without
-     * indicating any special modifier keys, pass 0. If <code>show</code> is
-     * <code>true</code>, then the plug-in will be asked to show itself,
+     * indicating any special modifier keys, pass 0. If {@code show} is
+     * {@code true}, then the plug-in will be asked to show itself,
      * otherwise to hide itself. The exact behaviours implied by the terms
      * "show" and "hide" depend on the plug-in, but generally a show request
      * executes the plug-in behaviour or makes the plug-in's dialog visible,
@@ -941,18 +941,18 @@ public final class StrangeEons {
      *
      * <p>
      * <b>Note:</b> The general contract for plug-in behaviour states that a
-     * plug-in will only be shown if its <code>isPluginShowing</code> method
-     * returns <code>false</code>, and vice-versa. Although most plug-ins do not
+     * plug-in will only be shown if its {@code isPluginShowing} method
+     * returns {@code false}, and vice-versa. Although most plug-ins do not
      * rely on this guarantee, you should not violate it unless the plug-in's
      * documentation explicitly permits it.
      *
      * @param plugin the plug-in to be activated
      * @param modifiers the set of control key modifiers to activate the plug-in
      * with
-     * @param show if <code>true</code>, the plug-in should show/start itself,
+     * @param show if {@code true}, the plug-in should show/start itself,
      * otherwise, hide/stop itself
-     * @throws IllegalArgumentException if <code>plugin</code> is not a
-     * <code>Plugin.ACTIVATED</code> type
+     * @throws IllegalArgumentException if {@code plugin} is not a
+     * {@code Plugin.ACTIVATED} type
      */
     public void activatePlugin(Plugin plugin, int modifiers, boolean show) {
         if (plugin.getPluginType() != Plugin.ACTIVATED) {
@@ -984,27 +984,27 @@ public final class StrangeEons {
      * Returns a file that can be used to store user data.For example, a plug-in
      * might use this to create a folder for storing cached data. All of the
      * files returned by this method will be located in a special
-     * system-dependent storage folder. If <code>child</code> is
-     * <code>null</code>, then the storage folder itself will be returned.
-     * Otherwise, <code>child</code> is taken to be a relative path, and the
+     * system-dependent storage folder. If {@code child} is
+     * {@code null}, then the storage folder itself will be returned.
+     * Otherwise, {@code child} is taken to be a relative path, and the
      * returned file will combine the storage folder with this relative
      * location. For example, on a UNIX system, calling this method with child
-     * "test.txt" might return <code>~/.StrangeEons3/test.txt</code>.
+     * "test.txt" might return {@code ~/.StrangeEons3/test.txt}.
      *
      * <p>
      * To locate a subfolder in user storage, specify a relative path using '/'
      * as the directory separator character. (Slashes will be converted to the
      * platform-specific separator character automatically.) For example,
-     * <code>"myplugin/cachefile"</code> would refer to the file
+     * {@code "myplugin/cachefile"} would refer to the file
      * <i>cachefile</i> in the <i>myplugin</i> subfolder of the user storage
      * folder.
      *
      * @param child
      * @return the folder in which per-user files are stored, or the
-     * <code>child</code> within that folder
+     * {@code child} within that folder
      * @throws IllegalArgumentException if the returned file would not be
      * located in the system-dependent storage folder (for example, if
-     * <code>child</code> starts with "..")
+     * {@code child} starts with "..")
      */
     public static File getUserStorageFile(String child) {
         File f = USER_STORAGE_FOLDER;
@@ -1079,7 +1079,7 @@ public final class StrangeEons {
      *
      * @param toDelete the file to delete at startup
      * @param delete whether the record to delete should be added or removed
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      * @throws IllegalArgumentException if the file to be deleted is not in the
      * user storage folder
      */
@@ -1137,16 +1137,16 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns <code>true</code> if a file has been marked for deletion on the
+     * Returns {@code true} if a file has been marked for deletion on the
      * next application start by passing it to
      * {@link #deleteOnStartup(java.io.File, boolean)}. Note that it is not
      * guaranteed that the file will actually be deleted, only that it is marked
      * and that an attempt to delete it will be made.
      *
      * @param toCheck the file to check
-     * @return <code>true</code> if the file will be deleted the next time the
+     * @return {@code true} if the file will be deleted the next time the
      * application starts
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public boolean willDeleteOnStartup(File toCheck) {
         if (toCheck == null) {
@@ -1185,9 +1185,9 @@ public final class StrangeEons {
      * with unsaved changes.
      *
      * <p>
-     * Exit tasks are performed calling the <code>run()</code> method of the
-     * <code>task</code> object. A description of each task will be logged at
-     * <code>Level.INFO</code> by calling the task's <code>toString()</code>
+     * Exit tasks are performed calling the {@code run()} method of the
+     * {@code task} object. A description of each task will be logged at
+     * {@code Level.INFO} by calling the task's {@code toString()}
      * method just before it runs. If a task throws an exception, it will be
      * logged but it will not prevent other exit tasks from running.
      *
@@ -1195,7 +1195,7 @@ public final class StrangeEons {
      * Tasks are not guaranteed to run in a particular order; they may run from
      * any thread and may even run concurrently. In general, do not expect to be
      * able to open a window or perform other actions on the event dispatch
-     * thread; to do so safely you would need to use <code>invokeLater</code>
+     * thread; to do so safely you would need to use {@code invokeLater}
      * and the application will probably exit before such code will get a chance
      * to run.
      *
@@ -1265,7 +1265,7 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns the most recently valid markup target. Returns <code>null</code>
+     * Returns the most recently valid markup target. Returns {@code null}
      * if there has either never been a valid target, or if the most recently
      * valid target is no currently valid (for example, if it has been disabled
      * since it became the current target). When responding to user action, this
@@ -1273,9 +1273,9 @@ public final class StrangeEons {
      * is likely to change the current target. For example, if the user selects
      * a menu item to activate your code, the act of opening the menu would
      * clear the current target, causing {@link #getCurrentMarkupTarget()} to
-     * return <code>null</code>.
+     * return {@code null}.
      *
-     * @return the most recent valid markup target, or <code>null</code>
+     * @return the most recent valid markup target, or {@code null}
      * @see #getCurrentMarkupTarget()
      */
     public MarkupTarget getMarkupTarget() {
@@ -1286,10 +1286,10 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns the current application-wide markup target, or <code>null</code>
+     * Returns the current application-wide markup target, or {@code null}
      * if there is no currently valid target.
      *
-     * @return the current markup target, or <code>null</code>
+     * @return the current markup target, or {@code null}
      * @see #getMarkupTarget()
      * @see #requestNewMarkupTarget(java.lang.Object)
      */
@@ -1303,14 +1303,14 @@ public final class StrangeEons {
     /**
      * Explicitly requests that the current application-wide
      * {@link MarkupTarget} be set to a specific object. If the request
-     * succeeds, <code>true</code> is returned. In order to succeed, the new
-     * target must either be <code>null</code> (to clear the current target) or
+     * succeeds, {@code true} is returned. In order to succeed, the new
+     * target must either be {@code null} (to clear the current target) or
      * a (strictly) valid markup target. If the current target changes, a
      * property change event will be fired for
-     * <code>MARKUP_TARGET_PROPERTY</code>.
+     * {@code MARKUP_TARGET_PROPERTY}.
      *
      * @param potentialTarget the object which may become the new target
-     * @return <code>true</code> if the requested object is the markup target
+     * @return {@code true} if the requested object is the markup target
      * when this method returns
      * @see MarkupTargetFactory#isValidTarget(java.lang.Object, boolean)
      */
@@ -1375,7 +1375,7 @@ public final class StrangeEons {
      * scripts later on. For example, a plug-in that adds new game component
      * types could register a named object in its extension plug-in that defines
      * a library of functions used by the individual DIY scripts. This can be
-     * more efficient than calling <code>useLibrary</code> in every component
+     * more efficient than calling {@code useLibrary} in every component
      * script because the library code only needs to be compiled once.
      * <li> Sharing information between scripts, or between different runs of
      * the same script. For example, one script could store information about a
@@ -1416,9 +1416,9 @@ public final class StrangeEons {
      * report if provided. The exact details of how the report is filed and what
      * steps the user must complete are subject to change.
      *
-     * @param description text to include with the report, or <code>null</code>
+     * @param description text to include with the report, or {@code null}
      * @param ex an exception that is relevant to the bug being reported, or
-     * <code>null</code>
+     * {@code null}
      */
     public void fileBugReport(String description, Throwable ex) {
         setWaitCursor(true);
@@ -1488,13 +1488,13 @@ public final class StrangeEons {
      * main application window. If the application window is not available yet,
      * then this method does nothing. Otherwise, it forwards the call to the
      * application window as if you had called
-     * <code>StrangeEons.getWindow().setWaitCursor( appIsBusy )</code>.
+     * {@code StrangeEons.getWindow().setWaitCursor( appIsBusy )}.
      *
      * <p>
      * This method nests: if you set a wait cursor four times, then you must
      * unset it four times before a regular cursor will be restored. To ensure
      * that the wait cursor is removed, you should place the call to unset the
-     * wait cursor in a <code>finally</code> clause:
+     * wait cursor in a {@code finally} clause:
      * <pre>
      * StrangeEons.setWaitCursor( true );
      * try {
@@ -1507,8 +1507,8 @@ public final class StrangeEons {
      * <p>
      * This method can be called from outside of the event dispatch thread.
      *
-     * @param appIsBusy <code>true</code> to set the wait cursor,
-     * <code>false</code> to unset it
+     * @param appIsBusy {@code true} to set the wait cursor,
+     * {@code false} to unset it
      */
     @SuppressWarnings("deprecation")
     public static void setWaitCursor(boolean appIsBusy) {
@@ -1546,7 +1546,7 @@ public final class StrangeEons {
      * has no effect.
      *
      * @param message the message to display
-     * @throws NullPointerException if <code>message</code> is <code>null</code>
+     * @throws NullPointerException if {@code message} is {@code null}
      */
     void setStartupActivityMessage(String message) {
         if (message == null) {
@@ -1568,7 +1568,7 @@ public final class StrangeEons {
      * During startup, this method will return the splash window. Once the
      * application window is visible, that will be returned instead. In the
      * event that this method is called before the splash window appears, this
-     * method will return <code>null</code>; however it is not normally possible
+     * method will return {@code null}; however it is not normally possible
      * for plug-in code to execute before the splash window is available.
      *
      * <p>
@@ -2125,12 +2125,12 @@ public final class StrangeEons {
 
     /**
      * Picks the first available locale in order of preference. If the command
-     * line locale is not <code>null</code>, returns that. Otherwise, if the
+     * line locale is not {@code null}, returns that. Otherwise, if the
      * user setting key specifies a valid locale, returns that. Otherwise,
-     * returns <code>Locale.getDefault()</code>.
+     * returns {@code Locale.getDefault()}.
      *
      * @param commandLine the locale specified on the command line, or
-     * <code>null</code>
+     * {@code null}
      * @param userSettingKey the user setting key to check for a locale
      * @return the first available locale in command line, user settings,
      * default order
@@ -2426,8 +2426,8 @@ public final class StrangeEons {
 
     /**
      * Returns a basic string description of the application, in the following
-     * format: <code>[StrangeEons <i>version</i>, <i>release type</i>
-     * release, build <i>number</i>]</code>.
+     * format: {@code [StrangeEons <i>version</i>, <i>release type</i>
+     * release, build <i>number</i>]}.
      *
      * @return a string describing the application
      */
@@ -2496,7 +2496,7 @@ public final class StrangeEons {
      *
      * @param ec the container type to register
      * @throws NullPointerException if the container or its identifier are
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if a container type with this type's
      * identifier is already registered
      */

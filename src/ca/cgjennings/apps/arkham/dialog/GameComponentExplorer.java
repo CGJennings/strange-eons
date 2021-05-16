@@ -361,16 +361,16 @@ public class GameComponentExplorer extends javax.swing.JDialog {
 
         /**
          * Returns the actual type of the value of the constant called
-         * <code>name</code>. If the value of the constant is <code>null</code>,
-         * this method returns <code>void.class</code>.
+         * {@code name}. If the value of the constant is {@code null},
+         * this method returns {@code void.class}.
          *
          * @param name the name of the constant to determine the type of
-         * @return the actual type of the constant, or <code>void.class</code>
+         * @return the actual type of the constant, or {@code void.class}
          */
         public Class getConstantType(String name);
 
         /**
-         * Returns the value of the constant called <code>name</code>.
+         * Returns the value of the constant called {@code name}.
          *
          * @param name the name of the constant to return the value of
          * @return the value of the named constant
@@ -388,11 +388,11 @@ public class GameComponentExplorer extends javax.swing.JDialog {
         public abstract String[] getMethodNames();
 
         /**
-         * Returns <code>true</code> if this component offers the named method.
+         * Returns {@code true} if this component offers the named method.
          *
          * @param methodName the name of the method to search for
-         * @return <code>true</code> if this component has a method named
-         * <code>methodName</code>
+         * @return {@code true} if this component has a method named
+         * {@code methodName}
          */
         public abstract boolean hasMethod(String methodName);
 
@@ -403,7 +403,7 @@ public class GameComponentExplorer extends javax.swing.JDialog {
          * @param methodName the method to fetch an argument list for
          * @return an array of the types of the parameters to this method, in
          * call order
-         * @throws IllegalArgumentException if <code>methodName</code> is not a
+         * @throws IllegalArgumentException if {@code methodName} is not a
          * method of this component
          */
         public abstract Class[] getArgumentTypes(String methodName);
@@ -416,30 +416,30 @@ public class GameComponentExplorer extends javax.swing.JDialog {
          * @param methodName the method to fetch an argument list for
          * @return an array of the types of the parameters to this method, in
          * call order
-         * @throws IllegalArgumentException if <code>methodName</code> is not a
+         * @throws IllegalArgumentException if {@code methodName} is not a
          * method of this component
          */
         public abstract Class[] getActualArgumentTypes(String methodName);
 
         /**
          * Returns the return type of a given method. If the method does not
-         * return a value, returns <code>void.class</code>.
+         * return a value, returns {@code void.class}.
          *
          * @param methodName the method to fetch a return type for
          * @return the class of the return type of the method
-         * @throws IllegalArgumentException if <code>methodName</code> is not a
+         * @throws IllegalArgumentException if {@code methodName} is not a
          * method of this component
          */
         public abstract Class getReturnType(String methodName);
 
         /**
          * Returns the actual return type of the method, even if it would be
-         * wrapped as a <code>GameObject</code> if called through this
+         * wrapped as a {@code GameObject} if called through this
          * interface.
          *
          * @param methodName the method to fetch a return type for
          * @return the class of the return type of the method
-         * @throws IllegalArgumentException if <code>methodName</code> is not a
+         * @throws IllegalArgumentException if {@code methodName} is not a
          * method of this component
          */
         public abstract Class getActualReturnType(String methodName);
@@ -453,11 +453,11 @@ public class GameComponentExplorer extends javax.swing.JDialog {
          *
          * @param methodName the name of the method to call
          * @param arguments the arguments to the method
-         * @return the value returned by the method, or <code>null</code> if it
-         * has <code>void</code> return type
+         * @return the value returned by the method, or {@code null} if it
+         * has {@code void} return type
          * @throws java.lang.reflect.InvocationTargetException if the underlying
          * method throws an exception during the method call
-         * @throws IllegalArgumentException if <code>methodName</code> is not a
+         * @throws IllegalArgumentException if {@code methodName} is not a
          * valid method or if the arguments are not appropriate for the method
          */
         public abstract Object call(String methodName, Object... arguments) throws InvocationTargetException;
@@ -472,7 +472,7 @@ public class GameComponentExplorer extends javax.swing.JDialog {
 
     /**
      * A {@link GameObject} that represents an immutable array-like collection
-     * of other <code>GameObjects</code>.
+     * of other {@code GameObjects}.
      *
      * @author Chris Jennings <https://cgjennings.ca/contact>
      */

@@ -82,7 +82,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      * on the clipboard (or system selection on *NIX) would filter out
      * everything but the
      * <b>Developer Tools</b> plug-in (since it has the specified UUID):<br>
-     * <code>eonscat:39f10fa9-6574-4be1-9dd6-3e658c9a6fd3</code>
+     * {@code eonscat:39f10fa9-6574-4be1-9dd6-3e658c9a6fd3}
      */
     public static final String CATLINK_PREFIX = "eonscat:";
 
@@ -102,7 +102,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      * Creates a new dialog for downloading plug-ins.
      *
      * @param parent the parent window, typically the application window
-     * @param defaultCatalogToOpen catalog to open, or <code>null</code> for the
+     * @param defaultCatalogToOpen catalog to open, or {@code null} for the
      * default catalog
      */
     public CatalogDialog(java.awt.Frame parent, URL defaultCatalogToOpen) {
@@ -113,7 +113,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      * Creates a new dialog for downloading plug-ins.
      *
      * @param parent the parent window, typically the application window
-     * @param defaultCatalogToOpen catalog to open, or <code>null</code> for the
+     * @param defaultCatalogToOpen catalog to open, or {@code null} for the
      * default catalog
      * @param allowCache a hint passed on to the catalogue that suggests whether
      * it should allow cached versions of the catalogue
@@ -396,7 +396,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Sets a text message that will be displayed the next time the this dialog
-     * gains focus, or clears the current message if <code>null</code>. This can
+     * gains focus, or clears the current message if {@code null}. This can
      * be used to provide an explanatory message or additional help when the
      * dialog is being displayed under program control (for example, if the
      * program is specifying the filter text).
@@ -408,7 +408,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Called when the window gains focus if there is pop-up text. Shows the
-     * text in a a dialog and resets the text to <code>null</code>.
+     * text in a a dialog and resets the text to {@code null}.
      */
     private void showPopupText() {
         if (popupText != null && !popupText.isEmpty()) {
@@ -418,15 +418,15 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     /**
-     * Returns the current <code>eonscat:</code> link text that is on the
-     * clipboard, or <code>null</code> if the clipboard is empty or not an
-     * <code>eonscat:</code> link. On platforms with a system selection
+     * Returns the current {@code eonscat:} link text that is on the
+     * clipboard, or {@code null} if the clipboard is empty or not an
+     * {@code eonscat:} link. On platforms with a system selection
      * (primarily those based on the X Window System), the system selection is
      * checked first. If there is no system selection or it does not contain a
      * link, then then system clipboard is checked.
      *
      * @return a catalogue link, without the {@link #CATLINK_PREFIX}, if one is
-     * present in the system selection or clipboard; otherwise <code>null</code>
+     * present in the system selection or clipboard; otherwise {@code null}
      */
     public static String getCatalogSearchClip() {
         String text = ScrapBook.getSystemSelectionText();

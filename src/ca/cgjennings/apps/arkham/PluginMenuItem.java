@@ -19,7 +19,7 @@ import javax.swing.KeyStroke;
 import resources.Settings;
 
 /**
- * A <code>JMenuItem</code> that is based on an activated plug-in.
+ * A {@code JMenuItem} that is based on an activated plug-in.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

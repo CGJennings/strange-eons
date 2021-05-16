@@ -150,12 +150,12 @@ public class AnimationUtilities {
      * window's current alpha is used
      * @param endAlpha the alpha value for the window at the end of animation
      * @param seconds the duration of the animation
-     * @param disposeOnFinish if <code>true</code>, the window's
-     * <code>dispose</code> method is called when the animation completes
-     * @throws NullPointerException if the window <code>w</code> is null
+     * @param disposeOnFinish if {@code true}, the window's
+     * {@code dispose} method is called when the animation completes
+     * @throws NullPointerException if the window {@code w} is null
      * @throws IllegalArgumentException if the alpha values are outside of the 0
-     * to 1 range (except that <code>startAlpha</code> may be -1) or if
-     * <code>seconds</code> is negative
+     * to 1 range (except that {@code startAlpha} may be -1) or if
+     * {@code seconds} is negative
      */
     public static void animateOpacityTransition(final Window w, float startAlpha, final float endAlpha, float seconds, final boolean disposeOnFinish) {
         if (w == null) {
@@ -200,7 +200,7 @@ public class AnimationUtilities {
      *
      * @param target the component to flash
      * @param flashColor the background colour to use when flashing; if
-     * <code>null</code> a default colour is used
+     * {@code null} a default colour is used
      */
     public static void attentionFlash(final JComponent target, final Color flashColor) {
         if (Animation.ENABLED) {

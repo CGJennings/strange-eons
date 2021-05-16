@@ -37,7 +37,7 @@ public class PlainTextCompleter implements CodeCompleter {
      * Creates a plain text completer that uses words from the specified
      * spelling checker.
      *
-     * @param sc the spelling checker to use, or <code>null</code> for the
+     * @param sc the spelling checker to use, or {@code null} for the
      * default
      * @see MultilanguageSupport#getChecker(java.util.Locale)
      */

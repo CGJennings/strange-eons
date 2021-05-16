@@ -54,7 +54,7 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
     }
 
     /**
-     * Sets the colour to overlay from a <code>Color</code> object.
+     * Sets the colour to overlay from a {@code Color} object.
      *
      * @param c the colour value to apply
      */
@@ -63,7 +63,7 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
     }
 
     /**
-     * Returns the colour to overlay as a <code>Color</code> object. If the
+     * Returns the colour to overlay as a {@code Color} object. If the
      * colour was set from a colour object, this is not guaranteed to be the
      * same instance.
      *
@@ -75,22 +75,22 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
 
     /**
      * Sets whether the alpha channel will be inverted. The default is
-     * <code>false</code>, so that the overlay is applied to the interior of the
-     * shape(s) defined by the alpha channel. If set to <code>true</code>, the
+     * {@code false}, so that the overlay is applied to the interior of the
+     * shape(s) defined by the alpha channel. If set to {@code true}, the
      * effect is to apply the overlay to the exterior of that shape.
      *
-     * @param invert if	<code>true</code>, alpha values are inverted
+     * @param invert if	{@code true}, alpha values are inverted
      */
     public void setAlphaInverted(boolean invert) {
         this.invert = invert;
     }
 
     /**
-     * Returns <code>true</code> if the alpha channel values will be inverted,
+     * Returns {@code true} if the alpha channel values will be inverted,
      * changing the shape from the exterior to the interior of the original
      * shape.
      *
-     * @return <code>true</code> if alpha values are inverted
+     * @return {@code true} if alpha values are inverted
      */
     public boolean isAlphaInverted() {
         return invert;
@@ -125,7 +125,7 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
      *
      * @param pixels the array of pixel data
      * @param rgb the colour to apply
-     * @param invert if <code>true</code>, the alpha value is inverted
+     * @param invert if {@code true}, the alpha value is inverted
      */
     static void overlay(final int[] pixels, final int width, int height, final int rgb, final boolean invert) {
         if (width * height >= Tuning.PER_ROW) {

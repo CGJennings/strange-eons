@@ -26,7 +26,7 @@ class FinishableWrapperOutputStream extends FinishableOutputStream {
 
     /**
      * Creates a new output stream which support finishing. The
-     * <code>finish()</code> method will do nothing.
+     * {@code finish()} method will do nothing.
      */
     public FinishableWrapperOutputStream(OutputStream out) {
         this.out = out;

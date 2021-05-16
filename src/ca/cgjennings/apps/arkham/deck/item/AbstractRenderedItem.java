@@ -180,7 +180,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
      * <p>
      * It is recommended that subclasses cache results if possible, in which
      * case {@link #clearCachedImages()} should be overridden to clear the
-     * cached result before calling the <code>super</code> implementation.
+     * cached result before calling the {@code super} implementation.
      *
      * @param target the target type for rendering
      * @param resolution the resolution that the item should be rendered at
@@ -243,7 +243,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
      * Clear any cached image data held by this object. The base class clears
      * any cached oriented results and the MIP map cache (if enabled).
      * Subclasses should override this (calling
-     * <code>super.clearCachedImages</code>) if the {@link #renderImage}
+     * {@code super.clearCachedImages}) if the {@link #renderImage}
      * implementation caches results.
      */
     protected void clearCachedImages() {
@@ -445,7 +445,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
         }
 
         /**
-         * Get a cached mip-map image, or <code>null</code>.
+         * Get a cached mip-map image, or {@code null}.
          *
          * @param mipdex the mip-map index
          * @return the cached image
@@ -470,10 +470,10 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
      * rendered item will transparently create and use MIP mapped versions of
      * the bitmap to improve painting speed and target. Subclasses may call this
      * method to disable the MIP map mechanism. To do so, you must call
-     * <code>setMipMapCacheEnabled( false )</code> in <b>both</b> the
+     * {@code setMipMapCacheEnabled( false )} in <b>both</b> the
      * constructor and {@link #readImpl}.
      *
-     * @param enable if <code>true</code>, the MIP map painting mechanism is
+     * @param enable if {@code true}, the MIP map painting mechanism is
      * enabled
      * @see #isMipMapCacheEnabled()
      * @since 3.0
@@ -489,10 +489,10 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     }
 
     /**
-     * Returns <code>true</code> if the MIP map mechanism is currently enabled
+     * Returns {@code true} if the MIP map mechanism is currently enabled
      * on this item.
      *
-     * @return <code>true</code> if MIP mapping is enabled
+     * @return {@code true} if MIP mapping is enabled
      * @see #setMipMapCacheEnabled(boolean)
      * @since 3.0
      */
@@ -501,11 +501,11 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     }
 
     /**
-     * Returns <code>true</code> if the MIP map cache should be enabled by
+     * Returns {@code true} if the MIP map cache should be enabled by
      * default for this item type. Subclasses can override this to disable this
-     * mechanism. (The base class returns <code>true</code>.)
+     * mechanism. (The base class returns {@code true}.)
      *
-     * @return <code>true</code> if the MIP map cache should automatically be
+     * @return {@code true} if the MIP map cache should automatically be
      * enabled during construction or deserialization
      */
     protected boolean isMipMapCacheEnabledByDefault() {
@@ -513,13 +513,13 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     }
 
     /**
-     * Returns <code>true</code> if the highest resolution MIP map image should
+     * Returns {@code true} if the highest resolution MIP map image should
      * be scaled up at high zoom levels. This method is called when the MIP map
      * cache is enabled but the current zoom level of the view requires an image
      * with higher resolution than the maximum resolution used by the MIP map
-     * cache. If it returns <code>true</code>, then the highest resolution MIP
+     * cache. If it returns {@code true}, then the highest resolution MIP
      * map image will be scaled up to the requested resolution. If it returns
-     * <code>false</code>, then a new rendering will be requested at the exact
+     * {@code false}, then a new rendering will be requested at the exact
      * resolution needed, just as if the MIP map cache was disabled.
      *
      * <p>

@@ -7,7 +7,7 @@ import javax.swing.text.Segment;
 
 /**
  * Tokenizer for editing settings files, string tables
- * (<code>.properties</code>), and related files.
+ * ({@code .properties}), and related files.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1

@@ -63,11 +63,11 @@ public class DeckPacker {
 
     /**
      * Adds one copy of a game component stored in a file to the resulting
-     * layout. This is a convenience for <code>add( gcFile, 1 )</code>.
+     * layout. This is a convenience for {@code add( gcFile, 1 )}.
      *
      * @param gcFile the file containing the game component
      * @throws NullPointerException if the game component file is
-     * <code>null</code>
+     * {@code null}
      * @see #add(java.io.File, int)
      */
     public boolean add(File gcFile) {
@@ -78,17 +78,17 @@ public class DeckPacker {
      * Reads a game component from a file and adds it to the resulting layout.
      * Some kinds of components, such as other decks, cannot be added to a deck.
      * Adding components of this type will have no effect on the resulting
-     * layout, and this method will return <code>false</code> to signal that the
+     * layout, and this method will return {@code false} to signal that the
      * component was skipped. If an error occurs while loading the file, an
      * error message will be displayed, the file will be skipped, and this
-     * method will return <code>false</code>.
+     * method will return {@code false}.
      *
      * @param gcFile the file containing the game component
      * @param copies the number of copies of the game component to include
-     * @return <code>true</code> if the file has been successfully added and the
+     * @return {@code true} if the file has been successfully added and the
      * layout will change as a result
      * @throws NullPointerException if the game component file is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if the number of copies is negative
      */
     public boolean add(File gcFile, int copies) {
@@ -212,10 +212,10 @@ public class DeckPacker {
     }
 
     /**
-     * Returns <code>true</code> if the layout will be designed for double-sided
+     * Returns {@code true} if the layout will be designed for double-sided
      * printing.
      *
-     * @return <code>true</code> if double-sided layouts are enabled
+     * @return {@code true} if double-sided layouts are enabled
      * @see #setLayoutDoubleSided
      */
     public boolean isLayoutDoubleSided() {
@@ -229,7 +229,7 @@ public class DeckPacker {
      * layout order of the following page is flipped horizontally so that they
      * will line up correctly when printed.
      *
-     * @param doubleSided if <code>true</code>, a double-sided layout is created
+     * @param doubleSided if {@code true}, a double-sided layout is created
      */
     public void setLayoutDoubleSided(boolean doubleSided) {
         this.doubleSided = doubleSided;
@@ -288,7 +288,7 @@ public class DeckPacker {
      *
      * @param paper the paper type that determines the size of pages and margin
      * in the layout
-     * @throws NullPointerException if the paper is <code>null</code>
+     * @throws NullPointerException if the paper is {@code null}
      */
     public void setPaper(PaperProperties paper) {
         if (paper == null) {
@@ -330,9 +330,9 @@ public class DeckPacker {
     /**
      * Lays out a prepared deck and set of cards. Subclasses may override this
      * to use a different bin packing algorithm. The passed-in deck is the
-     * destination for the layout, and cannot be <code>null</code>. The paper
+     * destination for the layout, and cannot be {@code null}. The paper
      * size for the layout can be obtained by calling
-     * <code>deck.getPaperProperties()</code>.
+     * {@code deck.getPaperProperties()}.
      *
      * @param deck the deck that should contain the details of the layout
      * @throws CancellationException if the cancellation flag was set while
@@ -427,7 +427,7 @@ public class DeckPacker {
      * @param c the card to place
      * @param w the required width
      * @param h the required height
-     * @return <code>true</code> if the card was placed successfully
+     * @return {@code true} if the card was placed successfully
      */
     private boolean tryToPlaceOnPage(Deck deck, int index, Card c, double w, double h) {
         Page p = deck.getPage(index);
@@ -659,7 +659,7 @@ public class DeckPacker {
     private ArrayList<Area> areas;
 
     /**
-     * Subclasses may set this to <code>true</code> during testing. If the
+     * Subclasses may set this to {@code true} during testing. If the
      * subclass uses {@link #place} to add cards, then a sequence of images will
      * be displayed showing how each card is placed.
      */
@@ -686,9 +686,9 @@ public class DeckPacker {
 
     /**
      * Returns an array of the cards that have been added for layout. If the
-     * comparator <code>comp</code> is non-<code>null</code> then it will be
+     * comparator {@code comp} is non-{@code null} then it will be
      * used to determine the sort order. Otherwise, a default sort order is used
-     * based on <code>Card</code>'s <code>Comparable</code> implementation. The
+     * based on {@code Card}'s {@code Comparable} implementation. The
      * default order is suited to the base implementation's bin packing
      * algorithm. Subclasses may substitute a different comparison function
      * suited for other algorithms.
@@ -731,10 +731,10 @@ public class DeckPacker {
     }
 
     /**
-     * Returns <code>true</code> if front and back faces should be grouped
+     * Returns {@code true} if front and back faces should be grouped
      * together. This has no effect if double-sided layout is enabled.
      *
-     * @return <code>true</code> if grouping is enabled
+     * @return {@code true} if grouping is enabled
      */
     public boolean isGroupingEnabled() {
         return groupCardPairs;
@@ -744,7 +744,7 @@ public class DeckPacker {
      * Sets whether front and back faces should be grouped together. This has no
      * effect if double-sided layout is enabled.
      *
-     * @param groupCardPairs if <code>true</code>, front and back faces placed
+     * @param groupCardPairs if {@code true}, front and back faces placed
      * side-by-side will be placed into a group
      */
     public void setGroupingEnabled(boolean groupCardPairs) {
@@ -774,8 +774,8 @@ public class DeckPacker {
          */
         PageItem front;
         /**
-         * The back face of the card; may be <code>null</code>. If present, must
-         * be same size as <code>front</code>.
+         * The back face of the card; may be {@code null}. If present, must
+         * be same size as {@code front}.
          */
         PageItem back;
         /**
@@ -868,9 +868,9 @@ public class DeckPacker {
     }
 
     /**
-     * Returns <code>true</code> if the cancellation flag has been set.
+     * Returns {@code true} if the cancellation flag has been set.
      *
-     * @return <code>true</code> if the layout operation has been cancelled
+     * @return {@code true} if the layout operation has been cancelled
      * @see #cancel()
      */
     public final boolean isCancelled() {

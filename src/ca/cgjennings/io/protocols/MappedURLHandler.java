@@ -29,7 +29,7 @@ public abstract class MappedURLHandler extends URLStreamHandler {
      *
      * @param sourceURL a URL in the protocol handled by this handler
      * @return a URL using another protocol that maps to the same resource as
-     * this handler, or <code>null</code>
+     * this handler, or {@code null}
      * @throws IOException if an I/O error occurs while composing the new URL
      */
     protected URL mapURL(URL sourceURL) throws IOException {
@@ -37,14 +37,14 @@ public abstract class MappedURLHandler extends URLStreamHandler {
     }
 
     /**
-     * Returns a <code>URLConnection</code> for the mapped URL. The base class
-     * returns <code>mappedURL.openConnection()</code>.
+     * Returns a {@code URLConnection} for the mapped URL. The base class
+     * returns {@code mappedURL.openConnection()}.
      *
      * @param sourceURL the original URL
      * @param mappedURL the mapped URL returned from {@link #mapURL}
      * @return a connection for the URL
      * @throws IOException if an I/O error occurs or the mapped URL is
-     * <code>null</code>
+     * {@code null}
      */
     protected URLConnection mapConnection(URL sourceURL, URL mappedURL) throws IOException {
         if (mappedURL == null) {
@@ -75,7 +75,7 @@ public abstract class MappedURLHandler extends URLStreamHandler {
      *
      * @param url the URL to compose
      * @return the host and path, concatenated and separated by a slash, or
-     * <code>null</code> if <code>null</code> was passed in
+     * {@code null} if {@code null} was passed in
      */
     public static String getComposedPath(URL url) {
         if (url == null) {

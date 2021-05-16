@@ -35,7 +35,7 @@ public class ClearFilter extends AbstractPixelwiseFilter {
 
     /**
      * Creates a filter that uses the ARGB value specified by a
-     * <code>Color</code> instance.
+     * {@code Color} instance.
      *
      * @param c the color to obtain an ARGB value from
      */
@@ -45,8 +45,8 @@ public class ClearFilter extends AbstractPixelwiseFilter {
 
     /**
      * Returns the current fill colour as an ARGB value. This can be converted
-     * to a <code>Color</code>, if required, using code like the following:
-     * <code>new Color( this.getColorRGB(), true )</code>.
+     * to a {@code Color}, if required, using code like the following:
+     * {@code new Color( this.getColorRGB(), true )}.
      *
      * @return the ARGB (sRGB) value of the fill colour
      */

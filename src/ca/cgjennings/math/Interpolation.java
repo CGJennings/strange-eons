@@ -65,7 +65,7 @@ public final class Interpolation {
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
      * and high1, this is the same as calling
-     * <code>lerp( 0.5, low2, high2 )</code>.
+     * {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -111,7 +111,7 @@ public final class Interpolation {
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
      * and high1, this is the same as calling
-     * <code>lerp( 0.5, low2, high2 )</code>.
+     * {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -137,7 +137,7 @@ public final class Interpolation {
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
      * and high1, this is the same as calling
-     * <code>lerp( 0.5, low2, high2 )</code>.
+     * {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -230,7 +230,7 @@ public final class Interpolation {
          *
          * @param x an array of x-values for the points
          * @param y an array of y-values for the points
-         * @throws NullPointerException if either array is <code>null</code>
+         * @throws NullPointerException if either array is {@code null}
          * @throws IllegalArgumentException if the data point criteria are not
          * met
          */
@@ -242,7 +242,7 @@ public final class Interpolation {
          * Checks that the set of sample points satisfy any criteria for using
          * the interpolator. The base class checks the following:
          * <ul>
-         * <li>x and y must be non-<code>null</code> and have the same length
+         * <li>x and y must be non-{@code null} and have the same length
          * <li>there must be at least one point (note that the concrete subclass
          * may require more than one point; check the specific class for
          * details)
@@ -256,7 +256,7 @@ public final class Interpolation {
          *
          * @param x an array of x-values for the points
          * @param y an array of y-values for the points
-         * @throws NullPointerException if either array is <code>null</code>
+         * @throws NullPointerException if either array is {@code null}
          * @throws IllegalArgumentException if the criteria above are not met
          */
         protected void checkPoints(double[] x, double[] y) {
@@ -422,8 +422,8 @@ public final class Interpolation {
      * A CubicSpline interpolator passes through each point in its data set,
      * connecting the points with cubic spline curves. The array of x values
      * used to define the curve must be ordered and strictly increasing. That
-     * is, for <code>i</code> in <code>0..x.length-2</code>,
-     * <code>x[i] &lt; x[i+1]</code>.
+     * is, for {@code i} in {@code 0..x.length-2},
+     * {@code x[i] &lt; x[i+1]}.
      */
     public static class CubicSpline extends InterpolatedFunction {
 
@@ -434,7 +434,7 @@ public final class Interpolation {
          *
          * @param x an array of x-values for the points
          * @param y an array of y-values for the points
-         * @throws NullPointerException if either array is <code>null</code>
+         * @throws NullPointerException if either array is {@code null}
          * @throws IllegalArgumentException if the data point criteria are not
          * met
          */
@@ -451,10 +451,10 @@ public final class Interpolation {
          * @param x an array of x-values for the points
          * @param y an array of y-values for the points
          * @param yp0 derivative at the lower boundary, or
-         * <code>Double.NaN</code> to let the interpolator choose
+         * {@code Double.NaN} to let the interpolator choose
          * @param ypN derivative at the upper boundary, or
-         * <code>Double.NaN</code> to let the interpolator choose
-         * @throws NullPointerException if either array is <code>null</code>
+         * {@code Double.NaN} to let the interpolator choose
+         * @throws NullPointerException if either array is {@code null}
          * @throws IllegalArgumentException if the data point criteria are not
          * met
          */

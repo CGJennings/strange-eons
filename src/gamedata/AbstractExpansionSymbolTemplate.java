@@ -20,7 +20,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
      * {@inheritDoc}
      * <p>
      * The abstract base class will return the same value as
-     * <code>getVariantCount()</code>.
+     * {@code getVariantCount()}.
      */
     @Override
     public int getLogicalVariantCount() {
@@ -31,7 +31,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
      * {@inheritDoc}
      * <p>
      * The abstract base class will return the same value as
-     * <code>getVariantName( variant )</code>.
+     * {@code getVariantName( variant )}.
      */
     @Override
     public String getLogicalVariantName(int variant) {
@@ -42,7 +42,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
      * {@inheritDoc}
      * <p>
      * The abstract base class will return the same value as
-     * <code>getVariantIcon()</code>.
+     * {@code getVariantIcon()}.
      */
     @Override
     public Icon getLogicalVariantIcon(int variant) {
@@ -77,7 +77,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
     /**
      * {@inheritDoc}
      * <p>
-     * This abstract base class always returns <code>null</code>, yielding a
+     * This abstract base class always returns {@code null}, yielding a
      * default backdrop paint.
      */
     @Override
@@ -88,9 +88,9 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
     /**
      * {@inheritDoc}
      * <p>
-     * This abstract base class returns <code>false</code>.
+     * This abstract base class returns {@code false}.
      *
-     * @return <code>true</code> if {@link #generateVariant} is supported
+     * @return {@code true} if {@link #generateVariant} is supported
      */
     @Override
     public boolean canGenerateVariantsAutomatically() {
@@ -102,8 +102,8 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
      *
      * <p>
      * If {@link #canGenerateVariantsAutomatically()} returns
-     * <code>false</code>, then this method throws an
-     * <code>UnsupportedOperationException</code>. Otherwise, the abstract base
+     * {@code false}, then this method throws an
+     * {@code UnsupportedOperationException}. Otherwise, the abstract base
      * class provides a default variant-generating algorithm based on the icons
      * for Arkham Horror. This can be used as-is when appropriate, or if useful
      * it can be used as a starting point for generating an appropriate image
@@ -269,9 +269,9 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
     /**
      * {@inheritDoc}
      * <p>
-     * This abstract base class returns <code>false</code>.
+     * This abstract base class returns {@code false}.
      *
-     * @return <code>true</code> if the component is responsible for drawing
+     * @return {@code true} if the component is responsible for drawing
      */
     @Override
     public boolean isCustomDrawn() {

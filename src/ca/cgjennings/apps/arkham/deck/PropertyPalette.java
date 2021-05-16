@@ -67,7 +67,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
     }
 
     /**
-     * Returns the global <code>PropertyPalette</code> window.
+     * Returns the global {@code PropertyPalette} window.
      *
      * @return the shared object palette instance
      */

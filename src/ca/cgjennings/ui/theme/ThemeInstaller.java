@@ -89,8 +89,8 @@ public class ThemeInstaller {
     private static Theme installed;
 
     /**
-     * Returns the installed theme, or <code>null</code> if no theme is
-     * installed. This will only be <code>null</code> if themes have not been
+     * Returns the installed theme, or {@code null} if no theme is
+     * installed. This will only be {@code null} if themes have not been
      * installed yet, or if the user theme could not be installed and the
      * built-in fallback theme could not be instantiated.
      *

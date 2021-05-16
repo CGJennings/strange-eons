@@ -40,13 +40,13 @@ public final class ConsoleErrorLocation {
      * description, which may have one of the following forms:
      * <ol>
      * <li> A standard script trace element consists of a script identifier, a
-     * colon, and a line number. E.g.: <code>Quickscript:2</code>
+     * colon, and a line number. E.g.: {@code Quickscript:2}
      * <li> An embedded script trace element consists of the word script, and
      * the script identifier and line number in parentheses. E.g.:
-     * <code>script(Quickscript:2)</code>
+     * {@code script(Quickscript:2)}
      * <li> A Java script trace element, which consists of class and method
      * descriptor, and the Java file and line number in parentheses E.g.:
-     * <code>java.awt.Component.processEvent(Component.java:6270)</code> The
+     * {@code java.awt.Component.processEvent(Component.java:6270)} The
      * file and line number information may instead read "Unknown Source" if the
      * class was compiled without debugging information, or "Native Method" if
      * executing native (non-Java) code.
@@ -54,8 +54,8 @@ public final class ConsoleErrorLocation {
      *
      * <p>
      * <b>Note:</b> If the specified stack trace text does not match one of the
-     * above patterns, then the identifier will be <code>null</code>. In this
-     * case the <code>ConsoleErrorLocation</code> is not valid and should not be
+     * above patterns, then the identifier will be {@code null}. In this
+     * case the {@code ConsoleErrorLocation} is not valid and should not be
      * used further.
      *
      * @param stackTraceLine a stack trace line, without the "at" prefix (see
@@ -245,10 +245,10 @@ public final class ConsoleErrorLocation {
     /**
      * Returns the line number (starting from 1) of the error, within an
      * evaluated string or 0 if the line number is unknown or was not within an
-     * <code>eval</code> function. When an error occurs during the evaluation of
+     * {@code eval} function. When an error occurs during the evaluation of
      * a string, this returns the line number within that string while
      * {@link #getLineNumber()} returns the line number of the
-     * <code>eval()</code> call.
+     * {@code eval()} call.
      *
      * @return the line number of the error within the evaluated code
      *

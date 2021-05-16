@@ -10,9 +10,9 @@ import java.text.AttributedCharacterIterator;
 import resources.StrangeImage;
 
 /**
- * Converts markup written for a <code>MarkupRenderer</code> into simple HTML.
+ * Converts markup written for a {@code MarkupRenderer} into simple HTML.
  * It works by taking advantage of the customizability of
- * <code>MarkupRenderer</code>'s tag handling to insert "invisible" tags back
+ * {@code MarkupRenderer}'s tag handling to insert "invisible" tags back
  * into the markup. The tags are made invisible by surrounding them with
  * special, non-printing characters instead of angle brackets. After the markup
  * is processed, the styled text is converted back into plain text and the

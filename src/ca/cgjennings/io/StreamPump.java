@@ -34,7 +34,7 @@ public class StreamPump {
      * @param in the stream to read from
      * @param out the stream to copy the read bytes to
      * @throws IOException if an I/O error occurs while copying
-     * @throws NullPointerException if either parameter is <code>null</code>
+     * @throws NullPointerException if either parameter is {@code null}
      */
     public static void copy(final InputStream in, final OutputStream out) throws IOException {
         if (in == null) {
@@ -111,7 +111,7 @@ public class StreamPump {
      * @param in the source to copy from
      * @param out the destination to copy to (may use a different encoding)
      * @throws IOException if an I/O error occurs while copying
-     * @throws NullPointerException if either parameter is <code>null</code>
+     * @throws NullPointerException if either parameter is {@code null}
      */
     public static void copy(final Reader in, final Writer out) throws IOException {
         if (in == null) {

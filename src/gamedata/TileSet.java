@@ -232,7 +232,7 @@ public class TileSet {
 
         /**
          * Returns the name of the tile. If the tile name starts with
-         * <code>@</code> in the tile set file, this name will already be
+         * {@code @} in the tile set file, this name will already be
          * converted into its localized form.
          *
          * @return the (possibly localized) name of the tile
@@ -298,7 +298,7 @@ public class TileSet {
         }
 
         /**
-         * Returns the credits for the tile, or <code>null</code> if the tile
+         * Returns the credits for the tile, or {@code null} if the tile
          * doesn't specify any credits.
          *
          * @return the credits for the tile design
@@ -322,7 +322,7 @@ public class TileSet {
          * default snap class, along with other properties.
          *
          * @return the tile class, as determined by the entry's
-         * <code>class</code> key
+         * {@code class} key
          */
         public TileClass getTileClass() {
             return tileClass;

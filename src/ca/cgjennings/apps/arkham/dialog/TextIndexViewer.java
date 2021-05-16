@@ -152,27 +152,6 @@ public class TextIndexViewer extends javax.swing.JDialog {
         }
     }
 
-//	/**
-//	 * @param args the command line arguments
-//	 */
-//	public static void main( String args[] ) {
-//		java.awt.EventQueue.invokeLater( new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				try {
-//				TextIndexViewer dialog = new TextIndexViewer( new javax.swing.JFrame(), new File("d:\\se3\\JavaDoc\\core-StrangeEonsAPIDocs\\api-indices\\se.idx") );
-//				dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-//					@Override
-//					public void windowClosing( java.awt.event.WindowEvent e ) {
-//						System.exit( 0 );
-//					}
-//				} );
-//				dialog.setVisible( true );
-//				}catch( Throwable t ) {t.printStackTrace();}
-//			}
-//		} );
-//	}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
     private javax.swing.JList docList;

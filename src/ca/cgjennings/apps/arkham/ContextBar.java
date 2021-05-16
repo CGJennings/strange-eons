@@ -203,7 +203,7 @@ public final class ContextBar {
     /**
      * Sets the buttons included on the context bar.
      *
-     * @param buttons an array of Button objects; use <code>null</code> to
+     * @param buttons an array of Button objects; use {@code null} to
      * insert a separator
      */
     public void setButtons(Button... buttons) {
@@ -236,12 +236,12 @@ public final class ContextBar {
      * instead of an ID to insert a separator.
      *
      * @param buttonDesc a string in the format described above
-     * @param skipInvalidButtons if <code>true</code>, invalid IDs will be
+     * @param skipInvalidButtons if {@code true}, invalid IDs will be
      * skipped
-     * @return an array of buttons; <code>null</code> will be used to indicate
+     * @return an array of buttons; {@code null} will be used to indicate
      * separators
      * @throws IllegalArgumentException if the format was invalid and
-     * <code>skipInvalidButtons</code> is <code>false</code>
+     * {@code skipInvalidButtons} is {@code false}
      */
     public static Button[] fromButtonDescription(String buttonDesc, boolean skipInvalidButtons) {
         if (buttonDesc == null) {
@@ -447,7 +447,7 @@ public final class ContextBar {
     /**
      * Enables or disabled the tool bar.
      *
-     * @param enable if <code>true</code> the tool bar will be created and
+     * @param enable if {@code true} the tool bar will be created and
      * shown; otherwise it will be hidden and associated resources will be freed
      */
     public void setEnabled(boolean enable) {
@@ -463,11 +463,11 @@ public final class ContextBar {
     }
 
     /**
-     * Returns <code>true</code> if the tool bar is currently enabled. When the
+     * Returns {@code true} if the tool bar is currently enabled. When the
      * tool bar is enabled, it will automatically pop up over the current markup
      * target.
      *
-     * @return <code>true</code> if the tool bar is enabled
+     * @return {@code true} if the tool bar is enabled
      */
     public boolean isEnabled() {
         return window != null;
@@ -477,7 +477,7 @@ public final class ContextBar {
      * Sets whether the tool bar is collapsed so that only the expand button is
      * visible.
      *
-     * @param collapsed if <code>true</code>, collapse the tool bar
+     * @param collapsed if {@code true}, collapse the tool bar
      */
     public void setCollapsed(boolean collapsed) {
         if (collapsed != isCollapsed()) {
@@ -486,10 +486,10 @@ public final class ContextBar {
     }
 
     /**
-     * Returns <code>true</code> if the tool bar is currently collapsed (only
+     * Returns {@code true} if the tool bar is currently collapsed (only
      * the button that expands the tool bar is visible).
      *
-     * @return <code>true</code> if the tool bar is collapsed
+     * @return {@code true} if the tool bar is collapsed
      */
     public boolean isCollapsed() {
         return showHideBtn.isSelected();
@@ -916,10 +916,10 @@ public final class ContextBar {
     private boolean isLowTransparency;
 
     /**
-     * Returns <code>true</code> if the pointer is currently over the context
+     * Returns {@code true} if the pointer is currently over the context
      * bar.
      *
-     * @return <code>true</code> if there is a pointer on this platform and it
+     * @return {@code true} if there is a pointer on this platform and it
      * is over the context bar
      */
     public boolean isPointerOverBar() {
@@ -1038,7 +1038,7 @@ public final class ContextBar {
      * it to the tool bar.
      *
      * @param button the button template to register
-     * @throws NullPointerException if the button or its ID is <code>null</code>
+     * @throws NullPointerException if the button or its ID is {@code null}
      * @throws IllegalArgumentException if the ID contains any invalid
      * characters
      */
@@ -1066,7 +1066,7 @@ public final class ContextBar {
      * Removes a previously registered button.
      *
      * @param button the button to remove from the registry
-     * @throws NullPointerException if the button or its ID is <code>null</code>
+     * @throws NullPointerException if the button or its ID is {@code null}
      * @see #registerButton
      */
     public static void unregisterButton(Button button) {
@@ -1090,12 +1090,12 @@ public final class ContextBar {
     }
 
     /**
-     * Returns the registered button with the given ID, or <code>null</code> if
+     * Returns the registered button with the given ID, or {@code null} if
      * there is no such button.
      *
      * @param id the button ID to match
      * @return the button with the requested ID, if registered
-     * @throws NullPointerException if <code>id</code> is null
+     * @throws NullPointerException if {@code id} is null
      */
     public static Button getButton(String id) {
         if (id == null) {
@@ -1150,7 +1150,7 @@ public final class ContextBar {
         String getID();
 
         /**
-         * Returns the button's name, or <code>null</code>.
+         * Returns the button's name, or {@code null}.
          *
          * @return a localized description of the button's function
          */
@@ -1183,17 +1183,17 @@ public final class ContextBar {
         void onDetach(Context context);
 
         /**
-         * Returns <code>true</code> if the button should be enabled in the
+         * Returns {@code true} if the button should be enabled in the
          * current context.
          *
          * @param context information about the current context
-         * @return <code>true</code> if the button should be enabled (ignored if
+         * @return {@code true} if the button should be enabled (ignored if
          * not visible)
          */
         boolean isEnabledInCurrentContext(Context context);
 
         /**
-         * Returns <code>true</code> if the button should be visible in the
+         * Returns {@code true} if the button should be visible in the
          * current context. A button should be invisible if it can never be
          * enabled in the current context, and disabled if it is not currently
          * usable due to a temporary restriction. For example, any text field
@@ -1203,7 +1203,7 @@ public final class ContextBar {
          * code should be visible only when editing a script.
          *
          * @param context information about the current context
-         * @return <code>true</code> if the button should be visible
+         * @return {@code true} if the button should be visible
          */
         boolean isVisibleInCurrentContext(Context context);
     }
@@ -1222,7 +1222,7 @@ public final class ContextBar {
      * to the constructor
      * <li> the button is always enabled and visible
      * ({@link #isEnabledInCurrentContext} and
-     * {@link #isVisibleInCurrentContext} always return <code>true</code>)
+     * {@link #isVisibleInCurrentContext} always return {@code true})
      * </ul>
      * <p>
      * At a minimum, subclasses must implement
@@ -1240,13 +1240,13 @@ public final class ContextBar {
          * from the specified resource. The icon image is loaded using
          * {@link ResourceKit#getIcon(java.lang.String)}, except that if the
          * icon resource does not contain a slash, the resource will be loaded
-         * from <code>resources/icons/toolbar</code>.
+         * from {@code resources/icons/toolbar}.
          *
          * @param id a unique button identifier
          * @param name the user-friendly name of the button
          * @param iconResource the resource to load the button's icon from
          * @throws NullPointerException if the name or icon resource is
-         * <code>null</code>
+         * {@code null}
          */
         public AbstractButton(String id, String name, String iconResource) {
             if (name == null) {
@@ -1325,12 +1325,12 @@ public final class ContextBar {
         private boolean autohide;
 
         /**
-         * Creates a new <code>CommandButton</code> for the specified command.
+         * Creates a new {@code CommandButton} for the specified command.
          * The button's unique ID will be determined by reading the command's
          * {@link AbstractCommand#BUTTON_ID_KEY} key.
          *
          * @param command the command to generate a button for
-         * @throws NullPointerException if the command is <code>null</code> or
+         * @throws NullPointerException if the command is {@code null} or
          * the command does not define a button ID value
          */
         public CommandButton(AbstractCommand command) {
@@ -1338,12 +1338,12 @@ public final class ContextBar {
         }
 
         /**
-         * Creates a new <code>CommandButton</code> for the specified command.
+         * Creates a new {@code CommandButton} for the specified command.
          * The command will use the specified ID.
          *
          * @param command the command to generate a button for
          * @param id the unique ID to use for the button
-         * @throws NullPointerException if the command is <code>null</code>
+         * @throws NullPointerException if the command is {@code null}
          */
         public CommandButton(String id, AbstractCommand command) {
             if (command == null) {
@@ -1433,7 +1433,7 @@ public final class ContextBar {
          * Causes the default implementation of
          * {@link #isVisibleInCurrentContext} to return the same value as
          * {@link #isEnabledInCurrentContext}. (The default behaviour is to
-         * simply return <code>true</code>.)
+         * simply return {@code true}.)
          *
          * @return this command button
          */
@@ -1574,7 +1574,7 @@ public final class ContextBar {
         }
 
         /**
-         * Returns <code>true</code> if the target component is also the current
+         * Returns {@code true} if the target component is also the current
          * markup target.
          *
          * @return if the bar is attached to the markup target
@@ -1584,14 +1584,14 @@ public final class ContextBar {
         }
 
         /**
-         * Returns <code>true</code> if the context bar is attached to some kind
+         * Returns {@code true} if the context bar is attached to some kind
          * of text editor, and that editor supports more than a single line of
          * text. For example, a context bar attached to a
-         * <code>JTextField</code> would return <code>false</code>, while a
-         * context bar attached to a <code>JTextArea</code> would return
-         * <code>true</code>.
+         * {@code JTextField} would return {@code false}, while a
+         * context bar attached to a {@code JTextArea} would return
+         * {@code true}.
          *
-         * @return <code>true</code> if the context bar is attached to a
+         * @return {@code true} if the context bar is attached to a
          * multi-line text editor
          */
         public boolean isMultipleLineTextEditor() {
@@ -1600,7 +1600,7 @@ public final class ContextBar {
 
         /**
          * If the current target is a code editor, returns the {@link CodeType}
-         * of the code being edited. Otherwise, returns <code>null</code>. The
+         * of the code being edited. Otherwise, returns {@code null}. The
          * following code can be used to verify that the target is a valid
          * markup target but is not used to edit code (i.e., that it is used to
          * enter markup for a game component):
@@ -1610,9 +1610,9 @@ public final class ContextBar {
          * }
          * </pre>
          *
-         * @return the type of code being edited, or <code>null</code>; if code
+         * @return the type of code being edited, or {@code null}; if code
          * is being edited but the type is indeterminate, script code
-         * (<code>CodeType.JAVASCRIPT</code>) is assumed
+         * ({@code CodeType.JAVASCRIPT}) is assumed
          */
         public CodeType getCodeType() {
             if (markup && (target instanceof JSourceCodeEditor)) {
@@ -1657,9 +1657,9 @@ public final class ContextBar {
 
         /**
          * If the target is within a Strange Eons editor tab, returns the
-         * editor. Otherwise returns <code>null</code>.
+         * editor. Otherwise returns {@code null}.
          *
-         * @return the editor affected by the target, or <code>null</code>
+         * @return the editor affected by the target, or {@code null}
          */
         public StrangeEonsEditor getEditor() {
             Container p = target;
@@ -1674,10 +1674,10 @@ public final class ContextBar {
 
         /**
          * If the target is part of an editor for a game component, returns the
-         * game component. Otherwise, returns <code>null</code>.
+         * game component. Otherwise, returns {@code null}.
          *
          * @return the game component affected by the markup target, or
-         * <code>null</code>
+         * {@code null}
          */
         public GameComponent getGameComponent() {
             StrangeEonsEditor ed = getEditor();
@@ -1689,10 +1689,10 @@ public final class ContextBar {
 
         /**
          * If the target is part of an editor associated with a particular game,
-         * returns the game. Otherwise, returns <code>null</code>.
+         * returns the game. Otherwise, returns {@code null}.
          *
          * @return the game of the game component affected by the markup target,
-         * or <code>null</code>
+         * or {@code null}
          */
         public Game getGame() {
             GameComponent gc = getGameComponent();
@@ -1705,9 +1705,9 @@ public final class ContextBar {
 
         /**
          * If the target is a page in a deck, returns the target as a page view
-         * instance. Otherwise, returns <code>null</code>.
+         * instance. Otherwise, returns {@code null}.
          *
-         * @return the page view represented by the target, or <code>null</code>
+         * @return the page view represented by the target, or {@code null}
          */
         public PageView getPageView() {
             if (!markup && (target instanceof PageView)) {
@@ -1718,9 +1718,9 @@ public final class ContextBar {
 
         /**
          * If the target is a page in a deck, returns the {@link Deck}.
-         * Otherwise returns <code>null</code>.
+         * Otherwise returns {@code null}.
          *
-         * @return the deck represented by the target, or <code>null</code>
+         * @return the deck represented by the target, or {@code null}
          */
         public Deck getDeck() {
             PageView v = getPageView();
@@ -1841,14 +1841,14 @@ public final class ContextBar {
     /**
      * The context bar can be prevented from appearing over a particular control
      * by setting a client property with this name to
-     * <code>java.lang.Boolean.TRUE</code>.
+     * {@code java.lang.Boolean.TRUE}.
      */
     public static final String BAR_DISABLE_PROPERTY = "contextbar-disable";
 
     /**
      * By default, the context bar appears above the control that it currently
      * affects. Setting a client property with this name to
-     * <code>java.lang.Boolean.TRUE</code> will cause the bar to appear below
+     * {@code java.lang.Boolean.TRUE} will cause the bar to appear below
      * the control instead.
      */
     public static final String BAR_BELOW_PROPERTY = "contextbar-below";
@@ -1856,7 +1856,7 @@ public final class ContextBar {
     /**
      * By default, the context bar appears outside of the control that it
      * currently affects. Setting a client property with this name to
-     * <code>java.lang.Boolean.TRUE</code> will cause the bar to appear inside
+     * {@code java.lang.Boolean.TRUE} will cause the bar to appear inside
      * the control instead.
      */
     public static final String BAR_INSIDE_PROPERTY = "contextbar-inside";
@@ -1864,7 +1864,7 @@ public final class ContextBar {
     /**
      * By default, the context bar appears on the trailing edge of the the
      * control that it currently affects. Setting a client property with this
-     * name to <code>java.lang.Boolean.TRUE</code> will cause the bar to appear
+     * name to {@code java.lang.Boolean.TRUE} will cause the bar to appear
      * on the leading side instead.
      */
     public static final String BAR_LEADING_SIDE_PROPERTY = "contextbar-leading";
@@ -1898,9 +1898,9 @@ public final class ContextBar {
          * must be in screen coordinates. The context bar will be located
          * relative to the returned rectangle as if that rectangle were the
          * bounding rectangle of the target component. For example, if the
-         * {@link #BAR_BELOW_PROPERTY} is set to <code>true</code>, then the bar
+         * {@link #BAR_BELOW_PROPERTY} is set to {@code true}, then the bar
          * will be placed below the bottom of the returned rectangle. If this
-         * method returns <code>null</code>, then the context bar will be shown
+         * method returns {@code null}, then the context bar will be shown
          * at its normal location.
          *
          * @param bar the context bar that is being positioned
@@ -1908,7 +1908,7 @@ public final class ContextBar {
          * @param barHeight the height of the context bar window, in pixels
          * @param target the component that the context bar is attached to
          * @return the rectangle, in screen coordinates, that the bar will be
-         * positioned relative to, or <code>null</code> to use the target
+         * positioned relative to, or {@code null} to use the target
          * component's bounding rectangle
          * @see #BAR_CUSTOM_LOCATION_PROPERTY
          */

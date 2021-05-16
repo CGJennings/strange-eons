@@ -131,7 +131,7 @@ public enum RenderTarget {
      * context.
      *
      * @param g the graphics context to modify
-     * @throws NullPointerException if the graphics context is <code>null</code>
+     * @throws NullPointerException if the graphics context is {@code null}
      * @see Sheet#applyContextHints(java.awt.Graphics2D)
      */
     public void applyTo(Graphics2D g) {
@@ -151,7 +151,7 @@ public enum RenderTarget {
     }
 
     /**
-     * Returns an appropriate <code>AffineTransformOp</code> interpolation type
+     * Returns an appropriate {@code AffineTransformOp} interpolation type
      * for this target.
      *
      * @return an appropriate affine transform interpolation type
@@ -172,7 +172,7 @@ public enum RenderTarget {
      * @param width the desired image width
      * @param height the desired image height
      * @return a scaled version of the image
-     * @throws NullPointerException if the source image is <code>null</code>
+     * @throws NullPointerException if the source image is {@code null}
      * @see ScaleCache
      */
     public BufferedImage resample(BufferedImage source, int width, int height) {
@@ -197,7 +197,7 @@ public enum RenderTarget {
      * @param factor a scaling factor to apply to the image
      * @return a version of the source image whose dimensions are scaled by the
      * requested amount
-     * @throws NullPointerException if the source image is <code>null</code>
+     * @throws NullPointerException if the source image is {@code null}
      * @see ScaleCache
      */
     public final BufferedImage resample(BufferedImage source, float factor) {

@@ -77,22 +77,22 @@ public class MnemonicInstaller {
     private static boolean hideMnem = false;
 
     /**
-     * Sets whether mnemonics will be displayed. When set to <code>true</code>,
+     * Sets whether mnemonics will be displayed. When set to {@code true},
      * mnemonic codes will still be extracted and set on components, but they
      * will not be marked in the UI. For example, if mnemonic letters are
      * normally underlined, this underlining will be disabled.
      *
-     * @param hide if <code>true</code>, mnemonics will be hidden
+     * @param hide if {@code true}, mnemonics will be hidden
      */
     public static void setMnemonicHidden(boolean hide) {
         hideMnem = hide;
     }
 
     /**
-     * Returns <code>true</code> if mnemonic letters will not be marked within
+     * Returns {@code true} if mnemonic letters will not be marked within
      * the UI.
      *
-     * @return <code>true</code> if mnemonics are hidden
+     * @return {@code true} if mnemonics are hidden
      * @see #setMnemonicHidden
      */
     public static boolean isMnemonicHidden() {

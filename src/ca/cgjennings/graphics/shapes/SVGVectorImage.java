@@ -29,7 +29,7 @@ import resources.ResourceKit;
  * {@link CoreComponents#SVG_IMAGE_SUPPORT SVG_IMAGE_SUPPORT} core component be
  * installed, as that plug-in contains support code necessary to render the SVG
  * content. If that library is not installed, but the
- * <code>SVGVectorImage</code> constructor is called from the event dispatch
+ * {@code SVGVectorImage} constructor is called from the event dispatch
  * thread (EDT), then the user will be given the opportunity to immediately
  * download and install the missing component. If the user chooses not to, or if
  * the constructor is called from a thread other than the EDT, then a
@@ -203,12 +203,12 @@ public class SVGVectorImage extends AbstractVectorImage {
     }
 
     /**
-     * Returns <code>true</code> if the SVG core library is installed. Note that
+     * Returns {@code true} if the SVG core library is installed. Note that
      * it is not required to call this before attempting to create an SVG image.
      * If possible, the SVG core will be loaded on demand (see the class
      * description for details).
      *
-     * @return <code>true</code> if SVG image file support is available
+     * @return {@code true} if SVG image file support is available
      */
     public static boolean isSupported() {
         return getBridgeMethod() != null;

@@ -28,7 +28,7 @@ public class Tools {
      *
      * @param prototype a prototype item that will be cloned as needed when
      * adding the tool to a deck page
-     * @throws NullPointerException if the prototype is <code>null</code>
+     * @throws NullPointerException if the prototype is {@code null}
      */
     public static synchronized void register(PageItem prototype) {
         if (prototype == null) {

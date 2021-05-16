@@ -59,7 +59,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Creates a default portrait instance that does not support rotation. This
-     * is a cover for <code>DefaultPortrait( gc, key, false )</code>.
+     * is a cover for {@code DefaultPortrait( gc, key, false )}.
      *
      * @param gc the game component that the portrait is used with
      * @param key the key used to determine the basic properties of the portrait
@@ -73,7 +73,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      *
      * @param gc the game component that the portrait is used with
      * @param key the key used to determine the basic properties of the portrait
-     * @param allowRotation if <code>true</code>, rotating the portrait is
+     * @param allowRotation if {@code true}, rotating the portrait is
      * allowed
      */
     public DefaultPortrait(GameComponent gc, String key, boolean allowRotation) {
@@ -134,8 +134,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * Creates a default portrait that replaces an existing portrait by
      * switching to a new base key. This can be used to convert old component
      * files when a component's base key name changes. It is normally used in a
-     * component's <code>onRead</code> function (for DIY components) or
-     * <code>readObject</code> method (for compiled code).
+     * component's {@code onRead} function (for DIY components) or
+     * {@code readObject} method (for compiled code).
      *
      * <p>
      * <b>Note:</b> Be careful not to confuse this with
@@ -173,9 +173,9 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Returns the portrait that this portrait is linked to, or
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @return the parent portrait, or <code>null</code> if this portrait is not
+     * @return the parent portrait, or {@code null} if this portrait is not
      * linked to another portrait
      * @see
      * DefaultPortrait#DefaultPortrait(ca.cgjennings.apps.arkham.component.DefaultPortrait,
@@ -230,14 +230,14 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * that the portrait appears on that face.)
      *
      * <p>
-     * Example <code>bitmap</code> values:<br>
+     * Example {@code bitmap} values:<br>
      * 0 : do not redraw any faces automatically<br>
-     * 1 : front face only (this is the value of <code>1 &lt;&lt; 0</code>)<br>
+     * 1 : front face only (this is the value of {@code 1 &lt;&lt; 0})<br>
      * 2 : back face only<br>
      * 3 : front and back faces (this is the value of
-     * <code>(1 &lt;&lt; 0)|(1 &lt;&lt; 1)</code>)<br>
+     * {@code (1 &lt;&lt; 0)|(1 &lt;&lt; 1)})<br>
      * 4 : update only the third face (this is the value of
-     * <code>1 &lt;&lt; 2</code>)<br>
+     * {@code 1 &lt;&lt; 2})<br>
      * -1 : update all faces
      *
      * @param bitmap a bitmap indicating the indices of the faces to update
@@ -263,8 +263,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      *
      * @param faces an array, each element of which is the index of a face that
      * shows this portrait
-     * @throws NullPointerException if <code>faces</code> is <code>null</code>
-     * @throws IllegalArgumentException if any value in the <code>faces</code>
+     * @throws NullPointerException if {@code faces} is {@code null}
+     * @throws IllegalArgumentException if any value in the {@code faces}
      * array is outside the supported range of 32 faces
      */
     public final void setFacesToUpdate(int[] faces) {
@@ -330,19 +330,19 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Installs the default portrait, if it is not already set. The default
      * portrait is determined by looking up the base key with the suffix
-     * <code>-portrait-template</code> appended. The value of this key must be a
+     * {@code -portrait-template} appended. The value of this key must be a
      * path relative to the resources folder that identifies an image file. If
      * the key is not defined, then the value
-     * <code>portraits/misc-portrait.jp2</code> will be used, but this should
+     * {@code portraits/misc-portrait.jp2} will be used, but this should
      * only be used as a placeholder during development. By default, the pan
      * position will be set to (0,0) and the scale and rotation will be set as
      * if for any other portrait installed by calling {@link #setSource}. The
      * default panning and scale values (for the default image only) can be
-     * overridden by keys with the suffix <code>-portrait-panx</code>,
-     * <code>-portrait-pany</code>, and <code>-portrait-scale</code>. The
+     * overridden by keys with the suffix {@code -portrait-panx},
+     * {@code -portrait-pany}, and {@code -portrait-scale}. The
      * default rotation (if enabled, and for both the default image and images
      * set by {@link #setSource}), can be set via the key suffix
-     * <code>-portrait-rotation</code>. (See
+     * {@code -portrait-rotation}. (See
      * {@link #computeDefaultImageRotation}.)
      */
     @Override
@@ -596,20 +596,20 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Sets whether this portrait should use the minimum fit scale when
-     * computing a default scale value for an image. When <code>false</code>,
+     * computing a default scale value for an image. When {@code false},
      * the default scale value is selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
      * entire portrait clip region is covered}, even if that means part of the
-     * portrait won't be visible. When <code>true</code>, the default scale
+     * portrait won't be visible. When {@code true}, the default scale
      * value is selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
      * entire image just fits within the clip region}, even if that means that
      * part of the clip region will not be covered by the portrait. The default
-     * setting is <code>false</code> (cover the entire clip region).
+     * setting is {@code false} (cover the entire clip region).
      *
      * <p>
      * <b>Note:</b> This is normally called at most once, just after the
      * portrait is first created.
      *
-     * @param useMinimum if <code>true</code>, the minimum scale that fits the
+     * @param useMinimum if {@code true}, the minimum scale that fits the
      * portrait within the clip region will be the default scale value
      */
     public final void setScaleUsesMinimum(boolean useMinimum) {
@@ -622,7 +622,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * region or fit the portrait within the clip region. See
      * {@link #setScaleUsesMinimum} for details.
      *
-     * @return <code>true</code> if the minimal scaling method is enabled
+     * @return {@code true} if the minimal scaling method is enabled
      */
     public final boolean getScaleUsesMinimum() {
         return useMinimalScale;
@@ -630,14 +630,14 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Sets whether the portrait is clipped to the clip region. The default is
-     * <code>true</code>. When <code>false</code> the clip region is only used
+     * {@code true}. When {@code false} the clip region is only used
      * to determine a portrait image's default size.
      *
      * <p>
      * <b>Note:</b> This is normally called at most once, just after the
      * portrait is first created.
      *
-     * @param clipping if <code>true</code>, clip the portrait to the clip
+     * @param clipping if {@code true}, clip the portrait to the clip
      * region when it is drawn with {@link #paint}.
      */
     public final void setClipping(boolean clipping) {
@@ -648,10 +648,10 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     }
 
     /**
-     * Returns <code>true</code> if the portrait will be clipped to the clip
+     * Returns {@code true} if the portrait will be clipped to the clip
      * region. See {@link #setClipping} for details.
      *
-     * @return <code>true</code> if clipping is enabled.
+     * @return {@code true} if clipping is enabled.
      */
     public final boolean getClipping() {
         return !noClip;
@@ -660,7 +660,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Returns the size of the bounding rectangle of the area that the portrait
      * is drawn in on the component sheet, in the coordinate system of the
-     * sheet's template. This may return <code>null</code> if this value is
+     * sheet's template. This may return {@code null} if this value is
      * unknown or inapplicable, in which case some features of the portrait
      * panel will not be available.
      *
@@ -747,7 +747,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * stencil permanently overrides the default clip stencil mechanism. Once an
      * explicit stencil is set, {@link #getClipStencil()} will return the most
      * recently set stencil. The stencil can be removed by explicitly setting it
-     * to <code>null</code>.
+     * to {@code null}.
      *
      * <p>
      * <b>Note:</b> The explicit clip stencil is <i>not</i> serialized when the
@@ -777,7 +777,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * <b>Note:</b> This is normally called at most once, just after the
      * portrait is first created.
      *
-     * @param fill if <code>true</code>, the portrait background will be filled
+     * @param fill if {@code true}, the portrait background will be filled
      * in when it is drawn with {@link #paint}.
      */
     public final void setBackgroundFilled(boolean fill) {
@@ -788,11 +788,11 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     }
 
     /**
-     * Returns <code>true</code> if portrait areas will be filled with solid
+     * Returns {@code true} if portrait areas will be filled with solid
      * white before painting the portrait. See {@link #setBackgroundFilled(boolean)
      * } for details.
      *
-     * @return <code>true</code> if the portrait clip region is filled before
+     * @return {@code true} if the portrait clip region is filled before
      * drawing the portrait
      */
     public final boolean isBackgroundFilled() {
@@ -924,10 +924,10 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Returns a default scale value for an image. This is the initial scale
      * value used when the image source changes. The scale is determined based
-     * on the <code>portrait-clip-region</code> for the provided portrait key.
+     * on the {@code portrait-clip-region} for the provided portrait key.
      *
      * @param image the image to compute a default scale for
-     * @return the default scale value for <code>image</code>
+     * @return the default scale value for {@code image}
      */
     public double computeDefaultImageScale(BufferedImage image) {
         if (gc == null || key == null) {
@@ -958,12 +958,12 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * The base class implementation uses the following procedure: If the
      * portrait does not include the rotation feature, 0 is always returned.
      * Otherwise, if a key equal to the base key with the suffix
-     * <code>-default-rotation</code> is defined and can be parsed as a double
+     * {@code -default-rotation} is defined and can be parsed as a double
      * value, then that value is returned. If the key does not exist or cannot
      * be parsed, 0 is returned.
      *
      * @param image the image to determine the default rotation for
-     * @return the default rotation value for <code>image</code>
+     * @return the default rotation value for {@code image}
      */
     public double computeDefaultImageRotation(BufferedImage image) {
         if (gc != null && features.contains(Feature.ROTATE)) {

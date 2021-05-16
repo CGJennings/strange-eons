@@ -23,8 +23,8 @@ final class PageItemTransferable implements Transferable {
      * can be mutated without affecting the transferable.
      *
      * @param source the items to create a transferable
-     * @throws NullPointerException if the source array is <code>null</code> or
-     * contains a <code>null</code> element
+     * @throws NullPointerException if the source array is {@code null} or
+     * contains a {@code null} element
      */
     public PageItemTransferable(PageItem[] source) {
         if (source == null) {

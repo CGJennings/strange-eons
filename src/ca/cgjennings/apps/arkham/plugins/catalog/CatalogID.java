@@ -115,7 +115,7 @@ public final class CatalogID {
     /**
      * If a string contains an ID string description of the form
      * <tt>CATALOGID{<i>uuid</i>:<i>date</i>}</tt>
-     * returns it as a <code>CatalogID</code>. Otherwise returns null.
+     * returns it as a {@code CatalogID}. Otherwise returns null.
      *
      * @param text the string to parse
      * @return the bundle ID contained in the string, or null
@@ -133,11 +133,11 @@ public final class CatalogID {
     }
 
     /**
-     * Compares the UUID of this ID with another ID returns <code>true</code> if
+     * Compares the UUID of this ID with another ID returns {@code true} if
      * and only if they are the same.
      *
      * @param rhs the ID to compare UUIDs with
-     * @return <code>true</code> if both IDs have the same UUID
+     * @return {@code true} if both IDs have the same UUID
      */
     public boolean sameUUID(CatalogID rhs) {
         if (rhs == null) {
@@ -150,13 +150,13 @@ public final class CatalogID {
     }
 
     /**
-     * Returns <code>true</code> if this ID and <code>rhs</code> are equal,
-     * meaning that <code>rhs</code> is also an ID, and its UUID and date match
+     * Returns {@code true} if this ID and {@code rhs} are equal,
+     * meaning that {@code rhs} is also an ID, and its UUID and date match
      * exactly.
      *
      * @param obj the object to test for equality
-     * @return <code>true</code> is and only if the this is equal to
-     * <code>rhs</code>
+     * @return {@code true} is and only if the this is equal to
+     * {@code rhs}
      */
     @Override
     public boolean equals(Object obj) {
@@ -179,13 +179,13 @@ public final class CatalogID {
     }
 
     /**
-     * Compares this ID to another ID and returns <code>true</code> if and only
-     * if they have the same UUID and the date of <code>rhs</code> is newer than
+     * Compares this ID to another ID and returns {@code true} if and only
+     * if they have the same UUID and the date of {@code rhs} is newer than
      * the date of this ID.
      *
      * @param rhs the ID to compare this ID to
-     * @return <code>true</code> if both IDs have the same UUID and this ID is
-     * older than the <code>rhs</code> ID
+     * @return {@code true} if both IDs have the same UUID and this ID is
+     * older than the {@code rhs} ID
      */
     public boolean isOlderThan(CatalogID rhs) {
         if (sameUUID(rhs)) {
@@ -196,7 +196,7 @@ public final class CatalogID {
 
     /**
      * Compares the date of this ID with another ID, without considering whether
-     * the UUIDs match. Returns a negative value if <code>rhs</code> is newer,
+     * the UUIDs match. Returns a negative value if {@code rhs} is newer,
      * zero if they are the same, or a positive value if this ID is newer.
      *
      * @param rhs the ID to compare this ID to
@@ -244,7 +244,7 @@ public final class CatalogID {
      * </pre>
      *
      * @param bundleFile the plug-in bundle to extract an ID from
-     * @return the UUID listed in the root file, or <code>null</code>
+     * @return the UUID listed in the root file, or {@code null}
      * @throws IOException if an error occurs while parsing the UUID
      */
     public static CatalogID getCatalogID(File bundleFile) throws IOException {
@@ -281,19 +281,19 @@ public final class CatalogID {
      * more arguments with the following form:
      * <pre>[--touch]  [--xfile] [--tfile] [n...] [existing ID...]</pre> Where:
      * <dl>
-     * <dt><code>--touch</code></dt><dd>generate and print the date part of an
+     * <dt>{@code --touch}</dt><dd>generate and print the date part of an
      * ID with current timestamp</dd>
-     * <dt><code>--xfile</code></dt><dd>will extract and print the ID from
+     * <dt>{@code --xfile}</dt><dd>will extract and print the ID from
      * plug-in bundle 'file'</dd>
-     * <dt><code>--tfile</code></dt><dd>will generate or touch the ID in plug-in
+     * <dt>{@code --tfile}</dt><dd>will generate or touch the ID in plug-in
      * bundle 'file'</dd>
-     * <dt><code>n</code></dt><dd>a series of one or more integers will generate
+     * <dt>{@code n}</dt><dd>a series of one or more integers will generate
      * a group of that many IDs</dd>
-     * <dt><code>existing ID</code></dt><dd>using an existing ID will touch the
+     * <dt>{@code existing ID}</dt><dd>using an existing ID will touch the
      * ID (make the date current)</dd>
      * </dl>
      * Generated IDs and timestamps are printed to the output stream, unless
-     * using the <code>--t</code> option (in which case the root file of the
+     * using the {@code --t} option (in which case the root file of the
      * bundle itself is modified).
      *
      * @param args the command line arguments for the tool

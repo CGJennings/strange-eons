@@ -28,7 +28,7 @@ public interface ViewTab {
 
     /**
      * Returns a component that will display the content of this tab. If this
-     * method returns <code>null</code>, then nothing will be added to the view
+     * method returns {@code null}, then nothing will be added to the view
      * for this project.
      *
      * @param v the view that this tab will appear in

@@ -16,11 +16,11 @@ public interface NamedObjectDatabase {
 
     /**
      * Returns the object associated with the requested name, or
-     * <code>null</code> if there is no object associated with the name.
+     * {@code null} if there is no object associated with the name.
      *
      * @param name the object name to return
-     * @return the value of the object in the database, or <code>null</code>
-     * @throws NullPointerException if name is <code>null</code>
+     * @return the value of the object in the database, or {@code null}
+     * @throws NullPointerException if name is {@code null}
      */
     Object getObject(String name);
 
@@ -31,7 +31,7 @@ public interface NamedObjectDatabase {
      *
      * @param name the name of the object to return
      * @param object the object to associate with the name in the database
-     * @throws NullPointerException if the name or object is <code>null</code>
+     * @throws NullPointerException if the name or object is {@code null}
      * @throws IllegalArgumentException if the name is already associated with
      * an object
      */
@@ -41,7 +41,7 @@ public interface NamedObjectDatabase {
      * Removes the object with the requested name, if any.
      *
      * @param name the name of the object to remove
-     * @throws NullPointerException if name is <code>null</code>
+     * @throws NullPointerException if name is {@code null}
      */
     void removeObject(String name);
 

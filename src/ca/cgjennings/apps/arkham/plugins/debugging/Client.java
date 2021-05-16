@@ -156,14 +156,14 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Sends <code>command</code> to the debug server with the given arguments,
+     * Sends {@code command} to the debug server with the given arguments,
      * returning the response as an array of lines.
      *
      * @param command the command to perform
-     * @param args the arguments (may be <code>null</code> if no arguments)
+     * @param args the arguments (may be {@code null} if no arguments)
      * @return the result of the command as an array of lines, or
-     * <code>null</code> if there was an error
-     * @throws NullPointerException if <code>name</code> is null
+     * {@code null} if there was an error
+     * @throws NullPointerException if {@code name} is null
      * @throws IllegalArgumentException if the number of arguments is incorrect
      */
     private String[] perform(Command command, String... args) {
@@ -183,7 +183,7 @@ public final class Client extends javax.swing.JFrame {
      * @param expression the expression to evaluate
      * @param stackFrame the stack frame to evaluate (0 for the top frame, -1 to
      * use the default frame)
-     * @return the value of the expression as a string, or <code>null</code>
+     * @return the value of the expression as a string, or {@code null}
      */
     private String eval(String expression, int stackFrame) {
         threadAssert();
@@ -200,9 +200,9 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Returns <code>true</code> if a script is currently interrupted.
+     * Returns {@code true} if a script is currently interrupted.
      *
-     * @return <code>true</code> if connected to a server and the client has
+     * @return {@code true} if connected to a server and the client has
      * detected that the server has reached a breakpoint
      */
     private boolean isInterrupted() {
@@ -211,7 +211,7 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Returns <code>true</code> if the client is connected to a debug server.
+     * Returns {@code true} if the client is connected to a debug server.
      *
      * @return if the server was available the last time the client checked
      */
@@ -221,9 +221,9 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Actively checks whether the connection is still valid. Typically, this is
-     * called after {@link #perform} returns <code>null</code> to check whether
+     * called after {@link #perform} returns {@code null} to check whether
      * a connection is still valid. If the connection appears to be broken, this
-     * method will set the connection flag to <code>false</code> (see
+     * method will set the connection flag to {@code false} (see
      * {@link #isConnected()}), then start a thread that will attempt to
      * reconnect automatically.
      */
@@ -279,11 +279,11 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Sets the content of the file display to <code>sourceText</code> and
+     * Sets the content of the file display to {@code sourceText} and
      * scrolls to the indicated line.
      *
      * @param sourceText the source code of the file to display (may be
-     * <code>null</code>)
+     * {@code null})
      * @param line the number of the line to highlight (counting from 0)
      */
     private void showFile(String sourceText, int line) {
@@ -1528,13 +1528,13 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Ensures that the entries in <code>model</code> match the list of strings.
-     * If possible, the selection is maintained. Returns <code>true</code> if
+     * Ensures that the entries in {@code model} match the list of strings.
+     * If possible, the selection is maintained. Returns {@code true} if
      * the model had to be changed.
      *
      * @param values the list of strings that the model must match
      * @param model a model to synchronize with the list
-     * @return <code>true</code> if the model was updated
+     * @return {@code true} if the model was updated
      */
     private boolean updateModel(Object[] values, JList list, DefaultListModel model) {
         boolean update = false;
@@ -2316,7 +2316,7 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Returns the actual stack frame index for a stack frame argument. If
-     * <code>index</code> is less than 0, it will return the selected stack
+     * {@code index} is less than 0, it will return the selected stack
      * frame. The result is clamped the the number of frames.
      *
      * @param stackFrame the index to correct
@@ -2339,10 +2339,10 @@ public final class Client extends javax.swing.JFrame {
      * Performs the command without displaying a wait cursor.
      *
      * @param command the command to perform
-     * @param args the arguments (may be <code>null</code> if no arguments)
+     * @param args the arguments (may be {@code null} if no arguments)
      * @return the result of the command as an array of lines, or
-     * <code>null</code> if there was an error
-     * @throws NullPointerException if <code>name</code> is null
+     * {@code null} if there was an error
+     * @throws NullPointerException if {@code name} is null
      * @throws IllegalArgumentException if the number of arguments is incorrect
      */
     private String[] performQuietly(Command command, String... args) {
@@ -2358,15 +2358,15 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Sends a command to the server and returns the reply. This is the internal
      * implementation used by {@link #perform} and {@link #performQuietly}. It
-     * is not restricted to commands enumerated by <code>Command</code>.
+     * is not restricted to commands enumerated by {@code Command}.
      *
      * @param name the raw string that names the command
-     * @param raw if <code>true</code>, the server reply is sent back verbatim
+     * @param raw if {@code true}, the server reply is sent back verbatim
      * (only used for debugging)
-     * @param args the arguments (may be <code>null</code> if no arguments)
+     * @param args the arguments (may be {@code null} if no arguments)
      * @return the result of the command as an array of lines, or
-     * <code>null</code> if there was an error
-     * @throws NullPointerException if <code>name</code> is null
+     * {@code null} if there was an error
+     * @throws NullPointerException if {@code name} is null
      */
     String[] send(String name, boolean raw, String... args) {
         Socket s = null;
@@ -2511,7 +2511,7 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Show or hide a wait cursor.
      *
-     * @param wait if <code>true</code>, show a wait cursor
+     * @param wait if {@code true}, show a wait cursor
      */
     private void waitCursor(boolean wait) {
         if (!EventQueue.isDispatchThread()) {
@@ -2743,11 +2743,11 @@ public final class Client extends javax.swing.JFrame {
         /**
          * For the given table and point, try to find an identifier to look up.
          * If found, try to determine a value. If a value can be determined,
-         * return it as a string. Otherwise return <code>null</code>.
+         * return it as a string. Otherwise return {@code null}.
          *
          * @param t the table (normally sourceTable)
          * @param p the point in the table
-         * @return a valid JS identifier or dot-expression, or <code>null</code>
+         * @return a valid JS identifier or dot-expression, or {@code null}
          */
         public String identifierUnderPoint(JTable t, Point p) {
             final int row = t.rowAtPoint(p);
@@ -2953,15 +2953,15 @@ public final class Client extends javax.swing.JFrame {
 
         /**
          * Updates whether this line info represents the line as being a valid
-         * breakpoint and having a break set, and returns <code>true</code> if
+         * breakpoint and having a break set, and returns {@code true} if
          * this changes the internal state of this object. This does not effect
          * whether the line has a breakpoint on the server.
          *
-         * @param breakable if <code>true</code> represents that the line should
+         * @param breakable if {@code true} represents that the line should
          * be breakable
-         * @param breakpoint if <code>true</code> represents that the line has a
+         * @param breakpoint if {@code true} represents that the line has a
          * breakpoint set
-         * @return <code>true</code> if the internal representation of the line
+         * @return {@code true} if the internal representation of the line
          * changes as a result
          */
         public boolean setBreak(boolean breakable, boolean breakpoint) {
@@ -3321,16 +3321,16 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Convert a sequence of expression names separated by null characters into
-     * a tree path in the scope tree. If <code>openPath</code> is
-     * <code>true</code>, the scope nodes will be opened as the path is decoded.
+     * a tree path in the scope tree. If {@code openPath} is
+     * {@code true}, the scope nodes will be opened as the path is decoded.
      * This is necessary when the tree is being updated after reaching a new
      * breakpoint since the tree model might be new and thus not have the
      * necessary children installed.
      *
      * @param expr the expression to expand
-     * @param openPath if <code>true</code> expands the tree as it goes
+     * @param openPath if {@code true} expands the tree as it goes
      * @return the path used to access this expression in the scope tree, or
-     * <code>null</code>
+     * {@code null}
      */
     private TreePath expressionToTreePath(String expr, boolean openPath) {
         if (expr == null) {
@@ -3530,10 +3530,10 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Reloads the list of available tables from the server, in case a new table
      * generator has been registered. By default, this is done only if
-     * <code>INFO_TABLE_LIST_UPDATE_DELAY</code> ms have elapsed since the last
+     * {@code INFO_TABLE_LIST_UPDATE_DELAY} ms have elapsed since the last
      * update.
      *
-     * @param force if <code>true</code>, forces the list to be updated no
+     * @param force if {@code true}, forces the list to be updated no
      * matter how recently this was last called
      */
     private void updateInfoTableList(boolean force) {

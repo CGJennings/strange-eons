@@ -292,8 +292,8 @@ public final class UILibraryHelper {
         /**
          * Adds a listener for changes to the selected button. This is only
          * fired if the user selects a button, not if the button is selected by
-         * calling <code>setSelected(true)</code>. To simulate the user clicking
-         * a button, call its <code>doClick()</code> method. The action event
+         * calling {@code setSelected(true)}. To simulate the user clicking
+         * a button, call its {@code doClick()} method. The action event
          * that is generated will have this as its source and the command string
          * will be equal to the setting value of the selected button.
          *

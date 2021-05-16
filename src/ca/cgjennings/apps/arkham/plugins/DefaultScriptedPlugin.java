@@ -34,7 +34,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
 
     /**
      * Creates a new scripted plug-in for the script identified by
-     * <code>scriptId</code>, which is a script identifier in the format
+     * {@code scriptId}, which is a script identifier in the format
      * specified for plug-in root files, namely a resource path for script file,
      * optionally starting with the prefix <tt>script:</tt>. (The script file
      * name presented to the script monkey and script debugger will never have
@@ -84,12 +84,12 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     /**
      * <b>Scripted Plug-in Notes:</b> The script will be evaluated (so any code
      * with global scope will be run). Then, if the script defines an
-     * <code>initialize()</code> function, it will be called, and if it returns
-     * <code>false</code>, then this method will return <code>false</code>.
+     * {@code initialize()} function, it will be called, and if it returns
+     * {@code false}, then this method will return {@code false}.
      * Otherwise, the plug-in's name, description, type, and version will be
-     * obtained and cached by calling the functions <code>getName()</code>,
-     * <code>getDescription()</code>, <code>getPluginType()</code>, and
-     * <code>getVersion()</code>, respectively.
+     * obtained and cached by calling the functions {@code getName()},
+     * {@code getDescription()}, {@code getPluginType()}, and
+     * {@code getVersion()}, respectively.
      * <p>
      * {@inheritDoc}
      */
@@ -154,7 +154,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     }
 
     /**
-     * <b>Scripted Plug-in Notes:</b> Calls the script's <code>unload()</code>
+     * <b>Scripted Plug-in Notes:</b> Calls the script's {@code unload()}
      * function, if any.
      * <p>
      * {@inheritDoc}
@@ -201,9 +201,9 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     }
 
     /**
-     * <b>Scripted Plug-in Notes:</b> If called with <code>show == true</code>,
-     * calls the script's <code>run()</code> function, if any. If called with
-     * <code>show == false</code>, calls the script's <code>hide()</code>
+     * <b>Scripted Plug-in Notes:</b> If called with {@code show == true},
+     * calls the script's {@code run()} function, if any. If called with
+     * {@code show == false}, calls the script's {@code hide()}
      * function, if any.
      * <p>
      * {@inheritDoc}
@@ -222,8 +222,8 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
 
     /**
      * <b>Scripted Plug-in Notes:</b> Returns the value of calling the script's
-     * <code>isShowing()</code> function, if any. Otherwise, returns
-     * <code>false</code>.
+     * {@code isShowing()} function, if any. Otherwise, returns
+     * {@code false}.
      * <p>
      * {@inheritDoc}
      */
@@ -278,7 +278,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
      *
      * @param name the name of the function to call
      * @param args an array of arguments to pass to the function
-     * @return the return value returned by the function, or <code>null</code>
+     * @return the return value returned by the function, or {@code null}
      */
     public Object call(String name, Object[] args) {
         return monkey.call(name, args);
@@ -290,7 +290,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
      * an image file with the same name (and in the same folder) as the plug-in
      * script, but with a <tt>.png</tt> or <tt>.jp2</tt> extension instead of a
      * <tt>.js</tt> extension. If no image file is found with one of these
-     * names, or if the image file cannot be read, <code>null</code> is
+     * names, or if the image file cannot be read, {@code null} is
      * returned.
      * <p>
      * {@inheritDoc}
@@ -344,8 +344,8 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     /**
      * <p>
      * <b>Scripted Plug-in Notes:</b> The default implementation returns the
-     * result of calling the script's <code>isUsable()</code> function, if any,
-     * and otherwise returns <code>true</code>.
+     * result of calling the script's {@code isUsable()} function, if any,
+     * and otherwise returns {@code true}.
      * <p>
      * {@inheritDoc}
      */
@@ -363,8 +363,8 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     /**
      * <p>
      * <b>Scripted Plug-in Notes:</b> The default implementation returns the
-     * result of calling the script's <code>getDefaultAcceleratorKey()</code>
-     * function, if any, and otherwise returns <code>null</code>.
+     * result of calling the script's {@code getDefaultAcceleratorKey()}
+     * function, if any, and otherwise returns {@code null}.
      * <p>
      * {@inheritDoc}
      */

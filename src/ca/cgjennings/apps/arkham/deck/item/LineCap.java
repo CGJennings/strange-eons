@@ -74,33 +74,6 @@ public enum LineCap implements IconProvider {
         return name;
     }
 
-//	/**
-//	 * Applies a model and renderer to a combo box so that the combo
-//	 * box can be used to select a a line join pattern.
-//	 * @return the modified combo box
-//	 */
-//	public static JComboBox createSelector( JComboBox box ) {
-//		LineCap[] values = LineCap.values();
-//		DefaultComboBoxModel model = new DefaultComboBoxModel( values );
-//		box.setModel( model );
-//		box.setEditable( false );
-//		box.setRenderer( new DefaultListCellRenderer() {
-//			@Override
-//			public Component getListCellRendererComponent( JList list, final Object value, int index, boolean isSelected, boolean cellHasFocus ) {
-//				String label;
-//				switch( (LineCap) value ) {
-//					case BUTT: label = string("style-li-butt"); break;
-//					case ROUND: label = string("style-li-round"); break;
-//					case SQUARE: label = string("style-li-square"); break;
-//					default: throw new AssertionError();
-//				}
-//				super.getListCellRendererComponent( list, label, index, isSelected, cellHasFocus );
-//				setIcon( new LineCapIcon( (LineCap) value ) );
-//				return this;
-//			}
-//		});
-//		return box;
-//	}
     private static final int IWIDTH = 16;
     private static final int IHEIGHT = 16;
 

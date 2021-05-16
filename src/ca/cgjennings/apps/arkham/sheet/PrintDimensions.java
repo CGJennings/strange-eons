@@ -44,7 +44,7 @@ public final class PrintDimensions {
      *
      * @param image the image whose pixel width and height will be used
      * @param pixelsPerInch the print resolution, in pixels per inch
-     * @throws NullPointerException if <code>image</code> is <code>null</code>
+     * @throws NullPointerException if {@code image} is {@code null}
      */
     public PrintDimensions(BufferedImage image, double pixelsPerInch) {
         this(image.getWidth(), image.getHeight(), pixelsPerInch);
@@ -89,11 +89,11 @@ public final class PrintDimensions {
     }
 
     /**
-     * Returns <code>true</code> if <code>obj</code> is a print dimensions
+     * Returns {@code true} if {@code obj} is a print dimensions
      * instance that represents the same printed size as this instance.
      *
      * @param obj the object to compare this to
-     * @return <code>true</code> if and only if they are print dimensions of the
+     * @return {@code true} if and only if they are print dimensions of the
      * same size, within one one hundred thousandth of a point in any dimension
      */
     @Override
@@ -109,11 +109,11 @@ public final class PrintDimensions {
     }
 
     /**
-     * Returns <code>true</code> if <code>other</code> represents the same
+     * Returns {@code true} if {@code other} represents the same
      * printed size as this.
      *
      * @param other the object to compare this to
-     * @return <code>true</code> if and only if they are print dimensions of the
+     * @return {@code true} if and only if they are print dimensions of the
      * same size, within one one hundred thousandth of a point in any dimension
      */
     public boolean equals(PrintDimensions other) {

@@ -107,10 +107,10 @@ public class RecentFiles {
     }
 
     /**
-     * Returns <code>true</code> if the specified file is a member of the list.
+     * Returns {@code true} if the specified file is a member of the list.
      *
      * @param file the file to check for
-     * @return <code>true</code> if the list contains the file
+     * @return {@code true} if the list contains the file
      */
     public static synchronized boolean contains(File file) {
         return files.contains(file);
@@ -295,15 +295,15 @@ public class RecentFiles {
     }
 
     /**
-     * Returns <code>true</code> is a file is (likely) a project. This method
+     * Returns {@code true} is a file is (likely) a project. This method
      * may be faster than calling {@link Project#isProjectFolder(java.io.File)}
      * and {@link Project#isProjectPackage(java.io.File)}, but it may sometimes
      * produce false positives as well.
      *
      * @param file the file to test
-     * @param thorough if <code>false</code>, a quick test is performed; if
-     * <code>true</code>, a more thorough test is performed
-     * @return <code>true</code> if the file is likely a project
+     * @param thorough if {@code false}, a quick test is performed; if
+     * {@code true}, a more thorough test is performed
+     * @return {@code true} if the file is likely a project
      */
     static boolean isProjectFile(File file, boolean thorough) throws IOException {
         if (file == null || !file.exists()) {

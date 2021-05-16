@@ -48,7 +48,7 @@ import resources.Settings;
 
 /**
  * An object that can determine metadata for one or more file types. Note that
- * if {@link #appliesTo} returns <code>false</code> for a given member, then the
+ * if {@link #appliesTo} returns {@code false} for a given member, then the
  * result of passing that member to any other method is undefined.
  *
  * <p>
@@ -69,14 +69,14 @@ public class MetadataSource {
     }
 
     /**
-     * Returns <code>true</code> if this source is intended to provide metadata
-     * for a given project member. The base class returns <code>true</code> for
+     * Returns {@code true} if this source is intended to provide metadata
+     * for a given project member. The base class returns {@code true} for
      * anything, as it provides the fallback implementation for unspecialized
      * file types.
      *
      * @param m the member to check for applicability
-     * @return <code>true</code> if this source can provide metadata about the
-     * specified member, otherwise <code>false</code>
+     * @return {@code true} if this source can provide metadata about the
+     * specified member, otherwise {@code false}
      */
     public boolean appliesTo(Member m) {
         return true;
@@ -85,16 +85,16 @@ public class MetadataSource {
     /**
      * After locating the correct source for a given member, a specific instance
      * is requested by calling this method. The base class simply returns
-     * <code>this</code>, which shares the source with all members that it
+     * {@code this}, which shares the source with all members that it
      * applies to. Subclasses may return an instance that is unique to a
      * particular member. For example, they might supply a unique icon that is a
      * thumbnail version of the member.
      *
      * @param m the member to request a more specific source for
      * @return a source that provides the most specific available data for
-     * <code>m</code>, possibly <code>this</code>
+     * {@code m}, possibly {@code this}
      * @throws IllegalArgumentException if this source does not apply to
-     * <code>m</code>
+     * {@code m}
      */
     public MetadataSource getSpecificInstanceFor(Member m) {
         if (!appliesTo(m)) {
@@ -108,7 +108,7 @@ public class MetadataSource {
      * specified member.
      *
      * @param m the member to fetch a description of
-     * @return a short description of <code>m</code>, typically 2-3 words
+     * @return a short description of {@code m}, typically 2-3 words
      */
     public String getDescription(Member m) {
         String type = null;
@@ -196,7 +196,7 @@ public class MetadataSource {
      * types, and otherwise attempts to fetch the system icon for the file type.
      *
      * @param m the member to locate an icon for
-     * @return an icon appropriate for <code>m</code>
+     * @return an icon appropriate for {@code m}
      */
     public Icon getIcon(Member m) {
         if (!m.getFile().exists()) {
@@ -383,7 +383,7 @@ public class MetadataSource {
      * as a {@link Map}. Unlike {@link #fillInMetadata}, this method will block:
      * the returned map will include all available metadata. The map's iterator
      * is guaranteed to return keys in the same order as they would have been
-     * added in by <code>fillInMetadata</code>. Be aware that the keys in this
+     * added in by {@code fillInMetadata}. Be aware that the keys in this
      * map are the names of the metadata entries, and that these are typically
      * localized. Therefore, the key names will vary depending on the interface
      * locale.
@@ -440,11 +440,11 @@ public class MetadataSource {
     /**
      * Returns a character set encoding for the specified member if it
      * represents a character-based file. If it is not, then this method returns
-     * <code>null</code>.
+     * {@code null}.
      *
      * @param m a member to obtain a character set for
      * @return the character set to use when reading the member as a character
-     * stream, or <code>null</code> if the member is not a kind of text file
+     * stream, or {@code null} if the member is not a kind of text file
      * known to this source
      */
     public Charset getDefaultCharset(Member m) {
@@ -522,7 +522,7 @@ public class MetadataSource {
          * allows the source to terminate expensive operations that are no
          * longer of interest. This may be called from any thread.
          *
-         * @return <code>true</code> if the consumer is still interested in this
+         * @return {@code true} if the consumer is still interested in this
          * data
          */
         public boolean isValid();
@@ -1214,9 +1214,9 @@ public class MetadataSource {
         }
 
         /**
-         * If <code>autopause</code> is <code>true</code>, then
-         * <code>pause()</code> will be called before calling
-         * <code>fillInThreadedMetadataImpl</code>. If the property consumer
+         * If {@code autopause} is {@code true}, then
+         * {@code pause()} will be called before calling
+         * {@code fillInThreadedMetadataImpl}. If the property consumer
          * becomes invalid during the pause, then the threaded metadata will not
          * be requested.
          *
@@ -1247,14 +1247,14 @@ public class MetadataSource {
         private static Executor executor = Executors.newSingleThreadExecutor();
 
         /**
-         * Briefly pauses the current thread, then returns <code>false</code> if
+         * Briefly pauses the current thread, then returns {@code false} if
          * the property consumer is no longer valid or the thread was
          * interrupted. This is called at the start of the background thread if
          * the autopause option is enabled. It prevents the generation of
          * expensive metadata when the user is quickly moving through the
          * project members, such as when navigating the tree with the keyboard.
          *
-         * @return <code>true</code> if the thread should proceed with
+         * @return {@code true} if the thread should proceed with
          * generating metadata
          */
         protected boolean pause(PropertyConsumer pc) {

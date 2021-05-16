@@ -51,9 +51,9 @@ public final class StrokeFilter extends AbstractImageFilter {
      * Creates a new stroke filter that strokes with the specified width and
      * colour along the outside edge of the image shape.
      *
-     * @param color the pen colour, as a <code>Color</code> object
+     * @param color the pen colour, as a {@code Color} object
      * @param width the pen width, in pixels
-     * @throws NullPointerException if the colour is <code>null</code>
+     * @throws NullPointerException if the colour is {@code null}
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(Color color, int width) {
@@ -65,11 +65,11 @@ public final class StrokeFilter extends AbstractImageFilter {
      * Creates a new stroke filter that strokes with the specified width and
      * colour along the specified edge of the image shape.
      *
-     * @param color the pen colour, as a <code>Color</code> object
+     * @param color the pen colour, as a {@code Color} object
      * @param width the pen width, in pixels
      * @param position the side of the edge to stroke
      * @throws NullPointerException if the colour or position is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(Color color, int width, Position position) {
@@ -86,7 +86,7 @@ public final class StrokeFilter extends AbstractImageFilter {
      * @param width the pen width, in pixels
      * @param position the side of the edge to stroke
      * @throws NullPointerException if the colour or position is
-     * <code>null</code>
+     * {@code null}
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(int color, int width, Position position) {
@@ -109,7 +109,7 @@ public final class StrokeFilter extends AbstractImageFilter {
      *
      * @param position whether the stroke falls outside, inside, or on the image
      * edge
-     * @throws NullPointerException if the position is <code>null</code>
+     * @throws NullPointerException if the position is {@code null}
      */
     public void setPosition(Position position) {
         if (position == null) {
@@ -201,8 +201,8 @@ public final class StrokeFilter extends AbstractImageFilter {
     /**
      * Sets whether the pen shape is rounded.
      *
-     * @param roundedPen <code>true</code> if the pen is rounded;
-     * <code>false</code> if the pen is squared
+     * @param roundedPen {@code true} if the pen is rounded;
+     * {@code false} if the pen is squared
      */
     public void setRoundedPen(boolean roundedPen) {
         round = roundedPen;
@@ -211,7 +211,7 @@ public final class StrokeFilter extends AbstractImageFilter {
     /**
      * Returns whether the pen shape is rounded.
      *
-     * @return <code>true</code> if the pen is rounded; <code>false</code> if
+     * @return {@code true} if the pen is rounded; {@code false} if
      * the pen is squared
      */
     public boolean isRoundedPen() {
