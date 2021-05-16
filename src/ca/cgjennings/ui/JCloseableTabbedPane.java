@@ -33,9 +33,9 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
                     if (index < 0) {
                         return;
                     }
-                    if ((e.getModifiers() & MouseEvent.SHIFT_MASK) != 0) {
+                    if ((e.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0) {
                         closeAllBut(-1);
-                    } else if ((e.getModifiers() & (MouseEvent.ALT_MASK | MouseEvent.META_MASK)) != 0) {
+                    } else if ((e.getModifiersEx() & (MouseEvent.ALT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) != 0) {
                         closeAllBut(index);
                     } else {
                         fireTabClosing(index, isDirty(index));
