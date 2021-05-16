@@ -383,6 +383,11 @@ public final class StrangeEons {
                 System.exit(0);
             }
 
+            if( commandLineArguments.xDisablePluginLoading) {
+                BundleInstaller.disablePluginLoading();
+                log.info("disabled plug-in loading");
+            }
+
             applyGraphicsOptions(commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
             applyTextAntialiasingOptions(commandLineArguments.xAAText);
             initStage1();
