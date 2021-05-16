@@ -79,7 +79,7 @@ class DebuggerFeedbackProvider {
             Object src = e.getSource();
             if (src == launchItem) {
                 try {
-                    ScriptDebugging.getInstaller().startClient(null);
+                    ScriptDebugging.getInstaller().startClient();
                 } catch (IOException ex) {
                     StrangeEons.log.log(Level.WARNING, "launch failed", ex);
                 }

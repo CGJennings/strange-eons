@@ -1,12 +1,15 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
+import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.project.Open;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.io.StreamPump;
+import ca.cgjennings.util.CommandFormatter;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -243,11 +246,8 @@ public class ScriptDebugging {
 
         /**
          * Start or display the debug client window.
-         *
-         * @param launchParam a setting value that can be used to modify
-         * behaviour; use <code>null</code> for default value
          */
-        public void startClient(String launchParam) throws IOException;
+        public void startClient() throws IOException;
 
         /**
          * Returns <code>true</code> if the debugging client is currently
@@ -291,7 +291,7 @@ public class ScriptDebugging {
 
                 if (Settings.getShared().getYesNo("script-debug-client-autostart")) {
                     try {
-                        startClient(null);
+                        startClient();
                     } catch (IOException e) {
                         StrangeEons.log.log(Level.WARNING, "failed to start client with default command", e);
                     }
@@ -305,51 +305,41 @@ public class ScriptDebugging {
         }
 
         @Override
-        public void startClient(String launchCommand) throws IOException {
+        public void startClient() throws IOException {
             if (isClientRunning()) {
                 return;
             }
 
-            if (launchCommand == null) {
-                launchCommand = Settings.getUser().get("script-debug-client-jvm");
+            final DefaultScriptDebugger server = DefaultScriptDebugger.getInstance();
+            final String host = server.getHost();
+            final String port = String.valueOf(server.getPort());
+
+            String userOverride = Settings.getUser().get("script-debug-client-launch", null);
+            if(userOverride != null) {
+                CommandFormatter cf = new DefaultCommandFormatter();
+                cf.setVariable('h', host);
+                cf.setVariable('p', port);
+                client = new Subprocess(cf.formatCommand(userOverride));
+            } else {
+                client = Subprocess.launch(
+                        "-Xshare:off", "-Xms64m",
+                        "debugger",
+                        "--host", host,
+                        "--port", port
+                );
             }
-
-            String sejar = BundleInstaller.getApplicationLibrary().getAbsolutePath();
-            String command = launchCommand.replace("%%", "%\0").replace("%j", System.getProperty("java.class.path", sejar)).replace("%\0", "%").trim();
-
-            StrangeEons.log.log(Level.INFO, "launching client process: \"{0}\"", command);
-
-            ProcessBuilder pb = new ProcessBuilder(Open.splitCommand(command));
-            pb.redirectErrorStream(true);
-            client = pb.start();
-            Thread t = new Thread("Debug client output stream pipe") {
-                @Override
-                public void run() {
-                    while (client != null) {
-                        try {
-                            StreamPump.copy(client.getInputStream(), System.out);
-                            StrangeEons.log.log(Level.INFO, "debugger client return value: {0}", client.exitValue());
-                            client = null;
-                        } catch (IOException e) {
-                            StrangeEons.log.log(Level.SEVERE, "unexpected error while pumping debug client I/O", e);
-                            if (++errCount == 5) {
-                                StrangeEons.log.log(Level.SEVERE, "error limit reached: giving up on client");
-                                client = null;
-                            }
-                        }
-                    }
-                }
-                private int errCount;
-            };
-            t.setDaemon(true);
-            t.start();
+            client.setSurvivor(true);
+            client.setExitCodeShown(false);
+            client.setStreamIORedirected(false);
+            client.start();
         }
 
-        private volatile Process client;
+        private volatile Subprocess client;
 
         @Override
         public boolean isClientRunning() {
-            return client != null || DefaultScriptDebugger.isClientConnected();
+            Subprocess theClient = client;
+            return (theClient != null && theClient.isRunning()) || DefaultScriptDebugger.isClientConnected();
         }
     };
 }

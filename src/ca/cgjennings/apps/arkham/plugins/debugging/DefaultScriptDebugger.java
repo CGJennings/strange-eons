@@ -145,6 +145,13 @@ public final class DefaultScriptDebugger {
         }
     }
 
+    /** Return the shared instance, or null. */
+    static DefaultScriptDebugger getInstance() {
+        synchronized (DefaultScriptDebugger.class) {
+            return theDebugger;
+        }
+    }
+
     /**
      * Returns <code>true</code> if a client is connected to the debugger. Since
      * the client does not maintain a continuous connection, this method cannot

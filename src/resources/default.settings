@@ -436,11 +436,22 @@ pack-bundle-strip-meta = yes
 # Default settings for bundle testing
 test-bundle-log = ALL
 test-bundle-no-plugins = yes
-test-bundle-jvm = java -Xmx2g -cp "%j" strangeeons
+test-bundle-vm-args =
 test-bundle-args =
 # if yes, a special testing theme will override the user-selected theme
 # to make it easy to tell which instance of SE is the test version
 test-bundle-use-testing-theme = yes
+# If this setting is defined, it will override the default command used to
+# launch the app in plug-in test mode. The following variables can be used:
+#
+# %j - the path to the Java runtime executable
+# %v - the virtual machine arguments used to launch the main app
+# %c - the class path used to launch the main app
+#
+# The default is not to define this key, meaning a default method will be used
+# that may change from version to version.
+#
+# test-bundle-launch = %j %v -cp %c
 
 # If a subprocess is created with the command name "java", then the following
 # will be substituted as the path to the command. This allows you to name a specific
@@ -590,8 +601,19 @@ script-debug-port = 8888
 # Autolaunch client when debugging is enabled
 script-debug-client-autostart = yes
 
-# Command to launch the debugger client
-script-debug-client-jvm = java -Xms64m -cp "%j" debugger
+# If this setting is defined, it will override the default command used to
+# launch the script debugger client. The following variables can be used:
+#
+# %j - the path to the Java runtime executable
+# %v - the virtual machine arguments used to launch the main app
+# %c - the class path used to launch the main app
+# %h - the host name of the debug server
+# %p - the port number of the debug server
+#
+# The default is not to define this key, meaning a default method will be used
+# that may change from version to version.
+#
+# script-debug-client-launch = %j -cp %c debugger --host %h --port %p
 
 
 
