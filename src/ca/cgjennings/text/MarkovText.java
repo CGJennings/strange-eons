@@ -380,28 +380,6 @@ public class MarkovText {
         return lhs == len ? -1 : 1;
     }
 
-//    /** Debugging: print a suffix array entry. */
-//    private void printSuffix( Integer[] suffixArray, int s ) {
-//        System.out.format( "%4d: ", s );
-//        for( int i = suffixArray[s]; i < text.length; ++i ) {
-//            System.out.print( text[i] );
-//        }
-//        System.out.println();
-//    }
-//
-//    /** Debugging: print the letter-level suffix array. */
-//    private void printCharSuffixArray() {
-//        for( int i = 0; i < letterSuffixes.length; ++i ) {
-//            printSuffix( letterSuffixes, i );
-//        }
-//    }
-//
-//    /** Debugging: print the word-level suffix array. */
-//    private void printWordSuffixArray() {
-//        for( int i = 0; i < wordSuffixes.length; ++i ) {
-//            printSuffix( wordSuffixes, i );
-//        }
-//    }
     /**
      * The model text to use, with each word separated by exactly one space.
      */
