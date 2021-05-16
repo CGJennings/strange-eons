@@ -437,7 +437,7 @@ public class RawSettings {
                                 migrateTable.put(s, s);
                             }
                         }
-                    } else if (line.indexOf("->") >= 0) {
+                    } else if (line.contains("->")) {
                         String[] tokens = line.split("\\s*\\-\\>\\s*");
                         migrateTable.put(tokens[0], tokens[1]);
                     } else {

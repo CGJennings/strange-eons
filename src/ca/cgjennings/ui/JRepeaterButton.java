@@ -168,7 +168,7 @@ public class JRepeaterButton extends JButton {
             @Override
             public void mousePressed(MouseEvent e) {
                 if (e.getButton() == MouseEvent.BUTTON1) {
-                    modifiers = e.getModifiers();
+                    modifiers = e.getModifiersEx();
                 }
             }
         });

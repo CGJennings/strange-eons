@@ -118,34 +118,34 @@ public interface PluginContext {
     /**
      * A modifier constant indicating that a Shift key was held down.
      */
-    public static final int SHIFT = InputEvent.SHIFT_MASK;
+    public static final int SHIFT = InputEvent.SHIFT_DOWN_MASK;
     /**
      * A modifier constant indicating that an Alt key was held down.
      */
-    public static final int ALT = InputEvent.ALT_MASK;
+    public static final int ALT = InputEvent.ALT_DOWN_MASK;
     /**
      * A modifier constant indicating that a Control or Ctrl key was held down.
      */
-    public static final int CONTROL = InputEvent.CTRL_MASK;
+    public static final int CONTROL = InputEvent.CTRL_DOWN_MASK;
     /**
      * A modifier constant indicating that a Control or Ctrl key was held down.
      */
-    public static final int CTRL = InputEvent.CTRL_MASK;
+    public static final int CTRL = InputEvent.CTRL_DOWN_MASK;
     /**
      * A modifier constant indicating that a Meta key was held down.
      */
-    public static final int META = InputEvent.META_MASK;
+    public static final int META = InputEvent.META_DOWN_MASK;
     /**
      * A modifier constant indicating that the Command key (on Apple computers)
      * was held down.
      */
-    public static final int COMMAND = InputEvent.META_MASK;
+    public static final int COMMAND = InputEvent.META_DOWN_MASK;
     /**
      * A modifier constant indicating that the key used as a menu accelerator
      * key on this platform was held down. (For example, it maps to Ctrl on
      * Windows and Command on Mac.)
      */
-    public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+    public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
     // Backwards compatibility
 
