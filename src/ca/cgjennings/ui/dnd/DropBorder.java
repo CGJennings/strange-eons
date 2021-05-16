@@ -15,7 +15,7 @@ import javax.swing.border.Border;
 /**
  * A temporary border that can be installed on drop targets during a drag
  * operation to provide visual feedback. It draws itself over the existing
- * border (or does nothing if the existing border is <code>null</code>).
+ * border (or does nothing if the existing border is {@code null}).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

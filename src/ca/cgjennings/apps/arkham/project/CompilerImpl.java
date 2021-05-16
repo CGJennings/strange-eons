@@ -13,7 +13,7 @@ import static resources.Language.string;
 
 /**
  * A default implementation of {@link Compiler} that uses the Java 6
- * <code>ToolProvider</code> API to locate a Java compiler. This class (and the
+ * {@code ToolProvider} API to locate a Java compiler. This class (and the
  * compiler implementation) will be lazily loaded by {@link Compile} when
  * required.
  *
@@ -23,7 +23,7 @@ class CompilerImpl implements Compile.Compiler {
 
     /**
      * Attempts to locate a Java compiler. If none is available, throws
-     * <code>UnsupportedOperationException</code>.
+     * {@code UnsupportedOperationException}.
      */
     public CompilerImpl() {
         javac = ToolProvider.getSystemJavaCompiler();

@@ -25,7 +25,7 @@ import java.io.OutputStream;
  * <ol>
  * <li>Call {@link #selectLocation} to allow the user to select a destination
  * for the container or perform other configuration steps. If this returns
- * <code>false</code>, cancel the export.
+ * {@code false}, cancel the export.
  * <li>Call {@link #createContainer} to start the export process by creating the
  * container.
  * <li>Call {@link #addEntry} once for each file to be written. For each call,
@@ -61,7 +61,7 @@ import java.io.OutputStream;
  * <p>
  * Note that there is typically only one instance of a given export container
  * that is shared by all users. It is therefore vital that users of a contain
- * surround its use with appropriate <code>try</code> ... <code>catch</code>
+ * surround its use with appropriate {@code try} ... {@code catch}
  * blocks. Otherwise, an error may leave the container instance in an invalid
  * state and it will not be usable again until the application is restarted.
  *
@@ -93,15 +93,15 @@ public interface ExportContainer {
      * container. The dialog is not necessarily a file dialog; for example, it
      * might prompt the user to enter account credentials for an online service
      * or enter the address of an FTP server. It is not required to show any
-     * dialog at all, and may simply return <code>true</code> if there is
+     * dialog at all, and may simply return {@code true} if there is
      * nothing for the user to decide.
      *
      * @param baseName a suggested base name that can be used to compose a file
      * or folder name for the container
      * @param locationHint an optional component that may be used as a hint to
      * locate any dialogs that must be created
-     * @return <code>true</code> if the export should proceed, or
-     * <code>false</code> if the user cancels the operation
+     * @return {@code true} if the export should proceed, or
+     * {@code false} if the user cancels the operation
      */
     boolean selectLocation(String baseName, Component locationHint);
 
@@ -128,7 +128,7 @@ public interface ExportContainer {
     /**
      * Creates a new file in the container with the given name and returns an
      * output stream for the caller to write the file to. After writing the
-     * file, you are responsible for calling <code>close()</code> on the output
+     * file, you are responsible for calling {@code close()} on the output
      * stream.
      *
      * @param name the name of the file to create in the container
@@ -140,7 +140,7 @@ public interface ExportContainer {
     /**
      * Close the current container, allowing a new container to be created.
      *
-     * @param display if <code>true</code>, the user has requested that the
+     * @param display if {@code true}, the user has requested that the
      * container be "displayed"
      * @throws IOException if an I/O exception occurs
      */
@@ -154,9 +154,9 @@ public interface ExportContainer {
     void destroyContainer();
 
     /**
-     * Returns <code>true</code> if the container has user-configurable options.
+     * Returns {@code true} if the container has user-configurable options.
      *
-     * @return <code>true</code> if the container can be {@link #configure}d
+     * @return {@code true} if the container can be {@link #configure}d
      */
     boolean isConfigurable();
 
@@ -170,14 +170,14 @@ public interface ExportContainer {
 
     /**
      * Returns a hint as to whether a file format is supported. This method
-     * returns <code>true</code> if the file type is definitely supported. It
-     * returns <code>false</code> if the file type is not supported, or if the
+     * returns {@code true} if the file type is definitely supported. It
+     * returns {@code false} if the file type is not supported, or if the
      * container cannot determine whether the file type is supported.
      *
      * <p>
      * A common use of this method is to determine whether a container is
      * compatible with some kind of task being presented to the user. In these
-     * cases, implementations that always return <code>false</code> will not be
+     * cases, implementations that always return {@code false} will not be
      * included in the list of container choices presented to the user.
      *
      * <p>
@@ -198,8 +198,8 @@ public interface ExportContainer {
      *
      * @param extension the typical file format extension for the file, such as
      * "png" for PNG images
-     * @return <code>true</code> if the file type is definitely supported, and
-     * <code>false</code> otherwise
+     * @return {@code true} if the file type is definitely supported, and
+     * {@code false} otherwise
      */
     boolean isFileFormatSupported(String extension);
 }

@@ -7,13 +7,13 @@ import java.net.URL;
 import resources.ResourceKit;
 
 /**
- * A URL protocol handler for the <code>res:</code> protocol, which accesses
+ * A URL protocol handler for the {@code res:} protocol, which accesses
  * application resources.
  *
  * <p>
  * URLs consist of these segments (where [...] indicates an optional
  * segment):<br>
- * <code>res: [//] [/] [path/]* file</code><br>
+ * {@code res: [//] [/] [path/]* file}<br>
  * Where:<br>
  * <dl>
  * <dt>[//]<dd> is optional, but makes it easier to distinguish URLs from files
@@ -81,14 +81,14 @@ public class Handler extends MappedURLHandler {
 //import resources.ResourceKit;
 //
 ///**
-// * A URL protocol handler for the <code>res://</code> protocol, which access
+// * A URL protocol handler for the {@code res://} protocol, which access
 // * application resources.
 // *
 // * Note: the unusual class name is required for this class to be used
 // * by the default protocol handler factory.
 // *
 // * Valid URLs consist of these segments:<br>
-// * <code>res: [//] [/] [path/]* file</code><br>
+// * {@code res: [//] [/] [path/]* file}<br>
 // * Where:<br>
 // * <dl>
 // *  <dt>[//]<dd> is optional, but makes it easier to distinguish URLs from files

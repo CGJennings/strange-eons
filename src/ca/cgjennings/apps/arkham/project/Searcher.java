@@ -32,7 +32,7 @@ public class Searcher {
      * @param pattern the regular expression to search for
      * @param receiver the receiver to be notified of search results as they
      * become available
-     * @throws NullPointerException if any parameter is <code>null</code>
+     * @throws NullPointerException if any parameter is {@code null}
      */
     public Searcher(final Member parent, Pattern pattern, ResultReceiver receiver) {
         this(parent, pattern, receiver, 0);
@@ -160,7 +160,7 @@ public class Searcher {
     /**
      * Called to scan a file for matches to the specified pattern.
      *
-     * @param member the non-<code>null</code>, non-folder member to scan (if
+     * @param member the non-{@code null}, non-folder member to scan (if
      * possible)
      */
     private void scanFile(Member member) {
@@ -202,7 +202,7 @@ public class Searcher {
      * @param member the member being searched
      * @param reader a reader than can be used to read text content to be
      * searched
-     * @param isBinaryType <code>true</code> if the file is binary rather than a
+     * @param isBinaryType {@code true} if the file is binary rather than a
      * text file
      * @throws IOException if an I/O error occurs while reading the file
      */
@@ -236,12 +236,12 @@ public class Searcher {
     }
 
     /**
-     * Returns <code>true</code> if the given member should be skipped by the
-     * searcher. (The base class returns <code>false</code>, meaning that all
+     * Returns {@code true} if the given member should be skipped by the
+     * searcher. (The base class returns {@code false}, meaning that all
      * files are searched.)
      *
      * @param member the file to test
-     * @return <code>true</code> if the file should be excluded
+     * @return {@code true} if the file should be excluded
      */
     protected boolean isExcluded(Member member) {
         return false;
@@ -252,10 +252,10 @@ public class Searcher {
      * If the file is a known text file type, the default encoding for that type
      * will be returned. If the file is one of a small set of known binary file
      * types, returns an encoding suitable for that file type. Otherwise,
-     * returns <code>null</code> to indicate that the file cannot be scanned.
+     * returns {@code null} to indicate that the file cannot be scanned.
      *
      * @param member the member to determine an encoding for
-     * @return an encoding to use for scanning, or <code>null</code> if none
+     * @return an encoding to use for scanning, or {@code null} if none
      * applies
      * @see MetadataSource#getDefaultCharset
      */

@@ -152,7 +152,7 @@ public abstract class AbstractPixelwiseFilter extends AbstractImageFilter {
      * This method is called with a block of ARGB values to be filtered.
      * Subclasses must override this method to implement the actual filtering
      * algorithm by replacing each pixel value in the range
-     * <code>argb[start] ... argb[end-1]</code> with the filtered value.
+     * {@code argb[start] ... argb[end-1]} with the filtered value.
      *
      * @param argb an array of pixel data to filter
      * @param start the index of the first pixel to filter

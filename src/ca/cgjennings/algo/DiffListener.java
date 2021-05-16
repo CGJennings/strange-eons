@@ -5,7 +5,7 @@ package ca.cgjennings.algo;
  *
  * @param <E> the type of the elements that may be inserted, deleted, or
  * changed; for example, in a text file each element might be a
- * <code>String</code> representing a single line
+ * {@code String} representing a single line
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1
  */
@@ -16,9 +16,9 @@ public interface DiffListener<E> {
      * original to the changed sequence.
      *
      * @param original the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>original</code>
+     * {@link Diff#findChanges} as the parameter named {@code original}
      * @param changed the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>changed</code>
+     * {@link Diff#findChanges} as the parameter named {@code changed}
      * @param originalIndex the index in the original sequence at which this
      * event occurs
      * @param element the original element
@@ -30,9 +30,9 @@ public interface DiffListener<E> {
      * changed sequence.
      *
      * @param original the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>original</code>
+     * {@link Diff#findChanges} as the parameter named {@code original}
      * @param changed the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>changed</code>
+     * {@link Diff#findChanges} as the parameter named {@code changed}
      * @param originalIndex the index in the original sequence at which this
      * event occurs
      * @param insertedelement the element from the changed sequence that must be
@@ -45,9 +45,9 @@ public interface DiffListener<E> {
      * sequence.
      *
      * @param original the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>original</code>
+     * {@link Diff#findChanges} as the parameter named {@code original}
      * @param changed the array or list that was passed to
-     * {@link Diff#findChanges} as the parameter named <code>changed</code>
+     * {@link Diff#findChanges} as the parameter named {@code changed}
      * @param originalIndex the index in the original sequence at which this
      * event occurs
      * @param removedelement the element from the changed sequence that must be

@@ -119,17 +119,17 @@ public final class CodeFormatPage extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
 	/**
-	 * Returns <code>true</code> if compiler support was detected.
+	 * Returns {@code true} if compiler support was detected.
 	 *
-	 * @return <code>true</code> if Java compilation will be available in projects
+	 * @return {@code true} if Java compilation will be available in projects
 	 */
 	public boolean isCompilerAvailable() {
 		return compilerAvailable;
 	}
 
 	/**
-	 * Sets whether the compiled plug-in option (if <code>true</code>) or
-	 * scripted option (if <code>false</code>, the default).
+	 * Sets whether the compiled plug-in option (if {@code true}) or
+	 * scripted option (if {@code false}, the default).
 	 *
 	 * @param compiled whether the plug-in will be compiled
 	 */
@@ -142,10 +142,10 @@ public final class CodeFormatPage extends javax.swing.JPanel {
 	}
 
 	/**
-	 * Returns <code>true</code> if the compiled code option has been selected,
-	 * or <code>false</code> if the script code option is selected.
+	 * Returns {@code true} if the compiled code option has been selected,
+	 * or {@code false} if the script code option is selected.
 	 *
-	 * @return <code>true</code> if the plug-in will be compiled
+	 * @return {@code true} if the plug-in will be compiled
 	 */
 	public boolean isCompiledFormatSelected() {
 		return compiledBtn.isSelected();

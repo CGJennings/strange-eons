@@ -32,9 +32,9 @@ public final class ShapeUtilities {
      * @param shape the shape whose outline is to be measured
      * @return the sum of the lengths of the line segments of the flattened
      * curve
-     * @throws NullPointerException if shape is <code>null</code>
-     * @throws IllegalArgumentException if <code>flatness</code> or
-     * <code>limit</code> is less than 0
+     * @throws NullPointerException if shape is {@code null}
+     * @throws IllegalArgumentException if {@code flatness} or
+     * {@code limit} is less than 0
      */
     public static double pathLength(Shape shape) {
         return pathLength(shape, DEFAULT_FLATNESS, DEFAULT_LIMIT);
@@ -50,9 +50,9 @@ public final class ShapeUtilities {
      * and the flattened curve
      * @return the sum of the lengths of the line segments of the flattened
      * curve
-     * @throws NullPointerException if shape is <code>null</code>
-     * @throws IllegalArgumentException if <code>flatness</code> or
-     * <code>limit</code> is less than 0
+     * @throws NullPointerException if shape is {@code null}
+     * @throws IllegalArgumentException if {@code flatness} or
+     * {@code limit} is less than 0
      */
     public static double pathLength(Shape shape, double flatness) {
         return pathLength(shape, flatness, DEFAULT_LIMIT);
@@ -70,9 +70,9 @@ public final class ShapeUtilities {
      * will be generated for any curved segment of the path
      * @return the sum of the lengths of the line segments of the flattened
      * curve
-     * @throws NullPointerException if shape is <code>null</code>
-     * @throws IllegalArgumentException if <code>flatness</code> or
-     * <code>limit</code> is less than 0
+     * @throws NullPointerException if shape is {@code null}
+     * @throws IllegalArgumentException if {@code flatness} or
+     * {@code limit} is less than 0
      */
     @SuppressWarnings("fallthrough")
     public static double pathLength(Shape shape, double flatness, int limit) {
@@ -131,8 +131,8 @@ public final class ShapeUtilities {
 
     /**
      * Returns a {@link Shape} that is the difference of the two shape
-     * parameters: the result is the <code>lhs</code> shape with any parts that
-     * overlap the <code>rhs</code> removed. Neither of original shapes will be
+     * parameters: the result is the {@code lhs} shape with any parts that
+     * overlap the {@code rhs} removed. Neither of original shapes will be
      * modified.
      *
      * @param lhs the primary shape
@@ -166,7 +166,7 @@ public final class ShapeUtilities {
      * Returns a {@link Shape} that is the exclusive or of the two shape
      * parameters: areas in one shape or the other will be included in the
      * returned shape, excluding areas that are present in both. This is
-     * equivalent to <code>union(lhs,subtract(lhs,rhs))</code>. Neither of
+     * equivalent to {@code union(lhs,subtract(lhs,rhs))}. Neither of
      * original shapes will be modified.
      *
      * @param lhs the primary shape

@@ -19,7 +19,7 @@ public class KitUtilities {
 
 	/**
 	 * Creates one or more subfolders in a task folder. If path is
-	 * <code>null</code>, then this will create the plug-in's base location,
+	 * {@code null}, then this will create the plug-in's base location,
 	 * the location identified by the "Location" field of {@link NamePage}.
 	 * Typically, this is something like resources/myplugin. If path is non-null,
 	 * then it will create a subfolder (using path as the name) within the base location.
@@ -27,7 +27,7 @@ public class KitUtilities {
 	 * created. For example, "fonts/body" would create a fonts folder in the base
 	 * location, and a body folder within the fonts folder.
 	 *
-	 * <p>If the name page np is  <code>null</code>, then the task folder is used
+	 * <p>If the name page np is  {@code null}, then the task folder is used
 	 * as the base location.
 	 *
 	 * <p>If a folder that would have been created by this method already exists,
@@ -113,13 +113,13 @@ public class KitUtilities {
 
 	/**
 	 * Returns a File object for a file within a plug-in within the given task folder.
-	 * If the name page is non-<code>null</code>, then the base location given
+	 * If the name page is non-{@code null}, then the base location given
 	 * on that page will be the parent of the file. Otherwise, the task folder
 	 * will be the parent of the file. The path argument specifies a path
 	 * relative to this parent and ending in the file of interest.
 	 *
 	 * @param t the task folder that contains the plug-in files
-	 * @param np if non-<code>null</code>, used to determine the base location within the task
+	 * @param np if non-{@code null}, used to determine the base location within the task
 	 * @param path a path indicating the desired file location, using / to separate folders
 	 * @return the specified file within the task folder
 	 */

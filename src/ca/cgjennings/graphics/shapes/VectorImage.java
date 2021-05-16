@@ -45,7 +45,7 @@ public interface VectorImage {
     /**
      * Paints the image at the specified location and size in the user
      * coordinates of the provided graphics context. If the
-     * <code>fitToSize</code> parameter is <code>true</code>, then the aspect
+     * {@code fitToSize} parameter is {@code true}, then the aspect
      * ratio of the vector image will be maintained. If the aspect ratio of the
      * vector image does not match the specified width and height, then the
      * vector image will be scaled to just fit within the specified size, and
@@ -56,22 +56,22 @@ public interface VectorImage {
      * @param y the y-coordinate to render at
      * @param width the width to paint the image at
      * @param height the height to paint the image at
-     * @param fitToSize if <code>true</code>, the aspect ratio of the vector
+     * @param fitToSize if {@code true}, the aspect ratio of the vector
      * image will be maintained
      */
     void paint(Graphics2D g, double x, double y, double width, double height, boolean fitToSize);
 
     /**
      * Paints the image to cover the specified rectangle in the user coordinates
-     * of the provided graphics context. If the <code>fitToSize</code> parameter
-     * is <code>true</code>, then the aspect ratio of the vector image will be
+     * of the provided graphics context. If the {@code fitToSize} parameter
+     * is {@code true}, then the aspect ratio of the vector image will be
      * maintained. If the aspect ratio of the vector image does not match the
      * specified width and height, then the vector image will be scaled to just
      * fit within the specified size, and centered over the drawing area.
      *
      * @param g the graphics context to render into
      * @param paintRectangle the rectangle that the image should cover
-     * @param fitToSize if <code>true</code>, the aspect ratio of the vector
+     * @param fitToSize if {@code true}, the aspect ratio of the vector
      * image will be maintained
      */
     void paint(Graphics2D g, Rectangle2D paintRectangle, boolean fitToSize);
@@ -87,15 +87,15 @@ public interface VectorImage {
 
     /**
      * Creates a raster image from the vector image with the specified width and
-     * height (in pixels). If the <code>fitToSize</code> parameter is
-     * <code>true</code>, then the aspect ratio of the vector image will be
+     * height (in pixels). If the {@code fitToSize} parameter is
+     * {@code true}, then the aspect ratio of the vector image will be
      * maintained. If the aspect ratio of the vector image does not match the
      * specified width and height, then the vector image will be scaled to just
      * fit within the specified size, and centered over the drawing area.
      *
      * @param width the image width, in pixels
      * @param height the image height, in pixels
-     * @param fitToSize if <code>true</code>, the aspect ratio of the vector
+     * @param fitToSize if {@code true}, the aspect ratio of the vector
      * image will be maintained
      * @return a rendering of the vector image at the specified size
      */

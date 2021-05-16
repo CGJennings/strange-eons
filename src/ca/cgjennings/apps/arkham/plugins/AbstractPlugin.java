@@ -19,7 +19,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>true</code>.
+     * The abstract implementation returns {@code true}.
      */
     @Override
     public boolean initializePlugin(PluginContext context) {
@@ -68,7 +68,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>null</code>.
+     * The abstract implementation returns {@code null}.
      */
     @Override
     public String getPluginDescription() {
@@ -78,7 +78,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>1</code>.
+     * The abstract implementation returns {@code 1}.
      */
     @Override
     public float getPluginVersion() {
@@ -108,7 +108,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>false</code>.
+     * The abstract implementation returns {@code false}.
      */
     @Override
     public boolean isPluginShowing() {
@@ -118,7 +118,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>true</code>.
+     * The abstract implementation returns {@code true}.
      */
     @Override
     public boolean isPluginUsable() {
@@ -132,7 +132,7 @@ public abstract class AbstractPlugin implements Plugin {
      * located for an image with the same name as the class but with a
      * <tt>.png</tt> or <tt>.jp2</tt> extension. If found, it attempts to read
      * an image from the file. If successful, the image is returned; otherwise,
-     * <code>null</code> is returned.
+     * {@code null} is returned.
      */
     @Override
     public BufferedImage getRepresentativeImage() {
@@ -153,7 +153,7 @@ public abstract class AbstractPlugin implements Plugin {
     /**
      * {@inheritDoc}
      * <p>
-     * The abstract implementation returns <code>null</code>.
+     * The abstract implementation returns {@code null}.
      */
     @Override
     public String getDefaultAcceleratorKey() {

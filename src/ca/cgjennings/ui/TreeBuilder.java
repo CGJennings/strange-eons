@@ -8,7 +8,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 
 /**
- * A <code>TreeBuilder</code> aids in the dynamic construction of a
+ * A {@code TreeBuilder} aids in the dynamic construction of a
  * {@link TreeModel}. It operates under the assumption that the tree is
  * constructed from two kinds of nodes: containers and leaves. For example, if
  * building a tree from a directory structure, directories would be containers
@@ -39,7 +39,7 @@ public abstract class TreeBuilder<C, L> {
      * Adds a new node to the tree as a child of the specified parent container.
      *
      * @param parent the container to place the node in
-     * @param leaf the leaf to add; if <code>null</code> ensures that a node for
+     * @param leaf the leaf to add; if {@code null} ensures that a node for
      * the parent exists
      */
     public void add(C parent, L leaf) {
@@ -87,7 +87,7 @@ public abstract class TreeBuilder<C, L> {
      * for any valid input container, recursively calling this method will
      * eventually return the root container. For example, if the container type
      * is {@link File} and this method returns
-     * <code>container.getParent()</code>, then any directory added to the tree
+     * {@code container.getParent()}, then any directory added to the tree
      * would have to be a direct or indirect child of the file used to create
      * the root.
      *
@@ -110,7 +110,7 @@ public abstract class TreeBuilder<C, L> {
         /**
          * Sorts the children of this container.
          *
-         * @param allDescendants if <code>true</code>, the child containers are
+         * @param allDescendants if {@code true}, the child containers are
          * also sorted, recursively
          */
         @SuppressWarnings("unchecked")

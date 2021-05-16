@@ -115,8 +115,8 @@ public final class PSDImageReader {
      *
      * @param index the 0-based index of the layer
      * @return the layer at the requested index
-     * @throws IndexOutOfBoundsException if <code>index</code> &lt; 0 or
-     * <code>index</code> &gt;= {@link #getLayerCount}
+     * @throws IndexOutOfBoundsException if {@code index} &lt; 0 or
+     * {@code index} &gt;= {@link #getLayerCount}
      */
     public ImageLayer getLayer(int index) {
         if (index < 0 || index >= layers.length) {

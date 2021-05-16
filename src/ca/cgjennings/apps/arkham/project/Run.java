@@ -20,7 +20,7 @@ public class Run extends TaskAction {
     /**
      * Creates a new run or debug action, depending on the specified parameter.
      *
-     * @param debugAction if <code>true</code>, creates a debug action rather
+     * @param debugAction if {@code true}, creates a debug action rather
      * than a plain run action
      */
     public Run(boolean debugAction) {
@@ -60,8 +60,8 @@ public class Run extends TaskAction {
 
     /**
      * Run a script file as if using this action. The variables
-     * <code>project</code>, <code>task</code>, and <code>member</code> are
-     * passed to the script but may be <code>null</code> if the script does not
+     * {@code project}, {@code task}, and {@code member} are
+     * passed to the script but may be {@code null} if the script does not
      * rely on them. If the script is currently being edited by the application,
      * any unsaved changes will be saved before running.
      *
@@ -69,8 +69,8 @@ public class Run extends TaskAction {
      * @param project the project instance to pass to the script
      * @param task the task instance to pass to the script
      * @param member the member instance to pass to the script
-     * @return <code>true</code> if the script is successfully loaded and run
-     * @throws NullPointerException if <code>f</code> is <code>null</code>
+     * @return {@code true} if the script is successfully loaded and run
+     * @throws NullPointerException if {@code f} is {@code null}
      */
     public boolean runFile(File f, Project project, Task task, Member member) {
         if (f == null) {

@@ -80,7 +80,7 @@ public abstract class NewTaskType {
 
     /**
      * Returns a string that describes the type of task created by this
-     * <code>NewTaskType</code>. The default implementation returns
+     * {@code NewTaskType}. The default implementation returns
      * <tt>"TASK"</tt>, the generic task type. Returning <tt>"PROJECT"</tt> is
      * illegal, because that type is reserved to identify project folders. The
      * <tt>type</tt> setting of new tasks of this type will be set to the value
@@ -93,7 +93,7 @@ public abstract class NewTaskType {
      * Note that the type identifier returned by this method does not have to be
      * unique.
      *
-     * @return a non-<code>null</code> string describing the task type
+     * @return a non-{@code null} string describing the task type
      */
     public String getType() {
         return GENERIC_TYPE;
@@ -101,12 +101,12 @@ public abstract class NewTaskType {
 
     /**
      * Returns a string that describes the subtype of task created by this
-     * <code>NewTaskType</code>. This can be <code>null</code> to indicate no
-     * subtype. (The default implementation returns <code>null</code>.) The
+     * {@code NewTaskType}. This can be {@code null} to indicate no
+     * subtype. (The default implementation returns {@code null}.) The
      * <tt>subtype</tt> setting of new tasks of this type will be set to the
-     * value returned by this method if it is non-<code>null</code>.
+     * value returned by this method if it is non-{@code null}.
      *
-     * @return a string describing the task subtype, or <code>null</code>
+     * @return a string describing the task subtype, or {@code null}
      */
     public String getSubtype() {
         return null;
@@ -114,9 +114,9 @@ public abstract class NewTaskType {
 
     /**
      * Returns a string that identifies an image resource to be used to locate
-     * the icon image for this task type. If <code>null</code>, a default icon
+     * the icon image for this task type. If {@code null}, a default icon
      * will be used based on the project type. If this value is
-     * non-<code>null</code>, then the <tt>icon</tt> setting of new tasks of
+     * non-{@code null}, then the <tt>icon</tt> setting of new tasks of
      * this type will be set to the returned value. The icon used in the project
      * view can be changed during {@link #initializeNewTask} by changing the
      * value of this setting.
@@ -143,16 +143,16 @@ public abstract class NewTaskType {
      * have a new, empty task folder after adding the new task.
      *
      * <p>
-     * This method should return <code>true</code> if the initialization is
-     * successful. If it returns <code>false</code>, or the method throws an
+     * This method should return {@code true} if the initialization is
+     * successful. If it returns {@code false}, or the method throws an
      * exception, then the task folder will be deleted. If an exception was
      * thrown, then a generic error message will be displayed; if the method
-     * returns <code>false</code> then it is assumed that the method displayed
+     * returns {@code false} then it is assumed that the method displayed
      * its own, more specific message.
      *
      * @param project the project that the task was added to
      * @param task the {@link Member} that represents the new task's folder
-     * @return <code>true</code> if initialization succeeded
+     * @return {@code true} if initialization succeeded
      * @throws Throwable if an uncaught exception occurs during initialization
      */
     public boolean initializeNewTask(Project project, Task task) throws Throwable {
@@ -176,10 +176,10 @@ public abstract class NewTaskType {
      * Registers a new task type.
      *
      * @param ntt the type to register
-     * @throws NullPointerException if <code>ntt</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>ntt</code> is already
+     * @throws NullPointerException if {@code ntt} is {@code null}
+     * @throws IllegalArgumentException if {@code ntt} is already
      * registered
-     * @throws IllegalArgumentException if <code>ntt</code> uses a reserved type
+     * @throws IllegalArgumentException if {@code ntt} uses a reserved type
      * code
      */
     public static void register(NewTaskType ntt) {
@@ -200,8 +200,8 @@ public abstract class NewTaskType {
      * Unregisters a new task type.
      *
      * @param ntt the type to unregister
-     * @throws NullPointerException if <code>ntt</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>ntt</code> is not already
+     * @throws NullPointerException if {@code ntt} is {@code null}
+     * @throws IllegalArgumentException if {@code ntt} is not already
      * registered
      */
     public static void unregister(NewTaskType ntt) {
@@ -216,12 +216,12 @@ public abstract class NewTaskType {
     }
 
     /**
-     * Returns <code>true</code> if a new task type instance is currently
+     * Returns {@code true} if a new task type instance is currently
      * registered.
      *
      * @param ntt the type to look for
-     * @return <code>true</code> if <code>ntt</code> has been registered
-     * @throws NullPointerException if <code>ntt</code> is <code>null</code>
+     * @return {@code true} if {@code ntt} has been registered
+     * @throws NullPointerException if {@code ntt} is {@code null}
      */
     public static boolean isRegistered(NewTaskType ntt) {
         if (ntt == null) {

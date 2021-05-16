@@ -24,12 +24,12 @@ public class MarkupTargetFactory {
     }
 
     /**
-     * Returns <code>true</code> if a markup target can be created for an
-     * object. To be valid, the potential target must be non-<code>null</code>,
+     * Returns {@code true} if a markup target can be created for an
+     * object. To be valid, the potential target must be non-{@code null},
      * and must be a supported type of interface component. If
-     * <code>strict</code> is <code>true</code>, then the potential target must
+     * {@code strict} is {@code true}, then the potential target must
      * also be showing, enabled, and editable. Currently supported component
-     * types include text fields (any subclass of <code>JTextComponent</code>)
+     * types include text fields (any subclass of {@code JTextComponent})
      * and code editor controls. Other types might be supported in future
      * versions.
      *
@@ -39,16 +39,16 @@ public class MarkupTargetFactory {
      * false positives, such as the path field in file dialogs. The default
      * decision as to whether a component is accepted can be overridden by
      * setting the client property
-     * <code>MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY</code> to either
-     * <code>Boolean.TRUE</code> (accept if possible) or
-     * <code>Boolean.FALSE</code> (always reject). To be accepted, the component
-     * must still be of a supported type and (if <code>strict</code>) be
+     * {@code MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY} to either
+     * {@code Boolean.TRUE} (accept if possible) or
+     * {@code Boolean.FALSE} (always reject). To be accepted, the component
+     * must still be of a supported type and (if {@code strict}) be
      * showing, enabled, and editable.
      *
      * @param potentialTarget the potential markup target to check
-     * @param strict if <code>true</code>, the target must be showing, enabled,
+     * @param strict if {@code true}, the target must be showing, enabled,
      * and editable
-     * @return <code>true</code> if the component can be a markup target
+     * @return {@code true} if the component can be a markup target
      */
     public static boolean isValidTarget(final Object potentialTarget, final boolean strict) {
         if (potentialTarget instanceof JComponent) {
@@ -118,13 +118,13 @@ public class MarkupTargetFactory {
 
     /**
      * Returns a markup target instance for a component if it is valid;
-     * otherwise, returns <code>null</code>.
+     * otherwise, returns {@code null}.
      *
      * @param potentialTarget the potential target to create a markup target for
-     * @param strict if <code>true</code>, the component must be showing,
+     * @param strict if {@code true}, the component must be showing,
      * enabled, and editable
      * @return a markup target compatible with the provided object, or
-     * <code>null</code>
+     * {@code null}
      */
     public static MarkupTarget createMarkupTarget(Object potentialTarget, boolean strict) {
         JUtilities.threadAssert(); // ensure synched to EDT
@@ -483,13 +483,13 @@ public class MarkupTargetFactory {
      * be targeted, such as fields in a dialog box.
      * <p>
      * This is a convenience method that sets the
-     * <code>FORCE_MARKUP_TARGET_PROPERTY</code> client property on the target
+     * {@code FORCE_MARKUP_TARGET_PROPERTY} client property on the target
      * component.
      *
      * @param target the target to modify
      * @param allow whether targeting should be explicitly enabled or explicitly
      * disabled
-     * @throws NullPointerException if the target is <code>null</code>
+     * @throws NullPointerException if the target is {@code null}
      */
     public static void enableTargeting(JComponent target, boolean allow) {
         if (target == null) {

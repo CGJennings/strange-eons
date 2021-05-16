@@ -157,7 +157,7 @@ public class JReorderableTabbedPane extends JTabbedPane {
      * called when the tab is "grabbed" with the mouse pointer.
      *
      * @param index the index of the tab being tested
-     * @return <code>true</code> if moving the tab to a new position is allowed
+     * @return {@code true} if moving the tab to a new position is allowed
      */
     protected boolean isTabReorderable(int index) {
         return true;

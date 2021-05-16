@@ -136,13 +136,13 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
             }
 
             /**
-             * Returns <code>true</code> if the URI should be passed to the
+             * Returns {@code true} if the URI should be passed to the
              * proxy server for possible modification. The current rule, which
              * might be modified in response to future issues, is to proxy only
              * http requests where the host name is not localhost.
              *
              * @param uri the URI to consider
-             * @return <code>true</code> if the proxy server should be consulted
+             * @return {@code true} if the proxy server should be consulted
              */
             private boolean isProxied(URI uri) {
                 // proxy http URLs where the host is NOT localhost
@@ -184,7 +184,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
      * Shows a dialog that allows the user to configure proxy settings.
      *
      * @param parent the parent component of the dialog (may be
-     * <code>null</code>)
+     * {@code null})
      */
     public static void showProxySettingsDialog(JComponent parent) {
         // Sanity check

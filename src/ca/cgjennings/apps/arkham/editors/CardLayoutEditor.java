@@ -80,7 +80,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
     /**
      * Creates a new card layout editor for the specified layout file. As they
      * are part of a project, a card layout is always tied to a file (i.e., it
-     * never has a  <code>null</code> file value).
+     * never has a  {@code null} file value).
      *
      * @param f the file to edit
      */
@@ -2224,7 +2224,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
     /**
      * Returns the index of the layer that will represent the card template.
      * This is the index of the lowest visible layer with type
-     * <code>IMAGE</code> located at (0,0). If there is no suitable layer,
+     * {@code IMAGE} located at (0,0). If there is no suitable layer,
      * returns -1.
      *
      * @return the index of the template layer, or -1

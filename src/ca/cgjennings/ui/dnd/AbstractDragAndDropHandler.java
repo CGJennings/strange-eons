@@ -8,7 +8,7 @@ import javax.swing.JComponent;
  * {@link DropHandler} in a single object. This can be a useful basis for
  * building interactions with reasonably simple drag logic, such as dragging and
  * dropping between two containers. For convenience, the method
- * {@link #acceptDrop acceptDrop} returns <code>true</code>; the methods {@link #dragFinished dragFinished}, {@link #dragEnter dragEnter},
+ * {@link #acceptDrop acceptDrop} returns {@code true}; the methods {@link #dragFinished dragFinished}, {@link #dragEnter dragEnter},
  * {@link #dragExit dragExit}, and {@link #dragMove dragMove} have empty
  * implementations.
  *

@@ -7,7 +7,7 @@ import java.awt.Paint;
 import javax.swing.Icon;
 
 /**
- * An icon that draws its content using a <code>Paint</code> value.
+ * An icon that draws its content using a {@code Paint} value.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

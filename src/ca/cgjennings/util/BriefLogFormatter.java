@@ -9,7 +9,7 @@ import java.util.logging.LogRecord;
 
 /**
  * A log record formatter that is less verbose than
- * <code>SimpleFormatter</code>. It only prints the time/date/location header
+ * {@code SimpleFormatter}. It only prints the time/date/location header
  * when the calling method changes.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

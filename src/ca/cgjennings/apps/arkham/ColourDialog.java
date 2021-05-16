@@ -1036,7 +1036,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     /**
      * Returns the colour selected by the user using the dialog, or
-     * <code>null</code>.
+     * {@code null}.
      *
      * @return the selected colour
      */

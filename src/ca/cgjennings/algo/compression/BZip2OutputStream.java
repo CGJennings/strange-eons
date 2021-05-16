@@ -592,7 +592,7 @@ class BZip2OutputStream extends OutputStream
      * @param out * the destination stream.
      *
      * @throws IOException if an I/O error occurs in the specified stream.
-     * @throws NullPointerException if <code>out == null</code>.
+     * @throws NullPointerException if {@code out == null}.
      */
     public BZip2OutputStream(final OutputStream out) throws IOException {
         this(out, MAX_BLOCKSIZE);
@@ -612,9 +612,9 @@ class BZip2OutputStream extends OutputStream
      * @param blockSize the blockSize as 100k units.
      *
      * @throws IOException if an I/O error occurs in the specified stream.
-     * @throws IllegalArgumentException if <code>(blockSize < 1) || (blockSize >
-     * 9)</code>.
-     * @throws NullPointerException if <code>out == null</code>.
+     * @throws IllegalArgumentException if {@code (blockSize < 1) || (blockSize >
+     * 9)}.
+     * @throws NullPointerException if {@code out == null}.
      *
      * @see #MIN_BLOCKSIZE
      * @see #MAX_BLOCKSIZE

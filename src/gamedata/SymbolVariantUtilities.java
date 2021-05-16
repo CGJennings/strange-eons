@@ -162,8 +162,8 @@ public final class SymbolVariantUtilities {
      * 2-pixel wide outline.)
      *
      * <p>
-     * This method will produce a square image that is <code>size</code> by
-     * <code>size</code> pixels. The largest dimension will be scaled up or down
+     * This method will produce a square image that is {@code size} by
+     * {@code size} pixels. The largest dimension will be scaled up or down
      * as needed, and the opposite dimension will be padded with completely
      * transparent pixels, if necessary, to fill it out.
      *
@@ -201,7 +201,7 @@ public final class SymbolVariantUtilities {
 
     /**
      * Adds transparent padding to each edge of the image equal to
-     * <code>paddingSize</code>. This is useful when you are about to apply an
+     * {@code paddingSize}. This is useful when you are about to apply an
      * effect that grows from the edge of the original image.
      *
      * @param source the original image
@@ -253,7 +253,7 @@ public final class SymbolVariantUtilities {
     /**
      * Returns a stroked version of the source image. This is identical to
      * {@link #outline(java.awt.image.BufferedImage, int, int)} except that it
-     * takes a <code>Color</code> instance for the outline colour.
+     * takes a {@code Color} instance for the outline colour.
      *
      * @param source the image to outline
      * @param outlineColor the colour of the outline
@@ -327,7 +327,7 @@ public final class SymbolVariantUtilities {
     /**
      * Returns a version of the image with a drop shadow. This is identical to
      * {@link #shadow(java.awt.image.BufferedImage, double, int, int, int, int)}
-     * except that it takes a <code>Color</code> instance for the shadow colour.
+     * except that it takes a {@code Color} instance for the shadow colour.
      *
      * @param source the image to shade
      * @param angle the anti-clockwise angle from the x-axis, in degrees
@@ -363,7 +363,7 @@ public final class SymbolVariantUtilities {
     /**
      * Recolours an image with a single colour. This is identical to
      * {@link #recolor(java.awt.image.BufferedImage, int)} except that it takes
-     * a <code>Color</code> instance instead of an integer RGB value.
+     * a {@code Color} instance instead of an integer RGB value.
      *
      * @param source the source image
      * @param color the colour value (alpha is ignored)
@@ -376,13 +376,13 @@ public final class SymbolVariantUtilities {
     }
 
     /**
-     * Returns <code>true</code> if and only if every pixel in the source image
+     * Returns {@code true} if and only if every pixel in the source image
      * has the same RGB value (the alpha channel may vary). This can determine,
      * for example, if {@link #extractSymbol} has converted the image to pure
      * black or greyscale.
      *
      * @param source the image to check
-     * @return <code>true</code> if every pixel in the source is the same colour
+     * @return {@code true} if every pixel in the source is the same colour
      */
     public static boolean isMonochrome(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
@@ -396,11 +396,11 @@ public final class SymbolVariantUtilities {
     }
 
     /**
-     * Returns <code>true</code> if and only if, for every pixel in the source
+     * Returns {@code true} if and only if, for every pixel in the source
      * image, that pixel has identical red, green and blue levels.
      *
      * @param source the image to check
-     * @return <code>true</code> if every pixel in the source is grey
+     * @return {@code true} if every pixel in the source is grey
      */
     public static boolean isGreyscale(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
@@ -418,8 +418,8 @@ public final class SymbolVariantUtilities {
 
     /**
      * Recolours an image. The source image is assumed to be greyscale. The
-     * darkest pixels will be coloured with <code>color1</code>, the lightest
-     * pixels will be coloured with <code>color2</code>, and pixels whose
+     * darkest pixels will be coloured with {@code color1}, the lightest
+     * pixels will be coloured with {@code color2}, and pixels whose
      * brightness is in between will be interpolate between the two extremes.
      * The interpolation is non-linear, leaving a margin around the brightest
      * and darkest pixel values to allow for some noise in the image.
@@ -481,7 +481,7 @@ public final class SymbolVariantUtilities {
     /**
      * Recolours an image. This is identical to
      * {@link #recolor(java.awt.image.BufferedImage, int, int)} except that it
-     * takes <code>Color</code> instances instead of integer RGB values.
+     * takes {@code Color} instances instead of integer RGB values.
      *
      * <p>
      * <b>Note:</b> This effect is applied in-place; the returned image is the

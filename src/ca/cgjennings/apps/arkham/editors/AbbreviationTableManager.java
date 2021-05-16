@@ -33,7 +33,7 @@ public class AbbreviationTableManager {
      * Returns the shared abbreviation table for the given code type. If the
      * user has created a custom table, this will be returned. Otherwise, a
      * default table is returned if one exists (they are defined in
-     * <code>resources/abbrv</code>). If no default table exists, an empty table
+     * {@code resources/abbrv}). If no default table exists, an empty table
      * is returned.
      *
      * <p>
@@ -69,7 +69,7 @@ public class AbbreviationTableManager {
      * Returns the shared abbreviation table for the game with the specified
      * code. If the user has created a custom table, this will be returned.
      * Otherwise, a default table is returned if one exists (they are defined in
-     * <code>resources/abbrv</code>). If no default table exists, an empty table
+     * {@code resources/abbrv}). If no default table exists, an empty table
      * is returned.
      *
      * <p>
@@ -121,10 +121,10 @@ public class AbbreviationTableManager {
 
     /**
      * Loads and returns an abbreviation table suitable for the given code type,
-     * or returns <code>null</code>.
+     * or returns {@code null}.
      *
      * @param type the code type to load a table for
-     * @return the table for the code type, or <code>null</code>
+     * @return the table for the code type, or {@code null}
      */
     private static LanguageAwareAbbreviationTable loadAbbreviationTable(String fileName) {
         LanguageAwareAbbreviationTable at = null;
@@ -175,7 +175,7 @@ public class AbbreviationTableManager {
      * @param type the code type whose table should be modified
      * @param at the new table content for the code type
      * @throws IOException if an I/O error occurs during the save operation
-     * @throws NullPointerException if either parameter is <code>null</code>
+     * @throws NullPointerException if either parameter is {@code null}
      */
     public static void saveUserTable(CodeType type, AbbreviationTable at) throws IOException {
         save(getTable(type), fileNameForCodeType(type), at);
@@ -189,7 +189,7 @@ public class AbbreviationTableManager {
      * @param gameCode the code of the game whose table should be modified
      * @param at the new table content for the code type
      * @throws IOException if an I/O error occurs during the save operation
-     * @throws NullPointerException if either parameter is <code>null</code>
+     * @throws NullPointerException if either parameter is {@code null}
      */
     public static void saveUserTable(String gameCode, AbbreviationTable at) throws IOException {
         save(getTable(gameCode), fileNameForGame(gameCode), at);
@@ -222,13 +222,13 @@ public class AbbreviationTableManager {
     }
 
     /**
-     * Returns <code>true</code> if the specified code type is mapped to another
+     * Returns {@code true} if the specified code type is mapped to another
      * type for the purposes of loading an abbreviation table. For example, the
      * code type for automation scripts is mapped to the code type for regular
      * script files, so they share a common set of definitions.
      *
      * @param type the code type to check for mapping
-     * @return <code>true</code> if the code type shares another type's
+     * @return {@code true} if the code type shares another type's
      * abbreviation table
      */
     public static boolean isCodeTypeMapped(CodeType type) {
@@ -281,7 +281,7 @@ public class AbbreviationTableManager {
          * Sets the language used to expand game string (#) tags. The default
          * language is {@link Language#getGame()}.
          *
-         * @param lang the non-<code>null</code> language to use
+         * @param lang the non-{@code null} language to use
          * @see #getGameLanguage()
          */
         public void setGameLanguage(Language lang) {
@@ -306,7 +306,7 @@ public class AbbreviationTableManager {
          * Sets the language used to expand interface string (@) tags. The
          * default language is {@link Language#getInterface()}.
          *
-         * @param lang the non-<code>null</code> language to use
+         * @param lang the non-{@code null} language to use
          * @see #getInterfaceLanguage
          */
         public void setInterfaceLanguage(Language lang) {

@@ -26,7 +26,7 @@ import resources.StrangeImage;
  * selected image can be changed by calling {@link #setFile} or
  * {@link #setImage}. Changes to the selected image can be detected by
  * registering a property change listener and listening for changes to the
- * property <code>SELECTED_IMAGE_CHANGED_PROPERTY</code>.
+ * property {@code SELECTED_IMAGE_CHANGED_PROPERTY}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -82,7 +82,7 @@ public class JIconDrop extends JLabel {
 
     /**
      * Sets the paint used to draw the backdrop behind the image. If
-     * <code>null</code>, a default paint will be used.
+     * {@code null}, a default paint will be used.
      *
      * @param p
      */
@@ -125,10 +125,10 @@ public class JIconDrop extends JLabel {
 
     /**
      * Returns the file that was the source of the current image, or
-     * <code>null</code> if no image is set or if the image did not come from a
+     * {@code null} if no image is set or if the image did not come from a
      * file.
      *
-     * @return the file that the current image came from, or <code>null</code>
+     * @return the file that the current image came from, or {@code null}
      */
     public File getFile() {
         return file;
@@ -151,7 +151,7 @@ public class JIconDrop extends JLabel {
     }
 
     /**
-     * Returns the currently selected image, or <code>null</code> if no image is
+     * Returns the currently selected image, or {@code null} if no image is
      * selected.
      *
      * @return the selected image
@@ -162,8 +162,8 @@ public class JIconDrop extends JLabel {
 
     /**
      * Sets the selected image, or clears the selection if the image is
-     * <code>null</code>. Setting the image directly will also set the current
-     * file to <code>null</code>. If <code>image</code> is not in an integer RGB
+     * {@code null}. Setting the image directly will also set the current
+     * file to {@code null}. If {@code image} is not in an integer RGB
      * format, the component will create a copy of the image in such a format,
      * using the converted image in place of the original.
      *

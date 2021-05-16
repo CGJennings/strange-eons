@@ -105,11 +105,11 @@ public class SubstitutionFilter extends AbstractPixelwiseFilter {
     }
 
     /**
-     * Returns <code>true</code> if the substitute colour is blended with the
+     * Returns {@code true} if the substitute colour is blended with the
      * original colour according to the distance from the target colour. This
      * has no effect if the error tolerance is 0.
      *
-     * @return <code>true</code> if the substitute colour is blended with the
+     * @return {@code true} if the substitute colour is blended with the
      * target colour in proportion to the target's error
      */
     public boolean isBlendedWithOriginal() {
@@ -121,7 +121,7 @@ public class SubstitutionFilter extends AbstractPixelwiseFilter {
      * proportion to a pixel's distance from the colour to match. This has no
      * effect if the error tolerance is 0.
      *
-     * @param blend if <code>true</code>, blending is performed relative to the
+     * @param blend if {@code true}, blending is performed relative to the
      * amount of error
      */
     public void setBlendedWithOriginal(boolean blend) {

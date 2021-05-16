@@ -35,7 +35,7 @@ import javax.script.*;
  * (Scripting for the Java Platform) that are capable of interpreting Strange
  * Eons scripts. This provides a lower-level interface to the scripting system
  * than a {@link ScriptMonkey}. It is only provided to allow access to the
- * script system via the <code>javax.scripting</code> API; plug-in developers
+ * script system via the {@code javax.scripting} API; plug-in developers
  * will have no need to use this as a general rule.
  *
  * @author Mike Grogan
@@ -225,10 +225,10 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
     }
 
     /**
-     * Returns <code>true</code> the scripting system will report warnings as
+     * Returns {@code true} the scripting system will report warnings as
      * well as errors.
      *
-     * @return <code>true</code> if warnings are reported
+     * @return {@code true} if warnings are reported
      * @see #setWarningReportingEnabled(boolean)
      */
     public static boolean isWarningReportingEnabled() {
@@ -238,7 +238,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
     /**
      * Sets whether the scripting system will report warnings as well as errors.
      *
-     * @param warningsEnabled <code>true</code> if warnings are reported
+     * @param warningsEnabled {@code true} if warnings are reported
      * @see #isWarningReportingEnabled()
      */
     public static void setWarningReportingEnabled(boolean warningsEnabled) {
@@ -277,7 +277,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
      * Returns whether debugging information will be generated for parsed
      * scripts.
      *
-     * @return <code>true</code> if generation of debugging info is enabled
+     * @return {@code true} if generation of debugging info is enabled
      */
     public static boolean isDebugInfoEnabled() {
         return debugInfoEnabled;
@@ -288,7 +288,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
      * If this is enabled, it may limit the optimization level that is
      * effectively applied to executed scripts.
      *
-     * @param debugInfoEnabled <code>true</code> to enable generation of
+     * @param debugInfoEnabled {@code true} to enable generation of
      * debugging info
      */
     public static void setDebugInfoEnabled(boolean debugInfoEnabled) {

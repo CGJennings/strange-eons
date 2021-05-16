@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import resources.ResourceKit;
 
 /**
- * An <code>ObjectInputStream</code> with additional features for Strange Eons.
+ * An {@code ObjectInputStream} with additional features for Strange Eons.
  * This input stream includes special support for serializing images. It also
  * performs some transparent conversions to provide backwards compatibility with
  * previous releases.
@@ -77,8 +77,8 @@ public class SEObjectInputStream extends ObjectInputStream {
     }
 
     /**
-     * This is a convenience method that calls <code>readObject</code> and casts
-     * the result to <code>String</code> before returning it.
+     * This is a convenience method that calls {@code readObject} and casts
+     * the result to {@code String} before returning it.
      *
      * @return a string written to the stream at the current position
      * @throws IOException if an I/O error occurs
@@ -95,8 +95,8 @@ public class SEObjectInputStream extends ObjectInputStream {
      * Reads an image from the stream that was previously written with
      * {@link SEObjectOutputStream#writeImage(java.awt.image.BufferedImage)}.
      *
-     * @return an image in <code>TYPE_INT_RGB</code> or
-     * <code>TYPE_INT_ARGB</code> format
+     * @return an image in {@code TYPE_INT_RGB} or
+     * {@code TYPE_INT_ARGB} format
      * @throws IOException if an I/O error occurs
      * @throws InvalidClassException if no image is found at this point in the
      * stream

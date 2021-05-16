@@ -30,10 +30,10 @@ public final class ViewOptions {
     }
 
     /**
-     * Returns <code>true</code> if the handles for grabbing and manipulating
+     * Returns {@code true} if the handles for grabbing and manipulating
      * aspects of page items (such as size, rotation, etc.) are painted.
      *
-     * @return <code>true</code> if the handles should be painted
+     * @return {@code true} if the handles should be painted
      */
     public static boolean isDragHandlePainted() {
         return handles;
@@ -43,7 +43,7 @@ public final class ViewOptions {
      * Sets whether the handles for grabbing and manipulating aspects of page
      * items (such as size, rotation, etc.) should be painted.
      *
-     * @param drawHandles <code>true</code> if the handles should be painted
+     * @param drawHandles {@code true} if the handles should be painted
      */
     public static void setDragHandlePainted(boolean drawHandles) {
         if (handles != drawHandles) {
@@ -53,9 +53,9 @@ public final class ViewOptions {
     }
 
     /**
-     * Returns <code>true</code> if the page margins are shown.
+     * Returns {@code true} if the page margins are shown.
      *
-     * @return <code>true</code> if the margins should be painted
+     * @return {@code true} if the margins should be painted
      */
     public static boolean isMarginPainted() {
         return margin;
@@ -64,7 +64,7 @@ public final class ViewOptions {
     /**
      * Sets whether the page margins are shown.
      *
-     * @param drawMargin <code>true</code> if the margins should be painted
+     * @param drawMargin {@code true} if the margins should be painted
      */
     public static void setMarginPainted(boolean drawMargin) {
         if (margin != drawMargin) {
@@ -74,9 +74,9 @@ public final class ViewOptions {
     }
 
     /**
-     * Returns <code>true</code> if the grid is shown.
+     * Returns {@code true} if the grid is shown.
      *
-     * @return <code>true</code> if the grid should be painted
+     * @return {@code true} if the grid should be painted
      */
     public static boolean isGridPainted() {
         return grid;
@@ -85,7 +85,7 @@ public final class ViewOptions {
     /**
      * Sets whether the page grid is shown.
      *
-     * @param drawGrid <code>true</code> if the grid should be painted
+     * @param drawGrid {@code true} if the grid should be painted
      */
     public static void setGridPainted(boolean drawGrid) {
         if (grid != drawGrid) {

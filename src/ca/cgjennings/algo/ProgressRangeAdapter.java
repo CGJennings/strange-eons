@@ -13,7 +13,7 @@ public class ProgressRangeAdapter implements ProgressListener {
 
     /**
      * Creates a new range adapter. The input progress range of 0..1 will be
-     * mapped to the range <code>rangeLow</code>..<code>rangeHigh</code> before
+     * mapped to the range {@code rangeLow}..{@code rangeHigh} before
      * passing the progress message on to the adaptee.
      *
      * @param rangeLow the progress value to report when the input progress is 0
@@ -22,8 +22,8 @@ public class ProgressRangeAdapter implements ProgressListener {
      * @param adaptee the listener that the adapted range will be forwarded to
      * @throws IllegalArgumentException if the range values are out of the
      * allowed range of progress values (0 to 1), or if
-     * <code>rangeLow &gt; rangeHigh</code>
-     * @throws NullPointerException if the adaptee is <code>null</code>
+     * {@code rangeLow &gt; rangeHigh}
+     * @throws NullPointerException if the adaptee is {@code null}
      */
     public ProgressRangeAdapter(float rangeLow, float rangeHigh, ProgressListener adaptee) {
         if (rangeLow > rangeHigh) {

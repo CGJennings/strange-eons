@@ -44,9 +44,9 @@ final class BusyDialogImpl extends javax.swing.JDialog {
     /**
      * Creates a new busy dialog with the specified title message that will
      * perform the specified operation in a separate thread. The dialog's parent
-     * frame will default to the main application window if <code>null</code>.
+     * frame will default to the main application window if {@code null}.
      * The dialog will include a Cancel button that can be clicked by the user.
-     * When pressed, the specified listener's <code>actionPerformed</code>
+     * When pressed, the specified listener's {@code actionPerformed}
      * method will be called from the event dispatch thread.
      *
      * @param owner the {@link BusyDialog} instance that delegates to this
@@ -152,7 +152,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
     /**
      * Sets the status text of the <i>current</i> busy dialog. This version of
      * the method will not actually update the text more often than once per
-     * <code>delay</code> milliseconds. This prevents status text updates from
+     * {@code delay} milliseconds. This prevents status text updates from
      * dominating the time spent doing real work If no busy dialog is open, this
      * method has no effect.
      *
@@ -198,7 +198,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
     /**
      * Sets the current progress value of the <i>current</i> busy dialog. This
      * version of the method will not actually update the progress more often
-     * than once per <code>delay</code> milliseconds. This prevents progress
+     * than once per {@code delay} milliseconds. This prevents progress
      * updates from dominating the time spent doing real work If no busy dialog
      * is open, this method has no effect.
      *
@@ -247,7 +247,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
      * then it will return the dialog that is displaying progress for that
      * Runnable. Otherwise, it returns the most recently created BusyDialog that
      * is still open. If no BusyDialog is open, it will return
-     * <code>null</code>. The static methods
+     * {@code null}. The static methods
      * {@link #titleText}, {@link #statusText}, {@link #currentProgress}, and
      * {@link #maximumProgress} all modify the state of the current dialog.
      *
@@ -255,7 +255,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
      * This method can be called from any thread.
      *
      * @return the busy dialog that this thread should modify, or
-     * <code>null</code>
+     * {@code null}
      */
     public static BusyDialogImpl getCurrentDialog() {
         BusyDialogImpl bd = null;
@@ -343,7 +343,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
      * long the task will take to complete.
      *
      * <p>
-     * When this method is called and the <code>maximumValue</code> is not
+     * When this method is called and the {@code maximumValue} is not
      * negative, the current progress value is reset to 0.
      *
      * <p>
@@ -390,10 +390,10 @@ final class BusyDialogImpl extends javax.swing.JDialog {
     }
 
     /**
-     * Returns <code>true</code> if this dialog has a cancel button and it has
+     * Returns {@code true} if this dialog has a cancel button and it has
      * been pressed by the user.
      *
-     * @return <code>true</code> if the user has indicated that they wish to
+     * @return {@code true} if the user has indicated that they wish to
      * cancel the operation
      */
     public boolean isCancelled() {

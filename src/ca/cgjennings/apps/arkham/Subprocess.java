@@ -28,7 +28,7 @@ import resources.ResourceKit;
 import resources.Settings;
 
 /**
- * A <code>Subprocess</code> is a child process that has been started by, and is
+ * A {@code Subprocess} is a child process that has been started by, and is
  * being monitored by, the application. The subprocess runs concurrently with
  * the application. The output and error streams of the subprocess are connected
  * to the script console.
@@ -48,8 +48,8 @@ public final class Subprocess {
      * specified command.
      *
      * @param command an array of command tokens to execute
-     * @throws NullPointerException if <code>command</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>command.length == 0</code>
+     * @throws NullPointerException if {@code command} is {@code null}
+     * @throws IllegalArgumentException if {@code command.length == 0}
      * @throws IllegalStateException if the application window has not been
      * created yet
      */
@@ -74,8 +74,8 @@ public final class Subprocess {
      * specified command.
      *
      * @param command an list of command tokens to execute
-     * @throws NullPointerException if <code>command</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>command.length == 0</code>
+     * @throws NullPointerException if {@code command} is {@code null}
+     * @throws IllegalArgumentException if {@code command.length == 0}
      * @throws IllegalStateException if the application window has not been
      * created yet
      */
@@ -151,12 +151,12 @@ public final class Subprocess {
     private static final int NOTSTARTED = 0, FINISHED = 1, RUNNING = 2;
 
     /**
-     * Returns <code>true</code> if this subprocess has been started. Once a
+     * Returns {@code true} if this subprocess has been started. Once a
      * subprocess has started, its configuration cannot be modified. Once the
-     * subprocess starts, this method will always return <code>true</code> even
+     * subprocess starts, this method will always return {@code true} even
      * after the subprocess ends.
      *
-     * @return <code>true</code> if the process has started
+     * @return {@code true} if the process has started
      * @see #isRunning()
      */
     public synchronized boolean isStarted() {
@@ -164,10 +164,10 @@ public final class Subprocess {
     }
 
     /**
-     * Returns <code>true</code> if this subprocess has been started and it is
+     * Returns {@code true} if this subprocess has been started and it is
      * still running.
      *
-     * @return <code>true</code> if the process has started but not finished
+     * @return {@code true} if the process has started but not finished
      * @see #isStarted()
      */
     public synchronized boolean isRunning() {
@@ -175,10 +175,10 @@ public final class Subprocess {
     }
 
     /**
-     * Sets whether the subprocess will be a survivor. If <code>true</code>,
+     * Sets whether the subprocess will be a survivor. If {@code true},
      * then the process will not be destroyed when the application terminates.
      *
-     * @param survivor <code>true</code> if the subprocess will survive the
+     * @param survivor {@code true} if the subprocess will survive the
      * application
      * @throws IllegalStateException if the subprocess has already been started
      */
@@ -190,10 +190,10 @@ public final class Subprocess {
     }
 
     /**
-     * Returns <code>true</code> if this subprocess will continue after the
+     * Returns {@code true} if this subprocess will continue after the
      * application terminates.
      *
-     * @return <code>true</code> if the subprocess will survive the application
+     * @return {@code true} if the subprocess will survive the application
      */
     public synchronized boolean isSurvivor() {
         return survives;
@@ -203,7 +203,7 @@ public final class Subprocess {
      * Sets whether the subprocess will redirect the standard
      * I/O streams to the script console. The default is to redirect streams.
      *
-     * @param redirect <code>true</code> if the streams will be redirected
+     * @param redirect {@code true} if the streams will be redirected
      * @throws IllegalStateException if the subprocess has already been started
      * @since 3.2
      */
@@ -215,10 +215,10 @@ public final class Subprocess {
     }
 
     /**
-     * Returns <code>true</code> if this subprocess will redirect the standard
+     * Returns {@code true} if this subprocess will redirect the standard
      * I/O streams to the script console.
      *
-     * @return <code>true</code> if the streams will be redirected
+     * @return {@code true} if the streams will be redirected
      * @since 3.2
      */
     public synchronized boolean isStreamIORedirected() {
@@ -227,19 +227,19 @@ public final class Subprocess {
 
     /**
      * Sets whether the exit code is written to the console when the process
-     * ends. The default is <code>true</code>.
+     * ends. The default is {@code true}.
      *
-     * @param show if <code>true</code>, print the exit code
+     * @param show if {@code true}, print the exit code
      */
     public synchronized void setExitCodeShown(boolean show) {
         showRetVal = show;
     }
 
     /**
-     * Returns <code>true</code> if the exit code will be written to the console
+     * Returns {@code true} if the exit code will be written to the console
      * when the process ends.
      *
-     * @return <code>true</code> if the exit code is printed
+     * @return {@code true} if the exit code is printed
      */
     public synchronized boolean isExitCodeShown() {
         return showRetVal;
@@ -250,7 +250,7 @@ public final class Subprocess {
      * terminate the subprocess. The control will remove itself automatically
      * when the subprocess terminates.
      *
-     * @param label label text to include on the button; if <code>null</code>
+     * @param label label text to include on the button; if {@code null}
      * the command name will be used
      * @return a control that can be used to stop the subprocess
      * @throws IllegalStateException if the subprocess has already been started

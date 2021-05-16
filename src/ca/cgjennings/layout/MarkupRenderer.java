@@ -63,22 +63,22 @@ import java.util.logging.Logger;
  * <p>
  * Non-parametric style tags are tags that do not take parameters and apply a
  * {@link TextStyle} to the text they enclose. Examples include the &lt;b&gt;
- * (bold) and &lt;i&gt; (italic) tags. <code>TextStyle</code>s consist of one or
- * more <code>TextAttribute</code>s and their values; a single non-parametric
+ * (bold) and &lt;i&gt; (italic) tags. {@code TextStyle}s consist of one or
+ * more {@code TextAttribute}s and their values; a single non-parametric
  * tag can therefore have multiple effects.
  * <p>
  * Parametric style tags are tags that can include parameters which are parsed
  * by a {@link ParametricStyleFactory}. The factory will return a
- * <code>TextStyle</code> based on the tag's parameters, which is then applied
+ * {@code TextStyle} based on the tag's parameters, which is then applied
  * to the block it encloses. Examples include the &lt;color&gt;/&lt;colour&gt;
  * and &lt;image&gt; tags.
  * <p>
  * Interpreted tags include all tags not recognized as any of the other types.
  * These tags are passed to {@link #handleUnknownTag}, which is given the
  * opportunity to do something with it. Generally, if it wishes to handle the
- * tag it will return a replacement string. The <code>MarkupRenderer</code> base
+ * tag it will return a replacement string. The {@code MarkupRenderer} base
  * class uses this to replace Unicode character tags with their equivalent
- * Unicode characters. The <code>GenderAwareMarkupRenderer</code> subclass uses
+ * Unicode characters. The {@code GenderAwareMarkupRenderer} subclass uses
  * this to parse tags that include masculine and feminine variants that are
  * selected based upon a gender supplied to the renderer (as in
  * &lt;his/her&gt;).
@@ -145,8 +145,8 @@ public class MarkupRenderer {
     /**
      * Try to fit text that is too long for the draw rectangle by scaling down
      * the text. Note that this can be time consuming, and that it will augment
-     * your specified styles with <code>TextTransform</code> style
-     * <code>TextAttribute</code>s.
+     * your specified styles with {@code TextTransform} style
+     * {@code TextAttribute}s.
      */
     public static final int FIT_SCALE_TEXT = 2;
     /**
@@ -568,7 +568,7 @@ public class MarkupRenderer {
 
     /**
      * Limit the text scaling algorithm to scale down to no more than
-     * <code>factor</code> * 100% of the original size.
+     * {@code factor} * 100% of the original size.
      */
     public void setScalingLimit(double factor) {
         if (factor <= 0 || factor > 1) {
@@ -580,7 +580,7 @@ public class MarkupRenderer {
 
     /**
      * Set the fractional increment at which text is scaled; the precision of
-     * text scaling is limited to 1/<code>limit</code>.
+     * text scaling is limited to 1/{@code limit}.
      */
     public void setScalingFractionalLimit(int limit) {
         if (limit <= 0) {
@@ -1031,7 +1031,7 @@ public class MarkupRenderer {
     /**
      * Render the markup on a graphics context within a specified region. A
      * y-coordinate indicating where a subsequent line would begin is returned.
-     * If <code>measureOnly</code> is set to true, a draw is computed but no
+     * If {@code measureOnly} is set to true, a draw is computed but no
      * actual rendering performed. In this case, the return value is the height
      * of the region needed to render the text.
      */
@@ -1365,7 +1365,7 @@ public class MarkupRenderer {
      * Process a markup string, retaining only any definitions that are created.
      * Once some markup is processed (other than a library) all definitions will
      * be cleared again. Therefore, any required libraries must be added before
-     * <i>each</i> call to <code>setMarkupText</code>.
+     * <i>each</i> call to {@code setMarkupText}.
      * <p>
      * This method clears the current markup text.
      */
@@ -2254,7 +2254,7 @@ public class MarkupRenderer {
     }
 
     /**
-     * Converts a <code>Strings</code> containing &lt;br&gt; tags into one that
+     * Converts a {@code Strings} containing &lt;br&gt; tags into one that
      * uses newlines instead. This is not required before sending markup to the
      * draw system. Rather, this is intended for use when deserializing markup
      * that has had newlines converted into &lt;br&gt; tags for convenience of
@@ -2358,7 +2358,7 @@ public class MarkupRenderer {
     }
 
     /**
-     * This class provides an <code>AttributedString</code> with extended
+     * This class provides an {@code AttributedString} with extended
      * information on how the string should be drawn.
      */
     protected class StyledParagraph extends AttributedString {
@@ -2466,9 +2466,9 @@ public class MarkupRenderer {
 
     /**
      * Returns the base file that the formatter may optionally use to complete
-     * relative path names, or <code>null</code> if none is defined.
+     * relative path names, or {@code null} if none is defined.
      *
-     * @return the base file for relative paths, or <code>null</code>
+     * @return the base file for relative paths, or {@code null}
      */
     public File getBaseFile() {
         return baseFile;

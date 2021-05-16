@@ -32,7 +32,7 @@ public abstract class AbstractImagewiseFilter extends AbstractImageFilter {
      * filtering.
      *
      * @param source the source image
-     * @param destination the destination image (may be <code>null</code>)
+     * @param destination the destination image (may be {@code null})
      * @return the destination image
      */
     @Override
@@ -57,7 +57,7 @@ public abstract class AbstractImagewiseFilter extends AbstractImageFilter {
      *
      * @param source the source pixel data in ARGB format
      * @param destination the destination in which the filtered should be
-     * stored, may be <code>null</code>
+     * stored, may be {@code null}
      * @param width the width of the source image
      * @param height the height of the source image
      * @return the array that holds the destination pixels

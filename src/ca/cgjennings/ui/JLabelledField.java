@@ -132,11 +132,11 @@ public class JLabelledField extends JTextField {
     }
 
     /**
-     * Returns <code>true</code> if the label is currently being displayed. The
+     * Returns {@code true} if the label is currently being displayed. The
      * label is displayed when the text field contains the empty string and the
      * field does not have focus.
      *
-     * @return <code>true</code> if the label text is showing
+     * @return {@code true} if the label text is showing
      */
     public boolean isLabelShowing() {
         return !getText().equals(label) && showingLabel;

@@ -21,7 +21,7 @@ import java.awt.geom.Point2D;
 public class TextStroke implements Stroke {
 
     /**
-     * The <code>Style</code> determines how the text is placed fitted to the
+     * The {@code Style} determines how the text is placed fitted to the
      * path when the length of the text and the length of a path are not the
      * same.
      */
@@ -54,8 +54,8 @@ public class TextStroke implements Stroke {
 
     /**
      * Creates a text stroke for the given text and font that will fit the text
-     * to fill the entire path and use default <code>flatness</code> and
-     * <code>limit</code> parameters.
+     * to fill the entire path and use default {@code flatness} and
+     * {@code limit} parameters.
      *
      * @param text the text to be drawn along stroked paths
      * @param font the font to drawn the text in
@@ -66,7 +66,7 @@ public class TextStroke implements Stroke {
 
     /**
      * Creates a text stroke for the given text, font, and fitting style and use
-     * default <code>flatness</code> and <code>limit</code> parameters.
+     * default {@code flatness} and {@code limit} parameters.
      *
      * @param text the text to be drawn along stroked paths
      * @param font the font to drawn the text in
@@ -78,8 +78,8 @@ public class TextStroke implements Stroke {
 
     /**
      * Creates a text stroke for the given text and font that will fit the text
-     * to fill the entire path and use default <code>flatness</code> and
-     * <code>limit</code> parameters.
+     * to fill the entire path and use default {@code flatness} and
+     * {@code limit} parameters.
      *
      * @param text the text to be drawn along stroked paths
      * @param font the font to drawn the text in
@@ -88,8 +88,8 @@ public class TextStroke implements Stroke {
      * and the flattened curve
      * @param limit log<sub>2</sub> of the maximum number of line segments that
      * will be generated for any curved segment of the path
-     * @throws IllegalArgumentException if <code>flatness</code> or
-     * <code>limit</code> is less than 0
+     * @throws IllegalArgumentException if {@code flatness} or
+     * {@code limit} is less than 0
      */
     public TextStroke(String text, Font font, TextStroke.Style style, double flatness, int limit) {
         if (flatness < 0d) {
@@ -116,20 +116,20 @@ public class TextStroke implements Stroke {
      * along the portion of the curve covered by the glyph. There are two such
      * right vectors: one points from the curve towards the <i>outside</i> of
      * the shape, and one points from the curve towards the <i>inside</i> of the
-     * shape. When this is set to <code>true</code>, the inside vector will be
+     * shape. When this is set to {@code true}, the inside vector will be
      * selected and the order in which the glyphs are drawn will be reversed.
      *
-     * @param flip if <code>true</code>, flips the text inside-out
+     * @param flip if {@code true}, flips the text inside-out
      */
     public final void setInsideOut(boolean flip) {
         flipped = flip;
     }
 
     /**
-     * Returns <code>true</code> if the text is drawn inside-out, that is, if
+     * Returns {@code true} if the text is drawn inside-out, that is, if
      * the direction that the glyphs protrude from the path is flipped.
      *
-     * @return <code>true</code> if the glyph direction should be flipped
+     * @return {@code true} if the glyph direction should be flipped
      */
     public final boolean isInsideOut() {
         return flipped;
@@ -160,11 +160,11 @@ public class TextStroke implements Stroke {
     }
 
     /**
-     * Sets the bidi orientation of the text. Set to <code>true</code> for
-     * left-to-right languages (e.g., English) and <code>false</code> for
-     * right-to-left languages (e.g., Arabic). The default is <code>true</code>.
+     * Sets the bidi orientation of the text. Set to {@code true} for
+     * left-to-right languages (e.g., English) and {@code false} for
+     * right-to-left languages (e.g., Arabic). The default is {@code true}.
      *
-     * @param leftToRight <code>true</code> if the text should be treated as
+     * @param leftToRight {@code true} if the text should be treated as
      * left-to-right
      */
     public final void setLeftToRight(boolean leftToRight) {
@@ -175,10 +175,10 @@ public class TextStroke implements Stroke {
     }
 
     /**
-     * Returns <code>true</code> if the text is treated as a left-to-right
+     * Returns {@code true} if the text is treated as a left-to-right
      * language.
      *
-     * @return <code>true</code> if the bidi order is treated as left-to-right
+     * @return {@code true} if the bidi order is treated as left-to-right
      */
     public final boolean isLeftToRight() {
         return leftToRight;

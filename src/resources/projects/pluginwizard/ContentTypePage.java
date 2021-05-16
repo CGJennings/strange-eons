@@ -10,7 +10,7 @@ import static resources.Language.string;
 /**
  * A standard plug-in wizard page that allows the user to choose a kind of
  * plug-in to create. This allows the user to select from the basic plug-in
- * types (<code>ACTIVATED</code>, <code>INJECTED</code>, or <code>EXTENSION</code>),
+ * types ({@code ACTIVATED}, {@code INJECTED}, or {@code EXTENSION}),
  * and, optionally, a theme or library.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -43,9 +43,9 @@ public final class ContentTypePage extends javax.swing.JPanel {
 	 * Creates new plug-in type selection page that includes the basic plug-in
 	 * types and may optionally include themes and libraries.
 	 *
-	 * @param allowThemes if <code>true</code>, then the user will be allowed
+	 * @param allowThemes if {@code true}, then the user will be allowed
 	 *     to select a theme plug-in (.setheme file type).
-	 * @param allowLibraries  if <code>true</code>, then the user will be allowed
+	 * @param allowLibraries  if {@code true}, then the user will be allowed
 	 *     to select a library plug-in type (.selibrary file type).
 	 * @param model the model that the page will be placed in
 	 */

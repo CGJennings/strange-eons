@@ -48,7 +48,7 @@ public class JFilterField extends JLabelledField {
      * Filter fields use a special border that includes a search icon. If you
      * want to change the filter field's border but keep the search icon, call
      * this method with your new border. If you want to replace the border
-     * completely, including the search icon, call <code>setBorder</code>
+     * completely, including the search icon, call {@code setBorder}
      * instead.
      *
      * @param b the new border to set

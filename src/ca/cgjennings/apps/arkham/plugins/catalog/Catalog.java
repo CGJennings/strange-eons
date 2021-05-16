@@ -94,7 +94,7 @@ public class Catalog {
     private int hiddenListings = 0;
 
     /**
-     * Creates a new, empty catalog with a <code>null</code> base URL. This can
+     * Creates a new, empty catalog with a {@code null} base URL. This can
      * be useful as a temporary placeholder in a UI while downloading a catalog,
      * or it can be used by subclasses.
      */
@@ -105,7 +105,7 @@ public class Catalog {
      * Creates a catalog from a collection of {@link Listing}s. This is normally
      * used to create a temporary local catalog in order to write a catalog
      * description file. The base URL is not required unless installation is
-     * attempted, and may be <code>null</code>.
+     * attempted, and may be {@code null}.
      */
     public Catalog(URL base, Collection<Listing> listings) {
         this.base = base;
@@ -120,7 +120,7 @@ public class Catalog {
      *
      * @param base the URL to load the catalog from
      * @throws IOException if an error occurs while reading the catalog
-     * @throws NullPointerException if <code>base</code> is <code>null</code>
+     * @throws NullPointerException if {@code base} is {@code null}
      */
     public Catalog(URL base) throws IOException {
         this(base, true, (JProgressBar) null);
@@ -128,16 +128,16 @@ public class Catalog {
 
     /**
      * Loads a catalog from a base URL. The URL of the catalog will be the base
-     * URL with "catalog.txt" appended. If <code>feedback</code> if
-     * non-<code>null</code>, then it will be updated with progress information.
+     * URL with "catalog.txt" appended. If {@code feedback} if
+     * non-{@code null}, then it will be updated with progress information.
      *
      * @param base the URL to load the catalog from
-     * @param allowCache if <code>true</code>, and if the URL identifies the
+     * @param allowCache if {@code true}, and if the URL identifies the
      * default catalog URL, then a cached version of the catalog may be returned
      * @param feedback an optional progress bar to send feedback to while
      * reading
      * @throws IOException if an error occurs while reading the catalog
-     * @throws NullPointerException if <code>base</code> is <code>null</code>
+     * @throws NullPointerException if {@code base} is {@code null}
      */
     public Catalog(URL base, boolean allowCache, JProgressBar feedback) throws IOException {
         if (base == null) {
@@ -218,10 +218,10 @@ public class Catalog {
 
     /**
      * Returns the locally cached catalog, if any. If there is no locally cached
-     * catalog, returns <code>null</code>.
+     * catalog, returns {@code null}.
      *
      * @return the locally cached copy of the primary catalog, or
-     * <code>null</code>
+     * {@code null}
      */
     public static Catalog getLocalCopy() {
         synchronized (CACHE_FILE) {
@@ -284,7 +284,7 @@ public class Catalog {
     /**
      * Returns the number of listings in the catalog, including any hidden
      * listings. The number of hidden listings is always equal to
-     * <code>trueSize() - size()</code>.
+     * {@code trueSize() - size()}.
      *
      * @return the total number of listings, including hidden ones
      */
@@ -293,7 +293,7 @@ public class Catalog {
     }
 
     /**
-     * Returns the listing at index <code>n</code> in the catalog.
+     * Returns the listing at index {@code n} in the catalog.
      *
      * @param n the index of the desired listing
      * @return the listing at the specified index
@@ -346,7 +346,7 @@ public class Catalog {
     }
 
     /**
-     * Compares the listing at index <code>n</code> with the set of installed
+     * Compares the listing at index {@code n} with the set of installed
      * plug-ins and returns a {@link VersioningState} value that describes the
      * relative version of the installed plug-in, if any.
      *
@@ -393,7 +393,7 @@ public class Catalog {
     }
 
     /**
-     * Mark the listing at index <code>n</code> for installation. All flagged
+     * Mark the listing at index {@code n} for installation. All flagged
      * plug-ins are installed together when {@link #installFlaggedPlugins()} is
      * called.
      *
@@ -410,11 +410,11 @@ public class Catalog {
     }
 
     /**
-     * Returns <code>true</code> if the listing at the indicated index is
+     * Returns {@code true} if the listing at the indicated index is
      * flagged for installation.
      *
      * @param n the index of the listing to test
-     * @return <code>true</code> if the listing is marked for installation
+     * @return {@code true} if the listing is marked for installation
      */
     public final boolean getInstallFlag(int n) {
         if (n < 0 || n >= listings.size()) {
@@ -502,7 +502,7 @@ public class Catalog {
      * required plugins, they are also added (and so on). When this method
      * returns, all installation flags in this catalog will be cleared.
      *
-     * @return <code>true</code> if a restart (of the application) is required
+     * @return {@code true} if a restart (of the application) is required
      * to complete installation
      */
     public boolean installFlaggedPlugins() {
@@ -542,16 +542,16 @@ public class Catalog {
     }
 
     /**
-     * Returns <code>true</code> if a restart (of the application) would be
+     * Returns {@code true} if a restart (of the application) would be
      * required after the currently selected plug-ins are installed. The answer
      * is based on the types of plug-ins flagged for installation, and the types
      * of any plug-ins they require.
      * <p>
-     * If this method returns <code>false</code>, a restart may still be
+     * If this method returns {@code false}, a restart may still be
      * required if one of the plug-in bundles could not be written and an
      * autoupdate file was generated.
      *
-     * @return <code>true</code> if a restart should not be required
+     * @return {@code true} if a restart should not be required
      */
     public boolean isRestartRequiredAfterInstall() {
         synchronized (Catalog.class) {
@@ -1038,7 +1038,7 @@ public class Catalog {
      * Removes the listing whose catalog ID matches the provided UUID.
      *
      * @param uuid the UUID of the listing to remove
-     * @return <code>true</code> if an entry was removed, <code>false</code> if
+     * @return {@code true} if an entry was removed, {@code false} if
      * no entry matches the UUID
      */
     public boolean remove(UUID uuid) {
@@ -1181,10 +1181,10 @@ public class Catalog {
 //		}
 //	}
 //	/**
-//	 * Returns <code>true</code> if a file appears to contain a compressed
+//	 * Returns {@code true} if a file appears to contain a compressed
 //	 * catalog.
 //	 * @param f the potential catalog to test
-//	 * @return <code>true</code> if the file has compressed catalog magic
+//	 * @return {@code true} if the file has compressed catalog magic
 //	 * @throws IOException
 //	 */
 //	public static boolean isCompressed( File f ) throws IOException {

@@ -32,8 +32,8 @@ public class PlatformSupport {
     }
 
     /**
-     * A convenience method for <code>makeAgnosticDialog( dialog, true,
-     * designedOK, designedCancel )</code>, which assumes that the dialog
+     * A convenience method for {@code makeAgnosticDialog( dialog, true,
+     * designedOK, designedCancel )}, which assumes that the dialog
      * buttons are in "Windows order" (OK on the left, Cancel on the right).
      *
      * @param dialog the dialog or other control to be reordered
@@ -46,7 +46,7 @@ public class PlatformSupport {
     }
 
     /**
-     * Initialize an <code>AgnosticDialog</code> by swapping the OK and Cancel
+     * Initialize an {@code AgnosticDialog} by swapping the OK and Cancel
      * buttons, if appropriate, and attaching action listeners to the
      * {@link AgnosticDialog#handleOKAction} and
      * {@link AgnosticDialog#handleCancelAction} methods.
@@ -59,26 +59,26 @@ public class PlatformSupport {
      * they need to be swapped. No other properties are changed. For complete
      * control over the actions taken when a swap occurs, implement
      * {@link QueriedAgnosticDialog} instead. This is a subinterface of
-     * <code>AgnosticDialog</code>.
+     * {@code AgnosticDialog}.
      * <p>
      * <b>Notes:</b>
      * <ol>
      * <li>You must ensure that this method is only called once for a given
-     * <code>AgnosticDialog</code> during its lifetime, or the button order will
+     * {@code AgnosticDialog} during its lifetime, or the button order will
      * be inconsistent and the action events will be called multiple times.
      * <li>Although referred to in the general sense as the "OK" button, the
      * text of this button should name the specific action it will perform.
      * </ol>
      *
      * @param dialog the dialog or other control to be reordered
-     * @param isInOKCancelOrder <code>true</code> is the dialog is designed with
-     * <code>designedOK</code> on the left
+     * @param isInOKCancelOrder {@code true} is the dialog is designed with
+     * {@code designedOK} on the left
      * @param designedOK the button that was designed to be the "OK" (accept,
      * commit) button
      * @param designedCancel the button that was designed to be the "Cancel"
      * button
      * @return the button that will be used as the OK button
-     * @throws IllegalArgumentException if either button is <code>null</code> or
+     * @throws IllegalArgumentException if either button is {@code null} or
      * if they refer to the same object
      */
     public static JButton makeAgnosticDialog(final AgnosticDialog dialog, boolean isInOKCancelOrder, JButton designedOK, JButton designedCancel) {
@@ -168,8 +168,8 @@ public class PlatformSupport {
      * Return the button that will be (or is) the OK button in an agnostic
      * dialog. This can be called before or after {@link #makeAgnosticDialog}.
      *
-     * @param isInOKCancelOrder <code>true</code> is the dialog is designed with
-     * <code>designedOK</code> on the left
+     * @param isInOKCancelOrder {@code true} is the dialog is designed with
+     * {@code designedOK} on the left
      * @param designedOK the button that was designed as the "OK" (accept,
      * commit) button
      * @param designedCancel the button that was designed as the "Cancel" button
@@ -189,8 +189,8 @@ public class PlatformSupport {
      * Return the button that will be (or is) the Cancel button in an agnostic
      * dialog. This can be called before or after {@link #makeAgnosticDialog}.
      *
-     * @param isInOKCancelOrder <code>true</code> is the dialog is designed with
-     * <code>designedOK</code> on the left
+     * @param isInOKCancelOrder {@code true} is the dialog is designed with
+     * {@code designedOK} on the left
      * @param designedOK the button that was designed as the "OK" (accept,
      * commit) button
      * @param designedCancel the button that was designed as the "Cancel" button
@@ -203,10 +203,10 @@ public class PlatformSupport {
     }
 
     /**
-     * Returns <code>true</code> if the OK button should be left (ahead) of the
+     * Returns {@code true} if the OK button should be left (ahead) of the
      * Cancel button on this platform.
      *
-     * @return <code>true</code> if OK comes before Cancel; <code>false</code>
+     * @return {@code true} if OK comes before Cancel; {@code false}
      * if it comes after
      */
     public static boolean isAgnosticOKInFirstPosition() {
@@ -242,7 +242,7 @@ public class PlatformSupport {
 
     // TODO: centralize control variant client properties for different L&Fs
     /**
-     * Parse a string to create a <code>KeyStroke</code> appropriate as an
+     * Parse a string to create a {@code KeyStroke} appropriate as an
      * accelerator for the native OS. The string must have the following syntax:
      * <pre>
      *    &lt;modifiers&gt;* (&lt;typedID&gt; | &lt;pressedReleasedID&gt;)
@@ -259,11 +259,11 @@ public class PlatformSupport {
      * menu accelerator key for the native platform. For example, "menu X" will
      * be treated as "ctrl X" on the Windows platform, but as "meta X" (which is
      * Command key + X) on Max OS X platform. Note that there is no way to
-     * determine from the returned <code>KeyStroke</code> instance whether the
+     * determine from the returned {@code KeyStroke} instance whether the
      * "menu" modifier was used or not.
      *
      * @param stroke a string formatted as above
-     * @return a <code>KeyStroke</code> object representing the specified key
+     * @return a {@code KeyStroke} object representing the specified key
      * event
      */
     @SuppressWarnings("deprecation")

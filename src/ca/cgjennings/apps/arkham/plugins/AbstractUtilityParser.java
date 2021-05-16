@@ -90,7 +90,7 @@ public abstract class AbstractUtilityParser {
      * This is called after each script is parsed to allow the utility access to
      * the resulting abstract syntax tree. In the event of a serious parser
      * error that prevents the tree from being generated, the root node will be
-     * <code>null</code>.
+     * {@code null}.
      *
      * @param rootNode the root of the parse tree
      */

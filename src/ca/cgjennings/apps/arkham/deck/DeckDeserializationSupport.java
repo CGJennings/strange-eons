@@ -43,10 +43,10 @@ public final class DeckDeserializationSupport {
     }
 
     /**
-     * Returns <code>true</code> if there is currently a deserialization session
+     * Returns {@code true} if there is currently a deserialization session
      * active.
      *
-     * @return <code>true</code> if the shared instance is in use
+     * @return {@code true} if the shared instance is in use
      */
     public synchronized boolean isActive() {
         return active;
@@ -69,9 +69,9 @@ public final class DeckDeserializationSupport {
 
     /**
      * Returns the folder that will be used as a last-ditch fallback to find a
-     * missing file linked to by the deck. May be <code>null</code>.
+     * missing file linked to by the deck. May be {@code null}.
      *
-     * @return the fallback folder, or <code>null</code>
+     * @return the fallback folder, or {@code null}
      */
     public File getDefaultFallbackFolder() {
         return fallbackFolder;
@@ -101,7 +101,7 @@ public final class DeckDeserializationSupport {
      * location.
      *
      * @param path the original path
-     * @return the path that replaced it, or <code>null</code> if not replaced
+     * @return the path that replaced it, or {@code null} if not replaced
      */
     String getReplacementPath(String path) {
         return replacementPaths.get(path);
@@ -113,7 +113,7 @@ public final class DeckDeserializationSupport {
      *
      * @param path the identifier that locates the original file
      * @param name the component name to display to the user as a hint
-     * @return the game component for the identifier, or <code>null</code>
+     * @return the game component for the identifier, or {@code null}
      * @throws IOException if an I/O error occurs while reading the file
      */
     public GameComponent findGameComponent(String path, String name) throws IOException {

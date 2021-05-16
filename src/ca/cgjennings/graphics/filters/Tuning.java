@@ -10,13 +10,13 @@ import java.lang.reflect.Modifier;
 import java.util.Properties;
 
 /**
- * The <code>Tuning</code> class contains tuning hints that help the image
+ * The {@code Tuning} class contains tuning hints that help the image
  * processing system decide between multiple algorithms when performing certain
  * operations. A default tuning profile is built in, but more accurate tuning
  * values can be determined for a particular platform by calling
  * {@link #update}. This should only be done when no image processing is
  * currently taking place. Tuning profiles can be read to and from a file to
- * avoid having to call <code>update</code> for each application run.
+ * avoid having to call {@code update} for each application run.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -95,7 +95,7 @@ public final class Tuning {
     /**
      * Updates the tuning parameters with platform-specific data by running a
      * sequence of test operations. This is a cover for
-     * <code>update( 5, false )</code>.
+     * {@code update( 5, false )}.
      */
     private static void update() {
         update(5, false);
@@ -110,7 +110,7 @@ public final class Tuning {
      *
      * @param accuracy a value from 1-9, with higher values requested
      * progressively more accurate results
-     * @param printResults if <code>true</code> the results will be printed to
+     * @param printResults if {@code true} the results will be printed to
      * System.err as they are generated.
      */
     public synchronized static void update(int accuracy, boolean printResults) {

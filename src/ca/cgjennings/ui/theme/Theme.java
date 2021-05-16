@@ -16,7 +16,7 @@ import resources.Language;
 import resources.ResourceKit;
 
 /**
- * A <code>Theme</code> encapsulates a UI design theme. Themes are applied while
+ * A {@code Theme} encapsulates a UI design theme. Themes are applied while
  * installing a look and feel and given an opportunity to modify its design
  * parameters (typically by changing values in either the default or look and
  * feel {@link javax.swing.UIDefaults}).
@@ -63,7 +63,7 @@ public abstract class Theme {
 
     /**
      * An optional sentence (without final punctuation) that briefly describes
-     * the theme. The base class returns <code>null</code> to indicate that no
+     * the theme. The base class returns {@code null} to indicate that no
      * description is provided.
      *
      * @return a theme description
@@ -142,11 +142,11 @@ public abstract class Theme {
     /**
      * Given an array of font family names, returns the first font family that
      * is available on this system. If none of the font families in the array
-     * are available, this method returns <code>Font.SANS_SERIF</code>.
+     * are available, this method returns {@code Font.SANS_SERIF}.
      *
      * @param families an array of candidate family names
      * @return the available candidate with the lowest index in
-     * <code>families</code>, or the standard sans-serif family name
+     * {@code families}, or the standard sans-serif family name
      */
     public static String findAvailableFontFamily(String[] families) {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -167,7 +167,7 @@ public abstract class Theme {
      * Returns the look and feel class name. Subclasses may override this to use
      * a custom look and feel.
      *
-     * @return the name of a <code>LookAndFeel</code> subclass
+     * @return the name of a {@code LookAndFeel} subclass
      */
     public String getLookAndFeelClassName() {
         return StrangeNimbus.class.getName();
@@ -177,7 +177,7 @@ public abstract class Theme {
      * This method is called prior to instantiating the look and feel and allows
      * you to modify the UI manager's default properties.
      *
-     * @param defaults the <code>UIManager</code> defaults
+     * @param defaults the {@code UIManager} defaults
      */
     public abstract void modifyManagerDefaults(UIDefaults defaults);
 
@@ -281,7 +281,7 @@ public abstract class Theme {
      * Gives the theme the opportunity to modify a image to reflect the
      * installed theme. This version of the method is called in cases where
      * there is no resource identifier available for the image. The base class
-     * returns <code>source</code> unmodified. If you wish to modify images for
+     * returns {@code source} unmodified. If you wish to modify images for
      * your theme, it is important that you make your changes to a
      * <i>copy</i> of the original image to avoid corrupting the image cache.
      *
@@ -295,8 +295,8 @@ public abstract class Theme {
     }
 
     /**
-     * A UI key that contains the <code>Border</code> used for headings and
-     * subheadings. If <code>null</code>, a default algorithm is used to create
+     * A UI key that contains the {@code Border} used for headings and
+     * subheadings. If {@code null}, a default algorithm is used to create
      * a suitably themed border. The font for headings is based on the font used
      * for titled borders, at a larger size. (If that font is not available, the
      * default font for labels is used.)
@@ -305,22 +305,22 @@ public abstract class Theme {
      */
     public static final String HEADING_BORDER = "se-heading-border";
     /**
-     * A UI key that contains the <code>Color</code> used for the background of
+     * A UI key that contains the {@code Color} used for the background of
      * the editor tabs.
      */
     public static final String EDITOR_TAB_BACKGROUND = "se-editor-tab-background";
     /**
-     * A UI key that contains the <code>Color</code> used for the background of
+     * A UI key that contains the {@code Color} used for the background of
      * sidepanel title bars, like at the top of project views.
      */
     public static final String SIDEPANEL_TITLE_BACKGROUND = "se-title-background";
     /**
-     * A UI key that contains the <code>Color</code> used for the foreground of
+     * A UI key that contains the {@code Color} used for the foreground of
      * sidepanel title bars, like at the top of project views.
      */
     public static final String SIDEPANEL_TITLE_FOREGROUND = "se-title-foreground";
     /**
-     * A UI key that contains the <code>Color</code> used for the border drawn
+     * A UI key that contains the {@code Color} used for the border drawn
      * around fields that accept a file drop when files are dragged over them.
      */
     public static final String FILE_DROP_BORDER = "FileDrop.borderColor";
@@ -355,7 +355,7 @@ public abstract class Theme {
     public static final String CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT = "se-cycle-margin";
     /**
      * UI key for console background colour; used if painter is
-     * <code>null</code>.
+     * {@code null}.
      */
     public static final String CONSOLE_BACKROUND = "se-conbg";
     /**
@@ -414,7 +414,7 @@ public abstract class Theme {
      * An image filter used to create a disabled icon from a regular icon when
      * no disabled icon is explicitly set. If set, the value must be a subclass
      * of {@link java.awt.image.BufferedImageOp}. (This includes any filter in
-     * the <code>ca.cgjennings.graphics.filters</code> package can be used.)
+     * the {@code ca.cgjennings.graphics.filters} package can be used.)
      */
     public static final String DISABLED_ICON_FILTER = "eons-difilt";
 }

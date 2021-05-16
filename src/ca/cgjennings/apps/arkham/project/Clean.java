@@ -62,8 +62,8 @@ public class Clean extends TaskAction {
     }
 
     /**
-     * Returns <code>true</code> if the clean command should delete a particular
-     * file or folder. The base class implementation returns <code>true</code>
+     * Returns {@code true} if the clean command should delete a particular
+     * file or folder. The base class implementation returns {@code true}
      * when the member is not a folder and its extension matches one of those
      * that is passed in. Subclasses can override this to create customized
      * clean actions for a specific task. (If the new action uses
@@ -74,7 +74,7 @@ public class Clean extends TaskAction {
      * @param m the candidate for deletion
      * @param extensions an array of file extensions that may be used to assist
      * in decision-making
-     * @return <code>true</code> if <code>m</code> should be deleted by a clean
+     * @return {@code true} if {@code m} should be deleted by a clean
      * operation
      */
     protected boolean willDelete(Member m, String[] extensions) {

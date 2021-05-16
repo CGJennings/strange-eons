@@ -23,7 +23,7 @@ import resources.ResourceKit;
  * (but not decks or case books). This dialog is used by the base printing
  * implementation in {@link AbstractGameComponentEditor}. A number of
  * package-visible members allow fetching the requested settings; after the
- * modal dialog returns, the value of <code>ok</code> is <code>true</code> if
+ * modal dialog returns, the value of {@code ok} is {@code true} if
  * the user wants to proceed with printing.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -462,7 +462,7 @@ class PrintSetupDialog extends javax.swing.JDialog implements AgnosticDialog {
      * type).
      *
      * @param printSheets the sheets to be printed
-     * @throws NullPointerException if the array of sheets is <code>null</code>
+     * @throws NullPointerException if the array of sheets is {@code null}
      */
     public void setUpForSheets(Sheet[] printSheets) {
         sheetCount = printSheets.length;

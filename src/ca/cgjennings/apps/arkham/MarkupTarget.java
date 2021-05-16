@@ -20,7 +20,7 @@ public interface MarkupTarget {
     /**
      * If set in a component's client properties, forces whether a component is
      * or is not considered to be a markup target. Set to
-     * <code>Boolean.TRUE</code> or <code>Boolean.FALSE</code>. Otherwise,
+     * {@code Boolean.TRUE} or {@code Boolean.FALSE}. Otherwise,
      * markup target candidates are evaluated using heuristics. To be valid, the
      * component must still be an acceptable type of control, and (in strict
      * validation mode) showing, enabled, and editable.
@@ -68,17 +68,17 @@ public interface MarkupTarget {
      *
      * @param start the start index of the substring
      * @param length the number of characters to include
-     * @return the text of the markup target from <code>start</code> to
-     * <code>end-1</code>, inclusive
+     * @return the text of the markup target from {@code start} to
+     * {@code end-1}, inclusive
      * @throws IllegalArgumentException if start or length is negative
      */
     String getText(int start, int length);
 
     /**
      * Changes the selection in the markup target. Invalid selections will be
-     * clamped to the valid range of the document. Note that <code>start</code>
-     * does not need to be less than <code>end</code>; the cursor will be
-     * located at the <code>end</code> offset.
+     * clamped to the valid range of the document. Note that {@code start}
+     * does not need to be less than {@code end}; the cursor will be
+     * located at the {@code end} offset.
      *
      * @param start the start offset of the new selection
      * @param end the end offset of the new selection
@@ -135,11 +135,11 @@ public interface MarkupTarget {
      * Inserts text at the cursor position. If there is an active selection, it
      * will be replaced. The inserted text may be modified before insertion, so
      * the actual number of characters inserted may not be the same as
-     * <code>text.length()</code>.
+     * {@code text.length()}.
      *
      * @param text the text to insert
      * @return the number of characters inserted
-     * @throws NullPointerException if text is <code>null</code>
+     * @throws NullPointerException if text is {@code null}
      */
     int setSelectedText(String text);
 
@@ -149,13 +149,13 @@ public interface MarkupTarget {
      * will be removed. This is a simple way to add or remove modal markup tags
      * around the selection. For example, to bold the selected text (or unbold
      * if it is surround by a bold tag pair):<br>
-     * <code>tagSelection( "&lt;b&gt;", "&lt;/b&gt;" )</code>
+     * {@code tagSelection( "&lt;b&gt;", "&lt;/b&gt;" )}
      *
      * @param prefix the prefix to insert (or remove) at the start of the
      * selection
      * @param suffix the suffix to insert (or remove) at the end of the
      * selection
-     * @param caseSensitive if <code>true</code>, the prefix and suffix are
+     * @param caseSensitive if {@code true}, the prefix and suffix are
      * case-sensitive
      */
     void tagSelectedText(String prefix, String suffix, boolean caseSensitive);
@@ -176,7 +176,7 @@ public interface MarkupTarget {
     void paste();
 
     /**
-     * Returns the actual target wrapped by this <code>MarkupTarget</code>.
+     * Returns the actual target wrapped by this {@code MarkupTarget}.
      *
      * @return the underlying object that is manipulated by this markup target
      * instance

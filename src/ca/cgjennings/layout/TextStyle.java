@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 /**
- * A combination of <code>TextAttribute</code>s that represents a particular
+ * A combination of {@code TextAttribute}s that represents a particular
  * style of text (a heading, for example).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -43,7 +43,7 @@ public class TextStyle {
     }
 
     /**
-     * Add a new <code>TextAttribute</code> to this style.
+     * Add a new {@code TextAttribute} to this style.
      */
     public void add(TextAttribute attr, Object styleValue) {
         styles.put(attr, styleValue);
@@ -51,8 +51,8 @@ public class TextStyle {
 
     /**
      * Add an arbitrarily long sequence of styles and values. The sequence of
-     * arguments must come in pairs of <code>TextAttribute</code>s followed by
-     * <code>Object</code> values.
+     * arguments must come in pairs of {@code TextAttribute}s followed by
+     * {@code Object} values.
      */
     public void add(Object... listOfAttributesAndStyles) {
         for (int i = 0; i < listOfAttributesAndStyles.length; i += 2) {
@@ -64,22 +64,22 @@ public class TextStyle {
     }
 
     /**
-     * Add all the attributes of the <code>sourceStyle</code> to this style.
+     * Add all the attributes of the {@code sourceStyle} to this style.
      */
     public void add(TextStyle sourceStyle) {
         styles.putAll(sourceStyle.styles);
     }
 
     /**
-     * Get the value for a <code>TextAttribute</code> in this style. Returns
-     * <code>null</code> if the attribute has not been specified.
+     * Get the value for a {@code TextAttribute} in this style. Returns
+     * {@code null} if the attribute has not been specified.
      */
     public Object get(TextAttribute attr) {
         return styles.get(attr);
     }
 
     /**
-     * Remove a <code>TextAttribute</code> from the style.
+     * Remove a {@code TextAttribute} from the style.
      */
     public void remove(TextAttribute attr) {
         styles.remove(attr);
@@ -94,7 +94,7 @@ public class TextStyle {
 
     /**
      * Apply this style to a range of characters in an
-     * <code>AttributedString</code>.
+     * {@code AttributedString}.
      *
      * @param s the string to the apply the attributes of the style to
      * @param beginPos the index of the first character in the range
@@ -110,7 +110,7 @@ public class TextStyle {
     }
 
     /**
-     * Apply a style to all characters in an <code>AttributedString</code>.
+     * Apply a style to all characters in an {@code AttributedString}.
      */
     public void applyStyle(AttributedString s) {
         for (Entry<TextAttribute, Object> entry : styles.entrySet()) {

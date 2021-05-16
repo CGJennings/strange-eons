@@ -38,7 +38,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
 
     /**
      * A property that changes when entries are added to or removed from the
-     * list. When an ID is removed, the new value will be <code>null</code>.
+     * list. When an ID is removed, the new value will be {@code null}.
      * When an ID is added or replaced, the new value will be the the new ID.
      */
     public static final String LIST_MODIFIED_PROPERTY = "cid-list-modified";
@@ -438,7 +438,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
     }
 
     /**
-     * Identical to {@link #toString()}, but returns <code>null</code> if the
+     * Identical to {@link #toString()}, but returns {@code null} if the
      * list is empty.
      *
      * @return a string suitable for setting in a catalog listing

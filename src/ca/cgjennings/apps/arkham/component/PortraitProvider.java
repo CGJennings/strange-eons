@@ -11,9 +11,9 @@ package ca.cgjennings.apps.arkham.component;
 public interface PortraitProvider {
 
     /**
-     * Returns a <code>Portrait</code> that can be used to manipulate one of the
+     * Returns a {@code Portrait} that can be used to manipulate one of the
      * portrait images used by a component. A component may use more than one
-     * portrait. The value of <code>index</code> indicates which portrait is
+     * portrait. The value of {@code index} indicates which portrait is
      * desired, and must be be between 0 and {@link #getPortraitCount()}-1
      * (inclusive).
      *

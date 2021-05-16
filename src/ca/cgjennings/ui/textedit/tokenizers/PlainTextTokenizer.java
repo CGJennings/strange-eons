@@ -7,7 +7,7 @@ import ca.cgjennings.ui.textedit.completion.PlainTextCompleter;
 import javax.swing.text.Segment;
 
 /**
- * A basic tokenizer that marks all text as <code>PLAIN</code>.
+ * A basic tokenizer that marks all text as {@code PLAIN}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

@@ -76,13 +76,13 @@ public class IconBorder extends AbstractBorder {
 
     /**
      * Assuming that a component has this border installed on it, returns
-     * <code>true</code> if a point in the component's coordinate space would be
+     * {@code true} if a point in the component's coordinate space would be
      * over the icon.
      *
      * @param c the component to test
      * @param x the x-coordinate of the point
      * @param y the y-coordinate of the point
-     * @return <code>true</code> if (x,y) is over the icon border
+     * @return {@code true} if (x,y) is over the icon border
      */
     public boolean isPointOverIcon(JComponent c, int x, int y) {
         Insets i = c.getInsets();
@@ -105,7 +105,7 @@ public class IconBorder extends AbstractBorder {
      * component without creating a compound border.
      * <p>
      * If the component is an editable combo box, the icon will be installed on
-     * the editor component if it is a <code>JComponent</code>.
+     * the editor component if it is a {@code JComponent}.
      *
      * @param c the component to install the border on, typically a text field
      * @return the installed compound border

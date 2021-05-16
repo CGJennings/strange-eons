@@ -20,7 +20,7 @@ import resources.Language;
 import static resources.Language.string;
 
 /**
- * <code>PaperProperties</code> are immutable objects that describe the
+ * {@code PaperProperties} are immutable objects that describe the
  * properties of the paper used in a deck.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -74,13 +74,13 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * can be given in any order. The actual width and height dimensions will be
      * determined automatically from the orientation. The paper name is
      * localized automatically if the name begins with '@'. The localized name
-     * is determined as if by <code>Language.string( name.substring(1) )</code>.
+     * is determined as if by {@code Language.string( name.substring(1) )}.
      *
      * @param name the name to use for the paper type
      * @param width paper width in points
      * @param height paper height in points
      * @param orientation one of {@link #LANDSCAPE} or {@link #PORTRAIT}
-     * @throws NullPointerException if the name is <code>null</code>
+     * @throws NullPointerException if the name is {@code null}
      */
     public PaperProperties(String name, double width, double height, boolean orientation) {
         if (name == null) {
@@ -131,10 +131,10 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * @param orientation one of {@link #LANDSCAPE} or {@link #PORTRAIT}
      * @param margin the size of the print edge margin, in points
      * @param gridSeparation the size of the snapping grid, in points
-     * @param isPhysical <code>true</code> if this paper represents physical
-     * media, or <code>false</code> if it represents a virtual paper size such
+     * @param isPhysical {@code true} if this paper represents physical
+     * media, or {@code false} if it represents a virtual paper size such
      * as the size of an expansion board
-     * @param game the game that this paper applies to, or <code>null</code> for
+     * @param game the game that this paper applies to, or {@code null} for
      * all games
      */
     public PaperProperties(String name, double width, double height, boolean orientation, double margin, double gridSeparation, boolean isPhysical, Game game) {
@@ -259,13 +259,13 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
 
     /**
-     * Returns <code>true</code> if this page uses portrait orientation. (The
+     * Returns {@code true} if this page uses portrait orientation. (The
      * definition of {@link #PORTRAIT} is such that the value returned from this
      * method and the value returned from {@link #getOrientation} are
      * identical.)
      *
-     * @return <code>true</code> if orientation is {@link #PORTRAIT}, otherwise
-     * <code>false</code>
+     * @return {@code true} if orientation is {@link #PORTRAIT}, otherwise
+     * {@code false}
      * @see #getOrientation()
      */
     public boolean isPortraitOrientation() {
@@ -285,11 +285,11 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
 
     /**
-     * Returns <code>true</code> if this describes a physical paper type; that
+     * Returns {@code true} if this describes a physical paper type; that
      * is, if it matches real-world paper sizes that might fit in a particular
      * printer model.
      *
-     * @return <code>true</code> if this is a physical paper type
+     * @return {@code true} if this is a physical paper type
      */
     public boolean isPhysical() {
         return isPhysical;
@@ -300,7 +300,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * associated with. If the paper type is not associated with a game, this
      * will be {@link Game#ALL_GAMES_CODE}.
      *
-     * @return the non-<code>null</code> game code for the game this paper type
+     * @return the non-{@code null} game code for the game this paper type
      * is associated with
      */
     public String getGameCode() {
@@ -308,7 +308,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
 
     /**
-     * Returns a <code>PaperProperties</code> with the same dimensions as this
+     * Returns a {@code PaperProperties} with the same dimensions as this
      * paper but with the requested orientation. If the orientation matches this
      * paper's orientation, this instance is returned. Otherwise, a new instance
      * is returned with the requested orientation.
@@ -333,11 +333,11 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * Create a {@code PageFormat} object that is compatible with this
      * {@code PaperProperties}. {@code PageFormat}s are used by the printing
      * system to describe physical pages. If {@code applyMargins} is
-     * <code>true</code>, then the imageable area of the resulting
+     * {@code true}, then the imageable area of the resulting
      * {@code PageFormat} will be reduced to account for the margin. Otherwise,
      * the imageable area will be set to the entire page.
      *
-     * @param applyMargins if <code>true</code>, use the margin to set the
+     * @param applyMargins if {@code true}, use the margin to set the
      * imageable area
      * @return a page format that represents the same physical paper size and
      * orientation as this instance
@@ -366,7 +366,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      *
      * @param ppi the resolution of resulting image, in pixels per inch
      * @return an image the same size as this paper size at the given resolution
-     * @throws IllegalArgumentException if <code>ppi</code> is not a positive
+     * @throws IllegalArgumentException if {@code ppi} is not a positive
      * number
      */
     public BufferedImage createCompatibleImage(double ppi) {
@@ -404,11 +404,11 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
 
     /**
-     * Returns <code>true</code> if another properties instance has the same
+     * Returns {@code true} if another properties instance has the same
      * dimensions, orientation, grid size, margin, and name as this instance.
      *
      * @param that the paper properties to compare this with
-     * @return <code>true</code> if the paper properties are equal to this
+     * @return {@code true} if the paper properties are equal to this
      */
     @Override
     public boolean equals(Object that) {

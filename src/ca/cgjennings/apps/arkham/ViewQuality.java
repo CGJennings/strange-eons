@@ -178,12 +178,12 @@ public enum ViewQuality {
     }
 
     /**
-     * Returns <code>true</code> if the view quality is set to automatic
+     * Returns {@code true} if the view quality is set to automatic
      * management mode. When automatic management is enabled, {@link #get()}
      * will return a fixed value but specific rendering systems may choose to
      * use a different quality setting depending on system performance.
      *
-     * @return <code>true</code> if rendering systems may manage performance
+     * @return {@code true} if rendering systems may manage performance
      * automatically
      */
     public synchronized static boolean isManagedAutomatically() {

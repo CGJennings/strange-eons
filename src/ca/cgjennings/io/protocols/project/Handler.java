@@ -10,7 +10,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * A URL protocol handler for the <code>project:</code> protocol, which accesses
+ * A URL protocol handler for the {@code project:} protocol, which accesses
  * the contents of the open project.
  *
  * <p>

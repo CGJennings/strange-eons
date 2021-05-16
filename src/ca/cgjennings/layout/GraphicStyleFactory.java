@@ -35,7 +35,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
     /**
      * Create a style based on a list of parameters to be parsed, typically from
      * an &lt;image&gt; tag. The format of the parameters is as follows:<br>
-     * <code>    url [width [height]] [alignment [offset]]</code>
+     * {@code     url [width [height]] [alignment [offset]]}
      */
     @Override
     public TextStyle createStyle(MarkupRenderer renderer, String[] parameters) {
@@ -217,15 +217,15 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
     }
 
     /**
-     * Returns <code>true</code> if the image identifier appears to refer to a
+     * Returns {@code true} if the image identifier appears to refer to a
      * URL rather than a local file.
      *
      * @param identifier the identifier to check
-     * @return <code>true</code> if the identifier does not refer to a file on
+     * @return {@code true} if the identifier does not refer to a file on
      * the local file system
      *
      * @deprecated Use {@link StrangeImage} to load user images and
-     * <code>!StrangeImage.isFileIdentifier( identifier )</code> as a
+     * {@code !StrangeImage.isFileIdentifier( identifier )} as a
      * replacement for this call.
      */
     public static boolean isURLString(String identifier) {

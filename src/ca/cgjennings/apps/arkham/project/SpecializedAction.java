@@ -4,7 +4,7 @@ package ca.cgjennings.apps.arkham.project;
  * A superclass for actions that specialize one of the built-in actions by
  * modifying their behaviour. The same action can be specialized multiple times.
  * As long as each instance is well-behaved and passes all calls that they don't
- * care about on to <code>superAction</code>, multiple specializations can only
+ * care about on to {@code superAction}, multiple specializations can only
  * interfere with each other if there is overlap between the cases they
  * specialize. When two or more actions specialize the same case (such as files
  * with a certain extension), only the last one registered takes effect.
@@ -28,7 +28,7 @@ public abstract class SpecializedAction extends TaskAction {
      * Use this instance to specialize an already registered action.
      *
      * @param action the action that this action specializes
-     * @throws IllegalArgumentException if <code>action</code> is not registered
+     * @throws IllegalArgumentException if {@code action} is not registered
      */
     public SpecializedAction(TaskAction action) {
         install(action);

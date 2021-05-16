@@ -33,18 +33,18 @@ import javax.swing.text.html.HTMLEditorKit.HTMLFactory;
 public class EditorPane extends JEditorPane {
 
     /**
-     * Creates a new <code>EditorPane</code>. The document model is set to
-     * <code>null</code>.
+     * Creates a new {@code EditorPane}. The document model is set to
+     * {@code null}.
      */
     public EditorPane() {
         install();
     }
 
     /**
-     * Creates an <code>EditorPane</code> based on a specified URL for input.
+     * Creates an {@code EditorPane} based on a specified URL for input.
      *
      * @param initialPage the URL
-     * @exception IOException if the URL is <code>null</code> or cannot be
+     * @exception IOException if the URL is {@code null} or cannot be
      * accessed
      */
     public EditorPane(URL initialPage) throws IOException {
@@ -53,11 +53,11 @@ public class EditorPane extends JEditorPane {
     }
 
     /**
-     * Creates an <code>EditorPane</code> based on a string containing a URL
+     * Creates an {@code EditorPane} based on a string containing a URL
      * specification.
      *
      * @param url the URL
-     * @exception IOException if the URL is <code>null</code> or cannot be
+     * @exception IOException if the URL is {@code null} or cannot be
      * accessed
      */
     public EditorPane(String url) throws IOException {
@@ -66,14 +66,14 @@ public class EditorPane extends JEditorPane {
     }
 
     /**
-     * Creates an <code>EditorPane</code> that has been initialized to the given
-     * text by calling the <code>setContentType</code> and <code>setText</code>
+     * Creates an {@code EditorPane} that has been initialized to the given
+     * text by calling the {@code setContentType} and {@code setText}
      * methods.
      *
      * @param type mime type of the given text
-     * @param text the text to initialize with; may be <code>null</code>
-     * @exception NullPointerException if the <code>type</code> parameter is
-     * <code>null</code>
+     * @param text the text to initialize with; may be {@code null}
+     * @exception NullPointerException if the {@code type} parameter is
+     * {@code null}
      */
     public EditorPane(String type, String text) {
         super(type, text);

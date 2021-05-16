@@ -63,7 +63,7 @@ import resources.ResourceKit;
 /**
  * The abstract base class for {@link GameComponent} editors. Editors for
  * components based on compiled code will typically be a direct subclass of
- * <code>AbstractGameComponentEditor</code>. Editors for components based on DIY
+ * {@code AbstractGameComponentEditor}. Editors for components based on DIY
  * scripts use {@link DIYEditor}s.
  *
  * @param <G> the type of game component to be edited
@@ -314,12 +314,12 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * Replace the currently edited component. This consists of the following
      * steps:
      * <ol>
-     * <li> if <code>newComponent</code> has an on-install event in its private
+     * <li> if {@code newComponent} has an on-install event in its private
      * settings, then the on-install event is called
-     * <li> the editor is updated to point to <code>newComponent</code> and it
-     * creates a new set of sheets from <code>newComponent</code> and installs
+     * <li> the editor is updated to point to {@code newComponent} and it
+     * creates a new set of sheets from {@code newComponent} and installs
      * them in the preview window
-     * <li> the current state of <code>newComponent</code> is copied from the
+     * <li> the current state of {@code newComponent} is copied from the
      * component to the editor controls
      * </ol>
      *
@@ -493,7 +493,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * Returns an array of labels that can be used to describe the component's
      * sheets. The returned array uses the same order as
      * {@link GameComponent#getSheets()}. The base class implementation is
-     * equivalent to calling <code>getGameComponent().getSheetTitles()</code>.
+     * equivalent to calling {@code getGameComponent().getSheetTitles()}.
      *
      * <p>
      * Note that the returned array is shared. If you need to modify its
@@ -558,7 +558,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Returns <code>true</code> if the commandable wishes to handle the given
+     * Returns {@code true} if the commandable wishes to handle the given
      * command. This method defines the set of commands that the commandable
      * responds to. The commandable might not be able to act on the command at
      * the current moment. For example, a commandable that responds to "Cut"
@@ -572,7 +572,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * and {@link Commands#SPIN_OFF SPIN_OFF}.
      *
      * @param command the command to be performed
-     * @return <code>true</code> if this commandable wishes to handle the
+     * @return {@code true} if this commandable wishes to handle the
      * command (even if it cannot execute the command currently)
      * @see Commands
      */
@@ -688,7 +688,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     /**
      * This method is called once for each tick of the heartbeat timer. It the
-     * game component is currently <code>null</code>, it returns immediately.
+     * game component is currently {@code null}, it returns immediately.
      * Otherwise, it calls {@link #populateComponentFromDelayedFields()} and
      * then determines if it the previews should be updated. The procedure for
      * determining if previews should be updated is as follows:
@@ -883,7 +883,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param index the index of the desired sheet
      * @return the sheet at the requested index
      * @throws IndexOutOfBoundsException if the index does not fall in
-     * <code>0 ... {@link #getSheetCount()}-1</code>, inclusive
+     * {@code 0 ... {@link #getSheetCount()}-1}, inclusive
      */
     public Sheet getSheet(int index) {
         if (index < 0 || index >= getSheetCount()) {
@@ -893,7 +893,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Adds a new <code>FieldPopulationListener</code> to this game component
+     * Adds a new {@code FieldPopulationListener} to this game component
      * editor. A field population event is fired after the editor's controls are
      * modified to match the edited component. This typically happens as part of
      * setting the game component for the editor.
@@ -907,7 +907,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Removes a <code>FieldPopulationListener</code> from this game component
+     * Removes a {@code FieldPopulationListener} from this game component
      * editor.
      *
      * @param fpl the listener to remove
@@ -1001,10 +1001,10 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Returns <code>true</code> if the edited game component has unsaved
+     * Returns {@code true} if the edited game component has unsaved
      * changes.
      *
-     * @return <code>true</code> if the game component has been edited since the
+     * @return {@code true} if the game component has been edited since the
      * last time it was saved
      */
     @Override
@@ -1023,7 +1023,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * {@link #hasUnsavedChanges()} and the game component's
      * {@link GameComponent#hasUnsavedChanges()} will match.)
      *
-     * @param isDirty <code>true</code> if this game component has unsaved
+     * @param isDirty {@code true} if this game component has unsaved
      * changes
      */
     @Override
@@ -1130,9 +1130,9 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     /**
      * Returns the edited game component. If this editor is not editing a game
-     * component, returns <code>null</code>.
+     * component, returns {@code null}.
      *
-     * @return the edited game component, or <code>null</code> if this editor is
+     * @return the edited game component, or {@code null} if this editor is
      * not editing a game component
      */
     @Override

@@ -21,9 +21,9 @@ public class PlatformFileSystem {
      *
      * @param file the file to modify
      * @param hidden whether the hidden bit should be set or unset
-     * @return <code>true</code> if no change was needed or the required change
+     * @return {@code true} if no change was needed or the required change
      * was successful
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public static boolean setHidden(File file, boolean hidden) {
         if (file == null) {
@@ -40,8 +40,8 @@ public class PlatformFileSystem {
      * read the file, and list contents if the file is a directory.
      *
      * @param file the file to make readable
-     * @return <code>true</code> if change was successful
-     * @throws NullPointerException if the file is <code>null</code>
+     * @return {@code true} if change was successful
+     * @throws NullPointerException if the file is {@code null}
      */
     public static boolean makeReadableByUser(File file) {
         if (file == null) {
@@ -60,8 +60,8 @@ public class PlatformFileSystem {
      * read and write to the file, and list contents if the file is a directory.
      *
      * @param file the file to make writable
-     * @return <code>true</code> if change was successful
-     * @throws NullPointerException if the file is <code>null</code>
+     * @return {@code true} if change was successful
+     * @throws NullPointerException if the file is {@code null}
      */
     public static boolean makeWritableByUser(File file) {
         if (file == null) {

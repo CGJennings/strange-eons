@@ -29,8 +29,8 @@ public class GenderAwareMarkupRenderer extends MarkupRenderer {
 
     /**
      * Sets the "gender" using a simple male/female rule. If female is
-     * <code>true</code>, the second segment of a gender tag is used. If
-     * <code>false</code>, the first segment is used.
+     * {@code true}, the second segment of a gender tag is used. If
+     * {@code false}, the first segment is used.
      *
      * @param female if the second segment should be used
      */

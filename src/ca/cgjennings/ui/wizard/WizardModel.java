@@ -60,8 +60,8 @@ public interface WizardModel {
     int getPageCount();
 
     /**
-     * Returns <code>true</code> if there is a page after the current page. This
-     * method must always return <code>false</code> when progress is blocked.
+     * Returns {@code true} if there is a page after the current page. This
+     * method must always return {@code false} when progress is blocked.
      *
      * @return whether the next button should be enabled
      * @see #isProgressBlocked()
@@ -69,15 +69,15 @@ public interface WizardModel {
     boolean canGoForward();
 
     /**
-     * Returns <code>true</code> if there is a page before the current page.
+     * Returns {@code true} if there is a page before the current page.
      *
      * @return whether the previous button should be enabled
      */
     boolean canGoBackward();
 
     /**
-     * Returns <code>true</code> if the wizard can be finished in its current
-     * state. This method must always return <code>false</code> when progress is
+     * Returns {@code true} if the wizard can be finished in its current
+     * state. This method must always return {@code false} when progress is
      * blocked.
      *
      * @return whether the finish button should be enabled
@@ -107,7 +107,7 @@ public interface WizardModel {
      * Completes the wizard, causing any relevant actions to take place. It may
      * optionally return an arbitrary object to represent this result.
      *
-     * @return an optional result, or <code>null</code>
+     * @return an optional result, or {@code null}
      * @throws IllegalStateException if finishing is not currently possible
      * @see #canFinish()
      */
@@ -116,20 +116,20 @@ public interface WizardModel {
     /**
      * Sets whether or not progress is blocked. When progress is blocked,
      * {@link #canGoForward()} and {@link #canFinish()} must always return
-     * <code>false</code>. The progress blocking state can be cleared by calling
+     * {@code false}. The progress blocking state can be cleared by calling
      * this method with false, and is cleared automatically if the page changes.
      * Blocking provides a mechanism for individual pages to prevent progress if
      * they are missing required information.
      *
-     * @param block if <code>true</code>, prevents the user from going to the
+     * @param block if {@code true}, prevents the user from going to the
      * next page or finishing the dialog.
      */
     void setProgressBlocked(boolean block);
 
     /**
-     * Returns <code>true</code> if progress is currently blocked.
+     * Returns {@code true} if progress is currently blocked.
      *
-     * @return <code>true</code> if the user is blocked from continuing
+     * @return {@code true} if the user is blocked from continuing
      */
     boolean isProgressBlocked();
 
@@ -169,7 +169,7 @@ public interface WizardModel {
      * Adds a listener that will receive {@link WizardEvent}s from the model.
      *
      * @param li the listener to add
-     * @throws NullPointerException if the listener is <code>null</code>
+     * @throws NullPointerException if the listener is {@code null}
      */
     void addWizardListener(WizardListener li);
 
@@ -178,7 +178,7 @@ public interface WizardModel {
      * receives {@link WizardEvent}s from the model.
      *
      * @param li the listener to removes
-     * @throws NullPointerException if the listener is <code>null</code>
+     * @throws NullPointerException if the listener is {@code null}
      */
     void removeWizardListener(WizardListener li);
 }

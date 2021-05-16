@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.deck.item;
 
 /**
  * This is a marker interface extended by all interfaces for getting or setting
- * a type of style information. Each <code>Style</code> subinterface defines a
+ * a type of style information. Each {@code Style} subinterface defines a
  * collection of getters and setters that together are used to control the
  * parameters of that style. For example, the {@link LineStyle} defines getters
  * and setters for the line width, colour, dash pattern, and so on.
@@ -15,7 +15,7 @@ package ca.cgjennings.apps.arkham.deck.item;
  *
  * <p>
  * The style information for one or more {@link PageItem}s can be read and
- * written between different classes that have one or more <code>Style</code>
+ * written between different classes that have one or more {@code Style}
  * interface(s) in common using a {@link StyleCapture}. This allows you to, for
  * example, capture the style of one object and then apply it to other objects.
  *

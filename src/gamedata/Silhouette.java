@@ -37,14 +37,14 @@ public class Silhouette implements IconProvider {
     private static final int ICON_SIZE = 18;
 
     /**
-     * Creates a new silhouette with unique key <code>key</code>, that will
-     * obtain a stencil image from <code>stencilResource</code> and use
-     * <code>portraitResource</code> as its default portrait.
+     * Creates a new silhouette with unique key {@code key}, that will
+     * obtain a stencil image from {@code stencilResource} and use
+     * {@code portraitResource} as its default portrait.
      *
      * @param key the unique key
      * @param stencilResource resource file of the stencil image
      * @param portraitResource resource file of the portrait image; may be
-     * <code>null</code>
+     * {@code null}
      * @param bleedMargin the bleed margin surrounding the silhouette, in
      * points, or 0
      */
@@ -158,7 +158,7 @@ public class Silhouette implements IconProvider {
 
     /**
      * Returns the image resource name for this silhouette's default portrait
-     * resource. This is guaranteed not to be <code>null</code>.
+     * resource. This is guaranteed not to be {@code null}.
      *
      * @return the silhouette's default portrait
      */
@@ -207,11 +207,11 @@ public class Silhouette implements IconProvider {
     };
 
     /**
-     * Returns <code>true</code> if this silhouette and <code>obj</code> have
+     * Returns {@code true} if this silhouette and {@code obj} have
      * the same key.
      *
      * @param obj the object to test
-     * @return <code>true</code> if <code>obj</code> is a silhouette with the
+     * @return {@code true} if {@code obj} is a silhouette with the
      * same key
      */
     @Override
@@ -225,11 +225,11 @@ public class Silhouette implements IconProvider {
     }
 
     /**
-     * Returns the Silhouette with the specified key, or <code>null</code> if
+     * Returns the Silhouette with the specified key, or {@code null} if
      * there is none.
      *
      * @param key the key to search for
-     * @return the silhouette with the given key, or <code>null</code>
+     * @return the silhouette with the given key, or {@code null}
      */
     public static Silhouette get(String key) {
         return sils.get(key);
@@ -259,7 +259,7 @@ public class Silhouette implements IconProvider {
      * resources.
      *
      * @param silhouetteResource the file to parse
-     * @throws NullPointerException if the resource file is <code>null</code>
+     * @throws NullPointerException if the resource file is {@code null}
      * @throws IOException if an error occurs while reading the resource file
      * @throws ResourceParserException if an error occurs while parsing the file
      */
@@ -326,7 +326,7 @@ public class Silhouette implements IconProvider {
      * Registers a new silhouette.
      *
      * @param s the new silhouette to register
-     * @throws NullPointerException if <code>s</code> is <code>null</code>
+     * @throws NullPointerException if {@code s} is {@code null}
      */
     public synchronized static void register(Silhouette s) {
         registerImpl(s);

@@ -19,7 +19,7 @@ import resources.Language;
 
 /**
  * Creates simple PDF documents. PDF support is not built in; to use this class
- * the <code>core-PDFOutput.selibrary</code> library must be installed. (That
+ * the {@code core-PDFOutput.selibrary} library must be installed. (That
  * library provides a concrete implementation of the {@link PDFWriter} interface
  * defined in this class.) You can test whether PDF support is available by
  * calling {@link #isAvailable()}.
@@ -39,10 +39,10 @@ public final class PDFPrintSupport {
     }
 
     /**
-     * Returns <code>true</code> if PDF support is available.
+     * Returns {@code true} if PDF support is available.
      *
-     * @return <code>true</code> if {@link #createPDFWriter} will not throw an
-     * <code>UnsupportedOperationException</code> exception
+     * @return {@code true} if {@link #createPDFWriter} will not throw an
+     * {@code UnsupportedOperationException} exception
      */
     public synchronized static boolean isAvailable() {
         if (knownOK) {
@@ -389,7 +389,7 @@ public final class PDFPrintSupport {
          * specified destination.
          *
          * @param destination the PDF output file
-         * @throws NullPointerException if the file is <code>null</code>
+         * @throws NullPointerException if the file is {@code null}
          */
         public Configuration(File destination) {
             setOutputFile(destination);
@@ -411,7 +411,7 @@ public final class PDFPrintSupport {
 
         /**
          * Returns the file that the destination will be written to; may not be
-         * <code>null</code>.
+         * {@code null}.
          *
          * @return the destination
          */
@@ -421,10 +421,10 @@ public final class PDFPrintSupport {
 
         /**
          * Sets the file that the destination will be written to; may not be
-         * <code>null</code>.
+         * {@code null}.
          *
          * @param destination the PDF output file
-         * @throws NullPointerException if the file is <code>null</code>
+         * @throws NullPointerException if the file is {@code null}
          */
         public void setOutputFile(File destination) {
             if (destination == null) {
@@ -490,7 +490,7 @@ public final class PDFPrintSupport {
 
         /**
          * Returns the value to use as the title of the document in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @return the document title
          */
@@ -500,7 +500,7 @@ public final class PDFPrintSupport {
 
         /**
          * Sets the value to use as the title of the document in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @param title the document title to set
          */
@@ -510,7 +510,7 @@ public final class PDFPrintSupport {
 
         /**
          * Returns the value to use as the document author's name in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @return the document author
          */
@@ -520,7 +520,7 @@ public final class PDFPrintSupport {
 
         /**
          * Sets the value to use as the document author's name in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @param author the document author to set
          */
@@ -530,7 +530,7 @@ public final class PDFPrintSupport {
 
         /**
          * Returns the value to use as the subject of the document in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @return the document subject
          */
@@ -540,7 +540,7 @@ public final class PDFPrintSupport {
 
         /**
          * Sets the value to use as the subject of the document in the PDF
-         * metadata; if <code>null</code> a default, empty value is used.
+         * metadata; if {@code null} a default, empty value is used.
          *
          * @param subject the document subject to set
          */
@@ -584,7 +584,7 @@ public final class PDFPrintSupport {
      * Sets the name of the concrete {@link PDFWriter} class to use.
      *
      * @param className the fully qualified name of a class with a no-arg
-     * constructor that implements {@link PDFWriter}, or <code>null</code> to
+     * constructor that implements {@link PDFWriter}, or {@code null} to
      * use the default class
      */
     public static synchronized void setImplementationClassName(String className) {

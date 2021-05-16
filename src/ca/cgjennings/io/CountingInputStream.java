@@ -13,7 +13,7 @@ public class CountingInputStream extends FilterInputStream {
 
     /**
      * Create a new counting filter that will count the bytes read through it
-     * from <code>in</code>.
+     * from {@code in}.
      *
      * @param in the stream to count bytes from
      */

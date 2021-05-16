@@ -10,7 +10,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Listeners that register a file with a <code>FileChangeMonitor</code> receive
+ * Listeners that register a file with a {@code FileChangeMonitor} receive
  * notification when it changes.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -39,7 +39,7 @@ public class FileChangeMonitor {
      */
     private static final FileChangeMonitor shared = new FileChangeMonitor();
     /**
-     * The default <code>checkPeriod</code> used if none is given.
+     * The default {@code checkPeriod} used if none is given.
      */
     private static long defaultCheckPeriod = 4_000;
     /**
@@ -63,7 +63,7 @@ public class FileChangeMonitor {
     }
 
     /**
-     * Return a shared instance of <code>FileChangeMonitor</code>.
+     * Return a shared instance of {@code FileChangeMonitor}.
      *
      * @return an shared instance
      */
@@ -99,7 +99,7 @@ public class FileChangeMonitor {
      * Removes all listeners being monitored and ends the monitoring thread.
      * Once a monitor has been disposed, it cannot have any more listeners
      * added. If this method is called on the shared instance, it will throw an
-     * <code>UnsupportedOperationException</code>.
+     * {@code UnsupportedOperationException}.
      *
      * @throws UnsupportedOperationException if called on
      * {@link #getSharedInstance()}
@@ -117,10 +117,10 @@ public class FileChangeMonitor {
      * Begin monitoring a file for changes. Changes will cause the listener's
      * {@link FileChangeListener#fileChanged} method to be called.
      *
-     * @param listener the listener to notify when <code>file</code> changes
+     * @param listener the listener to notify when {@code file} changes
      * @param file the file to monitor
-     * @throws NullPointerException if <code>listener</code> or
-     * <code>file</code> is <code>null</code>
+     * @throws NullPointerException if {@code listener} or
+     * {@code file} is {@code null}
      * @throws IllegalStateException if this monitor has been {@link #dispose}d
      */
     public void addFileChangeListener(FileChangeListener listener, File file) {
@@ -130,22 +130,22 @@ public class FileChangeMonitor {
     /**
      * Begin monitoring a file for changes. Changes will cause the listener's
      * {@link FileChangeListener#fileChanged} method to be called. The value of
-     * <code>updatePeriod</code> is an approximate <i>maximum</i> delay, in
+     * {@code updatePeriod} is an approximate <i>maximum</i> delay, in
      * milliseconds, before a change in file state is detected. The monitor does
-     * not guarantee that <code>updatePeriod</code> will be honoured. If
-     * <code>listener</code> has already been registered to monitor
-     * <code>file</code>, the existing monitor will be removed and it will be
-     * replaced by one with the new <code>updatePeriod</code>. If the
-     * <code>updatePeriod</code> is 0, then the monitor is not added (it is
+     * not guarantee that {@code updatePeriod} will be honoured. If
+     * {@code listener} has already been registered to monitor
+     * {@code file}, the existing monitor will be removed and it will be
+     * replaced by one with the new {@code updatePeriod}. If the
+     * {@code updatePeriod} is 0, then the monitor is not added (it is
      * removed if it already exists).
      *
-     * @param listener the listener to notify when <code>file</code> changes
+     * @param listener the listener to notify when {@code file} changes
      * @param file the file to monitor
      * @param updatePeriod the approximate maximum delay before change
      * notification takes place
-     * @throws NullPointerException if <code>listener</code> or
-     * <code>file</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>updatePeriod</code> is negative
+     * @throws NullPointerException if {@code listener} or
+     * {@code file} is {@code null}
+     * @throws IllegalArgumentException if {@code updatePeriod} is negative
      * @throws IllegalStateException if this monitor has been {@link #dispose}d
      * of
      * @see #getDefaultCheckPeriod()
@@ -273,19 +273,19 @@ public class FileChangeMonitor {
     }
 
     /**
-     * Converts a (<code>FileChangeListener</code>, <code>File</code>) pair into
+     * Converts a ({@code FileChangeListener}, {@code File}) pair into
      * a unique identifying string.
      *
      * @param FileChangeListener the listener of the pair
      * @param File the file of the pair
-     * @return a <code>String</code> that uniquely identifies this pair
+     * @return a {@code String} that uniquely identifies this pair
      */
     private String createListenerID(FileChangeListener listener, File file) {
         return String.valueOf(System.identityHashCode(listener)) + ":" + file.getAbsolutePath();
     }
 
     /**
-     * A <code>TimerTask</code> that polls files for changes and fires change
+     * A {@code TimerTask} that polls files for changes and fires change
      * events as needed.
      */
     private static class MonitorTask extends TimerTask {
@@ -308,7 +308,7 @@ public class FileChangeMonitor {
         /**
          * Update or initialize the records of the file's state.
          *
-         * @param fireEvent if <code>true</code>, fire a change event on the
+         * @param fireEvent if {@code true}, fire a change event on the
          * listener if state has changed
          */
         protected void updateFileState(boolean fireEvent) {

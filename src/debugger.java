@@ -16,7 +16,7 @@ public final class debugger {
 
     /**
      * Starts the Strange Eons script debugger client, passing the supplied
-     * arguments the client's <code>main</code> method.
+     * arguments the client's {@code main} method.
      *
      * @param args the arguments to pass to the debugger client
      */

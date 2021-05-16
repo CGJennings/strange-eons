@@ -14,7 +14,7 @@ class LineBreakIterator extends BreakIteratorAdpater {
 
     /**
      * Create an iterator that wraps the standard line
-     * <code>BreakIterator</code> for the default locale.
+     * {@code BreakIterator} for the default locale.
      */
     public LineBreakIterator() {
         bi = BreakIterator.getLineInstance();

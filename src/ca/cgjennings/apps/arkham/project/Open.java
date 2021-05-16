@@ -257,7 +257,7 @@ public class Open extends TaskAction {
      * @param f the file that the command applies to (used to complete
      * <tt>%f</tt> variables).
      * @param commandString the command string to use
-     * @return <code>true</code> if the command is successfully started
+     * @return {@code true} if the command is successfully started
      * @throws IOException if an exception occurs while executing the command
      */
     public static boolean runCommand(File f, String commandString) throws IOException {
@@ -487,19 +487,19 @@ public class Open extends TaskAction {
 
     /**
      * If you wish to add special handling for opening a file type, you may
-     * register an <code>InternalOpener</code> for it. The opener will be used
+     * register an {@code InternalOpener} for it. The opener will be used
      * to open files that it applies to if the open rule for the file is either
      * {@link OpenRule#INTERNAL_OPEN} or {@link OpenRule#INTERNAL_EDIT}.
      */
     public interface InternalOpener {
 
         /**
-         * Returns <code>true</code> if this opener should be used to open the
+         * Returns {@code true} if this opener should be used to open the
          * specified file.
          *
          * @param f the file to check
-         * @return <code>true</code> if the opener can open the file,
-         * <code>false</code> otherwise
+         * @return {@code true} if the opener can open the file,
+         * {@code false} otherwise
          */
         public boolean appliesTo(File f);
 
@@ -533,7 +533,7 @@ public class Open extends TaskAction {
 
     /**
      * Unregisters a previously registered internal opener for handling a custom
-     * file type. Has no effect if the opener is <code>null</code> or is not
+     * file type. Has no effect if the opener is {@code null} or is not
      * registered.
      *
      * @param opener the opener being unregistered

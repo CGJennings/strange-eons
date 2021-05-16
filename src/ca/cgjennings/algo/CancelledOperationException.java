@@ -16,7 +16,7 @@ package ca.cgjennings.algo;
 public class CancelledOperationException extends RuntimeException {
 
     /**
-     * Constructs a new exception with <code>null</code> as its detail message.
+     * Constructs a new exception with {@code null} as its detail message.
      */
     public CancelledOperationException() {
     }
@@ -41,7 +41,7 @@ public class CancelledOperationException extends RuntimeException {
     }
 
     /**
-     * Constructs a new exception with a <code>null</code> message and the
+     * Constructs a new exception with a {@code null} message and the
      * specified cause.
      *
      * @param cause an exception that caused this exception

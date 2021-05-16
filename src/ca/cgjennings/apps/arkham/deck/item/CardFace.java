@@ -31,7 +31,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     protected transient String name;
 
     /**
-     * Create a <code>CardFace</code> for use in a deck.
+     * Create a {@code CardFace} for use in a deck.
      *
      * @param component the game component to get the faces from
      * @param path the path that the game component can be loaded from in future
@@ -50,7 +50,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
 
     /**
-     * Create a <code>CardFace</code> that can be used on a temporary deck.
+     * Create a {@code CardFace} that can be used on a temporary deck.
      * Temporary decks cannot be saved but can be printed.
      *
      * @param name the name to use for the face
@@ -80,10 +80,10 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
 
     /**
-     * Returns <code>true</code> if the automatic bleed margin feature is
+     * Returns {@code true} if the automatic bleed margin feature is
      * enabled.
      *
-     * @return <code>true</code> if an automatic bleed margin is enabled
+     * @return {@code true} if an automatic bleed margin is enabled
      * @see #setAutoBleedMarginEnabled(boolean)
      */
     public boolean isAutoBleedMarginEnabled() {
@@ -179,7 +179,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
      * set of sheets in place.
      *
      * @param component the component to replace the existing one with
-     * @return <code>true</code> if the existing component was replaced
+     * @return {@code true} if the existing component was replaced
      */
     public boolean refresh(GameComponent component) {
         if(component == null) return false;

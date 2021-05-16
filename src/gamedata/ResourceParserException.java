@@ -43,7 +43,7 @@ public class ResourceParserException extends RuntimeException {
 
     /**
      * Returns the resource file that was being parsed, if known, or
-     * <code>null</code>.
+     * {@code null}.
      *
      * @return the file containing the error
      */

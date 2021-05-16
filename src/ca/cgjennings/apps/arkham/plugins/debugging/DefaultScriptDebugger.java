@@ -43,7 +43,7 @@ import resources.Settings;
  * <p>
  * <b>Protocol Summary:</b> Each command is sent as a sequence of UTF-8 text
  * lines. The first line must be the magic value <tt>SEDP3</tt>. The next line
- * is the command name, as given by <code>Command.name()</code>. This is
+ * is the command name, as given by {@code Command.name()}. This is
  * followed by zero or more lines, where each line represents one argument. The
  * server will reply with either <tt>SEDP3 OK</tt> and the reply to the command
  * (if any), or else <tt>SEDP3 ERR</tt> and an error message.
@@ -135,9 +135,9 @@ public final class DefaultScriptDebugger {
     }
 
     /**
-     * Returns <code>true</code> if the debugger has been installed.
+     * Returns {@code true} if the debugger has been installed.
      *
-     * @return <code>true</code> if debugging is available
+     * @return {@code true} if debugging is available
      */
     public static boolean isInstalled() {
         synchronized (DefaultScriptDebugger.class) {
@@ -153,13 +153,13 @@ public final class DefaultScriptDebugger {
     }
 
     /**
-     * Returns <code>true</code> if a client is connected to the debugger. Since
+     * Returns {@code true} if a client is connected to the debugger. Since
      * the client does not maintain a continuous connection, this method cannot
      * be guaranteed to be accurate. It works by tracking the last time that a
-     * client connected to the server, and returning <code>true</code> if the
+     * client connected to the server, and returning {@code true} if the
      * last connection was in the near past.
      *
-     * @return <code>true</code> if a client application is probably available
+     * @return {@code true} if a client application is probably available
      */
     public static boolean isClientConnected() {
         synchronized (DefaultScriptDebugger.class) {
@@ -277,8 +277,8 @@ public final class DefaultScriptDebugger {
 
     /**
      * Create a server socket for the requested port (0 for any available port).
-     * If user setting <code>enable-remote-debugging</code> is
-     * <code>false</code>, the server socket will use the loopback address.
+     * If user setting {@code enable-remote-debugging} is
+     * {@code false}, the server socket will use the loopback address.
      *
      * @param port port to listen on, or 0 for any available
      * @return a server socket for the requested port, either on loopback or the
@@ -454,15 +454,15 @@ public final class DefaultScriptDebugger {
     private volatile long lastServiceTimestamp = 0L;
 
     /**
-     * Execute the client command, appending the result to <code>apply</code>.
+     * Execute the client command, appending the result to {@code apply}.
      *
-     * @param isIsolated <code>true</code> if this method is being called from
+     * @param isIsolated {@code true} if this method is being called from
      * an isolated thread
      * @param command the command to execute
      * @param args the arguments for the command
-     * @param errorWriter the writer needed to pass to <code>errorReply</code>
+     * @param errorWriter the writer needed to pass to {@code errorReply}
      * if an error occurs
-     * @return the string to reply with (without header), or <code>null</code>
+     * @return the string to reply with (without header), or {@code null}
      * if an error occurred and was handled
      */
     private String serviceImpl(Command command, String[] args, PrintWriter errorWriter) throws Throwable {

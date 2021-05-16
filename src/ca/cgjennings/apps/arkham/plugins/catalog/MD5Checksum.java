@@ -16,9 +16,9 @@ import java.util.logging.Level;
  * throws an exception while computing the checksum, the caller will be shielded
  * from this failure while the checksum would normally be computed. However,
  * when the checksum is requested after such an algorithm failure,
- * <code>null</code> will be returned, and if a failed checksum is compared to a
+ * {@code null} will be returned, and if a failed checksum is compared to a
  * known checksum using {@link #matches}, it will always return
- * <code>true</code>.
+ * {@code true}.
  *
  * <p>
  * <b>Security Warning:</b> Note that this class is only intended to be used to
@@ -69,11 +69,11 @@ public final class MD5Checksum {
 
     /**
      * Processes the next group of bytes to include in the checksum. This is
-     * equivalent to <code>update( bytes, 0, bytes.length )</code>.
+     * equivalent to {@code update( bytes, 0, bytes.length )}.
      *
      * @param bytes an array of bytes representing the next block of data in the
      * stream
-     * @throws NullPointerException if the buffer is <code>null</code>
+     * @throws NullPointerException if the buffer is {@code null}
      * @throws IllegalStateException if the checksum has been completed and
      * {@link #reset()} has not been called
      * @see #update(byte[], int, int)
@@ -88,7 +88,7 @@ public final class MD5Checksum {
      * @param buffer the buffer that holds the block of data
      * @param offset the offset into the buffer at which the data block starts
      * @param length the size of the block of data
-     * @throws NullPointerException if the buffer is <code>null</code>
+     * @throws NullPointerException if the buffer is {@code null}
      * @throws IllegalStateException if the checksum has been completed and
      * {@link #reset()} has not been called
      * @throws IllegalArgumentException if the length is negative
@@ -125,9 +125,9 @@ public final class MD5Checksum {
      * checksum operation has already been completed, this will return the same
      * checksum bytes until the next call to {@link #reset()}. If there has been
      * any internal failure of the checksum algorithm, this method will return
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @return the checksum bytes, or <code>null</code>
+     * @return the checksum bytes, or {@code null}
      */
     public byte[] getChecksum() {
         if (!done) {
@@ -147,7 +147,7 @@ public final class MD5Checksum {
     /**
      * Completes the checksum and returns a string that represents the checksum
      * value. If there has been any internal failure of the checksum algorithm,
-     * this method will return <code>null</code>.
+     * this method will return {@code null}.
      *
      * @return a string of hexadecimal digits representing the checksum value
      * @see #getChecksum()
@@ -170,14 +170,14 @@ public final class MD5Checksum {
     };
 
     /**
-     * Completes the checksum and returns <code>true</code> if this checksum
+     * Completes the checksum and returns {@code true} if this checksum
      * matches a previously produced checksum string. If there has been any
      * internal failure of the checksum algorithm, or if the comparison string
-     * is <code>null</code>, this method will return <code>true</code>.
+     * is {@code null}, this method will return {@code true}.
      *
      * @param checksumString the checksum string to compare to
-     * @return <code>false</code> if and only if the comparison string is not
-     * <code>null</code>, this check has non-<code>null</code> checksum bytes,
+     * @return {@code false} if and only if the comparison string is not
+     * {@code null}, this check has non-{@code null} checksum bytes,
      * and this checksum's checksum string is equal to the comparison string
      * except for differences in letter case
      */

@@ -50,7 +50,7 @@ import resources.Settings;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0 (replaces
- * <code>ca.cgjennings.apps.arkham.plugins.impl.Manager)</code>
+ * {@code ca.cgjennings.apps.arkham.plugins.impl.Manager)}
  */
 @SuppressWarnings("serial")
 public class PluginManager extends javax.swing.JDialog {

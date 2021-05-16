@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import static resources.Language.string;
 
 /**
- * A <code>TaskGoup</code> is a task folder that is allowed to contain other
+ * A {@code TaskGoup} is a task folder that is allowed to contain other
  * {@link Task}s. Moving a task folder into a task that is not a task group will
  * cause the moved task to lose its task status and become a plain file.
  *

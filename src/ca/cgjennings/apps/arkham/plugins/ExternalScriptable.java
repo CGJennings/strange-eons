@@ -393,7 +393,7 @@ final class ExternalScriptable implements Scriptable, ConstProperties {
      * Scriptable.class for type Object, and Boolean.class for type Boolean.
      * <p>
      *
-     * A <code>hint</code> of null means "no hint".
+     * A {@code hint} of null means "no hint".
      *
      * See ECMA 8.6.2.6.
      *

@@ -24,13 +24,13 @@ public class FileRecoveryException extends IOException {
      *
      * @param tempFileForRecovery the file to attempt recovery from
      * @param recoveryTitle the title of a message that may be displayed to the
-     * user after recovery; if this is <code>null</code>, a default title will
+     * user after recovery; if this is {@code null}, a default title will
      * be used
      * @param successMessage the body of a message that may be displayed to the
-     * user after recovery; if this is <code>null</code>, no message will be
+     * user after recovery; if this is {@code null}, no message will be
      * displayed
      * @param failMessage the body of a message that may be displayed to the
-     * user if recovery fails; if this is <code>null</code>, no message will be
+     * user if recovery fails; if this is {@code null}, no message will be
      * displayed
      */
     public FileRecoveryException(File tempFileForRecovery, String recoveryTitle, String successMessage, String failMessage) {

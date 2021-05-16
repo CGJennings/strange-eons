@@ -20,8 +20,8 @@ import javax.swing.text.Segment;
 // by Thomas Bierhance, at <http://www.orbital-computer.de/JComboBox/>.
 //
 /**
- * An adapter for the document in the <code>JTextComponent</code> of a
- * <code>JComboBox</code> that extends the <code>JComboBox</code> to
+ * An adapter for the document in the {@code JTextComponent} of a
+ * {@code JComboBox} that extends the {@code JComboBox} to
  * automatically complete the field text using entries from the combo box list.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -40,9 +40,9 @@ public class AutocompletionDocument implements NestingDocument {
     private boolean ignorecase;
 
     /**
-     * Create a new <code>AutocompletionDocument</code> that is wrapped around
+     * Create a new {@code AutocompletionDocument} that is wrapped around
      * the existing document within a combo box. The combo box's editor must be
-     * a subclass of <code>JTextComponent</code>.
+     * a subclass of {@code JTextComponent}.
      * <p>
      * The new document is not installed in the combo box, so autocompletion is
      * not started automatically. To easily create and install an adapter when
@@ -50,7 +50,7 @@ public class AutocompletionDocument implements NestingDocument {
      *
      * @param comboBox
      * @throws IllegalArgumentException is the combo box's editor is not a
-     * <code>JTextComponent</code>
+     * {@code JTextComponent}
      */
     public AutocompletionDocument(JComboBox comboBox) {
         Component editorComponent = comboBox.getEditor().getEditorComponent();
@@ -87,7 +87,7 @@ public class AutocompletionDocument implements NestingDocument {
     }
 
     /**
-     * Return the <code>JComboBox</code> that this document is autocompleting.
+     * Return the {@code JComboBox} that this document is autocompleting.
      *
      * @return the autocompleted combo box
      */
@@ -96,14 +96,14 @@ public class AutocompletionDocument implements NestingDocument {
     }
 
     /**
-     * Create and install an <code>AutocompletionDocument</code> on an existing
-     * <code>JComboBox</code>, causing it to begin autocompleting the text field
+     * Create and install an {@code AutocompletionDocument} on an existing
+     * {@code JComboBox}, causing it to begin autocompleting the text field
      * content.
      *
-     * @param comboBox the <code>JComboBox</code> to modify
+     * @param comboBox the {@code JComboBox} to modify
      * @return the newly installed document if installation was successful,
-     * otherwise <code>null</code> if it failed because the
-     * <code>JComboBox</code> is not using a <code>JTextComponent</code>
+     * otherwise {@code null} if it failed because the
+     * {@code JComboBox} is not using a {@code JTextComponent}
      */
     public static AutocompletionDocument install(JComboBox comboBox) {
         boolean wasEditable = comboBox.isEditable();
@@ -124,16 +124,16 @@ public class AutocompletionDocument implements NestingDocument {
     }
 
     /**
-     * Create and install an <code>AutocompletionDocument</code> on an existing
-     * <code>JComboBox</code>, causing it to begin autocompleting the text field
+     * Create and install an {@code AutocompletionDocument} on an existing
+     * {@code JComboBox}, causing it to begin autocompleting the text field
      * content.
      *
-     * @param comboBox the <code>JComboBox</code> to modify
+     * @param comboBox the {@code JComboBox} to modify
      * @param casesensitive whether autocompletion matching should be case
      * sensitive
      * @return the newly installed document if installation was successful,
-     * otherwise <code>null</code> if it failed because the
-     * <code>JComboBox</code> is not using a <code>JTextComponent</code>
+     * otherwise {@code null} if it failed because the
+     * {@code JComboBox} is not using a {@code JTextComponent}
      */
     public static AutocompletionDocument install(JComboBox comboBox, boolean casesensitive) {
         AutocompletionDocument document = install(comboBox);
@@ -236,21 +236,21 @@ public class AutocompletionDocument implements NestingDocument {
     private Collator collator;
 
     /**
-     * Return the list order <code>Collator</code>, or <code>null</code> if none
+     * Return the list order {@code Collator}, or {@code null} if none
      * is set.
      *
-     * @return the <code>Collator</code> by which elements are ordered
+     * @return the {@code Collator} by which elements are ordered
      */
     public Collator getCollator() {
         return collator;
     }
 
     /**
-     * If set to a non-<code>null</code> object, it is assumed that list
-     * elements are sorted according to <code>collator</code>. A faster search
+     * If set to a non-{@code null} object, it is assumed that list
+     * elements are sorted according to {@code collator}. A faster search
      * algorithm can be employed when looking for an autocomplete match.
      *
-     * @param collator the <code>Collator</code> by which elements are ordered
+     * @param collator the {@code Collator} by which elements are ordered
      */
     public void setCollator(Collator collator) {
         this.collator = collator;

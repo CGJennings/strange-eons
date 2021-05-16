@@ -6,7 +6,7 @@ import java.util.logging.Level;
 
 /**
  * Maintains a lock on the game data. When game data is locked, trying to add or
- * modify game data will fail by throwing an <code>IllegalStateException</code>.
+ * modify game data will fail by throwing an {@code IllegalStateException}.
  * Game data is normally locked after extensions are loaded to ensure that the
  * application remains in a consistent state. Developers may find it useful to
  * unlock the game data while debugging so that fewer application restarts are
@@ -29,9 +29,9 @@ public class Lock {
     private static final LinkedList<Runnable> lockTasks = new LinkedList<>();
 
     /**
-     * Returns <code>true</code> if the game data has been locked.
+     * Returns {@code true} if the game data has been locked.
      *
-     * @return <code>true</code> if lock tests will fail
+     * @return {@code true} if lock tests will fail
      */
     public static synchronized boolean isLocked() {
         return locked;
@@ -40,7 +40,7 @@ public class Lock {
     /**
      * Locks or unlocks the game data.
      *
-     * @param lock if <code>true</code>, lock game data so that future tests
+     * @param lock if {@code true}, lock game data so that future tests
      * fail
      */
     public static synchronized void setLocked(boolean lock) {
@@ -63,10 +63,10 @@ public class Lock {
     }
 
     /**
-     * Returns <code>true</code> if the game data has ever been locked during
+     * Returns {@code true} if the game data has ever been locked during
      * this run of the application.
      *
-     * @return <code>true</code> if {@link #isLocked()} has ever been true
+     * @return {@code true} if {@link #isLocked()} has ever been true
      */
     public static synchronized boolean hasBeenLocked() {
         return everLocked;
@@ -84,7 +84,7 @@ public class Lock {
      * Test the lock, and if locked throw an IllegalStateException using a
      * custom message.
      *
-     * @param message the base message, may be <code>null</code> for a default
+     * @param message the base message, may be {@code null} for a default
      * message
      */
     public static void test(String message) {
@@ -97,7 +97,7 @@ public class Lock {
      * parameter to the message without having to create a concatenated string
      * in the normal case where the test passes.)
      *
-     * @param message the base message, may be <code>null</code> for a default
+     * @param message the base message, may be {@code null} for a default
      * message
      * @param suffix an optional suffix to be appended as if by message + ": " +
      * suffix
@@ -111,7 +111,7 @@ public class Lock {
     /**
      * Throws an exception as if a test had been failed.
      *
-     * @param message the base message, may be <code>null</code> for a default
+     * @param message the base message, may be {@code null} for a default
      * message
      * @param suffix an optional suffix to be appended as if by message + ": " +
      * suffix

@@ -16,8 +16,8 @@ public interface RegistrationListener extends EventListener {
      * or unregistered.
      *
      * @param instance the specific object being registered or unregistered
-     * @param isRegistration <code>true</code> for registration,
-     * <code>false</code> for unregistration
+     * @param isRegistration {@code true} for registration,
+     * {@code false} for unregistration
      */
     void gameDataRegistered(Object instance, boolean isRegistration);
 }

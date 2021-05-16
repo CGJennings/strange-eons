@@ -51,7 +51,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * this behaviour, you can override this method; see {@link #setNameImpl}.
      *
      * @param name the new name of the component
-     * @throws NullPointerException if the name is <code>null</code>
+     * @throws NullPointerException if the name is {@code null}
      */
     public void setName(String name) {
         if (name == null) {
@@ -79,7 +79,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * behaviour for marking sheets.
      *
      * @param name the new name of the component
-     * @throws NullPointerException if the name is <code>null</code>
+     * @throws NullPointerException if the name is {@code null}
      */
     protected final void setNameImpl(String name) {
         if (name == null) {
@@ -119,7 +119,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * {@link #markUnsavedChanges()}.
      *
      * @param comment the new design comment
-     * @throws NullPointerException if the comment is <code>null</code>
+     * @throws NullPointerException if the comment is {@code null}
      */
     public void setComment(String comment) {
         if (comment == null) {
@@ -280,7 +280,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * a display name.
      *
      * @param source the string to filter
-     * @throws NullPointerException if the source string is <code>null</code>
+     * @throws NullPointerException if the source string is {@code null}
      */
     @SuppressWarnings("fallthrough")
     public static String filterComponentText(String source) {
@@ -430,7 +430,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     /**
      * Returns a bitmap image for a user-supplied path. The path may name a
      * local file or be any of the special URL paths supported by
-     * <code>StrangeImage</code>. If the path points to a vector image (and
+     * {@code StrangeImage}. If the path points to a vector image (and
      * vector support is installed), then the image will be converted to a
      * bitmap automatically, at a size and resolution based on
      *
@@ -455,7 +455,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * historical reasons, nothing is written by this class's default
      * serialization mechanism. Subclasses therefore have to read and set the
      * name, comment, and settings instances themselves. This method can be
-     * called from a subclass <code>writeObject</code> method to do this on
+     * called from a subclass {@code writeObject} method to do this on
      * behalf of the subclass.
      *
      * @param out the stream to write to
@@ -472,7 +472,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * historical reasons, nothing is written by this class's default
      * serialization mechanism. Subclasses therefore have to read and write the
      * name, comment, and settings instances themselves. This method can be
-     * called from a subclass <code>readObject</code> method to restore
+     * called from a subclass {@code readObject} method to restore
      * serialized data written with {@link #write}.
      *
      * @param in the stream to read from

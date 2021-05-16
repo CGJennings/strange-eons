@@ -87,7 +87,7 @@ public class TimeShiftedComposer extends AbstractFilteredComposer {
      * function will be passed the original timing position as a value between 0
      * and 1. It should return a new value, also between 0 and 1, that the
      * original value maps to. For example, the function
-     * <code>f(x)&nbsp;=&nbsp;1-x</code> would play the original animation in
+     * {@code f(x)&nbsp;=&nbsp;1-x} would play the original animation in
      * reverse.
      *
      * @see #getShiftFunction()
@@ -102,8 +102,8 @@ public class TimeShiftedComposer extends AbstractFilteredComposer {
     /**
      * Creates a time shift function that uses cubic spline interpolation to
      * create an interpolator that maps the unshifted times in
-     * <code>inputTimes</code> to the elements with the same index in
-     * <code>outputTimes</code>. The elements of <code>inputTimes</code> must be
+     * {@code inputTimes} to the elements with the same index in
+     * {@code outputTimes}. The elements of {@code inputTimes} must be
      * monotone increasing values (sorted into increasing order and with no
      * repeats).
      *

@@ -81,7 +81,7 @@ public abstract class AbstractItem implements PageItem {
      * {@inheritDoc}
      * <p>
      * Concrete subclasses should create an array of handles on demand and cache
-     * them in the <code>dragHandles</code> field in order to ensure that
+     * them in the {@code dragHandles} field in order to ensure that
      * handles are not shared between copies of the item. Example:
      * <pre>
      * public DragHandle[] getDragHandles() {
@@ -93,7 +93,7 @@ public abstract class AbstractItem implements PageItem {
      * </pre>
      *
      * @return an array of drag handles that can be used to manipulate the item,
-     * or <code>null</code>
+     * or {@code null}
      */
     @Override
     public DragHandle[] getDragHandles() {

@@ -77,7 +77,7 @@ public interface PageItem extends Cloneable, Serializable {
         SNAP_OVERLAY,
         /**
          * Class representing inlays: overlays that are normally
-         * <code>TARGET_MIXED</code>.
+         * {@code TARGET_MIXED}.
          */
         SNAP_INLAY,
         /**
@@ -150,14 +150,14 @@ public interface PageItem extends Cloneable, Serializable {
      * a <b>unit vector</b> that indicates the direction of the line that should
      * be drawn from the first point. (This means that the direction of the fold
      * mark line will be the same as that of the line segment from (0,0) to (x2,
-     * y2) and that <code>Math.sqrt( x2*x2 + y2*y2 ) = 1</code>.
+     * y2) and that {@code Math.sqrt( x2*x2 + y2*y2 ) = 1}.
      *
      * <p>
-     * Returns <code>null</code> if there are no extra fold marks for this
+     * Returns {@code null} if there are no extra fold marks for this
      * sheet.
      *
      * @return an array of fold mark data in the format described above, or
-     * <code>null</code> if there are no extra fold marks
+     * {@code null} if there are no extra fold marks
      */
     public double[] getFoldMarks();
 
@@ -206,7 +206,7 @@ public interface PageItem extends Cloneable, Serializable {
     public Rectangle2D.Double getRectangle();
 
     /**
-     * Return a <code>Shape</code> that corresponds to the outline of this item.
+     * Return a {@code Shape} that corresponds to the outline of this item.
      * In the simplest case, this can return the same result as
      * {@link #getRectangle()}. If precise geometry is available for the item,
      * then this should return a more accurate bounding shape.
@@ -217,7 +217,7 @@ public interface PageItem extends Cloneable, Serializable {
 
     /**
      * Returns an array of the custom {@link DragHandle}s for this item. If the
-     * item has no handles, returns <code>null</code>.
+     * item has no handles, returns {@code null}.
      *
      * @return an array of drag handles for manipulating the object
      */
@@ -270,7 +270,7 @@ public interface PageItem extends Cloneable, Serializable {
 
     /**
      * Returns a small representative icon for this item. The icon should be
-     * <code>ICON_SIZE</code> pixels wide and high.
+     * {@code ICON_SIZE} pixels wide and high.
      */
     public Icon getThumbnailIcon();
 
@@ -287,7 +287,7 @@ public interface PageItem extends Cloneable, Serializable {
     public double getY();
 
     /**
-     * Returns <code>true</code> if this item should have crop marks added to
+     * Returns {@code true} if this item should have crop marks added to
      * it. The crop marks will be placed {@link #getBleedMargin()} points from
      * the ends of each edge.
      */
@@ -301,37 +301,37 @@ public interface PageItem extends Cloneable, Serializable {
     public double getBleedMargin();
 
     /**
-     * Returns <code>true</code> if <code>point</code> is inside the visible
+     * Returns {@code true} if {@code point} is inside the visible
      * bounds of this object.
      *
      * @param point a point in document coordinates (points from the upper-left
      * corner of the page)
-     * @return <code>true</code> if the point lies inside the bounds of the
+     * @return {@code true} if the point lies inside the bounds of the
      * object
      */
     public boolean hitTest(Point2D point);
 
     /**
-     * Returns <code>true</code> if this is in a horizontal orientation (turned
+     * Returns {@code true} if this is in a horizontal orientation (turned
      * 90 degrees from normal). If this is not a {@link FlippablePageItem}, it
-     * must return <code>false</code>.
+     * must return {@code false}.
      */
     public boolean isHorizontal();
 
     /**
-     * Returns <code>true</code> if card is in a vertical orientation. If this
-     * is not a {@link FlippablePageItem}, it must return <code>true</code>.
+     * Returns {@code true} if card is in a vertical orientation. If this
+     * is not a {@link FlippablePageItem}, it must return {@code true}.
      */
     public boolean isVertical();
 
     /**
-     * Returns <code>true</code> if this item is mirror-imaged. If this is not a
-     * {@link FlippablePageItem}, it must return <code>false</code>.
+     * Returns {@code true} if this item is mirror-imaged. If this is not a
+     * {@link FlippablePageItem}, it must return {@code false}.
      */
     public boolean isMirrored();
 
     /**
-     * Returns <code>true</code> if this item has the same orientation rotation
+     * Returns {@code true} if this item has the same orientation rotation
      * as another item.
      */
     public boolean isTurned0DegreesFrom(PageItem rhs);
@@ -365,15 +365,15 @@ public interface PageItem extends Cloneable, Serializable {
      * Update any cached representations needed to paint this item at the
      * specified settings. It is not required that this be called prior to
      * calling {@link #paint}. Rather, the intent is that if this method returns
-     * without throwing any exceptions (such as <code>OutOfMemoryError</code>),
+     * without throwing any exceptions (such as {@code OutOfMemoryError}),
      * then a call to {@link #paint} with the same settings is also
      * <i>expected</i> to succeed. Thus, this method may be called prior to
      * rendering at high resolution and if it throws an
-     * <code>OutOfMemoryError</code>, the application can attempt to recover by
+     * {@code OutOfMemoryError}, the application can attempt to recover by
      * freeing up resources before trying to paint again.
      *
      * <p>
-     * If this <code>PageItem</code> does not require rendering to a buffer,
+     * If this {@code PageItem} does not require rendering to a buffer,
      * then this method may do nothing.
      *
      * @param target the rendering target
@@ -419,7 +419,7 @@ public interface PageItem extends Cloneable, Serializable {
     public void setLocation(Point2D loc);
 
     /**
-     * Returns the location of this item as a <code>Point2D</code>.
+     * Returns the location of this item as a {@code Point2D}.
      *
      * @return the location of this item on the page
      */
@@ -429,14 +429,14 @@ public interface PageItem extends Cloneable, Serializable {
      * Set the state of the item's selection lock. Locked items cannot be
      * selected or dragged.
      *
-     * @param lock if <code>true</code>, prevent selecting or moving the item
+     * @param lock if {@code true}, prevent selecting or moving the item
      */
     public void setSelectionLocked(boolean lock);
 
     /**
-     * Returns <code>true</code> if this item is locked against selection.
+     * Returns {@code true} if this item is locked against selection.
      *
-     * @return <code>true</code> if the object is locked
+     * @return {@code true} if the object is locked
      */
     public boolean isSelectionLocked();
 
@@ -448,16 +448,16 @@ public interface PageItem extends Cloneable, Serializable {
      *
      * @param menu the menu that will be displayed
      * @param selection the selected items; this should be considered read-only
-     * @param isSelectionFocus if <code>true</code>, this is the last item in
+     * @param isSelectionFocus if {@code true}, this is the last item in
      * the selection
      */
     public void customizePopupMenu(JPopupMenu menu, PageItem[] selection, boolean isSelectionFocus);
 
     /**
      * Returns the {@link Group} that this item belongs to, or
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @return the group the object is in, or <code>null</code> if it isn't in a
+     * @return the group the object is in, or {@code null} if it isn't in a
      * group
      */
     public Group getGroup();
@@ -467,18 +467,18 @@ public interface PageItem extends Cloneable, Serializable {
      * but rather the item should be added to a group using
      * {@link Group#add(ca.cgjennings.apps.arkham.deck.item.PageItem)}.
      *
-     * @param g the <code>Group</code> to add this to
+     * @param g the {@code Group} to add this to
      */
     void setGroup(Group g);
 
     /**
-     * Returns <code>true</code> if this item has one or more drag handles that
+     * Returns {@code true} if this item has one or more drag handles that
      * may lie outside of the item's bounding box. The editor normally only
      * tests handles that lie within the bounding box to see if the user has
-     * pointed at them; if this method returns <code>true</code> then the item's
+     * pointed at them; if this method returns {@code true} then the item's
      * handles are always tested.
      *
-     * @return <code>true</code> if some handles may be outside the bounding box
+     * @return {@code true} if some handles may be outside the bounding box
      */
     public boolean hasExteriorHandles();
 
@@ -486,21 +486,21 @@ public interface PageItem extends Cloneable, Serializable {
      * Sets a client property on this page item. Client properties can be used
      * by plug-ins to tag page items with plug-in specific data. Client
      * properties are saved as part a deck save file. To delete a client
-     * property, use this method to set its value to <code>null</code>.
+     * property, use this method to set its value to {@code null}.
      *
      * @param propertyName the property name
      * @param value the value to associate with the property
-     * @throws NullPointerException if the property name is <code>null</code>
+     * @throws NullPointerException if the property name is {@code null}
      */
     public void putClientProperty(String propertyName, String value);
 
     /**
      * Returns the value of a client property of this page item, or
-     * <code>null</code> if the property is not defined.
+     * {@code null} if the property is not defined.
      *
      * @param propertyName the property name
-     * @return the value associated with the property, or <code>null</code>
-     * @throws NullPointerException if the property name is <code>null</code>
+     * @return the value associated with the property, or {@code null}
+     * @throws NullPointerException if the property name is {@code null}
      */
     public String getClientProperty(String propertyName);
 }

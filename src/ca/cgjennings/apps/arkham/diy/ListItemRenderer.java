@@ -30,8 +30,8 @@ public class ListItemRenderer extends DefaultListCellRenderer {
      * @param list the list being painted
      * @param value the list item being painted in the list
      * @param index the index of the list item in the list
-     * @param isSelected <code>true</code> if the item is selected
-     * @param cellHasFocus <code>true</code> if the item has focus
+     * @param isSelected {@code true} if the item is selected
+     * @param cellHasFocus {@code true} if the item has focus
      * @return a component capable of painting list item
      */
     @Override

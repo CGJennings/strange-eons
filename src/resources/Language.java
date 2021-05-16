@@ -76,8 +76,8 @@ public class Language implements Iterable<String> {
     private Language parent;
 
     /**
-     * Create an empty language resource for a locale. If <code>loc</code> is
-     * <code>null</code>, the current UI locale is used.
+     * Create an empty language resource for a locale. If {@code loc} is
+     * {@code null}, the current UI locale is used.
      *
      * @param loc the locale that this language instance is based on
      * @see #setLocale(java.util.Locale)
@@ -96,10 +96,10 @@ public class Language implements Iterable<String> {
 
     /**
      * Sets this language's parent. If a string cannot be found in this
-     * language's string table, and a non-<code>null</code> parent is defined,
+     * language's string table, and a non-{@code null} parent is defined,
      * then the chain of parents will be searched to locate a definition.
      *
-     * @param parent the new parent to set; if <code>null</code> the existing
+     * @param parent the new parent to set; if {@code null} the existing
      * parent (if any) is removed
      * @throws IllegalArgumentException if setting the parent would create a
      * cycle (a language is directly or indirectly its own ancestor)
@@ -116,11 +116,11 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns this language's parent, or <code>null</code> if it has no parent.
+     * Returns this language's parent, or {@code null} if it has no parent.
      * The language's parent is consulted if this language does not define a
      * string.
      *
-     * @return the parent instance, or <code>null</code>
+     * @return the parent instance, or {@code null}
      */
     public synchronized Language getParent() {
         return parent;
@@ -128,7 +128,7 @@ public class Language implements Iterable<String> {
 
     /**
      * Changes the locale used by this language instance. If the supplied locale
-     * is <code>null</code>, the default locale is used. The supplied locale
+     * is {@code null}, the default locale is used. The supplied locale
      * must include a language and may optionally include a region (country).
      *
      * <p>
@@ -192,7 +192,7 @@ public class Language implements Iterable<String> {
      * base resource name includes an extension (a suffix starting with a '.'
      * character), that extension will be used to locate the resource files. If
      * the base resource name does not include an extension, the extension
-     * <code>.properties</code> will be used.
+     * {@code .properties} will be used.
      *
      * <p>
      * To prevent the accidental replacement of strings from the main
@@ -300,7 +300,7 @@ public class Language implements Iterable<String> {
      * Returns a formatted string defined in this language. Formatting flags in
      * the localized string will be filled in using the supplied arguments. The
      * formatting flags accepted by the method are exactly the same as those
-     * supported by <code>String.format</code> (similar to <code>sprintf</code>
+     * supported by {@code String.format} (similar to {@code sprintf}
      * in C).
      *
      * @param key the key for the localized formatting template
@@ -321,10 +321,10 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns <code>true</code> if the specified key if defined.
+     * Returns {@code true} if the specified key if defined.
      *
      * @param key the name of the key to test
-     * @return <code>true</code> if the key has a value
+     * @return {@code true} if the key has a value
      */
     public synchronized boolean isKeyDefined(String key) {
         if (strings.containsKey(key)) {
@@ -339,12 +339,12 @@ public class Language implements Iterable<String> {
 
     /**
      * Explicitly sets a key to a fixed value, overriding the result that would
-     * be obtained from the loaded string tables. If value is <code>null</code>,
+     * be obtained from the loaded string tables. If value is {@code null},
      * any value previously set with this method is removed.
      *
      * @param key the key to affect
      * @param value the new string value
-     * @throws NullPointerException if the key is <code>null</code>
+     * @throws NullPointerException if the key is {@code null}
      */
     public synchronized void set(String key, String value) {
         if (key == null) {
@@ -386,10 +386,10 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns a <code>Collator</code> that can be used to sort strings in this
+     * Returns a {@code Collator} that can be used to sort strings in this
      * language.
      *
-     * @return a <code>Collator</code> instance
+     * @return a {@code Collator} instance
      */
     public Collator getCollator() {
         return collator;
@@ -481,7 +481,7 @@ public class Language implements Iterable<String> {
 
     /**
      * Returns a string looked up with the default interface language. Cover for
-     * <code>Language.getInterface().get( key )</code>.
+     * {@code Language.getInterface().get( key )}.
      *
      * @param key the key for the string to retrieve
      * @return the localized string, or [MISSING: key]
@@ -518,7 +518,7 @@ public class Language implements Iterable<String> {
 
     /**
      * Returns a string looked up with the default game language. Cover for
-     * <code>Language.getInterface().get( key )</code>.
+     * {@code Language.getInterface().get( key )}.
      *
      * @param key the key for the string to retrieve
      * @return the localized string, or [MISSING: key]
@@ -530,7 +530,7 @@ public class Language implements Iterable<String> {
     /**
      * Formats and returns a format string looked up with the default game
      * language. Formatting flags in the localized string will be filled in
-     * using the supplied <code>args</code>.
+     * using the supplied {@code args}.
      *
      * @param key the key for the localized formatting template
      * @param args the arguments to use to fill in the formatting template
@@ -542,7 +542,7 @@ public class Language implements Iterable<String> {
 
     /**
      * Parses a locale description in ll_CC format and returns the
-     * <code>Locale</code>.
+     * {@code Locale}.
      *
      * @param code a locale described with a two-letter language and optional
      * two-letter country
@@ -581,7 +581,7 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns <code>true</code> if a locale description represents a valid
+     * Returns {@code true} if a locale description represents a valid
      * locale. In order to be valid, a locale description must have one of the
      * following forms, where x indicates a lower case letter and X indicates an
      * upper case letter:<br>
@@ -591,7 +591,7 @@ public class Language implements Iterable<String> {
      * the country code after an additional underscore) are not supported by
      * Strange Eons at this time.
      *
-     * @return <code>true</code> if the locale description is syntactically
+     * @return {@code true} if the locale description is syntactically
      * valid
      */
     public static boolean isLocaleDescriptionValid(String description) {
@@ -651,9 +651,9 @@ public class Language implements Iterable<String> {
      * least to most specialized for the locale's language. This is done by
      * composing the following resource file names, in order:
      * <ol>
-     * <li><code>baseName + suffix</code>
-     * <li><code>baseName + "_" + locale.getLanguage() + suffix</code>
-     * <li><code>baseName + "_" + locale.getLanguage() + "_" + locale.getCountry() + suffix</code>
+     * <li>{@code baseName + suffix}
+     * <li>{@code baseName + "_" + locale.getLanguage() + suffix}
+     * <li>{@code baseName + "_" + locale.getLanguage() + "_" + locale.getCountry() + suffix}
      * </ol>
      * At each of these steps, if there is a resource available that matches the
      * name, it will be added to the returned array. If not, then the search
@@ -663,7 +663,7 @@ public class Language implements Iterable<String> {
      * 0 and 3 resource files. For example, the following line would return the
      * main application interface text resources that match the interface
      * locale:<br>
-     * <code>Language.getInterface().getResourceChain( "text/interface/eons-text", ".properties" )</code>
+     * {@code Language.getInterface().getResourceChain( "text/interface/eons-text", ".properties" )}
      *
      * @param baseName the path and base file name of the resource
      * @param suffix the suffix to append to the end of the name; typically this
@@ -694,16 +694,16 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns a flag icon for the country part of locale <code>loc</code>. If
+     * Returns a flag icon for the country part of locale {@code loc}. If
      * the locale has no country part, or if no flag is available for the
      * country, a blank placeholder icon will be returned. The placeholder icon
      * is the same size as the flag icon would have been, if one was available.
-     * In no event will <code>null</code> be returned.
+     * In no event will {@code null} be returned.
      *
      * @param loc the locale to return a flag for
      * @return a small flag icon for the country of the requested locale, or a
      * blank icon
-     * @throws NullPointerException if <code>loc</code> is <code>null</code>
+     * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static synchronized Icon getIconForCountry(Locale loc) {
         if (loc == null) {
@@ -718,16 +718,16 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns an icon for the language part of locale <code>loc</code>. If the
+     * Returns an icon for the language part of locale {@code loc}. If the
      * locale has no language part, or if no icon is available for the language,
      * a blank placeholder icon will be returned. The placeholder icon is the
      * same size as the language icon would have been, if one was available. In
-     * no event will <code>null</code> be returned.
+     * no event will {@code null} be returned.
      *
      * @param loc the locale to return a flag for
      * @return a small icon for the language of the requested locale, or a blank
      * icon
-     * @throws NullPointerException if <code>loc</code> is <code>null</code>
+     * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static synchronized Icon getIconForLanguage(Locale loc) {
         if (loc == null) {
@@ -770,12 +770,12 @@ public class Language implements Iterable<String> {
     /**
      * Returns an icon that represents the language and country of a locale. If
      * a representation for the language or country is not available, that part
-     * of the resulting icon will be blank. In no event will <code>null</code>
+     * of the resulting icon will be blank. In no event will {@code null}
      * be returned.
      *
      * @param loc the locale to return a flag for
      * @return a small icon for the requested locale, or a blank icon
-     * @throws NullPointerException if <code>loc</code> is <code>null</code>
+     * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static Icon getIconForLocale(Locale loc) {
         if (loc == null) {
@@ -861,9 +861,9 @@ public class Language implements Iterable<String> {
     private static final int FLAG_SIZE = 16;
 
     /**
-     * Marks the locale <code>loc</code> as a "preferred locale" for interface
+     * Marks the locale {@code loc} as a "preferred locale" for interface
      * language purposes. This method is not normally called directly. Instead,
-     * plug-in authors will place a <code>ui-languages</code> client property in
+     * plug-in authors will place a {@code ui-languages} client property in
      * their root file with a comma-separated list of all of the interface
      * locales supported by the plug-in. The bundle installer will automatically
      * mark these as preferred when it loads the bundle. Preferred locales are
@@ -871,7 +871,7 @@ public class Language implements Iterable<String> {
      * dialog.
      *
      * @param loc the locale to prioritize
-     * @throws NullPointerException if <code>loc</code> is <code>null</code>
+     * @throws NullPointerException if {@code loc} is {@code null}
      * @throws IllegalArgumentException if there is no language defined in the
      * locale or there is a variant defined
      */
@@ -885,9 +885,9 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Marks the locale <code>loc</code> as a "preferred locale" for game
+     * Marks the locale {@code loc} as a "preferred locale" for game
      * language purposes. This method is not normally called directly. Instead,
-     * plug-in authors will place a <code>game-languages</code> client property
+     * plug-in authors will place a {@code game-languages} client property
      * in their root file with a comma-separated list of all of the game locales
      * supported by the plug-in. The bundle installer will automatically mark
      * these as preferred when it loads the bundle. Preferred locales are given
@@ -899,7 +899,7 @@ public class Language implements Iterable<String> {
      * preferred.
      *
      * @param loc the locale to prioritize
-     * @throws NullPointerException if <code>loc</code> is <code>null</code>
+     * @throws NullPointerException if {@code loc} is {@code null}
      * @throws IllegalArgumentException if there is no language defined in the
      * locale or there is a variant defined
      */
@@ -916,7 +916,7 @@ public class Language implements Iterable<String> {
     private static final Set<Locale> prefGameLocs = Collections.synchronizedSet(new HashSet<Locale>());
 
     /**
-     * Checks that the locale is not <code>null</code>, has a language, and does
+     * Checks that the locale is not {@code null}, has a language, and does
      * not have a variant. If any of these conditions fails, an appropriate
      * exception is thrown.
      *
@@ -937,12 +937,12 @@ public class Language implements Iterable<String> {
     /**
      * Creates an array of supported locales. The array is sorted by language
      * name in the interface locale, and then by country within the same
-     * language. If the set of locales to include is <code>null</code>, then all
+     * language. If the set of locales to include is {@code null}, then all
      * available locales will be included.
      *
      * @param prefer the set of preferred locales to use (either
-     * <code>prefUILocs</code> or <code>prefGameLocs</code>)
-     * @param includeAll if <code>true</code>, include all locales and not just
+     * {@code prefUILocs} or {@code prefGameLocs})
+     * @param includeAll if {@code true}, include all locales and not just
      * preferred ones
      * @return an array of locales, sorted as described above
      */
@@ -1043,19 +1043,19 @@ public class Language implements Iterable<String> {
      * The file name is broken into parts as follows:
      * <ol>
      * <li> The extension consists of all text after the first period (.), or
-     * <code>null</code> if there is no period in the name.
+     * {@code null} if there is no period in the name.
      * <li> The base name consists of all text from the start of the string up
      * to the first underscore (_) if any. If there is no underscore, then it
      * continues up until the first period, if any, and otherwise to the end of
      * the string.
      * <li> The locale description consists of the text after the first
      * underscore and up to the first period (.), if any. If there is no
-     * underscore, then the locale description is <code>null</code>. if there is
+     * underscore, then the locale description is {@code null}. if there is
      * no period, then the description continues to the end of the string. If
      * there is no underscore in the file name, then the locale description is
-     * <code>null</code>. Moreover, the locale is checked to determine if it is
+     * {@code null}. Moreover, the locale is checked to determine if it is
      * valid, as described below. If the locale is not valid, then the locale
-     * description will be <code>null</code> and the part that would have been
+     * description will be {@code null} and the part that would have been
      * the locale description, including the initial underscore, will be
      * included in the base name as if there were no underscore in the name.
      * </ol>
@@ -1067,7 +1067,7 @@ public class Language implements Iterable<String> {
          * Creates a localized file name from the name of the given file.
          *
          * @param file the file name to tokenize
-         * @throws NullPointerException if the file is <code>null</code>
+         * @throws NullPointerException if the file is {@code null}
          */
         public LocalizedFileName(File file) {
             this(file.getName());
@@ -1077,7 +1077,7 @@ public class Language implements Iterable<String> {
          * Creates a localized file name from a file name string.
          *
          * @param fileName the file name to tokenize
-         * @throws NullPointerException if the file is <code>null</code>
+         * @throws NullPointerException if the file is {@code null}
          */
         public LocalizedFileName(String fileName) {
             int dot = fileName.indexOf('.');
@@ -1112,13 +1112,13 @@ public class Language implements Iterable<String> {
 
         /**
          * The base name that was parsed out of the file name. This may be an
-         * empty string, but it will not be <code>null</code>.
+         * empty string, but it will not be {@code null}.
          */
         public final String baseName;
         /**
          * The locale description that was parsed out of the file name, or
-         * <code>null</code> if there was no locale description. A
-         * <code>null</code> locale description indicates that the file is
+         * {@code null} if there was no locale description. A
+         * {@code null} locale description indicates that the file is
          * either not part of a family of localized files, or that it represents
          * the default translation. If it is the default translation and other
          * translations are available, other files in the same folder should
@@ -1126,16 +1126,16 @@ public class Language implements Iterable<String> {
          */
         public final String localeDescription;
         /**
-         * The file extension of the file (such as <code>.properties</code>), or
-         * <code>null</code> if there is no file extension.
+         * The file extension of the file (such as {@code .properties}), or
+         * {@code null} if there is no file extension.
          */
         public final String extension;
 
         /**
          * Returns a locale matching the locale description. Returns
-         * <code>null</code> if the locale description is <code>null</code>.
+         * {@code null} if the locale description is {@code null}.
          *
-         * @return the locale for the locale description, or <code>null</code>
+         * @return the locale for the locale description, or {@code null}
          * @see Language#parseLocaleDescription(java.lang.String)
          */
         public Locale getLocale() {
@@ -1144,8 +1144,8 @@ public class Language implements Iterable<String> {
 
         /**
          * Returns the file name for the default translation file. For example,
-         * if the original file was <code>fruit_fr.properties</code>, this would
-         * return <code>fruit.properties</code>.
+         * if the original file was {@code fruit_fr.properties}, this would
+         * return {@code fruit.properties}.
          *
          * @return the file name representing the default translation in a group
          * of localized files
@@ -1161,7 +1161,7 @@ public class Language implements Iterable<String> {
         /**
          * Returns the file name for a localized file with the same base name
          * and extension but the specified locale. If the locale is
-         * <code>null</code>, then this returns the default file name.
+         * {@code null}, then this returns the default file name.
          *
          * @param loc the locale to create a file name for
          * @return the file name for the specified locale
@@ -1182,14 +1182,14 @@ public class Language implements Iterable<String> {
 
         /**
          * Returns the localized file name for the parent locale, or
-         * <code>null</code> if this file represents a default translation. For
-         * example, the parent of <code>file_en_CA.ext</code> is
-         * <code>file_en.ext</code>; The parent of <code>file_en.ext</code> is
-         * <code>file.ext</code>, and the parent of that file is
-         * <code>null</code>.
+         * {@code null} if this file represents a default translation. For
+         * example, the parent of {@code file_en_CA.ext} is
+         * {@code file_en.ext}; The parent of {@code file_en.ext} is
+         * {@code file.ext}, and the parent of that file is
+         * {@code null}.
          *
          * @return the next fallback translation for the file, or
-         * <code>null</code>
+         * {@code null}
          */
         public LocalizedFileName getParent() {
             if (localeDescription == null) {

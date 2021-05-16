@@ -58,13 +58,13 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * @param description a brief description or summary of the content of the
      * location
      * @param longDescription a longer, more detailed description (may be
-     * <code>null</code>)
+     * {@code null})
      * @param offset the location of the point in the text, as a character
      * offset from the start of the file
      * @param scope a value that indicates a nesting depth relative to other
      * navigation points in a collection of navigation points; default is 0
      * @param icon an icon for the navigation point type (may be
-     * <code>null</code>)
+     * {@code null})
      */
     public NavigationPoint(String description, String longDescription, int offset, int scope, Icon icon) {
         if (offset < 0) {
@@ -91,7 +91,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
     }
 
     /**
-     * Returns the icon for this point, or <code>null</code>.
+     * Returns the icon for this point, or {@code null}.
      *
      * @return this point's icon, if any
      */
@@ -156,7 +156,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
     }
 
     /**
-     * Returns <code>true</code> if two navigation points are considered equal,
+     * Returns {@code true} if two navigation points are considered equal,
      * based on their string description. Line numbers are NOT be considered
      * when determining equality. This is intentional.
      *
@@ -191,7 +191,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      *
      * @param newPoints the points to consider
      * @return the best matching point in the list for this point, or
-     * <code>null</code> if the list is empty
+     * {@code null} if the list is empty
      */
     public NavigationPoint getClosestPoint(List<NavigationPoint> newPoints) {
         if (newPoints == null || newPoints.isEmpty()) {

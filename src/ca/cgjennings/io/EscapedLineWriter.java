@@ -46,9 +46,9 @@ public class EscapedLineWriter extends BufferedWriter {
     }
 
     /**
-     * Returns <code>true</code> if Unicode escapes will be used.
+     * Returns {@code true} if Unicode escapes will be used.
      *
-     * @return <code>true</code> if characters outside of ISO-8859 are escaped
+     * @return {@code true} if characters outside of ISO-8859 are escaped
      * @see #setUnicodeEscaped(boolean)
      */
     public boolean isUnicodeEscaped() {
@@ -57,11 +57,11 @@ public class EscapedLineWriter extends BufferedWriter {
 
     /**
      * Sets whether uxxxx escapes should be used when writing characters outside
-     * of the ISO-8859 encoding range. Default is <code>true</code>; can be set
-     * to <code>false</code> if the output file can represent all unicode
+     * of the ISO-8859 encoding range. Default is {@code true}; can be set
+     * to {@code false} if the output file can represent all unicode
      * characters directly (e.g., UTF-8).
      *
-     * @param escape if <code>true</code>, Unicode escapes will be used
+     * @param escape if {@code true}, Unicode escapes will be used
      * @see #isUnicodeEscaped()
      */
     public void setUnicodeEscaped(boolean escape) {

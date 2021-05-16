@@ -27,11 +27,11 @@ public class DeckTask extends NewTaskType {
     private static final String DEFAULT_COPIES_FILE_NAME = "copies";
 
     /**
-     * Returns <code>true</code> if the specified task is a kind that supports
+     * Returns {@code true} if the specified task is a kind that supports
      * copies list files.
      *
      * @param t the task to check
-     * @return <code>true</code> if it can contain copies files
+     * @return {@code true} if it can contain copies files
      */
     public static boolean taskCanHaveCopiesList(Task t) {
         if (t != null) {
@@ -45,13 +45,13 @@ public class DeckTask extends NewTaskType {
 
     /**
      * Returns the name of the file that contains the copies list for the task,
-     * or <code>null</code> if this is not a deck or factory task. If the
-     * specified task is <code>null</code>, the default copies file name is
+     * or {@code null} if this is not a deck or factory task. If the
+     * specified task is {@code null}, the default copies file name is
      * returned.
      *
      * @param t the task to check
      * @return the name of the copies list file for the task, or
-     * <code>null</code>
+     * {@code null}
      */
     public static String getCopiesListFileName(Task t) {
         if (t == null) {
@@ -87,10 +87,10 @@ public class DeckTask extends NewTaskType {
     }
 
     /**
-     * Returns <code>true</code> if the given member is a copies list in a task.
+     * Returns {@code true} if the given member is a copies list in a task.
      *
      * @param m the member to test
-     * @return <code>true</code> if the member is the copies list file for its
+     * @return {@code true} if the member is the copies list file for its
      * task
      */
     public static boolean isCopiesList(Member m) {

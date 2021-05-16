@@ -84,7 +84,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Displays an error message. If a non-<code>null</code> exception is
+     * Displays an error message. If a non-{@code null} exception is
      * passed, the error message will include additional details about the error
      * taken from the exception, including the localized message (if any), and
      * the class name of the exception.
@@ -171,8 +171,8 @@ public final class ErrorDialog extends javax.swing.JDialog {
      * application from continuing. This method is not for general use; it is
      * normally only called during startup when a critical error occurs that
      * Strange Eons cannot recover from. The displayed error dialog will include
-     * a stack trace for the provided <code>cause</code>, and include an option
-     * to fill out a bug report. If the <code>cause</code> is null, then a stack
+     * a stack trace for the provided {@code cause}, and include an option
+     * to fill out a bug report. If the {@code cause} is null, then a stack
      * trace will be generated for the point at which the method was called.
      *
      * @param message the message to display

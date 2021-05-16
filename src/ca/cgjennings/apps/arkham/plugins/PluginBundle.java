@@ -23,7 +23,7 @@ import resources.ResourceKit;
 
 /**
  * A plug-in bundle is a file that stores the code and resources required by a
- * plug-in. The <code>PluginBundle</code> class encapsulates operations that can
+ * plug-in. The {@code PluginBundle} class encapsulates operations that can
  * be performed on such a bundle <i>without actually linking it to the
  * application</i>. (The distinction is important because linking a plug-in
  * bundle to the application also typically locks the bundle file until the
@@ -60,7 +60,7 @@ import resources.ResourceKit;
  * <p>
  * <b>Obsolete Formats:</b> Some alpha and beta releases of Strange Eons
  * supported bundles that used other archive formats. These bundles are no
- * longer supported, and attempting to create a <code>PluginBundle</code>
+ * longer supported, and attempting to create a {@code PluginBundle}
  * instance for such files, or to determine their format, will throw an
  * exception. Bundles stored in these obsolete formats would now typically be
  * converted into published bundles (see below).
@@ -137,8 +137,8 @@ public class PluginBundle {
      */
     private File file;
     /**
-     * The unwrapped temp file, or <code>null</code> if none exists. If
-     * <code>null</code>, either: the original bundle is not wrapped; the user
+     * The unwrapped temp file, or {@code null} if none exists. If
+     * {@code null}, either: the original bundle is not wrapped; the user
      * has not called any methods that would generate a temp file; or dispose()
      * was called.
      */
@@ -147,7 +147,7 @@ public class PluginBundle {
     /**
      * Creates a new plug-in bundle from a file path stored in a string. This
      * convenience constructor is equivalent to
-     * <code>PluginBundle( new java.io.File( file ) )</code>.
+     * {@code PluginBundle( new java.io.File( file ) )}.
      *
      * @param file the path and name of the bundle file
      * @throws IOException if an error occurs while accessing the bundle or it
@@ -175,13 +175,13 @@ public class PluginBundle {
 
     /**
      * Returns a {@link PluginRoot} for the root file in this bundle, or
-     * <code>null</code> if the plug-in does not have a root file. (A plug-in
+     * {@code null} if the plug-in does not have a root file. (A plug-in
      * bundle with no root file is invalid unless it is a library bundle.) If
-     * the bundle format is not <code>FORMAT_PLAIN</code>, then it will first be
+     * the bundle format is not {@code FORMAT_PLAIN}, then it will first be
      * converted into a plain bundle as if by calling
-     * <code>this.copy( this.getFile() )</code>.
+     * {@code this.copy( this.getFile() )}.
      *
-     * @return the content of the bundle's root file, or <code>null</code>
+     * @return the content of the bundle's root file, or {@code null}
      * @throws IOException if an I/O exception occurs while reading the root
      * file
      */
@@ -205,9 +205,9 @@ public class PluginBundle {
 
     /**
      * Returns a file that contains the contents of this bundle in
-     * <code>FORMAT_PLAIN</code>. If the original bundle was already plain, then
+     * {@code FORMAT_PLAIN}. If the original bundle was already plain, then
      * this is equivalent to calling {@link #getFile()}. Otherwise, a temporary
-     * file will be created in <code>FORMAT_PLAIN</code> and returned. (Repeated
+     * file will be created in {@code FORMAT_PLAIN} and returned. (Repeated
      * calls will return the same file unless {@link #dispose()} is called in
      * the meantime.)
      *
@@ -220,10 +220,10 @@ public class PluginBundle {
     }
 
     /**
-     * Returns a <code>ZipFile</code> that represents the archived contents of
+     * Returns a {@code ZipFile} that represents the archived contents of
      * this bundle.
      *
-     * @return a <code>ZipFile</code> that can be used to access the plug-in
+     * @return a {@code ZipFile} that can be used to access the plug-in
      * bundle's content
      * @throws java.io.IOException
      */
@@ -233,11 +233,11 @@ public class PluginBundle {
     }
 
     /**
-     * Returns a <code>URL</code> that can be used as a base URL to access the
+     * Returns a {@code URL} that can be used as a base URL to access the
      * archived contents of this bundle without linking it against the
      * application.
      *
-     * @return a <code>JarFile</code> URL for the plug-in bundle's content
+     * @return a {@code JarFile} URL for the plug-in bundle's content
      * @throws java.io.IOException if an I/O error occurs
      */
     public URL getBaseURL() throws IOException {
@@ -269,19 +269,19 @@ public class PluginBundle {
     }
 
     /**
-     * Writes a copy of the plug-in bundle to <code>destination</code>. The copy
-     * of the bundle will always be in <code>FORMAT_PLAIN</code>, but is
+     * Writes a copy of the plug-in bundle to {@code destination}. The copy
+     * of the bundle will always be in {@code FORMAT_PLAIN}, but is
      * otherwise identical to the original bundle. The newly created bundle is
-     * returned as a <code>PluginBundle</code>.
+     * returned as a {@code PluginBundle}.
      * <p>
      * It is valid to use the file containing this bundle as the destination. In
-     * this case, <code>this</code> is returned if the bundle is already
+     * this case, {@code this} is returned if the bundle is already
      * unwrapped. If the bundle is wrapped, it is unwrapped in place, replacing
      * the original file. In this case, this bundle's state is updated to
      * reflect the new status of the file.
      *
-     * @param destination the <code>File</code> to write the copy to
-     * @return a <code>PluginBundle</code> representing the destination
+     * @param destination the {@code File} to write the copy to
+     * @return a {@code PluginBundle} representing the destination
      * @throws IOException if an I/O error occurs during the copy
      */
     public PluginBundle copy(File destination) throws IOException {
@@ -339,7 +339,7 @@ public class PluginBundle {
 
     /**
      * Copies the bundle content into a ZIP archive with no file compression
-     * (all files in the archive are <code>STORE</code>d). There are two primary
+     * (all files in the archive are {@code STORE}d). There are two primary
      * reasons for wanting an uncompressed archive:
      * <ol>
      * <li>When the plug-in will actually be run from the bundle in question
@@ -416,12 +416,12 @@ public class PluginBundle {
 
     /**
      * Returns the apparent type of this bundle file, based on the file name's
-     * extension. This will be one of <code>TYPE_LIBRARY</code>,
-     * <code>TYPE_THEME</code>, <code>TYPE_EXTENSION</code>,
-     * <code>TYPE_PLUGIN</code>, or <code>TYPE_UNKNOWN</code>.
+     * extension. This will be one of {@code TYPE_LIBRARY},
+     * {@code TYPE_THEME}, {@code TYPE_EXTENSION},
+     * {@code TYPE_PLUGIN}, or {@code TYPE_UNKNOWN}.
      *
      * @return a type ID that matches the apparent type of this bundle
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public int getType() {
         return type;
@@ -429,9 +429,9 @@ public class PluginBundle {
 
     /**
      * Make a copy of a file, possibly inserting or removing the 4-byte wrapping
-     * header from the start of the copy. (If <code>removeHeader</code> is
-     * <code>true</code>, 4 bytes are skipped from the start of the source. If
-     * <code>insertHeader</code> is <code>true</code>, the wrapping header is
+     * header from the start of the copy. (If {@code removeHeader} is
+     * {@code true}, 4 bytes are skipped from the start of the source. If
+     * {@code insertHeader} is {@code true}, the wrapping header is
      * inserted at the start of the destination file.)
      */
     private static void copyImpl(File source, File destination, boolean removeHeader, boolean insertHeader) throws IOException {
@@ -479,14 +479,14 @@ public class PluginBundle {
     /**
      * Returns the apparent type of an arbitrary bundle file, based on the file
      * name's extension. The passed-in value can be any object; the object's
-     * string value is used. This will be one of <code>TYPE_LIBRARY</code>,
-     * <code>TYPE_THEME</code>, <code>TYPE_EXTENSION</code>,
-     * <code>TYPE_PLUGIN</code>, or <code>TYPE_UNKNOWN</code>.
+     * string value is used. This will be one of {@code TYPE_LIBRARY},
+     * {@code TYPE_THEME}, {@code TYPE_EXTENSION},
+     * {@code TYPE_PLUGIN}, or {@code TYPE_UNKNOWN}.
      *
      * @param file this object's string value will be treated as a file name
      * that will be used to return a more specific icon
      * @return a type ID that matches the apparent type of the file
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public static int getBundleType(Object file) {
         if (file == null) {
@@ -519,14 +519,14 @@ public class PluginBundle {
     /**
      * Returns a large or small icon that can be used to represent a plug-in
      * bundle in message dialogs, etc. A valid icon is returned even if file is
-     * <code>null</code>. However, if a valid plug-in file is named, the
+     * {@code null}. However, if a valid plug-in file is named, the
      * returned icon may more accurately reflect the file's contents.
      *
      * @param file this object's string value will be treated as a file name
      * that will be used to return a more specific icon
      * @param smallIcon if true, returns a small icon
      * @return an icon that represents the type of the bundle implied by
-     * <code>file</code>
+     * {@code file}
      */
     public static Icon getIcon(Object file, boolean smallIcon) {
         String image = "plugin";
@@ -552,14 +552,14 @@ public class PluginBundle {
 
     /**
      * Returns the storage format of an arbitrary bundle file, which will be one
-     * of <code>FORMAT_PLAIN</code>, <code>FORMAT_WRAPPED</code>, or
-     * <code>FORMAT_INVALID</code>.
+     * of {@code FORMAT_PLAIN}, {@code FORMAT_WRAPPED}, or
+     * {@code FORMAT_INVALID}.
      *
      * @param file the file to determine the format of
      * @return a format ID that matches the bundle format of the file
      * @throws java.io.IOException if an I/O error occurs while determining the
      * format
-     * @throws NullPointerException if the file is <code>null</code>
+     * @throws NullPointerException if the file is {@code null}
      */
     public static int getBundleFormat(File file) throws IOException {
         if (file == null) {
@@ -615,10 +615,10 @@ public class PluginBundle {
     /**
      * Performs cleanup when a plug-in bundle instance is no longer required. If
      * a temporary copy of the bundle file was created in
-     * <code>FORMAT_PLAIN</code>, calling this method will delete the temporary
+     * {@code FORMAT_PLAIN}, calling this method will delete the temporary
      * file. If this method is not called, the temporary file will be deleted
      * when the application terminates. It is safe to continue using this
-     * instance after calling <code>dispose()</code>, though potentially
+     * instance after calling {@code dispose()}, though potentially
      * inefficient.
      *
      * <p>

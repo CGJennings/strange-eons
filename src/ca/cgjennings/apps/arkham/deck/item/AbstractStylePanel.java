@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 
 /**
  * An abstract base class for implementing a {@link StylePanel} as a
- * <code>JPanel</code>.
+ * {@code JPanel}.
  *
  * @param <S> the style that this panel edits
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -18,8 +18,8 @@ public abstract class AbstractStylePanel<S extends Style> extends JPanel impleme
      * {@inheritDoc}
      *
      * <p>
-     * This implementation returns <code>this</code>; the style editing controls
-     * should be children of this <code>JPanel</code>.
+     * This implementation returns {@code this}; the style editing controls
+     * should be children of this {@code JPanel}.
      *
      * @return this panel
      */
@@ -62,8 +62,8 @@ public abstract class AbstractStylePanel<S extends Style> extends JPanel impleme
      * <p>
      * This implementation assumes that the panel implements the {@link Style}
      * subclass that it edits. (So, if this extends
-     * <code>AbstractStylePanel&lt;MyStyle&gt;</code> then it also implements
-     * <code>MyStyle</code>.) It populates the specified capture by simply
+     * {@code AbstractStylePanel&lt;MyStyle&gt;} then it also implements
+     * {@code MyStyle}.) It populates the specified capture by simply
      * capturing this panel instance (so the panel's getter methods for the
      * style will be called to obtain the panel state). If this panel does not
      * implement the style interface, an exception will be thrown at runtime.
@@ -82,7 +82,7 @@ public abstract class AbstractStylePanel<S extends Style> extends JPanel impleme
      * This implementation assumes that the panel implements the {@link Style}
      * subclass that it edits. (So, if this extends
      * {@code AbstractStylePanel<MyStyle>} then it also implements
-     * <code>MyStyle</code>.) It populates the panel by simply applying the
+     * {@code MyStyle}.) It populates the panel by simply applying the
      * capture to the panel (so the panel's setter methods for the style will be
      * invoked accordingly). If this panel does not implement the style
      * interface, an exception will be thrown at runtime.

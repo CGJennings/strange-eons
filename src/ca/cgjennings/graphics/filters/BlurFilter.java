@@ -52,8 +52,8 @@ public class BlurFilter extends AbstractImageFilter {
      * @param radius the radius of the blur
      * @param iterations the number of times to repeat the blur
      *
-     * @throws IllegalArgumentException if <code>radius</code>or
-     * <code>iterations</code> is negative
+     * @throws IllegalArgumentException if {@code radius}or
+     * {@code iterations} is negative
      */
     public BlurFilter(int radius, int iterations) {
         setHorizontalRadius(radius);
@@ -69,7 +69,7 @@ public class BlurFilter extends AbstractImageFilter {
      * @param iterations the number of times to repeat the blur
      *
      * @throws IllegalArgumentException if either radius or
-     * <code>iterations</code> is negative
+     * {@code iterations} is negative
      */
     public BlurFilter(int horzRadius, int vertRadius, int iterations) {
         setHorizontalRadius(horzRadius);
@@ -109,7 +109,7 @@ public class BlurFilter extends AbstractImageFilter {
      * width of twice this radius, plus one.
      *
      * @param hRadius the non-negative horizontal blur radius
-     * @throws IllegalArgumentException if <code>hRadius</code> is negative
+     * @throws IllegalArgumentException if {@code hRadius} is negative
      */
     public final void setHorizontalRadius(int hRadius) {
         if (hRadius < 0) {
@@ -135,7 +135,7 @@ public class BlurFilter extends AbstractImageFilter {
      * height of twice this radius, plus one.
      *
      * @param vRadius the non-negative vertical blur radius
-     * @throws IllegalArgumentException if <code>vRadius</code> is negative
+     * @throws IllegalArgumentException if {@code vRadius} is negative
      */
     public final void setVerticalRadius(int vRadius) {
         if (vRadius < 0) {
@@ -161,7 +161,7 @@ public class BlurFilter extends AbstractImageFilter {
      * sets both the horizontal and vertical radii to the same value.
      *
      * @param radius the non-negative blur radius
-     * @throws IllegalArgumentException if <code>radius</code> is negative
+     * @throws IllegalArgumentException if {@code radius} is negative
      */
     public final void setRadius(int radius) {
         setHorizontalRadius(radius);
@@ -170,7 +170,7 @@ public class BlurFilter extends AbstractImageFilter {
 
     /**
      * Sets whether pixel data will be processed with a premultiplied alpha
-     * channel. Setting this to <code>true</code> (the default) can avoid a
+     * channel. Setting this to {@code true} (the default) can avoid a
      * common artifact that appears when transparent pixels are a very different
      * colour than surrounding translucent or opaque pixels. The artifact
      * manifests as a fringe of the non-matching colour(s) around the edges of
@@ -178,7 +178,7 @@ public class BlurFilter extends AbstractImageFilter {
      * this artifact, it also increases processing time and decreases colour
      * accuracy.
      *
-     * @param enable if <code>true</code>, pixel values will be premultiplied by
+     * @param enable if {@code true}, pixel values will be premultiplied by
      * their alpha value before processing, and unpremultiplied afterward
      */
     public final void setPremultiplied(boolean enable) {
@@ -186,10 +186,10 @@ public class BlurFilter extends AbstractImageFilter {
     }
 
     /**
-     * Returns <code>true</code> if automatic premultiplication is enabled (the
+     * Returns {@code true} if automatic premultiplication is enabled (the
      * default).
      *
-     * @return <code>true</code> if pixel values will be premultiplied by their
+     * @return {@code true} if pixel values will be premultiplied by their
      * alpha value before processing, and unpremultiplied afterward
      * @see #setPremultiplied
      */
@@ -199,13 +199,13 @@ public class BlurFilter extends AbstractImageFilter {
 
     /**
      * Blurs the source image and places the result in a destination image. The
-     * destination image may be <code>null</code>, in which case a compatible
+     * destination image may be {@code null}, in which case a compatible
      * image is created automatically. It may also be the source image, in which
      * case the original image data is replaced by the result.
      *
      * @param src the source image to blur
      * @param dst the destination image to copy the result to, or
-     * <code>null</code>
+     * {@code null}
      * @return the destination image
      */
     @Override
@@ -270,18 +270,18 @@ public class BlurFilter extends AbstractImageFilter {
     /**
      * Blurs a block of image data. This method is provided for use by other
      * filters as part of their internal processing. <b>Note:</b> the contents
-     * of <code>in</code> will contain the final blurred data.
+     * of {@code in} will contain the final blurred data.
      *
      * @param in input ARGB pixel buffer
-     * @param temp temporary ARGB pixel buffer (may be <code>null</code>)
+     * @param temp temporary ARGB pixel buffer (may be {@code null})
      * @param width image width, in pixels
      * @param height image height, in pixels
      * @param horzRadius the horizontal blur radius
      * @param vertRadius the vertical blur radius
      * @param iterations the number of blur iterations
-     * @param alphaOnly if <code>true</code>, the blur only affects the alpha
+     * @param alphaOnly if {@code true}, the blur only affects the alpha
      * channel
-     * @param alphaOnlyRGB if <tt>alphaOnly</tt> is <code>true</code>, this is
+     * @param alphaOnlyRGB if <tt>alphaOnly</tt> is {@code true}, this is
      * the RGB value to fill into the other channels
      */
     static void blur(int[] in, int[] temp, int width, int height, int horzRadius, int vertRadius, int iterations, boolean alphaOnly, int alphaOnlyRGB) {

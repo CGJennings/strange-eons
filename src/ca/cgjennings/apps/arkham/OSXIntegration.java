@@ -94,7 +94,7 @@ public final class OSXIntegration {
      * Proxy method for exiting the application.
      *
      * @see StrangeEonsAppWindow#exitApplication(boolean)
-     * @return <code>false</code> if the exit was cancelled
+     * @return {@code false} if the exit was cancelled
      */
     public boolean exit() {
         AppFrame.getApp().exitApplication(false);

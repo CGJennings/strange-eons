@@ -19,9 +19,9 @@ import java.util.EnumSet;
 public interface Portrait {
 
     /**
-     * Sets the image used by the portrait.The value of <code>resource</code>
+     * Sets the image used by the portrait.The value of {@code resource}
  is an identifier such as a local path to an image file or a URL. Either
- <code>null</code> or an empty string is a special identifier that
+ {@code null} or an empty string is a special identifier that
      * requests a default image that depends on the component and portrait
      * number.
      * <p>
@@ -30,13 +30,13 @@ public interface Portrait {
      * store these values in temporary variables before setting them image, and
      * then restore them once this method returns.
      * <p>
-     * If an image cannot be obtained from <code>resource</code> (for example,
+     * If an image cannot be obtained from {@code resource} (for example,
      * if the file it names does not exist or is invalid), then a special error
      * image is substituted.
      *
      * @param resource an identifier user to locate the image (a file or URL)
-     * @throws NullPointerException if <code>resource</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code resource} is
+     * {@code null}
      */
     public void setSource(String resource);
 
@@ -129,8 +129,8 @@ public interface Portrait {
     public void setPan(Point2D pan);
 
     /**
-     * Returns the pan value as a <code>Point2D</code>. The pan values will be
-     * stored in <code>dest</code>; if <code>null</code>, a new point object
+     * Returns the pan value as a {@code Point2D}. The pan values will be
+     * stored in {@code dest}; if {@code null}, a new point object
      * will be allocated and returned.
      *
      * @param dest a point object to store the pan value in
@@ -184,14 +184,14 @@ public interface Portrait {
      * obscures the underlying portrait. In other words, the alpha channel
      * describes the shape of the portrait. If the portrait is simply an
      * unobscured rectangle (that is, nothing is drawn overtop of it), this
-     * method can simply return <code>null</code>.
+     * method can simply return {@code null}.
      *
      * <p>
      * <b>Note:</b> The value returned by this method is not guaranteed to be
      * accurate and should not be relied on.
      *
      * @return an image whose alpha channel describes the obscured areas of the
-     * portrait, or <code>null</code>
+     * portrait, or {@code null}
      */
     public BufferedImage getClipStencil();
 

@@ -4,7 +4,7 @@ import java.io.File;
 
 /**
  * An abstract file filter that can be used with both file chooser APIs and
- * <code>File.listFiles</code>.
+ * {@code File.listFiles}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

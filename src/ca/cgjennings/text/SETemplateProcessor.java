@@ -33,12 +33,12 @@ import resources.Language;
  * Throws an exception if the variable is undefined.
  * <p>
  * <b>{?<i>condition</i>} ... {/?<i>condition</i>}</b><br>
- * If the condition is set to <code>true</code>, then the text between the start
+ * If the condition is set to {@code true}, then the text between the start
  * and end symbols will be included in the document. Otherwise, it will be left
  * out. Throws an exception if the condition has not been set.
  * <p>
  * <b>{!<i>condition</i>} ... {/!<i>condition</i>}</b><br>
- * If the condition is set to <code>false</code>, then the text between the
+ * If the condition is set to {@code false}, then the text between the
  * start and end symbols will be included in the document. Otherwise, it will be
  * left out. Throws an exception if the condition has not been set.
  *
@@ -62,7 +62,7 @@ public class SETemplateProcessor extends TemplateProcessor {
 
     /**
      * Sets the language to be used for @-symbols. (The default value is
-     * <code>Language.getInterface()</code>.)
+     * {@code Language.getInterface()}.)
      *
      * @param ui the UI language to set
      */
@@ -72,7 +72,7 @@ public class SETemplateProcessor extends TemplateProcessor {
 
     /**
      * Sets the language to be used for #-symbols. (The default value is
-     * <code>Language.getGame()</code>.)
+     * {@code Language.getGame()}.)
      *
      * @param game the game language to set
      */

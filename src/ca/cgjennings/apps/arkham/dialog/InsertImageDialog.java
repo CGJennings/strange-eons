@@ -497,9 +497,9 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     /**
      * Returns the markup that will insert the selected image, or
-     * <code>null</code> if the operation was cancelled.
+     * {@code null} if the operation was cancelled.
      *
-     * @return markup for the selected image, or <code>null</code>
+     * @return markup for the selected image, or {@code null}
      */
     public String getMarkupString() {
         return markup;

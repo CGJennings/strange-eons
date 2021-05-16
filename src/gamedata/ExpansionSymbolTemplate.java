@@ -49,7 +49,7 @@ public interface ExpansionSymbolTemplate {
     int getVariantCount();
 
     /**
-     * Returns the name of the <code>n</code>th symbol variant; this is a simple
+     * Returns the name of the {@code n}th symbol variant; this is a simple
      * description in the UI language; e.g., "Regular", "Inversed".
      *
      * @param variant the variant number of the symbol
@@ -76,7 +76,7 @@ public interface ExpansionSymbolTemplate {
     int getLogicalVariantCount();
 
     /**
-     * Returns the name of the <code>n</code>th logical variant for games that
+     * Returns the name of the {@code n}th logical variant for games that
      * distinguish between visual variants and logical variants.
      *
      * @param variant the logical variant number
@@ -108,29 +108,29 @@ public interface ExpansionSymbolTemplate {
      * be used when selecting or editing a symbol with this variant. For
      * example, the end user expansion dialog (Expansion|New) will use this for
      * the drop boxes that the user drops symbol images on. If this method
-     * returns <code>null</code>, a default paint will be used.
+     * returns {@code null}, a default paint will be used.
      *
      * @param variant the index of the variant to obtain a backdrop for
-     * @return a paint to use as the backdrop, or <code>null</code> to use the
+     * @return a paint to use as the backdrop, or {@code null} to use the
      * default
      */
     Paint getDesignBackdropForVariant(int variant);
 
     /**
-     * Returns <code>true</code> if the components for this game will draw the
+     * Returns {@code true} if the components for this game will draw the
      * expansion symbols themselves instead of relying on the default mechanism.
      *
-     * @return <code>true</code> if expansion symbols are drawn by the
-     * component; <code>false</code> if expansion symbols are drawn by Strange
+     * @return {@code true} if expansion symbols are drawn by the
+     * component; {@code false} if expansion symbols are drawn by Strange
      * Eons
      */
     boolean isCustomDrawn();
 
     /**
-     * Returns <code>true</code> if this template can automatically generate a
+     * Returns {@code true} if this template can automatically generate a
      * family of variants given an example image.
      *
-     * @return <code>true</code> if
+     * @return {@code true} if
      * {@link #generateVariant(java.awt.image.BufferedImage, int)} is supported
      */
     boolean canGenerateVariantsAutomatically();
@@ -141,7 +141,7 @@ public interface ExpansionSymbolTemplate {
      * @param baseSymbol the example symbol to base the new design on; usually
      * it has the same style as the symbol at position 0
      * @param variant the number of the symbol design to generate
-     * @return the generated symbol for position <code>n</code>
+     * @return the generated symbol for position {@code n}
      * @throws UnsupportedOperationException if this template cannot generate
      * symbols
      */

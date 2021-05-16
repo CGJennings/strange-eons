@@ -166,7 +166,7 @@ public class AnimatedIcon implements Icon {
 
     /**
      * Sets the delay between frames, in ms. To set the frame rate in frames per
-     * second, use <code>setDelay( 1000/frameRate )</code>.
+     * second, use {@code setDelay( 1000/frameRate )}.
      *
      * @param delay the delay between successive frames
      */

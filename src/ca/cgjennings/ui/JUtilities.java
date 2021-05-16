@@ -56,8 +56,8 @@ public class JUtilities {
      * Recursively enable or disable a tree of components.
      *
      * @param component the root of the component tree
-     * @param enable if <code>true</code>, enable the components, else disable
-     * @throws NullPointerException if <code>c</code> is <code>null</code>
+     * @param enable if {@code true}, enable the components, else disable
+     * @throws NullPointerException if {@code c} is {@code null}
      */
     public static void enableTree(JComponent component, boolean enable) {
         if (component == null) {
@@ -76,8 +76,8 @@ public class JUtilities {
      * Returns the window that a component is contained within, if any.
      *
      * @param component the component to find the window of
-     * @return the containing window, or <code>null</code>
-     * @throws NullPointerException if <code>c</code> is <code>null</code>
+     * @return the containing window, or {@code null}
+     * @throws NullPointerException if {@code c} is {@code null}
      */
     public static Window findWindow(Component component) {
         if (component == null) {
@@ -89,7 +89,7 @@ public class JUtilities {
     /**
      * Adjusts a window's location so that the center is under the pointer. This
      * is a cover for
-     * <code>snapToPointer( window, ALIGN_CENTER, ALIGN_MIDDLE )</code>.
+     * {@code snapToPointer( window, ALIGN_CENTER, ALIGN_MIDDLE )}.
      *
      * @param window the window to adjust
      */
@@ -204,11 +204,11 @@ public class JUtilities {
      * Internal implementation that snaps a window to the desktop bounds as if
      * it was currently at the specified (x,y) position.
      *
-     * @param window window (not explicitly <code>null</code> checked)
+     * @param window window (not explicitly {@code null} checked)
      * @param x the x coord to pretend the window is at (may or may not be
-     * <code>w.getX()</code>)
+     * {@code w.getX()})
      * @param y the y coord to pretend the window is at (may or may not be
-     * <code>w.getY()</code>)
+     * {@code w.getY()})
      */
     private static void snapToDesktopImpl(Window window, int x, int y) {
         // get the rectangle of the window's display
@@ -268,12 +268,12 @@ public class JUtilities {
      * Adds listeners for all addXXXListener methods on a component that print
      * information to a selected output stream.
      *
-     * @param out the stream to print to (<code>System.err</code> if
-     * <code>null</code>)
+     * @param out the stream to print to ({@code System.err} if
+     * {@code null})
      * @param component the component to add listeners to
-     * @param includeAllMoveEvents if <code>true</code>, low-level cursor
+     * @param includeAllMoveEvents if {@code true}, low-level cursor
      * movements are included
-     * @param recursive if <code>true</code>, listeners are added recursively to
+     * @param recursive if {@code true}, listeners are added recursively to
      * children
      */
     public static void addDebugListeners(final PrintStream out, final Object component, final boolean includeAllMoveEvents, boolean recursive) {
@@ -443,17 +443,17 @@ public class JUtilities {
     private static HashMap<JRootPane, Integer> waitMap = new HashMap<>();
 
     /**
-     * Returns <code>true</code> if the mouse button with the indicated number
+     * Returns {@code true} if the mouse button with the indicated number
      * is down. If the button number is greater than the number of buttons
-     * recognized by this JVM, <code>false</code> is returned. Buttons from 1 to
+     * recognized by this JVM, {@code false} is returned. Buttons from 1 to
      * 3 can always be recognized; higher-numbered buttons may be recognized.
      * The highest possible button number that might be recognized is
      * {@link java.awt.MouseInfo#getNumberOfButtons()}. Button numbers higher
-     * than this can be safely requested but will return <code>false</code>.
+     * than this can be safely requested but will return {@code false}.
      *
      * @param button the number of the button (1 for BUTTON1, etc.) to test for
      * @param e the input event to test
-     * @return <code>true</code> if the button can be detected and is down
+     * @return {@code true} if the button can be detected and is down
      * @throws IllegalArgumentException if the button number is less than 1
      */
     public static boolean isButtonDown(int button, InputEvent e) {
@@ -468,45 +468,45 @@ public class JUtilities {
     }
 
     /**
-     * Returns <code>true</code> if the left mouse button was held down during
-     * the given <code>InputEvent</code>.
+     * Returns {@code true} if the left mouse button was held down during
+     * the given {@code InputEvent}.
      *
      * @param e the event to test
-     * @return <code>true</code> is mouse button was down
+     * @return {@code true} is mouse button was down
      */
     public static boolean leftButton(InputEvent e) {
         return isButtonDown(1, e);
     }
 
     /**
-     * Returns <code>true</code> if the middle mouse button was held down during
-     * the given <code>InputEvent</code>.
+     * Returns {@code true} if the middle mouse button was held down during
+     * the given {@code InputEvent}.
      *
      * @param e the event to test
-     * @return <code>true</code> is mouse button was down
+     * @return {@code true} is mouse button was down
      */
     public static boolean midButton(InputEvent e) {
         return isButtonDown(2, e);
     }
 
     /**
-     * Returns <code>true</code> if the right mouse button was held down during
-     * the given <code>InputEvent</code>.
+     * Returns {@code true} if the right mouse button was held down during
+     * the given {@code InputEvent}.
      *
      * @param e the event to test
-     * @return <code>true</code> is mouse button was down
+     * @return {@code true} is mouse button was down
      */
     public static boolean rightButton(InputEvent e) {
         return isButtonDown(3, e);
     }
 
     /**
-     * Returns <code>true</code> if the "back" mouse button was held down during
-     * the given <code>InputEvent</code> and this button can be detected by this
+     * Returns {@code true} if the "back" mouse button was held down during
+     * the given {@code InputEvent} and this button can be detected by this
      * JVM.
      *
      * @param e the event to test
-     * @return <code>true</code> is mouse button was down
+     * @return {@code true} is mouse button was down
      * @see #isButtonDown(int, java.awt.event.InputEvent)
      */
     public static boolean backButton(InputEvent e) {
@@ -514,12 +514,12 @@ public class JUtilities {
     }
 
     /**
-     * Returns <code>true</code> if the "forward" mouse button was held down
-     * during the given <code>InputEvent</code> and this button can be detected
+     * Returns {@code true} if the "forward" mouse button was held down
+     * during the given {@code InputEvent} and this button can be detected
      * by this JVM.
      *
      * @param e the event to test
-     * @return <code>true</code> is mouse button was down
+     * @return {@code true} is mouse button was down
      * @see #isButtonDown(int, java.awt.event.InputEvent)
      */
     public static boolean forwardButton(InputEvent e) {
@@ -570,7 +570,7 @@ public class JUtilities {
      * the window having a smaller title bar.
      *
      * @param window the window to make into a utility window
-     * @return <code>true</code> if the attempt succeeds, <code>false</code>
+     * @return {@code true} if the attempt succeeds, {@code false}
      * otherwise
      */
     public static boolean makeUtilityWindow(Window window) {
@@ -613,8 +613,8 @@ public class JUtilities {
 
     /**
      * Returns a border that is the composition of any number of other borders.
-     * Unlike <code>BorderFactory.createCompoundBorder</code>, this method can
-     * compose an arbitrary number of borders. In no case will <code>null</code>
+     * Unlike {@code BorderFactory.createCompoundBorder}, this method can
+     * compose an arbitrary number of borders. In no case will {@code null}
      * be returned; if no borders are passed in, an empty border will be
      * returned. If one border is passed in, it is returned unchanged. If two
      * borders are passed in, a simple compound border will be returned.
@@ -687,7 +687,7 @@ public class JUtilities {
      *
      * @param html the HTML string being displayed in a label
      * @param prefSize the preferred width or height of the component
-     * @param width if <code>true</code>, the preferred size dimension is width;
+     * @param width if {@code true}, the preferred size dimension is width;
      * otherwise height
      * @return the new preferred size of the component, with the specified
      * dimension set to the preferred size and other dimension calculated
@@ -713,7 +713,7 @@ public class JUtilities {
      * @param button the button to modify
      * @param standard the normal icon for the button
      * @param highlight the highlight icon for the button
-     * @param rollover if <code>true</code>, rollover effects are applied
+     * @param rollover if {@code true}, rollover effects are applied
      */
     public static void setIconPair(AbstractButton button, Icon standard, Icon highlight, boolean rollover) {
         button.setIcon(standard);
@@ -734,7 +734,7 @@ public class JUtilities {
      * @param button the button to modify
      * @param standard the normal icon resource
      * @param highlight the highlight icon resource
-     * @param rollover if <code>true</code>, rollover effects are applied
+     * @param rollover if {@code true}, rollover effects are applied
      */
     public static void setIconPair(AbstractButton button, String standard, String highlight, boolean rollover) {
         setIconPair(button, ResourceKit.getIcon(standard), ResourceKit.getIcon(highlight), rollover);
@@ -745,7 +745,7 @@ public class JUtilities {
      *
      * @param bar the menu bar to search
      * @param accel the accelerator key stroke to check for
-     * @return <code>true</code> if the accelerator is used by an item in the
+     * @return {@code true} if the accelerator is used by an item in the
      * menu bar
      */
     public static boolean isAcceleratorInUse(JMenuBar bar, KeyStroke accel) {

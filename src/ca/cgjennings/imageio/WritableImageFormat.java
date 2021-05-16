@@ -15,7 +15,7 @@ public interface WritableImageFormat {
     String getName();
 
     /**
-     * A full name for the format. May be <code>null</code>.
+     * A full name for the format. May be {@code null}.
      *
      * @return the long name of the format
      */
@@ -23,7 +23,7 @@ public interface WritableImageFormat {
 
     /**
      * A description of the trade-offs of using the format. May be
-     * <code>null</code>.
+     * {@code null}.
      *
      * @return the description of the format
      */
@@ -38,7 +38,7 @@ public interface WritableImageFormat {
 
     /**
      * Creates a simple image writer that can be used to write images in this
-     * format. The image writer must be <code>dispose()</code>d of after use.
+     * format. The image writer must be {@code dispose()}d of after use.
      *
      * @return a new image writer for the format
      */

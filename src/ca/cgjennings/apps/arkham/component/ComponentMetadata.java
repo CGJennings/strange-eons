@@ -45,7 +45,7 @@ public class ComponentMetadata {
     private static final int CURRENT_VERSION = 2;
 
     /**
-     * Creates a new <code>ComponentMetadata</code> instance that reads metadata
+     * Creates a new {@code ComponentMetadata} instance that reads metadata
      * from the specified file, if available. If there is an error while reading
      * the metadata, the resulting object will be identical to that of a file
      * that does not contain metadata.
@@ -98,8 +98,8 @@ public class ComponentMetadata {
     }
 
     /**
-     * Returns the <code>Class</code> instance that the game component is an
-     * instance of. Returns <code>null</code> if the component has no metadata.
+     * Returns the {@code Class} instance that the game component is an
+     * instance of. Returns {@code null} if the component has no metadata.
      *
      * @return the class representing the component
      * @throws ClassNotFoundException if the class cannot currently be loaded;
@@ -115,7 +115,7 @@ public class ComponentMetadata {
 
     /**
      * Returns the name of the class that the game component is an instance of.
-     * Returns <code>null</code> if the component has no metadata.
+     * Returns {@code null} if the component has no metadata.
      *
      * @return the class name, if available
      */
@@ -127,18 +127,18 @@ public class ComponentMetadata {
      * Returns the name of the component, as would be returned by calling
      * {@link GameComponent#getFullName()} on the actual component.
      *
-     * @return the component's name, or <code>null</code> if not available
+     * @return the component's name, or {@code null} if not available
      */
     public String getName() {
         return data == null ? null : data[NAME];
     }
 
     /**
-     * Returns <code>true</code> if the component has metadata and can be
+     * Returns {@code true} if the component has metadata and can be
      * included in a deck. Most components can be included in a deck, but some
      * can't, including case books and other decks.
      *
-     * @return <code>true</code> if it is known for certain that the component
+     * @return {@code true} if it is known for certain that the component
      * can be placed in a deck
      */
     public boolean isDeckLayoutSupported() {
@@ -148,10 +148,10 @@ public class ComponentMetadata {
     /**
      * Returns the resource identifier of the script file used to create the
      * component, if it is a DIY component and uses a script. Returns
-     * <code>null</code> if the metadata version is less than 2 or the component
+     * {@code null} if the metadata version is less than 2 or the component
      * is not a script-based DIY component.
      *
-     * @return the name of the DIY script, or <code>null</code>
+     * @return the name of the DIY script, or {@code null}
      */
     public String getDIYScriptResource() {
         return data == null ? null : data[DIY_SCRIPT];
@@ -214,11 +214,11 @@ public class ComponentMetadata {
 
     /**
      * Reads the raw metadata header and returns it as an array of strings.
-     * Returns <code>null</code> if no metadata is available or there is an
+     * Returns {@code null} if no metadata is available or there is an
      * error.
      *
      * @param source the file to read
-     * @return an array of metadata strings, or <code>null</code>
+     * @return an array of metadata strings, or {@code null}
      */
     private static String[] readRawMetaData(File source) {
         // check for metadata byte signature

@@ -48,10 +48,10 @@ public class JRepeaterButton extends JButton {
     }
 
     /**
-     * Creates a button where properties are taken from the <code>Action</code>
+     * Creates a button where properties are taken from the {@code Action}
      * supplied.
      *
-     * @param a the <code>Action</code> used to specify the new button
+     * @param a the {@code Action} used to specify the new button
      */
     public JRepeaterButton(Action a) {
         super(a);
@@ -131,10 +131,10 @@ public class JRepeaterButton extends JButton {
 
     /**
      * Sets whether the button fires an action event with the command string
-     * <code>RELEASE_COMMAND</code> when the button is released. Default is
-     * <code>false</code>.
+     * {@code RELEASE_COMMAND} when the button is released. Default is
+     * {@code false}.
      *
-     * @param fireEvent if <code>true</code>, a final event will be posted when
+     * @param fireEvent if {@code true}, a final event will be posted when
      * the user releases the button
      */
     public void setFireEventOnRelease(boolean fireEvent) {
@@ -142,10 +142,10 @@ public class JRepeaterButton extends JButton {
     }
 
     /**
-     * Returns <code>true</code> if the button will fire an action command when
+     * Returns {@code true} if the button will fire an action command when
      * the button is released.
      *
-     * @return <code>true</code> if the event will be fired
+     * @return {@code true} if the event will be fired
      */
     public boolean getFireEventOnRelease() {
         return fireOnRelease;

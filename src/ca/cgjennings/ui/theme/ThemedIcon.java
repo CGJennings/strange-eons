@@ -22,7 +22,7 @@ public class ThemedIcon implements Icon {
      * Creates a new themed icon. The icon's image will normally be obtained as
      * if loading an image with the {@link ResourceKit}, but if a theme is
      * installed then the theme will be given a chance to switch the image for a
-     * themed version. If <code>deferLoading</code> is <code>true</code>, then
+     * themed version. If {@code deferLoading} is {@code true}, then
      * it will not be loaded until the first time it is needed. Otherwise, the
      * image will be loaded immediately.
      *
@@ -37,12 +37,12 @@ public class ThemedIcon implements Icon {
      * Creates a new themed icon. The icon's image will normally be obtained as
      * if loading an image with the {@link ResourceKit}, but if a theme is
      * installed then the theme will be given a chance to switch the image for a
-     * themed version. If <code>deferLoading</code> is <code>true</code>, then
+     * themed version. If {@code deferLoading} is {@code true}, then
      * it will not be loaded until the first time it is needed. Otherwise, the
      * image will start loading immediately.
      *
      * @param resource the resource identifier for the icon
-     * @param deferLoading if <code>true</code>, the image is loaded lazily
+     * @param deferLoading if {@code true}, the image is loaded lazily
      * @see Theme#applyThemeToImage(java.lang.String)
      */
     public ThemedIcon(String resource, boolean deferLoading) {

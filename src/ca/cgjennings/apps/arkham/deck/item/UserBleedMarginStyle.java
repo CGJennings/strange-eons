@@ -10,17 +10,17 @@ package ca.cgjennings.apps.arkham.deck.item;
 public interface UserBleedMarginStyle extends Style {
 
     /**
-     * Returns <code>true</code> if the bleed margin should be drawn (as crop
+     * Returns {@code true} if the bleed margin should be drawn (as crop
      * marks).
      *
-     * @return <code>true</code> if crop marks are enabled
+     * @return {@code true} if crop marks are enabled
      */
     boolean isBleedMarginMarked();
 
     /**
      * Sets whether the user bleed margin is drawn (as crop marks).
      *
-     * @param mark <code>true</code> if crop marks are enabled
+     * @param mark {@code true} if crop marks are enabled
      */
     void setBleedMarginMarked(boolean mark);
 

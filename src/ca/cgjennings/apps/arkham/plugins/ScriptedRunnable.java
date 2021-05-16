@@ -6,9 +6,9 @@ import ca.cgjennings.script.mozilla.javascript.Context;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A <code>Runnable</code> that can execute script code in another thread. This
+ * A {@code Runnable} that can execute script code in another thread. This
  * can be used to parallelize script code using {@link SplitJoin}. It is also
- * used by the <code>threads</code> library to support with script code.
+ * used by the {@code threads} library to support with script code.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -17,8 +17,8 @@ public class ScriptedRunnable implements Runnable {
 
     /**
      * A runnable that executes the script code represented by the specified
-     * <code>ScriptedRunnable.Future</code> instance. From script code, a
-     * <code>ScriptedRunnable</code> can be instantiated by passing any function
+     * {@code ScriptedRunnable.Future} instance. From script code, a
+     * {@code ScriptedRunnable} can be instantiated by passing any function
      * to this constructor. A trivial example:
      * <pre>
      * importClass( ca.cgjennings.apps.arkham.plugins.ScriptedRunnable );
@@ -37,7 +37,7 @@ public class ScriptedRunnable implements Runnable {
     }
 
     /**
-     * Implements the <code>Runnable</code> interface required for threads and
+     * Implements the {@code Runnable} interface required for threads and
      * {@link SplitJoin} tasks. This will perform the necessary setup to execute
      * script code in a given thread, call the scripted function (with no
      * arguments), then clean up the script execution environment.
@@ -61,9 +61,9 @@ public class ScriptedRunnable implements Runnable {
      * Returns the return value of the script function. If an exception was
      * thrown by the function, it will be thrown when this is called. If the
      * function has not completed or returned no value, returns
-     * <code>null</code>.
+     * {@code null}.
      *
-     * @return the return value of the function, or <code>null</code>
+     * @return the return value of the function, or {@code null}
      */
     public Object getReturnValue() {
         boolean done = hasValue;
@@ -78,9 +78,9 @@ public class ScriptedRunnable implements Runnable {
     }
 
     /**
-     * Returns <code>true</code> if the runnable has completed.
+     * Returns {@code true} if the runnable has completed.
      *
-     * @return <code>true</code> if the runnable finished running
+     * @return {@code true} if the runnable finished running
      */
     public boolean hasReturnValue() {
         return hasValue;
@@ -106,7 +106,7 @@ public class ScriptedRunnable implements Runnable {
     /**
      * The interface that will be implemented using the function passed to the
      * constructor. This is then called to execute the script code by the
-     * <code>Runnable</code> implementation.
+     * {@code Runnable} implementation.
      */
     public interface Future {
 

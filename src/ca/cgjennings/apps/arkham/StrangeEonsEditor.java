@@ -45,8 +45,8 @@ public interface StrangeEonsEditor extends Commandable {
     ///////////////////////////
     /**
      * Sets the title of this document. As it shown in the document's tab, the
-     * title text should be kept short. The <code>title</code> value may be
-     * <code>null</code>, which is equivalent to an empty title.
+     * title text should be kept short. The {@code title} value may be
+     * {@code null}, which is equivalent to an empty title.
      *
      * @param title the text of the title to display
      */
@@ -54,11 +54,11 @@ public interface StrangeEonsEditor extends Commandable {
 
     /**
      * Returns the title used to describe this editor. The returned value is
-     * never <code>null</code>; if a <code>null</code> title is set with
+     * never {@code null}; if a {@code null} title is set with
      * {@link #setTitle} then this method returns an empty string.
      *
      * @return the current title, which is guaranteed not to be
-     * <code>null</code>
+     * {@code null}
      */
     public String getTitle();
 
@@ -78,14 +78,14 @@ public interface StrangeEonsEditor extends Commandable {
     /**
      * Returns the editor window icon.
      *
-     * @return the icon for the editor, or <code>null</code> if no icon is set
+     * @return the icon for the editor, or {@code null} if no icon is set
      */
     public Icon getFrameIcon();
 
     /**
      * Sets the tool tip text to display for the editor's tab.
      *
-     * @param toolTipText the text to display, or <code>null</code> to clear the
+     * @param toolTipText the text to display, or {@code null} to clear the
      * tool tip
      */
     public void setToolTipText(String toolTipText);
@@ -93,9 +93,9 @@ public interface StrangeEonsEditor extends Commandable {
     /**
      * Returns the tool tip text displayed for the editor's tab. If no tool tip
      * has been explicitly set and {@link #getFile()} returns a
-     * non-<code>null</code> value, then a default tool tip will be returned.
+     * non-{@code null} value, then a default tool tip will be returned.
      *
-     * @return the tool tip text to display, or <code>null</code> to clear the
+     * @return the tool tip text to display, or {@code null} to clear the
      * tool tip
      */
     public String getToolTipText();
@@ -111,8 +111,8 @@ public interface StrangeEonsEditor extends Commandable {
      * Closes the editor window. If there are unsaved changes, the user will be
      * prompted first and may cancel the close attempt.
      *
-     * @return returns <code>true</code> if the editor was actually closed, or
-     * <code>false</code> if the user cancelled the attempt or closing was
+     * @return returns {@code true} if the editor was actually closed, or
+     * {@code false} if the user cancelled the attempt or closing was
      * otherwise prevented
      */
     public boolean close();
@@ -121,15 +121,15 @@ public interface StrangeEonsEditor extends Commandable {
      * Attaches or detaches an editor from the tab strip. A detached editor is
      * shown in its own window, independent of the main application window.
      *
-     * @param attach if <code>true</code>, attach a detached editor; otherwise
+     * @param attach if {@code true}, attach a detached editor; otherwise
      * detach the editor from the tab strip
      */
     public void setAttached(boolean attach);
 
     /**
-     * Returns <code>true</code> if the editor is attached to the tab strip.
+     * Returns {@code true} if the editor is attached to the tab strip.
      *
-     * @return <code>true</code> if the editor is attached to the main
+     * @return {@code true} if the editor is attached to the main
      * application window
      */
     public boolean isAttached();
@@ -149,11 +149,11 @@ public interface StrangeEonsEditor extends Commandable {
     // EDITING FRAMEWORK //////////////////////////////////////////////////
     ///////////////////////
     /**
-     * Returns the edited game component, or <code>null</code> if this editor is
+     * Returns the edited game component, or {@code null} if this editor is
      * not editing a game component.
      *
      * @return the game component currently being edited by this editor, or
-     * <code>null</code>
+     * {@code null}
      */
     public GameComponent getGameComponent();
 
@@ -161,7 +161,7 @@ public interface StrangeEonsEditor extends Commandable {
      * Returns the standard file extension for the type of content displayed in
      * this editor.
      *
-     * @return a file extension, such as <code>"txt"</code>
+     * @return a file extension, such as {@code "txt"}
      * @see #getFileTypeDescription()
      */
     public String getFileNameExtension();
@@ -186,7 +186,7 @@ public interface StrangeEonsEditor extends Commandable {
     public void setFile(File newFile);
 
     /**
-     * Returns the file used to save this component, or <code>null</code> if it
+     * Returns the file used to save this component, or {@code null} if it
      * is a new, unsaved file or the editor is not associated with any
      * particular file.
      *
@@ -197,11 +197,11 @@ public interface StrangeEonsEditor extends Commandable {
     public File getFile();
 
     /**
-     * Returns <code>true</code> if this editor is editing a file that has
+     * Returns {@code true} if this editor is editing a file that has
      * unsaved changes. If the content cannot be saved or does not use files,
-     * then this method should return <code>false</code>.
+     * then this method should return {@code false}.
      *
-     * @return <code>true</code> if the editor's content may be different from
+     * @return {@code true} if the editor's content may be different from
      * the saved version
      */
     public boolean hasUnsavedChanges();
@@ -273,7 +273,7 @@ public interface StrangeEonsEditor extends Commandable {
     /**
      * Open the print dialog for this editor, allowing the user to print the
      * edited component. If this operation is not supported by this editor, an
-     * <code>UnsupportedOperationException</code> is thrown.
+     * {@code UnsupportedOperationException} is thrown.
      *
      * @throws UnsupportedOperationException if the PRINT command is not
      * supported
@@ -370,7 +370,7 @@ public interface StrangeEonsEditor extends Commandable {
      * <p>
      * Editors that use the heartbeat to synchronize preview updates will
      * respond to a boolean value returned by the listener. If this method
-     * returns <code>true</code>, it is assumed that the listener has made
+     * returns {@code true}, it is assumed that the listener has made
      * changes to the edited content. These changes may or may not be detectable
      * by the editor; the editor should thus redraw the preview from scratch at
      * the next opportunity.
@@ -383,18 +383,18 @@ public interface StrangeEonsEditor extends Commandable {
         /**
          * Called to indicate that a heartbeat is taking place in the indicated
          * editor. If a listener has attached to an editor for the purpose of
-         * modifying the edited content, it should return <code>true</code> on
+         * modifying the edited content, it should return {@code true} on
          * those heartbeats where a genuine modification takes place. In any
-         * other case, the listener should return <code>false</code>.
+         * other case, the listener should return {@code false}.
          *
          * <p>
          * <b>Important:</b> Editors that synchronize redrawing using the
          * heartbeat, including nearly all game component editors, will
          * <i>never</i> update the preview display if a heartbeat listener
-         * always returns <code>true</code>.
+         * always returns {@code true}.
          *
          * @param editor the editor that is processing a heartbeat
-         * @return <code>true</code> if the edited content was modified
+         * @return {@code true} if the edited content was modified
          */
         public boolean heartbeat(StrangeEonsEditor editor);
     }

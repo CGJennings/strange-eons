@@ -132,8 +132,8 @@ public enum CoreComponents {
 
     /**
      * Check for the presence of core or other required plug-ins, and install
-     * them if required. If <code>descriptor</code> is a
-     * <code>CoreComponents</code> identifier, that component is checked for.
+     * them if required. If {@code descriptor} is a
+     * {@code CoreComponents} identifier, that component is checked for.
      * Otherwise the value is converted to a string and parsed as follows:
      * <ol>
      * <li> The string is split into tokens by breaking at newlines; each token
@@ -146,10 +146,10 @@ public enum CoreComponents {
      * <tt>http://somewhere.tld/CATALOGUEID{...}</tt>.
      * </ol>
      *
-     * @param descriptor a <code>CoreComponent</code> or an object describing
+     * @param descriptor a {@code CoreComponent} or an object describing
      * the component to install (see above)
-     * @throws NullPointerException if <code>descriptor</code> is
-     * <code>null</code>
+     * @throws NullPointerException if {@code descriptor} is
+     * {@code null}
      * @throws MissingCoreComponentException if any component is missing or out
      * of date and the user refuses to install it, or if installation fails
      */

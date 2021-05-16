@@ -45,30 +45,30 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns the bundle that this was loaded from, or <code>null</code> if
+     * Returns the bundle that this was loaded from, or {@code null} if
      * this represents a built-in plug-in.
      *
-     * @return the source bundle, or <code>null</code>
+     * @return the source bundle, or {@code null}
      */
     public PluginBundle getBundle() {
         return bundle;
     }
 
     /**
-     * Returns the bundle's root file, or <code>null</code> if it does not have
+     * Returns the bundle's root file, or {@code null} if it does not have
      * a root file.
      *
-     * @return the root file of the source bundle, or <code>null</code>
+     * @return the root file of the source bundle, or {@code null}
      */
     public PluginRoot getPluginRoot() {
         return root;
     }
 
     /**
-     * Returns the {@link CatalogID} for the source bundle, or <code>null</code>
+     * Returns the {@link CatalogID} for the source bundle, or {@code null}
      * if the bundle's root file does not specify an id (or there is no bundle).
      *
-     * @return the bundle's ID, or <code>null</code>
+     * @return the bundle's ID, or {@code null}
      */
     public CatalogID getCatalogID() {
         PluginRoot r = getPluginRoot();
@@ -123,16 +123,16 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
      * information.
      *
      * @return the representative name reported by the plug-in (may be
-     * <code>null</code>)
+     * {@code null})
      */
     public abstract BufferedImage getRepresentativeImage();
 
     /**
-     * Returns <code>true</code> if there is an update pending for this plug-in.
+     * Returns {@code true} if there is an update pending for this plug-in.
      * A pending update is an updated version of the plug-in that will be
      * installed automatically the next time the application starts.
      *
-     * @return <code>true</code> if an update is pending
+     * @return {@code true} if an update is pending
      */
     public boolean isUpdatePending() {
         PluginBundle pb = getBundle();
@@ -143,11 +143,11 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns <code>true</code> if this plug-in's bundle has been marked for
+     * Returns {@code true} if this plug-in's bundle has been marked for
      * uninstallation. (The plug-in's bundle will be deleted the next time the
      * application starts.)
      *
-     * @return <code>true</code> if the plug-in will be uninstalled
+     * @return {@code true} if the plug-in will be uninstalled
      */
     public boolean isUninstallPending() {
         PluginBundle pb = getBundle();
@@ -158,13 +158,13 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns <code>true</code> is the bundle has been loaded. When a bundle
+     * Returns {@code true} is the bundle has been loaded. When a bundle
      * has been loaded, you can call {@link #getName}, {@link #getIcon}, and
      * {@link #getDescription} without triggering plug-in instantiation. When
-     * sorting bundles, if this returns <code>false</code>, then only the bundle
+     * sorting bundles, if this returns {@code false}, then only the bundle
      * type and priority will be used to determine bundle order.
      *
-     * @return <code>true</code> is plug-in information has been loaded
+     * @return {@code true} is plug-in information has been loaded
      */
     abstract boolean isLoaded();
 
@@ -185,7 +185,7 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
      * @param o the bundle object to compare to
      * @return a value that is negative, zero, or positive as the compared
      * bundle object is greater, equal, or less than this bundle object
-     * @throws NullPointerException if the compared object is <code>null</code>
+     * @throws NullPointerException if the compared object is {@code null}
      * @see #getPriority()
      * @see #getName()
      * @see #getCatalogID()

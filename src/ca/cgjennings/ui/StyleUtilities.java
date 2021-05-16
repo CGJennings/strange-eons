@@ -108,7 +108,7 @@ public class StyleUtilities {
      * the window is fully opaque).
      *
      * @param window the window to obtain the opacity of
-     * @throws NullPointerException if <code>window</code> is <code>null</code>
+     * @throws NullPointerException if {@code window} is {@code null}
      */
     public static float getWindowOpacity(Window window) {
         if (window == null) {

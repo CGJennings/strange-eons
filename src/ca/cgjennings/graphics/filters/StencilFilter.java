@@ -50,11 +50,11 @@ public class StencilFilter extends AbstractRowwiseFilter {
      * Sets whether the stencil is applied in alpha replace mode, in which the
      * output image's alpha channel is copied unmodified from the stencil image.
      * This is the default. The alternative, when this is set to
-     * <code>false</code>, is that the alpha values from the source and stencil
+     * {@code false}, is that the alpha values from the source and stencil
      * image are blended by multiplying them together.
      *
-     * @param replaceMode <code>true</code> if the stencil's alpha values should
-     * simply replace the alpha values in the source; <code>false</code> if the
+     * @param replaceMode {@code true} if the stencil's alpha values should
+     * simply replace the alpha values in the source; {@code false} if the
      * alpha values should be multiplied
      * @see #isAlphaReplaceMode()
      */
@@ -64,11 +64,11 @@ public class StencilFilter extends AbstractRowwiseFilter {
 
     /**
      * Returns whether the stencil's alpha values are copied over
-     * (<code>true</code>), or blended with the source image
-     * (<code>false</code>).
+     * ({@code true}), or blended with the source image
+     * ({@code false}).
      *
-     * @return <code>true</code> if the stencil's alpha values should simply
-     * replace the alpha values in the source; <code>false</code> if the alpha
+     * @return {@code true} if the stencil's alpha values should simply
+     * replace the alpha values in the source; {@code false} if the alpha
      * values should be multiplied
      * @see #setAlphaReplaceMode(boolean)
      */

@@ -8,7 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * A <code>JTable</code> cell renderer that supports mutiple lines.
+ * A {@code JTable} cell renderer that supports mutiple lines.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

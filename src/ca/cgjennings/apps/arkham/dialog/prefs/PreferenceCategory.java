@@ -20,7 +20,7 @@ public interface PreferenceCategory {
 
     /**
      * Returns the icon used to represent this category visually. The returned
-     * icon should be 48x48 pixels in size. If <code>null</code> is returned, a
+     * icon should be 48x48 pixels in size. If {@code null} is returned, a
      * default icon will be used.
      *
      * @return an icon representing this category
@@ -53,11 +53,11 @@ public interface PreferenceCategory {
     /**
      * This method is called after {@link #storeSettings()} when the user
      * accepts the changes in the preferences dialog. It should return
-     * <code>true</code> if and only if the user has changed a preference in
+     * {@code true} if and only if the user has changed a preference in
      * such a way that the change cannot take effect until the application is
      * restarted.
      *
-     * @return <code>true</code> if the application must be restarted for
+     * @return {@code true} if the application must be restarted for
      * changes to take effect
      */
     boolean isRestartRequired();

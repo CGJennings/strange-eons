@@ -12,7 +12,7 @@ import resources.ResourceKit;
 /**
  * Support editors are used to edit content other than game components. To
  * create a new support editor, override {@link #canPerformCommand}, if
- * necessary, to return <code>true</code> for all {@link DelegatedCommand}s that
+ * necessary, to return {@code true} for all {@link DelegatedCommand}s that
  * you wish to support. Standard editor commands null ({@link #clearImpl() clear}, {@link #exportImpl export}, {@link #saveImpl save},
  * {@link #printImpl}, and {@link #spinOffImpl spin off}) can be supported by
  * overriding the related implementation method. Other delegated commands can be
@@ -30,7 +30,7 @@ import resources.ResourceKit;
  * To set the title used for the editor's tab (or window, depending on
  * settings), use {@link #setTitle}; to set the tab's icon, use
  * {@link #setFrameIcon}. When the user modifies the document, call
- * <code>setUnsavedChanges(&nbsp;true&nbsp;)</code> to update the document's
+ * {@code setUnsavedChanges(&nbsp;true&nbsp;)} to update the document's
  * "dirty" state. (Do not set this if editing or saving is not supported.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -65,7 +65,7 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
     }// </editor-fold>//GEN-END:initComponents
 
     /**
-     * Returns <code>true</code> if the commandable wishes to handle the given
+     * Returns {@code true} if the commandable wishes to handle the given
      * command. This method defines the set of commands that the commandable
      * responds to. The commandable might not be able to act on the command at
      * the current moment. For example, a commandable that responds to "Cut"
@@ -77,7 +77,7 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
      * standard commands: CLEAR, EXPORT, PRINT, SAVE, SAVE_AS.
      *
      * @param command the command to be performed
-     * @return <code>true</code> if this commandable wishes to handle the
+     * @return {@code true} if this commandable wishes to handle the
      * command (even if it cannot execute the command currently)
      * @see Commands
      */
@@ -147,9 +147,9 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
 
     /**
      * Subclasses should override this to export the edited content if EXPORT is
-     * a supported command. The value of <code>type</code> is the index of the
+     * a supported command. The value of {@code type} is the index of the
      * element in {@link #getExportExtensions()} for the file type that was
-     * selected by the user. The value of <code>file</code> is the destination
+     * selected by the user. The value of {@code file} is the destination
      * file to write content to.
      *
      * @param type the index of the file format to export
@@ -167,7 +167,7 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
      * editor. This implementation returns an empty array. If your editor
      * supports export, it should override this to return
      *
-     * @return an array of file extensions, such as <code>"txt"</code>
+     * @return an array of file extensions, such as {@code "txt"}
      * <p>
      * This base implementation returns an empty array.
      */

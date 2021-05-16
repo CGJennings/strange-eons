@@ -34,7 +34,7 @@ public class CommandFormatter {
      * @throws IllegalArgumentException if a variable name is missing a value,
      * or if any name is not exactly one character
      * @throws NullPointerException if the array or any element in it is
-     * <code>null</code>
+     * {@code null}
      */
     public CommandFormatter(String... variableDefinitions) {
         if (variableDefinitions == null) {
@@ -66,7 +66,7 @@ public class CommandFormatter {
      * map.
      *
      * @param variableMap a map from variable names to their values
-     * @throws NullPointerException if any map entry is <code>null</code>
+     * @throws NullPointerException if any map entry is {@code null}
      * @throws IllegalArgumentException if any key does not have length 1 or is
      * the % symbol
      */
@@ -92,14 +92,14 @@ public class CommandFormatter {
      * Defines a variable that will replaced when formatting a command. When a
      * percent sign (%) occurs in a command template and is followed by this
      * variable name, it will be replaced by calling
-     * <code>value.toString()</code>. Setting a variable name to
-     * <code>null</code> will remove the variable, if it has been defined. The
+     * {@code value.toString()}. Setting a variable name to
+     * {@code null} will remove the variable, if it has been defined. The
      * variable % is reserved so that the sequence "%%" always produces "%" in
      * the formatted command.
      *
      * @param name the variable name
      * @param value the value for the variable
-     * @throws IllegalArgumentException if <code>name</code> is the percent sign
+     * @throws IllegalArgumentException if {@code name} is the percent sign
      */
     public void setVariable(char name, Object value) {
         if (name == '%') {
@@ -114,7 +114,7 @@ public class CommandFormatter {
     }
 
     /**
-     * Returns the value of a variable, or <code>null</code> if the variable is
+     * Returns the value of a variable, or {@code null} if the variable is
      * not defined.
      *
      * @param name the variable name
@@ -130,7 +130,7 @@ public class CommandFormatter {
     /**
      * Evaluates a variable to return its string expansion in a formatted
      * command. This is done by obtaining the variable's assigned value and
-     * calling its <code>toString()</code> method.
+     * calling its {@code toString()} method.
      *
      * @param name the name of the variable to evaluate
      * @return a string representing the value of the variable

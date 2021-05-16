@@ -93,7 +93,7 @@ public final class Actions {
 
     /**
      * Registers a new action with the default priority. Equivalent to
-     * <code>register( action, Actions.PRIORITY_DEFAULT )</code>.
+     * {@code register( action, Actions.PRIORITY_DEFAULT )}.
      *
      * @param action the action to register
      */
@@ -109,9 +109,9 @@ public final class Actions {
      *
      * @param action the action to be registered
      * @param priority the priority at which to register the action
-     * @throws NullPointerException if <code>action</code> is <code>null</code>
-     * @throws IllegalArgumentException if <code>priority</code> is not in the
-     * range <code>PRIORITY_MIN &lt;= priority &lt;= PRIORITY_MAX</code>
+     * @throws NullPointerException if {@code action} is {@code null}
+     * @throws IllegalArgumentException if {@code priority} is not in the
+     * range {@code PRIORITY_MIN &lt;= priority &lt;= PRIORITY_MAX}
      * @throws IllegalArgumentException if an action with this action's name is
      * already registered (other than this action)
      */
@@ -165,12 +165,12 @@ public final class Actions {
     }
 
     /**
-     * Returns the registered action with the given name, or <code>null</code>
+     * Returns the registered action with the given name, or {@code null}
      * if no action has this name. Each action must have a unique name, which is
      * returned by {@link TaskAction#getActionName()}.
      *
      * @param name the action name to search for
-     * @return the registered action with the given name, or <code>null</code>
+     * @return the registered action with the given name, or {@code null}
      */
     public static TaskAction findActionByName(String name) {
         for (TaskAction ta : priorityMap.keySet()) {
@@ -189,7 +189,7 @@ public final class Actions {
 
     /**
      * Returns the original, unspecialized instance of an action. If no action
-     * with the given name is registered, returns <code>null</code>. This is
+     * with the given name is registered, returns {@code null}. This is
      * useful if you need to call a method on a task action by casting it to its
      * actual type. For example:
      * <pre>
@@ -198,7 +198,7 @@ public final class Actions {
      *
      * @param name the name of the action to find the unspecialized instance of
      * @return the originally registered action with the given name, or
-     * <code>null</code>
+     * {@code null}
      */
     public static TaskAction getUnspecializedAction(String name) {
         TaskAction a = Actions.findActionByName(name);
@@ -212,8 +212,8 @@ public final class Actions {
      * Returns the current priority of a registered action.
      *
      * @param ta the action to look up the priority of
-     * @return the priority at which <code>ta</code> was registered
-     * @throws IllegalArgumentException if <code>ta</code> is not a registered
+     * @return the priority at which {@code ta} was registered
+     * @throws IllegalArgumentException if {@code ta} is not a registered
      * action
      */
     public static int getPriorityForAction(TaskAction ta) {
@@ -283,7 +283,7 @@ public final class Actions {
      * @param priority the desired priority of the listed actions
      * @return all registered actions that are registered at the requested
      * priority
-     * @throws IllegalArgumentException if <code>priority</code> is not a legal
+     * @throws IllegalArgumentException if {@code priority} is not a legal
      * priority value
      */
     static List<TaskAction> getActionsForPriority(int priority) {
@@ -467,7 +467,7 @@ public final class Actions {
      * IAE if it is not.
      *
      * @param p the priority level to check
-     * @throws IllegalArgumentException if <code>p</code> is invalid
+     * @throws IllegalArgumentException if {@code p} is invalid
      */
     private static void checkPriority(int p) {
         if (p < PRIORITY_MIN || p > PRIORITY_MAX) {

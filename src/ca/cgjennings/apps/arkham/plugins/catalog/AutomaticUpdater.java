@@ -62,10 +62,10 @@ public class AutomaticUpdater {
     }
 
     /**
-     * Returns <code>true</code> if, according to current settings, an automatic
+     * Returns {@code true} if, according to current settings, an automatic
      * update check is overdue.
      *
-     * @return <code>true</code> if the time since the last check is greater
+     * @return {@code true} if the time since the last check is greater
      * than the update check frequency set by the user
      */
     public static boolean isUpdateOverdue() {
@@ -74,11 +74,11 @@ public class AutomaticUpdater {
 
     /**
      * Returns the number of milliseconds before the next update check should be
-     * performed, or <code>Long.MAX_VALUE</code> if no update check will be
+     * performed, or {@code Long.MAX_VALUE} if no update check will be
      * performed. Note that this may be less than 0 if an update is overdue.
      *
      * @return the number of milliseconds before an update is pending, or
-     * <code>Long.MAX_VALUE</code>
+     * {@code Long.MAX_VALUE}
      */
     public static long getMillisecondsUntilNextCheck() {
         long period = getMillisecondsBetweenChecks();
@@ -116,13 +116,13 @@ public class AutomaticUpdater {
     }
 
     /**
-     * Returns <code>true</code> if it can determine with certainty that an
+     * Returns {@code true} if it can determine with certainty that an
      * application update is available. If no update is available, or if any
-     * error occurs, it will return <code>false</code>. This call bypasses the
+     * error occurs, it will return {@code false}. This call bypasses the
      * usual update infrastructure; for example, it does not reset the time
      * until the next update check.
      *
-     * @return <code>true</code> if an application update is available
+     * @return {@code true} if an application update is available
      */
     public static boolean isApplicationUpdateAvailable() {
         try {
@@ -166,19 +166,19 @@ public class AutomaticUpdater {
 
     /**
      * Performs an update check immediately, even if an update is not overdue.
-     * The value of <code>updateAction</code> must be one of:
-     * <code>ACTION_TELL_USER</code>, <code>ACTION_OPEN_CATALOG</code>,
-     * <code>ACTION_INSTALL_IMMEDIATELY</code>. If <code>allCatalogs</code> is
-     * <code>true</code>, then all catalogs in the user's catalog URL history
+     * The value of {@code updateAction} must be one of:
+     * {@code ACTION_TELL_USER}, {@code ACTION_OPEN_CATALOG},
+     * {@code ACTION_INSTALL_IMMEDIATELY}. If {@code allCatalogs} is
+     * {@code true}, then all catalogs in the user's catalog URL history
      * will be checked. Otherwise, only the default catalog is checked. Returns
-     * a bitwise combination of <code>true</code> if any updates were found, or
-     * <code>false</code> otherwise.
+     * a bitwise combination of {@code true} if any updates were found, or
+     * {@code false} otherwise.
      *
      * @param updateAction the action to take when updates are found
      * @param allCatalogs update from all catalogs in the catalog URL history,
      * not just the primary catalog
-     * @return <code>true</code> if any updates were found
-     * @throws IllegalArgumentException if the <code>updateAction</code> is not
+     * @return {@code true} if any updates were found
+     * @throws IllegalArgumentException if the {@code updateAction} is not
      * valid
      */
     public static int performUpdate(int updateAction, boolean allCatalogs) {
@@ -356,7 +356,7 @@ public class AutomaticUpdater {
      * when the application started).
      *
      * @param id the ID to check
-     * @return <code>true</code> if this ID's date is more recent than the most
+     * @return {@code true} if this ID's date is more recent than the most
      * recent ID seen at application start
      */
     static boolean isNew(CatalogID id) {

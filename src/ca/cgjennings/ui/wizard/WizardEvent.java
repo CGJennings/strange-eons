@@ -52,10 +52,10 @@ public class WizardEvent {
     }
 
     /**
-     * Returns the page component referred to by the event, or <code>null</code>
+     * Returns the page component referred to by the event, or {@code null}
      * if no page is relevant.
      *
-     * @return the page involved in the event, or <code>null</code>
+     * @return the page involved in the event, or {@code null}
      */
     public JComponent getPage() {
         return page;

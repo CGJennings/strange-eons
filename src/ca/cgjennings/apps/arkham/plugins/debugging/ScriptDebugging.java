@@ -121,7 +121,7 @@ public class ScriptDebugging {
     }
 
     /**
-     * Returns <code>true</code> if a debugger is currently installed.
+     * Returns {@code true} if a debugger is currently installed.
      *
      * @return whether a debugger is installed
      */
@@ -195,7 +195,7 @@ public class ScriptDebugging {
     }
 
     /**
-     * If debugging is installed, calls its <code>prepareToEnterContext</code>
+     * If debugging is installed, calls its {@code prepareToEnterContext}
      * method.
      */
     public static synchronized void prepareToEnterContext() {
@@ -250,10 +250,10 @@ public class ScriptDebugging {
         public void startClient() throws IOException;
 
         /**
-         * Returns <code>true</code> if the debugging client is currently
+         * Returns {@code true} if the debugging client is currently
          * running.
          *
-         * @return <code>true</code> if the client is active
+         * @return {@code true} if the client is active
          */
         public boolean isClientRunning();
     }

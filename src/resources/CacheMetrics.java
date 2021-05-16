@@ -1,9 +1,9 @@
 package resources;
 
 /**
- * A <code>CacheMetrics</code> instance provides information about a cache of
+ * A {@code CacheMetrics} instance provides information about a cache of
  * objects, and provides limited control over cache behaviour. A cache can
- * register its <code>CacheMetrics</code> instance with the
+ * register its {@code CacheMetrics} instance with the
  * {@link ResourceKit#registerCacheMetrics(resources.CacheMetrics) ResourceKit}
  * to make it available for programmatic access.
  *
@@ -39,10 +39,10 @@ public interface CacheMetrics {
     void clear();
 
     /**
-     * Returns <code>true</code> if the underlying cache supports clearing with
+     * Returns {@code true} if the underlying cache supports clearing with
      * the {@link #clear()} method.
      *
-     * @return <code>true</code> if <code>clear()</code> affects the cache
+     * @return {@code true} if {@code clear()} affects the cache
      */
     boolean isClearSupported();
 

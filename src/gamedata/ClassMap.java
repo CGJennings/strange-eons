@@ -260,7 +260,7 @@ public class ClassMap implements Iterable<Entry> {
 
         /**
          * Returns this entry's icon. This method never returns
-         * <code>null</code>.
+         * {@code null}.
          *
          * @return the icon for the entry
          */
@@ -281,9 +281,9 @@ public class ClassMap implements Iterable<Entry> {
 
         /**
          * Returns the custom category banner to display for this item, or
-         * <code>null</code> if the category should use the default banner.
+         * {@code null} if the category should use the default banner.
          *
-         * @return the custom category banner, or <code>null</code>
+         * @return the custom category banner, or {@code null}
          */
         public Icon getBanner() {
             return banner;
@@ -292,9 +292,9 @@ public class ClassMap implements Iterable<Entry> {
         /**
          * Returns the class name or script resource description that this entry
          * maps to. If the entry represents a category, the mapping will be
-         * <code>null</code>.
+         * {@code null}.
          *
-         * @return the class mapped to by this entry, or <code>null</code>
+         * @return the class mapped to by this entry, or {@code null}
          */
         public String getMapping() {
             return className;
@@ -303,7 +303,7 @@ public class ClassMap implements Iterable<Entry> {
         /**
          * Returns the category that this entry belongs to.
          *
-         * @return this entry's category, or <code>null</code> if this entry
+         * @return this entry's category, or {@code null} if this entry
          * <i>is</i> a category
          */
         public Entry getCategory() {
@@ -332,9 +332,9 @@ public class ClassMap implements Iterable<Entry> {
          * Returns the game that this entry is associated with. Class map files
          * designed for older versions of the application do not define the game
          * for an entry. Entries created from such class maps will return
-         * <code>null</code>.
+         * {@code null}.
          *
-         * @return the game associated with this entry, or <code>null</code>
+         * @return the game associated with this entry, or {@code null}
          */
         public Game getGame() {
             return game;
@@ -366,11 +366,11 @@ public class ClassMap implements Iterable<Entry> {
         }
 
         /**
-         * Returns <code>true</code> if the specified object is an entry with
+         * Returns {@code true} if the specified object is an entry with
          * the same mapping.
          *
          * @param rhs the object to compare this with
-         * @return <code>true</code> if the target object has the same class map
+         * @return {@code true} if the target object has the same class map
          * value
          */
         @Override
@@ -462,7 +462,7 @@ public class ClassMap implements Iterable<Entry> {
          * Creates an editor for this entry, adding it to the application
          * window.
          *
-         * @return the new editor, or <code>null</code> if creation failed
+         * @return the new editor, or {@code null} if creation failed
          */
         public StrangeEonsEditor createEditor() {
             return createEditor(false);
@@ -482,9 +482,9 @@ public class ClassMap implements Iterable<Entry> {
          * enabled, or if the component is created from compiled code rather
          * than a script.
          *
-         * @param debug if <code>true</code>, component types that use scripts
+         * @param debug if {@code true}, component types that use scripts
          * will be created in debug mode
-         * @return the new editor, or <code>null</code> if creation failed
+         * @return the new editor, or {@code null} if creation failed
          * @throws UnsupportedOperationException if called on a category entry
          */
         public StrangeEonsEditor createEditor(boolean debug) {
@@ -596,7 +596,7 @@ public class ClassMap implements Iterable<Entry> {
          * Creates a parser for the specified resource file.
          *
          * @param resource the location of the desired tile set resource
-         * @param gentle if <code>true</code>, parses in gentle mode
+         * @param gentle if {@code true}, parses in gentle mode
          */
         public Parser(String resource, boolean gentle) throws IOException {
             super(resource, gentle);
@@ -606,7 +606,7 @@ public class ClassMap implements Iterable<Entry> {
          * Creates a parser for the specified input stream.
          *
          * @param in the input stream to read from
-         * @param gentle if <code>true</code>, parses in gentle mode
+         * @param gentle if {@code true}, parses in gentle mode
          * @throws IOException if an I/O error occurs
          */
         public Parser(InputStream in, boolean gentle) throws IOException {
@@ -614,10 +614,10 @@ public class ClassMap implements Iterable<Entry> {
         }
 
         /**
-         * Returns the next entry in the class map, or <code>null</code> if the
+         * Returns the next entry in the class map, or {@code null} if the
          * last entry has been reached.
          *
-         * @return the next class map entry, or <code>null</code>
+         * @return the next class map entry, or {@code null}
          */
         @Override
         public Entry next() throws IOException {
@@ -676,7 +676,7 @@ public class ClassMap implements Iterable<Entry> {
 
         /**
          * Splits a string into up to three segments by breaking on pipes (|).
-         * If a segment is missing, its value will be <code>null</code>.
+         * If a segment is missing, its value will be {@code null}.
          */
         private String[] parseFields(String source) {
             final String[] fields = {null, null, null};

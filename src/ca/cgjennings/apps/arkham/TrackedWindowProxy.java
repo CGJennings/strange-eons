@@ -23,7 +23,7 @@ public abstract class TrackedWindowProxy implements TrackedWindow {
     /**
      * Creates a new proxy for a tracked window.
      *
-     * @param windowTitle the non-<code>null</code> window title
+     * @param windowTitle the non-{@code null} window title
      */
     public TrackedWindowProxy(String windowTitle) {
         this(windowTitle, null);
@@ -32,9 +32,9 @@ public abstract class TrackedWindowProxy implements TrackedWindow {
     /**
      * Creates a new proxy for a tracked window.
      *
-     * @param windowTitle the non-<code>null</code> window title
+     * @param windowTitle the non-{@code null} window title
      * @param windowIcon the icon to use for the menu item (may be
-     * <code>null</code>)
+     * {@code null})
      */
     public TrackedWindowProxy(String windowTitle, Icon windowIcon) {
         if (windowTitle == null) {

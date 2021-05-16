@@ -240,7 +240,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     }
 
     /**
-     * Returns the active deck page, or <code>null</code>.
+     * Returns the active deck page, or {@code null}.
      *
      * @return the currently edited page
      */
@@ -252,7 +252,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     }
 
     /**
-     * Returns the page view of the currently edited page, or <code>null</code>.
+     * Returns the page view of the currently edited page, or {@code null}.
      *
      * @return the view component of the active page
      */
@@ -753,18 +753,18 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     /**
      * Creates an image containing the content of the specified deck page as if
-     * it was printed at the specified resolution. The <code>pageBuffer</code>
-     * parameter can be <code>null</code>, in which case a suitable image will
+     * it was printed at the specified resolution. The {@code pageBuffer}
+     * parameter can be {@code null}, in which case a suitable image will
      * be created and returned. If you are creating images of multiple pages,
-     * you can pass <code>null</code> for the first call and then re-use the
+     * you can pass {@code null} for the first call and then re-use the
      * returned image for subsequent calls.
      *
      * @param pageBuffer an image to draw the page content on; may be
-     * <code>null</code>
+     * {@code null}
      * @param pageIndex the page to draw
      * @param ppi the resolution to draw the page at
      * @return the image that was drawn; the same value as
-     * <code>pageBuffer</code> if that parameter was non-<code>null</code>,
+     * {@code pageBuffer} if that parameter was non-{@code null},
      * otherwise a new, suitable image
      * @throws IllegalArgumentException if the page index is invalid or the
      * resolution is not positive
@@ -1030,7 +1030,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
      * platform-specific print dialog, if any, is displayed before printing
      * begins.
      *
-     * @param direct if <code>true</code>, no deck-specific print options are
+     * @param direct if {@code true}, no deck-specific print options are
      * shown
      */
     public void print(boolean direct) {
@@ -1123,7 +1123,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     }
 
     /**
-     * The implementation of print(). If <code>printResolution</code> is set to
+     * The implementation of print(). If {@code printResolution} is set to
      * a positive value, cards are prepared at that resolution. (This is set to
      * an explicit value when exporting.) Otherwise, if it is less than 0, the
      * card resolution is inferred from printer job settings.
@@ -1132,7 +1132,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
      * @param pf page format to conform to
      * @param pageIndex page index
      * @param printResolution print resolution, or -1 to determine automatically
-     * @return <code>PAGE_EXISTS</code> or <code>NO_SUCH_PAGE</code>
+     * @return {@code PAGE_EXISTS} or {@code NO_SUCH_PAGE}
      */
     private int print(Graphics g1, PageFormat pf, int pageIndex, double printResolution) {
         final Settings s = Settings.getUser();
@@ -2377,7 +2377,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     }
 
     /**
-     * Update a changed card if it matches the path of <code>f</code>. Helper
+     * Update a changed card if it matches the path of {@code f}. Helper
      * method for {@link #fileChanged}.
      */
     private int possiblyRefreshCard(File f, PageItem c, GameComponent component) {

@@ -102,9 +102,9 @@ public class TintFilter extends TintOverlayFilter {
     }
 
     /**
-     * A <code>TintFilter</code> that scales its saturation and brightness. For
+     * A {@code TintFilter} that scales its saturation and brightness. For
      * example, if the scale is 2, then a factor of 0.5 is scaled to 1. This is
-     * useful when reading values from a <code>TintPanel</code>.
+     * useful when reading values from a {@code TintPanel}.
      */
     public static class ScaledTintFilter extends TintFilter {
 

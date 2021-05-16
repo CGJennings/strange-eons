@@ -39,7 +39,7 @@ public interface TrackedWindow extends IconProvider {
     /**
      * Requests that the window be given focus, if it is focusable.
      *
-     * @return <code>false</code> if the request will certainly fail
+     * @return {@code false} if the request will certainly fail
      */
     boolean requestFocusInWindow();
 }

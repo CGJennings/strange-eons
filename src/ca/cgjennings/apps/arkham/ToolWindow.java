@@ -29,7 +29,7 @@ import javax.swing.border.LineBorder;
  * either by adding a single child component using {@link #setBody} (this
  * component may have children of its own) or by obtaining the panel that
  * normally contains this child with {@link #getBodyPanel()}. If the second
- * method is used, then <code>setBody</code> and <code>getBody</code> must not
+ * method is used, then {@code setBody} and {@code getBody} must not
  * be called.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

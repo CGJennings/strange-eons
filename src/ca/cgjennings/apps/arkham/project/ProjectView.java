@@ -113,7 +113,7 @@ public final class ProjectView extends javax.swing.JPanel {
     /**
      * The property name of a property change event that is fired when this view
      * is about to close. To listen for the active project being closed, rather
-     * than a specific view, register a <code>ProjectEventListener</code> with
+     * than a specific view, register a {@code ProjectEventListener} with
      * the application window instead.
      *
      * @see ca.cgjennings.apps.arkham.StrangeEonsAppWindow.ProjectEventListener
@@ -134,7 +134,7 @@ public final class ProjectView extends javax.swing.JPanel {
     private static final String PROJECT_FIRST_ROW = "first-row";
 
     /**
-     * Returns the view of the currently open project, or <code>null</code> if
+     * Returns the view of the currently open project, or {@code null} if
      * there is no open project.
      *
      * @return the view of the open project
@@ -545,12 +545,12 @@ public final class ProjectView extends javax.swing.JPanel {
     }
 
     /**
-     * Returns <code>true</code> if the specified member is a folder, task, or
+     * Returns {@code true} if the specified member is a folder, task, or
      * project with children, and the member's visual representation is
      * currently collapsed.
      *
      * @param m the member whose status is being queried
-     * @return <code>true</code> if the member is visually collapsed
+     * @return {@code true} if the member is visually collapsed
      */
     public boolean isFolderCollpased(Member m) {
         return projTree.isCollapsed(memberToTreePath(m));
@@ -683,7 +683,7 @@ public final class ProjectView extends javax.swing.JPanel {
      * Place a window near the (inferred) locus of attention in the project
      * view. This would be used, for example, to open a small editor or dialog
      * box in response to the user selecting a command in the project view. This
-     * is a convenince for <code>moveToLocusOfAttention( w, 0 )</code>.
+     * is a convenince for {@code moveToLocusOfAttention( w, 0 )}.
      *
      * @param window the window to position
      */
@@ -813,8 +813,8 @@ public final class ProjectView extends javax.swing.JPanel {
     }
 
     /**
-     * Sets an accelerator used by this view for a <code>TaskAction</code>. If
-     * <code>command</code> is true, then a key stroke should represent a plain
+     * Sets an accelerator used by this view for a {@code TaskAction}. If
+     * {@code command} is true, then a key stroke should represent a plain
      * key (such as "F1"); a modifier key prefix will be added automatically
      * based on the platform.
      *
@@ -2394,9 +2394,9 @@ public final class ProjectView extends javax.swing.JPanel {
      * Registers a new custom view tab to be displayed in project views.
      *
      * @param viewTab the view tab instance to register
-     * @throws NullPointerException if the view tab is <code>null</code>
+     * @throws NullPointerException if the view tab is {@code null}
      * @throws IllegalArgumentException if the view tab's name is
-     * <code>null</code>
+     * {@code null}
      * @see ViewTab#getViewTabName()
      */
     public static void registerViewTab(ViewTab viewTab) {

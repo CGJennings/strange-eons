@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * A generic interface for simple compression and decompression of data streams
  * using various compression algorithms. In addition to supporting the filtered
- * stream model used in the Java I/O libraries, <code>Compressors</code> use a
+ * stream model used in the Java I/O libraries, {@code Compressors} use a
  * pipe-style model in which data is transformed as it copied through from an
  * input stream to an output stream. This style is more convenient in many
  * applications.
@@ -35,7 +35,7 @@ public interface Compressor {
      *
      * @param level the compression level from 0 to 9, with higher values
      * suggesting that the algorithm should try harder to compress the data
-     * @throws IllegalArgumentException if the requested <code>level</code> is
+     * @throws IllegalArgumentException if the requested {@code level} is
      * out of range
      */
     void setCompressionLevel(int level);
@@ -111,7 +111,7 @@ public interface Compressor {
      *
      * @param out the stream to write compressed data to
      * @return a filter stream that will compress data and write it to
-     * <code>out</code>
+     * {@code out}
      * @throws IOException if an error occurs while creating the stream
      */
     OutputStream filter(OutputStream out) throws IOException;
@@ -121,7 +121,7 @@ public interface Compressor {
      * compressed data.
      *
      * @param in the stream to read compressed data from
-     * @return a filter stream that will decompress data from <code>in</code> as
+     * @return a filter stream that will decompress data from {@code in} as
      * it is read from
      * @throws IOException if an error occurs while creating the stream
      */

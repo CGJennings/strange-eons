@@ -16,13 +16,13 @@ import java.awt.image.BufferedImage;
  * <table border=0>
  * <caption>Some example <i>mask</i> and <i>condition</i> values</caption>
  * <tr><th>Mask</th>       <th>Condition</th>  <th>Effect</th></tr>
- * <tr><td><code>0xff000000 </code></td> <td><code>0x00000000 </code></td>
+ * <tr><td>{@code 0xff000000 }</td> <td>{@code 0x00000000 }</td>
  * <td>Trim transparent (alpha=0) edges</td></tr>
- * <tr><td><code>0xffffffff </code></td> <td><code>0xffffffff </code></td>
+ * <tr><td>{@code 0xffffffff }</td> <td>{@code 0xffffffff }</td>
  * <td>Trim solid white edges</td></tr>
- * <tr><td><code>0xffffffff </code></td> <td><code>0xff000000 </code></td>
+ * <tr><td>{@code 0xffffffff }</td> <td>{@code 0xff000000 }</td>
  * <td>Trim solid black edges</td></tr>
- * <tr><td><code>0x00ffffff </code></td> <td><code>0x00RRGGBB </code></td>
+ * <tr><td>{@code 0x00ffffff }</td> <td>{@code 0x00RRGGBB }</td>
  * <td>Trim edges with colour RRGGBB, ignoring transparency</td></tr>
  * </table>
  *
@@ -48,8 +48,8 @@ public final class TrimFilter extends AbstractImageFilter {
 
     /**
      * Creates a new filter that trims fully transparent edges off of images.
-     * That is, with a mask of <code>0xff000000</code> and a condition of
-     * <code>0xff000000</code>.
+     * That is, with a mask of {@code 0xff000000} and a condition of
+     * {@code 0xff000000}.
      */
     public TrimFilter() {
     }
@@ -69,12 +69,12 @@ public final class TrimFilter extends AbstractImageFilter {
      * Filters the image, returning an image with trimmable edges cropped off.
      * The destination image is ignored, as described in the
      * {@linkplain TrimFilter class description}. If the trim operation would
-     * result in an empty image, the filter returns <code>null</code>.
+     * result in an empty image, the filter returns {@code null}.
      *
      * @param sourceImage the image to trim
      * @param ignoredDestination this parameter is ignored
      * @return a new, trimmed image; or the source image if no edges are
-     * trimmed; or <code>null</code> if the entire image is trimmed
+     * trimmed; or {@code null} if the entire image is trimmed
      */
     @Override
     @SuppressWarnings("empty-statement")

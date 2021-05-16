@@ -129,7 +129,7 @@ public class FolderTree extends JTree {
 
     /**
      * Sets the currently selected folder. If the parameter is
-     * <code>null</code>, a default folder is used.
+     * {@code null}, a default folder is used.
      *
      * @param f a file representing the folder to select
      * @see #getSelectedFolder()
@@ -151,12 +151,12 @@ public class FolderTree extends JTree {
     }
 
     /**
-     * Returns a tree path for the specified file, or <code>null</code>. If
+     * Returns a tree path for the specified file, or {@code null}. If
      * there are multiple tree paths that are equivalent to the specified file,
      * there is no guarantee as to which is selected.
      *
      * @param f the file to locate in the tree
-     * @return the path to the file, or <code>null</code>
+     * @return the path to the file, or {@code null}
      */
     public TreePath getTreePathForFolder(File f) {
         if (!fsv.isFileSystem(f) || !fsv.isTraversable(f)) {
@@ -306,7 +306,7 @@ public class FolderTree extends JTree {
      * the node.
      *
      * @param path the path to convert to a file
-     * @return the file represented by the path, or <code>null</code>
+     * @return the file represented by the path, or {@code null}
      */
     public File getFolderForTreePath(TreePath path) {
         if (path == null) {
@@ -339,7 +339,7 @@ public class FolderTree extends JTree {
      * @param path the path to search
      * @param name the name to search for
      * @return the node in the path that matches the specified name, or
-     * <code>null</code> if it is not found
+     * {@code null} if it is not found
      */
     public TreePath findChild(TreePath path, String name) {
         Node n = (Node) path.getLastPathComponent();

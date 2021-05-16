@@ -45,7 +45,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
 
     /**
      * Creates a new wizard dialog that will fill in the provided new, empty
-     * task. The task may be <code>null</code> to assist in testing of new
+     * task. The task may be {@code null} to assist in testing of new
      * wizard kits.
      *
      * @param owner
@@ -507,7 +507,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
      * All registered projects will be listed on the first page of the dialog,
      * and when the user selects a project the matching kit will be used to
      * provide the following pages. If the user finishes the wizard, the
-     * matching kit's <code>createTask</code> method will be called to fill in
+     * matching kit's {@code createTask} method will be called to fill in
      * the task folder.
      */
     public static interface WizardKit {

@@ -175,7 +175,7 @@ public final class DragManager<T> {
     /**
      * Sets the cursor displayed for the token when a drag is not allowed.
      *
-     * @param noDropCursor the new cursor to use; <code>null</code> for default
+     * @param noDropCursor the new cursor to use; {@code null} for default
      * cursor
      */
     public void setNoDropCursor(Cursor noDropCursor) {
@@ -191,9 +191,9 @@ public final class DragManager<T> {
     }
 
     /**
-     * Returns <code>true</code> if drag token images are displayed.
+     * Returns {@code true} if drag token images are displayed.
      *
-     * @return <code>true</code> if the images associated with tokens are
+     * @return {@code true} if the images associated with tokens are
      * visible
      */
     public boolean isTokenVisible() {
@@ -206,7 +206,7 @@ public final class DragManager<T> {
      * platforms, the method will only affect subsequent tokens and not the
      * currently displayed token.
      *
-     * @param visible <code>true</code> if the images associated with tokens are
+     * @param visible {@code true} if the images associated with tokens are
      * visible
      */
     public void setTokenVisible(boolean visible) {
@@ -236,10 +236,10 @@ public final class DragManager<T> {
     }
 
     /**
-     * Ends a drag; if the specified target is <code>null</code>, the drag is
+     * Ends a drag; if the specified target is {@code null}, the drag is
      * being cancelled, otherwise the drag completed with a drop on that target.
      *
-     * @param target the drop target, or <code>null</code>
+     * @param target the drop target, or {@code null}
      */
     private void endDrag(JComponent target) {
         DragToken oToken = aToken;
@@ -265,7 +265,7 @@ public final class DragManager<T> {
      *
      * @param location a location on the display
      * @return a drop target at the location willing to accept the active drag,
-     * or <code>null</code>
+     * or {@code null}
      */
     private JComponent findTarget(Point location) {
         for (Window w : Window.getWindows()) {

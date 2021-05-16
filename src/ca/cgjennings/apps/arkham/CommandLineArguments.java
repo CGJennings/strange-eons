@@ -152,7 +152,7 @@ public class CommandLineArguments implements Cloneable {
     /**
      * Non-standard debugging option. <p>
      * Disables the use of threads to accelerate image filters in the package
-     * <code>ca.cgjennings.graphics.filters</code> and use of multiple threads
+     * {@code ca.cgjennings.graphics.filters} and use of multiple threads
      * by {@link ca.cgjennings.algo.SplitJoin}.
      */
     public boolean xDisableFilterThreads = false;
@@ -207,7 +207,7 @@ public class CommandLineArguments implements Cloneable {
     /**
      * This class cannot be instantiated. To obtain the command line arguments
      * for the application, call
-     * <code>StrangeEons.getApplication().getCommandLineArguments()</code>.
+     * {@code StrangeEons.getApplication().getCommandLineArguments()}.
      */
     private CommandLineArguments() {
     }

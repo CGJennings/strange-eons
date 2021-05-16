@@ -26,7 +26,7 @@ public final class FileNameExtensionFilter extends FileFilter {
      *
      * @param fileTypeDescription the file type description
      * @param fileNameExtensions file extensions to accept; may not be
-     * <code>null</code>, empty, or contain <code>null</code> elements
+     * {@code null}, empty, or contain {@code null} elements
      */
     public FileNameExtensionFilter(String fileTypeDescription, String... fileNameExtensions) {
         if (fileTypeDescription == null) {
@@ -104,11 +104,11 @@ public final class FileNameExtensionFilter extends FileFilter {
     }
 
     /**
-     * Returns <code>true</code> if the filter accepts the file; that is, if a
+     * Returns {@code true} if the filter accepts the file; that is, if a
      * file chooser using the filter would display the file.
      *
      * @param file the file to test
-     * @return <code>true</code> if the file represents a folder or matches one
+     * @return {@code true} if the file represents a folder or matches one
      * of the filter's extensions
      */
     @Override
@@ -140,11 +140,11 @@ public final class FileNameExtensionFilter extends FileFilter {
     }
 
     /**
-     * Returns <code>true</code> if the specified extension matches one of the
+     * Returns {@code true} if the specified extension matches one of the
      * extensions in the filter.
      *
      * @param extension the extension (not including the '.' character)
-     * @return <code>true</code> if the extension matches one of the extensions
+     * @return {@code true} if the extension matches one of the extensions
      * accepted by this filter
      */
     public boolean matches(String extension) {

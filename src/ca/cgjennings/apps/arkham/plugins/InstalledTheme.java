@@ -34,11 +34,11 @@ public final class InstalledTheme extends InstalledBundleObject {
      * with the given className.
      *
      * @param bundle the bundle that the theme class is stored in, or
-     * <code>null</code> for built in themes
+     * {@code null} for built in themes
      * @param className the class used to instantiate the theme
      * @throws PluginException if the theme is unavailable or there is an
      * exception while extracting the theme information
-     * @throws NullPointerException if className is <code>null</code>
+     * @throws NullPointerException if className is {@code null}
      */
     public InstalledTheme(PluginBundle bundle, String className) throws IOException, PluginException {
         super(bundle);

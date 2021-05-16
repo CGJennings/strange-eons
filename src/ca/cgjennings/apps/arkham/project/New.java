@@ -29,7 +29,7 @@ public class New extends TaskActionTree {
     }
 
     /**
-     * A useful class for adding actions to <code>New</code>. It is not
+     * A useful class for adding actions to {@code New}. It is not
      * required: you can use any {@link TaskAction}.
      */
     public static class NewAction extends TaskAction {
@@ -63,7 +63,7 @@ public class New extends TaskActionTree {
          * create a new file
          * @param extension the file name extension to use for the new file
          * @param resourceFile the resource that will be copied to create an
-         * empty new file, or <code>null</code>
+         * empty new file, or {@code null}
          * @param icon the icon to display as the file type icon
          */
         public NewAction(String label, String defaultFileName, String extension, String resourceFile, Icon icon) {
@@ -80,11 +80,11 @@ public class New extends TaskActionTree {
          * create a new file
          * @param extension the file name extension to use for the new file
          * @param resourceFile the resource that will be copied to create an
-         * empty new file, or <code>null</code>
+         * empty new file, or {@code null}
          * @param icon the icon to display as the file type icon
          * @param taskType the code for the task type that this action is
          * restricted to, or a comma separated list of such task types;
-         * <code>null</code> to allow the action to apply anywhere
+         * {@code null} to allow the action to apply anywhere
          */
         public NewAction(String label, String defaultFileName, String extension, String resourceFile, Icon icon, String taskType) {
             if (!label.endsWith("...")) {
@@ -172,7 +172,7 @@ public class New extends TaskActionTree {
         /**
          * Creates a file of the type represented by this action. The base class
          * copies the specified resource file to the destination. (If the
-         * resource file is <code>null</code>, it creates a folder.)
+         * resource file is {@code null}, it creates a folder.)
          *
          * @param file the file to be created
          * @throws IOException if an error occurs while creating the file (if
@@ -199,7 +199,7 @@ public class New extends TaskActionTree {
         }
 
         /**
-         * Returns <code>true</code> if the target is any kind of folder
+         * Returns {@code true} if the target is any kind of folder
          * (including a project or task) and the task type restrictions (if any)
          * are met.
          *
@@ -382,14 +382,14 @@ public class New extends TaskActionTree {
          * @param key a UI text key for the component; if the key has the
          * "app-new-" prefix this may be left off
          * @param className the fully qualified name of the component class; or,
-         * if no package is specified, the <code>arkham.component</code> package
+         * if no package is specified, the {@code arkham.component} package
          * is used by default
          * @param taskType the type of task that must be active for the action
-         * to apply, or <code>null</code>
+         * to apply, or {@code null}
          * @param taskSubtype the type of task subtype that must be active for
-         * the action to apply, or <code>null</code>
+         * the action to apply, or {@code null}
          * @throws NullPointerException if the key or class name is
-         * <code>null</code>
+         * {@code null}
          * @throws IllegalArgumentException if the specified class does not
          * exist
          */
@@ -498,10 +498,10 @@ public class New extends TaskActionTree {
 //		/**
 //		 * Returns a string describing the category that this type belongs to.
 //		 * Actions with the same category will be grouped together. If this
-//		 * returns <code>null</code>, then this action will be excluded from
+//		 * returns {@code null}, then this action will be excluded from
 //		 * the Other dialog.
 //		 *
-//		 * @return a category name for the other dialog, or <code>null</code>
+//		 * @return a category name for the other dialog, or {@code null}
 //		 */
 //		public String getCategory();
 //	}

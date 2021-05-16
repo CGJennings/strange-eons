@@ -20,7 +20,7 @@ public class ProgressHelper implements MonitoredAlgorithm {
      * Creates a new helper with the specified source and listener.
      *
      * @param source the source that will be passed to listener events
-     * @param li the listener to set (may be <code>null</code>)
+     * @param li the listener to set (may be {@code null})
      */
     public ProgressHelper(Object source, ProgressListener li) {
         this(source, li, 0);
@@ -30,7 +30,7 @@ public class ProgressHelper implements MonitoredAlgorithm {
      * Creates a new helper with the specified source, listener, and step count.
      *
      * @param source the source that will be passed to listener events
-     * @param li the listener to set (may be <code>null</code>)
+     * @param li the listener to set (may be {@code null})
      * @param stepCount the number of steps that must be executed before
      * completion
      */
@@ -46,8 +46,8 @@ public class ProgressHelper implements MonitoredAlgorithm {
      * only be set before the algorithm begins executing, not while it is
      * already in progress.
      *
-     * @param li the listener to set (may be <code>null</code>)
-     * @return the previous listener, or <code>null</code>
+     * @param li the listener to set (may be {@code null})
+     * @return the previous listener, or {@code null}
      */
     @Override
     public ProgressListener setProgressListener(ProgressListener li) {
@@ -67,7 +67,7 @@ public class ProgressHelper implements MonitoredAlgorithm {
 
     /**
      * Sets the object that will be reported as the source of listener events.
-     * The default source is <code>this</code>, which is suitable if the
+     * The default source is {@code this}, which is suitable if the
      * algorithm subclasses this class.
      *
      * @param source the apparent source of events

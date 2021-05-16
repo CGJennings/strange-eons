@@ -25,14 +25,14 @@ import java.awt.image.Kernel;
  *
  * <p>
  * {@link #isAlphaPremultiplied()} determines whether the alpha channel is
- * premultiplied. The default is <code>true</code>. Subclasses may choose to
+ * premultiplied. The default is {@code true}. Subclasses may choose to
  * override this if they are calling the
  * {@linkplain #filter(int[], int[], int, int) integer array} filtering method
  * with pixel data that is already premultiplied.
  *
  * <p>
  * {@link #isAlphaFiltered()} determines whether the alpha channel is retained
- * after filtering. The default is <code>true</code>. If <code>false</code>, the
+ * after filtering. The default is {@code true}. If {@code false}, the
  * alpha channel will be completely opaque after filtering.
  *
  * <p>
@@ -58,22 +58,22 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
     }
 
     /**
-     * Returns <code>true</code> if images with an alpha channel will
+     * Returns {@code true} if images with an alpha channel will
      * automatically be converted to a premultiplied format during the
      * convolution, and converted back afterward.
      *
-     * @return <code>true</code> if images are premultiplied automatically
+     * @return {@code true} if images are premultiplied automatically
      */
     public boolean isAlphaPremultiplied() {
         return true;
     }
 
     /**
-     * Returns <code>true</code> if the alpha channel is filtered. If this
-     * returns <code>false</code>, the alpha channel is set to 255. For more
+     * Returns {@code true} if the alpha channel is filtered. If this
+     * returns {@code false}, the alpha channel is set to 255. For more
      * complex channel value manipulation, see {@link ChannelSwapFilter}.
      *
-     * @return <code>true</code> if the alpha channel is processed by the filter
+     * @return {@code true} if the alpha channel is processed by the filter
      */
     public boolean isAlphaFiltered() {
         return true;
@@ -84,7 +84,7 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
      * filter. Typically, array is either length one (non-separable) or length
      * two (separable).
      *
-     * @return an array of non-<code>null</code> convolution kernels
+     * @return an array of non-{@code null} convolution kernels
      */
     protected abstract Kernel[] getKernels();
 

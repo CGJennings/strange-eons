@@ -124,7 +124,7 @@ public class ImageExporter {
      * @param multipleFaces a hint that the export will consist of a card with
      * multiple faces
      * @param hasMarker a hint that the final sheet is a marker
-     * @return <code>false</code> if the export was cancelled
+     * @return {@code false} if the export was cancelled
      * @throws IOException if an I/O error occurs
      */
     public boolean beginExport(String baseSheetName, String comments, double defaultDPI, boolean largeFormat, boolean allowJoining, boolean multipleFaces, boolean hasMarker) throws IOException {
@@ -194,7 +194,7 @@ public class ImageExporter {
      * @param multipleFaces a hint that the export will consist of a card with
      * multiple faces
      * @param hasMarker a hint that the final sheet is a marker
-     * @return <code>false</code> if the export was cancelled
+     * @return {@code false} if the export was cancelled
      * @throws IOException if an I/O error occurs
      */
     public boolean beginExport(String baseSheetName, String comments, double defaultDPI, PrintDimensions sizeInPoints, boolean allowJoining, boolean multipleFaces, boolean hasMarker) throws IOException {

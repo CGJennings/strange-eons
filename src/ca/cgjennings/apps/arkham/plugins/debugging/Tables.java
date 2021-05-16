@@ -111,12 +111,12 @@ public class Tables {
     }
 
     /**
-     * Returns the generator with the given <code>name</code>, or
-     * <code>null</code> if there is no such generator.
+     * Returns the generator with the given {@code name}, or
+     * {@code null} if there is no such generator.
      *
      * @param name the name of the generator to find
-     * @return the generator registered under <code>name</code>, or
-     * <code>null</code>
+     * @return the generator registered under {@code name}, or
+     * {@code null}
      */
     public static TableGenerator getGenerator(String name) {
         return toGen.get(name);
@@ -124,10 +124,10 @@ public class Tables {
 
     /**
      * Returns a table generator using the generator with the given
-     * <code>name</code>, or <code>null</code>.
+     * {@code name}, or {@code null}.
      *
      * @param name the name of the generator to use
-     * @return a table generated with the named generator, or <code>null</code>
+     * @return a table generated with the named generator, or {@code null}
      */
     public static InfoTable generate(String name) {
         TableGenerator tg = getGenerator(name);

@@ -19,7 +19,7 @@ import resources.Settings;
 /**
  * Task action that creates a plug-in bundle from the contents of a plug-in task
  * folder. The bundle is written to the project folder using the name stored in
- * the task's {@link #KEY_BUNDLE_FILE} (<code>bundle-file</code>). If this key
+ * the task's {@link #KEY_BUNDLE_FILE} ({@code bundle-file}). If this key
  * is not defined, then <tt>bundle.seplugin</tt> is used as a base.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

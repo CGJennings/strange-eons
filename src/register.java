@@ -24,7 +24,7 @@ import javax.imageio.ImageIO;
  * standards.
  *
  * <p>
- * This tool requires that <code>xdg-utils</code> be installed on the target
+ * This tool requires that {@code xdg-utils} be installed on the target
  * system. Most modern distros will already have this installed.
  *
  * <p>
@@ -216,7 +216,7 @@ public final class register extends CommandLineParser {
      *
      * @param destName the file name
      * @return a file with the given name in
-     * <code>~/.StrangeEons3/desktop</code>
+     * {@code ~/.StrangeEons3/desktop}
      */
     private File file(String destName) {
         return new File(sh.directory(), destName);
@@ -387,7 +387,7 @@ public final class register extends CommandLineParser {
      * @param name the application or directory name
      * @param comment a comment for the entry, typically displayed as a tool tip
      * @param iconName the name of the icon to associate with the entry
-     * @param exec executable command line (<code>null</code> for directories)
+     * @param exec executable command line ({@code null} for directories)
      * @param mimeTypes list of MIME type strings that the application can open
      * (empty for directories)
      *
@@ -675,7 +675,7 @@ public final class register extends CommandLineParser {
     /**
      * Prints the result of a check being performed.
      *
-     * @param ok <code>true</code> if the check passed
+     * @param ok {@code true} if the check passed
      */
     private void passItem(boolean ok) {
         System.out.println(ok ? "OK" : "Failed");
@@ -684,7 +684,7 @@ public final class register extends CommandLineParser {
 
     /**
      * Prints a warning message. Either the message or the throwable may be
-     * <code>null</code>, but not both.
+     * {@code null}, but not both.
      *
      * @param message the message to print
      * @param t an exception to describe
@@ -705,7 +705,7 @@ public final class register extends CommandLineParser {
 
     /**
      * Prints an error message, and then quits unless running in debug mode.
-     * Either the message or the throwable may be <code>null</code>, but not
+     * Either the message or the throwable may be {@code null}, but not
      * both.
      *
      * @param message the message to print
@@ -804,7 +804,7 @@ public final class register extends CommandLineParser {
      * installation has a subdirectory "bin" containing the "java" executable.
      *
      * @param loc the candidate location
-     * @return <code>true</code> if the directory is a Java installation
+     * @return {@code true} if the directory is a Java installation
      * directory for the minimum required version
      * @see #MIN_JAVA_VERSION
      */

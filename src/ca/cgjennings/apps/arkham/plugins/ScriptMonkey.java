@@ -31,7 +31,7 @@ import resources.ResourceKit;
 import resources.Settings;
 
 /**
- * A <code>ScriptMonkey</code> manages the execution of a script from Strange
+ * A {@code ScriptMonkey} manages the execution of a script from Strange
  * Eons.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -48,9 +48,9 @@ public final class ScriptMonkey {
      */
     public static final String ON_INSTALL_EVENT_KEY = "on-install";
     /**
-     * If a component's private settings set this key, then <code>Sheet</code>s
+     * If a component's private settings set this key, then {@code Sheet}s
      * evaluate the script it contains and call the function
-     * <code>onPaint( Graphics2D, GameComponent, Sheet )</code>.
+     * {@code onPaint( Graphics2D, GameComponent, Sheet )}.
      */
     public static final String ON_PAINT_EVENT_KEY = "on-paint";
 
@@ -64,7 +64,7 @@ public final class ScriptMonkey {
     public static final String CLEAR_CONSOLE_ON_RUN_KEY = "clear-script-console";
 
     /**
-     * Creates a new <code>ScriptMonkey</code> that can be used to execute
+     * Creates a new {@code ScriptMonkey} that can be used to execute
      * script code.
      *
      * @param scriptFileName the identifier to associate with the code that will
@@ -90,7 +90,7 @@ public final class ScriptMonkey {
      * is running, this will normally be the same name as the other, true,
      * identifier. But when running a script "on demand", as from the project
      * <b>Run</b> command or the <b>Quickscript</b> window, then the
-     * <code>ScriptMonkey</code> will typically be constructed using the file
+     * {@code ScriptMonkey} will typically be constructed using the file
      * name "Quickscript", because many scripts check for this and change their
      * behaviour accordingly. (For example, the source code for a plug-in might
      * run a test of the plug-in functionality.) However, in this case the
@@ -179,27 +179,27 @@ public final class ScriptMonkey {
 
     /**
      * The reserved variable name for the
-     * {@linkplain StrangeEons application instance} (<code>Eons</code>)
+     * {@linkplain StrangeEons application instance} ({@code Eons})
      */
     public static final String VAR_APPLICATION = "Eons";
     /**
      * The reserved variable name for the script's
-     * {@link PluginContext PluginContext} (<code>PluginContext</code>).
+     * {@link PluginContext PluginContext} ({@code PluginContext}).
      */
     public static final String VAR_CONTEXT = "PluginContext";
     /**
      * The reserved variable name for the active (edited) game component
-     * (<code>Component</code>).
+     * ({@code Component}).
      */
     public static final String VAR_COMPONENT = "Component";
     /**
      * The reserved variable name for the active (selected) editor
-     * (<code>Editor</code>).
+     * ({@code Editor}).
      */
     public static final String VAR_EDITOR = "Editor";
     /**
      * The reserved variable name for the source file name
-     * (<code>sourcefile</code>).
+     * ({@code sourcefile}).
      */
     public static final String VAR_FILE = "sourcefile";
 
@@ -213,7 +213,7 @@ public final class ScriptMonkey {
      * functions. Functions that are not defined in the evaluated script code
      * will do nothing. If such missing functions return a value in the
      * specified interface, they will return zero if the return type is a
-     * primitive numeric type, or <code>null</code> otherwise.
+     * primitive numeric type, or {@code null} otherwise.
      *
      * @param <T> the type of the implemented interface
      * @param klass the class value of the interface to implement
@@ -291,9 +291,9 @@ public final class ScriptMonkey {
     }
 
     /**
-     * Call a script function, returning <code>null</code> without displaying an
+     * Call a script function, returning {@code null} without displaying an
      * error if the method does not exist. If a script error occurs, an error
-     * message is displayed and <code>null</code> is returned.
+     * message is displayed and {@code null} is returned.
      *
      * @param method the name of a script function
      * @param args the arguments to pass to the function
@@ -313,10 +313,10 @@ public final class ScriptMonkey {
 
     /**
      * Call a script function. If the function does not exist, an error message
-     * is displayed and a <code>NoSuchMethodException</code> exception is
+     * is displayed and a {@code NoSuchMethodException} exception is
      * returned. If a script error occurs, the error is printed on the console
      * and returned. Otherwise, the return value of the function (or
-     * <code>null</code>) is returned.
+     * {@code null}) is returned.
      *
      * @param method the name of a script function
      * @param args the arguments to pass to the function
@@ -341,7 +341,7 @@ public final class ScriptMonkey {
      *
      * @param name the variable name to bind
      * @param object the value to assign to the variable name
-     * @throws NullPointerException if the variable name is <code>null</code>
+     * @throws NullPointerException if the variable name is {@code null}
      * @throws IllegalArgumentException if the variable name starts with a
      * reserved character ($, @, #)
      */
@@ -362,7 +362,7 @@ public final class ScriptMonkey {
      * Binds the specified {@link PluginContext} to the global scope.
      *
      * @param pluginContext the plug-in context to bind (may be
-     * <code>null</code>)
+     * {@code null})
      * @see PluginContextFactory
      */
     public void bind(PluginContext pluginContext) {
@@ -510,11 +510,11 @@ public final class ScriptMonkey {
     /**
      * Runs a script file stored in a resource file. The script is simply
      * evaluated; no specific function is called or result captured. Returns
-     * <code>true</code> if the script was loaded and run without error,
-     * <code>false</code> otherwise.
+     * {@code true} if the script was loaded and run without error,
+     * {@code false} otherwise.
      *
      * @param resource the resource file containing the script
-     * @return <code>true</code> if a breakpoint should be set at the start of
+     * @return {@code true} if a breakpoint should be set at the start of
      * the script
      */
     public static boolean runResourceScript(String resource, boolean debug) {
@@ -559,15 +559,15 @@ public final class ScriptMonkey {
 
     /**
      * Runs a resource creation script stored in a resource file. The script is
-     * evaluated and then its <code>createResource()</code> method is invoked.
+     * evaluated and then its {@code createResource()} method is invoked.
      * The result of that function is then returned. If there is an error
-     * loading or running the script, a <code>null</code> value is returned. If
+     * loading or running the script, a {@code null} value is returned. If
      * the script is missing, an error message is shown. If there is an error in
      * the script, it is displayed in the output console.
      *
      * @param resource the resource file containing the script
-     * @return the object returned from <code>createResource()</code>, or
-     * <code>null</code>
+     * @return the object returned from {@code createResource()}, or
+     * {@code null}
      */
     public static Object runResourceCreationScript(String resource) {
         Object createdObject = null;
@@ -659,8 +659,8 @@ public final class ScriptMonkey {
     /**
      * Sets the {@link Language} object that is used to look up interface
      * strings with <tt>@<i>string_key</i></tt> syntax. Passing
-     * <code>null</code> will reset the language to
-     * <code>Language.getInterface()</code>.
+     * {@code null} will reset the language to
+     * {@code Language.getInterface()}.
      *
      * @param language the UI language whose strings will be visible in the
      * global scope
@@ -682,8 +682,8 @@ public final class ScriptMonkey {
 
     /**
      * Sets the {@link Language} object that is used to look up game strings
-     * with <tt>#<i>string_key</i></tt> syntax. Passing <code>null</code> will
-     * reset the language to <code>Language.getGame()</code>.
+     * with <tt>#<i>string_key</i></tt> syntax. Passing {@code null} will
+     * reset the language to {@code Language.getGame()}.
      *
      * @param language the game language whose strings will be visible in the
      * global scope
@@ -767,7 +767,7 @@ public final class ScriptMonkey {
     /**
      * Evaluate a library file within the current script context. This method is
      * not intended for external use, although nothing prevents it. It is
-     * invoked from within scripts in order to process <code>useLibrary()</code>
+     * invoked from within scripts in order to process {@code useLibrary()}
      * calls.
      *
      * @param engine the engine to add the library to
@@ -837,12 +837,12 @@ public final class ScriptMonkey {
     }
 
     /**
-     * Returns <code>true</code> if a library identifier is actually a URL. For
-     * example, it would return <code>false</code> for "imageutils", but
-     * <code>true</code> for "res://my/library.js".
+     * Returns {@code true} if a library identifier is actually a URL. For
+     * example, it would return {@code false} for "imageutils", but
+     * {@code true} for "res://my/library.js".
      *
      * @param s the identifier to check
-     * @return <code>true</code> if the identifier is not a simple library name
+     * @return {@code true} if the identifier is not a simple library name
      */
     public static boolean isLibraryNameAURL(String s) {
         return s.indexOf(':') >= 0;

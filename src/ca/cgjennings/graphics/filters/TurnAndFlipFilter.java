@@ -54,41 +54,41 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
     public static final int TURN_90_RIGHT_FLIP_HORZ = 7;
 
     /**
-     * Flip vertically without turning (same as <code>TURN_180_FLIP</code>).
+     * Flip vertically without turning (same as {@code TURN_180_FLIP}).
      */
     public static final int TURN_0_FLIP_VERT = 6;
     /**
      * Rotate 90 degrees anticlockwise and flip vertically (same as
-     * <code>TURN_90_RIGHT_FLIP_HORZ</code>).
+     * {@code TURN_90_RIGHT_FLIP_HORZ}).
      */
     public static final int TURN_90_LEFT_FLIP_VERT = 7;
     /**
      * Rotate 180 degrees and flip vertically (same as
-     * <code>TURN_0_FLIP</code>).
+     * {@code TURN_0_FLIP}).
      */
     public static final int TURN_180_FLIP_VERT = 4;
     /**
      * Rotate 90 degrees clockwise and flip vertically (same as
-     * <code>TURN_90_LEFT_FLIP_HORZ</code>).
+     * {@code TURN_90_LEFT_FLIP_HORZ}).
      */
     public static final int TURN_90_RIGHT_FLIP_VERT = 5;
 
     /**
-     * Flip both axes without turning (same as <code>TURN_180</code>).
+     * Flip both axes without turning (same as {@code TURN_180}).
      */
     public static final int TURN_0_FLIP_BOTH = 2;
     /**
      * Rotate 90 degrees anticlockwise and flip both axes (same as
-     * <code>TURN_90_RIGHT</code>).
+     * {@code TURN_90_RIGHT}).
      */
     public static final int TURN_90_LEFT_FLIP_BOTH = 3;
     /**
-     * Rotate 180 degrees and flip both axes (same as <code>TURN_0</code>).
+     * Rotate 180 degrees and flip both axes (same as {@code TURN_0}).
      */
     public static final int TURN_180_FLIP_BOTH = 0;
     /**
      * Rotate 90 degrees clockwise and flip both axes (same as
-     * <code>TURN_90_LEFT</code>).
+     * {@code TURN_90_LEFT}).
      */
     public static final int TURN_90_RIGHT_FLIP_BOTH = 1;
 
@@ -114,7 +114,7 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
      * Returns the current orientation setting that describes how output images
      * should be turned and flipped relative to input images.
      *
-     * @return the <code>TURN_*</code> orientation value
+     * @return the {@code TURN_*} orientation value
      */
     public int getOrientation() {
         return orient;
@@ -123,7 +123,7 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
     /**
      * Sets the orientation of output images relative to source images.
      *
-     * @param orientation the <code>TURN_*</code> value that encodes how the
+     * @param orientation the {@code TURN_*} value that encodes how the
      * image should be rotated and flipped
      */
     public void setOrientation(int orientation) {

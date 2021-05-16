@@ -1861,7 +1861,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     }
 
     /**
-     * If this setting key is set to <code>true</code>, the editor won't
+     * If this setting key is set to {@code true}, the editor won't
      * automatically generate a catalogue ID when you open a root file that
      * doesn't have one.
      */

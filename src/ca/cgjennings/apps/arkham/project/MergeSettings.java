@@ -86,7 +86,7 @@ public class MergeSettings extends TaskActionTree {
      * This action tree returns true since all of its children represent
      * settings instances with which a settings file could be merged.
      *
-     * @return <code>true</code>
+     * @return {@code true}
      */
     @Override
     protected boolean isAppliesToShortCircuited() {

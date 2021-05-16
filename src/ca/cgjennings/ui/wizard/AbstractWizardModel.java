@@ -7,9 +7,9 @@ import javax.swing.JComponent;
  * An abstract base class for wizard models. This base class provides all the
  * functionality required by a wizard model except for
  * {@link WizardModel#getPageOrder()}. Because the implementations of the other
- * methods must call <code>getPageOrder()</code>, subclasses that do not
+ * methods must call {@code getPageOrder()}, subclasses that do not
  * represent the page order internally as an array should consider caching the
- * <code>getPageOrder()</code> for performance reasons.
+ * {@code getPageOrder()} for performance reasons.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

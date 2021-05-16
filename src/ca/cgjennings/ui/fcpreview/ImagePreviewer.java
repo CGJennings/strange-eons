@@ -197,7 +197,7 @@ public class ImagePreviewer extends JPanel {
      * override this to create a custom previewer for a different file type.
      * Note that this is typically
      * <b>not</b> run from the event dispatch thread. If constructing the image
-     * fails for any reason, this method must return <code>null</code> and
+     * fails for any reason, this method must return {@code null} and
      * should not display an error message.
      *
      * @param f the file to compose a preview of
@@ -215,11 +215,11 @@ public class ImagePreviewer extends JPanel {
     }
 
     /**
-     * Returns <code>true</code> if this file appears to be of a type for which
+     * Returns {@code true} if this file appears to be of a type for which
      * a preview can be created.
      *
      * @param o the file to check
-     * @return <code>true</code> if previewing this file is expected to succeed
+     * @return {@code true} if previewing this file is expected to succeed
      */
     public boolean isResourceTypeSupported(Object o) {
         if (!(o instanceof File)) {

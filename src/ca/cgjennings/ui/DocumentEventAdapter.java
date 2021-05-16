@@ -4,8 +4,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 /**
- * A <code>DocumentListener</code> that routes all events through
- * <code>changedUpdate</code>.
+ * A {@code DocumentListener} that routes all events through
+ * {@code changedUpdate}.
  *
  * @author Chris
  */

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A <code>LinearHistory</code> captures a sequence of user actions and allows
+ * A {@code LinearHistory} captures a sequence of user actions and allows
  * them to be replayed, as with the forward/back operations in a browsing
  * interface.
  *
@@ -19,7 +19,7 @@ public class LinearHistory<P> {
 
     /**
      * Creates a new linear history that tracks state objects (URL, location,
-     * document, etc.) of type <code>P</code>.
+     * document, etc.) of type {@code P}.
      */
     public LinearHistory() {
     }
@@ -35,7 +35,7 @@ public class LinearHistory<P> {
     /**
      * Go directly to a new position (without using forward or back) and display
      * the position. Any positions after the current position in the history are
-     * deleted, and the new <code>position</code> becomes the end of the
+     * deleted, and the new {@code position} becomes the end of the
      * history.
      *
      * @param position
@@ -88,18 +88,18 @@ public class LinearHistory<P> {
     }
 
     /**
-     * Returns <code>true</code> if it is possible to go back in the history.
+     * Returns {@code true} if it is possible to go back in the history.
      *
-     * @return <code>true</code> if {@link #back()} will have any effect
+     * @return {@code true} if {@link #back()} will have any effect
      */
     public boolean canGoBack() {
         return index > (forwardBias ? 1 : 0);
     }
 
     /**
-     * Returns <code>true</code> if it is possible to go forward in the history.
+     * Returns {@code true} if it is possible to go forward in the history.
      *
-     * @return <code>true</code> if {@link #forward()} will have any effect
+     * @return {@code true} if {@link #forward()} will have any effect
      */
     public boolean canGoForward() {
         return index < list.size() + (forwardBias ? 0 : -1);
