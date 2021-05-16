@@ -502,68 +502,6 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
     private transient Icon icon;
 
-//	/**
-//	 * Adds a custom paper size to the deck editor. This is used primarily to
-//	 * add new paper sizes that match expansion boards
-//	 * for different games, but other uses are possible. Note that portrait
-//	 * and landscape variants of the paper type will be generated
-//	 * automatically. Both the width and height must be positive values
-//	 * less than or equal to {@link #MAX_PAPER_SIZE}.
-//	 *
-//	 * <p>The value of <code>marginInPoints</code> determines the size of the margin,
-//	 * which is used as a visual cue for the designer (it does not prevent
-//	 * card placement, although most printers cannot print all the way to their
-//	 * edges). The value of <code>gridInPoints</code> determines the spacing of
-//	 * a set of equidistant grid lines. Cards that are not snapped to other cards
-//	 * will normally snap to the nearest half-grid line. Either or both of these
-//	 * values may be less than 0, in which case default values will be used.
-//	 * The value of <code>marginInPoints</code> may be 0 to indicate no margin.
-//	 * If <code>name</code> starts with an at sign (@), then the rest of the string
-//	 * is used as an interface language key to look up a localized name.
-//	 *
-//	 * @param name the name to use for this paper type, localized if possible
-//	 * @param widthInPoints the width of the paper, in points (1/72 inch)
-//	 * @param heightInPoints the height of the paper, in points
-//	 * @param marginInPoints the visual margin provided around the page in the deck editor, in points
-//	 * @param gridInPoints the spacing of the grid in the deck editor, in points
-//	 * @param isPhysicalPaperSize if <code>true</code>, then this represents an actual paper size; otherwise,
-//	 *     it represents a size that is convenient to design for, like an expansion board
-//	 * @throws NullPointerException if <code>name</code> is <code>null</code>
-//	 * @throws IllegalArgumentException if <code>name</code> is empty or contains only whitespace,
-//	 *     if either dimension is not in the range 0 &lt; <i>d</i> <u>&lt;</u> <code>MAX_PAPER_SIZE</code>,
-//	 *     or if <code>gridInPoints</code> is 0
-//	 */
-//	public static void addCustomPaperType( String name, double widthInPoints, double heightInPoints, double marginInPoints, double gridInPoints, boolean isPhysicalPaperSize ) {
-//		if( name == null ) throw new NullPointerException( "name" );
-//		name = name.trim();
-//		if( name.length() == 0 ) throw new IllegalArgumentException( "empty name" );
-//		if( gridInPoints == 0 ) throw new IllegalArgumentException( "gridInPoints cannot be 0" );
-//		checkPaperDimension( widthInPoints );
-//		checkPaperDimension( heightInPoints );
-//
-//		if( widthInPoints > heightInPoints ) {
-//			double swapTemp = widthInPoints;
-//			widthInPoints = heightInPoints;
-//			heightInPoints = swapTemp;
-//		}
-//
-//		for( int i=1; ; ++i ) {
-//			String ithName = RawSettings.getSetting( "custom-paper-name-" + i );
-//			if( ithName == null ) {
-//				writePaperToIndex( true, i, name, widthInPoints, heightInPoints, marginInPoints, gridInPoints, isPhysicalPaperSize );
-//				break;
-//			} else if( name.equals( ithName ) ){
-//				PaperProperties p = readPaperAtIndex( true, i )[0];
-//				if( p.pageWidth == widthInPoints && p.pageHeight == heightInPoints ) {
-//					// if it is the same name and size, then it is already present
-//					// we will rewrite it to the same index (this lets the margin
-//					// and grid be updated in the future)
-//					writePaperToIndex( true, i, name, widthInPoints, heightInPoints, marginInPoints, gridInPoints, isPhysicalPaperSize );
-//					break;
-//				}
-//			}
-//		}
-//	}
     private static void checkPaperDimension(double d) {
         if (d != d || d <= 0 || d > ca.cgjennings.apps.arkham.deck.Deck.MAX_PAPER_SIZE) {
             throw new IllegalArgumentException("invalid paper measure: " + d);
