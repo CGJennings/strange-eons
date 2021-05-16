@@ -98,7 +98,7 @@ public abstract class MappedURLHandler extends URLStreamHandler {
      * @return an absolute path
      */
     public static String removeRelativePathComponents(String path) {
-        if (path.indexOf("./") < 0) {
+        if (!path.contains("./")) {
             return path;
         }
         LinkedList<String> out = new LinkedList<>();
