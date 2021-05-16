@@ -1097,24 +1097,4 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             }
         }
     }
-
-//	/**
-//	 * @param args the command line arguments
-//	 */
-//	public static void main( String args[] ) {
-//		java.awt.EventQueue.invokeLater( new Runnable() {
-//
-//			public void run() {
-//				ResourceKit.initialize();
-//				ColourDialog dialog = new ColourDialog( new javax.swing.JFrame() );
-//				dialog.addWindowListener( new java.awt.event.WindowAdapter() {
-//
-//					public void windowClosing( java.awt.event.WindowEvent e ) {
-//						System.exit( 0 );
-//					}
-//				} );
-//				dialog.setVisible( true );
-//			}
-//		} );
-//	}
 }
