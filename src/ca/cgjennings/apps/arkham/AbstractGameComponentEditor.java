@@ -934,20 +934,6 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         }
     }
 
-//    /** Return a name for this window. */
-//    public String getDisplayName( int unsavedChangeStarMode ) {
-//		String name = getGameComponent().getFullName();
-//		if( name == null ) name = " ";
-//
-//		if( getFile() == null ) {
-//			name = name + " (" + getFile().getName() + ')';
-//		} else {
-//			name = name + " (" + string( "ae-unsaved" ) + ')';
-//		}
-//        return AbstractGameComponent.filterComponentText( name );
-//    }
-    // UNDO:
-//	private GameComponent previousComponentState = null;
     @Override
     public void dispose() {
         JDesktopPane desktop = getDesktopPane();
