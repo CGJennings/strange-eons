@@ -468,10 +468,6 @@ public class New extends TaskActionTree {
             return true;
         }
 
-//		@Override
-//		public String getCategory() {
-//			return null;
-//		}
         @Override
         public Icon getIcon() {
             if (icon == null) {
@@ -489,20 +485,4 @@ public class New extends TaskActionTree {
             return icon;
         }
     }
-
-//	/**
-//	 * This interface should be implemented by subactions that you add to the
-//	 * "new" action. This information is used by the New | Other... dialog.
-//	 */
-//	public interface Info {
-//		/**
-//		 * Returns a string describing the category that this type belongs to.
-//		 * Actions with the same category will be grouped together. If this
-//		 * returns {@code null}, then this action will be excluded from
-//		 * the Other dialog.
-//		 *
-//		 * @return a category name for the other dialog, or {@code null}
-//		 */
-//		public String getCategory();
-//	}
 }
