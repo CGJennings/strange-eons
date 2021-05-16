@@ -187,7 +187,7 @@ public class IconBorder extends AbstractBorder {
                 if (tempCursor != null) {
                     if (e.getButton() == MouseEvent.BUTTON1) {
                         if (li != null) {
-                            li.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "BORDER_CLICK", e.getModifiers()));
+                            li.actionPerformed(new ActionEvent(c, ActionEvent.ACTION_PERFORMED, "BORDER_CLICK", e.getModifiersEx()));
                         }
                     } else if (e.isPopupTrigger()) {
                         showPopup(e);
