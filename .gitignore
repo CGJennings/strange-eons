@@ -8,6 +8,8 @@ dist/
 nbdist/
 .nb-gradle/
 
+Thumbs.db
+
 # Log files
 *.log
 
