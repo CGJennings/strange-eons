@@ -264,7 +264,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
 
         editor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
         editor.setComponentPopupMenu( editorPopup );
-        editor.setText("println( \"Hello, Other World!\" );");
+        editor.setText("println(\"Hello, Other World!\");");
         editor.selectAll();
         editor.setTokenizer( new ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer() );
 

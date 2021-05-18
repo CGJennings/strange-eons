@@ -4,6 +4,8 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JHeading;
+import ca.cgjennings.ui.JLinkLabel;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -12,6 +14,7 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import resources.Language;
 import resources.ResourceKit;
 
@@ -27,6 +30,8 @@ import resources.ResourceKit;
 public abstract class Theme {
 
     public Theme() {
+        UIManager.put(LINK_LABEL_FOREGROUND, new Color(0x3978ab));
+        UIManager.put("useDarkTheme", isDarkOnLight());
     }
 
     /**
@@ -382,6 +387,10 @@ public abstract class Theme {
      * UI key for console font.
      */
     public static final String CONSOLE_FONT = "eons-confont";
+    /**
+     * UI key for the foreground colour of {@link JLinkLabel}s.
+     */
+    public static final String LINK_LABEL_FOREGROUND = "se-link-label-fg";
     /**
      * Exterior border colour of mesage pop-ups.
      */

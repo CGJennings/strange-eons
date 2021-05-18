@@ -1,6 +1,7 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.platform.DesktopIntegration;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,7 @@ import java.text.AttributedCharacterIterator.Attribute;
 import java.util.HashMap;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 /**
  * A clickable link label.
@@ -59,8 +61,9 @@ public class JLinkLabel extends JLabel {
     }
 
     private void init() {
+        final Color fg = UIManager.getColor(Theme.LINK_LABEL_FOREGROUND);
+        setForeground(fg == null ? Color.BLUE : fg);
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        setForeground(Color.BLUE);
         setFocusable(true);
         HashMap<Attribute, Object> underline = new HashMap<>();
         underline.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
