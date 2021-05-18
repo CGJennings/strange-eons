@@ -302,6 +302,11 @@ public final class StrangeEons {
      * string is 1.6.0_25, then the returned value is the array [1,6,0,25].
      *
      * <p>
+     * The returned array will always include 4 elements. If the version string
+     * has additional tokens, they are dropped. If the version string has fewer
+     * tokens, extra elements in the returned array will be set to 0.
+     *
+     * <p>
      * If for some reason the version cannot be parsed (for example, if the
      * property is not defined or it uses a non-standard format), then the
      * failure will be logged and every element of the returned array will be
@@ -2013,7 +2018,9 @@ public final class StrangeEons {
      */
     private void initCheckJREVersion() {
         int[] ver = getJavaVersion();
-        if (ver.length < 2 || ver[0] != 1 || ver[1] != 8) {
+        final boolean isJava8 = ver[0] == 1 && ver[2] == 8;
+        final boolean isJava9to11 = ver[0] >= 9 && ver[0] <= 11;
+        if (!(isJava8 || isJava9to11)) {
             try {
                 EventQueue.invokeAndWait(() -> {
                     // no L&F installed yet
