@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import java.awt.event.InputEvent;
 import java.awt.Toolkit;
+import java.lang.reflect.Method;
 import java.util.Locale;
 import resources.Language;
 import resources.Settings;
@@ -145,7 +146,10 @@ public interface PluginContext {
      * key on this platform was held down. (For example, it maps to Ctrl on
      * Windows and Command on Mac.)
      */
-    public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+    public static final int MENU = PluginContextFactory.getMenuShortcutKeyMask();
+    // JDK 10+ replace with:
+    // public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
+
 
     // Backwards compatibility
 
