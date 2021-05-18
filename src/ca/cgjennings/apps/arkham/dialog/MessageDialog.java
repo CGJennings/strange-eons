@@ -58,6 +58,7 @@ class MessageDialog extends javax.swing.JDialog {
         Color bg = UIManager.getColor(Theme.MESSAGE_BACKGROUND);
         borderContainer.setBackground(bg);
         messagePanel.setBackground(bg);
+        iconLabel.setBackground(bg);
 
         final boolean modeless = !m.isDialogStyle();
 
@@ -188,7 +189,6 @@ class MessageDialog extends javax.swing.JDialog {
         borderContainer.setBorder( UIManager.getBorder( Theme.MESSAGE_BORDER_INFORMATION ) );
         borderContainer.setLayout(new java.awt.BorderLayout());
 
-        iconLabel.setBackground(java.awt.Color.white);
         iconLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         iconLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 12, 12, 12));
         iconLabel.setOpaque(true);
