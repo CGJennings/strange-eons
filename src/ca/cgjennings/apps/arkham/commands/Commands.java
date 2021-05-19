@@ -24,6 +24,7 @@ import ca.cgjennings.apps.arkham.dialog.InsertCharsDialog;
 import ca.cgjennings.apps.arkham.dialog.InsertImageDialog;
 import ca.cgjennings.apps.arkham.dialog.PluginManager;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
+import ca.cgjennings.apps.arkham.editors.CodeFormatterFactory;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.ConfigureUpdatesDialog;
 import ca.cgjennings.apps.arkham.project.ProjectView;
@@ -31,6 +32,7 @@ import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.EditorCommands;
+import ca.cgjennings.ui.textedit.InputHandler;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import ca.cgjennings.ui.textedit.Tokenizer;
 import java.awt.Color;
@@ -1197,6 +1199,12 @@ public class Commands {
             return false;
         }
     }.key("complete-code");
+
+    /**
+     * Formats (pretty prints) the current editor content, if a suitable formatter is available.
+     */
+    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null);
+
     /**
      * Displays the source code abbreviation table editor.
      */

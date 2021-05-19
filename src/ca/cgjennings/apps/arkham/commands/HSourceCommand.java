@@ -73,10 +73,6 @@ class HSourceCommand extends DelegatedCommand {
         return this;
     }
 
-//	public HSourceCommand forType( CodeEditor.CodeType type ) {
-//		this.type = type;
-//		return this;
-//	}
     @Override
     public void performDefaultAction(ActionEvent e) {
         if (al == null) {
