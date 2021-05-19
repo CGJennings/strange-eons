@@ -91,6 +91,9 @@ class CatPlugins extends FillInPreferenceCategory {
 
         unindent();
         addCheckBox("script-warnings", string("sd-l-js-warnings"), false);
+        indent();
+        addCheckBox("script-ignore-missing-semicolons", string("sd-l-js-semicolons"), false);
+        unindent();
         addCheckBox("script-full-exception-trace", string("sd-l-js-stack-trace"), false);
         addCheckBox("script-compatibility-mode", string("sd-l-js-lib-compat"), false);
 
