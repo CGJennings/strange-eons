@@ -22,6 +22,7 @@ import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.TreeLabelExposer;
 import ca.cgjennings.ui.anim.AnimationUtilities;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -893,7 +894,7 @@ public final class ProjectView extends javax.swing.JPanel {
         findPanel = new javax.swing.JPanel();
         findIcon = new javax.swing.JLabel();
         projFindField =  new JLabelledField() ;
-        ((JLabelledField) projFindField).setTextForeground( new Color(0,0,4) );
+        ((JLabelledField) projFindField).setTextForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         closeFindBtn = new javax.swing.JButton();
         notePanel = new javax.swing.JPanel();
         tabs = new javax.swing.JTabbedPane();
@@ -1035,7 +1036,7 @@ public final class ProjectView extends javax.swing.JPanel {
 
         treePanel.add(titlePanel, java.awt.BorderLayout.NORTH);
 
-        findPanel.setBackground(java.awt.Color.white);
+        findPanel.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         findPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(0, 0, 0)));
         findPanel.setComponentPopupMenu(searchPopup);
         findPanel.setName("findPanel"); // NOI18N
@@ -1051,10 +1052,10 @@ public final class ProjectView extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 0, 4);
         findPanel.add(findIcon, gridBagConstraints);
 
-        projFindField.setBackground( Color.WHITE );
+        projFindField.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         projFindField.setFont(projFindField.getFont().deriveFont(projFindField.getFont().getSize()-1f));
         projFindField.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
-        projFindField.setCaretColor( Color.BLACK );
+        projFindField.setCaretColor(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         projFindField.setComponentPopupMenu(searchPopup);
         projFindField.setName("projFindField"); // NOI18N
         projFindField.addActionListener(new java.awt.event.ActionListener() {
@@ -1069,14 +1070,13 @@ public final class ProjectView extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         findPanel.add(projFindField, gridBagConstraints);
 
-        closeFindBtn.setBackground(java.awt.Color.white);
-        closeFindBtn.setIcon( ResourceKit.getIcon( "ui/controls/close0.png" ) );
+        closeFindBtn.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
+        closeFindBtn.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
+        closeFindBtn.setText("╳");
         closeFindBtn.setBorder(null);
         closeFindBtn.setBorderPainted(false);
         closeFindBtn.setContentAreaFilled(false);
         closeFindBtn.setName("closeFindBtn"); // NOI18N
-        closeFindBtn.setPressedIcon( ResourceKit.getIcon( "ui/controls/close2.png" ) );
-        closeFindBtn.setRolloverIcon( ResourceKit.getIcon( "ui/controls/close1.png" ) );
         closeFindBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeFindBtnActionPerformed(evt);
@@ -1121,8 +1121,9 @@ public final class ProjectView extends javax.swing.JPanel {
 
         noteScroll.setBorder(null);
 
-        noteField.setBackground(new java.awt.Color(255, 255, 176));
-        noteField.setForeground(new java.awt.Color(0, 0, 4));
+        noteField.setBackground(UIManager.getColor(Theme.NOTES_BACKGROUND));
+        noteField.setFont(new java.awt.Font("Monospaced", 0, 14)); // NOI18N
+        noteField.setForeground(UIManager.getColor(Theme.NOTES_FOREGROUND));
         noteField.setLineWrap(true);
         noteField.setTabSize(4);
         noteField.setWrapStyleWord(true);

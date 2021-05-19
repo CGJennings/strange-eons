@@ -267,8 +267,8 @@
             </Container>
             <Container class="javax.swing.JPanel" name="findPanel">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND)" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
@@ -307,7 +307,7 @@
                 <Component class="javax.swing.JTextField" name="projFindField">
                   <Properties>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" Color.WHITE " type="code"/>
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND)" type="code"/>
                     </Property>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                       <FontInfo relative="true">
@@ -320,7 +320,7 @@
                       </Border>
                     </Property>
                     <Property name="caretColor" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" Color.BLACK " type="code"/>
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
                     </Property>
                     <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="searchPopup"/>
@@ -332,7 +332,7 @@
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JLabelledField() "/>
-                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="((JLabelledField) projFindField).setTextForeground( new Color(0,0,4) );"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="((JLabelledField) projFindField).setTextForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));"/>
                   </AuxValues>
                   <Constraints>
                     <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
@@ -342,24 +342,19 @@
                 </Component>
                 <Component class="javax.swing.JButton" name="closeFindBtn">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND)" type="code"/>
                     </Property>
-                    <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" ResourceKit.getIcon( &quot;ui/controls/close0.png&quot; ) " type="code"/>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="&#x2573;"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="null"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                     <Property name="contentAreaFilled" type="boolean" value="false"/>
                     <Property name="name" type="java.lang.String" value="closeFindBtn" noResource="true"/>
-                    <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" ResourceKit.getIcon( &quot;ui/controls/close2.png&quot; ) " type="code"/>
-                    </Property>
-                    <Property name="rolloverIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" ResourceKit.getIcon( &quot;ui/controls/close1.png&quot; ) " type="code"/>
-                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeFindBtnActionPerformed"/>
@@ -480,11 +475,14 @@
                   <SubComponents>
                     <Component class="javax.swing.JTextArea" name="noteField">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="b0" green="ff" red="ff" type="rgb"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.NOTES_BACKGROUND)" type="code"/>
                         </Property>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="4" green="0" red="0" type="rgb"/>
+                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                          <Font name="Monospaced" size="14" style="0"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.NOTES_FOREGROUND)" type="code"/>
                         </Property>
                         <Property name="lineWrap" type="boolean" value="true"/>
                         <Property name="tabSize" type="int" value="4"/>

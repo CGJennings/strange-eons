@@ -30,8 +30,13 @@ import resources.ResourceKit;
 public abstract class Theme {
 
     public Theme() {
+        final boolean dark = isDarkOnLight();
+        UIManager.put("useDarkTheme", dark);
         UIManager.put(LINK_LABEL_FOREGROUND, new Color(0x3978ab));
-        UIManager.put("useDarkTheme", isDarkOnLight());
+        UIManager.put(NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
+        UIManager.put(NOTES_FOREGROUND, Color.BLACK);
+        UIManager.put(PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
+        UIManager.put(PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
     }
 
     /**
@@ -388,6 +393,14 @@ public abstract class Theme {
      */
     public static final String CONSOLE_FONT = "eons-confont";
     /**
+     * UI key for text notes panels (e.g., project notes) background colour.
+     */
+    public static final String NOTES_BACKGROUND = "se-notes-bg";
+    /**
+     * UI key for text notes panels (e.g., project notes) foreground colour.
+     */
+    public static final String NOTES_FOREGROUND = "se-notes-fg";
+    /**
      * UI key for the foreground colour of {@link JLinkLabel}s.
      */
     public static final String LINK_LABEL_FOREGROUND = "se-link-label-fg";
@@ -419,6 +432,14 @@ public abstract class Theme {
      * Message pop-up border for dialog messages.
      */
     public static final String MESSAGE_BORDER_DIALOG = "eons-mbdialog";
+    /**
+     * UI key for project search field background colour.
+     */
+    public static final String PROJECT_FIND_BACKGROUND = "se-projfind-bg";
+    /**
+     * UI key for project search field foreground colour.
+     */
+    public static final String PROJECT_FIND_FOREGROUND = "se-projfind-fg";
     /**
      * An image filter used to create a disabled icon from a regular icon when
      * no disabled icon is explicitly set. If set, the value must be a subclass
