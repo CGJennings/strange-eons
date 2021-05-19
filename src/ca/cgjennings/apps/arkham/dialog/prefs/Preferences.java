@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.dialog.prefs;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -21,6 +22,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import resources.Language;
 import static resources.Language.string;
 
@@ -45,8 +47,8 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        catList.setForeground(Color.BLACK);
-        catList.setBackground(Color.WHITE);
+        catList.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
+        catList.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
         catList.setCellRenderer(new Renderer());
         updateCategories();
         catList.setSelectedIndex(0);
@@ -244,7 +246,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         });
         catScroll.setViewportView(catList);
 
-        prefCards.setBackground(java.awt.Color.white);
+        prefCards.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
         prefCards.setLayout(new java.awt.CardLayout());
         cardScroll.setViewportView(prefCards);
 

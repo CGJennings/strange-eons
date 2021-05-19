@@ -73,6 +73,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
      */
     public CatContextBar() {
         initComponents();
+        FillInPreferenceCategory.style(this);
 
         dstScroll.setRowHeaderView(fauxCollapseBtn);
 

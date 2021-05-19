@@ -78,6 +78,9 @@ public class YuggothTheme extends Theme {
         defaults.put("menu", Color.BLACK);
         defaults.put("menuText", Color.WHITE);
 
+        defaults.put("SplitPane.background", new Color(0x1b1d22));
+
+        defaults.put("TitledBorder.titleColor", new Color(0xeeffff));
 
         /*
         defaults.put("", );
@@ -115,6 +118,14 @@ MenuBar[Enabled].borderPainter
         */
 
     }
+    
+
+    @Override
+    public void modifyLookAndFeelDefaults(UIDefaults defaults) {
+        modifyManagerDefaults(defaults);
+    }
+
+
 
     private static class SolidPainter implements Painter<Component> {
         private final Paint paint;
@@ -127,11 +138,6 @@ MenuBar[Enabled].borderPainter
             g.setPaint(paint);
             g.fillRect(0, 0, width, height);
         }
-    }
-
-    @Override
-    public void modifyLookAndFeelDefaults(UIDefaults defaults) {
-        defaults.put("TitledBorder.titleColor", new Color(0xeeffff));
     }
 
     @Override

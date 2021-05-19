@@ -9,22 +9,27 @@ import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
 import ca.cgjennings.apps.arkham.plugins.PluginContext;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JTip;
-import java.awt.Color;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import resources.ResourceKit;
 import resources.Settings;
 import se.datadosen.component.RiverLayout;
@@ -121,7 +126,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
 
     private void init(String title, BufferedImage iconImage) {
         panel = new JPanel();
-        style(panel);
         RiverLayout layout = new RiverLayout();
         indentHgapOffset = layout.getHgap();
         panel.setLayout(layout);
@@ -140,14 +144,39 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     }
 
     /**
-     * Do default styling on controls.
+     * Apply theme colours to preference controls.
      *
      * @param c
      */
-    private void style(JComponent c) {
-        c.setBackground(Color.WHITE);
-        c.setForeground(Color.BLACK);
+    static void style(JComponent c) {
+        c.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
+        c.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
+        if(c instanceof JLabel) {
+            JLabel label = (JLabel) c;
+            if(label.getFont() != null && label.getFont().getSize2D() > defaultLabelFontSize) {
+                label.setForeground(UIManager.getColor(Theme.PREFS_HEADING));
+            }
+        } else if(c instanceof JTable) {
+            JTable table = (JTable) c;
+        } else if(c instanceof JScrollPane) {
+            c.setOpaque(true);
+        }
+        for(int i=0; i<c.getComponentCount(); ++i) {
+            Component kid = c.getComponent(i);
+            if(kid instanceof JPanel || kid instanceof JLabel || kid instanceof JCheckBox || kid instanceof JRadioButton || kid instanceof JScrollPane) {
+                style((JComponent) kid);
+            }
+        }
         c.setOpaque(true);
+    }
+    private static final float defaultLabelFontSize;
+    static {
+        Font f = new JLabel().getFont();
+        if(f == null) {
+            defaultLabelFontSize = 12f;
+        } else {
+            defaultLabelFontSize = f.getSize2D();
+        }
     }
 
     /**
@@ -315,7 +344,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public JLabel label(String text) {
         JLabel label = new JLabel(text);
-        style(label);
         addIndent(indent);
         panel.add(label, "");
         return label;
@@ -326,7 +354,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public JLabel note(String text) {
         JLabel label = new JLabel(text);
-        style(label);
         Font f = label.getFont();
         label.setFont(f.deriveFont(f.getSize2D() - 1f));
         addIndent(indent);
@@ -343,7 +370,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     public JTip tip(String tipText) {
         JTip tip = new JTip();
         tip.setTipText(tipText);
-        style(tip);
         addIndent(indent);
         panel.add(tip, "");
         return tip;
@@ -361,7 +387,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public SBCheckBox addCheckBox(String key, String text, boolean invert) {
         SBCheckBox b = new SBCheckBox(text, invert);
-        style(b);
         addAuto(key, b);
         addIndent(indent);
         panel.add(b, "");
@@ -379,7 +404,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public SBDropDown addDropDown(String key, String[] labels, String[] values) {
         SBDropDown b = new SBDropDown(labels, values);
-        //style( b );
         addAuto(key, b);
         addIndent(indent);
         panel.add(b, "");
@@ -398,7 +422,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public SBIntSpinner addRange(String key, String label, int min, int max, int stepSize) {
         SBIntSpinner b = new SBIntSpinner(min, max, stepSize);
-        style(b);
         b.getEditor().setOpaque(false);
         addAuto(key, b);
         addIndent(indent);
@@ -406,7 +429,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
         if (label != null) {
             JLabel jlab = new JLabel(label);
             jlab.setLabelFor(b);
-            style(jlab);
             panel.add(jlab, "");
         }
 
@@ -424,14 +446,12 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public JTextField addField(String key, String label, int cols) {
         SBTextField tf = new SBTextField(cols);
-        style(tf);
         addAuto(key, tf);
         addIndent(indent);
 
         if (label != null) {
             JLabel jlab = new JLabel(label);
             jlab.setLabelFor(tf);
-            style(jlab);
             panel.add(jlab, "");
         }
 
@@ -487,7 +507,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             b.addActionListener(pressHandler);
         }
         currentGroup.add(b);
-        style(b);
         addIndent(indent);
         panel.add(b, "");
         return b;
@@ -580,8 +599,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
 
     private JLabel makeHeading(String text, float sizeAdj) {
         JLabel label = new JLabel(text);
-        style(label);
-        label.setForeground(HEADING_COLOR);
         Font f = label.getFont();
         label.setFont(f.deriveFont(Font.BOLD, f.getSize2D() + sizeAdj));
         return label;
@@ -602,10 +619,9 @@ public class FillInPreferenceCategory implements PreferenceCategory {
         indent = Math.max(0, --indent);
     }
 
-    private static final Color HEADING_COLOR = new Color(135, 103, 5);
-
     @Override
     public JPanel getPanel() {
+        style(panel);
         return panel;
     }
 

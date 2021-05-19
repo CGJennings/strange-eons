@@ -1,10 +1,8 @@
 /*
- common.js - version 24
+ common.js - version 25
  Core functionality included in every script.
  */
 
-global = this;
-const self = this;
 const ca = Packages.ca;
 const gamedata = Packages.gamedata;
 const resources = Packages.resources;
