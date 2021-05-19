@@ -579,6 +579,8 @@ use-plugin-icons = yes
 script-optimization-level = 0
 # Enables warning messages from the script parser.
 script-warnings = no
+# Ignore missing semicolon warnings even if other warnings are shown
+script-ignore-missing-semicolons = no
 
 # If yes, enable script compatibility mode; see backwards-compatibility.js
 script-compatibility-mode = no

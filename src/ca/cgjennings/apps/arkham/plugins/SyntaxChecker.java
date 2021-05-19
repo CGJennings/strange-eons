@@ -99,8 +99,7 @@ public class SyntaxChecker extends AbstractUtilityParser {
      * @return {@code true} if the error should be included in the results
      */
     protected boolean acceptError(String message, boolean warning, int offset, int length) {
-        // The default implementation ignores "Code has no side effects" warnings
-        return !WarningErrorReporter.CODE_HAS_NO_SIDE_EFECTS.equals(message);
+        return WarningErrorReporter.acceptError(message, warning);
     }
 
     @Override
