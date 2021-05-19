@@ -14,7 +14,9 @@ import java.util.logging.Level;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class CodeFormatterFactory {
+
     public static interface Formatter {
+
         /**
          * Format and return the given source code string.
          *
@@ -35,29 +37,29 @@ public final class CodeFormatterFactory {
      */
     public static Formatter getFormatter(CodeEditor.CodeType type) {
         Formatter f;
-        switch(type) {
+        switch (type) {
             case PLAIN:
             case PLAIN_UTF8:
-                if(text == null) {
+                if (text == null) {
                     text = new TextFormatter();
                 }
                 f = text;
                 break;
             case AUTOMATION_SCRIPT:
             case JAVASCRIPT:
-                if(js == null) {
+                if (js == null) {
                     js = new JSFormatter();
                 }
                 f = js;
                 break;
             case CSS:
-                if(css == null) {
+                if (css == null) {
                     css = new CSSFormatter();
                 }
                 f = css;
                 break;
             case HTML:
-                if(html == null) {
+                if (html == null) {
                     html = new HTMLFormatter();
                 }
                 f = html;
@@ -74,23 +76,25 @@ public final class CodeFormatterFactory {
     private static Formatter html;
 
     private static class TextFormatter implements Formatter {
+
         private final LineWrapper wrapper;
 
         TextFormatter() {
             wrapper = new LineWrapper();
         }
+
         public String format(String code) {
             String[] lines = code.split("\n");
-            StringBuilder b = new StringBuilder(code.length() * 11/10);
-            for(String li : lines) {
+            StringBuilder b = new StringBuilder(code.length() * 11 / 10);
+            for (String li : lines) {
                 b.append(wrapper.wrap(li)).append('\n');
             }
             return b.toString();
         }
     }
 
-
     private static class ScriptedFormatter implements Formatter {
+
         private String functionName;
         private String sourceFile;
         private SEScriptEngine engine;
@@ -102,14 +106,14 @@ public final class CodeFormatterFactory {
 
         public String format(String code) {
             try {
-                if(engine == null) {
+                if (engine == null) {
                     InputStream in = getClass().getResourceAsStream(sourceFile);
                     engine = new SEScriptEngine();
                     engine.eval(new InputStreamReader(in, StandardCharsets.UTF_8));
                     in.close();
                 }
                 return (String) engine.invokeFunction(functionName, code);
-            } catch(Throwable ex) {
+            } catch (Throwable ex) {
                 StrangeEons.log.log(Level.SEVERE, "formatter failed", ex);
             }
             return code;
