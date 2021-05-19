@@ -25,6 +25,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
 
     public CatTheme() {
         initComponents();
+        FillInPreferenceCategory.style(this);
 
         DefaultComboBoxModel model = new DefaultComboBoxModel(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
         markupFamily.setModel(model);

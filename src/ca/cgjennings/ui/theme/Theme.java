@@ -37,6 +37,9 @@ public abstract class Theme {
         UIManager.put(NOTES_FOREGROUND, Color.BLACK);
         UIManager.put(PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
         UIManager.put(PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
+        UIManager.put(PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
+        UIManager.put(PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
+        UIManager.put(PREFS_HEADING, new Color(135, 103, 5));
     }
 
     /**
@@ -440,6 +443,18 @@ public abstract class Theme {
      * UI key for project search field foreground colour.
      */
     public static final String PROJECT_FIND_FOREGROUND = "se-projfind-fg";
+    /**
+     * UI key for project search field background colour.
+     */
+    public static final String PREFS_BACKGROUND = "se-pref-bg";
+    /**
+     * UI key for project search field foreground colour.
+     */
+    public static final String PREFS_FOREGROUND = "se-pref-fg";
+    /**
+     * UI key for project search field foreground colour.
+     */
+    public static final String PREFS_HEADING = "se-pref-head";
     /**
      * An image filter used to create a disabled icon from a regular icon when
      * no disabled icon is explicitly set. If set, the value must be a subclass

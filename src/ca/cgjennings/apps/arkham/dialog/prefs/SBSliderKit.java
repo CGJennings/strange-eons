@@ -27,6 +27,7 @@ public class SBSliderKit extends javax.swing.JPanel implements SettingBackedCont
      */
     public SBSliderKit(int min, int max, int stepSize, int minorStepSize, String leftSideText, String rightSideText, boolean showSliderValue) {
         initComponents();
+        FillInPreferenceCategory.style(this);
 
         slider.setMinimum(min);
         slider.setMaximum(max);
