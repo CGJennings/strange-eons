@@ -2,7 +2,9 @@ package ca.cgjennings.apps.arkham.commands;
 
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import java.awt.event.ActionEvent;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import resources.AcceleratorTable;
 
 /**
  * Delegated commands are commands that are normally handled by a
@@ -24,6 +26,16 @@ public class DelegatedCommand extends AbstractCommand {
 
     public DelegatedCommand(String nameKey, String iconResource) {
         super(nameKey, iconResource);
+    }
+
+    public DelegatedCommand(String nameKey, String iconResource, String acceleratorKey) {
+        super(nameKey, iconResource);
+        if(acceleratorKey != null) {
+            final KeyStroke ks = AcceleratorTable.getApplicationTable().get(acceleratorKey);
+            if (ks != null) {
+                setAccelerator(ks);
+            }
+        }
     }
 
     /**

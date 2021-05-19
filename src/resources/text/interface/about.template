@@ -48,14 +48,14 @@ for helping to test the earliest versions of Strange Eons 3.
 
 <p>Strange Eons makes use of code from the following libraries, or of code
 	derived from them:</p>
-	<p>JavaScript interpretation is performed using the
+<p>JavaScript interpretation is performed using the
 	<a href="http://developer.mozilla.org/En/Rhino">Mozilla Rhino</a>
 	interpreter under the <a href="http://www.mozilla.org/MPL/2.0/">MPL</a>.
 	The bridge to the Java scripting API is copyright © 2006, Sun Microsystems,
 	Inc. and is released under a BSD license: </p>
-	<p><tt>Copyright (C) 2006 Sun Microsystems, Inc. All rights
+<p><tt>Copyright (C) 2006 Sun Microsystems, Inc. All rights
 	reserved. Use is subject to license terms. </tt></p>
-	<p><tt>Redistribution and use in source and binary forms,
+<p><tt>Redistribution and use in source and binary forms,
 	with or without modification, are permitted provided that the following
 	conditions are met: Redistributions of source code must retain the above
 	copyright notice, this list of conditions and the following disclaimer.
@@ -198,6 +198,32 @@ for helping to test the earliest versions of Strange Eons 3.
 
 <p>LZMA compression was adapted from code placed in the public domain by
    Lasse Collin and Igor Pavlov.
+
+<p>Code formatting makes use of the
+<a href="https://github.com/beautify-web/js-beautify">JS Beautifier</a> group
+of libraries, which are included under an MIT license:</p>
+
+<p><tt>The MIT License (MIT)</tt></p>
+
+<p><tt>Copyright (c) 2007-2018 Einar Lielmanis, Liam Newman, and contributors.</tt></p>
+
+<p><tt>Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the "Software"), to
+deal in the Software without restriction, including without limitation the
+rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</tt></p>
+
+<p><tt>The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.</tt></p>
+
+<p><tt>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</tt></p>
 
 <p>Some icons in Strange Eons are taken or adapted from the
 <i><a href="http://www.famfamfam.com/lab/icons/silk/">Silk</a></i>

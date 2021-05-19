@@ -877,6 +877,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         javax.swing.JMenuItem makeBundleItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem testBundleItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator27 = new javax.swing.JPopupMenu.Separator();
+        formatCodeItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem trimLinesItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator16 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem srcShiftUpItem = new javax.swing.JMenuItem();
@@ -1403,6 +1404,10 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         jSeparator27.setName("jSeparator27"); // NOI18N
         sourceMenu.add(jSeparator27);
+
+        formatCodeItem.setAction(Commands.FORMAT_CODE);
+        formatCodeItem.setName("formatCodeItem"); // NOI18N
+        sourceMenu.add(formatCodeItem);
 
         trimLinesItem.setAction( Commands.REMOVE_TRAILING_SPACES );
         trimLinesItem.setName("trimLinesItem"); // NOI18N
@@ -2294,6 +2299,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenuItem exportItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem findInProjectItem;
+    private javax.swing.JMenuItem formatCodeItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JCheckBoxMenuItem inkSaverMenuItem;
     private javax.swing.JMenuItem insertCharsItem;

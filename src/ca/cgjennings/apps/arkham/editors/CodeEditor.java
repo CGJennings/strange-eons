@@ -102,7 +102,6 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     private CodeEditor() {
         initComponents();
-//		editor.putClientProperty( ContextBar.BAR_INSIDE_PROPERTY, Boolean.TRUE );
         editor.putClientProperty(ContextBar.BAR_LEADING_SIDE_PROPERTY, Boolean.TRUE);
 
         sideBarPanel.setVisible(false);
@@ -960,14 +959,6 @@ public class CodeEditor extends AbstractSupportEditor {
         findField.requestFocusInWindow();
     }
 
-//	@Override
-//	public int getSupportedOperations() {
-//		int base = SUPPORTS_ALL_STANDARD_OPERATIONS|SUPPORTS_FIND;
-//		if( !findEditor().isEditable() ) {
-//			base = base & ~(SUPPORTS_CLEAR|SUPPORTS_SAVE);
-//		}
-//		return base;
-//	}
     @Override
     public boolean canPerformCommand(AbstractCommand command) {
         if (command == Commands.FIND || command == Commands.RUN_FILE || command == Commands.DEBUG_FILE) {
@@ -979,7 +970,7 @@ public class CodeEditor extends AbstractSupportEditor {
     @Override
     public boolean isCommandApplicable(AbstractCommand command) {
         if (!getEditor().isEditable()) {
-            if ((command == Commands.CLEAR) || (command == Commands.SAVE) || (command == Commands.SAVE_AS)) {
+            if ((command == Commands.CLEAR) || (command == Commands.SAVE) || (command == Commands.FORMAT_CODE)) {
                 return false;
             }
         }
@@ -991,6 +982,8 @@ public class CodeEditor extends AbstractSupportEditor {
                 return true;
             }
             return false;
+        } else if (command == Commands.FORMAT_CODE) {
+            return CodeFormatterFactory.getFormatter(getCodeType()) != null;
         }
 
         return super.isCommandApplicable(command);
@@ -1004,6 +997,8 @@ public class CodeEditor extends AbstractSupportEditor {
             if (isCommandApplicable(command)) {
                 run(command == Commands.DEBUG_FILE);
             }
+        } else if (command == Commands.FORMAT_CODE) {
+            format();
         } else {
             super.performCommand(command);
         }
@@ -1629,6 +1624,11 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
+        if(isCommandApplicable(Commands.FORMAT_CODE)) {
+            menu.add(Commands.FORMAT_CODE);
+            menu.addSeparator();
+        }
+
         if (type == CodeType.JAVASCRIPT) {
             menu.add(Commands.RUN_FILE);
             if (ScriptDebugging.isInstalled()) {
@@ -1663,6 +1663,22 @@ public class CodeEditor extends AbstractSupportEditor {
         menu.add(Commands.PASTE);
 
         return menu;
+    }
+
+    /**
+     * Format the code in the code editor, if a suitable formatter is available.
+     * Otherwise, do nothing.
+     */
+    public void format() {
+        CodeFormatterFactory.Formatter f = CodeFormatterFactory.getFormatter(type);
+        if(f != null) {
+            int line = editor.getCaretLine();
+            String formatted = f.format(editor.getText());
+            editor.setText(formatted);
+            int offset = editor.getLineCount() < line ? editor.getDocumentLength() : editor.getLineStartOffset(line);
+            editor.setCaretPosition(line);
+            editor.scrollToCaret();
+        }
     }
 
     /**
