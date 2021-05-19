@@ -33,6 +33,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
      */
     public CatLanguage() {
         initComponents();
+        FillInPreferenceCategory.style(this);
     }
 
     /**
