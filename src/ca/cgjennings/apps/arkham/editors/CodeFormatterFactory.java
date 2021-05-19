@@ -80,7 +80,12 @@ public final class CodeFormatterFactory {
             wrapper = new LineWrapper();
         }
         public String format(String code) {
-            return wrapper.wrap(code);
+            String[] lines = code.split("\n");
+            StringBuilder b = new StringBuilder(code.length() * 11/10);
+            for(String li : lines) {
+                b.append(wrapper.wrap(li)).append('\n');
+            }
+            return b.toString();
         }
     }
 

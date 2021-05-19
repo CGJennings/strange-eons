@@ -36,7 +36,7 @@ public class LineWrapper {
      * would appear on the following line)
      */
     public LineWrapper(String breakText, int firstWrap, int afterWrap, int tolerance) {
-        this.breakText = breakText;
+        this.breakText = breakText == null ? "\n" : breakText;
         this.firstWrap = firstWrap;
         this.afterWrap = afterWrap;
         this.tolerance = tolerance;

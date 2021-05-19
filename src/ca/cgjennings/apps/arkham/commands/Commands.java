@@ -1203,7 +1203,7 @@ public class Commands {
     /**
      * Formats (pretty prints) the current editor content, if a suitable formatter is available.
      */
-    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null);
+    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null, "format-code");
 
     /**
      * Displays the source code abbreviation table editor.
