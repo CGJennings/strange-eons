@@ -78,6 +78,15 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
             // add top level functions
             String names[] = { /*"bindings", "scope",*/"sync"};
             topLevel.defineFunctionProperties(names, SEScriptEngine.class, ScriptableObject.DONTENUM);
+
+            // define some standard variables that refer to the global scope
+            Scriptable global = getRuntimeScope(context);
+            // Node.js "global"
+            global.put("global", global, global);
+            // Web Worker "self"
+            global.put("self", global, global);
+            // ECMAScript 2020 "globalThis"
+            global.put("globalThis", global, global);
         } finally {
             Context.exit();
         }
