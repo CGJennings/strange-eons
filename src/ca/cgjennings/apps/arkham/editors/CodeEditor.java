@@ -609,6 +609,7 @@ public class CodeEditor extends AbstractSupportEditor {
         });
 
         replaceField.setColumns(12);
+        replaceField.setText(Settings.getUser().get(KEY_LAST_REPLACE));
         replaceField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replaceActionPerformed(evt);
@@ -748,7 +749,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 EventQueue.invokeLater( new Runnable() {
                     @Override
                     public void run() {
-                        JSourceCodeEditor editor = getEditor();
+                        ca.cgjennings.ui.textedit.JSourceCodeEditor editor = getEditor();
                         if( e.getKeyChar() == 27 ) { // Escape
                             editor.requestFocusInWindow();
                             findPanel.setVisible( false );
@@ -933,7 +934,11 @@ public class CodeEditor extends AbstractSupportEditor {
 
     public void find() {
         String sel = getEditor().getSelectedText();
-        if (!sel.isEmpty()) {
+        if (sel.isEmpty()) {
+           if (findField.getText().isEmpty()) {
+               findField.setText(Settings.getUser().get(KEY_LAST_FIND));
+           }
+        } else {
             findField.setText(sel);
         }
         if (!findPanel.isVisible()) {
@@ -951,7 +956,6 @@ public class CodeEditor extends AbstractSupportEditor {
                     getRootPane().validate();
                 }
             }.play();
-
         } else {
             findNextBtn.doClick();
         }
@@ -1308,6 +1312,9 @@ public class CodeEditor extends AbstractSupportEditor {
         }
     }//GEN-LAST:event_navListMousePressed
 
+    private static final String KEY_LAST_FIND = "last-find";
+    private static final String KEY_LAST_REPLACE = "last-replace";
+
     public static final String KEY_SHOW_NAVIGATOR = "show-source-navigator";
     private static boolean navIsVisible = Settings.getShared().getYesNo(KEY_SHOW_NAVIGATOR);
 
@@ -1321,6 +1328,8 @@ public class CodeEditor extends AbstractSupportEditor {
 
     private Pattern createPattern() {
         String patternText = findField.getText();
+        Settings.getUser().set(KEY_LAST_FIND, patternText);
+        Settings.getUser().set(KEY_LAST_REPLACE, replaceField.getText());
         if (errorHighlight != null) {
             findField.getHighlighter().removeHighlight(errorHighlight);
         }
