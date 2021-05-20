@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 
 /**
- * The primary interface to TypeScript language services.
+ * The primary method of accessing TypeScript language services.
  * This class allows you to hand off service requests to be performed in
  * the background. A callback that you provide will be called with
  * the result once it is available.
@@ -19,6 +19,16 @@ import java.util.logging.Level;
  */
 public final class TypeScript {
     private TypeScript() {
+    }
+
+    /**
+     * Gets a string describing which version of TypeScript is being used.
+     *
+     * @param callback will be called with a non-null version string,
+     *    such as "4.2.0-dev"
+     */
+    public static void getVersion(Consumer<String> callback) {
+        post(RequestType.VERSION, callback);
     }
 
     /**
@@ -32,9 +42,20 @@ public final class TypeScript {
         post(RequestType.TRANSPILE, callback, Objects.requireNonNull(source, "source"));
     }
 
+    /**
+     * Restarts the service provider. This can be called during development
+     * to pick up changes to the service implementation without restarting
+     * the app.
+     */
+    public static void restart() {
+        post(RequestType.RELOAD, null);
+    }
+
     /** The types of request that can be posted. */
     private static enum RequestType {
+        VERSION,
         TRANSPILE,
+        RELOAD
     }
 
     /** Queues up a request to be performed later in the background. */
@@ -50,13 +71,21 @@ public final class TypeScript {
     private static void requestHandler() {
         try {
             ts = new TypeScriptServiceProvider();
+            TypeScriptServices tss = ts.getServices();
             for(;;) {
                 Request next = queue.poll(365L, TimeUnit.DAYS);
                 if(next == null) continue;
                 StrangeEons.log.log(Level.INFO, "received {0} request", next.type);
                 switch(next.type) {
+                    case VERSION:
+                        reply(next, tss.getVersion());
+                        break;
                     case TRANSPILE:
-                        transpile(next);
+                        reply(next, tss.transpile((String)next.args[0]));
+                        break;
+                    case RELOAD:
+                        ts = new TypeScriptServiceProvider();
+                        tss = ts.getServices();
                         break;
                     default:
                         throw new AssertionError();
@@ -67,11 +96,6 @@ public final class TypeScript {
         } catch(Exception ex) {
             StrangeEons.log.log(Level.SEVERE, "service error", ex);
         }
-    }
-
-    /** Handle a TRANSPILE request. */
-    private static void transpile(Request r) {
-        reply(r, ts.transpile((String) r.args[0]));
     }
     
     /** Posts a string result back to the caller. */

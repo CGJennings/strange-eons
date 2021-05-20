@@ -17,6 +17,7 @@ import javax.script.ScriptException;
  */
 public class TypeScriptServiceProvider {
     private SEScriptEngine engine;
+    private TypeScriptServices services;
     private Object ts;
     private Object json;
 
@@ -26,101 +27,51 @@ public class TypeScriptServiceProvider {
      * instantiated in a separate thread.
      */
     public TypeScriptServiceProvider() {
-        try (Reader lib = readTSServicesLib()) {
-            if(lib == null) throw new AssertionError("could not load services lib");
+        try {
             engine = new SEScriptEngine();
-            engine.eval(lib);
-            ts = engine.get("ts");
-            json = engine.get("JSON");
-        } catch(ScriptException | IOException ex) {
+            load("typescriptServices.js");
+            load("javaBridge.js");
+            final Object bridgeImpl = engine.get("bridge");
+            services = engine.getInterface(bridgeImpl, TypeScriptServices.class);
+        } catch(ScriptException ex) {
             throw new AssertionError("failed to parse library", ex);
         }
     }
-    
-    private static String unwrapString(Object s) {
-        return s == null ? null :  String.valueOf(s);
-    }
-
-    public String transpile(String source) {
-        return unwrapString(ts("transpile", source));
-    }
-
-
 
     /**
-     * Invoke a method on the TypeScript service instance. If the method does
-     * not exist or the attempt results in an error, a message is logged and
-     * null is returned.
-     *
-     * @param method the method name
-     * @param args arguments to pass
-     * @return the return value
+     * Returns an object that provides direct, synchronous access to the
+     * available services. The {@link TypeScript} class provides the same
+     * services asynchronously.
+     * 
+     * @return a non-null concrete implementation of the service interface
      */
-    public Object ts(String method, Object... args) {
-        return invoke(ts, method, args);
+    public TypeScriptServices getServices() {
+        return services;
     }
 
     /**
-     * Invoke a method or function on any object in the TypeScript service runtime.
-     * If the method does not exist or the attempt results in an error, a
-     * message is logged and null is returned.
+     * Returns the TypeScript compiler API script object. This can be used
+     * to access the API directly from script code.
      *
-     * @param thisObj the script object of the instance whose method will be invoked;
-     *   if null, then a function in the global scope with the given name is called instead
-     * @param method the method name
-     * @param args arguments to pass
-     * @return the return value
+     * @return the compiler API
      */
-    public Object invoke(Object thisObj, String method, Object... args) {
-        try {
-            if(thisObj == null) {
-                return engine.invokeFunction(method, args);
-            }
-            return engine.invokeMethod(thisObj, method, args);
-        } catch(NoSuchMethodException nsm) {
-            StrangeEons.log.log(Level.SEVERE, "no such method: {0}", method);
-        } catch(ScriptException ex) {
-            StrangeEons.log.log(Level.SEVERE, "invoke failed: " + method, ex);
+    public Object getTs() {
+        return engine.get("ts");
+    }
+
+    /**
+     * Evaluate part of the JS implementation in the underlying script engine.
+     * @param resourceFile the file to evaluate, relative to this class
+     */
+    private void load(String resourceFile) throws ScriptException {
+        try(Reader r = new InputStreamReader(
+                    TypeScriptServiceProvider.class.getResourceAsStream(resourceFile),
+                    StandardCharsets.UTF_8
+            )) {
+            engine.eval(r);
+            r.close();
+        } catch(IOException ex) {
+            throw new AssertionError("unable to load " + resourceFile, ex);
         }
-        return null;
-    }
-
-    /**
-     * Get an object by name from the global scope.
-     *
-     * @param nameInGlobalScope name of the object
-     * @return the object's value, or null if undefined
-     */
-    public Object object(String nameInGlobalScope) {
-        return engine.get(nameInGlobalScope);
-    }
-
-    /**
-     * Returns a JavaScript string literal equivalent to the specified unsafe
-     * string.
-     *
-     * @param unsafe the string to convert to a string literal
-     * @return a JavaScript string literal of the string, or null if null was
-     *   specified
-     */
-    public String quote(String unsafe) {
-        if(unsafe == null) return unsafe;
-        return unwrapString(invoke(json, "stringify", unsafe));
-    }
-
-    /**
-     * Returns an input stream reader that reads the bundled TypeScript
-     * language services library.
-     * 
-     * <p>
-     * The bundled library can be updated from
-     * <a href="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js">this URL</a>.
-     * 
-     * @return a reader for the library source code, or null if it is missing
-     */
-    private static Reader readTSServicesLib() {
-        InputStream in = TypeScriptServiceProvider.class.getResourceAsStream("typescriptServices.js");
-        if(in == null) return null;
-        return new InputStreamReader(in, StandardCharsets.UTF_8);
     }
 }
