@@ -29,6 +29,7 @@ public class TypeScriptServiceProvider {
     public TypeScriptServiceProvider() {
         try {
             engine = new SEScriptEngine();
+            // https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js
             load("typescriptServices.js");
             load("javaBridge.js");
             final Object bridgeImpl = engine.get("bridge");
