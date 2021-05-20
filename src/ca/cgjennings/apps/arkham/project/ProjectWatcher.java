@@ -261,9 +261,6 @@ final class ProjectWatcher {
         }
         synchronized (updateQueue) {
             enqueue(null, folder);
-// use to identify source of unnecessary explicit synch calls
-//Throwable t = new Throwable();
-//t.printStackTrace();
             processPendingQueueEvents();
         }
     }
