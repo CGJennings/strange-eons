@@ -235,6 +235,9 @@
             <Component class="javax.swing.JTextField" name="replaceField">
               <Properties>
                 <Property name="columns" type="int" value="12"/>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Settings.getUser().get(KEY_LAST_REPLACE)" type="code"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="replaceActionPerformed"/>
