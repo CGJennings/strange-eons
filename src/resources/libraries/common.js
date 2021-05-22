@@ -1,5 +1,5 @@
 /*
- common.js - version 25
+ common.js - version 26
  Core functionality included in every script.
  */
 
@@ -43,7 +43,7 @@ if (Settings.shared.getBoolean('script-warnings')) {
         frame = Math.min(Math.max(0, stack.length - 1), frame);
         ca.cgjennings.script.mozilla.javascript.Context.reportWarning(
                 message, stack[frame].file, stack[frame].line, null, -1
-        );
+                );
     };
     Error.deprecated = function deprecated(message, frame) {
         message = '[DEPRECATED] ' + (message || "unspecified feature");
@@ -146,7 +146,7 @@ const sprintf = function sprintf() {
     return arkham.plugins.LibImpl.sprintf(
             loc, arguments[firstObj - 1],
             Array.prototype.slice.call(arguments, firstObj)
-    );
+            );
 };
 
 const print = function print() {
@@ -215,7 +215,7 @@ const string = function string(key) {
                 useLibrary.__$.getUiLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-        );
+                );
     }
     return str;
 };
@@ -232,7 +232,7 @@ const gstring = function gstring(key) {
                 useLibrary.__$.getGameLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-        );
+                );
     }
     return str;
 };
@@ -410,6 +410,98 @@ String.prototype.dontEnum(
 Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
 };
+
+// CommonJS-style require function
+
+(function () {
+    const cache = {};
+
+    function protocolOf(path) {
+        let protocol = /^[^:]*:\/*/.exec(path);
+        return protocol == null ? "" : protocol[0];
+    }
+
+    function partsOf(base, relative) {
+        if (base == null)
+            throw new Error("null base");
+        base = String(base);
+        if (relative != null) {
+            relative = String(relative);
+            if (protocolOf(relative).length > 0) {
+                return partsOf(relative, null);
+            }
+            if ((relative == "." || relative.startsWith("./")) && !base.endsWith("/")) {
+                relative = "." + relative;
+            }
+        }
+        let protocol = protocolOf(String(base));
+        base = base.substring(protocol.length);
+        if (relative != null) {
+            relative = String(relative);
+            if (relative.startsWith("/")) {
+                base = relative.substring(1);
+            } else {
+                if (!base.endsWith("/")) {
+                    base += "/" + relative;
+                } else {
+                    base += relative;
+                }
+            }
+        }
+        let normal = base.split("/").reduce((a, v) => {
+            if (v == "..") {
+                a.pop();
+            } else if (v != ".") {
+                a.push(v);
+            }
+            return a;
+        }, []).join("/");
+        normal = normal.replace(/^\/*/, "");
+        const i = normal.lastIndexOf("/") + protocol.length + 1;
+        const path = protocol + normal;
+        return {
+            path: path,
+            parent: path.substring(0, i),
+            file: path.substring(i)
+        };
+    }
+
+    function requireImpl(moduleBase, moduleFile) {
+        // import standard library for global side effects
+        if (!moduleFile.includes("/")) {
+            useLibrary(moduleFile);
+            return globalThis;
+        }
+
+        const parts = partsOf(moduleBase, moduleFile);
+
+        if (cache[parts.path] !== undefined) {
+            return cache[parts.path];
+        }
+
+        const src = arkham.project.ProjectUtilities.getResourceText(parts.path);
+        if (src === null) {
+            throw new Error("module not found: " + parts.path);
+        }
+
+        parts.exports = {};
+        (new Function("require", "module", "exports", "__filename", "__dirname", src))
+                (createRequire(parts.parent), parts, parts.exports, parts.file, parts.parent);
+        cache[parts.path] = parts.exports;
+        return parts.exports;
+    }
+
+    function createRequire(moduleBase) {
+        return function require(moduleFile) {
+            return requireImpl(moduleBase, moduleFile);
+        };
+    }
+
+    globalThis.require = function require(moduleFile) {
+        globalThis.require = createRequire(partsOf(globalThis["javax.script.filename"]||sourcefile, ".").parent);
+        return globalThis.require(moduleFile);
+    }
+})();
 
 if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
     useLibrary("backwards-compatibility");
