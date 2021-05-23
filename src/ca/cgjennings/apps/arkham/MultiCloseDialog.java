@@ -4,11 +4,13 @@ import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.IconProvider;
 import ca.cgjennings.ui.JIconList;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.LinkedList;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import static resources.Language.string;
 import resources.ResourceKit;
 import resources.Settings;
@@ -175,7 +177,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         jSeparator1 = new javax.swing.JSeparator();
         saveSelBtn = new javax.swing.JButton();
         discardSelBtn = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
+        headBannerPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         warningIcon = new javax.swing.JLabel();
@@ -217,38 +219,40 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
             }
         });
 
-        jPanel1.setBackground(java.awt.Color.white);
-        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
+        headBannerPanel.setBackground(UIManager.getColor(Theme.HEAD_BANNER_BACKGROUND));
+        headBannerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
+        jLabel2.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         jLabel2.setText(string("app-l-multiclose-2")); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 6, 0));
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel1.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         jLabel1.setText(string("app-l-multiclose-1")); // NOI18N
 
         warningIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/warning.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout headBannerPanelLayout = new javax.swing.GroupLayout(headBannerPanel);
+        headBannerPanel.setLayout(headBannerPanelLayout);
+        headBannerPanelLayout.setHorizontalGroup(
+            headBannerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headBannerPanelLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addComponent(warningIcon)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(headBannerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        headBannerPanelLayout.setVerticalGroup(
+            headBannerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(headBannerPanelLayout.createSequentialGroup()
                 .addGap(6, 6, 6)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(headBannerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(warningIcon)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headBannerPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(1, 1, 1)
                         .addComponent(jLabel2)))
@@ -275,7 +279,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(saveSelBtn)))
                 .addContainerGap())
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(headBannerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cancelBtn, discardAllBtn, saveAllBtn});
@@ -285,7 +289,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(headBannerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(fileScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 159, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -366,9 +370,9 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     private javax.swing.JButton discardSelBtn;
     private javax.swing.JList fileList;
     private javax.swing.JScrollPane fileScroll;
+    private javax.swing.JPanel headBannerPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JButton saveAllBtn;
     private javax.swing.JButton saveSelBtn;

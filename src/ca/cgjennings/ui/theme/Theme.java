@@ -40,6 +40,8 @@ public abstract class Theme {
         UIManager.put(PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
         UIManager.put(PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
         UIManager.put(PREFS_HEADING, new Color(135, 103, 5));
+        UIManager.put(HEAD_BANNER_BACKGROUND, UIManager.get(PREFS_BACKGROUND));
+        UIManager.put(HEAD_BANNER_FOREGROUND, UIManager.get(PREFS_FOREGROUND));
     }
 
     /**
@@ -455,6 +457,18 @@ public abstract class Theme {
      * UI key for project search field foreground colour.
      */
     public static final String PREFS_HEADING = "se-pref-head";
+    /**
+     * UI key for the "head banner" foreground colour. This is a rectangular
+     * banner with higher contrast than a standard label-on-panel.
+     * The most prominent example is the {@link MultiCloseDialog}.
+     */
+    public static final String HEAD_BANNER_FOREGROUND = "se-headbanner-fg";
+    /**
+     * UI key for the "head banner" backround colour. This is a rectangular
+     * banner with higher contrast than a standard label-on-panel.
+     */
+    public static final String HEAD_BANNER_BACKGROUND = "se-headbanner-bg";
+
     /**
      * An image filter used to create a disabled icon from a regular icon when
      * no disabled icon is explicitly set. If set, the value must be a subclass
