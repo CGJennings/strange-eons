@@ -411,97 +411,17 @@ Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
 };
 
-// CommonJS-style require function
-
-(function () {
-    const cache = {};
-
-    function protocolOf(path) {
-        let protocol = /^[^:]*:\/*/.exec(path);
-        return protocol == null ? "" : protocol[0];
+function require(modulePath) {
+    if (!modulePath.includes("/")) {
+        useLibrary(modulePath);
+        return globalThis;
     }
-
-    function partsOf(base, relative) {
-        if (base == null)
-            throw new Error("null base");
-        base = String(base);
-        if (relative != null) {
-            relative = String(relative);
-            if (protocolOf(relative).length > 0) {
-                return partsOf(relative, null);
-            }
-            if ((relative == "." || relative.startsWith("./")) && !base.endsWith("/")) {
-                relative = "." + relative;
-            }
-        }
-        let protocol = protocolOf(String(base));
-        base = base.substring(protocol.length);
-        if (relative != null) {
-            relative = String(relative);
-            if (relative.startsWith("/")) {
-                base = relative.substring(1);
-            } else {
-                if (!base.endsWith("/")) {
-                    base += "/" + relative;
-                } else {
-                    base += relative;
-                }
-            }
-        }
-        let normal = base.split("/").reduce((a, v) => {
-            if (v == "..") {
-                a.pop();
-            } else if (v != ".") {
-                a.push(v);
-            }
-            return a;
-        }, []).join("/");
-        normal = normal.replace(/^\/*/, "");
-        const i = normal.lastIndexOf("/") + protocol.length + 1;
-        const path = protocol + normal;
-        return {
-            path: path,
-            parent: path.substring(0, i),
-            file: path.substring(i)
-        };
+    if (require.cache == null) {
+        require.cache = {};
     }
-
-    function requireImpl(moduleBase, moduleFile) {
-        // import standard library for global side effects
-        if (!moduleFile.includes("/")) {
-            useLibrary(moduleFile);
-            return globalThis;
-        }
-
-        const parts = partsOf(moduleBase, moduleFile);
-
-        if (cache[parts.path] !== undefined) {
-            return cache[parts.path];
-        }
-
-        const src = arkham.project.ProjectUtilities.getResourceText(parts.path);
-        if (src === null) {
-            throw new Error("module not found: " + parts.path);
-        }
-
-        parts.exports = {};
-        (new Function("require", "module", "exports", "__filename", "__dirname", src))
-                (createRequire(parts.parent), parts, parts.exports, parts.file, parts.parent);
-        cache[parts.path] = parts.exports;
-        return parts.exports;
-    }
-
-    function createRequire(moduleBase) {
-        return function require(moduleFile) {
-            return requireImpl(moduleBase, moduleFile);
-        };
-    }
-
-    globalThis.require = function require(moduleFile) {
-        globalThis.require = createRequire(partsOf(globalThis["javax.script.filename"]||sourcefile, ".").parent);
-        return globalThis.require(moduleFile);
-    }
-})();
+    let module = {exports: {}};
+    return arkham.plugins.LibImpl.require(sourcefile, modulePath, module, module.exports, require.cache);
+}
 
 if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
     useLibrary("backwards-compatibility");
