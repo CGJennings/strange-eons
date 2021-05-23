@@ -399,9 +399,7 @@ public class BundleInstaller {
             try {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
-                if (StrangeEons.getBuildNumber() == 99999) {
-                    installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
-                }
+                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
