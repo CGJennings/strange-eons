@@ -1,11 +1,16 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.project.ProjectUtilities;
+import ca.cgjennings.script.mozilla.javascript.Scriptable;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.script.ScriptException;
+import resources.ResPath;
 
 /**
  * Helper methods that support the implementation of the script library.
@@ -266,5 +271,45 @@ public final class LibImpl {
             o = ((Number) o).longValue();
         }
         return o;
+    }
+
+    /**
+     * Implements CommonJS require() support.
+     *
+     * @param source the sourcefile
+     * @param modulePath the relative module path to load
+     * @param module the module object to pass to the module
+     * @param exports the module.exports object to pass to the module
+     * @returns an object containing the module exports
+     */
+    public static Object require(String source, String modulePath, Scriptable module, Scriptable exports, Scriptable cache) throws IOException {
+        ResPath parentPath = new ResPath(source).getParent();
+        ResPath path = parentPath.resolve(modulePath);
+        modulePath = path.toString();
+
+        if (cache.has(modulePath, cache)) {
+            return cache.get(modulePath, cache);
+        }
+
+        String src = ProjectUtilities.getResourceText(modulePath);
+        if(src == null) throw new IOException("file not found: " + modulePath);
+
+        Object exported;
+        ScriptMonkey m = new ScriptMonkey(modulePath);
+        if(modulePath.endsWith(".json")) {
+            m.bind("jsonData", src);
+            exported = m.eval("JSON.parse(jsonData)");
+        } else {
+            m.bind("__filename", path.getName());
+            m.bind("__dirname", parentPath.toString());
+            m.bind("module", module);
+            m.bind("exports", exports);
+            m.bind("modCache", cache);
+            m.eval("require.cache=modCache;delete modCache;");
+            m.eval(src);
+            exported = module.get("exports", module);
+        }
+        cache.put(modulePath, cache, exported);
+        return exported;
     }
 }
