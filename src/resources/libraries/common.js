@@ -420,7 +420,7 @@ function require(modulePath) {
         require.cache = {};
     }
     let module = {exports: {}};
-    return arkham.plugins.LibImpl.require(sourcefile, modulePath, module, module.exports, require.cache);
+    return arkham.plugins.LibImpl.require(globalThis["javax.script.filename"], modulePath, module, module.exports, require.cache);
 }
 
 if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
