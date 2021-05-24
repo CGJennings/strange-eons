@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.PluginBundle;
+import ca.cgjennings.platform.DarkModeDetector;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.MnemonicInstaller;
@@ -62,6 +63,8 @@ public class ThemeInstaller {
 
     private static final String FALLBACK_THEME_CLASS = THEME_DAGON_CLASS;
     private static final String KEY_THEME_CLASS = "theme";
+    private static final String KEY_DARK_THEME_CLASS = "dark-theme";
+    private static final String KEY_AUTO_DARK = "auto-select-dark-theme";
     private static final String KEY_USE_TEST_THEME = "test-bundle-use-testing-theme";
 
     private static Object platformHelper;
@@ -150,7 +153,15 @@ public class ThemeInstaller {
 
     private static Theme instantiateTheme() {
         Theme theme;
-        String themeClass = Settings.getShared().get(KEY_THEME_CLASS);
+        String themeClass = Settings.getShared().get(KEY_THEME_CLASS);;
+        if (Settings.getShared().getYesNo(KEY_AUTO_DARK)) {
+            if (new DarkModeDetector().detect()) {
+                themeClass = Settings.getShared().get(KEY_DARK_THEME_CLASS);
+                StrangeEons.log.info("detected dark mode system setting");
+            } else {
+                StrangeEons.log.info("did not detect a dark mode system setting");
+            }
+        }
         if (themeClass == null || themeClass.length() == 0) {
             themeClass = FALLBACK_THEME_CLASS;
         }
