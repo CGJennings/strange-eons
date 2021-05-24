@@ -353,6 +353,7 @@ public final class ImageUtilities {
      * @return the content of the icon, as an image
      */
     public static BufferedImage iconToImage(Icon i) {
+        if (i == null) return null;
         if (i instanceof ThemedIcon) {
             return ((ThemedIcon) i).getImage();
         }
@@ -362,7 +363,6 @@ public final class ImageUtilities {
                 return (BufferedImage) ii;
             }
         }
-
         BufferedImage img = new BufferedImage(i.getIconWidth(), i.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = img.createGraphics();
         try {
@@ -380,6 +380,7 @@ public final class ImageUtilities {
      * @return a version of the icon with a suitable "disabled" effect applied
      */
     public static ImageIcon createDisabledIcon(Icon src) {
+        if (src == null) return null;
         synchronized (ImageUtilities.class) {
             if (disFilter == null) {
                 disFilter = new AbstractPixelwiseFilter() {
@@ -417,6 +418,7 @@ public final class ImageUtilities {
      * @return a version of the icon with a ghosting effect applied
      */
     public static ImageIcon createGhostedIcon(Icon src) {
+        if (src == null) return null;
         synchronized (ImageUtilities.class) {
             if (csFilter == null) {
                 csFilter = new CheckeredScreenFilter();
@@ -433,6 +435,7 @@ public final class ImageUtilities {
      * @return a greyscale version of the icon
      */
     public static ImageIcon createDesaturatedIcon(Icon src) {
+        if (src == null) return null;
         return new ImageIcon(desaturate(iconToImage(src)));
     }
 

@@ -2018,7 +2018,7 @@ public final class StrangeEons {
      */
     private void initCheckJREVersion() {
         int[] ver = getJavaVersion();
-        final boolean isJava8 = ver[0] == 1 && ver[2] == 8;
+        final boolean isJava8 = ver[0] == 1 && ver[1] == 8;
         final boolean isJava9to11 = ver[0] >= 9 && ver[0] <= 11;
         if (!(isJava8 || isJava9to11)) {
             try {
