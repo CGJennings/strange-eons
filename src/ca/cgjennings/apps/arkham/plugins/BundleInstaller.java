@@ -400,6 +400,8 @@ public class BundleInstaller {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+
+                installedThemes.add(new InstalledTheme(null, "ca.cgjennings.ui.theme.FlatTheme"/*ThemeInstaller.THEME_YUGGOTH_CLASS*/));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }

@@ -5,6 +5,7 @@ import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.plaf.basic.BasicButtonUI;
 import resources.ResourceKit;
 
 /**
@@ -24,9 +25,11 @@ public class ToolCloseButton extends JButton {
             SELECTED = ResourceKit.getIcon("ui/controls/close-inv2.png");
         }
         super.setOpaque(true);
+        setContentAreaFilled(false);
+        setDefaultCapable(false);
+        setUI(new BasicButtonUI());
         setBackground(Color.BLACK);
         setBorderPainted(false);
-        setContentAreaFilled(false);
         setFocusPainted(false);
         setBorder(BorderFactory.createMatteBorder(0, 4, 0, 4, Color.BLACK));
         setMargin(MARGIN);
@@ -35,6 +38,7 @@ public class ToolCloseButton extends JButton {
         setRolloverEnabled(true);
         setRolloverIcon(ROLLOVER);
         setRolloverSelectedIcon(ROLLOVER);
+
     }
 
     @Override
