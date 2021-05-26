@@ -30,7 +30,7 @@ var GameData = {
         }
         gamedata.Game.register(code, gameName, gameName, iconImage, null);
     },
-
+    
     registerExpansion(code, name, iconImage, cardImage, invCardImage) {
         const BI = java.awt.BufferedImage;
         if (iconImage == null) {
@@ -76,7 +76,7 @@ var availableFontFamilies = () => FontUtils.availableFontFamilies();
 var registerFontFamily = key => FontUtils.registerFontFamily(key);
 var findMatchingFamily = (families, defaultFamily) => FontUtils.findMatchingFamily(families, defaultFamily);
 var registerFontFamilyFromResources = function() {
-    FontUtils.registerFontFamilyFromResources.apply(this, arguments);
+    return FontUtils.registerFontFamilyFromResources.apply(this, arguments);
 }
 
 
