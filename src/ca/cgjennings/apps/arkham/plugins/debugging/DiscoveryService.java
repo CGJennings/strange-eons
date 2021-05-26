@@ -114,7 +114,7 @@ public final class DiscoveryService {
 
     private static final int MIN_PORT = 1024;
     private static final int MAX_PORT = 65535;
-    private static final int NUM_SEARCH_THREADS = Runtime.getRuntime().availableProcessors() * 2;
+    private static final int NUM_SEARCH_THREADS = Runtime.getRuntime().availableProcessors() * 5;
     private static final int SOCKET_TIMEOUT = 150;
 
     /**
@@ -238,9 +238,7 @@ public final class DiscoveryService {
                         }
                     }
                     jobsComplete += 1;
-                    if(progress != null && (jobsComplete & 0xff) == 0xff) {
-                        progress.progressUpdate(this, (float) jobsComplete/(float) numJobs);
-                    }
+                    progress.progressUpdate(this, (float) jobsComplete/(float) numJobs);
                 };
             }
         }

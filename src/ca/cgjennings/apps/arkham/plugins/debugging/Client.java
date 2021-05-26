@@ -242,28 +242,30 @@ public final class Client extends javax.swing.JFrame {
         connected = false;
         updateToolState();
 
-        showPanel("connecting");
-        Thread connectThread = new Thread(() -> {
-            // already tried once
-            final int MAX_ATTEMPTS = CONNECT_RETRY_LIMIT - 1;
-            for (int retry = 0; retry < MAX_ATTEMPTS && (System.currentTimeMillis() - START_TIME) < 10_000; ++retry) {
-                System.err.println("Connection failed; retry #" + (retry + 1));
-                if (perform(Command.PROBE) != null) {
-                    EventQueue.invokeLater(() -> {
-                        updateToolState();
-                        synchAll();
-                        // synchAll will switch to main panel when done
-                    });
-                    reconnectTimer.stop();
-                    connected = true;
-                    return;
+        if(autoConnect) {
+            showPanel("connecting");
+            Thread connectThread = new Thread(() -> {
+                // already tried once
+                final int MAX_ATTEMPTS = CONNECT_RETRY_LIMIT - 1;
+                for (int retry = 0; retry < MAX_ATTEMPTS && (System.currentTimeMillis() - START_TIME) < 10_000; ++retry) {
+                    System.err.println("Connection failed; retry #" + (retry + 1));
+                    if (perform(Command.PROBE) != null) {
+                        EventQueue.invokeLater(() -> {
+                            updateToolState();
+                            synchAll();
+                            // synchAll will switch to main panel when done
+                        });
+                        reconnectTimer.stop();
+                        connected = true;
+                        return;
+                    }
                 }
-            }
-            connected = false;
-            showPanel("connect");
-        }, "Server Connection Thread");
-        connectThread.setDaemon(true);
-        connectThread.start();
+                connected = false;
+                showPanel("connect");
+            }, "Server Connection Thread");
+            connectThread.setDaemon(true);
+            connectThread.start();
+        }
     }
     // The number of times to try connecting to the server
     // before assuming that it is offline.
@@ -597,6 +599,7 @@ public final class Client extends javax.swing.JFrame {
         watchCopyItem = new javax.swing.JMenuItem();
         sourcePopup = new javax.swing.JLabel();
         toolPanel = new javax.swing.JPanel();
+        reconnectBtn = new javax.swing.JButton();
         runBtn = new javax.swing.JButton();
         breakBtn = new javax.swing.JButton();
         stopBtn = new javax.swing.JButton();
@@ -620,6 +623,7 @@ public final class Client extends javax.swing.JFrame {
         javax.swing.JLabel configLabel = new javax.swing.JLabel();
         javax.swing.JLabel portLabel = new javax.swing.JLabel();
         portField = new javax.swing.JSpinner();
+        scanBtn = new javax.swing.JButton();
         connectBtn = new javax.swing.JButton();
         javax.swing.JLabel errorLabel = new javax.swing.JLabel();
         leftFill = new javax.swing.JLabel();
@@ -700,6 +704,17 @@ public final class Client extends javax.swing.JFrame {
 
         toolPanel.setBackground(java.awt.Color.darkGray);
         toolPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.orange), javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.lightGray)));
+
+        reconnectBtn.setBackground(java.awt.Color.black);
+        reconnectBtn.setForeground(java.awt.Color.lightGray);
+        reconnectBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/back-hi.png"))); // NOI18N
+        reconnectBtn.setBorderPainted(false);
+        reconnectBtn.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        reconnectBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reconnectBtnActionPerformed(evt);
+            }
+        });
 
         runBtn.setBackground(java.awt.Color.black);
         runBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/continue.png"))); // NOI18N
@@ -883,6 +898,8 @@ public final class Client extends javax.swing.JFrame {
             toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolPanelLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(reconnectBtn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(linkLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, toolPanelLayout.createSequentialGroup()
@@ -913,10 +930,10 @@ public final class Client extends javax.swing.JFrame {
                 .addComponent(stopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(onTopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        toolPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
+        toolPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, reconnectBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
 
         toolPanelLayout.setVerticalGroup(
             toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -936,13 +953,14 @@ public final class Client extends javax.swing.JFrame {
                     .addComponent(breakThrowBtn)
                     .addComponent(breakDebuggerBtn)
                     .addComponent(onTopBtn)
-                    .addComponent(stopBtn))
+                    .addComponent(stopBtn)
+                    .addComponent(reconnectBtn))
                 .addGap(1, 1, 1)
                 .addComponent(linkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        toolPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
+        toolPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, reconnectBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
 
         getContentPane().add(toolPanel, java.awt.BorderLayout.NORTH);
 
@@ -999,7 +1017,7 @@ public final class Client extends javax.swing.JFrame {
         portLabel.setText(string( "connect-port" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
         connectPanel.add(portLabel, gridBagConstraints);
@@ -1007,10 +1025,23 @@ public final class Client extends javax.swing.JFrame {
         portField.setModel(new javax.swing.SpinnerNumberModel(8888, 80, 65535, 1));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 4, 4);
         connectPanel.add(portField, gridBagConstraints);
+
+        scanBtn.setText(string("connect-scan")); // NOI18N
+        scanBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                scanBtnActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
+        connectPanel.add(scanBtn, gridBagConstraints);
 
         connectBtn.setMnemonic('c');
         connectBtn.setText(string( "connect-btn" )); // NOI18N
@@ -1021,7 +1052,7 @@ public final class Client extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
         connectPanel.add(connectBtn, gridBagConstraints);
@@ -1031,7 +1062,7 @@ public final class Client extends javax.swing.JFrame {
         errorLabel.setText(string( "connect-error" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.insets = new java.awt.Insets(8, 4, 0, 4);
         connectPanel.add(errorLabel, gridBagConstraints);
@@ -1039,7 +1070,7 @@ public final class Client extends javax.swing.JFrame {
         leftFill.setText(" ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         connectPanel.add(leftFill, gridBagConstraints);
@@ -1047,7 +1078,7 @@ public final class Client extends javax.swing.JFrame {
         rightFill.setText(" ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         connectPanel.add(rightFill, gridBagConstraints);
@@ -1057,7 +1088,7 @@ public final class Client extends javax.swing.JFrame {
         hostLabel.setText(string( "connect-host" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.insets = new java.awt.Insets(0, 4, 4, 4);
         connectPanel.add(hostLabel, gridBagConstraints);
@@ -1071,7 +1102,7 @@ public final class Client extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 2, 4, 4);
@@ -1082,7 +1113,7 @@ public final class Client extends javax.swing.JFrame {
         errorLabel2.setText(string( "connect-error2" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.gridwidth = 5;
         gridBagConstraints.insets = new java.awt.Insets(1, 4, 4, 4);
         connectPanel.add(errorLabel2, gridBagConstraints);
@@ -1353,8 +1384,8 @@ public final class Client extends javax.swing.JFrame {
                     .addComponent(typeHeadLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
-                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
                 .addContainerGap())
         );
         typePanelLayout.setVerticalGroup(
@@ -1441,7 +1472,7 @@ public final class Client extends javax.swing.JFrame {
                 .addComponent(infoSelectCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 261, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
                 .addComponent(clearCaches)
                 .addGap(18, 18, 18)
                 .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1644,7 +1675,7 @@ public final class Client extends javax.swing.JFrame {
             ((CardLayout) cardRoot.getLayout()).show(cardRoot, name);
             panel = name;
 
-            if (name.equals("connect")) {
+            if (name.equals("connect") && autoConnect) {
                 reconnectTimer.start();
             }
         } else {
@@ -1669,6 +1700,7 @@ public final class Client extends javax.swing.JFrame {
                 host = "localhost";
             }
             connected = false;
+            autoConnect = true;
             checkConnection();
 	}//GEN-LAST:event_connectBtnActionPerformed
 
@@ -1745,6 +1777,7 @@ public final class Client extends javax.swing.JFrame {
     private volatile boolean maybeReachedBreakpoint = true;
     private volatile boolean interrupted = false;
     private volatile boolean connected = false;
+    private volatile boolean autoConnect = true;
     // This is a cookie that is compared with the value returned from the
     // PROBE command. When the cookie does not match, it indicates that a
     // new breakpoint has been triggered. send() automatically checks if
@@ -2300,6 +2333,26 @@ public final class Client extends javax.swing.JFrame {
             }
 	}//GEN-LAST:event_clearCachesActionPerformed
 
+    private void scanBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_scanBtnActionPerformed
+        DiscoveryDialog dd = new DiscoveryDialog(this);
+        dd.setVisible(true);
+        DiscoveryService.ServerInfo info = dd.getSelectedServer();
+        if(info != null) {
+            hostField.setText(info.address.getHostName());
+            portField.setValue(info.port);
+            if(connectBtn.isEnabled()) {
+                connectBtn.doClick(0);
+            }
+        }
+    }//GEN-LAST:event_scanBtnActionPerformed
+
+    private void reconnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reconnectBtnActionPerformed
+        connected = false;
+        autoConnect = false;
+        updateToolState();
+        showPanel("connect");
+    }//GEN-LAST:event_reconnectBtnActionPerformed
+
     private Popup popup;
     private String popupExpression;
 
@@ -2567,10 +2620,12 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JSpinner portField;
     private javax.swing.JLabel propHeadLabel;
     private javax.swing.JTextField propertyField;
+    private javax.swing.JButton reconnectBtn;
     private javax.swing.JButton refreshBtn;
     private ca.cgjennings.ui.JLinkLabel removeAllBreaksBtn;
     private javax.swing.JLabel rightFill;
     private javax.swing.JButton runBtn;
+    private javax.swing.JButton scanBtn;
     private javax.swing.JTextArea scopeObjField;
     private javax.swing.JScrollPane scopeOutField;
     private javax.swing.JLabel scopeTitle;
