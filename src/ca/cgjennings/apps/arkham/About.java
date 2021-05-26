@@ -201,7 +201,7 @@ final class About extends javax.swing.JDialog {
         SETemplateProcessor tp = new SETemplateProcessor();
         tp.set("version", StrangeEons.getVersionString());
 
-        // updated Dec 21 2019
+        // updated May 25 2021
         final int ANONYMOUS_COUNT = 12;
         tp.set("supporter-list",
                 "Audrey Latimer (Arkham Horror Queen Anne), "
@@ -212,10 +212,12 @@ final class About extends javax.swing.JDialog {
                 + "Juvenihilist (Patrik Ekström), "
                 + "Nathalie Emond, "
                 + "Grudunza (Eric Endres), "
+                + "Simone Grandini, "
                 + "Lenore-the-grateful-twitterer (Ian Hansen), "
                 + "Jim Kiefer, "
                 + "Jonas Philippe Kocher, "
                 + "Sean Marshall, "
+                + "Bryce McKay, "
                 + "Olivier Mercier, "
                 + "Bennett Oppel, "
                 + "Charles Robb, "
