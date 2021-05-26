@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
+import ca.cgjennings.algo.ProgressListener;
 import ca.cgjennings.algo.SplitJoin;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,7 +114,7 @@ public final class DiscoveryService {
 
     private static final int MIN_PORT = 1024;
     private static final int MAX_PORT = 65535;
-    private static final int NUM_SEARCH_THREADS = 20;
+    private static final int NUM_SEARCH_THREADS = Runtime.getRuntime().availableProcessors() * 2;
     private static final int SOCKET_TIMEOUT = 150;
 
     /**
@@ -145,6 +146,11 @@ public final class DiscoveryService {
     public Consumer<ServerInfo> getDiscoveryConsumer() {
         return callback;
     }
+
+    public void setProgressListener(ProgressListener progress) {
+        progressLi = progress;
+    }
+    private volatile ProgressListener progressLi;
 
     /**
      * Lists local network addresses, including the loopback address.
@@ -213,6 +219,10 @@ public final class DiscoveryService {
         Runnable[] jobs = new Runnable[PORTS_PER_HOST * hostsToTest.size()];
 
         final Consumer<ServerInfo> callback = this.callback;
+        final ProgressListener progress = this.progressLi;
+
+        jobsComplete = 0;
+        final int numJobs = jobs.length;
 
         int i = 0;
         for (InetAddress host : hostsToTest) {
@@ -227,6 +237,10 @@ public final class DiscoveryService {
                             callback.accept(hit);
                         }
                     }
+                    jobsComplete += 1;
+                    if(progress != null && (jobsComplete & 0xff) == 0xff) {
+                        progress.progressUpdate(this, (float) jobsComplete/(float) numJobs);
+                    }
                 };
             }
         }
@@ -236,6 +250,7 @@ public final class DiscoveryService {
         sj.dispose();
         return hits;
     }
+    private volatile int jobsComplete;
 
     /**
      * Tests if the port is a debug server on the specified host.
