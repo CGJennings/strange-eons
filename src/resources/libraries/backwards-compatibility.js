@@ -30,9 +30,9 @@ var GameData = {
         }
         gamedata.Game.register(code, gameName, gameName, iconImage, null);
     },
-
+    
     registerExpansion(code, name, iconImage, cardImage, invCardImage) {
-        const BI = java.awt.BufferedImage;
+        const BI = java.awt.image.BufferedImage;
         if (iconImage == null) {
             iconImage = 'icons/un-expansion-icon.png';
         }
@@ -76,7 +76,7 @@ var availableFontFamilies = () => FontUtils.availableFontFamilies();
 var registerFontFamily = key => FontUtils.registerFontFamily(key);
 var findMatchingFamily = (families, defaultFamily) => FontUtils.findMatchingFamily(families, defaultFamily);
 var registerFontFamilyFromResources = function() {
-    FontUtils.registerFontFamilyFromResources.apply(this, arguments);
+    return FontUtils.registerFontFamilyFromResources.apply(this, arguments);
 }
 
 
