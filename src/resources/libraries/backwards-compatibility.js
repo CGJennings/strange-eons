@@ -32,7 +32,7 @@ var GameData = {
     },
     
     registerExpansion(code, name, iconImage, cardImage, invCardImage) {
-        const BI = java.awt.BufferedImage;
+        const BI = java.awt.image.BufferedImage;
         if (iconImage == null) {
             iconImage = 'icons/un-expansion-icon.png';
         }
