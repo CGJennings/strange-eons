@@ -1,5 +1,7 @@
 package ca.cgjennings.ui;
 
+import static ca.cgjennings.ui.theme.Theme.HEAD_BANNER_BACKGROUND;
+import static ca.cgjennings.ui.theme.Theme.HEAD_BANNER_FOREGROUND;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -15,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import resources.ResourceKit;
 
@@ -51,8 +54,8 @@ public class JTip extends JLabel {
 
         JLabel stdTip = new JLabel();
         stdTip.setFont(stdTip.getFont().deriveFont(Font.PLAIN, stdTip.getFont().getSize2D() - 1));
-        stdTip.setBackground(Color.WHITE);
-        stdTip.setForeground(Color.BLACK);
+        stdTip.setBackground(UIManager.getColor(HEAD_BANNER_BACKGROUND));
+        stdTip.setForeground(UIManager.getColor(HEAD_BANNER_FOREGROUND));
         stdTip.setOpaque(true);
         stdTip.setBorder(TIP_BORDER);
         stdTip.setIcon(ResourceKit.getIcon("application/information.png"));

@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.PluginBundle;
+import ca.cgjennings.platform.DarkModeDetector;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.MnemonicInstaller;
@@ -12,6 +13,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -62,6 +64,8 @@ public class ThemeInstaller {
 
     private static final String FALLBACK_THEME_CLASS = THEME_DAGON_CLASS;
     private static final String KEY_THEME_CLASS = "theme";
+    private static final String KEY_DARK_THEME_CLASS = "dark-theme";
+    private static final String KEY_AUTO_DARK = "auto-select-dark-theme";
     private static final String KEY_USE_TEST_THEME = "test-bundle-use-testing-theme";
 
     private static Object platformHelper;
@@ -110,7 +114,20 @@ public class ThemeInstaller {
         StrangeEons.log.fine("installed mnemonic handler");
 
         BundleInstaller.loadThemeBundles();
-        installImpl();
+
+        try {
+            Theme theme = instantiateTheme();
+            installImpl(theme);
+        } catch(Exception ex) {
+            StrangeEons.log.log(Level.SEVERE, null, ex);
+            try {
+                installImpl(new HydraTheme());
+            } catch(Exception ie) {
+                StrangeEons.log.log(Level.SEVERE, "unable to install fallback theme, things will be broken", ie);
+                System.exit(20);
+            }
+            ErrorDialog.displayError(Language.string("rk-err-theme"), ex);
+        }
 
         UIManager.getLookAndFeelDefaults().put("OptionPane.sameSizeButtons", Boolean.TRUE);
 
@@ -120,7 +137,7 @@ public class ThemeInstaller {
         if (platformHelper != null) {
             try {
                 platformHelper.getClass().getMethod("finish").invoke(platformHelper);
-            } catch (Throwable t) {
+            } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException t) {
                 StrangeEons.log.log(Level.SEVERE, null, t);
             }
             platformHelper = null;
@@ -150,7 +167,15 @@ public class ThemeInstaller {
 
     private static Theme instantiateTheme() {
         Theme theme;
-        String themeClass = Settings.getShared().get(KEY_THEME_CLASS);
+        String themeClass = Settings.getShared().get(KEY_THEME_CLASS);;
+        if (Settings.getShared().getYesNo(KEY_AUTO_DARK)) {
+            if (new DarkModeDetector().detect()) {
+                themeClass = Settings.getShared().get(KEY_DARK_THEME_CLASS);
+                StrangeEons.log.info("detected dark mode system setting");
+            } else {
+                StrangeEons.log.info("did not detect a dark mode system setting");
+            }
+        }
         if (themeClass == null || themeClass.length() == 0) {
             themeClass = FALLBACK_THEME_CLASS;
         }
@@ -184,55 +209,52 @@ public class ThemeInstaller {
             theme = (Theme) Class.forName(themeClass).getConstructor().newInstance();
         } catch (Throwable t) {
             StrangeEons.log.log(Level.WARNING, "failed to instantiate theme " + themeClass, t);
-            theme = new DagonTheme();
-        }
-
-        // typically, this means that the theme uses Nimbus
-        // but this system is pre-Java 6u10
-        if (theme.getLookAndFeelClassName() == null) {
-            theme = new TchoTchoTheme();
+            theme = new HydraTheme();
         }
 
         return theme;
     }
 
-    private static void installImpl() {
-        Theme theme = instantiateTheme();
+    private static void installImpl(Theme theme) throws Exception {
+        installStrangeEonsUIDefaults(theme);
+        theme.modifyManagerDefaults(UIManager.getDefaults());
+        LookAndFeel laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
 
-        try {
-            installStrangeEonsUIDefaults();
-            theme.modifyManagerDefaults(UIManager.getDefaults());
-            LookAndFeel laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
+        UIDefaults lafDefs = laf.getDefaults();
 
-            UIDefaults lafDefs = laf.getDefaults();
-
+        if (UIManager.getBoolean(Theme.OVERRIDE_LAF_MESSAGE_ICONS)) {
             lafDefs.put("OptionPane.errorIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/error.png")));
             lafDefs.put("OptionPane.warningIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/warning.png")));
             lafDefs.put("OptionPane.questionIcon", null);
             lafDefs.put("OptionPane.informationIcon", null);
-
-            // put in the theme's L&F defaults
-            theme.modifyLookAndFeelDefaults(lafDefs);
-
-            theme.modifyLookAndFeel(laf);
-            UIManager.setLookAndFeel(laf);
-            installStrangeEonsUIFallbackDefaults();
-            theme.themeInstalled();
-
-            installed = theme;
-            StrangeEons.log.log(Level.INFO, "installed theme \"{0}\"", theme.getThemeName());
-        } catch (Throwable t) {
-            try {
-                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            } catch (Throwable it) {
-                StrangeEons.log.log(Level.SEVERE, null, it);
-            }
-            installed = null;
-            ErrorDialog.displayError(Language.string("rk-err-theme"), t);
         }
+
+        // put in the theme's L&F defaults
+        theme.modifyLookAndFeelDefaults(lafDefs);
+
+        theme.modifyLookAndFeel(laf);
+        UIManager.setLookAndFeel(laf);
+        installStrangeEonsUIFallbackDefaults();
+        theme.themeInstalled();
+
+        installed = theme;
+        StrangeEons.log.log(Level.INFO, "installed theme \"{0}\"", theme.getThemeName());
     }
 
-    private static void installStrangeEonsUIDefaults() {
+    private static void installStrangeEonsUIDefaults(Theme theme) {
+        final boolean dark = theme == null ? false : theme.isDarkOnLight();
+        UIManager.put("useDarkTheme", dark);
+        UIManager.put(Theme.LINK_LABEL_FOREGROUND, new Color(0x3978ab));
+        UIManager.put(Theme.NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
+        UIManager.put(Theme.NOTES_FOREGROUND, Color.BLACK);
+        UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
+        UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
+        UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
+        UIManager.put(Theme.PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
+        UIManager.put(Theme.PREFS_HEADING, new Color(135, 103, 5));
+        UIManager.put(Theme.HEAD_BANNER_BACKGROUND, UIManager.get(Theme.PREFS_BACKGROUND));
+        UIManager.put(Theme.HEAD_BANNER_FOREGROUND, UIManager.get(Theme.PREFS_FOREGROUND));
+
         UIDefaults ui = UIManager.getDefaults();
         ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x73_96ab));
         ui.put(Theme.SIDEPANEL_TITLE_BACKGROUND, Color.BLACK);
@@ -301,7 +323,7 @@ public class ThemeInstaller {
                 if (lafi.getName().equals("Nimbus")) {
                     try {
                         UIManager.setLookAndFeel(lafi.getClassName());
-                        installStrangeEonsUIDefaults();
+                        installStrangeEonsUIDefaults(null);
                         installStrangeEonsUIFallbackDefaults();
                         return;
                     } catch (Throwable t) {

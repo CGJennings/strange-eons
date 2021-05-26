@@ -30,16 +30,6 @@ import resources.ResourceKit;
 public abstract class Theme {
 
     public Theme() {
-        final boolean dark = isDarkOnLight();
-        UIManager.put("useDarkTheme", dark);
-        UIManager.put(LINK_LABEL_FOREGROUND, new Color(0x3978ab));
-        UIManager.put(NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
-        UIManager.put(NOTES_FOREGROUND, Color.BLACK);
-        UIManager.put(PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
-        UIManager.put(PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
-        UIManager.put(PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
-        UIManager.put(PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
-        UIManager.put(PREFS_HEADING, new Color(135, 103, 5));
     }
 
     /**
@@ -444,6 +434,10 @@ public abstract class Theme {
      */
     public static final String PROJECT_FIND_FOREGROUND = "se-projfind-fg";
     /**
+     * UI key for the project area properties/notes tabs background color.
+     */
+    public static final String PROJECT_NOTES_TAB_BACKGROUND = "se-projnotestab-bg";
+    /**
      * UI key for project search field background colour.
      */
     public static final String PREFS_BACKGROUND = "se-pref-bg";
@@ -456,10 +450,29 @@ public abstract class Theme {
      */
     public static final String PREFS_HEADING = "se-pref-head";
     /**
+     * UI key for the "head banner" foreground colour. This is a rectangular
+     * banner with higher contrast than a standard label-on-panel.
+     * The most prominent example is the {@link MultiCloseDialog}.
+     */
+    public static final String HEAD_BANNER_FOREGROUND = "se-headbanner-fg";
+    /**
+     * UI key for the "head banner" backround colour. This is a rectangular
+     * banner with higher contrast than a standard label-on-panel.
+     */
+    public static final String HEAD_BANNER_BACKGROUND = "se-headbanner-bg";
+
+    /**
      * An image filter used to create a disabled icon from a regular icon when
      * no disabled icon is explicitly set. If set, the value must be a subclass
      * of {@link java.awt.image.BufferedImageOp}. (This includes any filter in
-     * the {@code ca.cgjennings.graphics.filters} package can be used.)
+     * the {@code ca.cgjennings.graphics.filters} package.)
      */
     public static final String DISABLED_ICON_FILTER = "eons-difilt";
+
+    /**
+     * A UI key for a boolean value that, if true and supported by the selected
+     * LaF class, will override the LaF icons for JOptionPane-style messages
+     * with a common set of icons.
+     */
+    public static final String OVERRIDE_LAF_MESSAGE_ICONS = "override-icons";
 }

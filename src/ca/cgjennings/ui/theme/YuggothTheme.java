@@ -13,6 +13,8 @@ import java.awt.Paint;
 import java.util.Objects;
 import javax.swing.Painter;
 import javax.swing.UIDefaults;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.InsetsUIResource;
 
 /**
  * The Yuggoth theme is a built-in dark mode theme.
@@ -55,68 +57,85 @@ public class YuggothTheme extends Theme {
         defaults.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
         defaults.put( "text", new Color( 230, 230, 230) );
 
-        SolidPainter solidBlack = new SolidPainter(Color.BLACK);
-        SolidPainter solidWhite = new SolidPainter(Color.WHITE);
-        SolidPainter solidGrey = new SolidPainter(new Color(0x7c7d7f));
+        ColorUIResource MENU = new ColorUIResource(0x111111);
+        ColorUIResource MENU_TEXT = new ColorUIResource(0xffffff);
+        Color MENU_SELECTED = new ColorUIResource(0x685d9c);
+        Color MENU_SELECTED_TEXT = MENU_TEXT;
+        Color MENU_DISABLED_TEXT = new ColorUIResource(0x555555);
+        Color MENU_SHORTCUT = new Color(0x959595);
+        Color MENU_SHORTCUT_DISABLED = MENU_DISABLED_TEXT;
 
-        defaults.put("MenuBar[Enabled].backgroundPainter", solidBlack);
-        defaults.put("MenuBar:Menu[Enabled].textForeground", Color.WHITE);
-        defaults.put("MenuBar:Menu[Selected].backgroundPainter", solidGrey);
-        defaults.put("MenuBar:Menu[Selected].textForeground", Color.BLACK);
-        defaults.put("MenuBar.background", Color.BLACK);
-        defaults.put("MenuBar.foreground", Color.WHITE);
+        Painter<?> P_MENU = new SolidPainter(MENU);
+        Painter<?> P_MENU_SELECTED = new SolidPainter(MENU_SELECTED);
 
-        defaults.put("Menu.background", Color.BLACK);
-        defaults.put("Menu.foreground", Color.WHITE);
-        defaults.put("Menu[Enabled].textForeground", Color.WHITE);
+        defaults.put("menu", MENU);
+        defaults.put("menuText", MENU_TEXT);
 
-        defaults.put("MenuItem.textForeground", Color.WHITE);
-        defaults.put("MenuItem[Enabled].textForeground", Color.WHITE);
-        defaults.put("RadioButtonMenuItem[Enabled].textForeground", Color.WHITE);
-        defaults.put("CheckBoxMenuItem[Enabled].textForeground", Color.WHITE);
+        defaults.put("Menu.disabledText", MENU_DISABLED_TEXT);
+        defaults.put("MenuBar.disabledText", MENU_DISABLED_TEXT);
+        defaults.put("MenuItem.disabledText", MENU_DISABLED_TEXT);
+        defaults.put("MenuBar.foreground", MENU_TEXT);
+        defaults.put("MenuItem.textForeground", MENU_TEXT);
+        defaults.put("MenuBar:Menu[Enabled].textForeground", MENU_TEXT);
+        defaults.put("Menu[Enabled].textForeground", MENU_TEXT);
+        defaults.put("MenuItem[Enabled].textForeground", MENU_TEXT);
+        defaults.put("RadioButtonMenuItem.textForeground", MENU_TEXT);
+        defaults.put("RadioButtonMenuItem[Enabled].textForeground", MENU_TEXT);
+        defaults.put("CheckBoxMenuItem.foreground", MENU_TEXT);
+        defaults.put("CheckBoxMenuItem.textForeground", MENU_TEXT);
+        defaults.put("CheckBoxMenuItem[Enabled].textForeground", MENU_TEXT);
+        defaults.put("MenuBar:Menu[Selected].textForeground", MENU_SELECTED_TEXT);
+        defaults.put("MenuBar:Menu[Disabled].textForeground", MENU_DISABLED_TEXT);
+        defaults.put("Menu[Disabled].foreground", MENU_DISABLED_TEXT);
+        defaults.put("Menu[Disabled].textForeground", MENU_DISABLED_TEXT);
+        defaults.put("MenuItem[Disabled].textForeground", MENU_DISABLED_TEXT);
+        defaults.put("RadioButtonMenuItem.disabledText", MENU_DISABLED_TEXT);
+        defaults.put("RadioButtonMenuItem[Disabled].textForeground", MENU_DISABLED_TEXT);
+        defaults.put("CheckBoxMenuItem.disabledText", MENU_DISABLED_TEXT);
+        defaults.put("CheckBoxMenuItem[Disabled].foreground", MENU_DISABLED_TEXT);
+        defaults.put("CheckBoxMenuItem[Disabled].textForeground", MENU_DISABLED_TEXT);
+        defaults.put("MenuItem:MenuItemAccelerator.textForeground", MENU_SHORTCUT);
+        defaults.put("MenuItem:MenuItemAccelerator[Disabled].textForeground", MENU_SHORTCUT_DISABLED);
+        defaults.put("MenuBar[Enabled].backgroundPainter", P_MENU);
+        defaults.put("MenuBar:Menu[Selected].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("MenuBar.background", MENU);
+        defaults.put("PopupMenu.background", MENU);
+        defaults.put("PopupMenu[Disabled].backgroundPainter", P_MENU);
+        defaults.put("PopupMenu[Enabled].backgroundPainter", P_MENU );
+        defaults.put("PopupMenuSeparator[Enabled].backgroundPainter", P_MENU);
+        defaults.put("PopupMenuSeparator.contentMargins", new InsetsUIResource(2, 0, 3, 0));
+        defaults.put("Menu.backgroundPainter", MENU);
+        defaults.put("Menu[Enabled].backgroundPainter", P_MENU);
+        defaults.put("Menu[Disabled].backgroundPainter", P_MENU);
+        defaults.put("Menu[Enabled+Selected].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("MenuItem.background", MENU);
+        defaults.put("MenuItem[Enabled].backgroundPainter", P_MENU);
+        defaults.put("MenuItem[Disabled].backgroundPainter", P_MENU);
+        defaults.put("MenuItem[MouseOver].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("RadioButtonMenuItem[Enabled].backgroundPainter", P_MENU);
+        defaults.put("RadioButtonMenuItem[Disabled].backgroundPainter", P_MENU);
+        defaults.put("RadioButtonMenuItem[MouseOver].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("RadioButtonMenuItem[MouseOver+Selected].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("CheckBoxMenuItem[Enabled].backgroundPainter", P_MENU);
+        defaults.put("CheckBoxMenuItem[Disabled].backgroundPainter", P_MENU);
+        defaults.put("CheckBoxMenuItem[MouseOver].backgroundPainter", P_MENU_SELECTED);
+        defaults.put("CheckBoxMenuItem[MouseOver+Selected].backgroundPainter", P_MENU_SELECTED);
 
-        defaults.put("menu", Color.BLACK);
-        defaults.put("menuText", Color.WHITE);
+        Object painter = defaults.get("CheckBoxMenuItem[MouseOver+Selected].checkIconPainter");
+        if(painter != null) {
+            defaults.put("CheckBoxMenuItem[Enabled+Selected].checkIconPainter", painter);
+        }
+        painter = defaults.get("RadioButtonMenuItem[MouseOver+Selected].checkIconPainter");
+        if(painter != null) {
+            defaults.put("RadioButtonMenuItem[Enabled+Selected].checkIconPainter", painter);
+        }
+        painter = defaults.get("Menu[Enabled+Selected].arrowIconPainter");
+        if(painter != null) {
+            defaults.put("Menu[Enabled].arrowIconPainter", painter);
+        }
 
         defaults.put("SplitPane.background", new Color(0x1b1d22));
-
         defaults.put("TitledBorder.titleColor", new Color(0xeeffff));
-
-        /*
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        defaults.put("", );
-        */
-
-
-
-        /*
-
-
-Key	Value	Preview
-MenuBar.background	#d6d9df (214,217,223)
-MenuBar.contentMargins	Insets (2,6,2,6)	Insets (2,6,2,6)
-MenuBar.disabled	#d6d9df (214,217,223)
-MenuBar.disabledText	#000000 (0,0,0)
-MenuBar.font	Font SansSerif 12	Font SansSerif 12
-MenuBar.foreground	#000000 (0,0,0)
-MenuBar.windowBindings	[Ljava.lang.Object;@5421e554
-MenuBar:Menu.contentMargins	Insets (1,4,2,4)	Insets (1,4,2,4)
-MenuBar:Menu:MenuItemAccelerator.contentMargins	Insets (0,0,0,0)	Insets (0,0,0,0)
-MenuBar:Menu[Disabled].textForeground	#8e8f91 (142,143,145)
-MenuBar:Menu[Enabled].textForeground	#232324 (35,35,36)
-MenuBar:Menu[Selected].backgroundPainter	Painter	Painter
-MenuBar:Menu[Selected].textForeground	#ffffff (255,255,255)
-MenuBar[Enabled].backgroundPainter	Painter	Painter
-MenuBar[Enabled].borderPainter
-        */
-
     }
     
 
@@ -136,6 +155,23 @@ MenuBar[Enabled].borderPainter
         @Override
         public void paint(Graphics2D g, Component c, int width, int height) {
             g.setPaint(paint);
+            g.fillRect(0, 0, width, height);
+        }
+    }
+
+    private static class OutlinedPainter implements Painter<Component> {
+        private final Paint paint, outline;
+
+        public OutlinedPainter(final Paint paint, final Paint outline) {
+            this.paint = Objects.requireNonNull(paint);
+            this.outline = Objects.requireNonNull(outline);
+        }
+
+        @Override
+        public void paint(Graphics2D g, Component c, int width, int height) {
+            g.setPaint(paint);
+            g.fillRect(0, 0, width, height);
+            g.setPaint(outline);
             g.fillRect(0, 0, width, height);
         }
     }
