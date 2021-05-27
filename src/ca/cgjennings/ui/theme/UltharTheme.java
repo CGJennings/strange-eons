@@ -12,21 +12,20 @@ import javax.swing.UIManager;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.2
  */
-public class FlatTheme extends Theme {
-    public FlatTheme() {
+public class UltharTheme extends Theme {
+    public UltharTheme() {
     }
-
-    protected boolean dark;
 
     @Override
     public String getLookAndFeelClassName() {
         return "com.formdev.flatlaf.Flat"
-                + (dark ? "Dark" : "Light")
+                + (isDarkOnLight() ? "Dark" : "Light")
                 + "Laf";
     }
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
+        final boolean dark = isDarkOnLight();
         UIManager.put( "Button.arc", 999 );
         UIManager.put( "ScrollBar.width", 12 );
         UIManager.put( "ScrollBar.thumbArc", 999 );
@@ -35,9 +34,13 @@ public class FlatTheme extends Theme {
         UIManager.put( "TabbedPane.tabSeparatorsFullHeight", true );
         UIManager.put( "TabbedPane.selectedBackground", dark ? Color.BLACK : Color.WHITE);
         UIManager.put(EDITOR_TAB_BACKGROUND, null);
-        UIManager.put(NOTES_BACKGROUND, null);
-        UIManager.put(PROJECT_FIND_BACKGROUND, null);
-        UIManager.put(PROJECT_FIND_FOREGROUND, null);
+        if(dark) {
+
+        } else {
+            UIManager.put(NOTES_BACKGROUND, null);
+            UIManager.put(PROJECT_FIND_BACKGROUND, null);
+            UIManager.put(PROJECT_FIND_FOREGROUND, null);
+        }
     }
 
     @Override
@@ -48,8 +51,9 @@ public class FlatTheme extends Theme {
 //    public String getThemeDescription() {
 //        return super.getThemeDescription(); //To change body of generated methods, choose Tools | Templates.
 //    }
+
     @Override
     public boolean isDarkOnLight() {
-        return dark;
+        return false;
     }
 }
