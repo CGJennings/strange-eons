@@ -284,7 +284,7 @@ public class ThemeInstaller {
         UIDefaults ui = UIManager.getDefaults();
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EXTERIOR, "text", 0x202f66);
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EDGE, "controlHighlight", 0xf7f8fa);
-        installFallbackColour(ui, Theme.MESSAGE_BORDER_MAIN, "nimbusFocus", 0xb5caff);
+        installFallbackColour(ui, Theme.MESSAGE_BORDER_MAIN, "nimbusFocus", dark ? 0x646464 : 0xb5caff);
         installFallbackColour(ui, Theme.MESSAGE_BACKGROUND, "nimbusLightBackground", dark ? 0x0111111 : 0xffffff);
         installFallbackColour(ui, Theme.MESSAGE_FOREGROUND, "text", dark ? 0xf7f7f7 : 0x0);
 
