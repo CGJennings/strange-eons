@@ -28,7 +28,7 @@ public final class DiscoveryDialog extends javax.swing.JDialog {
 
         Thread searcher = new Thread(() -> {
             try {
-                DiscoveryService ds = new DiscoveryService();
+                DiscoveryService ds = new DiscoveryService(InetAddress.getLoopbackAddress(), InetAddress.getLocalHost());
                 ds.setDiscoveryConsumer(info -> {
                     EventQueue.invokeLater(() -> {
                         try {
