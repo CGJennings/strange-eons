@@ -317,7 +317,7 @@ public final class DefaultScriptDebugger {
 
         dc.setListener(interfaceAdapter);
 
-        host = socket.getInetAddress().getHostAddress();
+        host = socket.getInetAddress().getHostName();
 
         if (uiControl != null) {
             uiControl.uninstall();

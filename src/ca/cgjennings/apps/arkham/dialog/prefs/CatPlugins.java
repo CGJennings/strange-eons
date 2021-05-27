@@ -10,7 +10,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import javax.swing.JComponent;
-import javax.swing.JTextField;
 import static resources.Language.string;
 import resources.Settings;
 
@@ -175,84 +174,4 @@ class CatPlugins extends FillInPreferenceCategory {
             }
         }
     }
-
-//		// API Library Source Options
-//		apiFile = new JFileField();
-//		apiFile.setColumns( 40 );
-//		apiFile.setFileType( FileType.GENERIC );
-//		apiFile.setGenericFileTypeDescription( "allclasses-noframe.html" );
-//		apiFile.setGenericFileTypeExtensions( "html" );
-//		ActionListener apiListener = new ActionListener() {
-//			@Override
-//			public void actionPerformed( ActionEvent e ) {
-//				apiFile.setEnabled( localAPIBtn.isSelected() );
-//			}
-//		};
-//		subheading( string("api-title") );
-//		label( string("sd-l-api-source") );
-//		indent();
-//		onlineAPIBtn = addRadioButton( string("sd-b-api-source-online"), apiListener );
-//		localAPIBtn = addRadioButton( string("sd-b-api-source-local"), apiListener );
-//		indent();
-//		addUnmanagedControl( apiFile );
-//	private JRadioButton onlineAPIBtn, localAPIBtn;
-//	private JFileField apiFile;
-//	@Override
-//	public void loadSettings() {
-//		super.loadSettings();
-//		// API source
-//		String val = Settings.getUser().get( "java-api-base-local" );
-//		if( val == null || val.isEmpty() ) {
-//			onlineAPIBtn.setSelected( true );
-//			apiFile.setText( "" );
-//			apiFile.setEnabled( false );
-//		} else {
-//			localAPIBtn.setSelected( true );
-//			apiFile.setText( val );
-//			apiFile.setEnabled( true );
-//		}
-//	}
-//	@Override
-//	public void storeSettings() {
-//		super.storeSettings();
-//		Settings user = Settings.getUser();
-//		// API base
-//		if( onlineAPIBtn.isSelected() ) {
-//			user.reset( "java-api-base-local" );
-//		} else {
-//			File f = new File( apiFile.getText() );
-//			File checked = searchForDocBase( f );
-//			if( checked != null ) f = checked;
-//			user.set( "java-api-base-local", f.getAbsolutePath() );
-//		}
-//	}
-//	private File searchForDocBase( File f ) {
-//		if( f == null ) return null;
-//		if( f.getName().equals( "allclasses-noframe.html" ) ) {
-//			return f.getParentFile();
-//		}
-//		if( f.isDirectory() ) {
-//			File[] kids = f.listFiles();
-//			for( File k : kids ) {
-//				if( k.getName().equals( "allclasses-noframe.html" ) ) {
-//					return f;
-//				}
-//			}
-//			for( File k : kids ) {
-//				if( k.isDirectory() ) {
-//					File c = searchForDocBase( k );
-//					if( c != null ) return c;
-//				}
-//			}
-//			return null;
-//		} else {
-//			return searchForDocBase( f.getParentFile() );
-//		}
-//	}
-    /*
-Strings:
-sd-l-api-source = Source for Java API Documentation:
-sd-b-api-source-online = Use online documentation
-sd-b-api-source-local = Use a local copy:
-     */
 }

@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
+import ca.cgjennings.algo.ProgressListener;
 import ca.cgjennings.algo.SplitJoin;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,7 +114,7 @@ public final class DiscoveryService {
 
     private static final int MIN_PORT = 1024;
     private static final int MAX_PORT = 65535;
-    private static final int NUM_SEARCH_THREADS = 20;
+    private static final int NUM_SEARCH_THREADS = Runtime.getRuntime().availableProcessors() * 5;
     private static final int SOCKET_TIMEOUT = 150;
 
     /**
@@ -145,6 +146,11 @@ public final class DiscoveryService {
     public Consumer<ServerInfo> getDiscoveryConsumer() {
         return callback;
     }
+
+    public void setProgressListener(ProgressListener progress) {
+        progressLi = progress;
+    }
+    private volatile ProgressListener progressLi;
 
     /**
      * Lists local network addresses, including the loopback address.
@@ -213,6 +219,10 @@ public final class DiscoveryService {
         Runnable[] jobs = new Runnable[PORTS_PER_HOST * hostsToTest.size()];
 
         final Consumer<ServerInfo> callback = this.callback;
+        final ProgressListener progress = this.progressLi;
+
+        jobsComplete = 0;
+        final int numJobs = jobs.length;
 
         int i = 0;
         for (InetAddress host : hostsToTest) {
@@ -227,6 +237,8 @@ public final class DiscoveryService {
                             callback.accept(hit);
                         }
                     }
+                    jobsComplete += 1;
+                    progress.progressUpdate(this, (float) jobsComplete/(float) numJobs);
                 };
             }
         }
@@ -236,6 +248,7 @@ public final class DiscoveryService {
         sj.dispose();
         return hits;
     }
+    private volatile int jobsComplete;
 
     /**
      * Tests if the port is a debug server on the specified host.
@@ -245,26 +258,17 @@ public final class DiscoveryService {
      * @return information about the debug server, or null if it is not a server
      */
     private ServerInfo testPort(InetAddress host, int port) {
-        Socket s = null;
-        try {
-            if (canRuleOutQuickly(host, port)) {
-                return null;
-            }
+        if (canRuleOutQuickly(host, port)) {
+            return null;
+        }
 
-            s = new Socket(host, port);
+        try (Socket s = new Socket(host, port)) {
             s.setSoTimeout(SOCKET_TIMEOUT);
             sendProbe(s);
             ServerInfo info = readProbeReply(s);
-            s.close();
             return info;
         } catch (IOException badPort) {
             return null;
-        } finally {
-            if (s != null) try {
-                s.close();
-            } catch (IOException ce) {
-                return null;
-            }
         }
     }
 
@@ -281,12 +285,13 @@ public final class DiscoveryService {
      *   a proper debug server reply, or the server information if one is detected
      */
     private static ServerInfo readProbeReply(Socket s) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
-        String magic = in.readLine();
-        if ("SEDP3 OK".equals(magic)) {
-            return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8))) {
+            String magic = in.readLine();
+            if ("SEDP3 OK".equals(magic)) {
+                return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
+            }
+            throw new IOException(); // found something but not a debug server
         }
-        throw new IOException(); // found something but not a debug server
     }
 
     private static final byte[] PROBE_BYTES = "SEDP3\nSERVERINFO\n".getBytes(StandardCharsets.UTF_8);

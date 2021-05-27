@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.ui.JTip;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import static resources.Language.string;
@@ -64,7 +67,8 @@ class DebuggerFeedbackProvider {
                 "<html><b>" + string("debugger-name") + "</b><br>"
                 + addressText
         );
-        tip.setBackground(Color.WHITE);
+        tip.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
+        tip.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
 
         final JMenuItem launchItem = new JMenuItem(string("debugger-launch"));
         final JMenuItem uninstallItem = new JMenuItem(string("debugger-uninstall"));
