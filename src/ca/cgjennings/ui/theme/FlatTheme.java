@@ -35,7 +35,7 @@ public class FlatTheme extends Theme {
         UIManager.put( "TabbedPane.tabSeparatorsFullHeight", true );
         UIManager.put( "TabbedPane.selectedBackground", dark ? Color.BLACK : Color.WHITE);
         UIManager.put(EDITOR_TAB_BACKGROUND, null);
-        UIManager.put(PROJECT_NOTES_TAB_BACKGROUND, null);
+        UIManager.put(NOTES_BACKGROUND, null);
         UIManager.put(PROJECT_FIND_BACKGROUND, null);
         UIManager.put(PROJECT_FIND_FOREGROUND, null);
     }
