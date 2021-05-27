@@ -110,7 +110,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="reconnectBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
+                  <Component id="backBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" max="-2" attributes="0">
                       <Component id="linkLabel" alignment="0" max="32767" attributes="1"/>
@@ -167,7 +167,7 @@
                       <Component id="breakDebuggerBtn" linkSize="2" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="onTopBtn" linkSize="2" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="stopBtn" linkSize="2" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="reconnectBtn" linkSize="2" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="backBtn" linkSize="2" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                   <Component id="linkLabel" min="-2" pref="8" max="-2" attributes="0"/>
@@ -177,7 +177,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="reconnectBtn">
+        <Component class="javax.swing.JButton" name="backBtn">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
@@ -194,7 +194,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reconnectBtnActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="backBtnActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="runBtn">
@@ -732,10 +732,6 @@
                   <ResourceString bundle="resources/text/interface/debugger.properties" key="connect-error" replaceFormat="string( &quot;{key}&quot; )"/>
                 </Property>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="0" gridY="5" gridWidth="5" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="8" insetsLeft="4" insetsBottom="0" insetsRight="4" anchor="10" weightX="0.0" weightY="0.0"/>
@@ -810,10 +806,6 @@
                   <ResourceString bundle="resources/text/interface/debugger.properties" key="connect-error2" replaceFormat="string( &quot;{key}&quot; )"/>
                 </Property>
               </Properties>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
-                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
-              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
                   <GridBagConstraints gridX="0" gridY="6" gridWidth="5" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="1" insetsLeft="4" insetsBottom="4" insetsRight="4" anchor="10" weightX="0.0" weightY="0.0"/>
