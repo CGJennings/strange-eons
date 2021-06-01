@@ -364,7 +364,8 @@ public class CodeEditor extends AbstractSupportEditor {
     public static enum CodeType {
 
         PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
-        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, true),
+        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
+        TYPESCRIPT("ts", "prj-prop-typescript", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
         JAVA("java", "prj-prop-java", ProjectUtilities.ENC_SCRIPT, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
         PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
         SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
