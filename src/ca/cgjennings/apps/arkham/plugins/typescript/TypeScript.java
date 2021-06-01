@@ -22,6 +22,13 @@ public final class TypeScript {
     }
 
     /**
+     * Suggests to the service that it should prepare to be used soon.
+     * If the service is already running, this method returns immediately.
+     */
+    public static void warmUp() {
+    }
+
+    /**
      * Gets a string describing which version of TypeScript is being used.
      *
      * @param callback will be called with a non-null version string,

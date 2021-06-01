@@ -297,7 +297,7 @@ final class ProjectWatcher {
             for (PendingUpdate pu : updateQueue) {
                 StrangeEons.log.log(Level.INFO, "project watcher update: {0}", pu);
                 if (pu.kind == ENTRY_MODIFY) {
-// TODO: update project view properties if currently showing this file
+                    // TODO: update project view properties if currently showing this file
                 } else {
                     pu.member.synchronizeImpl();
                 }
