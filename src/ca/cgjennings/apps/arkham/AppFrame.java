@@ -27,6 +27,7 @@ import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.*;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -69,7 +70,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         localizeTitle();
 
         if (PlatformSupport.PLATFORM_IS_MAC) {
-            OSXIntegration.install(exitSeparator, exitItem, aboutSeparator, aboutItem, preferencesSeparator, preferencesItem);
+            installMacOsDesktopHandlers();
         }
 
         setIconImages(getApplicationFrameIcons());
@@ -1592,26 +1593,8 @@ final class AppFrame extends StrangeEonsAppWindow {
         }
     }
 
-    /**
-     * @deprecated This is a cover method for {@code exitApplication( false )}. It is
-     * retained for backwards compatibility.
-     */
-    @Deprecated
-    public void exitApplication() {
-        //
-        // THIS EXACT SIGNATURE IS REQUIRED BY OS X ADAPTER
-        //
-        // NOTE WELL:
-        // This method cannot be removed. It is required for backwards
-        // compatibility to avoid breaking the interface presented to
-        // older plug-ins. It is also required in order to implement
-        // the OSXAdapter so that the Application/Quit menu works
-        // correctly.
-        exitApplication(false);
-    }
-
     @Override
-    public void exitApplication(final boolean restart) {
+    public boolean exitApplication(final boolean restart) {
         if ((getExtendedState() & ICONIFIED) != 0) {
             setExtendedState(getExtendedState() & ~ICONIFIED);
         }
@@ -1655,7 +1638,9 @@ final class AppFrame extends StrangeEonsAppWindow {
                     }
                 });
             }
+            return true;
         }
+        return false;
     }
 
     /** Tracks whether the window has ever been visible, which cancels any non-interactive mode. */
@@ -2566,5 +2551,35 @@ final class AppFrame extends StrangeEonsAppWindow {
      */
     private static JSeparator sep() {
         return new JPopupMenu.Separator();
+    }
+
+    /**
+     * Re-arranges menus and installs OS-specific handling for MacOS.
+     */
+    private void installMacOsDesktopHandlers() {
+        Desktop desktop = Desktop.getDesktop();
+        desktop.setDefaultMenuBar(menuBar);
+        desktop.setAboutHandler(ev -> this.showAboutDialog());
+        desktop.setOpenFileHandler(ev -> ev.getFiles().forEach(this::openFile));
+        desktop.setPreferencesHandler(ev -> this.showPreferencesDialog(this, null));
+        desktop.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
+        desktop.setQuitHandler((ev, response) -> {
+            try {
+                if(!exitApplication(false)) {
+                    response.cancelQuit();
+                    return;
+                }
+            } catch(Exception ex) {
+                // user still chose to quie
+            }
+            response.performQuit();
+        });
+
+        exitSeparator.setVisible(false);
+        exitItem.setVisible(false);
+        aboutSeparator.setVisible(false);
+        aboutItem.setVisible(false);
+        preferencesSeparator.setVisible(false);
+        preferencesItem.setVisible(false);
     }
 }

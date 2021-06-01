@@ -203,7 +203,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * @param restart restart after exit
      * @since 2.1a8
      */
-    public abstract void exitApplication(boolean restart);
+    public abstract boolean exitApplication(boolean restart);
 
     /**
      * Displays a message to inform the user that the application should be
