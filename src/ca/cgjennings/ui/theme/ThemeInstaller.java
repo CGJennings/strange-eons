@@ -288,7 +288,7 @@ public class ThemeInstaller {
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EDGE, "controlHighlight", 0xf7f8fa);
         installFallbackColour(ui, Theme.MESSAGE_BORDER_MAIN, "nimbusFocus", dark ? 0x646464 : 0xb5caff);
         installFallbackColour(ui, Theme.MESSAGE_BACKGROUND, "nimbusLightBackground", dark ? 0x0111111 : 0xffffff);
-        installFallbackColour(ui, Theme.MESSAGE_FOREGROUND, "text", dark ? 0xf7f7f7 : 0x0);
+        installFallbackColour(ui, Theme.MESSAGE_FOREGROUND, Theme.MESSAGE_FOREGROUND, dark ? 0xf7f7f7 : 0x0);
 
         if (ui.get(Theme.MESSAGE_BORDER_DIALOG) == null) {
             Border darkBorder = new LineBorder(ui.getColor(Theme.MESSAGE_BORDER_EXTERIOR), 1);
