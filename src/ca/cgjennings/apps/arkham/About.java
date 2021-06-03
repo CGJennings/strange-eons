@@ -336,6 +336,10 @@ final class About extends javax.swing.JDialog {
         gridBagConstraints.insets = new java.awt.Insets(1, 4, 1, 4);
         getContentPane().add(secretBtn, gridBagConstraints);
 
+        titleLabel.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)
+        );
+        titleLabel.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND)
+        );
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         titleLabel.setText(string("ab-title")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
