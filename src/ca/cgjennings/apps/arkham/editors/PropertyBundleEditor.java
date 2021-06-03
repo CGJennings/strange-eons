@@ -12,6 +12,7 @@ import ca.cgjennings.spelling.SpellingChecker;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Point;
@@ -587,9 +588,10 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel14.setBackground(java.awt.Color.black);
+        jLabel14.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         jLabel14.setFont(jLabel14.getFont().deriveFont(jLabel14.getFont().getStyle() | java.awt.Font.BOLD, jLabel14.getFont().getSize()-1));
-        jLabel14.setForeground(java.awt.Color.white);
+        jLabel14.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND)
+        );
         jLabel14.setText(string( "dt-l-keys" )); // NOI18N
         jLabel14.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4));
         jLabel14.setOpaque(true);
