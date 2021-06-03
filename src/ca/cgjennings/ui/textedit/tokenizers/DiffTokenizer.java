@@ -6,7 +6,7 @@ import javax.swing.text.Segment;
 
 /**
  * Tokenizer that highlights differences between two text files. This tokenizer
- * is intended for use with static document content.
+ * is intended for use with read-only document content.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1

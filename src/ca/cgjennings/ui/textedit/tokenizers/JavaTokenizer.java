@@ -43,11 +43,6 @@ public class JavaTokenizer extends Tokenizer {
         lastKeyword = offset;
         int length = line.count + offset;
         boolean backslash = false;
-
-        // these are used when processing numbers
-//		boolean couldBeHex = false;
-//		boolean isHex = false;
-//		boolean sawDecimal = false;
         loop:
         for (int i = offset; i < length; i++) {
             int i1 = (i + 1);
