@@ -1659,7 +1659,9 @@
                   </Border>
                 </Property>
                 <Property name="tabLayoutPolicy" type="int" value="1"/>
-                <Property name="tabPlacement" type="int" value="3"/>
+                <Property name="tabPlacement" type="int" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getBoolean(Theme.ALTERNATE_DOCUMENT_TAB_ORIENTATION) ? JTabbedPane.TOP : JTabbedPane.BOTTOM" type="code"/>
+                </Property>
                 <Property name="name" type="java.lang.String" value="editorTab" noResource="true"/>
               </Properties>
               <AuxValues>

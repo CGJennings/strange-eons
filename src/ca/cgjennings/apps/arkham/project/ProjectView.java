@@ -895,7 +895,7 @@ public final class ProjectView extends javax.swing.JPanel {
         findIcon = new javax.swing.JLabel();
         projFindField =  new JLabelledField() ;
         ((JLabelledField) projFindField).setTextForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
-        closeFindBtn = new javax.swing.JButton();
+        closeFindBtn = new ca.cgjennings.apps.arkham.ToolCloseButton();
         notePanel = new javax.swing.JPanel();
         tabs = new javax.swing.JTabbedPane();
         StyleUtilities.mini( tabs );
@@ -991,9 +991,9 @@ public final class ProjectView extends javax.swing.JPanel {
         titlePanel.setName("titlePanel"); // NOI18N
         titlePanel.setLayout(new java.awt.GridBagLayout());
 
-        treeLabel.setBackground(java.awt.Color.black);
+        treeLabel.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         treeLabel.setFont(treeLabel.getFont().deriveFont(treeLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        treeLabel.setForeground(java.awt.Color.white);
+        treeLabel.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND));
         treeLabel.setText(string( "prj-l-view-tree" )); // NOI18N
         treeLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4));
         treeLabel.setName("treeLabel"); // NOI18N
@@ -1004,7 +1004,7 @@ public final class ProjectView extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         titlePanel.add(treeLabel, gridBagConstraints);
 
-        addTaskBtn.setBackground(java.awt.Color.black);
+        addTaskBtn.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         addTaskBtn.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 1, new java.awt.Color(99, 99, 99)), javax.swing.BorderFactory.createEmptyBorder(2, 8, 2, 8)));
         addTaskBtn.setForeground(new java.awt.Color(57, 120, 171));
         addTaskBtn.setText(string( "pa-add-task" )); // NOI18N
@@ -1021,6 +1021,7 @@ public final class ProjectView extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         titlePanel.add(addTaskBtn, gridBagConstraints);
 
+        toolCloseBtn.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         toolCloseBtn.setName("toolCloseBtn"); // NOI18N
         toolCloseBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1072,7 +1073,6 @@ public final class ProjectView extends javax.swing.JPanel {
 
         closeFindBtn.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         closeFindBtn.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
-        closeFindBtn.setText("╳");
         closeFindBtn.setBorder(null);
         closeFindBtn.setBorderPainted(false);
         closeFindBtn.setContentAreaFilled(false);
@@ -1097,7 +1097,7 @@ public final class ProjectView extends javax.swing.JPanel {
         notePanel.setName("notePanel"); // NOI18N
         notePanel.setLayout(new java.awt.BorderLayout());
 
-        tabs.setBackground(java.awt.Color.black);
+        tabs.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         tabs.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         tabs.setFont(tabs.getFont().deriveFont(tabs.getFont().getSize()-2f));
         tabs.setName("tabs"); // NOI18N
