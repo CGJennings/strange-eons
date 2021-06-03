@@ -19,25 +19,31 @@ public class UltharTheme extends Theme {
     @Override
     public String getLookAndFeelClassName() {
         return "com.formdev.flatlaf.Flat"
-                + (isDarkOnLight() ? "Dark" : "Light")
+                + (isDark() ? "Dark" : "Light")
                 + "Laf";
     }
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
-        final boolean dark = isDarkOnLight();
+        final boolean dark = isDark();
+        final Color DEEP_GREY = new Color(0x333333);
         UIManager.put( "Button.arc", 999 );
         UIManager.put( "ScrollBar.width", 12 );
         UIManager.put( "ScrollBar.thumbArc", 999 );
         UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
         UIManager.put( "TabbedPane.showTabSeparators", true );
         UIManager.put( "TabbedPane.tabSeparatorsFullHeight", true );
-        UIManager.put( "TabbedPane.selectedBackground", dark ? Color.BLACK : Color.WHITE);
+        UIManager.put(ALTERNATE_DOCUMENT_TAB_ORIENTATION, true);
+        UIManager.put(NOTES_BACKGROUND, null);
         UIManager.put(EDITOR_TAB_BACKGROUND, null);
         if(dark) {
-
+            UIManager.put(PROJECT_HEADER_BACKGROUND, DEEP_GREY);
+            UIManager.put(PROJECT_FIND_BACKGROUND, null);
         } else {
-            UIManager.put(NOTES_BACKGROUND, null);
+            final Color DIVIDER = new Color(0xe7e7e7);
+            UIManager.put("SplitPane.background", DIVIDER);
+            UIManager.put(PROJECT_HEADER_BACKGROUND, DIVIDER);
+            UIManager.put(PROJECT_HEADER_FOREGROUND, DEEP_GREY);
             UIManager.put(PROJECT_FIND_BACKGROUND, null);
             UIManager.put(PROJECT_FIND_FOREGROUND, null);
         }
@@ -47,13 +53,8 @@ public class UltharTheme extends Theme {
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
     }
 
-//    @Override
-//    public String getThemeDescription() {
-//        return super.getThemeDescription(); //To change body of generated methods, choose Tools | Templates.
-//    }
-
     @Override
-    public boolean isDarkOnLight() {
+    public boolean isDark() {
         return false;
     }
 }
