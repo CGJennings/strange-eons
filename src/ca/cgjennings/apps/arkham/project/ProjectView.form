@@ -180,8 +180,8 @@
               <SubComponents>
                 <Component class="javax.swing.JLabel" name="treeLabel">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
                     </Property>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                       <FontInfo relative="true">
@@ -210,8 +210,8 @@
                 </Component>
                 <Component class="ca.cgjennings.ui.JLinkLabel" name="addTaskBtn">
                   <Properties>
-                    <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
                     </Property>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -252,6 +252,9 @@
                 </Component>
                 <Component class="ca.cgjennings.apps.arkham.ToolCloseButton" name="toolCloseBtn">
                   <Properties>
+                    <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
+                    </Property>
                     <Property name="name" type="java.lang.String" value="toolCloseBtn" noResource="true"/>
                   </Properties>
                   <Events>
@@ -383,8 +386,8 @@
           <SubComponents>
             <Container class="javax.swing.JTabbedPane" name="tabs">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">

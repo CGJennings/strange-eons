@@ -297,6 +297,12 @@ public abstract class Theme {
     }
 
     /**
+     * A UI key that controls a boolean property that affects whether document
+     * tabs should switch their orientation. Set if tabs look wrong for a
+     * given L&F. 
+     */
+    public static final String ALTERNATE_DOCUMENT_TAB_ORIENTATION = "se-alt-doc-tab-dir";
+    /**
      * A UI key that contains the {@code Border} used for headings and
      * subheadings. If {@code null}, a default algorithm is used to create
      * a suitably themed border. The font for headings is based on the font used
@@ -436,6 +442,12 @@ public abstract class Theme {
      * UI key for the project area properties/notes tabs background color.
      */
     public static final String PROJECT_NOTES_TAB_BACKGROUND = "se-projnotestab-bg";
+
+    /**
+     * UI key for the background colour used for project view headers
+     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     */
+    public static final String PROJECT_HEADER_BACKGROUND = "se-projhead-bg";
     /**
      * UI key for project search field background colour.
      */
