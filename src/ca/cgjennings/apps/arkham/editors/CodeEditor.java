@@ -37,6 +37,7 @@ import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -75,6 +76,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
@@ -567,9 +569,9 @@ public class CodeEditor extends AbstractSupportEditor {
 
         titlePanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setBackground(java.awt.Color.black);
+        jLabel1.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD));
-        jLabel1.setForeground(java.awt.Color.white);
+        jLabel1.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND));
         jLabel1.setText(string( "find-replace" )); // NOI18N
         jLabel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, new java.awt.Color(99, 99, 99)), javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4)));
         jLabel1.setOpaque(true);
@@ -579,6 +581,7 @@ public class CodeEditor extends AbstractSupportEditor {
         gridBagConstraints.weighty = 1.0;
         titlePanel.add(jLabel1, gridBagConstraints);
 
+        closeBtn.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 closeBtncloseClicked(evt);
@@ -790,7 +793,6 @@ public class CodeEditor extends AbstractSupportEditor {
         gridBagConstraints.weightx = 1.0;
         getContentPane().add(findPanel, gridBagConstraints);
 
-        sideBarSplitter.setBorder(null);
         sideBarSplitter.setDividerLocation(200);
         sideBarSplitter.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
@@ -834,9 +836,9 @@ public class CodeEditor extends AbstractSupportEditor {
         navTitle.setOpaque(false);
         navTitle.setLayout(new java.awt.GridBagLayout());
 
-        navLabel.setBackground(java.awt.Color.black);
+        navLabel.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         navLabel.setFont(navLabel.getFont().deriveFont(navLabel.getFont().getStyle() | java.awt.Font.BOLD, navLabel.getFont().getSize()-2));
-        navLabel.setForeground(java.awt.Color.white);
+        navLabel.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND));
         navLabel.setText(string( "code-navigator" )); // NOI18N
         navLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4));
         navLabel.setOpaque(true);
@@ -846,6 +848,7 @@ public class CodeEditor extends AbstractSupportEditor {
         gridBagConstraints.weighty = 1.0;
         navTitle.add(navLabel, gridBagConstraints);
 
+        sourceNavCloseButton.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         sourceNavCloseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sourceNavCloseButtonActionPerformed(evt);

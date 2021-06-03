@@ -68,6 +68,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         initComponents();
         localizeTitle();
 
+
         if (PlatformSupport.PLATFORM_IS_MAC) {
             OSXIntegration.install(exitSeparator, exitItem, aboutSeparator, aboutItem, preferencesSeparator, preferencesItem);
         }
@@ -937,7 +938,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         editorTab.setBackground( UIManager.getDefaults().getColor( Theme.EDITOR_TAB_BACKGROUND ) );
         editorTab.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1,  UIManager.getDefaults().getColor( Theme.EDITOR_TAB_BACKGROUND ) ));
         editorTab.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-        editorTab.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
+        editorTab.setTabPlacement(UIManager.getBoolean(Theme.ALTERNATE_DOCUMENT_TAB_ORIENTATION) ? JTabbedPane.TOP : JTabbedPane.BOTTOM);
         editorTab.setName("editorTab"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;

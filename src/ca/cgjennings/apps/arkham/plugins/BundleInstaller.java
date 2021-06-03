@@ -400,16 +400,17 @@ public class BundleInstaller {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
+                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_ULTHAR_CLASS));
+                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DREAMLANDS_CLASS));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
             //  - add system L&F theme
             try {
                 installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_TCHO_TCHO_CLASS));
-            } catch (PluginException e) {
+            } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "native theme not available", e);
-            } catch (IOException e) {
-            } // not possible for built-in themes
+            }
         }
 
         // Discover any theme bundles added since the last call, and add them

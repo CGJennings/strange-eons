@@ -258,26 +258,17 @@ public final class DiscoveryService {
      * @return information about the debug server, or null if it is not a server
      */
     private ServerInfo testPort(InetAddress host, int port) {
-        Socket s = null;
-        try {
-            if (canRuleOutQuickly(host, port)) {
-                return null;
-            }
+        if (canRuleOutQuickly(host, port)) {
+            return null;
+        }
 
-            s = new Socket(host, port);
+        try (Socket s = new Socket(host, port)) {
             s.setSoTimeout(SOCKET_TIMEOUT);
             sendProbe(s);
             ServerInfo info = readProbeReply(s);
-            s.close();
             return info;
         } catch (IOException badPort) {
             return null;
-        } finally {
-            if (s != null) try {
-                s.close();
-            } catch (IOException ce) {
-                return null;
-            }
         }
     }
 
@@ -294,12 +285,13 @@ public final class DiscoveryService {
      *   a proper debug server reply, or the server information if one is detected
      */
     private static ServerInfo readProbeReply(Socket s) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8));
-        String magic = in.readLine();
-        if ("SEDP3 OK".equals(magic)) {
-            return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8))) {
+            String magic = in.readLine();
+            if ("SEDP3 OK".equals(magic)) {
+                return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
+            }
+            throw new IOException(); // found something but not a debug server
         }
-        throw new IOException(); // found something but not a debug server
     }
 
     private static final byte[] PROBE_BYTES = "SEDP3\nSERVERINFO\n".getBytes(StandardCharsets.UTF_8);

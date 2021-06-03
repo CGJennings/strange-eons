@@ -153,7 +153,7 @@ public class HTMLTokenizer extends Tokenizer {
                     }
                     break;
 
-                case INTERNAL1: // Inside a JavaScript
+                case INTERNAL1: // Inside an HTML <script> block
                     switch (c) {
                         case '<':
                             backslash = false;

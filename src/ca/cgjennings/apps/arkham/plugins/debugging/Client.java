@@ -61,7 +61,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -261,6 +260,8 @@ public final class Client extends javax.swing.JFrame {
                     }
                 }
                 connected = false;
+                errorLabel.setVisible(true);
+                errorLabel2.setVisible(true);
                 showPanel("connect");
             }, "Server Connection Thread");
             connectThread.setDaemon(true);
@@ -393,6 +394,8 @@ public final class Client extends javax.swing.JFrame {
         installAccelerator("raw", commandRaw);
         installAccelerator("stack-down", commandStackDown);
         installAccelerator("stack-up", commandStackUp);
+
+        installToolTip("reconnect", backBtn);
 
         installToolTip("debug-view", debugBtn);
         installToolTip("table-view", infoBtn);
@@ -599,7 +602,7 @@ public final class Client extends javax.swing.JFrame {
         watchCopyItem = new javax.swing.JMenuItem();
         sourcePopup = new javax.swing.JLabel();
         toolPanel = new javax.swing.JPanel();
-        reconnectBtn = new javax.swing.JButton();
+        backBtn = new javax.swing.JButton();
         runBtn = new javax.swing.JButton();
         breakBtn = new javax.swing.JButton();
         stopBtn = new javax.swing.JButton();
@@ -625,12 +628,12 @@ public final class Client extends javax.swing.JFrame {
         portField = new javax.swing.JSpinner();
         scanBtn = new javax.swing.JButton();
         connectBtn = new javax.swing.JButton();
-        javax.swing.JLabel errorLabel = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         leftFill = new javax.swing.JLabel();
         rightFill = new javax.swing.JLabel();
         javax.swing.JLabel hostLabel = new javax.swing.JLabel();
         hostField = new javax.swing.JTextField();
-        javax.swing.JLabel errorLabel2 = new javax.swing.JLabel();
+        errorLabel2 = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         sourceSplit =  new ThinSplitPane() ;
         scriptSplit =  new ThinSplitPane() ;
@@ -705,14 +708,14 @@ public final class Client extends javax.swing.JFrame {
         toolPanel.setBackground(java.awt.Color.darkGray);
         toolPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.orange), javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.lightGray)));
 
-        reconnectBtn.setBackground(java.awt.Color.black);
-        reconnectBtn.setForeground(java.awt.Color.lightGray);
-        reconnectBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/back-hi.png"))); // NOI18N
-        reconnectBtn.setBorderPainted(false);
-        reconnectBtn.setMargin(new java.awt.Insets(1, 1, 1, 1));
-        reconnectBtn.addActionListener(new java.awt.event.ActionListener() {
+        backBtn.setBackground(java.awt.Color.black);
+        backBtn.setForeground(java.awt.Color.lightGray);
+        backBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/back-hi.png"))); // NOI18N
+        backBtn.setBorderPainted(false);
+        backBtn.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        backBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reconnectBtnActionPerformed(evt);
+                backBtnActionPerformed(evt);
             }
         });
 
@@ -898,7 +901,7 @@ public final class Client extends javax.swing.JFrame {
             toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(toolPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(reconnectBtn)
+                .addComponent(backBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(linkLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -933,7 +936,7 @@ public final class Client extends javax.swing.JFrame {
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        toolPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, reconnectBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
+        toolPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backBtn, breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
 
         toolPanelLayout.setVerticalGroup(
             toolPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -954,13 +957,13 @@ public final class Client extends javax.swing.JFrame {
                     .addComponent(breakDebuggerBtn)
                     .addComponent(onTopBtn)
                     .addComponent(stopBtn)
-                    .addComponent(reconnectBtn))
+                    .addComponent(backBtn))
                 .addGap(1, 1, 1)
                 .addComponent(linkLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        toolPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, reconnectBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
+        toolPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {backBtn, breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
 
         getContentPane().add(toolPanel, java.awt.BorderLayout.NORTH);
 
@@ -1765,7 +1768,7 @@ public final class Client extends javax.swing.JFrame {
         updateStatus();
     }
 
-    private String host = InetAddress.getLoopbackAddress().getHostAddress();
+    private String host = InetAddress.getLoopbackAddress().getHostName();
     private int port = 8888;
 
     // Counts heartbeats; when this reaches a predefined limit,
@@ -2346,12 +2349,14 @@ public final class Client extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_scanBtnActionPerformed
 
-    private void reconnectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reconnectBtnActionPerformed
+    private void backBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backBtnActionPerformed
         connected = false;
         autoConnect = false;
         updateToolState();
+        errorLabel.setVisible(false);
+        errorLabel2.setVisible(false);
         showPanel("connect");
-    }//GEN-LAST:event_reconnectBtnActionPerformed
+    }//GEN-LAST:event_backBtnActionPerformed
 
     private Popup popup;
     private String popupExpression;
@@ -2590,6 +2595,7 @@ public final class Client extends javax.swing.JFrame {
     private int waitDepth = 0;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backBtn;
     private javax.swing.JButton breakBtn;
     private javax.swing.JToggleButton breakDebuggerBtn;
     private javax.swing.JToggleButton breakEnterBtn;
@@ -2601,6 +2607,8 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JPanel connectPanel;
     private javax.swing.JPanel connectingPanel;
     private javax.swing.JToggleButton debugBtn;
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel errorLabel2;
     private ca.cgjennings.ui.JLabelledField filterField;
     private ca.cgjennings.ui.JHelpButton helpButton;
     private javax.swing.JTextField hostField;
@@ -2620,7 +2628,6 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JSpinner portField;
     private javax.swing.JLabel propHeadLabel;
     private javax.swing.JTextField propertyField;
-    private javax.swing.JButton reconnectBtn;
     private javax.swing.JButton refreshBtn;
     private ca.cgjennings.ui.JLinkLabel removeAllBreaksBtn;
     private javax.swing.JLabel rightFill;
