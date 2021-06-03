@@ -51,6 +51,14 @@ public class ThemeInstaller {
      * Class name of the built-in "Yuggoth" theme.
      */
     public static final String THEME_YUGGOTH_CLASS = "ca.cgjennings.ui.theme.YuggothTheme";
+    /**
+     * Class name of the built-in "Ulthar" theme.
+     */
+    public static final String THEME_ULTHAR_CLASS = "ca.cgjennings.ui.theme.UltharTheme";
+    /**
+     * Class name of the built-in "Dreamlands" theme.
+     */
+    public static final String THEME_DREAMLANDS_CLASS = "ca.cgjennings.ui.theme.DreamlandsTheme";
 
     /**
      * Class name of the built-in "Tcho Tcho" theme, which is based on the
@@ -234,7 +242,7 @@ public class ThemeInstaller {
 
         theme.modifyLookAndFeel(laf);
         UIManager.setLookAndFeel(laf);
-        installStrangeEonsUIFallbackDefaults();
+        installStrangeEonsUIFallbackDefaults(theme);
         theme.themeInstalled();
 
         installed = theme;
@@ -242,11 +250,13 @@ public class ThemeInstaller {
     }
 
     private static void installStrangeEonsUIDefaults(Theme theme) {
-        final boolean dark = theme == null ? false : theme.isDarkOnLight();
+        final boolean dark = theme == null ? false : theme.isDark();
         UIManager.put("useDarkTheme", dark);
         UIManager.put(Theme.LINK_LABEL_FOREGROUND, new Color(0x3978ab));
         UIManager.put(Theme.NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
         UIManager.put(Theme.NOTES_FOREGROUND, Color.BLACK);
+        UIManager.put(Theme.PROJECT_HEADER_BACKGROUND, Color.BLACK);
+        UIManager.put(Theme.PROJECT_HEADER_FOREGROUND, Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
         UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
@@ -271,13 +281,14 @@ public class ThemeInstaller {
         ui.put(Theme.CONSOLE_FONT, new Font(Font.MONOSPACED, Font.PLAIN, 13));
     }
 
-    private static void installStrangeEonsUIFallbackDefaults() {
+    private static void installStrangeEonsUIFallbackDefaults(Theme theme) {
+        final boolean dark = theme == null ? false : theme.isDark();
         UIDefaults ui = UIManager.getDefaults();
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EXTERIOR, "text", 0x202f66);
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EDGE, "controlHighlight", 0xf7f8fa);
-        installFallbackColour(ui, Theme.MESSAGE_BORDER_MAIN, "nimbusFocus", 0xb5caff);
-        installFallbackColour(ui, Theme.MESSAGE_BACKGROUND, "nimbusLightBackground", 0xffffff);
-        installFallbackColour(ui, Theme.MESSAGE_FOREGROUND, "text", 0x000000);
+        installFallbackColour(ui, Theme.MESSAGE_BORDER_MAIN, "nimbusFocus", dark ? 0x646464 : 0xb5caff);
+        installFallbackColour(ui, Theme.MESSAGE_BACKGROUND, "nimbusLightBackground", dark ? 0x0111111 : 0xffffff);
+        installFallbackColour(ui, Theme.MESSAGE_FOREGROUND, Theme.MESSAGE_FOREGROUND, dark ? 0xf7f7f7 : 0x0);
 
         if (ui.get(Theme.MESSAGE_BORDER_DIALOG) == null) {
             Border darkBorder = new LineBorder(ui.getColor(Theme.MESSAGE_BORDER_EXTERIOR), 1);
@@ -324,7 +335,6 @@ public class ThemeInstaller {
                     try {
                         UIManager.setLookAndFeel(lafi.getClassName());
                         installStrangeEonsUIDefaults(null);
-                        installStrangeEonsUIFallbackDefaults();
                         return;
                     } catch (Throwable t) {
                         // do nothing, will eventually fall back on system LaF

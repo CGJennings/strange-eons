@@ -5,7 +5,6 @@ import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
@@ -14,7 +13,6 @@ import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import resources.Language;
 import resources.ResourceKit;
 
@@ -76,12 +74,13 @@ public abstract class Theme {
     }
 
     /**
-     * Returns whether the theme is, on the whole, dark-on-light, similar
+     * Returns whether the theme is, on the whole, light-on-dark, similar
      * to OS "dark modes". The base class returns {@code false}.
      *
      * @return true if the theme is a "dark mode" style theme
+     * @since 3.2
      */
-    public boolean isDarkOnLight() {
+    public boolean isDark() {
         return false;
     }
 
@@ -131,7 +130,7 @@ public abstract class Theme {
 
     /**
      * Returns the first font family in a list of comma-separated font families
-     * that is available on this system. If none of the families is avaiable, a
+     * that is available on this system. If none of the families is available, a
      * standard sans-serif family is returned.
      *
      * @param families a list of comma-separated font family names
@@ -288,7 +287,7 @@ public abstract class Theme {
      * your theme, it is important that you make your changes to a
      * <i>copy</i> of the original image to avoid corrupting the image cache.
      *
-     * @param source the image to apply theming to
+     * @param source the image to apply themeing to
      * @return a themed copy of the image, or the original image if it is not
      * modified by the theme
      * @see #applyThemeToImage(java.lang.String)
@@ -297,6 +296,12 @@ public abstract class Theme {
         return source;
     }
 
+    /**
+     * A UI key that controls a boolean property that affects whether document
+     * tabs should switch their orientation. Set if tabs look wrong for a
+     * given L&F. 
+     */
+    public static final String ALTERNATE_DOCUMENT_TAB_ORIENTATION = "se-alt-doc-tab-dir";
     /**
      * A UI key that contains the {@code Border} used for headings and
      * subheadings. If {@code null}, a default algorithm is used to create
@@ -437,6 +442,19 @@ public abstract class Theme {
      * UI key for the project area properties/notes tabs background color.
      */
     public static final String PROJECT_NOTES_TAB_BACKGROUND = "se-projnotestab-bg";
+
+    /**
+     * UI key for the background colour used for project view headers
+     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     */
+    public static final String PROJECT_HEADER_BACKGROUND = "se-projhead-bg";
+
+    /**
+     * UI key for the background colour used for project view headers
+     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     */
+    public static final String PROJECT_HEADER_FOREGROUND = "se-projhead-fg";
+
     /**
      * UI key for project search field background colour.
      */

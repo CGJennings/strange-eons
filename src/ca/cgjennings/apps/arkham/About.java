@@ -200,6 +200,9 @@ final class About extends javax.swing.JDialog {
     private String createAboutText() {
         SETemplateProcessor tp = new SETemplateProcessor();
         tp.set("version", StrangeEons.getVersionString());
+        tp.set("bg", String.format(Locale.ROOT, "#%06X", aboutText.getBackground().getRGB() & 0xffffff));
+        tp.set("fg", String.format(Locale.ROOT, "#%06X", aboutText.getForeground().getRGB() & 0xffffff));
+        tp.set("inv", UIManager.getBoolean("useDarkTheme") ? "-inv" : "");
 
         // updated May 25 2021
         final int ANONYMOUS_COUNT = 12;
@@ -285,7 +288,6 @@ final class About extends javax.swing.JDialog {
         });
 
         aboutText.setEditable(false);
-        aboutText.setBackground(new java.awt.Color(254, 254, 255));
         aboutText.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         aboutText.setContentType("text/html"); // NOI18N
         aboutText.addMouseListener(new java.awt.event.MouseAdapter() {
