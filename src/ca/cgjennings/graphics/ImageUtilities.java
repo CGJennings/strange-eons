@@ -381,31 +381,46 @@ public final class ImageUtilities {
      */
     public static ImageIcon createDisabledIcon(Icon src) {
         if (src == null) return null;
-        synchronized (ImageUtilities.class) {
-            if (disFilter == null) {
-                disFilter = new AbstractPixelwiseFilter() {
-                    @Override
-                    public void filterPixels(int[] pixels, int start, int end) {
-                        for (int i = 0; i < pixels.length; ++i) {
-                            int argb = pixels[i];
-                            int gray = ((77 * ((argb >> 16) & 0xff))
-                                    + (150 * ((argb >> 8) & 0xff))
-                                    + (28 * (argb & 0xff))) / 255;
+        return new ImageIcon(createDisabledImage(iconToImage(src)));
+    }
 
-                            gray = (255 - ((255 - gray) / 2));
-                            if (gray < 0) {
-                                gray = 0;
+    /**
+     * Returns a "disabled" version of an image.
+     *
+     * @param src the image to convert
+     * @return a version of the image with a suitable default "disabled" effect applied
+     */
+    public static BufferedImage createDisabledImage(BufferedImage src) {
+        if (src == null) return null;
+
+        if (disFilter == null) {
+            synchronized (ImageUtilities.class) {
+                if (disFilter == null) {
+                    disFilter = new AbstractPixelwiseFilter() {
+                        @Override
+                        public void filterPixels(int[] pixels, int start, int end) {
+                            for (int i = 0; i < pixels.length; ++i) {
+                                int argb = pixels[i];
+                                int gray = ((77 * ((argb >> 16) & 0xff))
+                                        + (150 * ((argb >> 8) & 0xff))
+                                        + (28 * (argb & 0xff))) / 255;
+
+                                gray = (255 - ((255 - gray) / 2));
+                                if (gray < 0) {
+                                    gray = 0;
+                                }
+                                if (gray > 255) {
+                                    gray = 255;
+                                }
+                                pixels[i] = (argb & 0xff000000) | (gray << 16) | (gray << 8) | (gray);
                             }
-                            if (gray > 255) {
-                                gray = 255;
-                            }
-                            pixels[i] = (argb & 0xff000000) | (gray << 16) | (gray << 8) | (gray);
                         }
-                    }
-                };
+                    };
+                }
             }
         }
-        return new ImageIcon(disFilter.filter(iconToImage(src), null));
+
+        return disFilter.filter(src, null);
     }
     private static AbstractPixelwiseFilter disFilter;
 

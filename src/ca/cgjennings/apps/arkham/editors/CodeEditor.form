@@ -42,16 +42,16 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
                 </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                   <FontInfo relative="true">
                     <Font bold="true" component="jLabel1" property="font" relativeSize="true" size="0"/>
                   </FontInfo>
                 </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND)" type="code"/>
                 </Property>
                 <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                   <ResourceString bundle="resources/text/interface/eons-text.properties" key="find-replace" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -79,6 +79,11 @@
               </Constraints>
             </Component>
             <Component class="ca.cgjennings.apps.arkham.ToolCloseButton" name="closeBtn">
+              <Properties>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
+                </Property>
+              </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="closeBtncloseClicked"/>
               </Events>
@@ -348,9 +353,6 @@
     </Container>
     <Container class="javax.swing.JSplitPane" name="sideBarSplitter">
       <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="null"/>
-        </Property>
         <Property name="dividerLocation" type="int" value="200"/>
       </Properties>
       <Events>
@@ -468,16 +470,16 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="navLabel">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
                         </Property>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                           <FontInfo relative="true">
                             <Font bold="true" component="navLabel" property="font" relativeSize="true" size="-2"/>
                           </FontInfo>
                         </Property>
-                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND)" type="code"/>
                         </Property>
                         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                           <ResourceString bundle="resources/text/interface/eons-text.properties" key="code-navigator" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -500,6 +502,11 @@
                       </Constraints>
                     </Component>
                     <Component class="ca.cgjennings.apps.arkham.ToolCloseButton" name="sourceNavCloseButton">
+                      <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)" type="code"/>
+                        </Property>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sourceNavCloseButtonActionPerformed"/>
                       </Events>

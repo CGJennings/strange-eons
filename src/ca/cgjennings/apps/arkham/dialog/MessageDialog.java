@@ -80,7 +80,9 @@ class MessageDialog extends javax.swing.JDialog {
                 if (s == null) {
                     s = " ";
                 }
-                messagePanel.add(new JLabel(s), messagePanel.getComponentCount() > 0 ? "br" : "");
+                JLabel label = new JLabel(s);
+                label.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
+                messagePanel.add(label, messagePanel.getComponentCount() > 0 ? "br" : "");
             }
         }
         if (m.inlineComponents != null) {

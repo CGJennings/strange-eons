@@ -1,11 +1,14 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.algo.SplitJoin;
+import ca.cgjennings.graphics.ImageUtilities;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import javax.swing.Icon;
+import javax.swing.UIManager;
 import resources.ResourceKit;
 
 /**
@@ -93,6 +96,20 @@ public class ThemedIcon implements Icon {
     }
     private volatile BufferedImage im;
 
+    private final BufferedImage getDisabledImage() {
+        if (dim != null) return dim;
+
+        BufferedImage im = getImage();
+        BufferedImageOp op = (BufferedImageOp) UIManager.get(Theme.DISABLED_ICON_FILTER);
+        if (op == null) {
+            dim = ImageUtilities.createDisabledImage(im);
+        } else {
+            dim = op.filter(im, null);
+        }
+        return dim;
+    }
+    private BufferedImage dim;
+
     @Override
     public int getIconWidth() {
         BufferedImage bi = getImage();
@@ -116,7 +133,11 @@ public class ThemedIcon implements Icon {
         BufferedImage bi = getImage();
 
         if (c != null && !c.isEnabled()) {
-            System.err.println("DISABLED");
+            final BufferedImage dbi = getDisabledImage();
+            if (dbi != null) {
+                g.drawImage(dbi, x, y, null);
+                return;
+            }
         }
 
         if (bi != null) {
