@@ -199,6 +199,11 @@ for helping to test the earliest versions of Strange Eons 3.
 <p>LZMA compression was adapted from code placed in the public domain by
    Lasse Collin and Igor Pavlov.
 
+<p>The Dreamlands and Ulthar themes use the
+        <a href="https://github.com/JFormDesigner/FlatLaf/">FlatLaf</a> library,
+        which is licensed under the
+        <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License, version 2.0</a>.
+
 <p>Code formatting makes use of the
 <a href="https://github.com/beautify-web/js-beautify">JS Beautifier</a> group
 of libraries, which are included under an MIT license:</p>
