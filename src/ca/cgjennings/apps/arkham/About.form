@@ -140,6 +140,12 @@
     </Component>
     <Component class="ca.cgjennings.ui.TitleLabel" name="titleLabel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND)&#xd;&#xa;" type="code"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND)&#xd;&#xa;" type="code"/>
+        </Property>
         <Property name="horizontalAlignment" type="int" value="2"/>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="ab-title" replaceFormat="string(&quot;{key}&quot;)"/>
