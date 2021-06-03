@@ -541,6 +541,7 @@ public class SimpleImageWriter {
         }
     }
 
+    @Deprecated
     @Override
     protected void finalize() throws Throwable {
         try {

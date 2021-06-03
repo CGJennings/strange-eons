@@ -27,6 +27,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -821,6 +823,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         }
 
         try {
+            @SuppressWarnings("deprecation")
             Rectangle r = console.modelToView(endOfDoc);
             if (r != null) {
                 Rectangle vis = console.getVisibleRect();
@@ -870,14 +873,30 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
      * @return a description of the stack trace element at that line, or
      * {@code null}
      * @see #getErrorAtOffset(int)
+     *
+     * @deprecated
      */
+    @Deprecated
     public ConsoleErrorLocation getErrorAtPoint(Point p) {
         int pos = console.viewToModel(p);
-        if (pos < 0) {
-            return null;
-        }
-        return getErrorAtOffset(pos);
+        return pos < 0 ? null : getErrorAtOffset(pos);
     }
+    
+    /**
+     * Returns a description of the error at the offset into the console text
+     * under the specified point in the console window. Returns
+     * {@code null} if the line at that point does not represent a valid
+     * stack trace entry.
+     *
+     * @param p the point over the script console
+     * @return a description of the stack trace element at that line, or
+     * {@code null}
+     * @see #getErrorAtOffset(int)
+     */
+    public ConsoleErrorLocation getErrorAtPoint(Point2D p) {
+        int pos = console.viewToModel2D(p);
+        return pos < 0 ? null : getErrorAtOffset(pos);
+    }    
 
     /**
      * Returns a description of the error at the line at offset {@code pos}

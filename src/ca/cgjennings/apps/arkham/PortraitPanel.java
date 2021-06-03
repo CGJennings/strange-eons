@@ -1114,6 +1114,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         }
     }
 
+    @Deprecated
     @Override
     protected void finalize() throws Throwable {
         try {

@@ -190,6 +190,7 @@ public class SVGVectorImage extends AbstractVectorImage {
         }
     }
 
+    @Deprecated
     @Override
     protected void finalize() throws Throwable {
         try {

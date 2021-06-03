@@ -871,9 +871,9 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
                     StrangeEons.log.log(Level.WARNING, "no comment line entry for {0}", curKey.key);
                 } else {
                     try {
-                        Rectangle2D pos = commentBlockField.modelToView(commentOffset);
+                        Rectangle2D pos = commentBlockField.modelToView2D(commentOffset);
                         if (pos != null) {
-                            commentBlockScroll.getViewport().setViewPosition(new Point(0, (int)pos.getY()));
+                            commentBlockScroll.getViewport().setViewPosition(new Point(0, (int) pos.getY()));
                         }
                     } catch (Exception e) {
                         StrangeEons.log.log(Level.WARNING, null, e);
