@@ -74,13 +74,13 @@ public abstract class Theme {
     }
 
     /**
-     * Returns whether the theme is, on the whole, dark-on-light, similar
+     * Returns whether the theme is, on the whole, light-on-dark, similar
      * to OS "dark modes". The base class returns {@code false}.
      *
      * @return true if the theme is a "dark mode" style theme
      * @since 3.2
      */
-    public boolean isDarkOnLight() {
+    public boolean isDark() {
         return false;
     }
 

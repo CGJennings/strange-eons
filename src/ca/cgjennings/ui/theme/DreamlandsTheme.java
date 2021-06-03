@@ -11,7 +11,7 @@ public class DreamlandsTheme extends UltharTheme {
     }
 
     @Override
-    public boolean isDarkOnLight() {
+    public boolean isDark() {
         return true;
     }
 }

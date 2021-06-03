@@ -250,7 +250,7 @@ public class ThemeInstaller {
     }
 
     private static void installStrangeEonsUIDefaults(Theme theme) {
-        final boolean dark = theme == null ? false : theme.isDarkOnLight();
+        final boolean dark = theme == null ? false : theme.isDark();
         UIManager.put("useDarkTheme", dark);
         UIManager.put(Theme.LINK_LABEL_FOREGROUND, new Color(0x3978ab));
         UIManager.put(Theme.NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
@@ -282,7 +282,7 @@ public class ThemeInstaller {
     }
 
     private static void installStrangeEonsUIFallbackDefaults(Theme theme) {
-        final boolean dark = theme == null ? false : theme.isDarkOnLight();
+        final boolean dark = theme == null ? false : theme.isDark();
         UIDefaults ui = UIManager.getDefaults();
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EXTERIOR, "text", 0x202f66);
         installFallbackColour(ui, Theme.MESSAGE_BORDER_EDGE, "controlHighlight", 0xf7f8fa);

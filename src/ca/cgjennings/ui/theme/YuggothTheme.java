@@ -177,7 +177,7 @@ public class YuggothTheme extends Theme {
     }
 
     @Override
-    public boolean isDarkOnLight() {
+    public boolean isDark() {
         return true;
     }
 }
