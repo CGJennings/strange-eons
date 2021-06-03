@@ -255,6 +255,8 @@ public class ThemeInstaller {
         UIManager.put(Theme.LINK_LABEL_FOREGROUND, new Color(0x3978ab));
         UIManager.put(Theme.NOTES_BACKGROUND, dark ? new Color(0xd2d26a) : new Color(0xffffb0));
         UIManager.put(Theme.NOTES_FOREGROUND, Color.BLACK);
+        UIManager.put(Theme.PROJECT_HEADER_BACKGROUND, Color.BLACK);
+        UIManager.put(Theme.PROJECT_HEADER_FOREGROUND, Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
         UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);

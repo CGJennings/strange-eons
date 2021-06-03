@@ -448,6 +448,13 @@ public abstract class Theme {
      * (Project Files, Add New Task..., Properties/Notes, etc.)
      */
     public static final String PROJECT_HEADER_BACKGROUND = "se-projhead-bg";
+
+    /**
+     * UI key for the background colour used for project view headers
+     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     */
+    public static final String PROJECT_HEADER_FOREGROUND = "se-projhead-fg";
+
     /**
      * UI key for project search field background colour.
      */

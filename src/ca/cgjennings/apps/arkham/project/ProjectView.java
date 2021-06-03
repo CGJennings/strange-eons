@@ -993,7 +993,7 @@ public final class ProjectView extends javax.swing.JPanel {
 
         treeLabel.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         treeLabel.setFont(treeLabel.getFont().deriveFont(treeLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        treeLabel.setForeground(java.awt.Color.white);
+        treeLabel.setForeground(UIManager.getColor(Theme.PROJECT_HEADER_FOREGROUND));
         treeLabel.setText(string( "prj-l-view-tree" )); // NOI18N
         treeLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4));
         treeLabel.setName("treeLabel"); // NOI18N
