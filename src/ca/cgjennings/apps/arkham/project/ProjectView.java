@@ -895,7 +895,7 @@ public final class ProjectView extends javax.swing.JPanel {
         findIcon = new javax.swing.JLabel();
         projFindField =  new JLabelledField() ;
         ((JLabelledField) projFindField).setTextForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
-        closeFindBtn = new javax.swing.JButton();
+        closeFindBtn = new ca.cgjennings.apps.arkham.ToolCloseButton();
         notePanel = new javax.swing.JPanel();
         tabs = new javax.swing.JTabbedPane();
         StyleUtilities.mini( tabs );
@@ -1073,7 +1073,6 @@ public final class ProjectView extends javax.swing.JPanel {
 
         closeFindBtn.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         closeFindBtn.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
-        closeFindBtn.setText("╳");
         closeFindBtn.setBorder(null);
         closeFindBtn.setBorderPainted(false);
         closeFindBtn.setContentAreaFilled(false);
