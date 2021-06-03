@@ -496,7 +496,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
         overlayPanel.add(notInDefaultLabel, gridBagConstraints);
 
-        translatedLabel.setBackground(java.awt.Color.black);
+        translatedLabel.setBackground(new JList().getForeground());
         translatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         translatedLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1313,7 +1313,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
                     c = translatedInParentLabel.getBackground();
                     break;
                 default:
-                    c = isSelected ? getForeground() : translatedLabel.getBackground();
+                    c = isSelected ? list.getSelectionForeground() : list.getForeground();
             }
             // Having the diff tag overrides all other conditions
             if (k.diff) {
