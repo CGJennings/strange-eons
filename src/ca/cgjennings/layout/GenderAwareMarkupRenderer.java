@@ -12,8 +12,16 @@ import resources.Language;
  * renderer has been set to.
  * <p>
  * To prevent confusion with closing tags, if no text should be produced for a
- * given gender, the tag should indicate this with a hypen, e.g.,
+ * given gender, the tag should indicate this with a hyphen, e.g.,
  * &lt;-/something&gt; would produce either "" or "something".
+ * <p>
+ * Some examples of how the tags can be used:
+ * <ul>
+ *   <li> {@code <Jack/Diane> was a great scholar of old.}
+ *   <li> {@code The priest<-/ess> is angry.}
+   * <li> {@code You bite <his/her/its/their> hand<-/-/-/s>.}
+   * <li> {@code The <orange/yellow/red/green> key fits this lock.}
+ * </ul>
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

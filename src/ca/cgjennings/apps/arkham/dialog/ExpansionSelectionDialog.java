@@ -9,6 +9,7 @@ import ca.cgjennings.ui.JIconList;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.ListTransferHandler;
 import ca.cgjennings.ui.ToggleSelectionModel;
+import ca.cgjennings.ui.theme.Theme;
 import gamedata.Expansion;
 import gamedata.ExpansionSymbolTemplate;
 import gamedata.Game;
@@ -23,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+import javax.swing.UIManager;
 import static resources.Language.string;
 import resources.Settings;
 
@@ -265,10 +267,11 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
         jLabel1.setLabelFor(variantCombo);
         jLabel1.setText(string("expsel-l-variant")); // NOI18N
 
-        jPanel1.setBackground(java.awt.Color.white);
+        jPanel1.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
+        jLabel2.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
         jLabel2.setText(string("expsel-l-info")); // NOI18N
         jLabel2.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 

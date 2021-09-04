@@ -20,6 +20,7 @@ import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.JKeyStrokeField;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.anim.AnimationUtilities;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -39,6 +40,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -205,7 +207,7 @@ public class PluginManager extends javax.swing.JDialog {
 
         compoundPluginPanel.add(pluginScroll, java.awt.BorderLayout.CENTER);
 
-        pluginTitle.setBackground(new java.awt.Color(245, 245, 255));
+        pluginTitle.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         pluginTitle.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
         pluginTitle.setLayout(new java.awt.GridBagLayout());
 
@@ -221,7 +223,7 @@ public class PluginManager extends javax.swing.JDialog {
         pluginTitle.add(pluginIcon, gridBagConstraints);
 
         pluginName.setFont(pluginName.getFont().deriveFont(pluginName.getFont().getStyle() | java.awt.Font.BOLD, pluginName.getFont().getSize()+2));
-        pluginName.setForeground(java.awt.Color.darkGray);
+        pluginName.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         pluginName.setText(" ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -233,6 +235,7 @@ public class PluginManager extends javax.swing.JDialog {
         pluginTitle.add(pluginName, gridBagConstraints);
 
         pluginDesc.setFont(pluginDesc.getFont().deriveFont(pluginDesc.getFont().getSize()-1f));
+        pluginDesc.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         pluginDesc.setText(" ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -245,7 +248,7 @@ public class PluginManager extends javax.swing.JDialog {
 
         compoundPluginPanel.add(pluginTitle, java.awt.BorderLayout.PAGE_START);
 
-        configPanel.setBackground(new java.awt.Color(245, 245, 255));
+        configPanel.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         configPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.gray));
 
         uninstallBtn.setFont(uninstallBtn.getFont().deriveFont(uninstallBtn.getFont().getStyle() | java.awt.Font.BOLD));
@@ -256,6 +259,7 @@ public class PluginManager extends javax.swing.JDialog {
             }
         });
 
+        enableCheck.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         enableCheck.setText(string( "plug-b-enabled" )); // NOI18N
         enableCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -264,6 +268,7 @@ public class PluginManager extends javax.swing.JDialog {
         });
 
         shortcutLabel.setFont(shortcutLabel.getFont().deriveFont(shortcutLabel.getFont().getStyle() | java.awt.Font.BOLD));
+        shortcutLabel.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         shortcutLabel.setText(string( "plug-col-key" )); // NOI18N
 
         shortcutField.setText("Ctrl+Alt+Shift+Backspace");
@@ -784,8 +789,9 @@ public class PluginManager extends javax.swing.JDialog {
             if (e.iplugin == null) {
                 setBorder(index == 0 ? topSectionBorder : sectionBorder);
                 if (!isSelected) {
-                    setBackground(Color.LIGHT_GRAY);
+                    setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
                 }
+                setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
                 setFont(section);
             } else {
                 if (e.uninstalled) {

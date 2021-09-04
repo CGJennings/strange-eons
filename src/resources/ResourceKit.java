@@ -1990,15 +1990,27 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
+        
         // use PFD if enabled
         if (ProjectFolderDialog.isFolderDialogEnabled()) {
+            final String KEY = getFolderKey(projectFileChooser);
             ProjectFolderDialog d = new ProjectFolderDialog(StrangeEons.getWindow(), ProjectFolderDialog.Mode.SELECT_PROJECT);
-            d.setSelectedFolder(projectFileChooser.getSelectedFile());
+            
+            if (RawSettings.getUserSetting(KEY) != null) {
+                File folder = new File(RawSettings.getUserSetting(KEY));
+                while(folder != null && !folder.isDirectory()) {
+                    folder = folder.getParentFile();
+                }
+                d.setSelectedFolder(folder);
+            } else {
+                d.setSelectedFolder(null);
+            }
+
             File folder = d.showDialog();
+
             if (folder != null) {
-                File savedFolder = folder.getParentFile();
-                projectFileChooser.setSelectedFile(savedFolder);
-                saveDefaultFolder(projectFileChooser);
+                RawSettings.setUserSetting(KEY, folder.getAbsolutePath());
+                RawSettings.writeUserSettings();
             }
             return folder;
         }
