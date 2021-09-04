@@ -160,8 +160,8 @@
             </Container>
             <Container class="javax.swing.JPanel" name="pluginTitle">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="f5" red="f5" type="rgb"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND)" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
@@ -203,8 +203,8 @@
                         <Font bold="true" component="pluginName" property="font" relativeSize="true" size="2"/>
                       </FontInfo>
                     </Property>
-                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                      <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                   </Properties>
@@ -221,6 +221,9 @@
                         <Font component="pluginDesc" property="font" relativeSize="true" size="-1"/>
                       </FontInfo>
                     </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" value=" "/>
                   </Properties>
                   <Constraints>
@@ -233,8 +236,8 @@
             </Container>
             <Container class="javax.swing.JPanel" name="configPanel">
               <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="f5" red="f5" type="rgb"/>
+                <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND)" type="code"/>
                 </Property>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
@@ -316,6 +319,9 @@
                 </Component>
                 <Component class="javax.swing.JCheckBox" name="enableCheck">
                   <Properties>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
+                    </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="resources/text/interface/eons-text.properties" key="plug-b-enabled" replaceFormat="string( &quot;{key}&quot; )"/>
                     </Property>
@@ -330,6 +336,9 @@
                       <FontInfo relative="true">
                         <Font bold="true" component="shortcutLabel" property="font" relativeSize="true" size="0"/>
                       </FontInfo>
+                    </Property>
+                    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND)" type="code"/>
                     </Property>
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="resources/text/interface/eons-text.properties" key="plug-col-key" replaceFormat="string( &quot;{key}&quot; )"/>

@@ -146,7 +146,7 @@ public class FolderTree extends JTree {
         }
         setSelectionPath(path);
         expandPath(path);
-        scrollRowToVisible(getRowForPath(path));
+        scrollPathToVisible(path);
         return true;
     }
 

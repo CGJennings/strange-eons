@@ -127,6 +127,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         allowCacheHint = allowCache;
         initComponents();
+        findPanel.setBackground(filterField.getBackground());
         initFilterMenu();
 
         // TODO: installs when hitting enter in URL combo
@@ -1016,7 +1017,6 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         tableEncloser.add(tableScroll, java.awt.BorderLayout.CENTER);
 
-        findPanel.setBackground(java.awt.Color.white);
         findPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(0, 0, 0)));
         findPanel.setLayout(new java.awt.GridBagLayout());
 
