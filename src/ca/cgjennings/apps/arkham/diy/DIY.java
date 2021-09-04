@@ -1984,6 +1984,18 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
+     * Returns the current portrait image as a bitmap. This is equivalent to
+     * {@code getPortrait(0).getImage()}.
+     *
+     * @return the portrait image
+     * @see #getPortrait
+     * @see Portrait
+     */    
+    public final BufferedImage getPortraitImage() {
+        return getPortrait(0).getImage();
+    }
+
+    /**
      * Returns the horizontal position of the portrait. This is equivalent to
      * {@code getPortrait(0).getPanX()}.
      *

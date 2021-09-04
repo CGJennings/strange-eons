@@ -181,10 +181,6 @@ render-as-prototype = no
 # Setting this to "no" is not generally recommended.
 use-fractional-glyph-metrics = yes
 
-# If yes, text is anti-aliased when rendering at high quality (this includes
-# high quality previews, exporting, and printing).
-use-antialiased-text-on-highquality = yes
-
 # If yes, then page views in the deck editor are always anti-aliased;
 # otherwise, anti-aliasing may be disabled during drag and scroll operations
 # and at low quality settings.
@@ -295,7 +291,7 @@ use-generic-serif-body-for-languages = ru
 ##
 
 # Specify the interface theme to install, assuming it is available.
-# The following theme classes are built in:
+# Some of the built-in themes:
 #     ca.cgjennings.ui.theme.DagonTheme       [green Nimbus variant]
 #     ca.cgjennings.ui.theme.HydraTheme       [blue Nimbus variant]
 #     ca.cgjennings.ui.theme.TchoTchoTheme    [emulate native platform look and feel]
@@ -348,7 +344,7 @@ enable-experimental-features = no
 # text control font is used.
 edit-font-family = default
 #edit-font-family = Monospaced
-# edit-font-family = Consolas,Inconsolata,Bitstream Vera Sans Mono,Lucida Sans Typewriter,Monospaced
+#edit-font-family = Consolas,Inconsolata,Bitstream Vera Sans Mono,Lucida Sans Typewriter,Monospaced
 edit-font-pointsize = 12
 edit-font-bold = no
 edit-font-italic = no
@@ -585,7 +581,7 @@ script-warnings = no
 script-ignore-missing-semicolons = no
 
 # If yes, enable script compatibility mode; see backwards-compatibility.js
-script-compatibility-mode = no
+script-compatibility-mode = yes
 
 # If yes, a complete stack trace is dumped to the console window when a script
 # error occurs, and not just a trace of the the JavaScript system.

@@ -70,7 +70,7 @@ public class CommandLineArguments implements Cloneable {
      */
     public File resfolder = null;
 
-    /** Script file to run in script mode; see {@link RunScriptHandler}. */
+    /** Script file to run in script mode; see {@link ScriptRunnerModeHelper}. */
     public File run = null;
 
     /**

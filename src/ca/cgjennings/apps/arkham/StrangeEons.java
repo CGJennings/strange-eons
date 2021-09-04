@@ -96,7 +96,7 @@ public final class StrangeEons {
 
     private static final int VER_MAJOR = 3;
     private static final int VER_MINOR = 2;
-    private static final ReleaseType VER_TYPE = ReleaseType.BETA;
+    private static final ReleaseType VER_TYPE = ReleaseType.DEVELOPMENT;
 
     private static final int VER_BUILD;
 
