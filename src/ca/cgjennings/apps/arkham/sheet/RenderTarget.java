@@ -36,17 +36,7 @@ public enum RenderTarget {
     FAST_PREVIEW {
         @Override
         public void applyTo(Graphics2D g) {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT);
-            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-            g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-            g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-            g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
-            final Object fractional = Settings.getShared().getYesNo("use-fractional-glyph-metrics")
-                    ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-                    : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractional);
+            g.addRenderingHints(StandardHints.FAST_PREVIEW);
         }
 
         @Override
@@ -78,19 +68,7 @@ public enum RenderTarget {
     PREVIEW {
         @Override
         public void applyTo(Graphics2D g) {
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_DEFAULT);
-            final Object textAA = Settings.getShared().getYesNo("use-antialiased-text-on-highquality")
-                    ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_GASP;
-            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textAA);
-            g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT);
-            g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_DEFAULT);
-            g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_DEFAULT);
-            final Object fractional = Settings.getShared().getYesNo("use-fractional-glyph-metrics")
-                    ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-                    : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-            g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractional);
+            g.addRenderingHints(StandardHints.PREVIEW);
         }
 
         @Override
@@ -117,7 +95,12 @@ public enum RenderTarget {
      * image (typically at high resolution) suitable for use in other
      * applications. This target favours quality without regard to speed.
      */
-    EXPORT,
+    EXPORT {
+        @Override
+        public void applyTo(Graphics2D g) {
+            g.addRenderingHints(StandardHints.EXPORT);
+        }
+    },
     /**
      * Indicates that the purpose of the rendering is to render a printed image.
      * This target favours quality without regard to speed.
@@ -135,19 +118,7 @@ public enum RenderTarget {
      * @see Sheet#applyContextHints(java.awt.Graphics2D)
      */
     public void applyTo(Graphics2D g) {
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        final Object textAA = Settings.getShared().getYesNo("use-antialiased-text-on-highquality")
-                ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_GASP;
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, textAA);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        final Object fractional = Settings.getShared().getYesNo("use-fractional-glyph-metrics")
-                ? RenderingHints.VALUE_FRACTIONALMETRICS_ON
-                : RenderingHints.VALUE_FRACTIONALMETRICS_OFF;
-        g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, fractional);
+        g.addRenderingHints(StandardHints.PRINT);
     }
 
     /**
