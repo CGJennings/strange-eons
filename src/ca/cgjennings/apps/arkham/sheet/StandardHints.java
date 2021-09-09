@@ -61,8 +61,10 @@ public final class StandardHints {
     }
 
     /**
-     * For testing and experimentation.
-     * Changes a hint for all render targets or the specified target.
+     * For testing and experimentation.Changes a hint for all render targets or the specified target.
+     * @param key the {@link RenderingHint} key
+     * @param value the {@link RenderingHint} key's desired value
+     * @param renderTarget the render target value to affect, or null to change all targets
      */
     public static void set(Object key, Object value, RenderTarget renderTarget) {
         if (renderTarget == null || renderTarget == RenderTarget.PRINT) {
@@ -98,6 +100,9 @@ public final class StandardHints {
      * timer.setRepeats(false);
      * timer.start();
      * </pre>
+     *
+     * @param key a string name matching a rendering hint key, {@code KEY_} prefix optional
+     * @param value a string name matching a rendering hint key, {@code VALUE_} prefix optional
      */
     public static void set(String key, String value) {
         try {
