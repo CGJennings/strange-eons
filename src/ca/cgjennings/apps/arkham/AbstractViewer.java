@@ -51,6 +51,7 @@ public abstract class AbstractViewer extends JPanel {
 
     /**
      * Forwards to {@link #setBackgroundPaint}.
+     * @param c the new background color
      */
     @Override
     public void setBackground(Color c) {

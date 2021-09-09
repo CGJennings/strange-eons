@@ -67,6 +67,7 @@ public class MonitoredInputStream extends FilterInputStream {
     /**
      * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
+     * @throws java.io.IOException
      */
     @Override
     public int read() throws IOException {
@@ -81,6 +82,7 @@ public class MonitoredInputStream extends FilterInputStream {
     /**
      * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
+     * @throws java.io.IOException
      */
     @Override
     public int read(byte b[]) throws IOException {
@@ -95,6 +97,7 @@ public class MonitoredInputStream extends FilterInputStream {
     /**
      * Overrides {@code FilterInputStream.read} to update progress after
      * the read.
+     * @throws java.io.IOException
      */
     @Override
     public int read(byte b[],
@@ -111,6 +114,7 @@ public class MonitoredInputStream extends FilterInputStream {
     /**
      * Overrides {@code FilterInputStream.skip} to update progress after
      * the skip.
+     * @throws java.io.IOException
      */
     @Override
     public long skip(long n) throws IOException {
@@ -125,6 +129,7 @@ public class MonitoredInputStream extends FilterInputStream {
     /**
      * Overrides {@code FilterInputStream.reset} to reset progress listener
      * as well as the stream.
+     * @throws java.io.IOException
      */
     @Override
     public synchronized void reset() throws IOException {
