@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole.ConsolePrintWriter;
 import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
 import ca.cgjennings.script.mozilla.javascript.EvaluatorException;

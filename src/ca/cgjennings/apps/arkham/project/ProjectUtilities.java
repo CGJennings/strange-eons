@@ -426,7 +426,7 @@ public class ProjectUtilities {
      */
     public static final String ENC_SETTINGS = "ISO-8859-15";
     /**
-     * The encoding used to store script files.
+     * The encoding used to store script files (UTF-8).
      */
     public static final String ENC_SCRIPT = "UTF-8";
     /**

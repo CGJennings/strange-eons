@@ -557,6 +557,7 @@ public class MetadataSource {
                 "svg", ICON_VECTOR_IMAGE,
                 "svgz", ICON_VECTOR_IMAGE,
                 "js", ICON_SCRIPT,
+                "ts", ICON_TYPESCRIPT,
                 "ajs", ICON_AUTOMATION_SCRIPT,
                 "ttf", ICON_FONT,
                 "otf", ICON_FONT,
@@ -617,6 +618,7 @@ public class MetadataSource {
     public static final Icon ICON_JAVA = getIcon("project/java.png");
     public static final Icon ICON_SCRIPT = getIcon("project/script.png");
     public static final Icon ICON_AUTOMATION_SCRIPT = getIcon("project/auto.png");
+    public static final Icon ICON_TYPESCRIPT = getIcon("project/typescript.png");
     public static final Icon ICON_SETTINGS = getIcon("project/settings.png");
     public static final Icon ICON_PROPERTIES = getIcon("project/properties.png");
     public static final Icon ICON_COLLECTION = getIcon("project/collection.png");
@@ -828,15 +830,6 @@ public class MetadataSource {
             return ProjectUtilities.matchExtension(m, View.imageTypes);
         }
 
-//		@Override
-//		public Icon getIcon( Member m ) {
-//			if( ProjectUtilities.matchExtension( m, "psd" ) ) {
-//				return super.getIcon( m );
-//			} else if( ProjectUtilities.matchExtension( m, View.vectorImageTypes ) ) {
-//				return ICON_VECTOR_IMAGE;
-//			}
-//			return ICON_IMAGE;
-//		}
         @Override
         protected void fillInThreadedMetadataImpl(Member m, PropertyConsumer pc) {
             try {

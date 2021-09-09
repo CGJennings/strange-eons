@@ -198,7 +198,7 @@ public class Open extends TaskAction {
             switch (i) {
                 // "js", "java", "txt", "utf8", "properties", "html"
                 // "classmap", "silhouettes", "tiles", "text", "settings",
-                // "css", "ajs", "svg", "collection"
+                // "css", "ajs", "svg", "collection", "ts"
                 case 0: // js
                 case 12: // ajs
                     ed = new CodeEditor(f, ProjectUtilities.ENC_SCRIPT, CodeEditor.CodeType.JAVASCRIPT);
@@ -240,6 +240,9 @@ public class Open extends TaskAction {
                 case 14: // collection
                     ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.SETTINGS);
                     break;
+                case 15: // typescript
+                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.TYPESCRIPT);
+                    break;       
                 default:
                     throw new AssertionError();
             }
@@ -332,7 +335,7 @@ public class Open extends TaskAction {
     static final String[] codeTypes = new String[]{
         "js", "java", "txt", "utf8", "properties", "html",
         "classmap", "silhouettes", "tiles", "text", "settings",
-        "css", "ajs", "svg", "collection"
+        "css", "ajs", "svg", "collection", "ts"
     };
 
     /**

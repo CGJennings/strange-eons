@@ -261,9 +261,6 @@ final class ProjectWatcher {
         }
         synchronized (updateQueue) {
             enqueue(null, folder);
-// use to identify source of unnecessary explicit synch calls
-//Throwable t = new Throwable();
-//t.printStackTrace();
             processPendingQueueEvents();
         }
     }
@@ -300,7 +297,7 @@ final class ProjectWatcher {
             for (PendingUpdate pu : updateQueue) {
                 StrangeEons.log.log(Level.INFO, "project watcher update: {0}", pu);
                 if (pu.kind == ENTRY_MODIFY) {
-// TODO: update project view properties if currently showing this file
+                    // TODO: update project view properties if currently showing this file
                 } else {
                     pu.member.synchronizeImpl();
                 }
