@@ -811,12 +811,21 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
         timer.start();
     }
 
+    /**
+     * Stops updating the preview pane when the game component
+     * is modified.
+     * @see #resumeTimedUpdates()
+     */
     public void stopTimedUpdates() {
         if (timer != null) {
             timer.stop();
         }
     }
 
+    /**
+     * Resumes stopped preview updates.
+     * @see #stopTimedUpdates() 
+     */
     public void resumeTimedUpdates() {
         SwingUtilities.invokeLater(() -> {
             if (timer != null) {

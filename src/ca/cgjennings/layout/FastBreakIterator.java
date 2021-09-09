@@ -19,23 +19,26 @@ public final class FastBreakIterator extends BreakIterator {
     int last;
     int current;
 
-    public FastBreakIterator(BreakIterator childIterator) {
-        bi = childIterator;
+    public FastBreakIterator(BreakIterator iteratorToCache) {
+        bi = iteratorToCache;
     }
 
     @Override
     public void setText(CharacterIterator newText) {
-        int length = newText.getEndIndex() - newText.getBeginIndex();
+        int length = newText.getEndIndex() - newText.getBeginIndex() + 2;
         if (buffer == null || buffer.length < length) {
             buffer = new int[length];
         }
 
         // get all breaks in the text in one go
         bi.setText(newText);
+        buffer[0] = bi.first();
         int i, pos;
-        for (i = 0; (pos = bi.next()) != BreakIterator.DONE; ++i) {
+        for (i = 1; (pos = bi.next()) != BreakIterator.DONE; ++i) {
             buffer[i] = pos;
         }
+        buffer[i] = Integer.MAX_VALUE;
+//        Arrays.fill(buffer, i, buffer.length, Integer.MAX_VALUE);
         last = i - 1;
     }
 
@@ -80,7 +83,8 @@ public final class FastBreakIterator extends BreakIterator {
             current = match;
             return buffer[match];
         } else {
-            if (match == last) {
+            if (match > last) {
+                current = last;
                 return BreakIterator.DONE;
             }
             current = match;
@@ -101,13 +105,14 @@ public final class FastBreakIterator extends BreakIterator {
         if (match < 0) {
             match = (-match - 1) - 1;
             if (match < 0) {
-                current = last;
+                current = 0;
                 return BreakIterator.DONE;
             }
             current = match;
             return buffer[match];
         } else {
             if (--match < 0) {
+                current = 0;
                 return BreakIterator.DONE;
             }
             current = match;

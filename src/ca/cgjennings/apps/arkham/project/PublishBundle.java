@@ -152,6 +152,7 @@ public class PublishBundle extends TaskAction {
             if (pb.getFormat() != PluginBundle.FORMAT_PLAIN) {
                 BusyDialog.statusText(string("pa-pub-bundle-s0")); //unwrapping
                 pb.copy(unwrapFile);
+                pb = new PluginBundle(unwrapFile);
                 srcFile = unwrapFile;
             }
 

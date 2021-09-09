@@ -104,6 +104,12 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         pack();
     }
 
+    /**
+     * Recursively adjust a tree of components in this editor for the host platform.
+     *
+     * @param root the root of the tree to localize
+     * @see #localizeForPlatform()
+     */
     public static void localizeComponentTree(JComponent root) {
         if (PlatformSupport.PLATFORM_IS_MAC) {
             localizeComponentForOSX(root);
@@ -346,6 +352,9 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     /**
      * After installing the component, make sure you update the component
      * object.
+     *
+     * @param newComponent the new component being opened
+     * @param path the file path from which the component was loaded
      */
     public void handleOpenRequest(G newComponent, File path) {
         if (newComponent == null) {
@@ -960,11 +969,27 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * item's {@code toString()} value as a key. This makes it easy to create
      * localized combo boxes with fixed entries in the form editor. If prefix is
      * {@code null}, all items in the list will be localized.
+     *
+     * @param box the combo box whose labels should be localized
+     * @param prefix a prefix string that will identify labels that are string
+     *     table keys
      */
     public static void localizeComboBoxLabels(JComboBox box, String prefix) {
         localizeComboBoxLabels(null, box, prefix);
     }
 
+    /**
+     * {@code toString()} value begins with the prefix string with a localized
+     * string. The value of the string is determined by using the existing
+     * item's {@code toString()} value as a key. This makes it easy to create
+     * localized combo boxes with fixed entries in the form editor. If prefix is
+     * {@code null}, all items in the list will be localized.
+     *
+     * @param lang the language to use, or null for the interface language
+     * @param box the combo box whose labels should be localized
+     * @param prefix a prefix string that will identify labels that are string
+     *     table keys
+     */
     public static void localizeComboBoxLabels(Language lang, JComboBox box, String prefix) {
         if (lang == null) {
             lang = Language.getInterface();

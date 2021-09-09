@@ -182,19 +182,6 @@ public class PluginBundlePublisher {
     }
 
     /**
-     * If this boolean {@linkplain Settings#getUser() user setting} is
-     * {@code true}, then irrelevant JAR file metadata will be stripped out
-     * when packing the file. This data, consisting of one or more files in the
-     * META-INF archive directory, is sometimes added as a byproduct of building
-     * class-based plug-ins with a Java development environment. It is not
-     * needed by normal plug-in bundles, but is relevant in the rare case that a
-     * plug-in bundle is meant to be used as either a plug-in or a Java
-     * application. The default is {@code true}, that is, to strip out such
-     * metadata during publishing.
-     */
-    public static final String STRIP_JAR_METADATA_SETTING = "pack-bundle-strip-meta";
-
-    /**
      * Converts a bundle into an uncompressed, packed representation format. The
      * output file must still be compressed to complete the publication process.
      *
@@ -415,64 +402,5 @@ public class PluginBundlePublisher {
 
         name = name.substring(0, dot);
         return new File(f.getParentFile(), name);
-    }
-
-    /**
-     * A JAR file subclass that hides any content in the META-INF folder;
-     * primarily the manifest. Strange Eons plug-ins don't need this since they
-     * are not actually run as JARs, but they may still appear when a plug-in is
-     * created using an IDE or other tool. This class is used to effectively
-     * strip those files out when packing a bundle without having to rewrite
-     * the JAR file to a temporary location.
-     */
-    private static class StrippedJar extends JarFile {
-
-        public StrippedJar(File file) throws IOException {
-            super(file);
-        }
-
-        @Override
-        public Manifest getManifest() throws IOException {
-            return null;
-        }
-
-        @Override
-        public ZipEntry getEntry(String name) {
-            return hide(name) ? null : super.getEntry(name);
-        }
-
-        @Override
-        public Enumeration<JarEntry> entries() {
-            return new Enumeration<JarEntry>() {
-                final Enumeration<JarEntry> src = StrippedJar.super.entries();
-                private JarEntry next = nextValid();
-
-                @Override
-                public boolean hasMoreElements() {
-                    return next != null;
-                }
-
-                @Override
-                public JarEntry nextElement() {
-                    JarEntry v = next;
-                    next = nextValid();
-                    return v;
-                }
-
-                private JarEntry nextValid() {
-                    while (src.hasMoreElements()) {
-                        JarEntry e = src.nextElement();
-                        if (!hide(e.getName())) {
-                            return e;
-                        }
-                    }
-                    return null;
-                }
-            };
-        }
-
-        private boolean hide(String name) {
-            return name.equals("META-INF") || name.startsWith("META-INF/");
-        }
     }
 }
