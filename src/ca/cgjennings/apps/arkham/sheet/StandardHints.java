@@ -47,21 +47,24 @@ public final class StandardHints {
         PREVIEW.clear();
         PREVIEW.add(PRINT);
         PREVIEW.put(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_SPEED);
+        PREVIEW.put(KEY_ANTIALIASING, VALUE_ANTIALIAS_DEFAULT);
         PREVIEW.put(KEY_COLOR_RENDERING, VALUE_COLOR_RENDER_SPEED);
         PREVIEW.put(KEY_DITHERING, VALUE_DITHER_DEFAULT);
         PREVIEW.put(KEY_INTERPOLATION, VALUE_INTERPOLATION_BILINEAR);
-        PREVIEW.put(KEY_RENDERING, VALUE_RENDER_QUALITY);
+        PREVIEW.put(KEY_RENDERING, VALUE_RENDER_DEFAULT);
         PREVIEW.put(KEY_STROKE_CONTROL, VALUE_STROKE_DEFAULT);
-        PREVIEW.put(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_ON);
 
         FAST_PREVIEW.clear();
         FAST_PREVIEW.add(PREVIEW);
+        FAST_PREVIEW.put(KEY_DITHERING, VALUE_DITHER_DISABLE);
         FAST_PREVIEW.put(KEY_INTERPOLATION, VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+        FAST_PREVIEW.put(KEY_RENDERING, VALUE_RENDER_SPEED);
         FAST_PREVIEW.put(KEY_TEXT_ANTIALIASING, VALUE_TEXT_ANTIALIAS_DEFAULT);
     }
 
     /**
-     * For testing and experimentation.Changes a hint for all render targets or the specified target.
+     * For testing and experimentation.
+     * Changes a hint for all render targets or the specified target.
      * @param key the {@link RenderingHint} key
      * @param value the {@link RenderingHint} key's desired value
      * @param renderTarget the render target value to affect, or null to change all targets
