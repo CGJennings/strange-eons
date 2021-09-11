@@ -16,6 +16,7 @@ import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JFileField.FileType;
 import ca.cgjennings.ui.JIconDrop;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Theme;
 import gamedata.Expansion;
 import gamedata.ExpansionSymbolTemplate;
 import gamedata.Game;
@@ -44,6 +45,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -166,8 +168,9 @@ public class EndUserExpansion extends javax.swing.JDialog {
 
         headerAndPagePanel.setLayout(new java.awt.BorderLayout());
 
-        headerPanel.setBackground(new java.awt.Color(255, 255, 255));
+        headerPanel.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
         headerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(128, 128, 128)));
+        headerPanel.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
 
         jLabel10.setFont(jLabel10.getFont().deriveFont(jLabel10.getFont().getStyle() | java.awt.Font.BOLD, jLabel10.getFont().getSize()+3));
         jLabel10.setText(string("eue-l-heading")); // NOI18N
@@ -366,7 +369,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(134, Short.MAX_VALUE))
         );
 
         cardPanel.add(page3, "p3");
