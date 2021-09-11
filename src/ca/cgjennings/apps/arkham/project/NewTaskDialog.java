@@ -214,7 +214,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
-        banner.setBackground(java.awt.Color.gray);
+        banner.setBackground(java.awt.Color.darkGray);
         banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-task.jpg"))); // NOI18N
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));

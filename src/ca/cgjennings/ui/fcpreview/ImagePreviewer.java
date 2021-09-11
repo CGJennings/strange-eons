@@ -1,6 +1,7 @@
 package ca.cgjennings.ui.fcpreview;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -44,11 +45,13 @@ public class ImagePreviewer extends JPanel {
     public ImagePreviewer() {
         Color background = UIManager.getColor("background");
         if (background == null) {
-            background = new Color(0xd6d9df);
-        } else {
-            // avoid problems with derived colours
-            background = new Color(background.getRGB());
+            JPanel panel = new JPanel();
+            background = panel.getBackground();
         }
+        if (background == null) {
+            background = Color.BLACK;
+        }
+        background = new Color(background.getRGB());
 
         viewer = new ca.cgjennings.apps.arkham.ImageViewer();
         viewer.setBackground(background);
@@ -285,7 +288,11 @@ public class ImagePreviewer extends JPanel {
     public void setPreviewImage(BufferedImage i) {
         if (i == null) {
             if (nullImage == null) {
-                nullImage = ResourceKit.getImage("icons/black-fedora.png");
+                final String icon = "icons/" +
+                        (ThemeInstaller.getInstalledTheme().isDark()
+                        ? "back-fedora.png"
+                        : "fedora.png");
+                nullImage = ResourceKit.getImage(icon);
             }
             i = nullImage;
             card.show(this, "v");

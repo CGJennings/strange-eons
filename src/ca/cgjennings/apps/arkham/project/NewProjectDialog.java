@@ -265,7 +265,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
 
         getContentPane().add(contentPanel, java.awt.BorderLayout.CENTER);
 
-        banner.setBackground(java.awt.Color.gray);
+        banner.setBackground(java.awt.Color.darkGray);
         banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-proj.jpg"))); // NOI18N
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
