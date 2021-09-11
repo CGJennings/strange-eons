@@ -290,8 +290,8 @@ public class ImagePreviewer extends JPanel {
             if (nullImage == null) {
                 final String icon = "icons/" +
                         (ThemeInstaller.getInstalledTheme().isDark()
-                        ? "back-fedora.png"
-                        : "fedora.png");
+                        ? "fedora.png"
+                        : "black-fedora.png");
                 nullImage = ResourceKit.getImage(icon);
             }
             i = nullImage;
