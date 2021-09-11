@@ -29,6 +29,11 @@ public class TypeScriptServiceProvider {
     public TypeScriptServiceProvider() {
         try {
             engine = new SEScriptEngine();
+            // This file is stored in lib/typescript-services.jar to
+            // reduce build times and prevent IDEs from trying to
+            // process it for errors, code completions, etc.
+            //
+            // To update, check:
             // https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js
             load("typescriptServices.js");
             load("javaBridge.js");
