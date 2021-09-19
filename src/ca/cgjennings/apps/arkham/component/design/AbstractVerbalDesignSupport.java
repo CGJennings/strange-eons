@@ -147,8 +147,9 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
 
         public View() {
             super("text/html", "<html><body></body></html>");
+            setForeground(Color.BLACK);
             setBackground(new Color(250, 255, 196));
-            setBorder(BorderFactory.createEmptyBorder());
+            setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
             setEditable(false);
             setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
         }
