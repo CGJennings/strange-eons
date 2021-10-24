@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.deck;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.Curve;
 import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
@@ -1971,5 +1972,18 @@ public class Deck implements Serializable, GameComponent, Cloneable {
                 CoreComponents.validateCoreComponents(cores);
             }
         }
+    }
+
+    @Override
+    public ConversionContext createUpgradeConversionContext() {
+        return null;
+    }
+
+    @Override
+    public void convertFrom(GameComponent target, ConversionContext context) {
+    }
+
+    @Override
+    public void convertTo(GameComponent source, ConversionContext context) {
     }
 }

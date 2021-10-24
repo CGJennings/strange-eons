@@ -3,7 +3,9 @@ package ca.cgjennings.apps.arkham.diy;
 import ca.cgjennings.apps.arkham.*;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
+import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
@@ -94,6 +96,16 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
             public int getPortraitCount() {
                 writer.println("Dummy DIY: getPortraitCount");
                 return 0;
+            }
+
+            @Override
+            public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context) {
+                writer.println("Dummy DIY: onConvertFrom");
+            }
+
+            @Override
+            public void onConvertTo(DIY diy, GameComponent source, ConversionContext context) {
+                writer.println("Dummy DIY: onConvertTo");
             }
 
             private PrintWriter writer = ScriptMonkey.getSharedConsole().getErrorWriter();

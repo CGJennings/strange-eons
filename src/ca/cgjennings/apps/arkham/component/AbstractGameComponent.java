@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.component;
 
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
 import ca.cgjennings.graphics.ImageUtilities;
@@ -482,5 +483,18 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
         name = (String) in.readObject();
         comments = (String) in.readObject();
         privateSettings = (Settings) in.readObject();
+    }
+
+    @Override
+    public ConversionContext createUpgradeConversionContext() {
+        return null;
+    }
+
+    @Override
+    public void convertFrom(GameComponent target, ConversionContext context) {
+    }
+
+    @Override
+    public void convertTo(GameComponent source, ConversionContext context) {
     }
 }

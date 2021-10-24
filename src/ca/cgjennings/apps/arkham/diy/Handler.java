@@ -1,7 +1,9 @@
 package ca.cgjennings.apps.arkham.diy;
 
+import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
 import java.awt.Graphics2D;
@@ -110,4 +112,8 @@ public interface Handler extends PortraitProvider {
 
     @Override
     public Portrait getPortrait(int index);
+
+    public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context);
+
+    public void onConvertTo(DIY diy, GameComponent source, ConversionContext context);
 }

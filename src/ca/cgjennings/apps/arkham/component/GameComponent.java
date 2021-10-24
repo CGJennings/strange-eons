@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.component;
 
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -248,4 +249,10 @@ public interface GameComponent extends Serializable, Cloneable {
      * it on demand
      */
     public void coreCheck();
+
+    public ConversionContext createUpgradeConversionContext();
+
+    public void convertFrom(GameComponent target, ConversionContext context);
+
+    public void convertTo(GameComponent source, ConversionContext context);
 }

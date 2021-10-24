@@ -8,6 +8,7 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;
@@ -2721,6 +2722,39 @@ public class DIY extends AbstractGameComponent implements Handler {
         }
         for (String key : deleteKeys) {
             privateSettings.reset(key);
+        }
+    }
+
+    @Override
+    public ConversionContext createUpgradeConversionContext() {
+        return null;
+    }
+
+    @Override
+    public void convertFrom(GameComponent target, ConversionContext context) {
+        onConvertFrom(this, target, context);
+    }
+
+    @Override
+    public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context) {
+        try {
+            handler.onConvertFrom(diy, target, context);
+        } catch (Throwable t) {
+            ScriptMonkey.scriptError(t);
+        }
+    }
+
+    @Override
+    public void convertTo(GameComponent source, ConversionContext context) {
+        onConvertTo(this, source, context);
+    }
+
+    @Override
+    public void onConvertTo(DIY diy, GameComponent source, ConversionContext context) {
+        try {
+            handler.onConvertTo(diy, source, context);
+        } catch (Throwable t) {
+            ScriptMonkey.scriptError(t);
         }
     }
 }
