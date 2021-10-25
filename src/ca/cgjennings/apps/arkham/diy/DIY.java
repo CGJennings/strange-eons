@@ -215,6 +215,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     private transient JTextComponent nameField = null;
     private transient boolean scriptDebug;
     private transient Handler handler;
+    private transient ConversionContext conversionContext = null;
 
     static final int OPT_NO_PORTRAIT_FILL = 1;
     static final int OPT_NO_QUALITY_INIT = 1 << 1;
@@ -2727,7 +2728,7 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     @Override
     public ConversionContext createUpgradeConversionContext() {
-        return null;
+        return conversionContext;
     }
 
     @Override
@@ -2756,5 +2757,9 @@ public class DIY extends AbstractGameComponent implements Handler {
         } catch (Throwable t) {
             ScriptMonkey.scriptError(t);
         }
+    }
+
+    public void requireConversion(String className) {
+        conversionContext = new ConversionContext(className);
     }
 }
