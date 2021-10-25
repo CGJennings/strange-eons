@@ -214,6 +214,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     private transient boolean locked = false;
     private transient JTextComponent nameField = null;
     private transient boolean scriptDebug;
+    private transient ScriptMonkey monkey;
     private transient Handler handler;
     private transient ConversionContext conversionContext = null;
 
@@ -335,7 +336,7 @@ public class DIY extends AbstractGameComponent implements Handler {
             script = "res://" + script;
         }
         try {
-            ScriptMonkey monkey = new ScriptMonkey(script);
+            monkey = new ScriptMonkey(script);
             monkey.setSettingProvider(getSettings());
             monkey.bind(PluginContextFactory.createDummyContext());
             monkey.setBreakpoint(scriptDebug);
@@ -2738,11 +2739,7 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     @Override
     public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context) {
-        try {
-            handler.onConvertFrom(diy, target, context);
-        } catch (Throwable t) {
-            ScriptMonkey.scriptError(t);
-        }
+        monkey.ambivalentCall("onConvertFrom", diy, target, context);
     }
 
     @Override
@@ -2752,11 +2749,7 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     @Override
     public void onConvertTo(DIY diy, GameComponent source, ConversionContext context) {
-        try {
-            handler.onConvertTo(diy, source, context);
-        } catch (Throwable t) {
-            ScriptMonkey.scriptError(t);
-        }
+        monkey.ambivalentCall("onConvertTo", diy, source, context);
     }
 
     public void requireConversion(String className) {
