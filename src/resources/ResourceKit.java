@@ -2511,6 +2511,10 @@ public class ResourceKit {
                 target = (GameComponent) Class.forName(className).getConstructor().newInstance();
             }
         } catch (Exception e) {
+            String extensionName = context.getTargetExtensionName();
+            if (extensionName != null) {
+                displayError(string("rk-err-missing-plugin", extensionName), e);
+            }
             StrangeEons.log.log(Level.WARNING, string("app-err-open", sourceDescription), e);
             if (reportError) {
                 displayError(string("app-err-open", sourceDescription), e);
