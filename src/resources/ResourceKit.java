@@ -2441,7 +2441,7 @@ public class ResourceKit {
             // convert the component if required
             ConversionContext cc = gc.createUpgradeConversionContext();
             if (cc != null) {
-                gc = convertGameComponent(gc, cc);
+                gc = convertGameComponent(gc, cc, sourceDescription, reportError);
             }
             // verify that required cores are installed
             if (gc != null) {
@@ -2494,20 +2494,32 @@ public class ResourceKit {
         }
     }
 
-    public static GameComponent convertGameComponent(GameComponent source, ConversionContext context) throws IOException {
-        GameComponent target = createGameComponent(context.getTargetClassName());
-        if (target != null) {
-            source.convertFrom(target, context);
-            target.convertTo(source, context);
+    public static GameComponent convertGameComponent(GameComponent source, ConversionContext context, String sourceDescription, boolean reportError) {
+        String className = context.getTargetClassName();
+        if (className.startsWith("script:")) {
+            StrangeEons.log.log(Level.WARNING, string("app-err-open", sourceDescription));
+            if (reportError) {
+                displayError(string("app-err-open", sourceDescription), null);
+            }
+            return null;
         }
+        GameComponent target;
+        try {
+            if (className.startsWith("diy:")) {
+                target = new DIY(className.substring("diy:".length()), null, false);
+            } else {
+                target = (GameComponent) Class.forName(className).getConstructor().newInstance();
+            }
+        } catch (Exception e) {
+            StrangeEons.log.log(Level.WARNING, string("app-err-open", sourceDescription), e);
+            if (reportError) {
+                displayError(string("app-err-open", sourceDescription), e);
+            }
+            return null;
+        }
+        source.convertFrom(target, context);
+        target.convertTo(source, context);
         return target;
-    }
-
-    public static GameComponent createGameComponent(String className) throws IOException {
-        if (className.startsWith("diy:")) {
-            return new DIY(className.substring("diy:".length()), null, false);
-        }
-        return null;
     }
 
     /**
