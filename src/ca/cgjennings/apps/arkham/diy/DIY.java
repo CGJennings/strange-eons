@@ -2752,7 +2752,16 @@ public class DIY extends AbstractGameComponent implements Handler {
         monkey.ambivalentCall("onConvertTo", diy, source, context);
     }
 
+    public void requireConversion(String className) {
+        requireConversion(className, extensionName);
+    }
+
     public void requireConversion(String className, String extensionName) {
-        conversionContext = new ConversionContext(className, extensionName);
+        conversionContext = new ConversionContext(
+                ConversionContext.Trigger.UPGRADE,
+                "diy:" + handlerScript,
+                this.extensionName,
+                className,
+                extensionName);
     }
 }
