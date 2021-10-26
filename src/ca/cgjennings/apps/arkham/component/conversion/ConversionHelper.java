@@ -20,10 +20,14 @@ public class ConversionHelper {
         target.getSettings().addSettingsFrom(source.getSettings());
     }
 
-    public static void copyExpansions(GameComponent source, GameComponent target) {
-        for (String key : EXPANSION_KEYS) {
+    public static void copyKeys(GameComponent source, GameComponent target, String... keys) {
+        for (String key : keys) {
             target.getSettings().set(key, source.getSettings().get(key));
         }
+    }
+
+    public static void copyExpansions(GameComponent source, GameComponent target) {
+        copyKeys(source, target, EXPANSION_KEYS);
     }
 
     public static void copyBasics(GameComponent source, GameComponent target) {
