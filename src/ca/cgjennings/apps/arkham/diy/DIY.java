@@ -2729,7 +2729,10 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     @Override
     public ConversionContext createUpgradeConversionContext() {
-        return conversionContext;
+        // let the context be garbage collected after conversion is finished
+        ConversionContext context = conversionContext;
+        conversionContext = null;
+        return context;
     }
 
     @Override
