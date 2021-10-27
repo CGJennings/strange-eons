@@ -3,8 +3,12 @@ package ca.cgjennings.apps.arkham.component.conversion;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
+import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.imageio.SimpleImageWriter;
 import gamedata.Expansion;
+import java.io.File;
+import java.io.IOException;
 
 public class ConversionHelper {
 
@@ -39,7 +43,7 @@ public class ConversionHelper {
         copyExpansions(source, target);
     }
 
-    public static void copyPortraits(GameComponent source, GameComponent target) {
+    public static void copyPortraits(GameComponent source, GameComponent target, boolean copyImages, boolean copyLayouts) {
         if (!(source instanceof PortraitProvider && target instanceof PortraitProvider)) {
             return;
         }
@@ -49,11 +53,31 @@ public class ConversionHelper {
         for (int i = 0; i < count; i++) {
             Portrait sp = s.getPortrait(i);
             Portrait tp = t.getPortrait(i);
-            tp.setImage(sp.getSource(), sp.getImage());
-            tp.setPanX(sp.getPanX());
-            tp.setPanY(sp.getPanY());
-            tp.setRotation(sp.getRotation());
-            tp.setScale(sp.getScale());
+            if (copyImages && tp.getFeatures().contains(Feature.SOURCE)) {
+                String imageSource = sp.getSource();
+                if (imageSource != null && new File(imageSource).canRead()) {
+                    tp.setSource(imageSource);
+                } else {
+                    File tempFile = null;
+                    try {
+                        tempFile = File.createTempFile("conversion-", ".png");
+                        new SimpleImageWriter().write(sp.getImage(), tempFile);
+                        tp.setSource(tempFile.getAbsolutePath());
+                    } catch (IOException e) {
+                        tp.setSource(null);
+                    } finally {
+                        if (tempFile != null) {
+                            tempFile.delete();
+                        }
+                    }
+                }
+            }
+            if (copyLayouts) {
+                tp.setPanX(sp.getPanX());
+                tp.setPanY(sp.getPanY());
+                tp.setRotation(sp.getRotation());
+                tp.setScale(sp.getScale());
+            }
         }
     }
 
@@ -65,7 +89,7 @@ public class ConversionHelper {
             copyBasics(source, target);
         }
         if (context.shouldCopyPortraits()) {
-            copyPortraits(source, target);
+            copyPortraits(source, target, context.shouldCopyPortraitImages(), context.shouldCopyPortraitLayouts());
         }
     }
 }
