@@ -249,9 +249,39 @@ public interface GameComponent extends Serializable, Cloneable {
      */
     public void coreCheck();
 
+    /**
+     * Returns the {@link ConversionContext} created when the component type no
+     * longer handles the component. This method is called after a component is
+     * read from file. Should return {@code null} when no conversion is needed.
+     *
+     * @see ConversionContext
+     * @return a conversion context if the upgrade requires a conversion
+     */
     public ConversionContext createUpgradeConversionContext();
 
+    /**
+     * Called on a component that is being converted into another component
+     * type. Based on the conversion strategy, the old component may modify the
+     * new component directly, or modify the conversion context, or do nothing.
+     * This method is called before calling
+     * {@link #convertTo(GameComponent, ConversionContext)} on the target, and
+     * before any automatic conversion steps.
+     *
+     * @param target the new component that will replace this one
+     * @param context the conversion context
+     */
     public void convertFrom(GameComponent target, ConversionContext context);
 
+    /**
+     * Called on the replacement component when converting a component to
+     * another component type. Based on the conversion strategy, the new
+     * component may modify itself directly, or modify the conversion context,
+     * or do nothing. This method is called after calling
+     * {@link #convertFrom(GameComponent, ConversionContext)} on the source, but
+     * before any automatic conversion steps.
+     *
+     * @param source the old component that will be replaced
+     * @param context the conversion context
+     */
     public void convertTo(GameComponent source, ConversionContext context);
 }
