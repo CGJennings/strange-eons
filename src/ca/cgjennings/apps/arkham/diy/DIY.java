@@ -8,7 +8,7 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
-import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
+import ca.cgjennings.apps.arkham.component.ConversionContext;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;

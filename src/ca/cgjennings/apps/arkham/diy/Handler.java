@@ -3,7 +3,7 @@ package ca.cgjennings.apps.arkham.diy;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
-import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
+import ca.cgjennings.apps.arkham.component.ConversionContext;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
 import java.awt.Graphics2D;

@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.component;
 
-import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
 import ca.cgjennings.graphics.ImageUtilities;

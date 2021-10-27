@@ -7,8 +7,7 @@ import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.FileRecoveryException;
 import ca.cgjennings.apps.arkham.component.GameComponent;
-import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
-import ca.cgjennings.apps.arkham.component.conversion.ConversionHelper;
+import ca.cgjennings.apps.arkham.component.ConversionContext;
 import ca.cgjennings.apps.arkham.deck.DeckDeserializationSupport;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import static ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError;
@@ -2524,7 +2523,7 @@ public class ResourceKit {
         }
         source.convertFrom(target, context);
         target.convertTo(source, context);
-        ConversionHelper.copyRequestedData(source, target, context);
+        ConversionKit.copyRequestedData(source, target, context);
         return target;
     }
 

@@ -1,23 +1,24 @@
-package ca.cgjennings.apps.arkham.component.conversion;
+package resources;
 
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.component.ConversionContext;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import gamedata.Expansion;
 import java.io.File;
 import java.io.IOException;
 
-public class ConversionHelper {
+public class ConversionKit {
 
     private static final String[] EXPANSION_KEYS = new String[]{
         Expansion.EXPANSION_SETTING_KEY,
         Expansion.VARIANT_SETTING_KEY
     };
 
-    private ConversionHelper() {
+    private ConversionKit() {
     }
 
     public static void copySettings(GameComponent source, GameComponent target) {

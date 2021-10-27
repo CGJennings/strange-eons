@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.component;
 
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
-import ca.cgjennings.apps.arkham.component.conversion.ConversionContext;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.sheet.Sheet;

@@ -1,4 +1,4 @@
-package ca.cgjennings.apps.arkham.component.conversion;
+package ca.cgjennings.apps.arkham.component;
 
 import resources.Settings;
 
