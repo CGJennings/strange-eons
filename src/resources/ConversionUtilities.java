@@ -20,7 +20,7 @@ import java.io.IOException;
  *
  * @author Henrik Rostedt
  */
-public class ConversionKit {
+public class ConversionUtilities {
 
     private static final String[] EXPANSION_KEYS = new String[]{
         Expansion.EXPANSION_SETTING_KEY,
@@ -30,7 +30,7 @@ public class ConversionKit {
     /**
      * This class cannot be instantiated.
      */
-    private ConversionKit() {
+    private ConversionUtilities() {
     }
 
     /**
@@ -142,7 +142,7 @@ public class ConversionKit {
      * @param target the target component
      * @param context the conversion context
      */
-    public static void copyRequestedData(GameComponent source, GameComponent target, ConversionContext context) {
+    public static void copyDataBasedOnContext(GameComponent source, GameComponent target, ConversionContext context) {
         if (context.shouldCopySettings()) {
             copySettings(source, target);
         }

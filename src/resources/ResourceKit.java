@@ -2537,7 +2537,7 @@ public class ResourceKit {
         }
         source.convertFrom(target, context);
         target.convertTo(source, context);
-        ConversionKit.copyRequestedData(source, target, context);
+        ConversionUtilities.copyDataBasedOnContext(source, target, context);
         return target;
     }
 
