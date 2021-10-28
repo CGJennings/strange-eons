@@ -113,7 +113,29 @@ public interface Handler extends PortraitProvider {
     @Override
     public Portrait getPortrait(int index);
 
+    /**
+     * Called when the component is going to be converted into another component
+     * type. Depending on the conversion strategy, the component should modify
+     * the replacement (target) component directly or update the
+     * {@link ConversionContext} or do nothing. Implementing
+     * {@code onConvertFrom} in a DIY component is optional.
+     *
+     * @param diy the component
+     * @param target the replacement component
+     * @param context the conversion context
+     */
     public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context);
 
+    /**
+     * Called after {@link #create(DIY)} when the component was created to
+     * replace a component during conversion. Depending on the conversion
+     * strategy, the component should modify itself directly or update the
+     * {@link ConversionContext} or do nothing. Implementing {@code onConvertTo}
+     * in a DIY component is optional.
+     *
+     * @param diy the component
+     * @param source the component being replaced
+     * @param context the conversion context
+     */
     public void onConvertTo(DIY diy, GameComponent source, ConversionContext context);
 }

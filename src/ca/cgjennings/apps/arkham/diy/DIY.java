@@ -2740,6 +2740,17 @@ public class DIY extends AbstractGameComponent implements Handler {
         onConvertFrom(this, target, context);
     }
 
+    /**
+     * Calls the script's {@code onConvertFrom} function, if implemented. This
+     * should not be called directly.
+     *
+     * Exceptions thrown by the script function will be caught and reported in
+     * the script console.
+     *
+     * @param diy this component
+     * @param target the replacement component
+     * @param context the conversion context
+     */
     @Override
     public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context) {
         monkey.ambivalentCall("onConvertFrom", diy, target, context);
@@ -2750,15 +2761,41 @@ public class DIY extends AbstractGameComponent implements Handler {
         onConvertTo(this, source, context);
     }
 
+    /**
+     * Calls the script's {@code onConvertTo} function, if implemented. This
+     * should not be called directly.
+     *
+     * Exceptions thrown by the script function will be caught and reported in
+     * the script console.
+     *
+     * @param diy this component
+     * @param source the component to be replaced
+     * @param context the conversion context
+     */
     @Override
     public void onConvertTo(DIY diy, GameComponent source, ConversionContext context) {
         monkey.ambivalentCall("onConvertTo", diy, source, context);
     }
 
+    /**
+     * This method can be called by the DIY component if it wants to initiate
+     * conversion to another component type during {@code onRead}. The new type
+     * is assumed to belong to the same extension. If this is not the case, use
+     * {@link #requireConversion(String, String)} instead.
+     *
+     * @param className the class or script identifier to convert to
+     */
     public void requireConversion(String className) {
         requireConversion(className, extensionName);
     }
 
+    /**
+     * This method can be called by the DIY component if it wants to initiate
+     * conversion to another component type during {@code onRead}.
+     *
+     * @param className the class or script identifier to convert to
+     * @param extensionName the name of the extension containing the new type
+     */
     public void requireConversion(String className, String extensionName) {
         conversionContext = new ConversionContext(
                 ConversionContext.Trigger.UPGRADE,

@@ -2494,6 +2494,20 @@ public class ResourceKit {
         }
     }
 
+    /**
+     * Converts a {@link GameComponent} to another component type. The original
+     * component is unmodified (assuming conversion was implemented correctly)
+     * and a new converted component is returned.
+     *
+     * @param source the component to be converted
+     * @param context the conversion context
+     * @param sourceDescription a description of the original component, such as
+     * the file name, for use when reporting conversion failure
+     * @param reportError if {@code true}, any errors will be reported to the
+     * user with suitable error messages; otherwise, errors will simply be
+     * logged
+     * @return a converted copy of the game component
+     */
     public static GameComponent convertGameComponent(GameComponent source, ConversionContext context, String sourceDescription, boolean reportError) {
         String className = context.getTargetClassName();
         if (className.startsWith("script:")) {
