@@ -10,13 +10,13 @@ useLibrary("fontutils");
 // common.js
 var uselibrary = useLibrary;
 var usesettings = useSettings;
-var subclass = (constructor, superConstructor) => constructor.subclass( superConstructor );
+var subclass = (constructor, superConstructor) => constructor.subclass(superConstructor);
 var error = s => Error.error(s);
 error.handleUncaught = ex => Error.handleUncaught(ex);
-error.missingLibrary = function( shortName, fileName ) {
-	useLibrary.__threadassert();
-	alert( string( "scriptlib-missing-lib-alert", shortName, fileName ), true );
-	Error.error( string( "scriptlib-missing-lib", fileName ) );
+error.missingLibrary = function(shortName, fileName) {
+    useLibrary.__threadassert();
+    alert(string("scriptlib-missing-lib-alert", shortName, fileName), true);
+    Error.error(string("scriptlib-missing-lib", fileName));
 };
 var hide = () => {Console.visible = false;};
 
