@@ -33,7 +33,6 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 import javax.swing.text.JTextComponent;
