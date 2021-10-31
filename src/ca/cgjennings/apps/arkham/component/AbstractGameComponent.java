@@ -1,5 +1,7 @@
 package ca.cgjennings.apps.arkham.component;
 
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
 import ca.cgjennings.graphics.ImageUtilities;
@@ -485,15 +487,15 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     }
 
     @Override
-    public ConversionContext createUpgradeConversionContext() {
+    public UpgradeConversionTrigger createUpgradeConversionTrigger() {
         return null;
     }
 
     @Override
-    public void convertFrom(GameComponent target, ConversionContext context) {
+    public void convertFrom(ConversionSession session) {
     }
 
     @Override
-    public void convertTo(GameComponent source, ConversionContext context) {
+    public void convertTo(ConversionSession session) {
     }
 }

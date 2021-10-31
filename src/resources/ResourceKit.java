@@ -7,13 +7,13 @@ import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.FileRecoveryException;
 import ca.cgjennings.apps.arkham.component.GameComponent;
-import ca.cgjennings.apps.arkham.component.ConversionContext;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.deck.DeckDeserializationSupport;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import static ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError;
 import ca.cgjennings.apps.arkham.dialog.InsertCharsDialog;
 import ca.cgjennings.apps.arkham.dialog.Messenger;
-import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog.VersioningState;
@@ -2439,9 +2439,9 @@ public class ResourceKit {
             }
             gc = (GameComponent) o;
             // convert the component if required
-            ConversionContext cc = gc.createUpgradeConversionContext();
-            if (cc != null) {
-                gc = convertGameComponent(gc, cc, sourceDescription, reportError);
+            UpgradeConversionTrigger trigger = gc.createUpgradeConversionTrigger();
+            if (trigger != null) {
+                gc = ConversionSession.convertGameComponent(trigger, gc);
             }
             // verify that required cores are installed
             if (gc != null) {
@@ -2492,53 +2492,6 @@ public class ResourceKit {
             ComponentMetadata.writeMetadataToStream(oo, gc);
             oo.writeObject(gc);
         }
-    }
-
-    /**
-     * Converts a {@link GameComponent} to another component type. The original
-     * component is unmodified (assuming conversion was implemented correctly)
-     * and a new converted component is returned.
-     *
-     * @param source the component to be converted
-     * @param context the conversion context
-     * @param sourceDescription a description of the original component, such as
-     * the file name, for use when reporting conversion failure
-     * @param reportError if {@code true}, any errors will be reported to the
-     * user with suitable error messages; otherwise, errors will simply be
-     * logged
-     * @return a converted copy of the game component
-     */
-    public static GameComponent convertGameComponent(GameComponent source, ConversionContext context, String sourceDescription, boolean reportError) {
-        String className = context.getTargetClassName();
-        if (className.startsWith("script:")) {
-            StrangeEons.log.log(Level.WARNING, string("app-err-open", sourceDescription));
-            if (reportError) {
-                displayError(string("app-err-open", sourceDescription), null);
-            }
-            return null;
-        }
-        GameComponent target;
-        try {
-            if (className.startsWith("diy:")) {
-                target = new DIY(className.substring("diy:".length()), null, false);
-            } else {
-                target = (GameComponent) Class.forName(className).getConstructor().newInstance();
-            }
-        } catch (Exception e) {
-            String extensionName = context.getTargetExtensionName();
-            if (extensionName != null) {
-                displayError(string("rk-err-missing-plugin", extensionName), e);
-            }
-            StrangeEons.log.log(Level.WARNING, string("app-err-open", sourceDescription), e);
-            if (reportError) {
-                displayError(string("app-err-open", sourceDescription), e);
-            }
-            return null;
-        }
-        source.convertFrom(target, context);
-        target.convertTo(source, context);
-        ConversionUtilities.copyDataBasedOnContext(source, target, context);
-        return target;
     }
 
     /**

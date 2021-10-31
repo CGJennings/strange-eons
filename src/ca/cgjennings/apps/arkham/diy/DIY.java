@@ -8,7 +8,8 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
-import ca.cgjennings.apps.arkham.component.ConversionContext;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;
@@ -32,6 +33,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 import javax.swing.text.JTextComponent;
@@ -216,7 +218,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     private transient boolean scriptDebug;
     private transient ScriptMonkey monkey;
     private transient Handler handler;
-    private transient ConversionContext conversionContext = null;
+    private transient UpgradeConversionTrigger upgradeConversionTrigger = null;
 
     static final int OPT_NO_PORTRAIT_FILL = 1;
     static final int OPT_NO_QUALITY_INIT = 1 << 1;
@@ -2728,65 +2730,37 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     @Override
-    public ConversionContext createUpgradeConversionContext() {
-        // let the context be garbage collected after conversion is finished
-        ConversionContext context = conversionContext;
-        conversionContext = null;
-        return context;
+    public UpgradeConversionTrigger createUpgradeConversionTrigger() {
+        // let the trigger be garbage collected after conversion is finished
+        UpgradeConversionTrigger trigger = upgradeConversionTrigger;
+        upgradeConversionTrigger = null;
+        return trigger;
     }
 
     @Override
-    public void convertFrom(GameComponent target, ConversionContext context) {
-        onConvertFrom(this, target, context);
-    }
-
-    /**
-     * Calls the script's {@code onConvertFrom} function, if implemented. This
-     * should not be called directly.
-     *
-     * Exceptions thrown by the script function will be caught and reported in
-     * the script console.
-     *
-     * @param diy this component
-     * @param target the replacement component
-     * @param context the conversion context
-     */
-    @Override
-    public void onConvertFrom(DIY diy, GameComponent target, ConversionContext context) {
-        monkey.ambivalentCall("onConvertFrom", diy, target, context);
+    public void convertFrom(ConversionSession session) {
+        if (monkey != null) {
+            monkey.ambivalentCall("onConvertFrom", this, session);
+        }
     }
 
     @Override
-    public void convertTo(GameComponent source, ConversionContext context) {
-        onConvertTo(this, source, context);
-    }
-
-    /**
-     * Calls the script's {@code onConvertTo} function, if implemented. This
-     * should not be called directly.
-     *
-     * Exceptions thrown by the script function will be caught and reported in
-     * the script console.
-     *
-     * @param diy this component
-     * @param source the component to be replaced
-     * @param context the conversion context
-     */
-    @Override
-    public void onConvertTo(DIY diy, GameComponent source, ConversionContext context) {
-        monkey.ambivalentCall("onConvertTo", diy, source, context);
+    public void convertTo(ConversionSession session) {
+        if (monkey != null) {
+            monkey.ambivalentCall("onConvertTo", this, session);
+        }
     }
 
     /**
      * This method can be called by the DIY component if it wants to initiate
      * conversion to another component type during {@code onRead}. The new type
      * is assumed to belong to the same extension. If this is not the case, use
-     * {@link #requireConversion(String, String)} instead.
+     * {@link #convertToComponentType(String, String)} instead.
      *
      * @param className the class or script identifier to convert to
      */
-    public void requireConversion(String className) {
-        requireConversion(className, extensionName);
+    public void convertToComponentType(String className) {
+        convertToComponentType(className, null, null);
     }
 
     /**
@@ -2795,13 +2769,10 @@ public class DIY extends AbstractGameComponent implements Handler {
      *
      * @param className the class or script identifier to convert to
      * @param extensionName the name of the extension containing the new type
+     * @param extensionId the UUID of the extension containing the new type
      */
-    public void requireConversion(String className, String extensionName) {
-        conversionContext = new ConversionContext(
-                ConversionContext.Trigger.UPGRADE,
-                "diy:" + handlerScript,
-                this.extensionName,
-                className,
-                extensionName);
+    public void convertToComponentType(String className, String extensionName, String extensionId) {
+        checkPropertyLock();
+        upgradeConversionTrigger = new UpgradeConversionTrigger(className, extensionName, extensionId);
     }
 }

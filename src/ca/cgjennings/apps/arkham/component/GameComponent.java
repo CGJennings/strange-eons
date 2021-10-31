@@ -2,6 +2,8 @@ package ca.cgjennings.apps.arkham.component;
 
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -250,14 +252,14 @@ public interface GameComponent extends Serializable, Cloneable {
     public void coreCheck();
 
     /**
-     * Returns the {@link ConversionContext} created when the component type no
+     * Returns the {@link ConversionSession} created when the component type no
      * longer handles the component. This method is called after a component is
      * read from file. Should return {@code null} when no conversion is needed.
      *
-     * @see ConversionContext
+     * @see ConversionSession
      * @return a conversion context if the upgrade requires a conversion
      */
-    public ConversionContext createUpgradeConversionContext();
+    public UpgradeConversionTrigger createUpgradeConversionTrigger();
 
     /**
      * Called on a component that is being converted into another component
@@ -270,7 +272,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param target the new component that will replace this one
      * @param context the conversion context
      */
-    public void convertFrom(GameComponent target, ConversionContext context);
+    public void convertFrom(ConversionSession session);
 
     /**
      * Called on the replacement component when converting a component to
@@ -283,5 +285,5 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param source the old component that will be replaced
      * @param context the conversion context
      */
-    public void convertTo(GameComponent source, ConversionContext context);
+    public void convertTo(ConversionSession session);
 }
