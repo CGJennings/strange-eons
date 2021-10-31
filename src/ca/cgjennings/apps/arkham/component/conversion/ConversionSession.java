@@ -13,6 +13,7 @@ import ca.cgjennings.imageio.SimpleImageWriter;
 import gamedata.Expansion;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import resources.Settings;
@@ -161,7 +162,7 @@ public class ConversionSession {
         automaticCopyExpansionsEnabled = false;
         Settings s = source.getSettings();
         Settings t = target.getSettings();
-        Set<String> keys = s.getKeySet();
+        Set<String> keys = new HashSet(s.getKeySet());
         for (String key : excludedKeys) {
             keys.remove(key);
         }
