@@ -1,11 +1,14 @@
 package ca.cgjennings.apps.arkham.component.conversion;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
+import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
+import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import gamedata.Expansion;
 import java.io.File;
@@ -359,14 +362,17 @@ public class ConversionSession {
     }
 
     /**
-     * Checks if an extension is required, and if so, that it is installed.
+     * Checks if an extension is required, and if so, that it is installed. If
+     * user interaction is allowed, the user is prompted to install the
+     * extension if found in the catalog.
      *
      * @param name the name of the extension
      * @param rawId the UUID of the extension
+     * @param interactive whether user interaction is allowed or not
      * @throws ConversionException if the extension can not be found or if it is
      * not installed
      */
-    private static void checkExtension(String name, String rawId) throws ConversionException {
+    private static void checkExtension(String name, String rawId, boolean interactive) throws ConversionException {
         if (rawId == null) {
             return;
         }
@@ -378,6 +384,12 @@ public class ConversionSession {
         }
         if (BundleInstaller.getBundleFileForUUID(id) != null) {
             return;
+        }
+        if (interactive && Catalog.getLocalCopy().findListingByUUID(id) != -1) {
+            CatalogDialog dialog = new CatalogDialog(StrangeEons.getWindow());
+            dialog.setListingFilter(rawId);
+            dialog.setPopupText("This extension is required to use this component type. Please install it, restart, and try again.");
+            dialog.setVisible(true);
         }
         if (name != null) {
             throw new ConversionException("required extension not installed: " + name);
@@ -422,11 +434,12 @@ public class ConversionSession {
      *
      * @param trigger the trigger for the conversion
      * @param source the component to be converted
+     * @param interactive whether user interaction is allowed or not
      * @return the new converted component
      * @throws ConversionException if the conversion was unsuccessful
      */
-    public static GameComponent convertGameComponent(ConversionTrigger trigger, GameComponent source) throws ConversionException {
-        checkExtension(trigger.getRequiredExtensionName(), trigger.getRequiredExtensionId());
+    public static GameComponent convertGameComponent(ConversionTrigger trigger, GameComponent source, boolean interactive) throws ConversionException {
+        checkExtension(trigger.getRequiredExtensionName(), trigger.getRequiredExtensionId(), interactive);
         GameComponent target = createTarget(trigger.getTargetClassName());
         ConversionSession session = new ConversionSession(trigger, source, target);
         try {

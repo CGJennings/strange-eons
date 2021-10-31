@@ -2441,7 +2441,7 @@ public class ResourceKit {
             // convert the component if required
             UpgradeConversionTrigger trigger = gc.createUpgradeConversionTrigger();
             if (trigger != null) {
-                gc = ConversionSession.convertGameComponent(trigger, gc);
+                gc = ConversionSession.convertGameComponent(trigger, gc, reportError);
             }
             // verify that required cores are installed
             if (gc != null) {
