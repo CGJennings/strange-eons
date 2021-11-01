@@ -7,12 +7,16 @@ import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
+import ca.cgjennings.apps.arkham.plugins.PluginBundle;
+import ca.cgjennings.apps.arkham.plugins.PluginRoot;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
+import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import gamedata.Expansion;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -378,26 +382,75 @@ public class ConversionSession {
         if (rawId == null) {
             return;
         }
-        UUID id;
-        try {
-            id = UUID.fromString(rawId);
-        } catch (IllegalArgumentException e) {
-            throw new ConversionException("malformed extension UUID: " + rawId);
+
+        CatalogID id = CatalogID.extractCatalogID(rawId);
+        if (id == null) {
+            // not a full id, try parsing just as a UUID
+            id = CatalogID.extractCatalogID("CatalogID{" + rawId + ":1582-9-15-0-0-0-0}");
+            if (id == null) {
+                throw new ConversionException("must be a CatalogID or UUID: " + rawId);
+            }
         }
-        if (BundleInstaller.getBundleFileForUUID(id) != null) {
-            return;
+
+        final PluginBundle bundle = BundleInstaller.getPluginBundle(id.getUUID());
+        if (bundle != null) {
+            try {
+                final PluginRoot root = bundle.getPluginRoot();
+                final CatalogID installedId = root == null ? null : root.getCatalogID();
+                if (installedId != null && !installedId.isOlderThan(id)) {
+                    // desired bundle is installed, and is at least the required version
+                    return;
+                }
+            } catch (IOException ioe) {
+                throw new ConversionException("could not read installed plug-in version", ioe);
+            }
         }
-        if (interactive && Catalog.getLocalCopy().findListingByUUID(id) != -1) {
+
+        if (interactive && defaultCatalogIncludes(id)) {
             CatalogDialog dialog = new CatalogDialog(StrangeEons.getWindow());
-            dialog.setListingFilter(rawId);
+            dialog.setListingFilter(id.getUUID().toString());
             dialog.selectFilteredListingsForInstallation();
             dialog.setPopupText("This extension is required to use this component type. Please install it, restart, and try again.");
             dialog.setVisible(true);
         }
+
         if (name != null) {
             throw new ConversionException("required extension not installed: " + name);
         }
         throw new ConversionException("required extension not installed: " + rawId);
+    }
+
+    /**
+     * Make a best-effort attempt to determine if the default catalog has a
+     * plug-in with the same UUID, and at least as new as the timestamp,
+     * as the specified ID.
+     *
+     * @param id the non-null ID to search for
+     * @return true if the plug-in, or a newer version, is definitely in the catalog
+     */
+    private static boolean defaultCatalogIncludes(CatalogID id) {
+        try {
+            // look in the cached version first, if any
+            Catalog cat = Catalog.getLocalCopy();
+            for (int searchLocation=0; searchLocation < 2; ++searchLocation) {
+                if (cat != null) {
+                    final int i = cat.findListingByUUID(id.getUUID());
+                    if (i >= 0) {
+                        final CatalogID found = cat.get(i).getCatalogID();
+                        if (!found.isOlderThan(id)) {
+                            return true;
+                        }
+                    }
+                }
+
+                // catalog not cached, does not contain UUID, or version is old:
+                // try the latest catalog instead
+                cat = new Catalog(new URL(Settings.getUser().get("catalog-url-1")), false, null);
+            }
+        } catch (IOException ioe) {
+            // returns false
+        }
+        return false;
     }
 
     /**

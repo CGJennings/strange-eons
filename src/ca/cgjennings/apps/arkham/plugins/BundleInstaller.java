@@ -1057,6 +1057,18 @@ public class BundleInstaller {
     }
 
     /**
+     * Returns the {@link PluginBundle PluginBundle} associated with the loaded
+     * plug-in that has the specified UUID, or {@code null} if there is no such
+     * loaded bundle.
+     *
+     * @param uuid the UUID of the target bundle, as specified in its catalog ID
+     * @return the loaded bundle with the target UUID, or {@code null}
+     */
+    public static PluginBundle getPluginBundle(UUID uuid) {
+        return getPluginBundle(getBundleFileForUUID(uuid));
+    }
+
+    /**
      * Returns an array of the bundle files that have been dynamically added to
      * the class path. This set may include bundles that were discovered, but
      * not loaded (for example, if the bundle file was corrupt). In these cases,
