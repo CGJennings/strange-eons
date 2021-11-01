@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import javax.swing.SwingUtilities;
 import resources.Settings;
 
 /**
@@ -440,6 +441,10 @@ public class ConversionSession {
      * @throws ConversionException if the conversion was unsuccessful
      */
     public static GameComponent convertGameComponent(ConversionTrigger trigger, GameComponent source, boolean interactive) throws ConversionException {
+        if (interactive && !SwingUtilities.isEventDispatchThread()) {
+            // explicitly disable to prevent deadlock
+            interactive = false;
+        }
         checkExtension(trigger.getRequiredExtensionName(), trigger.getRequiredExtensionId(), interactive);
         GameComponent target = createTarget(trigger.getTargetClassName());
         ConversionSession session = new ConversionSession(trigger, source, target);
