@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.dialog.Messenger;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.PluginBundle;
@@ -17,10 +18,12 @@ import gamedata.Expansion;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import javax.swing.SwingUtilities;
+import resources.Language;
 import resources.Settings;
 
 /**
@@ -383,21 +386,21 @@ public class ConversionSession {
             return;
         }
 
-        CatalogID id = CatalogID.extractCatalogID(rawId);
-        if (id == null) {
+        CatalogID catId = CatalogID.extractCatalogID(rawId);
+        if (catId == null) {
             // not a full id, try parsing just as a UUID
-            id = CatalogID.extractCatalogID("CatalogID{" + rawId + ":1582-9-15-0-0-0-0}");
-            if (id == null) {
+            catId = CatalogID.extractCatalogID("CatalogID{" + rawId + ":1582-9-15-0-0-0-0}");
+            if (catId == null) {
                 throw new ConversionException("must be a CatalogID or UUID: " + rawId);
             }
         }
 
-        final PluginBundle bundle = BundleInstaller.getPluginBundle(id.getUUID());
+        final PluginBundle bundle = BundleInstaller.getPluginBundle(catId.getUUID());
         if (bundle != null) {
             try {
                 final PluginRoot root = bundle.getPluginRoot();
                 final CatalogID installedId = root == null ? null : root.getCatalogID();
-                if (installedId != null && !installedId.isOlderThan(id)) {
+                if (installedId != null && !installedId.isOlderThan(catId)) {
                     // desired bundle is installed, and is at least the required version
                     return;
                 }
@@ -406,12 +409,28 @@ public class ConversionSession {
             }
         }
 
-        if (interactive && defaultCatalogIncludes(id)) {
-            CatalogDialog dialog = new CatalogDialog(StrangeEons.getWindow());
-            dialog.setListingFilter(id.getUUID().toString());
-            dialog.selectFilteredListingsForInstallation();
-            dialog.setPopupText("This extension is required to use this component type. Please install it, restart, and try again.");
-            dialog.setVisible(true);
+        if (interactive) {
+            final String installMessage = Language.string("rk-conv-install-ext");
+            if (defaultCatalogIncludes(catId)) {
+                CatalogDialog dialog = new CatalogDialog(StrangeEons.getWindow());
+                dialog.setListingFilter(catId.getUUID().toString());
+                dialog.selectFilteredListingsForInstallation();
+                dialog.setPopupText(installMessage);
+                dialog.setVisible(true);
+            } else {
+                StringBuilder annotatedMessage = new StringBuilder(256);
+                annotatedMessage.append(installMessage).append('\n');
+                if (name != null) {
+                    annotatedMessage.append('\n').append(name);
+                }
+                if (catId != null) {
+                    annotatedMessage.append('\n').append(catId.getUUID().toString());
+                    if (catId.getDate().get(GregorianCalendar.YEAR) >= 2000) {
+                        annotatedMessage.append('\n').append(catId.getFormattedDate());
+                    }
+                }
+                Messenger.displayErrorMessage(null, annotatedMessage.toString());
+            }
         }
 
         if (name != null) {
