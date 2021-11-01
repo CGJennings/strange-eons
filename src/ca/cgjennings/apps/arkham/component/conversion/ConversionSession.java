@@ -390,6 +390,7 @@ public class ConversionSession {
         if (interactive && Catalog.getLocalCopy().findListingByUUID(id) != -1) {
             CatalogDialog dialog = new CatalogDialog(StrangeEons.getWindow());
             dialog.setListingFilter(rawId);
+            dialog.selectFilteredListingsForInstallation();
             dialog.setPopupText("This extension is required to use this component type. Please install it, restart, and try again.");
             dialog.setVisible(true);
         }
