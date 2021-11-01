@@ -27,6 +27,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.font.TextAttribute;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -72,6 +74,8 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 public final class CatalogDialog extends javax.swing.JDialog implements AgnosticDialog {
+    /** Property that changes when the dialog switches to a new catalog. */
+    public static final String CATALOG_PROPERTY = "catalog";
 
     /**
      * The string "eonscat:", the prefix that marks a Strange Eons <i>cat
@@ -86,7 +90,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      */
     public static final String CATLINK_PREFIX = "eonscat:";
 
-    private Catalog catalog;
+    /** Empty catalog used whenever a valid catalog has not or could not be loaded. */
+    private final Catalog placeholderCatalog = new Catalog();
+    private Catalog catalog = placeholderCatalog;
     private boolean doneInit = false;
 
     /**
@@ -134,7 +140,6 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         //getRootPane().setDefaultButton( okBtn );
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        catalog = new Catalog();
         table.setModel(new Model());
 
         addWindowFocusListener(new WindowFocusListener() {
@@ -396,6 +401,25 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     /**
+     * Selects all currently visible plug-ins for installation if possible.
+     * Does not affect the selection state of any plug-ins that are filtered
+     * out of the view.
+     */
+    public void selectFilteredListingsForInstallation() {
+        if (catalog == placeholderCatalog) {
+            addPropertyChangeListener(CATALOG_PROPERTY, new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    selectFilteredListingsForInstallation();
+                    CatalogDialog.this.removePropertyChangeListener(this);
+                }
+            });
+        } else {
+            selectAllItemActionPerformed(null);
+        }
+    }
+
+    /**
      * Sets a text message that will be displayed the next time the this dialog
      * gains focus, or clears the current message if {@code null}. This can
      * be used to provide an explanatory message or additional help when the
@@ -447,6 +471,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private TableRowSorter rowSorter;
 
     private synchronized void downloadCatalog(final URL location, final boolean allowCache) {
+        final Catalog oldCatalog = catalog == placeholderCatalog ? null : catalog;
         Thread checkThread = downloadThread;
         if (checkThread != null) {
             checkThread.interrupt();
@@ -463,10 +488,11 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                 EventQueue.invokeLater(() -> {
                     catalog = c;
                     catalogLoaded();
+                    firePropertyChange(CATALOG_PROPERTY, oldCatalog, catalog);
                 });
             } catch (final Throwable e) {
                 EventQueue.invokeLater(() -> {
-                    catalog = new Catalog();
+                    catalog = placeholderCatalog;
                     // make sure any selection in the table is cleared:
                     // although the table isn't visible, there might be
                     // a selection so you could install plug-ins you
@@ -483,6 +509,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                         downloadErrorLabel.setText(error);
                         showPanel("error");
                         StrangeEons.log.log(Level.INFO, "catalog download error", e);
+                    }
+                    if (oldCatalog != null) {
+                        firePropertyChange(CATALOG_PROPERTY, oldCatalog, null);
                     }
                 });
             } finally {
@@ -1371,7 +1400,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             }
             String location = urlCombo.getSelectedItem().toString();
             if (location.indexOf(':') < 0) {
-                location = "http://" + location;
+                location = "https://" + location;
                 urlCombo.setSelectedItem(location);
                 return;
             }
@@ -1431,9 +1460,14 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             if (catalog == null) {
                 return;
             }
-            Model model = (Model) table.getModel();
+
+            // select all possible visible (non-filtered) plug-ins
+            final Model model = (Model) table.getModel();
             for (int i = 0; i < catalog.size(); ++i) {
-                if (model.isCellEditable(i, COL_INSTALL)) {
+                // can't change state, so skip
+                if (!model.isCellEditable(i, COL_INSTALL)) continue;
+
+                if (table.convertRowIndexToView(i) >= 0) {
                     catalog.setInstallFlag(i, true);
                 }
             }

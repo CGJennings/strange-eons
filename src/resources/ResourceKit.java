@@ -7,6 +7,8 @@ import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.FileRecoveryException;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.deck.DeckDeserializationSupport;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import static ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError;
@@ -2436,8 +2438,15 @@ public class ResourceKit {
                 o = oi.readObject();
             }
             gc = (GameComponent) o;
+            // convert the component if required
+            UpgradeConversionTrigger trigger = gc.createUpgradeConversionTrigger();
+            if (trigger != null) {
+                gc = ConversionSession.convertGameComponent(trigger, gc, reportError);
+            }
             // verify that required cores are installed
-            gc.coreCheck();
+            if (gc != null) {
+                gc.coreCheck();
+            }
         } catch (FileRecoveryException recover) {
             File recoverFile = recover.getTempFile();
             gc = getGameComponentFromFile(recoverFile, false);
