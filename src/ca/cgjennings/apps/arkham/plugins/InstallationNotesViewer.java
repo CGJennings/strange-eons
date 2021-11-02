@@ -4,10 +4,12 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.platform.DesktopIntegration;
 import ca.cgjennings.ui.EditorPane;
+import ca.cgjennings.ui.theme.Theme;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
+import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
 import static resources.Language.string;
 
@@ -85,9 +87,10 @@ final class InstallationNotesViewer extends javax.swing.JDialog {
         jScrollPane1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
         view.setEditable(false);
-        view.setBackground(new java.awt.Color(254, 254, 255));
+        view.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         view.setContentType("text/html"); // NOI18N
         view.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        view.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jScrollPane1.setViewportView(view);
 
         closeBtn.setText(string("close")); // NOI18N
