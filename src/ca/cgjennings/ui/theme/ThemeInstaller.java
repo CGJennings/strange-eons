@@ -259,11 +259,14 @@ public class ThemeInstaller {
         UIManager.put(Theme.PROJECT_HEADER_FOREGROUND, Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
         UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
-        UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x111111) : Color.WHITE);
+        UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x202020) : Color.WHITE);
         UIManager.put(Theme.PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
         UIManager.put(Theme.PREFS_HEADING, new Color(135, 103, 5));
         UIManager.put(Theme.HEAD_BANNER_BACKGROUND, UIManager.get(Theme.PREFS_BACKGROUND));
         UIManager.put(Theme.HEAD_BANNER_FOREGROUND, UIManager.get(Theme.PREFS_FOREGROUND));
+
+        UIManager.put(Theme.PLUGIN_README_BACKGROUND, UIManager.getColor(Theme.PREFS_BACKGROUND));
+        UIManager.put(Theme.PLUGIN_README_FOREGROUND, UIManager.getColor(Theme.PREFS_FOREGROUND));
 
         UIDefaults ui = UIManager.getDefaults();
         ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x73_96ab));

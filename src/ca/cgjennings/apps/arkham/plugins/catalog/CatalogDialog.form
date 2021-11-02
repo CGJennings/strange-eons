@@ -434,8 +434,8 @@
                   <SubComponents>
                     <Container class="javax.swing.JPanel" name="infoPanel">
                       <Properties>
-                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                          <Color blue="ff" green="ff" id="white" palette="1" red="ff" type="palette"/>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                          <Connection code="UIManager.getColor(Theme.PLUGIN_README_BACKGROUND)" type="code"/>
                         </Property>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -529,13 +529,16 @@
                       <SubComponents>
                         <Component class="javax.swing.JLabel" name="nameLabel">
                           <Properties>
-                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="c0" green="c0" id="lightGray" palette="1" red="c0" type="palette"/>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.HEAD_BANNER_BACKGROUND)" type="code"/>
                             </Property>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
                               <FontInfo relative="true">
                                 <Font bold="true" component="nameLabel" property="font" relativeSize="true" size="2"/>
                               </FontInfo>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -561,6 +564,9 @@
                                 <Font bold="true" component="jLabel3" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
                             </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                               <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-ver" replaceFormat="string( &quot;{key}&quot; )"/>
                             </Property>
@@ -573,6 +579,9 @@
                                 <Font component="verLabel" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
                             </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="*"/>
                           </Properties>
                         </Component>
@@ -582,6 +591,9 @@
                               <FontInfo relative="true">
                                 <Font bold="true" component="jLabel1" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                               <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-home" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -602,7 +614,7 @@
                           <Properties>
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code=" Color.WHITE " type="code"/>
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_BACKGROUND)" type="code"/>
                             </Property>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.CompoundBorderInfo">
@@ -623,7 +635,7 @@
                               <Font name="SansSerif" size="12" style="0"/>
                             </Property>
                             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code=" Color.BLACK " type="code"/>
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.ComponentChooserEditor">
                               <ComponentRef name="descriptionPopup"/>
@@ -635,6 +647,9 @@
                         </Component>
                         <Component class="javax.swing.JLabel" name="installStateLabel">
                           <Properties>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="state"/>
                           </Properties>
                         </Component>
@@ -644,6 +659,9 @@
                               <FontInfo relative="true">
                                 <Font bold="true" component="jLabel4" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                               <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-size" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -657,6 +675,9 @@
                                 <Font component="sizeLabel" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
                             </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="*"/>
                           </Properties>
                         </Component>
@@ -666,6 +687,9 @@
                               <FontInfo relative="true">
                                 <Font bold="true" component="jLabel6" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                               <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-credit" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -679,6 +703,9 @@
                                 <Font component="creditsLabel" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
                             </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="*"/>
                           </Properties>
                         </Component>
@@ -688,6 +715,9 @@
                               <FontInfo relative="true">
                                 <Font bold="true" component="coreLabel" property="font" relativeSize="true" size="-1"/>
                               </FontInfo>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                              <Connection code="UIManager.getColor(Theme.PLUGIN_README_FOREGROUND)" type="code"/>
                             </Property>
                             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                               <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-l-core" replaceFormat="string( &quot;{key}&quot; )"/>
@@ -876,6 +906,12 @@
     </Component>
     <Component class="ca.cgjennings.ui.JWarningLabel" name="restartWarnLabel">
       <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIManager.getColor(Theme.MESSAGE_BACKGROUND)" type="code"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="UIManager.getColor(Theme.MESSAGE_FOREGROUND)" type="code"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="cat-restart-required" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
