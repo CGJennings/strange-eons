@@ -10,6 +10,7 @@ import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
+import ca.cgjennings.apps.arkham.plugins.typescript.TypeScript;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.arkham.project.Project;
@@ -364,9 +365,9 @@ public class CodeEditor extends AbstractSupportEditor {
      * The file types that can be edited by a {@code CodeEditor}.
      */
     public static enum CodeType {
-
         PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
-        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, true),
+        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
+        TYPESCRIPT("ts", "prj-prop-typescript", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
         JAVA("java", "prj-prop-java", ProjectUtilities.ENC_SCRIPT, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
         PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
         SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
@@ -471,6 +472,10 @@ public class CodeEditor extends AbstractSupportEditor {
                 if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
                     ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
                 }
+            }
+
+            if (this == TYPESCRIPT) {
+                TypeScript.warmUp();
             }
         }
 
@@ -1415,6 +1420,17 @@ public class CodeEditor extends AbstractSupportEditor {
         String text = editor.getText();
         ProjectUtilities.copyReader(new StringReader(escape(text)), f, encoding);
         refreshNavigator(text);
+
+        if(getCodeType() == CodeType.TYPESCRIPT) {
+            ca.cgjennings.apps.arkham.plugins.typescript.TypeScript.transpile(text, transpiled -> {
+                try {
+                    File js = ProjectUtilities.changeExtension(f, "js");
+                    ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
+                } catch(IOException ex) {
+                    StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+                }
+            });
+        }
     }
 
     public CodeType getCodeType() {

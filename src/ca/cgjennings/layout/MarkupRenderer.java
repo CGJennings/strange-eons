@@ -2464,7 +2464,7 @@ public class MarkupRenderer {
      * Warning: the fast line breaker is buggy; it works in most cases but
      * sometimes incorrectly breaks a line in the middle of a word.
      */
-    public static boolean USE_FAST_LINE_BREAKER = false;
+    public static boolean USE_FAST_LINE_BREAKER = true;
 
     private File baseFile;
 

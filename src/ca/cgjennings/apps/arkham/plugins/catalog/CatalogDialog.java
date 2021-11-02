@@ -15,6 +15,7 @@ import ca.cgjennings.ui.JLabelledField;
 import ca.cgjennings.ui.dnd.ScrapBook;
 import ca.cgjennings.ui.table.BooleanRenderer;
 import ca.cgjennings.ui.table.IconRenderer;
+import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -27,6 +28,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.font.TextAttribute;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
@@ -72,6 +75,8 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 public final class CatalogDialog extends javax.swing.JDialog implements AgnosticDialog {
+    /** Property that changes when the dialog switches to a new catalog. */
+    public static final String CATALOG_PROPERTY = "catalog";
 
     /**
      * The string "eonscat:", the prefix that marks a Strange Eons <i>cat
@@ -86,7 +91,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      */
     public static final String CATLINK_PREFIX = "eonscat:";
 
-    private Catalog catalog;
+    /** Empty catalog used whenever a valid catalog has not or could not be loaded. */
+    private final Catalog placeholderCatalog = new Catalog();
+    private Catalog catalog = placeholderCatalog;
     private boolean doneInit = false;
 
     /**
@@ -134,7 +141,6 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         //getRootPane().setDefaultButton( okBtn );
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        catalog = new Catalog();
         table.setModel(new Model());
 
         addWindowFocusListener(new WindowFocusListener() {
@@ -396,6 +402,25 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     /**
+     * Selects all currently visible plug-ins for installation if possible.
+     * Does not affect the selection state of any plug-ins that are filtered
+     * out of the view.
+     */
+    public void selectFilteredListingsForInstallation() {
+        if (catalog == placeholderCatalog) {
+            addPropertyChangeListener(CATALOG_PROPERTY, new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    selectFilteredListingsForInstallation();
+                    CatalogDialog.this.removePropertyChangeListener(this);
+                }
+            });
+        } else {
+            selectAllItemActionPerformed(null);
+        }
+    }
+
+    /**
      * Sets a text message that will be displayed the next time the this dialog
      * gains focus, or clears the current message if {@code null}. This can
      * be used to provide an explanatory message or additional help when the
@@ -447,6 +472,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private TableRowSorter rowSorter;
 
     private synchronized void downloadCatalog(final URL location, final boolean allowCache) {
+        final Catalog oldCatalog = catalog == placeholderCatalog ? null : catalog;
         Thread checkThread = downloadThread;
         if (checkThread != null) {
             checkThread.interrupt();
@@ -463,10 +489,11 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                 EventQueue.invokeLater(() -> {
                     catalog = c;
                     catalogLoaded();
+                    firePropertyChange(CATALOG_PROPERTY, oldCatalog, catalog);
                 });
             } catch (final Throwable e) {
                 EventQueue.invokeLater(() -> {
-                    catalog = new Catalog();
+                    catalog = placeholderCatalog;
                     // make sure any selection in the table is cleared:
                     // although the table isn't visible, there might be
                     // a selection so you could install plug-ins you
@@ -483,6 +510,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                         downloadErrorLabel.setText(error);
                         showPanel("error");
                         StrangeEons.log.log(Level.INFO, "catalog download error", e);
+                    }
+                    if (oldCatalog != null) {
+                        firePropertyChange(CATALOG_PROPERTY, oldCatalog, null);
                     }
                 });
             } finally {
@@ -821,7 +851,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                     e.printStackTrace();
                 }
                 listingText.flush();
-                descText += "<p style='background-color: #f7f7ff; font-family: Consolas, Andale Mono, Monospaced'>"
+                descText += "<p style='font-family: Consolas, Andale Mono, Monospaced'>"
                         + listingText.toString().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
                         + "</p>";
             }
@@ -1050,49 +1080,59 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         infoScroll.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        infoPanel.setBackground(java.awt.Color.white);
+        infoPanel.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         infoPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        nameLabel.setBackground(java.awt.Color.lightGray);
+        nameLabel.setBackground(UIManager.getColor(Theme.HEAD_BANNER_BACKGROUND));
         nameLabel.setFont(nameLabel.getFont().deriveFont(nameLabel.getFont().getStyle() | java.awt.Font.BOLD, nameLabel.getFont().getSize()+2));
+        nameLabel.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         nameLabel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(2, 8, 4, 8)));
         nameLabel.setOpaque(true);
 
         jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getStyle() | java.awt.Font.BOLD, jLabel3.getFont().getSize()-1));
+        jLabel3.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel3.setText(string( "cat-ver" )); // NOI18N
 
         verLabel.setFont(verLabel.getFont().deriveFont(verLabel.getFont().getSize()-1f));
+        verLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         verLabel.setText("*");
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD, jLabel1.getFont().getSize()-1));
+        jLabel1.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel1.setText(string( "cat-home" )); // NOI18N
 
         pageLabel.setText("*");
         pageLabel.setFont(pageLabel.getFont().deriveFont(pageLabel.getFont().getSize()-1f));
 
         descPane.setEditable(false);
-        descPane.setBackground( Color.WHITE );
+        descPane.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         descPane.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         descPane.setContentType("text/html"); // NOI18N
         descPane.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        descPane.setForeground( Color.BLACK );
+        descPane.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         descPane.setComponentPopupMenu(descriptionPopup);
 
+        installStateLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         installStateLabel.setText("state");
 
         jLabel4.setFont(jLabel4.getFont().deriveFont(jLabel4.getFont().getStyle() | java.awt.Font.BOLD, jLabel4.getFont().getSize()-1));
+        jLabel4.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel4.setText(string( "cat-size" )); // NOI18N
 
         sizeLabel.setFont(sizeLabel.getFont().deriveFont(sizeLabel.getFont().getSize()-1f));
+        sizeLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         sizeLabel.setText("*");
 
         jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getStyle() | java.awt.Font.BOLD, jLabel6.getFont().getSize()-1));
+        jLabel6.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel6.setText(string( "cat-credit" )); // NOI18N
 
         creditsLabel.setFont(creditsLabel.getFont().deriveFont(creditsLabel.getFont().getSize()-1f));
+        creditsLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         creditsLabel.setText("*");
 
         coreLabel.setFont(coreLabel.getFont().deriveFont(coreLabel.getFont().getStyle() | java.awt.Font.BOLD, coreLabel.getFont().getSize()-1));
+        coreLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         coreLabel.setText(string( "cat-l-core" )); // NOI18N
 
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
@@ -1270,6 +1310,8 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             }
         });
 
+        restartWarnLabel.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
+        restartWarnLabel.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
         restartWarnLabel.setText(string("cat-restart-required")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1371,7 +1413,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             }
             String location = urlCombo.getSelectedItem().toString();
             if (location.indexOf(':') < 0) {
-                location = "http://" + location;
+                location = "https://" + location;
                 urlCombo.setSelectedItem(location);
                 return;
             }
@@ -1431,9 +1473,14 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             if (catalog == null) {
                 return;
             }
-            Model model = (Model) table.getModel();
+
+            // select all possible visible (non-filtered) plug-ins
+            final Model model = (Model) table.getModel();
             for (int i = 0; i < catalog.size(); ++i) {
-                if (model.isCellEditable(i, COL_INSTALL)) {
+                // can't change state, so skip
+                if (!model.isCellEditable(i, COL_INSTALL)) continue;
+
+                if (table.convertRowIndexToView(i) >= 0) {
                     catalog.setInstallFlag(i, true);
                 }
             }

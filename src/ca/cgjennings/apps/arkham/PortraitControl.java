@@ -3,6 +3,8 @@ package ca.cgjennings.apps.arkham;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.graphics.filters.ColorOverlayFilter;
 import ca.cgjennings.ui.dnd.FileDrop;
+import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -55,7 +57,10 @@ public final class PortraitControl extends JComponent {
     public PortraitControl() {
         MARGIN_COLOR = UIManager.getColor("nimbusBlueGrey");
         if (MARGIN_COLOR == null) {
-            MARGIN_COLOR = Color.LIGHT_GRAY;
+            MARGIN_COLOR = UIManager.getColor(Theme.EDITOR_TAB_BACKGROUND);
+        }
+        if (MARGIN_COLOR == null) {
+            MARGIN_COLOR = ThemeInstaller.getInstalledTheme().isDark() ? Color.DARK_GRAY : Color.LIGHT_GRAY;
         }
         BACKGROUND_COLOR = MARGIN_COLOR.darker().darker();
 

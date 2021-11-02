@@ -428,9 +428,6 @@ use-project-folder-selector = yes
 # If true, Make Bundle will automatically touch catalogue ID timestamps
 make-bundle-autotouch = yes
 
-# If true, strip out JAR metadata when publishing bundles (META-INF and contents)
-pack-bundle-strip-meta = yes
-
 # Default settings for bundle testing
 test-bundle-log = ALL
 test-bundle-no-plugins = yes

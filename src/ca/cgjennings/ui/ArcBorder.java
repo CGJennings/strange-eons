@@ -218,6 +218,7 @@ public class ArcBorder extends AbstractBorder {
                 exterior.quadTo(fx1 + hr, fy2 - hr, fx1, fy2 - arcSize);
                 exterior.lineTo(fx1, fy2);
                 exterior.closePath();
+                break;
 
             default:
                 throw new AssertionError();

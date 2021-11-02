@@ -270,6 +270,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
         jPanel1.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
+        jLabel2.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
         jLabel2.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
         jLabel2.setText(string("expsel-l-info")); // NOI18N

@@ -192,6 +192,13 @@ public class CommandLineArguments implements Cloneable {
     public File xRestartLock = null;
 
     /**
+     * Internal use options. <p>
+     * Allows some Windows launcher applications to enable "console mode"
+     * without the option being rejected.
+     */
+    public boolean console;
+
+    /**
      * Returns an array of the files included on the command line to be opened
      * when the application starts. Note that the returned array is a copy, so
      * callers may modify it freely.

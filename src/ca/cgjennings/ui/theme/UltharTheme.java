@@ -26,7 +26,6 @@ public class UltharTheme extends Theme {
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
         final boolean dark = isDark();
-        final Color DEEP_GREY = new Color(0x333333);
         UIManager.put( "Button.arc", 999 );
         UIManager.put( "ScrollBar.width", 12 );
         UIManager.put( "ScrollBar.thumbArc", 999 );
@@ -37,9 +36,14 @@ public class UltharTheme extends Theme {
         UIManager.put(NOTES_BACKGROUND, null);
         UIManager.put(EDITOR_TAB_BACKGROUND, null);
         if(dark) {
-            UIManager.put(PROJECT_HEADER_BACKGROUND, DEEP_GREY);
-            UIManager.put(PROJECT_FIND_BACKGROUND, null);
+            final Color DEEPER_GREY = new Color(0x27292a);
+            final Color BRIGHT_GREY = new Color(0xa0aba6);
+            UIManager.put(PROJECT_HEADER_BACKGROUND, DEEPER_GREY);
+            UIManager.put(PROJECT_FIND_BACKGROUND, DEEPER_GREY);
+            UIManager.put(PLUGIN_README_BACKGROUND, DEEPER_GREY);
+            UIManager.put(PLUGIN_README_FOREGROUND, BRIGHT_GREY);
         } else {
+            final Color DEEP_GREY = new Color(0x3c3f41);
             final Color DIVIDER = new Color(0xe7e7e7);
             UIManager.put("SplitPane.background", DIVIDER);
             UIManager.put(PROJECT_HEADER_BACKGROUND, DIVIDER);

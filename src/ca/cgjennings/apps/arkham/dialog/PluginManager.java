@@ -248,7 +248,6 @@ public class PluginManager extends javax.swing.JDialog {
 
         compoundPluginPanel.add(pluginTitle, java.awt.BorderLayout.PAGE_START);
 
-        configPanel.setBackground(UIManager.getColor(Theme.PROJECT_FIND_BACKGROUND));
         configPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.gray));
 
         uninstallBtn.setFont(uninstallBtn.getFont().deriveFont(uninstallBtn.getFont().getStyle() | java.awt.Font.BOLD));
@@ -259,7 +258,6 @@ public class PluginManager extends javax.swing.JDialog {
             }
         });
 
-        enableCheck.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         enableCheck.setText(string( "plug-b-enabled" )); // NOI18N
         enableCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -268,7 +266,6 @@ public class PluginManager extends javax.swing.JDialog {
         });
 
         shortcutLabel.setFont(shortcutLabel.getFont().deriveFont(shortcutLabel.getFont().getStyle() | java.awt.Font.BOLD));
-        shortcutLabel.setForeground(UIManager.getColor(Theme.PROJECT_FIND_FOREGROUND));
         shortcutLabel.setText(string( "plug-col-key" )); // NOI18N
 
         shortcutField.setText("Ctrl+Alt+Shift+Backspace");
@@ -468,6 +465,13 @@ public class PluginManager extends javax.swing.JDialog {
                 fillInTable(b, iplugin);
                 b.append("</table>");
 
+                // pending update/uninstall
+                if (iplugin.isUpdatePending()) {
+                    fillInBox(b, string("plug-l-will-update"), false);
+                } else if (iplugin.isUninstallPending()) {
+                    fillInBox(b, string("plug-l-will-uninstall"), true);
+                }
+
                 PluginBundle pb = iplugin.getBundle();
                 if (pb != null) {
                     try {
@@ -479,13 +483,6 @@ public class PluginManager extends javax.swing.JDialog {
                         }
                     } catch (IOException ioe) {
                     }
-                }
-
-                // pending update/uninstall
-                if (iplugin.isUpdatePending()) {
-                    fillInBox(b, string("plug-l-will-update"), false);
-                } else if (iplugin.isUninstallPending()) {
-                    fillInBox(b, string("plug-l-will-uninstall"), true);
                 }
             }
 
@@ -540,10 +537,9 @@ public class PluginManager extends javax.swing.JDialog {
     }
 
     private void fillInBox(StringBuilder b, String text, boolean warn) {
-        b.append("<p align='center'><table border=0 bgcolor=#")
-                .append(warn ? "efe7b1" : "b1b1ef")
-                .append(" width=80% cellspacing=0 cellpadding=8><tr><td>");
-        b.append(text).append("</table>");
+        b.append("<p align='center' style='padding: 4px; border: 2px #")
+            .append(warn ? "ffa000" : "1565c0").append(" solid'>")
+            .append(text).append("</p>");
     }
 
 	private void openPluginFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openPluginFolderBtnActionPerformed

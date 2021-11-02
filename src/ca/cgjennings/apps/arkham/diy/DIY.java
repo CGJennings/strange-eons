@@ -8,6 +8,8 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;
@@ -213,7 +215,9 @@ public class DIY extends AbstractGameComponent implements Handler {
     private transient boolean locked = false;
     private transient JTextComponent nameField = null;
     private transient boolean scriptDebug;
+    private transient ScriptMonkey monkey;
     private transient Handler handler;
+    private transient UpgradeConversionTrigger upgradeConversionTrigger = null;
 
     static final int OPT_NO_PORTRAIT_FILL = 1;
     static final int OPT_NO_QUALITY_INIT = 1 << 1;
@@ -333,7 +337,7 @@ public class DIY extends AbstractGameComponent implements Handler {
             script = "res://" + script;
         }
         try {
-            ScriptMonkey monkey = new ScriptMonkey(script);
+            monkey = new ScriptMonkey(script);
             monkey.setSettingProvider(getSettings());
             monkey.bind(PluginContextFactory.createDummyContext());
             monkey.setBreakpoint(scriptDebug);
@@ -2722,5 +2726,52 @@ public class DIY extends AbstractGameComponent implements Handler {
         for (String key : deleteKeys) {
             privateSettings.reset(key);
         }
+    }
+
+    @Override
+    public UpgradeConversionTrigger createUpgradeConversionTrigger() {
+        // let the trigger be garbage collected after conversion is finished
+        UpgradeConversionTrigger trigger = upgradeConversionTrigger;
+        upgradeConversionTrigger = null;
+        return trigger;
+    }
+
+    @Override
+    public void convertFrom(ConversionSession session) {
+        if (monkey != null) {
+            monkey.ambivalentCall("onConvertFrom", this, session);
+        }
+    }
+
+    @Override
+    public void convertTo(ConversionSession session) {
+        if (monkey != null) {
+            monkey.ambivalentCall("onConvertTo", this, session);
+        }
+    }
+
+    /**
+     * This method can be called by the DIY component if it wants to initiate
+     * conversion to another component type during {@code onRead}. The new type
+     * is assumed to belong to the same extension. If this is not the case, use
+     * {@link #convertToComponentType(String, String)} instead.
+     *
+     * @param className the class or script identifier to convert to
+     */
+    public void convertToComponentType(String className) {
+        convertToComponentType(className, null, null);
+    }
+
+    /**
+     * This method can be called by the DIY component if it wants to initiate
+     * conversion to another component type during {@code onRead}.
+     *
+     * @param className the class or script identifier to convert to
+     * @param extensionName the name of the extension containing the new type
+     * @param extensionId the UUID of the extension containing the new type
+     */
+    public void convertToComponentType(String className, String extensionName, String extensionId) {
+        checkPropertyLock();
+        upgradeConversionTrigger = new UpgradeConversionTrigger(className, extensionName, extensionId);
     }
 }

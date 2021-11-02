@@ -2,6 +2,8 @@ package ca.cgjennings.apps.arkham.component;
 
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
+import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -248,4 +250,40 @@ public interface GameComponent extends Serializable, Cloneable {
      * it on demand
      */
     public void coreCheck();
+
+    /**
+     * Returns the {@link ConversionSession} created when the component type no
+     * longer handles the component. This method is called after a component is
+     * read from file. Should return {@code null} when no conversion is needed.
+     *
+     * @see ConversionSession
+     * @return a conversion context if the upgrade requires a conversion
+     */
+    public UpgradeConversionTrigger createUpgradeConversionTrigger();
+
+    /**
+     * Called on a component that is being converted into another component
+     * type. Based on the conversion strategy, the old component may modify the
+     * new component directly, or modify the conversion context, or do nothing.
+     * This method is called before calling
+     * {@link #convertTo(GameComponent, ConversionContext)} on the target, and
+     * before any automatic conversion steps.
+     *
+     * @param target the new component that will replace this one
+     * @param context the conversion context
+     */
+    public void convertFrom(ConversionSession session);
+
+    /**
+     * Called on the replacement component when converting a component to
+     * another component type. Based on the conversion strategy, the new
+     * component may modify itself directly, or modify the conversion context,
+     * or do nothing. This method is called after calling
+     * {@link #convertFrom(GameComponent, ConversionContext)} on the source, but
+     * before any automatic conversion steps.
+     *
+     * @param source the old component that will be replaced
+     * @param context the conversion context
+     */
+    public void convertTo(ConversionSession session);
 }

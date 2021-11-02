@@ -118,7 +118,7 @@ const ImageUtils = (function(){
             if (stitchEdge === ImageUtils.STITCH_HORIZONTAL) {
                 g.drawImage(image2, image1.getWidth(), 0, null);
             } else {
-                g.drawImage(image2, 0, image1.getHeight(), 0, null);
+                g.drawImage(image2, 0, image1.getHeight(), null);
             }
         } finally {
             if (g) g.dispose();

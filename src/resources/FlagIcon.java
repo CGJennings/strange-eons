@@ -101,14 +101,6 @@ final class FlagIcon implements Icon {
         return SIZE;
     }
 
-//	public static void main(String[] args) throws IOException {
-//		FlagIcon i = new FlagIcon( "ca" );
-//		BufferedImage bi = new BufferedImage( 16,16,BufferedImage.TYPE_INT_ARGB );
-//		Graphics2D g  = bi.createGraphics();
-//		i.paintIcon(null, g, 0, 0);
-//		g.dispose();
-//		ImageIO.write(bi, "png", new File("d:/test.png"));
-//	}
     private static final int SIZE = 16; // icon width
     private static final int W = 16; // true icon height
     private static final int H = 11; // true icon height

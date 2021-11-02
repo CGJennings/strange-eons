@@ -6,6 +6,7 @@ import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.GlowFilter;
 import ca.cgjennings.i18n.IntegerPluralizer;
 import ca.cgjennings.ui.BlankIcon;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -828,6 +829,7 @@ public class Language implements Iterable<String> {
     }
 
     private static BufferedImage makeIconText(String text, Font f) {
+        final boolean isDark = ThemeInstaller.getInstalledTheme().isDark();
         BufferedImage bi = new BufferedImage(FLAG_SIZE * 2, FLAG_SIZE * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
         try {
@@ -837,13 +839,12 @@ public class Language implements Iterable<String> {
             Rectangle2D bounds = fm.getStringBounds(text, g);
             int w = (int) (bounds.getWidth() + 0.5d);
             int h = (int) (bounds.getHeight() + 0.5d);
-            g.setColor(new Color(0x1a_2933));
+            g.setColor(isDark ? Color.LIGHT_GRAY : new Color(0x1a2933));
             g.drawString(text, (FLAG_SIZE * 2 - w) / 2, (FLAG_SIZE * 2 - h) / 2);
         } finally {
             g.dispose();
         }
-        GlowFilter gf = new GlowFilter(0xff_ffff, 1, true, 3);
-        return ImageUtilities.trim(gf.filter(bi, null));
+        return ImageUtilities.trim(bi);
     }
 
     /**

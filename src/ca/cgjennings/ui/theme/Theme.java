@@ -301,7 +301,7 @@ public abstract class Theme {
      * tabs should switch their orientation. Set if tabs look wrong for a
      * given L&F. 
      */
-    public static final String ALTERNATE_DOCUMENT_TAB_ORIENTATION = "se-alt-doc-tab-dir";
+    public static final String ALTERNATE_DOCUMENT_TAB_ORIENTATION = "eons-alt-doc-tab-dir";
     /**
      * A UI key that contains the {@code Border} used for headings and
      * subheadings. If {@code null}, a default algorithm is used to create
@@ -311,22 +311,22 @@ public abstract class Theme {
      *
      * @see JHeading
      */
-    public static final String HEADING_BORDER = "se-heading-border";
+    public static final String HEADING_BORDER = "eons-heading-border";
     /**
      * A UI key that contains the {@code Color} used for the background of
      * the editor tabs.
      */
-    public static final String EDITOR_TAB_BACKGROUND = "se-editor-tab-background";
+    public static final String EDITOR_TAB_BACKGROUND = "eons-editor-tab-background";
     /**
      * A UI key that contains the {@code Color} used for the background of
      * sidepanel title bars, like at the top of project views.
      */
-    public static final String SIDEPANEL_TITLE_BACKGROUND = "se-title-background";
+    public static final String SIDEPANEL_TITLE_BACKGROUND = "eons-title-background";
     /**
      * A UI key that contains the {@code Color} used for the foreground of
      * sidepanel title bars, like at the top of project views.
      */
-    public static final String SIDEPANEL_TITLE_FOREGROUND = "se-title-foreground";
+    public static final String SIDEPANEL_TITLE_FOREGROUND = "eons-title-foreground";
     /**
      * A UI key that contains the {@code Color} used for the border drawn
      * around fields that accept a file drop when files are dragged over them.
@@ -335,49 +335,49 @@ public abstract class Theme {
     /**
      * UI key for context bar background colour.
      */
-    public static final String CONTEXT_BAR_BACKGROUND = "se-cb-bg";
+    public static final String CONTEXT_BAR_BACKGROUND = "eons-cb-bg";
     /**
      * UI key for context bar foreground colour.
      */
-    public static final String CONTEXT_BAR_FOREGROUND = "se-cb-fg";
+    public static final String CONTEXT_BAR_FOREGROUND = "eons-cb-fg";
     /**
      * UI key for context bar button background colour.
      */
-    public static final String CONTEXT_BAR_BUTTON_BACKGROUND = "se-cb-btn-bg";
+    public static final String CONTEXT_BAR_BUTTON_BACKGROUND = "eons-cb-btn-bg";
     /**
      * UI key for context bar button background colour when under pointer.
      */
-    public static final String CONTEXT_BAR_BUTTON_ROLLOVER_BACKGROUND = "se-cb-btn-bghi";
+    public static final String CONTEXT_BAR_BUTTON_ROLLOVER_BACKGROUND = "eons-cb-btn-bghi";
     /**
      * UI key for context bar button outline colour when under pointer.
      */
-    public static final String CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND = "se-cb-brdr-fg";
+    public static final String CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND = "eons-cb-brdr-fg";
     /**
      * UI key for context bar button outline colour when held down.
      */
-    public static final String CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND = "se-cb-brdr-fghi";
+    public static final String CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND = "eons-cb-brdr-fghi";
     /**
      * A UI key for an adjustment applied to the margin of cycle buttons to move
      * the cycle icon close to the button edge.
      */
-    public static final String CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT = "se-cycle-margin";
+    public static final String CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT = "eons-cycle-margin";
     /**
      * UI key for console background colour; used if painter is
      * {@code null}.
      */
-    public static final String CONSOLE_BACKROUND = "se-conbg";
+    public static final String CONSOLE_BACKROUND = "eons-conbg";
     /**
      * UI key for console background colour.
      */
-    public static final String CONSOLE_BACKGROUND_PAINTER = "se-conp";
+    public static final String CONSOLE_BACKGROUND_PAINTER = "eons-conp";
     /**
      * UI key for console output text colour.
      */
-    public static final String CONSOLE_OUTPUT = "se-conout";
+    public static final String CONSOLE_OUTPUT = "eons-conout";
     /**
      * UI key for console error text colour.
      */
-    public static final String CONSOLE_ERROR = "se-conerr";
+    public static final String CONSOLE_ERROR = "eons-conerr";
     /**
      * UI key for console text selection background colour.
      */
@@ -393,15 +393,15 @@ public abstract class Theme {
     /**
      * UI key for text notes panels (e.g., project notes) background colour.
      */
-    public static final String NOTES_BACKGROUND = "se-notes-bg";
+    public static final String NOTES_BACKGROUND = "eons-notes-bg";
     /**
      * UI key for text notes panels (e.g., project notes) foreground colour.
      */
-    public static final String NOTES_FOREGROUND = "se-notes-fg";
+    public static final String NOTES_FOREGROUND = "eons-notes-fg";
     /**
      * UI key for the foreground colour of {@link JLinkLabel}s.
      */
-    public static final String LINK_LABEL_FOREGROUND = "se-link-label-fg";
+    public static final String LINK_LABEL_FOREGROUND = "eons-link-label-fg";
     /**
      * Exterior border colour of mesage pop-ups.
      */
@@ -433,51 +433,56 @@ public abstract class Theme {
     /**
      * UI key for project search field background colour.
      */
-    public static final String PROJECT_FIND_BACKGROUND = "se-projfind-bg";
+    public static final String PROJECT_FIND_BACKGROUND = "eons-projfind-bg";
     /**
      * UI key for project search field foreground colour.
      */
-    public static final String PROJECT_FIND_FOREGROUND = "se-projfind-fg";
+    public static final String PROJECT_FIND_FOREGROUND = "eons-projfind-fg";
+    /**
+     * UI key for plug-in installation notes and catalog info background colour.
+     */
+    public static final String PLUGIN_README_BACKGROUND = "eons-readme-bg";
+    /**
+     * UI key for plug-in installation notes and catalog info foreground colour.
+     */
+    public static final String PLUGIN_README_FOREGROUND = "eons-readme-fg";
     /**
      * UI key for the project area properties/notes tabs background color.
      */
-    public static final String PROJECT_NOTES_TAB_BACKGROUND = "se-projnotestab-bg";
-
+    public static final String PROJECT_NOTES_TAB_BACKGROUND = "eons-projnotestab-bg";
     /**
      * UI key for the background colour used for project view headers
      * (Project Files, Add New Task..., Properties/Notes, etc.)
      */
-    public static final String PROJECT_HEADER_BACKGROUND = "se-projhead-bg";
-
+    public static final String PROJECT_HEADER_BACKGROUND = "eons-projhead-bg";
     /**
      * UI key for the background colour used for project view headers
      * (Project Files, Add New Task..., Properties/Notes, etc.)
      */
-    public static final String PROJECT_HEADER_FOREGROUND = "se-projhead-fg";
-
+    public static final String PROJECT_HEADER_FOREGROUND = "eons-projhead-fg";
     /**
      * UI key for project search field background colour.
      */
-    public static final String PREFS_BACKGROUND = "se-pref-bg";
+    public static final String PREFS_BACKGROUND = "eons-pref-bg";
     /**
      * UI key for project search field foreground colour.
      */
-    public static final String PREFS_FOREGROUND = "se-pref-fg";
+    public static final String PREFS_FOREGROUND = "eons-pref-fg";
     /**
      * UI key for project search field foreground colour.
      */
-    public static final String PREFS_HEADING = "se-pref-head";
+    public static final String PREFS_HEADING = "eons-pref-head";
     /**
      * UI key for the "head banner" foreground colour. This is a rectangular
      * banner with higher contrast than a standard label-on-panel.
      * The most prominent example is the {@link MultiCloseDialog}.
      */
-    public static final String HEAD_BANNER_FOREGROUND = "se-headbanner-fg";
+    public static final String HEAD_BANNER_FOREGROUND = "eons-headbanner-fg";
     /**
      * UI key for the "head banner" backround colour. This is a rectangular
      * banner with higher contrast than a standard label-on-panel.
      */
-    public static final String HEAD_BANNER_BACKGROUND = "se-headbanner-bg";
+    public static final String HEAD_BANNER_BACKGROUND = "eons-headbanner-bg";
 
     /**
      * An image filter used to create a disabled icon from a regular icon when

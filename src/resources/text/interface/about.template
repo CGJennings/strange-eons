@@ -22,6 +22,10 @@ tt { font-size: 8pt; }
 <i>{@ab-byline}</i><br>
 <b><a class="s" href="http://cgjennings.ca/feedback/feedback.html">Christopher G. Jennings</a></b></p>
 
+<p><b>{@ab-contributors}</b><br>Henrik Rostedt.</p>
+
+<p><a href="https://github.com/CGJennings/strange-eons/">{@ab-contribute}</a></p>
+
 <h1>{@ab-trans-title}</h1>
 <p>{@ab-trans-text}</p>
 <table border="0" align="center" width="80%">
