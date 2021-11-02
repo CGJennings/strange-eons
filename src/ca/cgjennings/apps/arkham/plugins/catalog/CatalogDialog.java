@@ -15,6 +15,7 @@ import ca.cgjennings.ui.JLabelledField;
 import ca.cgjennings.ui.dnd.ScrapBook;
 import ca.cgjennings.ui.table.BooleanRenderer;
 import ca.cgjennings.ui.table.IconRenderer;
+import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -850,7 +851,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                     e.printStackTrace();
                 }
                 listingText.flush();
-                descText += "<p style='background-color: #f7f7ff; font-family: Consolas, Andale Mono, Monospaced'>"
+                descText += "<p style='font-family: Consolas, Andale Mono, Monospaced'>"
                         + listingText.toString().replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br>")
                         + "</p>";
             }
@@ -1079,49 +1080,59 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         infoScroll.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        infoPanel.setBackground(java.awt.Color.white);
+        infoPanel.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         infoPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        nameLabel.setBackground(java.awt.Color.lightGray);
+        nameLabel.setBackground(UIManager.getColor(Theme.HEAD_BANNER_BACKGROUND));
         nameLabel.setFont(nameLabel.getFont().deriveFont(nameLabel.getFont().getStyle() | java.awt.Font.BOLD, nameLabel.getFont().getSize()+2));
+        nameLabel.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         nameLabel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(2, 8, 4, 8)));
         nameLabel.setOpaque(true);
 
         jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getStyle() | java.awt.Font.BOLD, jLabel3.getFont().getSize()-1));
+        jLabel3.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel3.setText(string( "cat-ver" )); // NOI18N
 
         verLabel.setFont(verLabel.getFont().deriveFont(verLabel.getFont().getSize()-1f));
+        verLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         verLabel.setText("*");
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD, jLabel1.getFont().getSize()-1));
+        jLabel1.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel1.setText(string( "cat-home" )); // NOI18N
 
         pageLabel.setText("*");
         pageLabel.setFont(pageLabel.getFont().deriveFont(pageLabel.getFont().getSize()-1f));
 
         descPane.setEditable(false);
-        descPane.setBackground( Color.WHITE );
+        descPane.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         descPane.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         descPane.setContentType("text/html"); // NOI18N
         descPane.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        descPane.setForeground( Color.BLACK );
+        descPane.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         descPane.setComponentPopupMenu(descriptionPopup);
 
+        installStateLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         installStateLabel.setText("state");
 
         jLabel4.setFont(jLabel4.getFont().deriveFont(jLabel4.getFont().getStyle() | java.awt.Font.BOLD, jLabel4.getFont().getSize()-1));
+        jLabel4.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel4.setText(string( "cat-size" )); // NOI18N
 
         sizeLabel.setFont(sizeLabel.getFont().deriveFont(sizeLabel.getFont().getSize()-1f));
+        sizeLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         sizeLabel.setText("*");
 
         jLabel6.setFont(jLabel6.getFont().deriveFont(jLabel6.getFont().getStyle() | java.awt.Font.BOLD, jLabel6.getFont().getSize()-1));
+        jLabel6.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         jLabel6.setText(string( "cat-credit" )); // NOI18N
 
         creditsLabel.setFont(creditsLabel.getFont().deriveFont(creditsLabel.getFont().getSize()-1f));
+        creditsLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         creditsLabel.setText("*");
 
         coreLabel.setFont(coreLabel.getFont().deriveFont(coreLabel.getFont().getStyle() | java.awt.Font.BOLD, coreLabel.getFont().getSize()-1));
+        coreLabel.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         coreLabel.setText(string( "cat-l-core" )); // NOI18N
 
         javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
@@ -1299,6 +1310,8 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             }
         });
 
+        restartWarnLabel.setBackground(UIManager.getColor(Theme.MESSAGE_BACKGROUND));
+        restartWarnLabel.setForeground(UIManager.getColor(Theme.MESSAGE_FOREGROUND));
         restartWarnLabel.setText(string("cat-restart-required")); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
