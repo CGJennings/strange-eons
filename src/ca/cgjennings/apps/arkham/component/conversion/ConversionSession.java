@@ -21,7 +21,6 @@ import java.net.URL;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import javax.swing.SwingUtilities;
 import resources.Language;
 import resources.Settings;
