@@ -1,6 +1,8 @@
 package gamedata;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.conversion.ManualConversionTrigger;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -10,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import resources.Language;
 
 public class ConversionMap {
@@ -64,13 +67,20 @@ public class ConversionMap {
         if (cachedDirectConversions.containsKey(sourceClassName)) {
             return cachedDirectConversions.get(sourceClassName);
         }
-        Set<ConversionEntry> conversions = conversionsByClassName.get(sourceClassName);
-        if (conversions == null) {
+        Set<ConversionEntry> entries = conversionsByClassName.get(sourceClassName);
+        if (entries == null) {
             return Collections.emptySet();
         }
-        conversions = Collections.unmodifiableSet(conversions);
-        cachedDirectConversions.put(sourceClassName, conversions);
-        return conversions;
+        Set<ConversionEntry> entriesToInclude = new HashSet<>();
+        for (ConversionEntry entry : entries) {
+            if (!entry.hasRequiredExtension()) {
+                continue;
+            }
+            entriesToInclude.add(entry);
+        }
+        entriesToInclude = Collections.unmodifiableSet(entriesToInclude);
+        cachedDirectConversions.put(sourceClassName, entriesToInclude);
+        return entriesToInclude;
     }
 
     public Map<GroupEntry, Set<ConversionEntry>> getGroupConversions(String sourceClassName) {
@@ -84,17 +94,17 @@ public class ConversionMap {
         Map<GroupEntry, Set<ConversionEntry>> conversions = new HashMap<>();
         for (GroupEntry group : groups) {
             Set<ConversionEntry> entries = conversionsByGroup.get(group);
-            if (entries.size() <= 1) {
-                continue;
-            }
-            Set<ConversionEntry> otherEntries = new HashSet<>();
+            Set<ConversionEntry> entriesToInclude = new HashSet<>();
             for (ConversionEntry entry : entries) {
-                if (entry.getTargetClassName() == sourceClassName) {
+                if (entry.getTargetClassName() == sourceClassName || !entry.hasRequiredExtension()) {
                     continue;
                 }
-                otherEntries.add(entry);
+                entriesToInclude.add(entry);
             }
-            conversions.put(group, Collections.unmodifiableSet(otherEntries));
+            if (entriesToInclude.size() == 0) {
+                continue;
+            }
+            conversions.put(group, Collections.unmodifiableSet(entriesToInclude));
         }
         conversions = Collections.unmodifiableMap(conversions);
         cachedGroupConversions.put(sourceClassName, conversions);
@@ -214,6 +224,15 @@ public class ConversionMap {
 
         public GroupEntry getGroup() {
             return group;
+        }
+
+        public boolean hasRequiredExtension() {
+            try {
+                return requiredExtensionId == null || BundleInstaller.isPluginBundleInstalled(requiredExtensionId);
+            } catch (IllegalArgumentException e) {
+                StrangeEons.log.log(Level.WARNING, "ignoring conversion " + getId() + " because the extension id is invalid: " + requiredExtensionId);
+                return false;
+            }
         }
 
         public ManualConversionTrigger createManualConversionTrigger() {

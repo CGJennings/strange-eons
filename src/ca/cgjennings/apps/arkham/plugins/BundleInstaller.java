@@ -1068,6 +1068,27 @@ public class BundleInstaller {
         return getPluginBundle(getBundleFileForUUID(uuid));
     }
 
+    public static boolean isPluginBundleInstalled(UUID uuid) {
+        return getInstalledCatalogID(uuid) != null;
+    }
+
+    public static boolean isPluginBundleInstalled(CatalogID catId) {
+        CatalogID installedId = getInstalledCatalogID(catId.getUUID());
+        return installedId != null && !installedId.isOlderThan(catId);
+    }
+
+    public static boolean isPluginBundleInstalled(String rawId) {
+        CatalogID catId = CatalogID.extractCatalogID(rawId);
+        if (catId != null) {
+            return isPluginBundleInstalled(catId);
+        }
+        try {
+            return isPluginBundleInstalled(UUID.fromString(rawId));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("must be a CatalogID or UUID: " + rawId);
+        }
+    }
+
     /**
      * Returns an array of the bundle files that have been dynamically added to
      * the class path. This set may include bundles that were discovered, but
