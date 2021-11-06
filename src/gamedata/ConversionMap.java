@@ -20,6 +20,8 @@ public class ConversionMap {
     private static final List<String> conversionMapFiles = new ArrayList<>();
     private static final Map<String, GroupEntry> cachedGroups = new HashMap<>();
 
+    private static ConversionMap globalInstance = null;
+
     private final Map<String, Set<ConversionEntry>> conversionsByClassName = new HashMap<>();
     private final Map<String, Set<GroupEntry>> groupsByClassName = new HashMap<>();
     private final Map<GroupEntry, Set<ConversionEntry>> conversionsByGroup = new HashMap<>();
@@ -28,7 +30,7 @@ public class ConversionMap {
     private final Map<String, Map<GroupEntry, Set<ConversionEntry>>> cachedGroupConversions = new HashMap<>();
 
     public ConversionMap() throws IOException {
-        this((String[]) conversionMapFiles.toArray());
+        this(conversionMapFiles.toArray(new String[conversionMapFiles.size()]));
     }
 
     public ConversionMap(String... resources) throws IOException {
@@ -117,6 +119,13 @@ public class ConversionMap {
             throw new NullPointerException("resource");
         }
         conversionMapFiles.add(resource);
+    }
+
+    public static ConversionMap getGlobalInstance() throws IOException {
+        if (globalInstance == null) {
+            globalInstance = new ConversionMap();
+        }
+        return globalInstance;
     }
 
     private static GroupEntry cacheGroup(GroupEntry group) {

@@ -6,6 +6,7 @@
 const Game = gamedata.Game;
 const Expansion = gamedata.Expansion;
 const ClassMap = gamedata.ClassMap;
+const ConversionMap = gamedata.ConversionMap;
 const ExpansionSymbolTemplate = gamedata.ExpansionSymbolTemplate;
 const AbstractExpansionSymbolTemplate = gamedata.AbstractExpansionSymbolTemplate;
 const SymbolVariantUtilities = gamedata.SymbolVariantUtilities;

@@ -781,6 +781,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         editMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem clearItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem cloneItem = new javax.swing.JMenuItem();
+        convertMenu = new ConvertMenu(editMenu);
         javax.swing.JPopupMenu.Separator jSeparator9 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem cutItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem copyItem = new javax.swing.JMenuItem();
@@ -1039,6 +1040,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         cloneItem.setAction( Commands.SPIN_OFF );
         cloneItem.setName("cloneItem"); // NOI18N
         editMenu.add(cloneItem);
+
+        convertMenu.setText("C&onvert To");
+        convertMenu.setName("convertMenu"); // NOI18N
+        editMenu.add(convertMenu);
 
         jSeparator9.setName("jSeparator9"); // NOI18N
         editMenu.add(jSeparator9);
@@ -2288,6 +2293,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenuItem alignMiddleItem;
     private javax.swing.JMenuItem alignRightItem;
     private javax.swing.JMenuItem alignTopItem;
+    private javax.swing.JMenu convertMenu;
     private javax.swing.JMenuItem createExpansionItem;
     private javax.swing.JMenu deckMenu;
     private javax.swing.JDesktopPane desktopPane;
