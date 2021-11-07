@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import resources.Language;
@@ -18,16 +19,16 @@ import resources.Language;
 public class ConversionMap {
 
     private static final List<String> conversionMapFiles = new ArrayList<>();
-    private static final Map<String, GroupEntry> cachedGroups = new HashMap<>();
+    private static final Map<String, Group> cachedGroups = new HashMap<>();
 
     private static ConversionMap globalInstance = null;
 
-    private final Map<String, Set<ConversionEntry>> conversionsByClassName = new HashMap<>();
-    private final Map<String, Set<GroupEntry>> groupsByClassName = new HashMap<>();
-    private final Map<GroupEntry, Set<ConversionEntry>> conversionsByGroup = new HashMap<>();
+    private final Map<String, Set<Conversion>> conversionsByClassName = new HashMap<>();
+    private final Map<String, Set<Group>> groupsByClassName = new HashMap<>();
+    private final Map<Group, Set<Conversion>> conversionsByGroup = new HashMap<>();
 
-    private final Map<String, Set<ConversionEntry>> cachedDirectConversions = new HashMap<>();
-    private final Map<String, Map<GroupEntry, Set<ConversionEntry>>> cachedGroupConversions = new HashMap<>();
+    private final Map<String, Set<Conversion>> cachedDirectConversions = new HashMap<>();
+    private final Map<String, Map<Group, Set<Conversion>>> cachedGroupConversions = new HashMap<>();
 
     public ConversionMap() throws IOException {
         this(conversionMapFiles.toArray(new String[conversionMapFiles.size()]));
@@ -38,20 +39,20 @@ public class ConversionMap {
             try (Parser parser = new Parser(resource, false)) {
                 Entry entry;
                 while ((entry = parser.next()) != null) {
-                    if (!(entry instanceof ConversionEntry)) {
+                    if (!(entry instanceof Conversion)) {
                         continue;
                     }
-                    ConversionEntry e = (ConversionEntry) entry;
-                    String sourceClassName = e.getSourceClassName();
+                    Conversion conversion = (Conversion) entry;
+                    String sourceClassName = conversion.getSourceClassName();
                     if (sourceClassName != null) {
                         if (!conversionsByClassName.containsKey(sourceClassName)) {
                             conversionsByClassName.put(sourceClassName, new HashSet<>());
                         }
-                        conversionsByClassName.get(sourceClassName).add(e);
+                        conversionsByClassName.get(sourceClassName).add(conversion);
                         continue;
                     }
-                    String targetClassName = e.getTargetClassName();
-                    GroupEntry group = e.getGroup();
+                    String targetClassName = conversion.getTargetClassName();
+                    Group group = conversion.getGroup();
                     if (!groupsByClassName.containsKey(targetClassName)) {
                         groupsByClassName.put(targetClassName, new HashSet<>());
                     }
@@ -59,58 +60,58 @@ public class ConversionMap {
                     if (!conversionsByGroup.containsKey(group)) {
                         conversionsByGroup.put(group, new HashSet<>());
                     }
-                    conversionsByGroup.get(group).add(e);
+                    conversionsByGroup.get(group).add(conversion);
                 }
             }
         }
     }
 
-    public Set<ConversionEntry> getDirectConversions(String sourceClassName) {
+    public Set<Conversion> getDirectConversions(String sourceClassName) {
         if (cachedDirectConversions.containsKey(sourceClassName)) {
             return cachedDirectConversions.get(sourceClassName);
         }
-        Set<ConversionEntry> entries = conversionsByClassName.get(sourceClassName);
-        if (entries == null) {
+        Set<Conversion> conversions = conversionsByClassName.get(sourceClassName);
+        if (conversions == null) {
             return Collections.emptySet();
         }
-        Set<ConversionEntry> entriesToInclude = new HashSet<>();
-        for (ConversionEntry entry : entries) {
-            if (!entry.hasRequiredExtension()) {
+        Set<Conversion> conversionsToInclude = new HashSet<>();
+        for (Conversion conversion : conversions) {
+            if (!conversion.hasRequiredExtension()) {
                 continue;
             }
-            entriesToInclude.add(entry);
+            conversionsToInclude.add(conversion);
         }
-        entriesToInclude = Collections.unmodifiableSet(entriesToInclude);
-        cachedDirectConversions.put(sourceClassName, entriesToInclude);
-        return entriesToInclude;
+        conversionsToInclude = Collections.unmodifiableSet(conversionsToInclude);
+        cachedDirectConversions.put(sourceClassName, conversionsToInclude);
+        return conversionsToInclude;
     }
 
-    public Map<GroupEntry, Set<ConversionEntry>> getGroupConversions(String sourceClassName) {
+    public Map<Group, Set<Conversion>> getGroupConversions(String sourceClassName) {
         if (cachedGroupConversions.containsKey(sourceClassName)) {
             return cachedGroupConversions.get(sourceClassName);
         }
-        Set<GroupEntry> groups = groupsByClassName.get(sourceClassName);
+        Set<Group> groups = groupsByClassName.get(sourceClassName);
         if (groups == null) {
             return Collections.emptyMap();
         }
-        Map<GroupEntry, Set<ConversionEntry>> conversions = new HashMap<>();
-        for (GroupEntry group : groups) {
-            Set<ConversionEntry> entries = conversionsByGroup.get(group);
-            Set<ConversionEntry> entriesToInclude = new HashSet<>();
-            for (ConversionEntry entry : entries) {
-                if (entry.getTargetClassName() == sourceClassName || !entry.hasRequiredExtension()) {
+        Map<Group, Set<Conversion>> groupsToInclude = new HashMap<>();
+        for (Group group : groups) {
+            Set<Conversion> conversions = conversionsByGroup.get(group);
+            Set<Conversion> conversionsToInclude = new HashSet<>();
+            for (Conversion conversion : conversions) {
+                if (conversion.getTargetClassName().equals(sourceClassName) || !conversion.hasRequiredExtension()) {
                     continue;
                 }
-                entriesToInclude.add(entry);
+                conversionsToInclude.add(conversion);
             }
-            if (entriesToInclude.size() == 0) {
+            if (conversionsToInclude.isEmpty()) {
                 continue;
             }
-            conversions.put(group, Collections.unmodifiableSet(entriesToInclude));
+            groupsToInclude.put(group, Collections.unmodifiableSet(conversionsToInclude));
         }
-        conversions = Collections.unmodifiableMap(conversions);
-        cachedGroupConversions.put(sourceClassName, conversions);
-        return conversions;
+        groupsToInclude = Collections.unmodifiableMap(groupsToInclude);
+        cachedGroupConversions.put(sourceClassName, groupsToInclude);
+        return groupsToInclude;
     }
 
     public static void add(String resource) {
@@ -128,13 +129,13 @@ public class ConversionMap {
         return globalInstance;
     }
 
-    private static GroupEntry cacheGroup(GroupEntry group) {
-        GroupEntry existing = cachedGroups.get(group.getId());
+    private static Group cacheGroup(Group group) {
+        Group existing = cachedGroups.get(group.getId());
         if (existing == null) {
             cachedGroups.put(group.getId(), group);
             return group;
         }
-        if (existing.getName() == existing.getId()) {
+        if (existing.getName().equals(existing.getId())) {
             existing.setName(group.getName());
         }
         return existing;
@@ -156,11 +157,25 @@ public class ConversionMap {
         public int hashCode() {
             return id.hashCode();
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            return Objects.equals(this.id, ((Entry) obj).id);
+        }
     }
 
-    public static final class ClassEntry extends Entry {
+    public static final class Class extends Entry {
 
-        public ClassEntry(String className) {
+        public Class(String className) {
             super(className);
         }
 
@@ -191,22 +206,22 @@ public class ConversionMap {
         }
     }
 
-    public static final class GroupEntry extends NamedEntry {
+    public static final class Group extends NamedEntry {
 
-        public GroupEntry(String id, String name) {
+        public Group(String id, String name) {
             super(id, name);
         }
     }
 
-    public static final class ConversionEntry extends NamedEntry {
+    public static final class Conversion extends NamedEntry {
 
         private final String sourceClassName;
         private final String targetClassName;
         private final String requiredExtensionName;
         private final String requiredExtensionId;
-        private final GroupEntry group;
+        private final Group group;
 
-        public ConversionEntry(String name, ClassEntry sourceClassName, String targetClassName, String requiredExtensionName, String requiredExtensionId, GroupEntry group) {
+        public Conversion(String name, Class sourceClassName, String targetClassName, String requiredExtensionName, String requiredExtensionId, Group group) {
             super(name, name);
             this.sourceClassName = sourceClassName != null ? sourceClassName.getClassName() : null;
             this.targetClassName = targetClassName;
@@ -231,7 +246,7 @@ public class ConversionMap {
             return requiredExtensionId;
         }
 
-        public GroupEntry getGroup() {
+        public Group getGroup() {
             return group;
         }
 
@@ -239,7 +254,7 @@ public class ConversionMap {
             try {
                 return requiredExtensionId == null || BundleInstaller.isPluginBundleInstalled(requiredExtensionId);
             } catch (IllegalArgumentException e) {
-                StrangeEons.log.log(Level.WARNING, "ignoring conversion " + getId() + " because the extension id is invalid: " + requiredExtensionId);
+                StrangeEons.log.log(Level.WARNING, "ignoring conversion {0} because the extension id is invalid: {1}", new Object[]{getId(), requiredExtensionId});
                 return false;
             }
         }
@@ -251,8 +266,8 @@ public class ConversionMap {
 
     public static final class Parser extends ResourceParser<Entry> {
 
-        private ClassEntry currentClass = null;
-        private GroupEntry currentGroup = null;
+        private Class currentClass = null;
+        private Group currentGroup = null;
 
         public Parser(String resource, boolean gentle) throws IOException {
             super(resource, gentle);
@@ -262,6 +277,7 @@ public class ConversionMap {
             super(in, gentle);
         }
 
+        @Override
         public Entry next() throws IOException {
             String[] entry = readProperty();
             if (entry == null) {
@@ -273,7 +289,7 @@ public class ConversionMap {
                 return currentGroup;
             }
             if (entry[1].isEmpty()) {
-                currentClass = new ClassEntry(entry[0].trim());
+                currentClass = new Class(entry[0].trim());
                 currentGroup = null;
                 return currentClass;
             }
@@ -284,27 +300,27 @@ public class ConversionMap {
             return parseConversion(entry);
         }
 
-        private GroupEntry parseGroup(String[] entry) {
+        private Group parseGroup(String[] entry) {
             if (!entry[1].isEmpty()) {
                 error("parse error");
             }
             String[] parts = entry[0].split("\\|");
             String id = parts[0].substring(1).trim();
             if (parts.length < 2) {
-                return new GroupEntry(id, id);
+                return new Group(id, id);
             }
             if (parts.length > 2) {
                 error("parse error");
             }
-            return new GroupEntry(id, parts[1].trim());
+            return new Group(id, parts[1].trim());
         }
 
-        private ConversionEntry parseConversion(String[] entry) {
+        private Conversion parseConversion(String[] entry) {
             String name = entry[0].trim();
             String[] parts = entry[1].split("\\|");
             String targetClassName = parts[0].trim();
             if (parts.length < 2) {
-                return new ConversionEntry(name, currentClass, targetClassName, null, null, currentGroup);
+                return new Conversion(name, currentClass, targetClassName, null, null, currentGroup);
             }
             String[] extension = parts[1].split(":");
             String requiredExtensionName = null;
@@ -318,7 +334,7 @@ public class ConversionMap {
             if (parts.length > 2) {
                 error("parse error");
             }
-            return new ConversionEntry(name, currentClass, targetClassName, requiredExtensionName, requiredExtensionId, currentGroup);
+            return new Conversion(name, currentClass, targetClassName, requiredExtensionName, requiredExtensionId, currentGroup);
         }
     }
 }

@@ -6,11 +6,10 @@ import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionTrigger;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import gamedata.ConversionMap;
-import gamedata.ConversionMap.ConversionEntry;
-import gamedata.ConversionMap.GroupEntry;
+import gamedata.ConversionMap.Conversion;
+import gamedata.ConversionMap.Group;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.JMenu;
@@ -73,8 +72,7 @@ final class ConvertMenu extends JMenu {
             return;
         }
         // create group conversions
-        Map<GroupEntry, Set<ConversionEntry>> groups = conversionMap.getGroupConversions(className);
-        for (Entry<GroupEntry, Set<ConversionEntry>> entry : groups.entrySet()) {
+        for (Entry<Group, Set<Conversion>> entry : conversionMap.getGroupConversions(className).entrySet()) {
             JMenu groupMenu = new JMenu(entry.getKey().getName());
             createConversionItems(entry.getValue(), groupMenu);
             add(groupMenu);
@@ -84,19 +82,19 @@ final class ConvertMenu extends JMenu {
         classNameUpdated = false;
     }
 
-    private void createConversionItems(Set<ConversionEntry> entries, JMenu parent) {
-        for (ConversionEntry entry : entries) {
-            parent.add(new ConversionItem(entry));
+    private void createConversionItems(Set<Conversion> conversions, JMenu parent) {
+        for (Conversion conversion : conversions) {
+            parent.add(new ConversionItem(conversion));
         }
     }
 
     private static class ConversionItem extends JMenuItem {
 
-        private final ConversionEntry entry;
+        private final Conversion conversion;
 
-        public ConversionItem(ConversionEntry entry) {
-            super(entry.getName());
-            this.entry = entry;
+        public ConversionItem(Conversion conversion) {
+            super(conversion.getName());
+            this.conversion = conversion;
         }
 
         @Override
@@ -106,7 +104,7 @@ final class ConvertMenu extends JMenu {
             if (gc == null) {
                 return;
             }
-            ConversionTrigger trigger = entry.createManualConversionTrigger();
+            ConversionTrigger trigger = conversion.createManualConversionTrigger();
             GameComponent converted;
             try {
                 converted = ConversionSession.convertGameComponent(trigger, gc, true);
