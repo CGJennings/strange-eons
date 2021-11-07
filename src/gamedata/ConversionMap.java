@@ -323,7 +323,7 @@ public class ConversionMap {
             if (parts.length < 2) {
                 return new Conversion(name, currentClass, targetClassName, null, null, currentGroup);
             }
-            String[] extension = parts[1].split(":");
+            String[] extension = parts[1].split(";");
             String requiredExtensionName = null;
             String requiredExtensionId = null;
             if (extension.length == 2) {

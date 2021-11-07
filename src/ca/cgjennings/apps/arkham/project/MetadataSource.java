@@ -167,6 +167,7 @@ public class MetadataSource {
                 "txt", string("prj-prop-txt"),
                 "utf8", string("prj-prop-utf8"),
                 "classmap", string("prj-prop-class-map"),
+                "conversionmap", string("prj-prop-conversion-map"),
                 "silhouettes", string("prj-prop-sil"),
                 "tiles", string("prj-prop-tiles"),
                 "css", string("prj-prop-css"),
@@ -468,7 +469,7 @@ public class MetadataSource {
     private static final String[] KNOWN_TEXT_FILE_TYPES = new String[]{
         "txt", "text", "utf8", "htm", "html", "properties", "js", "java",
         "classmap", "tiles", "silhouettes", "css", "cardlayout", "ajs",
-        "settings", "collection"
+        "settings", "collection", "conversionmap"
     };
     private static final Charset[] KNOWN_TEXT_FILE_ENCODINGS = new Charset[]{
         Charset.forName("iso-8859-15"),
@@ -486,6 +487,7 @@ public class MetadataSource {
         Charset.forName("iso-8859-1"),
         Charset.forName("utf-8"),
         Charset.forName("iso-8859-1"),
+        Charset.forName("iso-8859-15"),
         Charset.forName("iso-8859-15"),};
 
     /**
@@ -580,6 +582,7 @@ public class MetadataSource {
                 "doc", ICON_DOCUMENT,
                 "odt", ICON_DOCUMENT,
                 "classmap", ICON_CLASS_MAP,
+                "conversionmap", ICON_CLASS_MAP,
                 "silhouettes", ICON_SILHOUETTES,
                 "tiles", ICON_TILE_SET,
                 "css", ICON_STYLE_SHEET,

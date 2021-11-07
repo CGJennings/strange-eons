@@ -13,6 +13,16 @@ import java.util.regex.Pattern;
  */
 public class PropertyNavigator implements Navigator {
 
+    private final boolean ignoreColon;
+
+    public PropertyNavigator() {
+        this(false);
+    }
+
+    public PropertyNavigator(boolean ignoreColon) {
+        this.ignoreColon = ignoreColon;
+    }
+
     @Override
     public void install(CodeEditor editor) {
     }
@@ -39,9 +49,11 @@ public class PropertyNavigator implements Navigator {
                     continue;
                 }
                 int split = line.indexOf('=');
-                int colon = line.indexOf(':');
-                if (split < 0 || (colon >= 0 && colon < split)) {
-                    split = colon;
+                if (!ignoreColon) {
+                    int colon = line.indexOf(':');
+                    if (split < 0 || (colon >= 0 && colon < split)) {
+                        split = colon;
+                    }
                 }
                 if (split < 0) {
                     split = line.length();

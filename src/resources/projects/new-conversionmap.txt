@@ -1,0 +1,11 @@
+#
+# A conversion map file adds new manual component conversion options to the
+# Edit menu.
+#
+
+diy:yourname/source-component-type.js
+  My Conversion = diy:yourname/target-component-type.js
+
+$custom | My Conversion Group
+  My First Component = diy:yourname/first-component.js
+  My Second Component = diy:yourname/second-component.js
