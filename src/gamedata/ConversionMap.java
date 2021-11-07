@@ -15,6 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import resources.Language;
+import static resources.Language.string;
 
 public class ConversionMap {
 
@@ -294,7 +295,7 @@ public class ConversionMap {
                 return currentClass;
             }
             if (currentGroup == null && currentClass == null) {
-                error("parse error");
+                error(string("rk-err-parse-conversionmap"));
                 return next();
             }
             return parseConversion(entry);
@@ -302,7 +303,7 @@ public class ConversionMap {
 
         private Group parseGroup(String[] entry) {
             if (!entry[1].isEmpty()) {
-                error("parse error");
+                warning("assignment to conversion map group");
             }
             String[] parts = entry[0].split("\\|");
             String id = parts[0].substring(1).trim();
@@ -310,7 +311,7 @@ public class ConversionMap {
                 return new Group(id, id);
             }
             if (parts.length > 2) {
-                error("parse error");
+                warning("extra fields in conversion map group");
             }
             return new Group(id, parts[1].trim());
         }
@@ -329,10 +330,10 @@ public class ConversionMap {
                 requiredExtensionName = extension[0].trim();
                 requiredExtensionId = extension[1].trim();
             } else {
-                error("parse error");
+                warning("malformed extension field in conversion map entry");
             }
             if (parts.length > 2) {
-                error("parse error");
+                warning("extra fields in conversion map entry");
             }
             return new Conversion(name, currentClass, targetClassName, requiredExtensionName, requiredExtensionId, currentGroup);
         }

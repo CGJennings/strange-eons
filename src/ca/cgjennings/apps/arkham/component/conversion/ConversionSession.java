@@ -493,7 +493,7 @@ public class ConversionSession {
                 return (GameComponent) Class.forName(className).getConstructor().newInstance();
             }
         } catch (Exception e) {
-            throw new ConversionException("unable to crate a new instance of " + className, e);
+            throw new ConversionException("unable to create a new instance of " + className, e);
         }
     }
 

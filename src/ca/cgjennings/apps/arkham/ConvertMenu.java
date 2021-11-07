@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionException;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionTrigger;
+import static ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError;
 import ca.cgjennings.apps.arkham.diy.DIY;
 import gamedata.ConversionMap;
 import gamedata.ConversionMap.Conversion;
@@ -12,10 +13,12 @@ import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+import static resources.Language.string;
 
 final class ConvertMenu extends JMenu {
 
@@ -69,6 +72,7 @@ final class ConvertMenu extends JMenu {
         try {
             conversionMap = ConversionMap.getGlobalInstance();
         } catch (IOException e) {
+            StrangeEons.log.log(Level.SEVERE, "unable to load conversion maps");
             return;
         }
         // create group conversions
@@ -109,7 +113,7 @@ final class ConvertMenu extends JMenu {
             try {
                 converted = ConversionSession.convertGameComponent(trigger, gc, true);
             } catch (ConversionException ex) {
-                // show error
+                displayError(string("rk-conv-err", gc.getName()), ex);
                 return;
             }
             StrangeEons.addEditor(converted.createDefaultEditor());
