@@ -1068,15 +1068,38 @@ public class BundleInstaller {
         return getPluginBundle(getBundleFileForUUID(uuid));
     }
 
+    /**
+     * Checks if a plug-in with the given UUID is installed.
+     *
+     * @param uuid the UUID of the plug-in
+     * @return whether the plug-in is installed or not
+     */
     public static boolean isPluginBundleInstalled(UUID uuid) {
         return getInstalledCatalogID(uuid) != null;
     }
 
+    /**
+     * Checks if a plug-in with the given {@link CatalogID}, or a newer version,
+     * is installed.
+     *
+     * @param catId the {@code CatalogID} of the plug-in
+     * @return whether the plug-in, or a newer version, is installed or not
+     */
     public static boolean isPluginBundleInstalled(CatalogID catId) {
         CatalogID installedId = getInstalledCatalogID(catId.getUUID());
         return installedId != null && !installedId.isOlderThan(catId);
     }
 
+    /**
+     * Checks if a plug-in with the given identifier is installed. The
+     * identifier should be a string which either contains a UUID or the string
+     * representation of a {@link CatalogID}. If it is a {@code CatalogID}, then
+     * the version of the installed plug-in must match or be newer.
+     *
+     * @param rawId the identifier of the plug-in
+     * @return whether the plug-in, or a newer version, is installed or not
+     * @throws IllegalArgumentException if the identifier is invalid
+     */
     public static boolean isPluginBundleInstalled(String rawId) {
         CatalogID catId = CatalogID.extractCatalogID(rawId);
         if (catId != null) {

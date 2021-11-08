@@ -20,6 +20,13 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import static resources.Language.string;
 
+/**
+ * The menu that lists the possible conversion options for the active game
+ * component. The menu is automatically updated when the parent menu is opened
+ * and the active game component type has changed.
+ *
+ * @author Henrik Rostedt
+ */
 final class ConvertMenu extends JMenu {
 
     private String className = null;
@@ -67,6 +74,7 @@ final class ConvertMenu extends JMenu {
         if (!classNameUpdated) {
             return;
         }
+        // remove the previous menu items
         removeAll();
         ConversionMap conversionMap;
         try {
