@@ -46,6 +46,7 @@ public class ConversionMap {
     private final Map<String, Set<Conversion>> conversionsByClassName = new HashMap<>();
     private final Map<String, Set<Group>> groupsByClassName = new HashMap<>();
     private final Map<Group, Set<Conversion>> conversionsByGroup = new HashMap<>();
+    private final Map<Group, Set<Group>> groupsByGroup = new HashMap<>();
 
     private final Map<String, Set<Conversion>> cachedDirectConversions = new HashMap<>();
     private final Map<String, Map<Group, Set<Conversion>>> cachedGroupConversions = new HashMap<>();
@@ -69,7 +70,12 @@ public class ConversionMap {
             try (Parser parser = new Parser(resource, false)) {
                 Entry entry;
                 while ((entry = parser.next()) != null) {
-                    // Class names and groups are extracted from the conversions
+                    if (entry instanceof Group) {
+                        // Register group links
+                        Group group = (Group) entry;
+                        groupsByGroup.put(group, group.getLinkedGroups());
+                        continue;
+                    }
                     if (!(entry instanceof Conversion)) {
                         continue;
                     }
@@ -143,8 +149,15 @@ public class ConversionMap {
         if (groups == null) {
             return Collections.emptyMap();
         }
-        Map<Group, Set<Conversion>> groupsToInclude = new HashMap<>();
+        Set<Group> groupsToConsider = new HashSet<>(groups);
         for (Group group : groups) {
+            Set<Group> linkedGroups = groupsByGroup.get(group);
+            if (linkedGroups != null) {
+                groupsToConsider.addAll(linkedGroups);
+            }
+        }
+        Map<Group, Set<Conversion>> groupsToInclude = new HashMap<>();
+        for (Group group : groupsToConsider) {
             Set<Conversion> conversions = conversionsByGroup.get(group);
             Set<Conversion> conversionsToInclude = new HashSet<>();
             for (Conversion conversion : conversions) {
@@ -201,10 +214,26 @@ public class ConversionMap {
             cachedGroups.put(group.getId(), group);
             return group;
         }
+        // Use the name of the new group if the existing group did not set one
         if (existing.getName().equals(existing.getId())) {
             existing.setName(group.getName());
         }
+        // Add any new linked groups to the existing group
+        Set<Group> newLinkedGroups = group.getLinkedGroups();
+        if (!newLinkedGroups.isEmpty()) {
+            existing.addLinkedGroups(newLinkedGroups);
+        }
         return existing;
+    }
+
+    private static Group cacheGroup(String id) {
+        Group existing = cachedGroups.get(id);
+        if (existing != null) {
+            return existing;
+        }
+        Group group = new Group(id, id, Collections.emptySet());
+        cachedGroups.put(id, group);
+        return group;
     }
 
     /**
@@ -319,14 +348,36 @@ public class ConversionMap {
      */
     public static final class Group extends NamedEntry {
 
+        private Set<Group> linkedGroups;
+
         /**
          * Creates a new group entry.
          *
          * @param id the group id
          * @param name the group name
+         * @param linkedGroups a set of groups this group links to
          */
-        public Group(String id, String name) {
+        public Group(String id, String name, Set<Group> linkedGroups) {
             super(id, name);
+            this.linkedGroups = Collections.unmodifiableSet(linkedGroups);
+        }
+
+        /**
+         * Returns the set of {@code Group}s this group links to. The linked
+         * groups will be available as conversion options for all component
+         * types in this group.
+         *
+         * @return the set of linked groups
+         */
+        public Set<Group> getLinkedGroups() {
+            return linkedGroups;
+        }
+
+        protected void addLinkedGroups(Set<Group> newLinkedGroups) {
+            Set<Group> combinedLinkedGroups = new HashSet<>();
+            combinedLinkedGroups.addAll(linkedGroups);
+            combinedLinkedGroups.addAll(newLinkedGroups);
+            linkedGroups = Collections.unmodifiableSet(combinedLinkedGroups);
         }
     }
 
@@ -502,12 +553,26 @@ public class ConversionMap {
             String[] parts = entry[0].split("\\|");
             String id = parts[0].substring(1).trim();
             if (parts.length < 2) {
-                return new Group(id, id);
+                return new Group(id, id, Collections.emptySet());
             }
-            if (parts.length > 2) {
+            String name = parts[1].trim();
+            if (parts.length < 3) {
+                return new Group(id, name, Collections.emptySet());
+            }
+            String[] groups = parts[2].split(";");
+            Set<Group> linkedGroups = new HashSet<>();
+            for (String group : groups) {
+                String trimmed = group.trim();
+                if (!trimmed.startsWith("$")) {
+                    warning("malformed group link");
+                    continue;
+                }
+                linkedGroups.add(cacheGroup(trimmed.substring(1)));
+            }
+            if (parts.length > 3) {
                 warning("extra fields in conversion map group");
             }
-            return new Group(id, parts[1].trim());
+            return new Group(id, name, linkedGroups);
         }
 
         private Conversion parseConversion(String[] entry) {
