@@ -388,8 +388,7 @@ public class ConversionMap {
 
         private final String sourceClassName;
         private final String targetClassName;
-        private final String requiredExtensionName;
-        private final String requiredExtensionId;
+        private final String requiredExtension;
         private final Group group;
 
         /**
@@ -399,19 +398,16 @@ public class ConversionMap {
          * @param sourceClassName the source class name entry, or {@code null}
          * if this is a group conversion option
          * @param targetClassName the target class name
-         * @param requiredExtensionName the name of the required extension, or
+         * @param requiredExtension the identifier of the required extension, or
          * {@code null} if the target belongs to the same extension
-         * @param requiredExtensionId the identifier of the required extension,
-         * or {@code null} if the target belongs to the same extension
          * @param group the group entry, or {@code null} if this is a direct
          * conversion option
          */
-        public Conversion(String name, Class sourceClassName, String targetClassName, String requiredExtensionName, String requiredExtensionId, Group group) {
+        public Conversion(String name, Class sourceClassName, String targetClassName, String requiredExtension, Group group) {
             super(name, name);
             this.sourceClassName = sourceClassName != null ? sourceClassName.getClassName() : null;
             this.targetClassName = targetClassName;
-            this.requiredExtensionName = requiredExtensionName;
-            this.requiredExtensionId = requiredExtensionId;
+            this.requiredExtension = requiredExtension;
             this.group = group;
         }
 
@@ -435,25 +431,14 @@ public class ConversionMap {
         }
 
         /**
-         * Returns the name of the required extension for the target component
-         * type. Returns {@code null} if it belongs to the same extension as the
-         * source component type.
-         *
-         * @return the required extension name
-         */
-        public String getRequiredExtensionName() {
-            return requiredExtensionName;
-        }
-
-        /**
          * Returns the identifier of the required extension for the target
          * component type. Returns {@code null} if it belongs to the same
          * extension as the source component type.
          *
          * @return the required extension identifier
          */
-        public String getRequiredExtensionId() {
-            return requiredExtensionId;
+        public String getRequiredExtension() {
+            return requiredExtension;
         }
 
         /**
@@ -473,9 +458,9 @@ public class ConversionMap {
          */
         public boolean hasRequiredExtension() {
             try {
-                return requiredExtensionId == null || BundleInstaller.isPluginBundleInstalled(requiredExtensionId);
+                return requiredExtension == null || BundleInstaller.isPluginBundleInstalled(requiredExtension);
             } catch (IllegalArgumentException e) {
-                StrangeEons.log.log(Level.WARNING, "ignoring conversion {0} because the extension id is invalid: {1}", new Object[]{getId(), requiredExtensionId});
+                StrangeEons.log.log(Level.WARNING, "ignoring conversion {0} because the extension id is invalid: {1}", new Object[]{getId(), requiredExtension});
                 return false;
             }
         }
@@ -486,7 +471,7 @@ public class ConversionMap {
          * @return a manual conversion trigger
          */
         public ManualConversionTrigger createManualConversionTrigger() {
-            return new ManualConversionTrigger(targetClassName, requiredExtensionName, requiredExtensionId, group != null ? group.getId() : null);
+            return new ManualConversionTrigger(targetClassName, null, requiredExtension, group != null ? group.getId() : null);
         }
     }
 
@@ -580,21 +565,13 @@ public class ConversionMap {
             String[] parts = entry[1].split("\\|");
             String targetClassName = parts[0].trim();
             if (parts.length < 2) {
-                return new Conversion(name, currentClass, targetClassName, null, null, currentGroup);
+                return new Conversion(name, currentClass, targetClassName, null, currentGroup);
             }
-            String[] extension = parts[1].split(";");
-            String requiredExtensionName = null;
-            String requiredExtensionId = null;
-            if (extension.length == 2) {
-                requiredExtensionName = extension[0].trim();
-                requiredExtensionId = extension[1].trim();
-            } else {
-                warning("malformed extension field in conversion map entry");
-            }
+            String requiredExtension = parts[1].trim();
             if (parts.length > 2) {
                 warning("extra fields in conversion map entry");
             }
-            return new Conversion(name, currentClass, targetClassName, requiredExtensionName, requiredExtensionId, currentGroup);
+            return new Conversion(name, currentClass, targetClassName, requiredExtension, currentGroup);
         }
     }
 }
