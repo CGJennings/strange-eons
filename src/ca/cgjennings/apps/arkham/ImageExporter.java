@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
+import ca.cgjennings.apps.arkham.sheet.EdgeStyle;
 import ca.cgjennings.apps.arkham.sheet.PrintDimensions;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -248,7 +249,7 @@ public class ImageExporter {
         }
 
         // within this lock we change, draw, and restore the sheet settings
-        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI, syntheticBleed);
+        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI, syntheticBleed ? EdgeStyle.BLEED : EdgeStyle.RAW);
 
         if (oversampled) {
             // bilinear scaling produces fewer JPEG artifacts than bicubic
@@ -461,7 +462,7 @@ public class ImageExporter {
                 + " onclick=\"show(this)\" src=\"" + fileName + '"'
                 + '>';
     }
-    
+
     private static String makeCssPrintWidth(String cssClassName, PrintDimensions size) {
         return '.' + cssClassName + "{width:" + size.getWidthInUnit(Length.IN) + "in}";
     }

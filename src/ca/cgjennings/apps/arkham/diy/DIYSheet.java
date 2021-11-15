@@ -456,6 +456,11 @@ public final class DIYSheet extends Sheet<DIY> {
     }
 
     @Override
+    public double getCornerRadius() {
+        return diy.getCornerRadius();
+    }
+
+    @Override
     public double[] getFoldMarks() {
         double[] marks = diy.getCustomFoldMarksInternal(index);
         if (marks == null) {

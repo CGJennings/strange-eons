@@ -20,10 +20,12 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.TexturePaint;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -457,12 +459,28 @@ public abstract class Sheet<G extends GameComponent> {
      * @see #applyContextHints
      * @since 3.0.3680
      */
-    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
+    public final BufferedImage paint(RenderTarget target, double resolution, EdgeStyle edgeStyle) {
         BufferedImage bi = paint(target, resolution);
-        if (getBleedMargin() <= 0d) {
-            bi = synthesizeBleedMargin(bi, synthesizeBleedMargin, resolution);
+        boolean bleedIncluded = getBleedMargin() > 0d;
+        switch (edgeStyle) {
+            case BLEED:
+                if (bleedIncluded) {
+                    return bi;
+                }
+                return synthesizeBleedMargin(bi, resolution);
+            case NO_BLEED:
+                if (bleedIncluded) {
+                    return removeBleedMargin(bi, resolution);
+                }
+                return bi;
+            case CUT:
+                if (bleedIncluded) {
+                    bi = removeBleedMargin(bi, resolution);
+                }
+                return cutCorners(bi, resolution);
+            default:
+                return bi;
         }
-        return bi;
     }
 
     /**
@@ -893,6 +911,10 @@ public abstract class Sheet<G extends GameComponent> {
      * @see #hasCropMarks
      */
     public double getBleedMargin() {
+        return 0d;
+    }
+
+    public double getCornerRadius() {
         return 0d;
     }
 
@@ -1433,9 +1455,9 @@ public abstract class Sheet<G extends GameComponent> {
      * @param resolution the resolution, in pixels per inch, of the sheet image
      * @return a new image with the requested margin, or
      */
-    protected BufferedImage synthesizeBleedMargin(BufferedImage sheetImage, boolean synthesize, double resolution) {
+    protected BufferedImage synthesizeBleedMargin(BufferedImage sheetImage, double resolution) {
         final double margin = getSyntheticBleedMargin();
-        if (!synthesize || margin == 0d) {
+        if (margin == 0d) {
             return sheetImage;
         }
 
@@ -1530,6 +1552,50 @@ public abstract class Sheet<G extends GameComponent> {
 
                 g.drawImage(sheetImage, m, m, null);
             }
+        } finally {
+            g.dispose();
+        }
+        return bi;
+    }
+
+    protected BufferedImage removeBleedMargin(BufferedImage sheetImage, double resolution) {
+        final double margin = getBleedMargin();
+        if (margin == 0d) {
+            return sheetImage;
+        }
+
+        final int m = (int) Math.ceil(margin / 72d * resolution);
+        final int m2 = m * 2;
+        final int w = sheetImage.getWidth() - m2;
+        final int h = sheetImage.getHeight() - m2;
+
+        BufferedImage bi = new BufferedImage(w, h, sheetImage.getType());
+        Graphics2D g = bi.createGraphics();
+        try {
+            g.drawImage(sheetImage, 0, 0, w, h, m, m, w + m, h + m, null);
+        } finally {
+            g.dispose();
+        }
+        return bi;
+    }
+
+    protected BufferedImage cutCorners(BufferedImage sheetImage, double resolution) {
+        final double radius = getCornerRadius();
+        if (radius == 0d) {
+            return sheetImage;
+        }
+
+        final int r = (int) Math.ceil(radius / 72d * resolution);
+        final int w = sheetImage.getWidth();
+        final int h = sheetImage.getHeight();
+
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+        try {
+            RoundRectangle2D bounds = new RoundRectangle2D.Float(0, 0, w, h, r, r);
+            g.setPaint(new TexturePaint(sheetImage, new Rectangle2D.Float(0, 0, w, h)));
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.fill(bounds);
         } finally {
             g.dispose();
         }

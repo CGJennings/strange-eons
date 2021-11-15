@@ -208,6 +208,7 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     private int flags = 0;
     private double bleedMargin = 0d;
+    private double cornerRadius = 0d;
     private double[][] customFoldMarks = null;
     private HighResolutionMode highResMode = HighResolutionMode.ENABLE;
     private Sheet.DeckSnappingHint deckSnappingHint = Sheet.DeckSnappingHint.CARD;
@@ -804,6 +805,18 @@ public class DIY extends AbstractGameComponent implements Handler {
             throw new IllegalArgumentException("bleed margin cannot be negative: " + marginInPoints);
         }
         bleedMargin = marginInPoints;
+    }
+
+    public double getCornerRadius() {
+        return cornerRadius;
+    }
+
+    public void setCornerRadius(double radiusInPoints) {
+        checkPropertyLock();
+        if (radiusInPoints < 0d) {
+            throw new IllegalArgumentException("corner radius cannot be negative: " + radiusInPoints);
+        }
+        cornerRadius = radiusInPoints;
     }
 
     /**
@@ -2104,7 +2117,7 @@ public class DIY extends AbstractGameComponent implements Handler {
             case PLAIN_BACK:
                 sheets = new Sheet[]{
                     new DIYSheet(this, frontTemplateKey + "-template", 0),
-                    new UndecoratedCardBack(this, backTemplateKey + "-template")
+                    new UndecoratedCardBack(this, backTemplateKey + "-template", bleedMargin, cornerRadius)
                 };
                 createFrontPainter(this, (DIYSheet) sheets[0]);
                 break;
@@ -2537,7 +2550,7 @@ public class DIY extends AbstractGameComponent implements Handler {
         return "DIY{script=" + getHandlerScript() + ", faceStyle=" + getFaceStyle() + '}';
     }
 
-    private static final int CURRENT_VERSION = 8;
+    private static final int CURRENT_VERSION = 9;
     private static final long serialVersionUID = 6_385_243_435_343_478_156L;
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -2573,6 +2586,7 @@ public class DIY extends AbstractGameComponent implements Handler {
         out.writeObject(portraitKey);
         out.writeInt(flags);
         out.writeObject(deckSnappingHint);
+        out.writeDouble(cornerRadius);
         out.writeDouble(bleedMargin);
         out.writeObject(highResMode);
         out.writeObject(customFoldMarks);
@@ -2649,6 +2663,12 @@ public class DIY extends AbstractGameComponent implements Handler {
             deckSnappingHint = (Sheet.DeckSnappingHint) in.readObject();
         } else {
             deckSnappingHint = Sheet.DeckSnappingHint.CARD;
+        }
+
+        if (version >= 9) {
+            cornerRadius = in.readDouble();
+        } else {
+            cornerRadius = 0d;
         }
 
         if (version >= 3) {
