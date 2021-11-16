@@ -797,6 +797,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         jSeparator38 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenu viewQualityMenu =  new ViewQualityMenu() ;
         javax.swing.JMenu previewBackdropItem =  new PreviewBackgroundMenu() ;
+        cardEdgeMenu = new CardEdgeMenu();
         javax.swing.JPopupMenu.Separator jSeparator19 = new javax.swing.JPopupMenu.Separator();
         viewContextBarItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator22 = new javax.swing.JPopupMenu.Separator();
@@ -1099,6 +1100,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         previewBackdropItem.setText(string("app-backdrop")); // NOI18N
         previewBackdropItem.setName("previewBackdropItem"); // NOI18N
         viewMenu.add(previewBackdropItem);
+
+        cardEdgeMenu.setText("Preview Card &Edge");
+        cardEdgeMenu.setName("cardEdgeMenu"); // NOI18N
+        viewMenu.add(cardEdgeMenu);
 
         jSeparator19.setName("jSeparator19"); // NOI18N
         viewMenu.add(jSeparator19);
@@ -2288,6 +2293,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenuItem alignMiddleItem;
     private javax.swing.JMenuItem alignRightItem;
     private javax.swing.JMenuItem alignTopItem;
+    private javax.swing.JMenu cardEdgeMenu;
     private javax.swing.JMenuItem createExpansionItem;
     private javax.swing.JMenu deckMenu;
     private javax.swing.JDesktopPane desktopPane;

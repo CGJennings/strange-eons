@@ -68,7 +68,7 @@ public class SheetViewer extends AbstractViewer {
             final long start = System.nanoTime();
             final boolean hadChanges = sheet.hasChanged();
             BufferedImage image = sheet.paint(
-                    rt, upsampleFactor * sheet.getTemplateResolution(), EdgeStyle.CUT
+                    rt, upsampleFactor * sheet.getTemplateResolution(), EdgeStyle.getPreviewEdgeStyle()
             );
             final long time = System.nanoTime() - start;
             if (ViewQuality.isManagedAutomatically()) {
