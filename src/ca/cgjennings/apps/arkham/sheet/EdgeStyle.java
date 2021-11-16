@@ -4,5 +4,6 @@ public enum EdgeStyle {
     RAW,
     BLEED,
     NO_BLEED,
-    CUT
+    CUT,
+    HIGHLIGHT
 }

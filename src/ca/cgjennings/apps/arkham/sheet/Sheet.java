@@ -478,6 +478,8 @@ public abstract class Sheet<G extends GameComponent> {
                     bi = removeBleedMargin(bi, resolution);
                 }
                 return cutCorners(bi, resolution);
+            case HIGHLIGHT:
+                return highlightEdge(bi, resolution);
             default:
                 return bi;
         }
@@ -1592,10 +1594,33 @@ public abstract class Sheet<G extends GameComponent> {
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
         try {
-            RoundRectangle2D bounds = new RoundRectangle2D.Float(0, 0, w, h, r, r);
             g.setPaint(new TexturePaint(sheetImage, new Rectangle2D.Float(0, 0, w, h)));
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.fill(bounds);
+            g.fill(new RoundRectangle2D.Float(0, 0, w, h, r, r));
+        } finally {
+            g.dispose();
+        }
+        return bi;
+    }
+
+    protected BufferedImage highlightEdge(BufferedImage sheetImage, double resolution) {
+        final double margin = getBleedMargin();
+        final double radius = getCornerRadius();
+
+        final int m = (int) Math.ceil(margin / 72d * resolution);
+        final int m2 = m * 2;
+        final int r = (int) Math.ceil(radius / 72d * resolution);
+        final int w = sheetImage.getWidth();
+        final int h = sheetImage.getHeight();
+
+        BufferedImage bi = new BufferedImage(w, h, sheetImage.getType());
+        Graphics2D g = bi.createGraphics();
+        try {
+            g.drawImage(sheetImage, 0, 0, null);
+            g.setPaint(Color.RED);
+            g.setStroke(new BasicStroke(4));
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g.draw(new RoundRectangle2D.Float(m, m, w - m2, h - m2, r, r));
         } finally {
             g.dispose();
         }
