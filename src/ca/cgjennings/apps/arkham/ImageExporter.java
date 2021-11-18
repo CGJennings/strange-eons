@@ -84,7 +84,7 @@ public class ImageExporter {
     private boolean hasMarker;
     private Sheet<?> lastFace; // track last face written for face suppression
     private boolean suppressSimpleFaces;
-    private boolean syntheticBleed;
+    private EdgeStyle edgeStyle;
     private boolean joinPerformed;
     private BufferedImage joinImageLHS;
     private ExportContainer exporter;
@@ -167,7 +167,7 @@ public class ImageExporter {
         joinPerformed = false;
 
         suppressSimpleFaces = efd.isFaceSuppressionEnabled();
-        syntheticBleed = efd.isSyntheticBleedMarginEnabled();
+        edgeStyle = efd.getEdgeStyle();
 
         itemData = new LinkedList<>();
         this.comments = comments;
@@ -249,7 +249,7 @@ public class ImageExporter {
         }
 
         // within this lock we change, draw, and restore the sheet settings
-        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI, syntheticBleed ? EdgeStyle.BLEED : EdgeStyle.RAW);
+        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI, edgeStyle);
 
         if (oversampled) {
             // bilinear scaling produces fewer JPEG artifacts than bicubic
