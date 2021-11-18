@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
+import ca.cgjennings.apps.arkham.sheet.EdgeStyle;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import ca.cgjennings.imageio.WritableImageFormat;
 import ca.cgjennings.platform.AgnosticDialog;
@@ -28,6 +29,25 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
+
+    private static class BleedOption {
+
+        private final EdgeStyle style;
+        private final String name;
+        private final String tip;
+
+        public BleedOption(EdgeStyle style) {
+            this.style = style;
+            String id = style.name().toLowerCase().replace('_', '-');
+            name = string("exf-name-edge-style-" + id);
+            tip = string("exf-tip-edge-style-" + id);
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
+    }
 
     private WritableImageFormat[] wifs;
     private String[] formats;
@@ -70,6 +90,14 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         // matching writers for each format, created by writer(i) on demand
         writers = new SimpleImageWriter[formats.length];
         formatCombo.setModel(m);
+
+        // init bleed margin options
+        m = new DefaultComboBoxModel();
+        m.addElement(new BleedOption(EdgeStyle.RAW));
+        m.addElement(new BleedOption(EdgeStyle.BLEED));
+        m.addElement(new BleedOption(EdgeStyle.NO_BLEED));
+        m.addElement(new BleedOption(EdgeStyle.CUT));
+        bleedCombo.setModel(m);
 
         // init container list
         m = new DefaultComboBoxModel(StrangeEons.getRegisteredExportContainers());
@@ -195,7 +223,6 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fmtGroup = new javax.swing.ButtonGroup();
         autoGroup = new javax.swing.ButtonGroup();
         customPanel = new javax.swing.JPanel();
         iowpPanel = new ca.cgjennings.imageio.IIOWritePanel();
@@ -215,7 +242,9 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         unitCombo = new javax.swing.JComboBox();
         suppressBackBtn = new javax.swing.JCheckBox();
         formatWarning = new ca.cgjennings.ui.JWarningLabel();
-        synthBleedCheck = new javax.swing.JCheckBox();
+        bleedLabel = new javax.swing.JLabel();
+        bleedCombo = new javax.swing.JComboBox<>();
+        bleedTip = new ca.cgjennings.ui.JTip();
         mainPanel = new javax.swing.JPanel();
         postOnlineBtn = new javax.swing.JRadioButton();
         printBtn = new javax.swing.JRadioButton();
@@ -281,7 +310,14 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         formatWarning.setText(string("exf-warn-format")); // NOI18N
 
-        synthBleedCheck.setText(string("de-l-fake-bleed")); // NOI18N
+        bleedLabel.setLabelFor(bleedCombo);
+        bleedLabel.setText(string("exf-l-bleed")); // NOI18N
+
+        bleedCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bleedComboActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout customPanelLayout = new javax.swing.GroupLayout(customPanel);
         customPanel.setLayout(customPanelLayout);
@@ -290,11 +326,11 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(customPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(synthBleedCheck)
                     .addComponent(resolutionLabel)
                     .addComponent(joinImagesBox)
                     .addComponent(formatLabel)
                     .addComponent(suppressBackBtn)
+                    .addComponent(bleedLabel)
                     .addGroup(customPanelLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -310,7 +346,11 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(unitCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(customPanelLayout.createSequentialGroup()
+                                .addComponent(bleedCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bleedTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         customPanelLayout.setVerticalGroup(
@@ -323,7 +363,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addComponent(formatTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(formatCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(formatWarning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
+                .addGap(24, 24, 24)
                 .addComponent(iowpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(resolutionLabel)
@@ -336,9 +376,13 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(joinImagesBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(suppressBackBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(synthBleedCheck)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(bleedLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(bleedCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bleedTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string("exf-l-basic"))); // NOI18N
@@ -543,8 +587,31 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         return suppressBackBtn.isSelected();
     }
 
+    @Deprecated
     boolean isSyntheticBleedMarginEnabled() {
-        return synthBleedCheck.isSelected();
+        return getEdgeStyle() == EdgeStyle.BLEED;
+    }
+
+    EdgeStyle getEdgeStyle() {
+        return ((BleedOption) bleedCombo.getSelectedItem()).style;
+    }
+
+    void setEdgeStyle(EdgeStyle style) {
+        for (int i = 0; i < bleedCombo.getItemCount(); i++) {
+            if (bleedCombo.getItemAt(i).style == style) {
+                bleedCombo.setSelectedIndex(i);
+                return;
+            }
+        }
+        bleedCombo.setSelectedIndex(0);
+    }
+
+    private void setEdgeStyle(String name) {
+        try {
+            setEdgeStyle(EdgeStyle.valueOf(name));
+        } catch (Exception e) {
+            setEdgeStyle(EdgeStyle.RAW);
+        }
     }
 
 	private void exportTypeActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_exportTypeActionPerformed
@@ -570,7 +637,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             // they will be cleared and disabled further below
             joinImagesBox.setSelected(false);
             suppressBackBtn.setSelected(false);
-            synthBleedCheck.setSelected(false);
+            //synthBleedCheck.setSelected(false); TODO
             switch (sel) {
                 case 0:
                     setFormat("jpg");
@@ -625,7 +692,13 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         setResolution(s.getInt(KEY_DPI));
         joinImagesBox.setSelected(s.getYesNo(KEY_COMBINE));
         suppressBackBtn.setSelected(s.getYesNo(KEY_SUPPRESS));
-        synthBleedCheck.setSelected(s.getYesNo(KEY_SYNTHETIC_BLEED));
+        String style = s.get(KEY_EDGE_STYLE);
+        if (style == null) {
+            // migrate the old "synthetic bleed" option
+            setEdgeStyle(s.getYesNo(KEY_SYNTHETIC_BLEED) ? EdgeStyle.BLEED : EdgeStyle.RAW);
+        } else {
+            setEdgeStyle(style);
+        }
     }
 
     private void saveCustomSettings() {
@@ -640,7 +713,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         if (multipleFacesHint) {
             s.setYesNo(KEY_SUPPRESS, suppressBackBtn.isSelected());
         }
-        s.setYesNo(KEY_SYNTHETIC_BLEED, synthBleedCheck.isSelected());
+        s.reset(KEY_SYNTHETIC_BLEED);
+        s.set(KEY_EDGE_STYLE, getEdgeStyle().name());
     }
 
     private static final String KEY_FORMAT = "imexport-format";
@@ -650,6 +724,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private static final String KEY_COMBINE = "imexport-combine";
     private static final String KEY_SUPPRESS = "imexport-suppress-backs";
     private static final String KEY_SYNTHETIC_BLEED = "imexport-synthetic-bleed";
+    private static final String KEY_EDGE_STYLE = "imexport-edge-style";
 
 	private void unitComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_unitComboActionPerformed
             int unit = unitCombo.getSelectedIndex();
@@ -725,6 +800,11 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             joinImagesBox.setEnabled(allowJoinHint);
         }
     }//GEN-LAST:event_suppressBackBtnActionPerformed
+
+    private void bleedComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bleedComboActionPerformed
+        BleedOption option = (BleedOption) bleedCombo.getSelectedItem();
+        bleedTip.setTipText(option.tip);
+    }//GEN-LAST:event_bleedComboActionPerformed
     private boolean dpiComboIsUpdating;
 
     private int[] ppiOptions = new int[]{
@@ -815,6 +895,9 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup autoGroup;
+    private javax.swing.JComboBox<BleedOption> bleedCombo;
+    private javax.swing.JLabel bleedLabel;
+    private ca.cgjennings.ui.JTip bleedTip;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JRadioButton compatibleBtn;
     private javax.swing.JButton configDestinationBtn;
@@ -823,7 +906,6 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JComboBox destinationCombo;
     private javax.swing.JLabel destinationLabel;
     private javax.swing.JComboBox dpiCombo;
-    private javax.swing.ButtonGroup fmtGroup;
     private javax.swing.JComboBox formatCombo;
     private ca.cgjennings.ui.JTip formatTip;
     private ca.cgjennings.ui.JWarningLabel formatWarning;
@@ -834,7 +916,6 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JRadioButton postOnlineBtn;
     private javax.swing.JRadioButton printBtn;
     private javax.swing.JCheckBox suppressBackBtn;
-    private javax.swing.JCheckBox synthBleedCheck;
     private javax.swing.JComboBox unitCombo;
     // End of variables declaration//GEN-END:variables
 

@@ -2,8 +2,6 @@
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="fmtGroup">
-    </Component>
     <Component class="javax.swing.ButtonGroup" name="autoGroup">
     </Component>
   </NonVisualComponents>
@@ -82,14 +80,14 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="102" attributes="0">
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="synthBleedCheck" min="-2" max="-2" attributes="0"/>
                       <Component id="resolutionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="joinImagesBox" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="formatLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="suppressBackBtn" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="bleedLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
                           <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -107,6 +105,11 @@
                                   <Component id="unitCombo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="resolutionHelp" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <Component id="bleedCombo" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="bleedTip" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -126,7 +129,7 @@
                       <Component id="formatCombo" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="formatWarning" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="0" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   <Component id="iowpPanel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
                   <Component id="resolutionLabel" min="-2" max="-2" attributes="0"/>
@@ -140,9 +143,14 @@
                   <Component id="joinImagesBox" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="suppressBackBtn" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="synthBleedCheck" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="bleedLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="bleedCombo" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="bleedTip" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -249,12 +257,25 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="synthBleedCheck">
+        <Component class="javax.swing.JLabel" name="bleedLabel">
           <Properties>
+            <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
+              <ComponentRef name="bleedCombo"/>
+            </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-              <ResourceString bundle="resources/text/interface/eons-text.properties" key="de-l-fake-bleed" replaceFormat="string(&quot;{key}&quot;)"/>
+              <ResourceString bundle="resources/text/interface/eons-text.properties" key="exf-l-bleed" replaceFormat="string(&quot;{key}&quot;)"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="bleedCombo">
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bleedComboActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;BleedOption&gt;"/>
+          </AuxValues>
+        </Component>
+        <Component class="ca.cgjennings.ui.JTip" name="bleedTip">
         </Component>
       </SubComponents>
     </Container>
