@@ -51,6 +51,17 @@ public abstract class ResourceParser<R> implements Closeable {
      * @param gentle if {@code true}, parses in gentle mode
      */
     public ResourceParser(String resource, boolean gentle) throws IOException {
+        this(resource, null, gentle);
+    }
+
+    /**
+     * Creates a parser for the specified resource file and encoding.
+     *
+     * @param resource the location of the desired tile set resource
+     * @param charset the name of the character set to use, such as "UTF-8"
+     * @param gentle if {@code true}, parses in gentle mode
+     */
+    public ResourceParser(String resource, String charset, boolean gentle) throws IOException {
         if (resource == null) {
             throw new NullPointerException("resource");
         }
@@ -67,7 +78,7 @@ public abstract class ResourceParser<R> implements Closeable {
         this.resource = resource;
         this.gentle = gentle;
         close = true;
-        r = new EscapedLineReader(url);
+        r = charset == null ? new EscapedLineReader(url) : new EscapedLineReader(url, charset);
     }
 
     /**
@@ -78,7 +89,19 @@ public abstract class ResourceParser<R> implements Closeable {
      * @throws IOException if an I/O error occurs
      */
     public ResourceParser(InputStream in, boolean gentle) throws IOException {
-        r = new EscapedLineReader(in);
+        this(in, null, gentle);
+    }
+
+    /**
+     * Creates a parser for the specified input stream and encoding.
+     *
+     * @param in the input stream to read from
+     * @param charset the name of the character set to use, such as "UTF-8"
+     * @param gentle if {@code true}, parses in gentle mode
+     * @throws IOException if an I/O error occurs
+     */
+    public ResourceParser(InputStream in, String charset, boolean gentle) throws IOException {
+        r = charset == null ? new EscapedLineReader(in) : new EscapedLineReader(in, charset);
         this.gentle = gentle;
     }
 

@@ -37,6 +37,7 @@ import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
+import ca.cgjennings.ui.textedit.tokenizers.ResourceFileTokenizer;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -371,9 +372,9 @@ public class CodeEditor extends AbstractSupportEditor {
         JAVA("java", "prj-prop-java", ProjectUtilities.ENC_SCRIPT, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
         PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
         SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
-        CLASS_MAP("classmap", "prj-prop-class-map", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
-        SILHOUETTES("silhouettes", "prj-prop-sil", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
-        TILES("tiles", "prj-prop-tiles", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
+        CLASS_MAP("classmap", "prj-prop-class-map", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
+        SILHOUETTES("silhouettes", "prj-prop-sil", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
+        TILES("tiles", "prj-prop-tiles", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
         HTML("html", "pa-new-html", null, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
         CSS("css", "prj-prop-css", null, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
         PLAIN_UTF8("utf8", "prj-prop-utf8", null, null, null, MetadataSource.ICON_FILE, false),
