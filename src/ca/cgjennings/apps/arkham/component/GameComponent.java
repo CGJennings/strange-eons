@@ -259,7 +259,9 @@ public interface GameComponent extends Serializable, Cloneable {
      * @see ConversionSession
      * @return a conversion context if the upgrade requires a conversion
      */
-    public UpgradeConversionTrigger createUpgradeConversionTrigger();
+    default UpgradeConversionTrigger createUpgradeConversionTrigger() {
+        return null;
+    }
 
     /**
      * Called on a component that is being converted into another component
@@ -272,7 +274,8 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param target the new component that will replace this one
      * @param context the conversion context
      */
-    public void convertFrom(ConversionSession session);
+    default void convertFrom(ConversionSession session) {
+    }
 
     /**
      * Called on the replacement component when converting a component to
@@ -285,5 +288,6 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param source the old component that will be replaced
      * @param context the conversion context
      */
-    public void convertTo(ConversionSession session);
+    default void convertTo(ConversionSession session) {
+    }
 }
