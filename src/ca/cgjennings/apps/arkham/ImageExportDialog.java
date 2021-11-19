@@ -39,8 +39,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         public BleedOption(EdgeStyle style) {
             this.style = style;
             String id = style.name().toLowerCase().replace('_', '-');
-            name = string("exf-name-edge-style-" + id);
-            tip = string("exf-tip-edge-style-" + id);
+            name = string("exf-edge-" + id);
+            tip = string("exf-edge-" + id + "-detail");
         }
 
         @Override
