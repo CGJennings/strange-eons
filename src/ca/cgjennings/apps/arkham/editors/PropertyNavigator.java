@@ -12,6 +12,15 @@ import java.util.regex.Pattern;
  * @since 3.0
  */
 public class PropertyNavigator implements Navigator {
+    private final boolean ignoreColon;
+
+    public PropertyNavigator() {
+        ignoreColon = false;
+    }
+
+    public PropertyNavigator(boolean ignoreColons) {
+        ignoreColon = ignoreColons;
+    }
 
     @Override
     public void install(CodeEditor editor) {
@@ -39,7 +48,7 @@ public class PropertyNavigator implements Navigator {
                     continue;
                 }
                 int split = line.indexOf('=');
-                int colon = line.indexOf(':');
+                int colon = ignoreColon ? -1 : line.indexOf(':');
                 if (split < 0 || (colon >= 0 && colon < split)) {
                     split = colon;
                 }
