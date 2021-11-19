@@ -64,6 +64,7 @@ public class RecentFiles {
     }
 
     private static void save() {
+        prune();
         int size = files.size();
         for (int i = 0; i < MAXIMUM_LIST_SIZE; ++i) {
             String key = "recent-file-" + (i + 1);
@@ -114,6 +115,24 @@ public class RecentFiles {
      */
     public static synchronized boolean contains(File file) {
         return files.contains(file);
+    }
+
+    /**
+     * Removes entries for which the target file no longer exists.
+     */
+    private static synchronized void prune() {
+        for (Iterator<File> it = files.iterator(); it.hasNext();) {
+            File f = it.next();
+            try {
+                if (!f.exists()) {
+                    it.remove();
+                }
+            } catch (SecurityException ex) {
+                // assume that it might exist, but stop trying to prune
+                // in case this would introduce a long delay in the UI thread
+                return;
+            }
+        }
     }
 
     /**
@@ -214,6 +233,7 @@ public class RecentFiles {
             removeAll();
             int maxItems = getNumberOfFilesToDisplay();
             synchronized (RecentFiles.class) {
+                RecentFiles.prune();
                 // get N recent files, separating into files and projects
                 LinkedList<File> projects = new LinkedList<>();
                 LinkedList<File> otherFiles = new LinkedList<>();
@@ -223,22 +243,24 @@ public class RecentFiles {
                         break;
                     }
                     try {
-                        if(isProjectFile(f, false)) {
+                        if (isProjectFile(f, false)) {
                             projects.add(f);
                             ++n;
                             continue;
                         }
-                    } catch(IOException ioe) {}
+                    } catch (IOException ioe) {
+                        // assume non-project file, so at least it is listed
+                    }
                     otherFiles.add(f);
                     ++n;
                 }
-                for( File f : projects) {
+                for (File f : projects) {
                     add(new RecentFileItem(f));
                 }
-                if(projects.size() > 0 && otherFiles.size() > 0) {
+                if (projects.size() > 0 && otherFiles.size() > 0) {
                     addSeparator();
                 }
-                for( File f : otherFiles) {
+                for (File f : otherFiles) {
                     add(new RecentFileItem(f));
                 }
             }
@@ -271,7 +293,8 @@ public class RecentFiles {
                 if (isProjectFile(f, false)) {
                     icon = MetadataSource.ICON_PROJECT;
                 }
-            } catch (IOException e) {}
+            } catch (IOException e) {
+            }
             setIcon(icon);
         }
 
@@ -295,9 +318,9 @@ public class RecentFiles {
     }
 
     /**
-     * Returns {@code true} is a file is (likely) a project. This method
-     * may be faster than calling {@link Project#isProjectFolder(java.io.File)}
-     * and {@link Project#isProjectPackage(java.io.File)}, but it may sometimes
+     * Returns {@code true} is a file is (likely) a project. This method may be
+     * faster than calling {@link Project#isProjectFolder(java.io.File)} and
+     * {@link Project#isProjectPackage(java.io.File)}, but it may sometimes
      * produce false positives as well.
      *
      * @param file the file to test
@@ -312,7 +335,7 @@ public class RecentFiles {
         if (thorough) {
             return Project.isProjectFolder(file) || Project.isProjectPackage(file);
         } else {
-            return file.isDirectory() || Project.isProjectPackage(file);
+            return file.isDirectory() || file.getName().endsWith(".seproject");
         }
     }
 }
