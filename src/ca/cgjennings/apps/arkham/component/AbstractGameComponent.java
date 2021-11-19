@@ -485,17 +485,4 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
         comments = (String) in.readObject();
         privateSettings = (Settings) in.readObject();
     }
-
-    @Override
-    public UpgradeConversionTrigger createUpgradeConversionTrigger() {
-        return null;
-    }
-
-    @Override
-    public void convertFrom(ConversionSession session) {
-    }
-
-    @Override
-    public void convertTo(ConversionSession session) {
-    }
 }
