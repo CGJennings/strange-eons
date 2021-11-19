@@ -373,7 +373,7 @@ public class CodeEditor extends AbstractSupportEditor {
         PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
         SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
         CLASS_MAP("classmap", "prj-prop-class-map", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
-        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", ProjectUtilities.ENC_SETTINGS, ConversionMapTokenizer.class, ConversionMapNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
+        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", ProjectUtilities.ENC_SETTINGS, ConversionMapTokenizer.class, ConversionMapNavigator.class, MetadataSource.ICON_CONVERSION_MAP, true),
         SILHOUETTES("silhouettes", "prj-prop-sil", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
         TILES("tiles", "prj-prop-tiles", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
         HTML("html", "pa-new-html", null, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),

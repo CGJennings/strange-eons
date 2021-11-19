@@ -582,7 +582,7 @@ public class MetadataSource {
                 "doc", ICON_DOCUMENT,
                 "odt", ICON_DOCUMENT,
                 "classmap", ICON_CLASS_MAP,
-                "conversionmap", ICON_CLASS_MAP,
+                "conversionmap", ICON_CONVERSION_MAP,
                 "silhouettes", ICON_SILHOUETTES,
                 "tiles", ICON_TILE_SET,
                 "css", ICON_STYLE_SHEET,
@@ -641,6 +641,7 @@ public class MetadataSource {
     public static final Icon ICON_EON_LIBRARY = getIcon("project/library.png");
     public static final Icon ICON_PACKED_BUNDLE = getIcon("project/packed-bundle.png");
     public static final Icon ICON_CLASS_MAP = getIcon("project/classmap.png");
+    public static final Icon ICON_CONVERSION_MAP = getIcon("project/conversionmap.png");
     public static final Icon ICON_SILHOUETTES = getIcon("project/sil.png");
     public static final Icon ICON_TILE_SET = getIcon("project/tiles.png");
     public static final Icon ICON_CARD_LAYOUT = getIcon("project/card-layout.png");
