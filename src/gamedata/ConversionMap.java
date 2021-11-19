@@ -27,9 +27,9 @@ import static resources.Language.string;
  * direct conversion options for the {@code my.example.CustomComponent}
  * component type:
  * <pre>
- * var classNane = 'my.example.CustomComponent';
+ * var className = 'my.example.CustomComponent';
  * var conversionMap = gamedata.ConversionMap.globalInstance;
- * for( let entry in Iterator( conversionMap.getDirectConversions(classNane) ) ) {
+ * for( let entry in Iterator( conversionMap.getDirectConversions(className) ) ) {
  *     println( entry.name + ' -&gt; ' + entry.targetClassName );
  * }
  * </pre>
