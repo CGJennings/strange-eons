@@ -637,7 +637,6 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             // they will be cleared and disabled further below
             joinImagesBox.setSelected(false);
             suppressBackBtn.setSelected(false);
-            //synthBleedCheck.setSelected(false); TODO
             switch (sel) {
                 case 0:
                     setFormat("jpg");
@@ -645,12 +644,14 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                     iowpPanel.setProgressiveScanEnabled(true);
                     setResolution(largeFormatHint ? 100 : 125);
                     suppressBackBtn.setSelected(true);
+                    setEdgeStyle(EdgeStyle.NO_BLEED);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 1:
                     setFormat("png");
                     iowpPanel.setProgressiveScanEnabled(false);
                     setResolution(300);
+                    setEdgeStyle(EdgeStyle.BLEED);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 2:
@@ -658,6 +659,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                     iowpPanel.setCompressionQuality(0.75f);
                     iowpPanel.setProgressiveScanEnabled(true);
                     setResolution(150);
+                    setEdgeStyle(EdgeStyle.NO_BLEED);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 3:
