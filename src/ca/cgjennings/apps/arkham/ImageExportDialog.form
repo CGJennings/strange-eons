@@ -110,11 +110,13 @@
                                   <Component id="bleedCombo" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="bleedTip" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="bleedWarning" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="40" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -149,6 +151,7 @@
                   <Group type="103" groupAlignment="2" attributes="0">
                       <Component id="bleedCombo" alignment="2" min="-2" max="-2" attributes="0"/>
                       <Component id="bleedTip" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="bleedWarning" alignment="2" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -276,6 +279,13 @@
           </AuxValues>
         </Component>
         <Component class="ca.cgjennings.ui.JTip" name="bleedTip">
+        </Component>
+        <Component class="ca.cgjennings.ui.JWarningLabel" name="bleedWarning">
+          <Properties>
+            <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+              <ResourceString bundle="resources/text/interface/eons-text.properties" key="exf-warn-transparency" replaceFormat="string(&quot;{key}&quot;)"/>
+            </Property>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

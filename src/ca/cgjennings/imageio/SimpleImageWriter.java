@@ -170,6 +170,10 @@ public class SimpleImageWriter {
         return format;
     }
 
+    public boolean isTransparencySupported() {
+        return format.equals(FORMAT_PNG) || format.equals(FORMAT_JPEG2000) || format.equals(FORMAT_GIF);
+    }
+
     /**
      * Returns {@code true} if one or more compression methods are
      * supported.
