@@ -78,7 +78,7 @@ final class ConvertMenu extends JMenu {
         removeAll();
         ConversionMap conversionMap;
         try {
-            conversionMap = ConversionMap.getGlobalInstance();
+            conversionMap = ConversionMap.getShared();
         } catch (IOException e) {
             StrangeEons.log.log(Level.SEVERE, "unable to load conversion maps");
             return;

@@ -28,7 +28,7 @@ import static resources.Language.string;
  * component type:
  * <pre>
  * var className = 'my.example.CustomComponent';
- * var conversionMap = gamedata.ConversionMap.globalInstance;
+ * var conversionMap = gamedata.ConversionMap.shared;
  * for( let entry in Iterator( conversionMap.getDirectConversions(className) ) ) {
  *     println( entry.name + ' -&gt; ' + entry.targetClassName );
  * }
@@ -41,7 +41,7 @@ public class ConversionMap {
     private static final List<String> conversionMapFiles = new ArrayList<>();
     private static final Map<String, Group> cachedGroups = new HashMap<>();
 
-    private static ConversionMap globalInstance = null;
+    private static ConversionMap shared = null;
 
     private final Map<String, Set<Conversion>> conversionsByClassName = new HashMap<>();
     private final Map<String, Set<Group>> groupsByClassName = new HashMap<>();
@@ -60,7 +60,7 @@ public class ConversionMap {
      * specified conversion map resources. Groups entries are cached statically,
      * however, the group members are tracked per instance. An extension wanting
      * to inspect the manual conversion options should generally use
-     * {@link #getGlobalInstance()} instead.
+     * {@link #getShared()} instead.
      *
      * @param resources the conversion map resources to parse
      * @throws IOException if any of the resources can not be read
@@ -194,18 +194,18 @@ public class ConversionMap {
     }
 
     /**
-     * Returns the global instance of {@code ConversionMap} that can be used to
+     * Returns a shared instance of {@code ConversionMap} that can be used to
      * look up conversion options. The instance is created the first time this
      * is called. Must not be called before all extensions have been loaded.
      *
-     * @return the global {@code ConversionMap} instance
-     * @throws IOException if the global instance could not be created
+     * @return the shared {@code ConversionMap} instance
+     * @throws IOException if the shared instance could not be created
      */
-    public static ConversionMap getGlobalInstance() throws IOException {
-        if (globalInstance == null) {
-            globalInstance = new ConversionMap();
+    public static ConversionMap getShared() throws IOException {
+        if (shared == null) {
+            shared = new ConversionMap();
         }
-        return globalInstance;
+        return shared;
     }
 
     private static Group cacheGroup(Group group) {
