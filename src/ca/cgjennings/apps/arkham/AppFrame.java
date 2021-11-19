@@ -781,6 +781,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         editMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem clearItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem cloneItem = new javax.swing.JMenuItem();
+        javax.swing.JPopupMenu.Separator jSeparator23 = new javax.swing.JPopupMenu.Separator();
         convertMenu = new ConvertMenu(editMenu);
         javax.swing.JPopupMenu.Separator jSeparator9 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem cutItem = new javax.swing.JMenuItem();
@@ -1041,7 +1042,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         cloneItem.setName("cloneItem"); // NOI18N
         editMenu.add(cloneItem);
 
-        convertMenu.setText("C&onvert To");
+        jSeparator23.setName("jSeparator23"); // NOI18N
+        editMenu.add(jSeparator23);
+
+        convertMenu.setText(string("app-convert")); // NOI18N
         convertMenu.setName("convertMenu"); // NOI18N
         editMenu.add(convertMenu);
 
