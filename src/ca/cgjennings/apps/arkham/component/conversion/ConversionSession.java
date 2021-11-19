@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import javax.swing.SwingUtilities;
 import resources.Language;
@@ -106,7 +107,7 @@ public class ConversionSession {
      * must extend {@link AbstractGameComponent}. This action is automatically
      * performed by default.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyName() {
         automaticCopyNameEnabled = false;
@@ -121,7 +122,7 @@ public class ConversionSession {
      * type must extend {@link AbstractGameComponent}. This action is
      * automatically performed by default.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyComment() {
         automaticCopyCommentEnabled = false;
@@ -135,7 +136,7 @@ public class ConversionSession {
      * Copies the settings for the given keys from the old component to the new.
      *
      * @param keys the settings keys to copy
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copySettings(String... keys) {
         Settings s = source.getSettings();
@@ -150,7 +151,7 @@ public class ConversionSession {
      * Copies all settings from the old component to the new. Keys inherited
      * from parent settings are not copied.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyAllSettings() {
         automaticCopyExpansionsEnabled = false;
@@ -163,7 +164,7 @@ public class ConversionSession {
      * given keys. Keys inherited from parent settings are not copied.
      *
      * @param excludedKeys the settings keys to exclude
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyAllSettingsExcept(String... excludedKeys) {
         automaticCopyExpansionsEnabled = false;
@@ -182,13 +183,18 @@ public class ConversionSession {
     /**
      * Copies settings from the old component to the new, based on the given key
      * pairs. The setting for the first key in the pair is fetched from the old
-     * component and stored using the second key in the new component. If an odd
-     * number of keys is given, the last key is ignored.
+     * component and stored using the second key in the new component.
      *
      * @param pairs the pairs of keys to copy
-     * @return the conversion session
+     * @return this conversion session
+     * @throws IllegalArgumentException if the array of key name pairs has an odd
+     *     length
      */
     public ConversionSession moveSettings(String... pairs) {
+        Objects.requireNonNull(pairs, "pairs");
+        if ((pairs.length & 1) != 0) {
+            throw new IllegalArgumentException("arguments must come in oldKey, newKey pairs");
+        }
         Settings s = source.getSettings();
         Settings t = target.getSettings();
         int count = pairs.length / 2;
@@ -199,10 +205,24 @@ public class ConversionSession {
     }
 
     /**
+     * Sets one or more settings on the new component, based on the given
+     * (key, value) pairs.
+     *
+     * @param keyValuePairs
+     * @return this conversion session
+     * @throws IllegalArgumentException if the array of setting pairs has an odd
+     *     length
+     */
+    public ConversionSession setSettings(String... keyValuePairs) {
+        target.getSettings().setSettings(keyValuePairs);
+        return this;
+    }
+
+    /**
      * Copies the expansions from the old component to the new. This action is
      * automatically performed by default.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyExpansions() {
         automaticCopyExpansionsEnabled = false;
@@ -218,7 +238,7 @@ public class ConversionSession {
      * @param sourceIndex the index of the portrait in the source component
      * @param targetIndex the index of the portrait in the target component
      * @param copyLayout whether to copy the adjustments of the portrait or not
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyPortrait(int sourceIndex, int targetIndex, boolean copyLayout) {
         disableAutomaticCopyPortraits();
@@ -263,7 +283,7 @@ public class ConversionSession {
      *
      * @param index the index of the portrait
      * @param copyLayout whether to copy the adjustments of the portrait or not
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyPortrait(int index, boolean copyLayout) {
         return copyPortrait(index, index, copyLayout);
@@ -277,7 +297,7 @@ public class ConversionSession {
      *
      * @param copyLayouts whether to copy the individual adjustments of the
      * portraits or not
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession copyAllPortraits(boolean copyLayouts) {
         if (!copyPortraitPossible) {
@@ -297,7 +317,7 @@ public class ConversionSession {
      * expansions. Needs to be called if changing any of these on the target
      * component manually.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession disableAutomaticCopyBasics() {
         automaticCopyNameEnabled = false;
@@ -310,7 +330,7 @@ public class ConversionSession {
      * Disables the automatic conversion for component portraits. Needs to be
      * called if modifying portraits on the target component manually.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession disableAutomaticCopyPortraits() {
         automaticCopyPortraitsEnabled = false;
@@ -320,7 +340,7 @@ public class ConversionSession {
     /**
      * Disables all automatic conversion steps.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession disableAutomaticConversion() {
         automaticCopyNameEnabled = false;
@@ -336,7 +356,7 @@ public class ConversionSession {
      * conversion is completed. It can be called before manually modifying the
      * target component, so the changes are not overwritten.
      *
-     * @return the conversion session
+     * @return this conversion session
      */
     public ConversionSession performAutomaticConversion() {
         if (automaticCopyNameEnabled) {
