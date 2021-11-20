@@ -279,6 +279,7 @@ public class New extends TaskActionTree {
 
         ta.add(null);
         ta.add(new NewAction(string("pa-new-classmap"), string("pa-new-classmap-name"), "classmap", "projects/new-classmap.txt", MetadataSource.ICON_CLASS_MAP, NewTaskType.PLUGIN_TYPE));
+        ta.add(new NewAction(string("pa-new-conversionmap"), string("pa-new-conversionmap-name"), "conversionmap", "projects/new-conversionmap.txt", MetadataSource.ICON_CONVERSION_MAP, NewTaskType.PLUGIN_TYPE));
         ta.add(new NewAction(string("pa-new-settings"), string("pa-new-settings-name"), "settings", "projects/new-settings.txt", MetadataSource.ICON_SETTINGS, NewTaskType.PLUGIN_TYPE));
         ta.add(new NewAction(string("pa-new-properties"), string("pa-new-properties-name"), "properties", "projects/new-properties.txt", MetadataSource.ICON_PROPERTIES));
         ta.add(new NewAction(string("pa-new-tiles"), string("pa-new-tiles-name"), "tiles", "projects/new-tiles.txt", MetadataSource.ICON_TILE_SET, NewTaskType.PLUGIN_TYPE));

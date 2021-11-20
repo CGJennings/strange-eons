@@ -22,7 +22,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import javax.swing.SwingUtilities;
 import resources.Language;
 import resources.Settings;
@@ -514,7 +513,7 @@ public class ConversionSession {
                 return (GameComponent) Class.forName(className).getConstructor().newInstance();
             }
         } catch (Exception e) {
-            throw new ConversionException("unable to crate a new instance of " + className, e);
+            throw new ConversionException("unable to create a new instance of " + className, e);
         }
     }
 

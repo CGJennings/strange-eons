@@ -247,6 +247,26 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator23">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator23" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+            <Menu class="javax.swing.JMenu" name="convertMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-convert" replaceFormat="string(&quot;{key}&quot;)"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="convertMenu" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new ConvertMenu(editMenu)"/>
+              </AuxValues>
+            </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator9">
               <Properties>
                 <Property name="name" type="java.lang.String" value="jSeparator9" noResource="true"/>

@@ -17,9 +17,10 @@ public class PropertyTokenizer extends Tokenizer {
     public PropertyTokenizer() {
     }
 
-    public PropertyTokenizer(boolean ignoreColon) {
-        this.ignoreColon = ignoreColon;
+    public PropertyTokenizer(boolean ignoreColons) {
+        ignoreColon = ignoreColons;
     }
+
     private boolean ignoreColon;
 
     @Override
