@@ -8,6 +8,12 @@ import javax.swing.JRadioButtonMenuItem;
 import static resources.Language.string;
 import resources.ResourceKit;
 
+/**
+ * A menu that provides options for the card edge style of game component
+ * previewers.
+ *
+ * @author Henrik Rostedt
+ */
 final class CardEdgeMenu extends JMenu {
 
     private final ButtonGroup group = new ButtonGroup();

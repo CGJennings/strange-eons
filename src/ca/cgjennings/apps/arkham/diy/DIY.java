@@ -807,10 +807,27 @@ public class DIY extends AbstractGameComponent implements Handler {
         bleedMargin = marginInPoints;
     }
 
+    /**
+     * Returns the corner radius for this component, in points.
+     *
+     * @return the component's corner radius, in points
+     */
     public double getCornerRadius() {
         return cornerRadius;
     }
 
+    /**
+     * Sets the radius for rounding the corners of this component, in points.
+     * (The default is 0, leaving the corners sharp)
+     *
+     * <p>
+     * <b>This is a <a href='#locked'>restricted property</a>.</b>
+     *
+     * @param radiusInPoints the new corner radius; this is used to round the
+     * corners of the component when trimming the edges.
+     * @throws IllegalArgumentException if the radius is negative
+     * @see #getCornerRadius
+     */
     public void setCornerRadius(double radiusInPoints) {
         checkPropertyLock();
         if (radiusInPoints < 0d) {

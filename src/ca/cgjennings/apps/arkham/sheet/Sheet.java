@@ -448,6 +448,7 @@ public abstract class Sheet<G extends GameComponent> {
      * @param target the target hint to use for painting
      * @param resolution the resolution of the returned image, or -1 for the
      * sheet's default resolution
+     * @param synthesizeBleedMargin whether to synthesize bleed margins or not
      * @return an image representing the content of the component face
      * represented by this sheet
      * @throws NullPointerException if target is {@code null}
@@ -458,6 +459,30 @@ public abstract class Sheet<G extends GameComponent> {
      * @see #paintSheet
      * @see #applyContextHints
      * @since 3.0.3680
+     * @deprecated use [@link #paint(RenderTarget, double, EdgeStyle)} instead
+     */
+    @Deprecated
+    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
+        return paint(target, resolution, synthesizeBleedMargin ? EdgeStyle.BLEED : EdgeStyle.RAW);
+    }
+
+    /**
+     * Returns an image of the sheet content as it should appear when printed or
+     * exported. The provided {@link EdgeStyle} determines how bleed is handled.
+     *
+     * @param target the target hint to use for painting
+     * @param resolution the resolution of the returned image, or -1 for the
+     * sheet's default resolution
+     * @param edgeStyle the edge style to apply to the sheet
+     * @return an image representing the content of the component face
+     * represented by this sheet
+     * @throws NullPointerException if target is {@code null}
+     * @throws IllegalArgumentException if the resolution is less than 1 but not
+     * the special default value (-1)
+     * @throws ConcurrentModificationException if the sheet is already being
+     * painted
+     * @see #paintSheet
+     * @see #applyContextHints
      */
     public final BufferedImage paint(RenderTarget target, double resolution, EdgeStyle edgeStyle) {
         BufferedImage bi = paint(target, resolution);
@@ -467,7 +492,7 @@ public abstract class Sheet<G extends GameComponent> {
                 if (bleedIncluded) {
                     return bi;
                 }
-                return synthesizeBleedMargin(bi, resolution);
+                return synthesizeBleedMargin(bi, true, resolution);
             case NO_BLEED:
                 if (bleedIncluded) {
                     return removeBleedMargin(bi, resolution);
@@ -916,6 +941,14 @@ public abstract class Sheet<G extends GameComponent> {
         return 0d;
     }
 
+    /**
+     * Returns the radius that should be used to round the corners of the
+     * component, measured in points. This allows you to specify how the corners
+     * of the component will be rounded when the trimmed edge style is selected.
+     * The base class defines a radius of 0, meaning there is no rounding.
+     *
+     * @return the size of the corner radius, in points (1 point = 1/72 inch)
+     */
     public double getCornerRadius() {
         return 0d;
     }
@@ -1455,11 +1488,11 @@ public abstract class Sheet<G extends GameComponent> {
      * synthesized; if {@code false}, subclasses may decorate the the image
      * to accordingly (for example, by painting on rounded corners)
      * @param resolution the resolution, in pixels per inch, of the sheet image
-     * @return a new image with the requested margin, or
+     * @return a new image with the requested margin, or the original image
      */
-    protected BufferedImage synthesizeBleedMargin(BufferedImage sheetImage, double resolution) {
+    protected BufferedImage synthesizeBleedMargin(BufferedImage sheetImage, boolean synthesize, double resolution) {
         final double margin = getSyntheticBleedMargin();
-        if (margin == 0d) {
+        if (!synthesize || margin == 0d) {
             return sheetImage;
         }
 
@@ -1560,6 +1593,15 @@ public abstract class Sheet<G extends GameComponent> {
         return bi;
     }
 
+    /**
+     * Removes any included bleed margin from the image.
+     *
+     * @param sheetImage the image, previously returned from
+     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
+     * to remove the bleed margin from
+     * @param resolution the resolution, in pixels per inch, of the sheet image
+     * @return a new image without the bleed margin, or the original image
+     */
     protected BufferedImage removeBleedMargin(BufferedImage sheetImage, double resolution) {
         final double margin = getBleedMargin();
         if (margin == 0d) {
@@ -1581,6 +1623,17 @@ public abstract class Sheet<G extends GameComponent> {
         return bi;
     }
 
+    /**
+     * Removes the corners of the image if a corner radius is specified. The
+     * corners are removed by adding transparency to the output image.
+     *
+     * @param sheetImage the image, previously returned from
+     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
+     * to cut the corners from
+     * @param resolution the resolution, in pixels per inch, of the sheet image
+     * @return a new image with rounded corners and transparency, or the
+     * original image
+     */
     protected BufferedImage cutCorners(BufferedImage sheetImage, double resolution) {
         final double radius = getCornerRadius();
         if (radius == 0d) {
@@ -1603,6 +1656,18 @@ public abstract class Sheet<G extends GameComponent> {
         return bi;
     }
 
+    /**
+     * Draws the outline of the card onto the image. Uses the bleed margin and
+     * corner radius values to trace the card edge. If both values are 0, the
+     * outline will simply follow the edge of the image. Intended for debugging
+     * or checking bleed margins.
+     *
+     * @param sheetImage the image, previously returned from
+     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
+     * to add the outline to
+     * @param resolution the resolution, in pixels per inch, of the sheet image
+     * @return a new image with the outline drawn onto it
+     */
     protected BufferedImage highlightEdge(BufferedImage sheetImage, double resolution) {
         final double margin = getBleedMargin();
         final double radius = getCornerRadius();
