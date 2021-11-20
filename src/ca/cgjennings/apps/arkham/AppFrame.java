@@ -1101,7 +1101,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         previewBackdropItem.setName("previewBackdropItem"); // NOI18N
         viewMenu.add(previewBackdropItem);
 
-        cardEdgeMenu.setText("Preview Card &Edge");
+        cardEdgeMenu.setText(string("app-card-edge")); // NOI18N
         cardEdgeMenu.setName("cardEdgeMenu"); // NOI18N
         viewMenu.add(cardEdgeMenu);
 
