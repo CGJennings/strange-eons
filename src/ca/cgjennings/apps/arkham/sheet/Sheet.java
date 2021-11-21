@@ -20,7 +20,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.TexturePaint;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
@@ -1647,9 +1646,9 @@ public abstract class Sheet<G extends GameComponent> {
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
         try {
-            g.setPaint(new TexturePaint(sheetImage, new Rectangle2D.Float(0, 0, w, h)));
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.fill(new RoundRectangle2D.Float(0, 0, w, h, r, r));
+            applyContextHints(g);
+            g.setClip(new RoundRectangle2D.Float(0, 0, w, h, r, r));
+            g.drawImage(sheetImage, null, null);
         } finally {
             g.dispose();
         }
