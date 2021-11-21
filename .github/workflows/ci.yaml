@@ -1,6 +1,12 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -13,5 +19,5 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Build with Ant
+      - name: Compile project
         run: ant -Dplatforms.JDK_1.8.home=$JDK_HOME compile -noinput -buildfile build.xml
