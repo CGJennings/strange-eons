@@ -50,6 +50,7 @@ import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
@@ -93,26 +94,40 @@ import resources.Settings;
  * @since 3.0
  */
 public final class StrangeEons {
-
     private static final int VER_MAJOR = 3;
-    private static final int VER_MINOR = 2;
-    private static final ReleaseType VER_TYPE = ReleaseType.BETA;
-
+    private static final int VER_MINOR = 3;
+    /** The build number, which increases monotonically on each release. */
     private static final int VER_BUILD;
-
-    /**
-     * This build number indicates an "internal development build", not an
-     * official release.
-     */
+    /** The release type describes whether this is a beta version, etc. */
+    private static final ReleaseType VER_TYPE;
+    /** Special build number indicating that this is not running as a packaged app. */
     static final int INTERNAL_BUILD_NUMBER = 99_999;
 
     static {
-        try(InputStreamReader in = new InputStreamReader(StrangeEons.class.getResourceAsStream("rev"), StandardCharsets.UTF_8)) {
-            String number = new BufferedReader(in).readLine().trim();
-            VER_BUILD = Integer.parseInt(number);
-        } catch (IOException | NumberFormatException e) {
-            throw new AssertionError("missing or invalid build number");
+        // Autodetect version details from file generated during app packaging
+        ReleaseType ver_type = ReleaseType.DEVELOPMENT;
+        int ver_build = INTERNAL_BUILD_NUMBER;
+
+        InputStream releaseInfoIn = StrangeEons.class.getResourceAsStream("rev");
+        if (releaseInfoIn != null) {
+            try(BufferedReader br = new BufferedReader(new InputStreamReader(releaseInfoIn, StandardCharsets.UTF_8))) {
+                ver_build = Integer.parseInt(br.readLine().trim());
+                if (ver_build != INTERNAL_BUILD_NUMBER) {
+                    ver_type = ReleaseType.GENERAL;
+                    String type = br.readLine();
+                    if (type != null) {
+                        ver_type = ReleaseType.valueOf(type.trim().toUpperCase(Locale.ROOT));
+                    }
+                }
+            } catch (IllegalArgumentException | NullPointerException syntaxEx) {
+                throw new AssertionError("invalid revision syntax");
+            } catch (IOException e) {
+                // if missing or unreadable fall back to dev build
+            }
         }
+
+        VER_BUILD = ver_build;
+        VER_TYPE = ver_type;
     }
 
     /**
