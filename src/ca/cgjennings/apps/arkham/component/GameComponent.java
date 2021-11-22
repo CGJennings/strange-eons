@@ -21,6 +21,20 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public interface GameComponent extends Serializable, Cloneable {
+    /**
+     * Returns the standard class map name that describes this component.
+     * For a compiled component this is the fully qualified name of the class.
+     * For a standard DIY component, it is {@code diy:} followed by the resource
+     * path of the script file.
+     * If the component was created from a {@code script:} class map entry,
+     * that will not be returned. The name of the true underlying type that was
+     * ultimately created by the script is returned instead.
+     *
+     * @return the class map type of this instance
+     */
+    default String getClassName() {
+        return getClass().getName();
+    }
 
     /**
      * Returns the name of this component. This is not the name of the component
