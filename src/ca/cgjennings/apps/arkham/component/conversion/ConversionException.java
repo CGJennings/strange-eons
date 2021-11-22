@@ -7,6 +7,7 @@ package ca.cgjennings.apps.arkham.component.conversion;
  * @see ConversionSession#convertGameComponent(ConversionTrigger,
  * ca.cgjennings.apps.arkham.component.GameComponent)
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ConversionException extends Exception {
 

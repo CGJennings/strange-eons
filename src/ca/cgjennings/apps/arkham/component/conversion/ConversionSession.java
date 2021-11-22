@@ -35,6 +35,7 @@ import resources.Settings;
  * return the instance itself, so that they can be chained easily.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ConversionSession {
 
