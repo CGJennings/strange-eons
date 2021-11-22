@@ -9,6 +9,7 @@ import ca.cgjennings.graphics.PrototypingGraphics2D;
 import ca.cgjennings.layout.MarkupRenderer;
 import gamedata.Expansion;
 import gamedata.Game;
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -1647,7 +1648,9 @@ public abstract class Sheet<G extends GameComponent> {
         Graphics2D g = bi.createGraphics();
         try {
             applyContextHints(g);
-            g.setClip(new RoundRectangle2D.Float(0, 0, w, h, r, r));
+            g.setPaint(Color.WHITE);
+            g.fillRoundRect(0, 0, w, h, r, r);
+            g.setComposite(AlphaComposite.SrcIn);
             g.drawImage(sheetImage, null, null);
         } finally {
             g.dispose();
