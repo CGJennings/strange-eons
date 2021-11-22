@@ -31,4 +31,9 @@ public abstract class AbstractConversionTrigger implements ConversionTrigger {
     public String getRequiredExtensionId() {
         return requiredExtensionId;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ", cause " + getCause();
+    }
 }

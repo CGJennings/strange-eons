@@ -42,4 +42,11 @@ public class ManualConversionTrigger extends AbstractConversionTrigger {
     public String getCause() {
         return "manual";
     }
+
+    @Override
+    public String toString() {
+        String s = super.toString();
+        if (group != null) s += ", group $" + group;
+        return s;
+    }
 }

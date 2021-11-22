@@ -86,6 +86,11 @@ public interface ConversionTrigger {
             public String getRequiredExtensionId() {
                 return extensionId;
             }
+
+            @Override
+            public String toString() {
+                return "basic trigger, cause " + getCause();
+            }
         };
     }
 }
