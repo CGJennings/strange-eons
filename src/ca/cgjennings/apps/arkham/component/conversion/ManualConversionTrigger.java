@@ -6,6 +6,7 @@ package ca.cgjennings.apps.arkham.component.conversion;
  * {@code "manual"} from {@link #getCause()}.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ManualConversionTrigger extends AbstractConversionTrigger {
 
