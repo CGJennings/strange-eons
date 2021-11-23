@@ -159,22 +159,23 @@ public class Open extends TaskAction {
             return true;
         }
 
-        if (ProjectUtilities.matchExtension(f, "cardlayout")) {
-            StrangeEons.getWindow().addEditor(new CardLayoutEditor(f));
-            return true;
-        }
+        // default handling for built-in files
+        final String ext = member != null ? member.getExtension() : ProjectUtilities.getFileExtension(f);
+        switch (ext) {
+            case "cardlayout":
+                StrangeEons.getWindow().addEditor(new CardLayoutEditor(f));
+                return true;
+            case "idx":
+                JDialog d = new TextIndexViewer(StrangeEons.getWindow(), f);
+                if (project != null) {
+                    project.getView().moveToLocusOfAttention(d);
+                }
+                d.setVisible(true);
+                return true;
 
-        if (ProjectUtilities.matchExtension(f, "idx")) {
-            JDialog d = new TextIndexViewer(StrangeEons.getWindow(), f);
-            if (project != null) {
-                project.getView().moveToLocusOfAttention(d);
-            }
-            d.setVisible(true);
-            return true;
-        }
-
-        if (ProjectUtilities.matchExtension(f, MetadataSource.DictionaryMetadata.DICTIONARY_EXTENSIONS)) {
-            try {
+            case "cpl":
+            case "3tree":
+                            try {
                 DictionaryEditor ed = new DictionaryEditor(StrangeEons.getWindow(), f);
                 if (project != null) {
                     project.getView().moveToLocusOfAttention(ed);
@@ -186,73 +187,26 @@ public class Open extends TaskAction {
             return true;
         }
 
-        if (ProjectUtilities.matchExtension(f, codeTypes)) {
-            CodeEditor ed;
-            String ext = member != null ? member.getExtension() : ProjectUtilities.getFileExtension(f);
-            int i;
-            for (i = 0; i < codeTypes.length; ++i) {
-                if (codeTypes[i].equals(ext)) {
-                    break;
-                }
+        CodeEditor ed = null;
+        // backwards compatibility: very old parsed resources used ".txt"
+        // extension, but in a plug-in task context
+        if ("txt".equals(ext)) {
+            if (!MetadataSource.TextMetadata.isDocType(member)) {
+                ed = new CodeEditor(f, CodeEditor.CodeType.SETTINGS);
             }
-            switch (i) {
-                // "js", "java", "txt", "utf8", "properties", "html"
-                // "classmap", "silhouettes", "tiles", "text", "settings",
-                // "css", "ajs", "svg", "collection", "ts", "conversionmap"
-                case 0: // js
-                case 12: // ajs
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SCRIPT, CodeEditor.CodeType.JAVASCRIPT);
-                    break;
-                case 1: // java
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.JAVA);
-                    break;
-                case 2: // txt
-                case 9:
-                case 10:
-                    if (MetadataSource.TextMetadata.isDocType(member)) {
-                        ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.PLAIN);
-                    } else {
-                        ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.SETTINGS);
-                    }
-                    break;
-                case 3: //utf8
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.PLAIN);
-                    break;
-                case 4: // properties
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UI_PROPERTIES, CodeEditor.CodeType.PROPERTIES);
-                    break;
-                case 5: // html
-                case 13: // svg
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.HTML);
-                    break;
-                case 6: // classmap
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.CLASS_MAP);
-                    break;
-                case 7: // silhouettes
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.SILHOUETTES);
-                    break;
-                case 8: // tiles
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.TILES);
-                    break;
-                case 11: // css
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.CSS);
-                    break;
-                case 14: // collection
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.SETTINGS);
-                    break;
-                case 15: // typescript
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_UTF8, CodeEditor.CodeType.TYPESCRIPT);
-                    break;
-                case 16: // conversionmap
-                    ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.CONVERSION_MAP);
-                    break;
-                default:
-                    throw new AssertionError();
+        }
+        // check extension against known code types
+        if (ed == null) {
+            for (CodeEditor.CodeType type : CodeEditor.CodeType.values()) {
+                if (!type.getExtension().equals(ext)) continue;
+                ed = new CodeEditor(f, type);
             }
-
+        }
+        if (ed != null) {
             StrangeEons.getWindow().addEditor(ed);
             return true;
         }
+
         return false;
     }
 
@@ -331,14 +285,8 @@ public class Open extends TaskAction {
         return member != null && !member.isFolder();
     }
 
-    static final String[] internalTypes = new String[]{
+    private static final String[] internalTypes = new String[]{
         "eon", "seplugin", "seext", "setheme", "selibrary"
-    };
-
-    static final String[] codeTypes = new String[]{
-        "js", "java", "txt", "utf8", "properties", "html",
-        "classmap", "silhouettes", "tiles", "text", "settings",
-        "css", "ajs", "svg", "collection", "ts", "conversionmap"
     };
 
     /**

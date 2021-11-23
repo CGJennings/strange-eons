@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.io.EscapedTextCodec;
 import ca.cgjennings.text.SETemplateProcessor;
 import ca.cgjennings.util.SortedProperties;
@@ -183,7 +184,7 @@ class ScriptWriter {
      * Adds a fragment from an arbitrary file.
      */
     public void appendFragment(File file) throws IOException {
-        append(ProjectUtilities.getFileAsString(file, ProjectUtilities.ENC_UTF8));
+        append(ProjectUtilities.getFileAsString(file, TextEncoding.SOURCE_CODE));
     }
 
     /**
@@ -205,12 +206,12 @@ class ScriptWriter {
      * @throws IOException
      */
     public void writeScript(File file) throws IOException {
-        ProjectUtilities.copyReader(new StringReader(getScript()), file, ProjectUtilities.ENC_SCRIPT);
+        ProjectUtilities.copyReader(new StringReader(getScript()), file, TextEncoding.SOURCE_CODE);
     }
 
     public void writeScript(File file, String encoding) throws IOException {
         String text = getScript();
-        if (!encoding.equals(ProjectUtilities.ENC_UTF8)) {
+        if (!encoding.equalsIgnoreCase(TextEncoding.SOURCE_CODE)) {
             text = EscapedTextCodec.escapeUnicode(text);
         }
         ProjectUtilities.copyReader(new StringReader(text), file, encoding);

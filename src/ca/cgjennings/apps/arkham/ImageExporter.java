@@ -436,7 +436,7 @@ public class ImageExporter {
         try {
             try {
                 OutputStream out = exporter.addEntry(readmeName);
-                writer = new BufferedWriter(new OutputStreamWriter(out, "utf-8"));
+                writer = new BufferedWriter(new OutputStreamWriter(out, TextEncoding.HTML_CSS_CS));
                 writer.write(text);
             } catch (WrappedException we) {
                 handleWrappedException(we);

@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.NoOpErrorReporter;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.debugging.DebuggingCallback.DebugEventListener;
@@ -387,8 +388,8 @@ public final class DefaultScriptDebugger {
     private void service(Socket client, IsolatedServerThread thread) throws IOException {
         PrintWriter w = null;
         try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            w = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), "utf-8")));
+            BufferedReader r = new BufferedReader(new InputStreamReader(client.getInputStream(), TextEncoding.DEBUGGER_CS));
+            w = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), TextEncoding.DEBUGGER_CS)));
 
             String protocol = r.readLine();
             if (!"SEDP3".equals(protocol)) {

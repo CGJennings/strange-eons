@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import static ca.cgjennings.apps.arkham.plugins.debugging.Command.escapeHTML;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
@@ -2435,8 +2436,8 @@ public final class Client extends javax.swing.JFrame {
             s.setSoTimeout(soTimeout);
             s.setPerformancePreferences(2, 1, 0);
             s.setTcpNoDelay(true);
-            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), "utf-8")));
-            in = new BufferedReader(new InputStreamReader(s.getInputStream(), "utf-8"));
+            out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(s.getOutputStream(), TextEncoding.DEBUGGER_CS)));
+            in = new BufferedReader(new InputStreamReader(s.getInputStream(), TextEncoding.DEBUGGER_CS));
             out.println("SEDP3");
             out.println(name);
             if (args != null) {
