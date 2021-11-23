@@ -22,7 +22,7 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import resources.Language;
 import resources.Settings;
@@ -35,6 +35,7 @@ import resources.Settings;
  * return the instance itself, so that they can be chained easily.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ConversionSession {
 
@@ -60,6 +61,11 @@ public class ConversionSession {
         this.source = source;
         this.target = target;
         copyPortraitPossible = source instanceof PortraitProvider && target instanceof PortraitProvider;
+        StrangeEons.log.info(
+                "conversion from type " + source.getClassName() +
+                " to type " + target.getClassName() +
+                ": " + trigger
+        );
     }
 
     /**
@@ -101,6 +107,7 @@ public class ConversionSession {
     public void cancel(String reason) {
         cancelled = true;
         cancelReason = reason;
+        StrangeEons.log.info("cancelling: " + reason);
     }
 
     /**
@@ -514,7 +521,7 @@ public class ConversionSession {
                 return (GameComponent) Class.forName(className).getConstructor().newInstance();
             }
         } catch (Exception e) {
-            throw new ConversionException("unable to crate a new instance of " + className, e);
+            throw new ConversionException("unable to create a new instance of " + className, e);
         }
     }
 

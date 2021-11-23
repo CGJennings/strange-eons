@@ -9,6 +9,7 @@ import java.util.Objects;
  * @see ConversionSession#convertGameComponent(ConversionTrigger,
  * ca.cgjennings.apps.arkham.component.GameComponent)
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public interface ConversionTrigger {
 
@@ -85,6 +86,11 @@ public interface ConversionTrigger {
             @Override
             public String getRequiredExtensionId() {
                 return extensionId;
+            }
+
+            @Override
+            public String toString() {
+                return "basic trigger, cause " + getCause();
             }
         };
     }

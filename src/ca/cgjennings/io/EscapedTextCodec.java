@@ -7,7 +7,8 @@ package ca.cgjennings.io;
  * that a line should be concatenated with the following line.
  *
  * Valid escapeUnicode sequences consist of a backslash (\) followed by any
- * of:<br>
+ * of:
+ *
  * <pre>
  * uXXXX   insert Unicode character U+XXXX (where XXXX is a 16-bit hexadecimal number)
  * n       newline

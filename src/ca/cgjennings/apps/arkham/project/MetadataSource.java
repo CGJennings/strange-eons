@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.Length;
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.diy.DIY;
@@ -167,6 +168,7 @@ public class MetadataSource {
                 "txt", string("prj-prop-txt"),
                 "utf8", string("prj-prop-utf8"),
                 "classmap", string("prj-prop-class-map"),
+                "conversionmap", string("prj-prop-conversion-map"),
                 "silhouettes", string("prj-prop-sil"),
                 "tiles", string("prj-prop-tiles"),
                 "css", string("prj-prop-css"),
@@ -452,41 +454,47 @@ public class MetadataSource {
             return null;
         }
         Charset encoding = null;
-        for (int i = 0; i < KNOWN_TEXT_FILE_TYPES.length; ++i) {
-            if (m.getExtension().equals(KNOWN_TEXT_FILE_TYPES[i])) {
-                encoding = KNOWN_TEXT_FILE_ENCODINGS[i];
+        for (int i = 0; i < KNOWN_TEXT_TYPES_MAP.length; i += 2) {
+            if (m.getExtension().equals(KNOWN_TEXT_TYPES_MAP[i])) {
+                encoding = (Charset) KNOWN_TEXT_TYPES_MAP[i+1];
                 break;
             }
         }
         // eons-plugin has no extension, but not everything with no extension
         // is eons-plugin...
         if (m.getName().equals("eons-plugin")) {
-            encoding = KNOWN_TEXT_FILE_ENCODINGS[2]; // set to UTF-8
+            encoding = TextEncoding.PLUGIN_ROOT_CS;
         }
         return encoding;
     }
-    private static final String[] KNOWN_TEXT_FILE_TYPES = new String[]{
-        "txt", "text", "utf8", "htm", "html", "properties", "js", "java",
-        "classmap", "tiles", "silhouettes", "css", "cardlayout", "ajs",
-        "settings", "collection"
+
+    private static final Object[] KNOWN_TEXT_TYPES_MAP = new Object[] {
+      "txt", TextEncoding.UTF8_CS,
+      "text", TextEncoding.UTF8_CS,
+      "utf8", TextEncoding.UTF8_CS,
+
+      "htm", TextEncoding.HTML_CSS_CS,
+      "html", TextEncoding.HTML_CSS_CS,
+      "css", TextEncoding.HTML_CSS_CS,
+
+      "properties", TextEncoding.STRINGS_CS,
+      
+      "ajs", TextEncoding.SCRIPT_CODE_CS,
+      "js", TextEncoding.SCRIPT_CODE_CS,
+      "java", TextEncoding.SCRIPT_CODE_CS,
+      "ts", TextEncoding.SCRIPT_CODE_CS,
+      
+      "cardlayout", TextEncoding.CARD_LAYOUT_CS,
+      
+      "settings", TextEncoding.SETTINGS_CS,
+
+      "classmap", TextEncoding.PARSED_RESOURCE_CS,
+      "tiles", TextEncoding.PARSED_RESOURCE_CS,
+      "silhouettes", TextEncoding.PARSED_RESOURCE_CS,
+      "conversionmap", TextEncoding.PARSED_RESOURCE_CS,
+
+      "collection", TextEncoding.SETTINGS_CS,
     };
-    private static final Charset[] KNOWN_TEXT_FILE_ENCODINGS = new Charset[]{
-        Charset.forName("iso-8859-15"),
-        Charset.forName("utf-8"),
-        Charset.forName("utf-8"),
-        Charset.forName("utf-8"),
-        Charset.forName("utf-8"),
-        Charset.forName("iso-8859-1"),
-        Charset.forName("utf-8"),
-        Charset.forName("utf-8"),
-        Charset.forName("iso-8859-15"),
-        Charset.forName("iso-8859-15"),
-        Charset.forName("iso-8859-15"),
-        Charset.forName("utf-8"),
-        Charset.forName("iso-8859-1"),
-        Charset.forName("utf-8"),
-        Charset.forName("iso-8859-1"),
-        Charset.forName("iso-8859-15"),};
 
     /**
      * This interface is implemented by objects that want to access textual
@@ -580,6 +588,7 @@ public class MetadataSource {
                 "doc", ICON_DOCUMENT,
                 "odt", ICON_DOCUMENT,
                 "classmap", ICON_CLASS_MAP,
+                "conversionmap", ICON_CONVERSION_MAP,
                 "silhouettes", ICON_SILHOUETTES,
                 "tiles", ICON_TILE_SET,
                 "css", ICON_STYLE_SHEET,
@@ -638,6 +647,7 @@ public class MetadataSource {
     public static final Icon ICON_EON_LIBRARY = getIcon("project/library.png");
     public static final Icon ICON_PACKED_BUNDLE = getIcon("project/packed-bundle.png");
     public static final Icon ICON_CLASS_MAP = getIcon("project/classmap.png");
+    public static final Icon ICON_CONVERSION_MAP = getIcon("project/conversionmap.png");
     public static final Icon ICON_SILHOUETTES = getIcon("project/sil.png");
     public static final Icon ICON_TILE_SET = getIcon("project/tiles.png");
     public static final Icon ICON_CARD_LAYOUT = getIcon("project/card-layout.png");
@@ -1000,7 +1010,7 @@ public class MetadataSource {
         public Charset getDefaultCharset(Member m) {
             BufferedReader r = null;
             try {
-                r = new BufferedReader(new InputStreamReader(new FileInputStream(m.getFile()), DEFAULT_CHARSET));
+                r = new BufferedReader(new InputStreamReader(new FileInputStream(m.getFile()), TextEncoding.UTF8_CS));
                 String line;
                 while ((line = r.readLine()) != null) {
                     // look for a <meta ... charset="..."> directive
@@ -1029,10 +1039,9 @@ public class MetadataSource {
                     }
                 }
             }
-            return DEFAULT_CHARSET;
+            return super.getDefaultCharset(m);
         }
         private static final String[] HTML_EXTENSIONS = new String[]{"html", "htm"};
-        private static final Charset DEFAULT_CHARSET = Charset.forName("utf-8");
         private static final Pattern PAT_ENCODING = Pattern.compile(
                 "<meta[^>]+\\s+content\\s*=\\s*['\"][^'\"]*charset=([-\\w])+[^'\"]*['\"][^>]*>",
                 Pattern.CASE_INSENSITIVE

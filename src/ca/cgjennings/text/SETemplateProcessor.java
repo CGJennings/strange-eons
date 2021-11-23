@@ -1,6 +1,7 @@
 package ca.cgjennings.text;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.IOException;
 import java.util.Locale;
@@ -108,7 +109,7 @@ public class SETemplateProcessor extends TemplateProcessor {
      */
     public String processFromResource(String templateResource) {
         try {
-            String text = ProjectUtilities.getResourceText(templateResource, ProjectUtilities.ENC_UTF8);
+            String text = ProjectUtilities.getResourceText(templateResource, TextEncoding.TEMPLATE);
             if (text == null) {
                 throw new IllegalArgumentException("no such resource: " + templateResource);
             }

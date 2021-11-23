@@ -1,5 +1,6 @@
 package ca.cgjennings.io;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * A buffered input stream reader that transparently converts escaped characters
@@ -68,13 +71,13 @@ public class EscapedLineReader extends LineNumberReader {
 
     /**
      * Creates a line reader for the specified input stream using a default
-     * buffer size.The encoding is assumed to be ISO-8859-15.
+     * buffer size. The encoding is assumed to be ISO-8859-15.
      *
      * @param in the input stream to read from
-     * @throws java.io.UnsupportedEncodingException
      */
-    public EscapedLineReader(InputStream in) throws UnsupportedEncodingException {
-        super(new InputStreamReader(in, RESOURCE_ENCODING));
+    public EscapedLineReader(InputStream in) {
+        super(new InputStreamReader(in, TextEncoding.PARSED_RESOURCE_CS));
+        setLineNumber(1);
     }
 
     /**
@@ -87,6 +90,7 @@ public class EscapedLineReader extends LineNumberReader {
      */
     public EscapedLineReader(InputStream in, String charset) throws UnsupportedEncodingException {
         super(new InputStreamReader(in, charset));
+        setLineNumber(1);
     }
 
     /**
@@ -98,6 +102,7 @@ public class EscapedLineReader extends LineNumberReader {
      */
     public EscapedLineReader(InputStream in, Charset charset) {
         super(new InputStreamReader(in, charset));
+        setLineNumber(1);
     }
 
     /**
@@ -108,7 +113,8 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws java.io.IOException
      */
     public EscapedLineReader(URL url) throws IOException {
-        super(new InputStreamReader(url.openStream(), RESOURCE_ENCODING));
+        super(new InputStreamReader(url.openStream(), TextEncoding.PARSED_RESOURCE_CS));
+        setLineNumber(1);
     }
 
     /**
@@ -121,6 +127,7 @@ public class EscapedLineReader extends LineNumberReader {
      */
     public EscapedLineReader(URL url, String charset) throws IOException {
         super(new InputStreamReader(url.openStream(), charset));
+        setLineNumber(1);
     }
 
     /**
@@ -131,20 +138,32 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws java.io.IOException
      */
     public EscapedLineReader(File f) throws IOException {
-        this(f.toURI().toURL());
+        this(f, TextEncoding.PARSED_RESOURCE);
     }
 
-    static final String RESOURCE_ENCODING = "iso-8859-15";
+    /**
+     * Creates a line reader that reads from the specified file, using a default
+     * buffer size and the specified encoding.
+     *
+     * @param f the file to read from
+     * @param charset the name of the character set to use, such as "UTF-8"
+     * @throws java.io.IOException
+     */
+    public EscapedLineReader(File f, String charset) throws IOException {
+        this(f.toURI().toURL(), charset);
+    }
 
     /**
      * Returns the next logical line from the stream, or null if the end of the
      * stream has been reached.The next logical line may consist of several
      * "natural" lines in the original file.Natural lines are concatenated into
      * a single logical line when a backslash character occurs immediately
-     * before the line separator between them. For example:      {@code 
+     * before the line separator between them. For example:
+     *
+     * <pre>
      * These two natural lines will \
      * form a single logical line.
-     * }
+     * </pre>
      *
      * <p>
      * A backslash is also used to introduce escape sequences. The sequences \n,
@@ -202,7 +221,7 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws IOException
      */
     public String[] readProperty() throws IOException {
-        return readProperty(true);
+        return readProperty(true, null);
     }
 
     /**
@@ -220,6 +239,10 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws IOException
      */
     public String[] readProperty(boolean skipEmptyLines) throws IOException {
+        return readProperty(skipEmptyLines, null);
+    }
+    
+    private String[] readProperty(boolean skipEmptyLines, String[] entry) throws IOException {
         String line = skipEmptyLines ? readNonemptyLineUnescaped() : readLineUnescaped();
         if (line == null) {
             return null;
@@ -238,9 +261,35 @@ public class EscapedLineReader extends LineNumberReader {
             }
             ++div;
         }
-        String key = unescapeLine(line.substring(0, div).trim());
-        String value = unescapeLine(line.substring(div + 1));
-        return new String[]{key.trim(), value.trim()};
+        final String key = unescapeLine(line.substring(0, div).trim()).trim();
+        final String value = unescapeLine(line.substring(div + 1)).trim();
+
+        if (entry == null) {
+            entry = new String[]{key, value}; 
+        } else {
+            entry[0] = key;
+            entry[1] = value;
+        }
+        
+        return entry;
+    }
+
+    /**
+     * Reads all remaining lines as a series of [key, value] pairs and stores
+     * them in the specified map.
+     *
+     * @param props the non-null map to add the read properties to
+     * @returns the map that was passed in
+     * @throws IOException if an I/O error occurs
+     */
+    public Map<String,String> readProperties(Map<String,String> props) throws IOException {
+        Objects.requireNonNull(props, "props");
+        String[] kv = readProperty(true, null);
+        while (kv != null) {
+            props.put(kv[0], kv[1]);
+            kv = readProperty(true, kv);
+        }
+        return props;
     }
 
     /**

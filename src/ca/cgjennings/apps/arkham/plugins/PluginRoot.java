@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.apps.arkham.plugins.catalog.Listing;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
@@ -78,7 +79,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
         try (ZipFile jar = bundle.getZipFile()) {
             ZipEntry entry = jar.getEntry(ROOT_FILE);
             if (entry != null) {
-                BufferedReader r = new BufferedReader(new InputStreamReader(jar.getInputStream(entry), "utf-8"));
+                BufferedReader r = new BufferedReader(new InputStreamReader(jar.getInputStream(entry), TextEncoding.PLUGIN_ROOT_CS));
                 parseStream(r);
             }
         }
@@ -98,7 +99,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
         }
         this.bundle = null;
 
-        try (BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), "utf-8"))) {
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(file), TextEncoding.PLUGIN_ROOT_CS))) {
             parseStream(r);
         }
     }
@@ -711,7 +712,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      */
     public void writeToBundleArchive(ZipOutputStream out) throws IOException {
         out.putNextEntry(new ZipEntry(ROOT_FILE));
-        out.write(toString().getBytes(ProjectUtilities.ENC_UTF8));
+        out.write(toString().getBytes(TextEncoding.PLUGIN_ROOT_CS));
         out.closeEntry();
     }
 
@@ -723,7 +724,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      */
     public void writeToFile(File f) throws IOException {
         try (OutputStream out = new FileOutputStream(f)) {
-            out.write(toString().getBytes(ProjectUtilities.ENC_UTF8));
+            out.write(toString().getBytes(TextEncoding.PLUGIN_ROOT_CS));
         }
     }
 

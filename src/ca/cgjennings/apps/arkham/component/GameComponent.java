@@ -21,6 +21,20 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public interface GameComponent extends Serializable, Cloneable {
+    /**
+     * Returns the standard class map name that describes this component.
+     * For a compiled component this is the fully qualified name of the class.
+     * For a standard DIY component, it is {@code diy:} followed by the resource
+     * path of the script file.
+     * If the component was created from a {@code script:} class map entry,
+     * that will not be returned. The name of the true underlying type that was
+     * ultimately created by the script is returned instead.
+     *
+     * @return the class map type of this instance
+     */
+    default String getClassName() {
+        return getClass().getName();
+    }
 
     /**
      * Returns the name of this component. This is not the name of the component
@@ -259,7 +273,9 @@ public interface GameComponent extends Serializable, Cloneable {
      * @see ConversionSession
      * @return a conversion context if the upgrade requires a conversion
      */
-    public UpgradeConversionTrigger createUpgradeConversionTrigger();
+    default UpgradeConversionTrigger createUpgradeConversionTrigger() {
+        return null;
+    }
 
     /**
      * Called on a component that is being converted into another component
@@ -272,7 +288,8 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param target the new component that will replace this one
      * @param context the conversion context
      */
-    public void convertFrom(ConversionSession session);
+    default void convertFrom(ConversionSession session) {
+    }
 
     /**
      * Called on the replacement component when converting a component to
@@ -285,5 +302,6 @@ public interface GameComponent extends Serializable, Cloneable {
      * @param source the old component that will be replaced
      * @param context the conversion context
      */
-    public void convertTo(ConversionSession session);
+    default void convertTo(ConversionSession session) {
+    }
 }

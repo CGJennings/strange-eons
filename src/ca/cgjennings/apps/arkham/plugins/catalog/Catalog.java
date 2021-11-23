@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins.catalog;
 
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.PluginBundle;
@@ -924,7 +925,7 @@ public class Catalog {
 
     private void readCatalog(InputStream in, final JProgressBar feedback, final int size) throws IOException {
         CountingInputStream cis = new CountingInputStream(in);
-        BufferedReader r = new BufferedReader(new InputStreamReader(cis, ProjectUtilities.ENC_UTF8));
+        BufferedReader r = new BufferedReader(new InputStreamReader(cis, TextEncoding.CATALOG_CS));
         StringBuilder comments = new StringBuilder();
         boolean commentsEnded = false;
 
@@ -1069,7 +1070,7 @@ public class Catalog {
      * @throws IOException if an error occurs while writing the catalog
      */
     public void write(OutputStream out) throws IOException {
-        BufferedWriter w = new BufferedWriter(new OutputStreamWriter(out, ProjectUtilities.ENC_UTF8));
+        BufferedWriter w = new BufferedWriter(new OutputStreamWriter(out, TextEncoding.CATALOG_CS));
 
         if (openingComments != null) {
             w.write(EscapedTextCodec.escapeUnicode(openingComments));

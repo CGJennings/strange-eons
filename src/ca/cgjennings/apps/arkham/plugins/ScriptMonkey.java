@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
@@ -206,7 +207,7 @@ public final class ScriptMonkey {
     /**
      * The standard encoding for script code stored in a file (UTF-8).
      */
-    public static final Charset SCRIPT_FILE_ENCODING = Charset.forName("UTF-8");
+    public static final Charset SCRIPT_FILE_ENCODING = TextEncoding.SCRIPT_CODE_CS;
 
     /**
      * Returns an object that implements a Java interface by calling script

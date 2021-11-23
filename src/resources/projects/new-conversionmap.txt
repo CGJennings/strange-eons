@@ -1,0 +1,54 @@
+#
+# A conversion map file adds new manual game component conversion options to the
+# Edit menu. The format is similar to the class map resources. It is recommended
+# to understand class map files before handling conversion map files.
+#
+# The file is divided into conversion groups (similar to class map categories),
+# with a number of conversion options within each group. It is recommended to
+# indent the conversion options so the groups are easier to distinguish. If a
+# group is repeated (even in another file) they will be merged together.
+#
+# A conversion option has the form:
+#     name = component | extension
+# Here the "name" is the name of the conversion option (usually the name of the
+# component type), which can be localized using "@" as in class maps.
+# The "component" is the component type this option converts TO. It has the same
+# format as used in the class map files.
+# The "extension" is optional. It should be included if the component type
+# belongs to another extension. It can be either the UUID or a CatalogID. The
+# conversion option will not show up if the extension is not installed or if it
+# is outdated.
+#
+# There are two types of conversion groups: direct and indirect.
+#
+# Direct conversion groups are created by putting a component type on its own
+# line. The conversion options within this group will be available for all
+# components of this component type.
+#
+# Indirect conversion groups have the following form:
+#     $id | name | $link1; $link2
+# The "id" is an id for the group that will be available when performing the
+# conversion. It needs to be prefixed with the "$" symbol.
+# The "name" is the name of the group that will be shown to the user, it can be
+# localized using "@".
+# The last part is an optional list of linked groups (using their group ids).
+# The conversion options within this group will be available to all the
+# component types included in the group. They will be organized in a sub menu.
+# The linked groups will likewise be available to all component types included
+# in the group. Group links are one-directional, component types in the linked
+# group will not automatically be linked to this group.
+#
+
+# direct conversion
+diy:yourname/source-component-type.js
+  My Conversion = diy:yourname/target-component-type.js
+
+# conversion group
+$my-group | My Conversion Group
+  My First Component = diy:yourname/first-component.js
+  My Second Component = diy:yourname/second-component.js
+  Their Component = diy:theirname/their-component.js | CatalogId(...)
+
+# links to another conversion group
+$another-group | @another-group-name | $my-group
+  @another-component = diy:yourname/another-component.js

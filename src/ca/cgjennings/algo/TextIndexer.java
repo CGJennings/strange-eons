@@ -365,7 +365,7 @@ public class TextIndexer implements MonitoredAlgorithm {
          */
         protected String read(String sourceID, URL url, String encodingHint) throws IOException {
             if (encodingHint == null) {
-                encodingHint = "UTF-8";
+                encodingHint = "utf-8";
             }
 
             if (isHTML(sourceID)) {

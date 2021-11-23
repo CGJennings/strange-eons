@@ -1,5 +1,6 @@
 package ca.cgjennings.io;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.text.LineWrapper;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * A writer that complements {@link EscapedLineReader} by automatically escaping
@@ -33,8 +35,16 @@ public class EscapedLineWriter extends BufferedWriter {
         this(new FileOutputStream(f));
     }
 
+    public EscapedLineWriter(File f, String charset) throws IOException {
+        this(new FileOutputStream(f), charset);
+    }
+
     public EscapedLineWriter(OutputStream out) throws IOException {
-        super(new OutputStreamWriter(out, EscapedLineReader.RESOURCE_ENCODING));
+        super(new OutputStreamWriter(out, TextEncoding.PARSED_RESOURCE_CS));
+    }
+
+    public EscapedLineWriter(OutputStream out, String charset) throws IOException {
+        super(new OutputStreamWriter(out, charset));
     }
 
     public EscapedLineWriter(Writer out, int sz) {
@@ -111,6 +121,19 @@ public class EscapedLineWriter extends BufferedWriter {
      */
     public void writeProperty(String key, String value) throws IOException {
         writeWrapped(escapeLine(key) + " = " + escape(value));
+    }
+
+    /**
+     * Writes a collection of properties as key, value pairs with escaping
+     * and line breaking.
+     *
+     * @param props the map of properties to write
+     * @throws IOException if an I/O error occurs
+     */
+    public void writeProperties(Map<String,String> props) throws IOException {
+        for (Map.Entry<String,String> kv : props.entrySet()) {
+            writeProperty(kv.getKey(), kv.getValue());
+        }
     }
 
     private void writeUnwrapped(String line) throws IOException {

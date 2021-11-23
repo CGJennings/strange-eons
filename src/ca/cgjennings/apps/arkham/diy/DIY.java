@@ -390,6 +390,14 @@ public class DIY extends AbstractGameComponent implements Handler {
         }
     }
 
+    @Override
+    public String getClassName() {
+        if (handlerScript == null) {
+            return super.getClassName();
+        }
+        return "diy:" + getHandlerScript();
+    }
+
     /**
      * Returns the resource name used to create a {@link Handler} for this
      * component, or {@code null} if the component was created directly

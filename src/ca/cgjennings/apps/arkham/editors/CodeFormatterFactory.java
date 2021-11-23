@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
 import ca.cgjennings.text.LineWrapper;
 import java.io.InputStream;
@@ -109,7 +110,7 @@ public final class CodeFormatterFactory {
                 if (engine == null) {
                     InputStream in = getClass().getResourceAsStream(sourceFile);
                     engine = new SEScriptEngine();
-                    engine.eval(new InputStreamReader(in, StandardCharsets.UTF_8));
+                    engine.eval(new InputStreamReader(in, TextEncoding.SOURCE_CODE));
                     in.close();
                 }
                 return (String) engine.invokeFunction(functionName, code);

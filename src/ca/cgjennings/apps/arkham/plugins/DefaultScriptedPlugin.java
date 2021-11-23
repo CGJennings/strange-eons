@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -60,7 +61,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
             } else {
                 in = new FileInputStream(scriptFile);
             }
-            BufferedReader r = new BufferedReader(new InputStreamReader(in, "utf-8"));
+            BufferedReader r = new BufferedReader(new InputStreamReader(in, TextEncoding.SOURCE_CODE));
 
             scriptEvalsOK = true;
             Object retval = monkey.eval(r);

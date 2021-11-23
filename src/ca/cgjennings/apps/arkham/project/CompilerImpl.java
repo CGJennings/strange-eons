@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.project;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
@@ -37,11 +38,11 @@ class CompilerImpl implements Compile.Compiler {
         temp.add("-g");
         temp.add("-deprecation");
         temp.add("-target");
-        temp.add("1.6");
+        temp.add("1.8");
         temp.add("-source");
-        temp.add("1.6");
+        temp.add("1.8");
         temp.add("-encoding");
-        temp.add("UTF-8");
+        temp.add(TextEncoding.SOURCE_CODE);
 
         File SEJar = BundleInstaller.getApplicationLibrary();
         temp.add("-classpath");
