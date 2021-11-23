@@ -88,34 +88,6 @@ public class TileSet {
     }
 
     /**
-     * Creates a suitable reader for a tile set resource.
-     *
-     * @param resource the resource location of the tile set
-     * @return a line reader that handles
-     */
-    public static EscapedLineReader createReader(String resource) {
-        URL url = null;
-        url = resources.ResourceKit.composeResourceURL(resource);
-        if (url == null) {
-            die(resource, null);
-            return null;
-        }
-        InputStream in = null;
-        try {
-            in = url.openStream();
-        } catch (IOException e) {
-            die(resource, e);
-            return null;
-        }
-
-        return new EscapedLineReader(in, Charset.forName("utf-8"));
-    }
-
-    private static void die(String resource, Throwable e) {
-        ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError(resources.Language.string("rk-err-data-resource", resource), e);
-    }
-
-    /**
      * An enumeration of the possible class values for a tile's tile set entry.
      */
     public static enum TileClass {

@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -266,12 +267,11 @@ public class Searcher {
         }
 
         if (ProjectUtilities.matchExtension(member, FORCED_SEARCH_EXTENSIONS)) {
-            return UTF8;
+            return TextEncoding.UTF8_CS;
         }
 
         return null;
     }
-    private Charset UTF8 = Charset.forName("utf-8");
 
     /**
      * Cancels the search before it completes.

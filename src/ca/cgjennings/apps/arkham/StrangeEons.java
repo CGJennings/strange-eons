@@ -1701,9 +1701,10 @@ public final class StrangeEons {
                 if (f.isEmpty()) {
                     continue;
                 }
-                File bf = new File(f);
+                File bf = new File(f).getAbsoluteFile();
                 if (bf.exists() && !bf.isDirectory()) {
                     bundles.add(bf);
+                    StrangeEons.log.log(Level.INFO, "accepted test bundle {0}", bf);
                 } else {
                     System.err.println("not a plug-in bundle: \"" + f + '"');
                     allAccepted = false;

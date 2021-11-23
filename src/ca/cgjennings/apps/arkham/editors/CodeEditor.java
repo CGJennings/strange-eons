@@ -6,6 +6,7 @@ import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.MarkupTargetFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
@@ -59,6 +60,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.EnumSet;
 import java.util.List;
@@ -298,11 +300,11 @@ public class CodeEditor extends AbstractSupportEditor {
             int b0 = in.read();
             if (b0 == 0xEE) {
                 if (in.read() == 0xBB && in.read() == 0xBF) {
-                    return Charset.forName("UTF-8");
+                    return StandardCharsets.UTF_8;
                 }
             } else if (b0 == 0xFE) {
                 if (in.read() == 0xFF) {
-                    return Charset.forName("UTF-16BE");
+                    return StandardCharsets.UTF_16BE;
                 }
             } else if (b0 == 0xFF) {
                 if (in.read() == 0xFE) {
@@ -311,7 +313,7 @@ public class CodeEditor extends AbstractSupportEditor {
                             return Charset.forName("UTF-32LE");
                         }
                     } else {
-                        return Charset.forName("UTF-16LE");
+                        return StandardCharsets.UTF_16LE;
                     }
                 }
             } else if (b0 == 0x00) {
@@ -367,19 +369,19 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public static enum CodeType {
         PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
-        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
-        TYPESCRIPT("ts", "prj-prop-typescript", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
-        JAVA("java", "prj-prop-java", ProjectUtilities.ENC_SCRIPT, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
-        PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
-        SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
-        CLASS_MAP("classmap", "prj-prop-class-map", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
-        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP, true),
-        SILHOUETTES("silhouettes", "prj-prop-sil", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
-        TILES("tiles", "prj-prop-tiles", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
-        HTML("html", "pa-new-html", null, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
-        CSS("css", "prj-prop-css", null, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
-        PLAIN_UTF8("utf8", "prj-prop-utf8", null, null, null, MetadataSource.ICON_FILE, false),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true);
+        JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
+        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
+        JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
+        PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
+        SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
+        CLASS_MAP("classmap", "prj-prop-class-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
+        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP, true),
+        SILHOUETTES("silhouettes", "prj-prop-sil", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
+        TILES("tiles", "prj-prop-tiles", TextEncoding.SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
+        HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
+        CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
+        PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE, false),
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true);
 
         private String enc;
         private Class<? extends Tokenizer> tokenizer;

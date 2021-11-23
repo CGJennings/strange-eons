@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
@@ -153,13 +154,13 @@ public class ScriptDebugging {
         if (location.startsWith("script:")) {
             location = location.substring("script:".length());
             try {
-                source = ProjectUtilities.getResourceText(location, "utf-8");
+                source = ProjectUtilities.getResourceText(location, TextEncoding.SOURCE_CODE);
             } catch (IOException e) {
             }
         } else if (location.startsWith("diy:")) {
             location = location.substring("diy:".length());
             try {
-                source = ProjectUtilities.getResourceText(location, "utf-8");
+                source = ProjectUtilities.getResourceText(location, TextEncoding.SOURCE_CODE);
             } catch (IOException e) {
             }
         } else {

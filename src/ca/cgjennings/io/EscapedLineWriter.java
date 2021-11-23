@@ -1,5 +1,6 @@
 package ca.cgjennings.io;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.text.LineWrapper;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,7 +40,7 @@ public class EscapedLineWriter extends BufferedWriter {
     }
 
     public EscapedLineWriter(OutputStream out) throws IOException {
-        super(new OutputStreamWriter(out, EscapedLineReader.RESOURCE_ENCODING));
+        super(new OutputStreamWriter(out, TextEncoding.PARSED_RESOURCE_CS));
     }
 
     public EscapedLineWriter(OutputStream out, String charset) throws IOException {

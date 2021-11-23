@@ -1,5 +1,6 @@
 package ca.cgjennings.io;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +76,7 @@ public class EscapedLineReader extends LineNumberReader {
      * @param in the input stream to read from
      */
     public EscapedLineReader(InputStream in) {
-        super(new InputStreamReader(in, RESOURCE_CHARSET));
+        super(new InputStreamReader(in, TextEncoding.PARSED_RESOURCE_CS));
         setLineNumber(1);
     }
 
@@ -112,7 +113,7 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws java.io.IOException
      */
     public EscapedLineReader(URL url) throws IOException {
-        super(new InputStreamReader(url.openStream(), RESOURCE_ENCODING));
+        super(new InputStreamReader(url.openStream(), TextEncoding.PARSED_RESOURCE_CS));
         setLineNumber(1);
     }
 
@@ -137,7 +138,7 @@ public class EscapedLineReader extends LineNumberReader {
      * @throws java.io.IOException
      */
     public EscapedLineReader(File f) throws IOException {
-        this(f, RESOURCE_ENCODING);
+        this(f, TextEncoding.PARSED_RESOURCE);
     }
 
     /**
@@ -151,10 +152,6 @@ public class EscapedLineReader extends LineNumberReader {
     public EscapedLineReader(File f, String charset) throws IOException {
         this(f.toURI().toURL(), charset);
     }
-
-
-    static final String RESOURCE_ENCODING = "iso-8859-15";
-    static final Charset RESOURCE_CHARSET = Charset.forName(RESOURCE_ENCODING);
 
     /**
      * Returns the next logical line from the stream, or null if the end of the

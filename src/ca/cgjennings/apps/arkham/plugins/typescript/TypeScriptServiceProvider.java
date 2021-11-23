@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,7 +73,7 @@ public class TypeScriptServiceProvider {
     private void load(String resourceFile) throws ScriptException {
         try(Reader r = new InputStreamReader(
                     TypeScriptServiceProvider.class.getResourceAsStream(resourceFile),
-                    StandardCharsets.UTF_8
+                    TextEncoding.SOURCE_CODE
             )) {
             engine.eval(r);
             r.close();

@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.MarkupTargetFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.prefs.LanguageCodeDescriptor;
 import ca.cgjennings.apps.arkham.plugins.PluginRoot;
@@ -1662,7 +1663,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         }
 
         try {
-            ProjectUtilities.copyReader(new StringReader(text), file, ProjectUtilities.ENC_UTF8);
+            ProjectUtilities.copyReader(new StringReader(text), file, TextEncoding.PLUGIN_ROOT);
             dispose();
         } catch (IOException e) {
             ErrorDialog.displayError(string("prj-err-write", file.getName()), e);
@@ -1836,7 +1837,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
                 valid = false;
                 if (f != null) {
                     try {
-                        String code = ProjectUtilities.getFileAsString(f, ProjectUtilities.ENC_UTF8);
+                        String code = ProjectUtilities.getFileAsString(f, TextEncoding.PLUGIN_ROOT);
                         if (isInstallType) {
                             valid = code.contains("install") && code.contains("uninstall");
                         } else {
