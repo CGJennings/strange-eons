@@ -10,22 +10,24 @@ import java.awt.Graphics2D;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class UndecoratedCardBack extends Sheet<GameComponent> {
-
     private final double bleedMargin;
-    private final double cornerRadius;
 
     public UndecoratedCardBack(GameComponent component, String templateKey) {
-        this(component, templateKey, 0d);
+        this(component, templateKey, 0d, -1d);
     }
 
     public UndecoratedCardBack(GameComponent component, String templateKey, double bleedMargin) {
-        this(component, templateKey, bleedMargin, 0d);
+        this(component, templateKey, bleedMargin, -1d);
     }
 
     public UndecoratedCardBack(GameComponent component, String templateKey, double bleedMargin, double cornerRadius) {
         super(component, templateKey);
         this.bleedMargin = bleedMargin;
-        this.cornerRadius = cornerRadius;
+
+        // retain default set by key unless an explicit radius was passed
+        if (cornerRadius >= 0d) {
+            setCornerRadius(cornerRadius);
+        }
     }
 
     @Override
@@ -41,10 +43,5 @@ public class UndecoratedCardBack extends Sheet<GameComponent> {
     @Override
     public double getBleedMargin() {
         return bleedMargin;
-    }
-
-    @Override
-    public double getCornerRadius() {
-        return cornerRadius;
     }
 }

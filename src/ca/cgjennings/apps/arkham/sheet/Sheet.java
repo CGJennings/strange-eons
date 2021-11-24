@@ -219,6 +219,8 @@ public abstract class Sheet<G extends GameComponent> {
             preferredUpsample = settings.getDouble(keybase + "-upsample");
         }
 
+        setCornerRadius(settings.getDouble(keybase + "-corner-radius", 0d));
+
         image = null;
         markChanged();
     }
@@ -945,13 +947,31 @@ public abstract class Sheet<G extends GameComponent> {
      * Returns the radius that should be used to round the corners of the
      * component, measured in points. This allows you to specify how the corners
      * of the component will be rounded when the trimmed edge style is selected.
-     * The base class defines a radius of 0, meaning there is no rounding.
+     * The default is a radius of 0, meaning there is no rounding.
      *
      * @return the size of the corner radius, in points (1 point = 1/72 inch)
      */
     public double getCornerRadius() {
-        return 0d;
+        return cornerRadius;
     }
+
+    /**
+     * Sets the corner radius used to round corners of the component, measured
+     * in points. Subclasses can use this instead of overriding {@link #getCornerRadius()}
+     * and design tools can use this to help developers find the right radius
+     * for their design.
+     * 
+     * @param radiusInPoints the new, non-negative radius to set
+     */
+    public void setCornerRadius(double radiusInPoints) {
+        if (radiusInPoints < 0d) throw new IllegalArgumentException("negative radius: " + radiusInPoints);
+        if (cornerRadius != radiusInPoints) {
+            cornerRadius = radiusInPoints;
+            markChanged();
+        }
+    }
+
+    private double cornerRadius = 0d;
 
     /**
      * Returns true if this sheet should have automatic crop and fold marks

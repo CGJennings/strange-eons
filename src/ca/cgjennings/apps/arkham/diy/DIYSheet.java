@@ -46,6 +46,7 @@ public final class DIYSheet extends Sheet<DIY> {
         this.diy = diy;
         this.index = index;
         diyFlags = diy.getFlags();
+        setCornerRadius(diy.getCornerRadius());
     }
 
     /**
@@ -453,11 +454,6 @@ public final class DIYSheet extends Sheet<DIY> {
     @Override
     public double getBleedMargin() {
         return diy.getBleedMargin();
-    }
-
-    @Override
-    public double getCornerRadius() {
-        return diy.getCornerRadius();
     }
 
     @Override
