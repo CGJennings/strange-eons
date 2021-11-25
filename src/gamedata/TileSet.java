@@ -10,12 +10,9 @@ import ca.cgjennings.apps.arkham.deck.item.OutlinedTile;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.deck.item.RotatableTile;
 import ca.cgjennings.apps.arkham.deck.item.Tile;
-import ca.cgjennings.io.EscapedLineReader;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -356,7 +353,7 @@ public class TileSet {
 
         /**
          * Returns the prototype page item for this tile set entry. This is the
-         * master item that appears in the deck editor's list of components.
+         * main item that appears in the deck editor's list of components.
          *
          * @return the prototype item for display in the deck editor
          */

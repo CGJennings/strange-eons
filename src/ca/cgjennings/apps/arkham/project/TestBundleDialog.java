@@ -21,7 +21,6 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import resources.Language;
 import static resources.Language.string;
-import resources.RawSettings;
 import resources.Settings;
 
 /**

@@ -22,7 +22,6 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 import resources.Language;
 import resources.Settings;

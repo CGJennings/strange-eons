@@ -213,7 +213,7 @@ public class AutomaticUpdater {
                     // *** NB: li.isnew must come first because each plug-in MUST be checked
                     newPlugins |= (li.isNew() && (state == VersioningState.NOT_INSTALLED || state == VersioningState.REQUIRES_APP_UPDATE) && !li.isHidden());
 
-                    // if this is the master catalog, check for SE updates
+                    // if this is the official catalog, check for SE updates
                     if (cat == 1) {
                         if (li.getCatalogID().getUUID().equals(APP_STABLE) && checkCoreApplicationListing(li)) {
                             foundSEUpdate = true;

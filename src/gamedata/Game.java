@@ -128,23 +128,30 @@ public final class Game implements Comparable<Game>, IconProvider {
     }
 
     /**
-     * Returns the master settings instance for this game. Each registered game
-     * has exactly one master settings instance. This is the preferred place to
+     * Returns the settings instance for this game. Each registered game
+     * has exactly one such instance. This is the preferred place to
      * store the default values for all of the settings used by a particular
-     * game. The master settings instance for a game should in turn be the
+     * game. The settings instance for a game should in turn be the
      * parent of all of the private settings instances for individual components
-     * that belong to that game. (The master settings table itself will have the
+     * that belong to that game. (The game's settings will in turn have the
      * shared settings as its parent.)
      *
-     * @return the master settings instance for this game
+     * @return the settings instance for this game
      */
-    public synchronized Settings getMasterSettings() {
-        if (masterSettings == null) {
-            masterSettings = new MasterSettings(this);
+    public synchronized Settings getSettings() {
+        if (settings == null) {
+            settings = new GameSettings(this);
         }
-        return masterSettings;
+        return settings;
     }
-    private Settings masterSettings;
+    private Settings settings;
+
+    
+    /** @deprecated Replaced by {@link #getSettings()}. */
+    @Deprecated
+    public final Settings getMasterSettings() {
+        return getSettings();
+    }
 
     /**
      * Returns the default style applicator used to modify the style of new
@@ -350,7 +357,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * <p>
      * When a component is created, a setting named {@code game} will be
      * added to it, set to the game code indicated by the class map file. The
-     * parent settings for that component will then be the master settings
+     * parent settings for that component will then be the settings
      * instance for the associated game. Components not associated with a
      * specific game in their class map will be associated with the special "all
      * games" game. (Generic components like {@link Marker}s use this game.)
@@ -379,7 +386,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * file names
      * @throws NullPointerException if the code or either name is
      * {@code null}
-     * @see #getMasterSettings()
+     * @see #getSettings()
      * @see #getAllGamesInstance()
      * @see ClassMap
      */
@@ -432,13 +439,13 @@ public final class Game implements Comparable<Game>, IconProvider {
 
     /**
      * The class of all settings instances returned from
-     * {@link #getMasterSettings()}.
+     * {@link #getSettings()}.
      */
-    public static final class MasterSettings extends Settings {
+    private static final class GameSettings extends Settings {
 
         private static final long serialVersionUID = 2_348_987_646_598_866_534L;
 
-        private MasterSettings(Game g) {
+        private GameSettings(Game g) {
             super.set(GAME_SETTING_KEY, g.code);
         }
 
@@ -446,19 +453,19 @@ public final class Game implements Comparable<Game>, IconProvider {
          * {@inheritDoc}
          *
          * <p>
-         * The master settings instance for a game will not allow you to change
+         * The settings instance for a game will not allow you to change
          * the value of the key with the name {@link #GAME_SETTING_KEY}.
          *
          * @throws IllegalArgumentException if the key is the
          * {@link #GAME_SETTING_KEY} and the value is not equal to the code for
-         * the game for which this is a master settings instance
+         * the game for which this is a settings instance
          */
         @Override
         public void set(String key, String value) {
             if (key.equals(GAME_SETTING_KEY)) {
                 String v = get(GAME_SETTING_KEY);
                 if ((v == null && value != null) || !v.equals(value)) {
-                    throw new IllegalArgumentException("cannot change the game setting of a game's master settings instance");
+                    throw new IllegalArgumentException("cannot change the game setting of a game's settings instance");
                 }
                 return; // no need to actually do the set since it would have no effect
             }
@@ -476,7 +483,12 @@ public final class Game implements Comparable<Game>, IconProvider {
                 code = g.code;
                 name = g.uiName;
             }
-            return "Settings (Master settings for " + code + '/' + name + ")";
+            return "Settings (for " + code + '/' + name + ")";
+        }
+
+        @Override
+        protected boolean isSerializedParent() {
+            return false;
         }
     };
 }

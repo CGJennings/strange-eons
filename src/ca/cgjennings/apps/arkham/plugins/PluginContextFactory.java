@@ -1,5 +1,10 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import java.awt.Toolkit;
+import java.awt.event.InputEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 /**
  * A factory for {@link PluginContext} instances.
  *

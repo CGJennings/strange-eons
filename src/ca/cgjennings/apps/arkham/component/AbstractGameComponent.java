@@ -1,7 +1,5 @@
 package ca.cgjennings.apps.arkham.component;
 
-import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
-import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
 import ca.cgjennings.graphics.ImageUtilities;

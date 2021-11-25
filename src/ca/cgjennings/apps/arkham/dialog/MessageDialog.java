@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.RootPaneContainer;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import se.datadosen.component.RiverLayout;

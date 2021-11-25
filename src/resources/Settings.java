@@ -15,7 +15,6 @@ import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.layout.TextStyle;
 import gamedata.Expansion;
 import gamedata.Game;
-import gamedata.Game.MasterSettings;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -94,15 +93,15 @@ import static resources.Language.string;
  * (in the sense of programming language theory) within the scope defined by its
  * parent. The most common place where plug-in developers encounter such scopes
  * is with the private settings instances found in {@link GameComponent}s. These
- * are always children of the {@link Game#getMasterSettings master settings} for
+ * are always children of the {@link Game#getSettings game settings} for
  * the game that the component belongs to, which in turn is a child of the
  * {@link #getShared shared global settings instance}. Thus, plug-in developers
  * can store the default values for settings used by the game component in the
- * game's master settings instance. This avoids unnecessary duplication and
+ * game's settings instance. This avoids unnecessary duplication and
  * makes it easier to change those defaults in future versions of the plug-in.
  * It also allows the end user to "hack" the layout of a component by modifying
  * the component's private settings to override values normally defined in the
- * game's master settings, such as image templates and text regions.
+ * game's settings, such as image templates and text regions.
  *
  * <p>
  * Most settings instances have a chain of parents that ultimately leads back to
@@ -477,13 +476,13 @@ public class Settings implements Serializable, Iterable<String> {
                 if (value != null) {
                     Game g = Game.get(value);
                     if (g != null) {
-                        Settings potentialParent = g.getMasterSettings();
+                        Settings potentialParent = g.getSettings();
                         if (potentialParent != this) {
                             parent = potentialParent;
                         }
                     }
                     if (parent == null) {
-                        StrangeEons.log.log(Level.WARNING, "no master settings for game {0}", value);
+                        StrangeEons.log.log(Level.WARNING, "no settings for game {0}", value);
                     }
                 }
             }
@@ -2759,7 +2758,7 @@ public class Settings implements Serializable, Iterable<String> {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(CURRENT_VERSION);
         out.writeObject(p);
-        if (parent != null && parent.getClass() != MasterSettings.class) {
+        if (parent != null && parent.isSerializedParent()) {
             out.writeObject(parent);
         } else {
             out.writeObject(null);
@@ -2787,9 +2786,9 @@ public class Settings implements Serializable, Iterable<String> {
         }
         if (version >= 3) {
             parent = (Settings) in.readObject();
-            // version 3 accidentally wrote master settings parent,
+            // version 3 accidentally wrote the game settings parent,
             // so we have to read this in, but null it out so the current
-            // master settings is applied below
+            // game settings are applied below
             if (version == 3) {
                 parent = null;
             }
@@ -3461,5 +3460,9 @@ public class Settings implements Serializable, Iterable<String> {
                 StrangeEons.log.log(Level.SEVERE, null, t);
             }
         }
+    }
+
+    protected boolean isSerializedParent() {
+        return true;
     }
 }

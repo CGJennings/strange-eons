@@ -5,7 +5,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import resources.Settings;
 
 /**
  * An enumeration of generic use cases for a requested rendering. When a caller

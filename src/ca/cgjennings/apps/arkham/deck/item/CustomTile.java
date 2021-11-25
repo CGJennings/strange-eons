@@ -37,7 +37,7 @@ import resources.StrangeImage;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public class CustomTile extends Tile implements EditablePageItem, SizablePageItem, UserBleedMarginStyle, OutlineStyle, MasterOpacityStyle {
+public class CustomTile extends Tile implements EditablePageItem, SizablePageItem, UserBleedMarginStyle, OutlineStyle, OpacityStyle {
 
     private float opacity = 1f;
     private boolean addCropMarks = false;

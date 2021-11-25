@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
 import ca.cgjennings.text.LineWrapper;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 /**

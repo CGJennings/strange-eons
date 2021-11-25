@@ -8,17 +8,17 @@ import java.text.ParseException;
 import static resources.Language.string;
 
 /**
- * The style panel for editing master opacity.
+ * The style panel for editing opacity.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
 @SuppressWarnings("serial")
-class MasterOpacityStylePanel extends AbstractStylePanel<MasterOpacityStylePanel> implements MasterOpacityStyle {
+class OpacityStylePanel extends AbstractStylePanel<OpacityStylePanel> implements OpacityStyle {
 
     private final NumberFormat formatter;
 
-    public MasterOpacityStylePanel() {
+    public OpacityStylePanel() {
         initComponents();
         formatter = NumberFormat.getPercentInstance();
         formatter.setMaximumFractionDigits(1);

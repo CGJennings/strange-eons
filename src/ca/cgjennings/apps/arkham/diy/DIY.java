@@ -235,7 +235,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Creates a new DIY component that will call into the given handler. If the
      * game code represents a registered game, the new component's settings will
-     * inherit from the master settings for that game.
+     * inherit from the settings for that game.
      *
      * @param handler the handler instance that will be called by this component
      * to perform customizable functions
@@ -261,7 +261,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Creates a new DIY component that will call into the given handler. If the
      * game code represents a registered game, the new component's settings will
-     * inherit from the master settings for that game. If the {@code debug}
+     * inherit from the settings for that game. If the {@code debug}
      * flag is set to {@code true}, then a breakpoint will be set at the
      * start of handler script.
      *

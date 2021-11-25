@@ -71,8 +71,9 @@ public interface GameComponent extends Serializable, Cloneable {
      * Returns a {@link Settings} instance that will return this component's
      * private settings. A component's private settings are saved along with the
      * component when it is written to a file. This can be used to override the
-     * default settings for component (stored in the master settings for the
-     * game) as a way to "hack" existing component designs. It can also be used
+     * default settings for component (which are determined by the the shared
+     * game settings for the game associated with the component)
+     * as a way to "hack" existing component designs. It can also be used
      * by the component itself to store arbitrary information.
      * {@link DIY DIY components} generally use the component's private settings
      * to store the current user-configurable state of the component.
@@ -80,7 +81,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * <p>
      * Note that setting the key with the name {@link Game#GAME_SETTING_KEY}
      * ("game") will change the parent scope of the private settings to the
-     * {@link Game#getMasterSettings() master settings instance} for that game
+     * {@link Game#getSettings() relevant game's settings} for that game
      * whose code matches the new value. (The initial value of this key is
      * normally set on the component's half using the game code specified in the
      * component's class map entry.)
