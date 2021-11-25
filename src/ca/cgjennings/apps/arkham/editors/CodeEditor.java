@@ -39,6 +39,7 @@ import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.ResourceFileTokenizer;
+import ca.cgjennings.ui.textedit.tokenizers.TypeScriptTokenizer;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -373,7 +374,7 @@ public class CodeEditor extends AbstractSupportEditor {
     public static enum CodeType {
         PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
         JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
-        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
+        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, TypeScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
         JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
         PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
         SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
