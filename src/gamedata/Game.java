@@ -149,7 +149,7 @@ public final class Game implements Comparable<Game>, IconProvider {
     
     /** @deprecated Replaced by {@link #getSettings()}. */
     @Deprecated
-    public Settings getMasterSettings() {
+    public final Settings getMasterSettings() {
         return getSettings();
     }
 

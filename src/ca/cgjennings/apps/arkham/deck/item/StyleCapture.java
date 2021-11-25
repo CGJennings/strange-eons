@@ -339,7 +339,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
 
     /**
      * Returns a set of the style classes that have been captured. For example,
-     * to test if the set contains a master opacity, you could use the following
+     * to test if the set contains a opacity, you could use the following
      * code:
      * <pre>
      * getCapturedStyles().contains( OpacityStyle.class );
