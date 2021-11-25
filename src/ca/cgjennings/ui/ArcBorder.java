@@ -9,8 +9,6 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 
 /**

@@ -4,34 +4,20 @@ import ca.cgjennings.apps.arkham.AbstractStrangeEonsEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.editors.NavigationPoint;
-import ca.cgjennings.apps.arkham.plugins.LibraryRegistry;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.apps.arkham.project.Project;
-import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.apps.arkham.project.Task;
-import ca.cgjennings.apps.arkham.project.TaskGroup;
 import ca.cgjennings.spelling.SpellingChecker;
 import ca.cgjennings.spelling.dict.TernaryTreeList;
 import ca.cgjennings.spelling.dict.WordList;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import gamedata.Game;
 import java.awt.Component;
 import java.io.File;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.text.Collator;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.swing.Icon;
-import resources.Language;
-import resources.Settings;
 
 /**
  * Utility methods useful during code completion. These methods have been

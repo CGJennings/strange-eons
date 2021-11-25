@@ -15,7 +15,6 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;

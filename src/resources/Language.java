@@ -3,7 +3,6 @@ package resources;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.graphics.filters.GlowFilter;
 import ca.cgjennings.i18n.IntegerPluralizer;
 import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.theme.ThemeInstaller;

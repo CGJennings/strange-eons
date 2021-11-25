@@ -1,14 +1,10 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
-import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
 import javax.script.ScriptException;
 
 /**

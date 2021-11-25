@@ -298,28 +298,31 @@ public class CodeEditor extends AbstractSupportEditor {
     public static Charset checkFileForBOM(File f) throws IOException {
         try (FileInputStream in = new FileInputStream(f)) {
             int b0 = in.read();
-            if (b0 == 0xEE) {
-                if (in.read() == 0xBB && in.read() == 0xBF) {
-                    return StandardCharsets.UTF_8;
-                }
-            } else if (b0 == 0xFE) {
-                if (in.read() == 0xFF) {
-                    return StandardCharsets.UTF_16BE;
-                }
-            } else if (b0 == 0xFF) {
-                if (in.read() == 0xFE) {
-                    if (in.read() == 0x00) {
+            switch (b0) {
+                case 0xEE:
+                    if (in.read() == 0xBB && in.read() == 0xBF) {
+                        return StandardCharsets.UTF_8;
+                    }   break;
+                case 0xFE:
+                    if (in.read() == 0xFF) {
+                        return StandardCharsets.UTF_16BE;
+                    }   break;
+                case 0xFF:
+                    if (in.read() == 0xFE) {
                         if (in.read() == 0x00) {
-                            return Charset.forName("UTF-32LE");
+                            if (in.read() == 0x00) {
+                                return Charset.forName("UTF-32LE");
+                            }
+                        } else {
+                            return StandardCharsets.UTF_16LE;
                         }
-                    } else {
-                        return StandardCharsets.UTF_16LE;
-                    }
-                }
-            } else if (b0 == 0x00) {
-                if (in.read() == 0x00 && in.read() == 0xFE && in.read() == 0xFF) {
-                    return Charset.forName("UTF-32BE");
-                }
+                    }   break;
+                case 0x00:
+                    if (in.read() == 0x00 && in.read() == 0xFE && in.read() == 0xFF) {
+                        return Charset.forName("UTF-32BE");
+                    }   break;
+                default:
+                    break;
             }
         }
         return null;
