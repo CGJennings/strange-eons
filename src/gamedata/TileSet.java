@@ -356,7 +356,7 @@ public class TileSet {
 
         /**
          * Returns the prototype page item for this tile set entry. This is the
-         * master item that appears in the deck editor's list of components.
+         * main item that appears in the deck editor's list of components.
          *
          * @return the prototype item for display in the deck editor
          */

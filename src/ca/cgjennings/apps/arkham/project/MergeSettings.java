@@ -9,8 +9,8 @@ import static resources.Language.string;
 import resources.Settings;
 
 /**
- * A task action that loads settings from a settings file into the shared or a
- * game's master settings. Useful when developing plug-ins that require certain
+ * A task action that loads settings from a settings file into the shared
+ * settings or a game's settings. Useful when developing plug-ins that require certain
  * settings to be available, such as DIY component scripts.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -124,7 +124,7 @@ public class MergeSettings extends TaskActionTree {
             ProjectUtilities.saveIfBeingEdited(member.getFile());
 
             // member cannot be null since appliesTo passed
-            Settings s = (game == null) ? Settings.getShared() : game.getMasterSettings();
+            Settings s = (game == null) ? Settings.getShared() : game.getSettings();
             try {
                 s.addSettingsFrom(member.getURL().toExternalForm());
                 return true;

@@ -286,9 +286,9 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     private Portrait portrait;
 
     /**
-     * Link this panel to another, master, panel. The image to use will be
-     * determined by the master panel. The image selection controls in this
-     * panel will be hidden.
+     * Link this panel to another panel. The image to use will be
+     * determined by the linked parent panel, so image selection
+     * is disabled.
      *
      * @param parent the panel to link to
      */
