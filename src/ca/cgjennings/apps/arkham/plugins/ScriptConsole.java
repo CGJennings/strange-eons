@@ -227,8 +227,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     }
 
     /**
-     * Returns a {@code PrintWriter} that can be used to write to the
-     * stdout stream of the console.
+     * Returns a {@code PrintWriter} that can be used to write to the stdout
+     * stream of the console.
      *
      * @return a print writer for {@link #getOutputStream()}
      */
@@ -237,8 +237,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     }
 
     /**
-     * Returns a {@code PrintWriter} that can be used to write to the
-     * stderr stream of the console.
+     * Returns a {@code PrintWriter} that can be used to write to the stderr
+     * stream of the console.
      *
      * @return a print writer for {@link #getErrorStream()}
      */
@@ -481,7 +481,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                     super.print(formatter.format(obj));
                 }
             } else if (obj instanceof Scriptable) {
-                if(Context.getCurrentContext() != null) {
+                if (Context.getCurrentContext() != null) {
                     super.print(ScriptableObject.callMethod((Scriptable) obj, "toString", NO_ARG_ARRAY));
                 } else {
                     ContextFactory.getGlobal().enterContext();
@@ -497,6 +497,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         }
         private final Object[] NO_ARG_ARRAY = new Object[0];
         private final NumberFormat formatter;
+
         {
             formatter = NumberFormat.getNumberInstance();
             formatter.setGroupingUsed(false);
@@ -543,8 +544,6 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                 StyleConstants.setForeground(attr, outColor == null ? Color.BLACK : outColor);
                 StyleConstants.setBold(attr, f.isBold());
             }
-//			StyleConstants.setFontFamily( attr, f.getFamily() );
-//			StyleConstants.setFontSize( attr, f.getSize() );
         }
 
         @Override
@@ -838,7 +837,6 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         if (text.length() == 0) {
             return;
         }
-        // text = text.replaceAll( "\r", "" ); // useful?
         try {
             StyledDocument sd = console.getStyledDocument();
             sd.insertString(sd.getLength(), text, isErr ? errcon.attr : outcon.attr);
@@ -849,12 +847,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         if (companion != null) {
             companion.print(text);
         }
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-        __postinsert();
-//			}
-//		} );
+
+        EventQueue.invokeLater(this::__postinsert);
     }
     private long lastFlushRepaintTime = System.nanoTime();
     private static final long MIN_FLUSH_REPAINT_PERIOD = 30_000_000;
@@ -862,9 +856,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     /**
      * Returns a description of the error at the offset into the console text
-     * under the specified point in the console window. Returns
-     * {@code null} if the line at that point does not represent a valid
-     * stack trace entry.
+     * under the specified point in the console window. Returns {@code null} if
+     * the line at that point does not represent a valid stack trace entry.
      *
      * @param p the point over the script console
      * @return a description of the stack trace element at that line, or
@@ -880,12 +873,12 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     }
 
     /**
-     * Returns a description of the error at the line at offset {@code pos}
-     * in the script console's text, or {@code null} if that line is not a
-     * stack trace line. The script console does not remember which lines are
-     * produced from a script stack trace. Rather, it attempts to parse lines on
-     * demand to extract the needed information. Therefore it can be fooled by
-     * lines that closely mimic the format of script stack traces.
+     * Returns a description of the error at the line at offset {@code pos} in
+     * the script console's text, or {@code null} if that line is not a stack
+     * trace line. The script console does not remember which lines are produced
+     * from a script stack trace. Rather, it attempts to parse lines on demand
+     * to extract the needed information. Therefore it can be fooled by lines
+     * that closely mimic the format of script stack traces.
      * <p>
      * If the line at the requested position cannot be parsed as a script stack
      * trace, then the immediately following line will also be tried. This is a
