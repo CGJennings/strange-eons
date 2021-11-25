@@ -1,0 +1,14 @@
+{
+  "name": "build-tools",
+  "version": "0.0.0",
+  "description": "Automate aspects of building SE",
+  "scripts": {
+    "ts": "update-ts-lib.js"
+  },
+  "author": "CGJ",
+  "devDependencies": {},
+  "dependencies": {
+    "jszip": "^3.7.1",
+    "uglify-js": "^3.14.3"
+  }
+}

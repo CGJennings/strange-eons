@@ -8,6 +8,8 @@ dist/
 nbdist/
 .nb-gradle/
 
+build-tools/node_modules/
+
 Thumbs.db
 
 # Log files
