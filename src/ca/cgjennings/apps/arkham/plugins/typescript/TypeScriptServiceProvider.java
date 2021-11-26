@@ -9,6 +9,7 @@ import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.logging.Level;
 import javax.script.ScriptException;
 
 /**
@@ -28,14 +29,17 @@ public class TypeScriptServiceProvider {
      * instantiated in a separate thread.
      */
     public TypeScriptServiceProvider() {
+        long startTime = System.currentTimeMillis();
+        StrangeEons.log.log(Level.INFO, "TS starting new service provider: {0}", Thread.currentThread());
         Context cx = Context.enter();
         try {
             engine = new SEScriptEngine();
             cx.setErrorReporter(new TSEngineErrorReporter(cx.getErrorReporter()));
+            cx.setDebugger(null, null);
             cx.setGeneratingDebug(false);
             cx.setGeneratingSource(false);
             // can't generate code as Rhino has 64k limit
-            cx.setOptimizationLevel(1);
+            cx.setOptimizationLevel(-1);
 
             // This file is stored in lib/typescript-services.jar to
             // reduce build times and prevent IDEs from trying to
@@ -52,6 +56,7 @@ public class TypeScriptServiceProvider {
         } finally {
             if (cx != null) Context.exit();
         }
+        StrangeEons.log.log(Level.INFO, "TS service provider started in {0} ms", System.currentTimeMillis() - startTime );
     }
 
     /**
