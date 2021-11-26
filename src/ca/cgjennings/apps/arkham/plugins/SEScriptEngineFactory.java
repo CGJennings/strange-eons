@@ -103,7 +103,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
                 return "Strange Rhino";
             case ScriptEngine.ENGINE_VERSION:
             case ScriptEngine.LANGUAGE_VERSION:
-                return "1.7.9-SE";
+                return "1.7.13-SE";
             case ScriptEngine.LANGUAGE:
                 return "ECMAScript";
             case "THREADING":
