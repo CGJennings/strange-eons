@@ -64,7 +64,7 @@ function doOrDie(task, f) {
 
     doOrDie("minify library", () => {
         const originalSize = Math.round(lib.length / 1024);
-        lib = uglify.minify(lib, {}).code;
+        lib = uglify.minify(lib).code;
         const minifiedSize = Math.round(lib.length / 1024);
         console.log(`minified from ${originalSize} kb to ${minifiedSize} kb`);
     });
