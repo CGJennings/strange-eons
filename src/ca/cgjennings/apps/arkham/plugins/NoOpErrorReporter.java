@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
-import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
 
 /**
  * An error reporter that does not generate any output. This is useful primarily

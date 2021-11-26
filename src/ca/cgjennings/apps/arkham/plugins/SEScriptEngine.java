@@ -24,18 +24,18 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.Function;
-import ca.cgjennings.script.mozilla.javascript.ImporterTopLevel;
-import ca.cgjennings.script.mozilla.javascript.JavaScriptException;
-import ca.cgjennings.script.mozilla.javascript.LazilyLoadedCtor;
-import ca.cgjennings.script.mozilla.javascript.RhinoException;
-import ca.cgjennings.script.mozilla.javascript.Script;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
-import ca.cgjennings.script.mozilla.javascript.ScriptableObject;
-import ca.cgjennings.script.mozilla.javascript.Synchronizer;
-import ca.cgjennings.script.mozilla.javascript.Undefined;
-import ca.cgjennings.script.mozilla.javascript.Wrapper;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.LazilyLoadedCtor;
+import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Synchronizer;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.Wrapper;
 import ca.cgjennings.script.util.InterfaceImplementor;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -137,7 +137,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         } catch (JavaScriptException jse) {
             int line = (line = jse.lineNumber()) == 0 ? -1 : line;
             Object value = jse.getValue();
-            String str = (value != null && value.getClass().getName().equals("ca.cgjennings.script.mozilla.javascript.NativeError")
+            String str = (value != null && value.getClass().getName().equals("org.mozilla.javascript.NativeError")
                     ? value.toString()
                     : jse.toString());
             throw new SEScriptException(jse, str, jse.sourceName(), line);
@@ -215,7 +215,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         } catch (JavaScriptException jse) {
             int line = (line = jse.lineNumber()) == 0 ? -1 : line;
             Object value = jse.getValue();
-            String str = (value != null && value.getClass().getName().equals("ca.cgjennings.script.mozilla.javascript.NativeError")
+            String str = (value != null && value.getClass().getName().equals("org.mozilla.javascript.NativeError")
                     ? value.toString()
                     : jse.toString());
             throw new SEScriptException(jse, str, jse.sourceName(), line);

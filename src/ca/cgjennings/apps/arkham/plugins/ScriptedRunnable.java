@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import ca.cgjennings.script.mozilla.javascript.Context;
+import org.mozilla.javascript.Context;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

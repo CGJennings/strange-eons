@@ -23,9 +23,9 @@
  */
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.ContextFactory;
-import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.ErrorReporter;
 import ca.cgjennings.script.util.*;
 import java.util.*;
 import javax.script.*;
@@ -102,11 +102,10 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
             case ScriptEngine.ENGINE:
                 return "Strange Rhino";
             case ScriptEngine.ENGINE_VERSION:
+            case ScriptEngine.LANGUAGE_VERSION:
                 return "1.7.9-SE";
             case ScriptEngine.LANGUAGE:
                 return "ECMAScript";
-            case ScriptEngine.LANGUAGE_VERSION:
-                return "6";
             case "THREADING":
                 return "MULTITHREADED";
             default:

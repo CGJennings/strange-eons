@@ -4,7 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.plugins.catalog.AutomaticUpdater;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.script.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.RhinoException;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.EventQueue;

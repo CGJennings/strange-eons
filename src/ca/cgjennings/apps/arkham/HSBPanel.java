@@ -3,7 +3,7 @@ package ca.cgjennings.apps.arkham;
 import static ca.cgjennings.apps.arkham.MarkupTargetFactory.enableTargeting;
 import ca.cgjennings.graphics.paints.CheckeredPaint;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.script.mozilla.javascript.NativeArray;
+import org.mozilla.javascript.NativeArray;
 import ca.cgjennings.ui.EyeDropper;
 import ca.cgjennings.ui.FilteredDocument;
 import ca.cgjennings.ui.OpacityLabel;

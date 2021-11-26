@@ -28,7 +28,7 @@ Error.error = function error(exception) {
     if (exception == null) {
         exception = 'unspecified error';
     } else if (exception instanceof java.lang.Throwable) {
-        ca.cgjennings.script.mozilla.javascript.Context.throwAsScriptRuntimeEx(exception);
+        org.mozilla.javascript.Context.throwAsScriptRuntimeEx(exception);
     } else if (exception instanceof Error) {
         throw exception;
     }
@@ -41,7 +41,7 @@ if (Settings.shared.getBoolean('script-warnings')) {
         frame = frame == null || frame != frame ? 1 : Math.max(0, -frame);
         let stack = useLibrary.__engine.getStackTrace();
         frame = Math.min(Math.max(0, stack.length - 1), frame);
-        ca.cgjennings.script.mozilla.javascript.Context.reportWarning(
+        org.mozilla.javascript.Context.reportWarning(
                 message, stack[frame].file, stack[frame].line, null, -1
                 );
     };

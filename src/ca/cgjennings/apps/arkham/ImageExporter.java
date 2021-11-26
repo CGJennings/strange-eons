@@ -7,7 +7,7 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.imageio.SimpleImageWriter;
-import ca.cgjennings.script.mozilla.javascript.WrappedException;
+import org.mozilla.javascript.WrappedException;
 import ca.cgjennings.text.SETemplateProcessor;
 import java.awt.Color;
 import java.awt.Graphics2D;

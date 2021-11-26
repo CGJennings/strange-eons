@@ -1,9 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.editors.NavigationPoint;
-import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
-import ca.cgjennings.script.mozilla.javascript.ast.AstRoot;
-import ca.cgjennings.script.mozilla.javascript.ast.IdeErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.ast.AstRoot;
+import org.mozilla.javascript.ast.IdeErrorReporter;
 import ca.cgjennings.ui.textedit.ErrorHighlighter;
 import ca.cgjennings.ui.textedit.HighlightedLine;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;

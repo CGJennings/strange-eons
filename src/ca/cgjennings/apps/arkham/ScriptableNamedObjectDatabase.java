@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Scriptable;
 import java.util.HashMap;
 
 /**
