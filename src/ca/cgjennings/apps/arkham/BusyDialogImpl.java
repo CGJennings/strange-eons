@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.script.mozilla.javascript.Context;
+import org.mozilla.javascript.Context;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
