@@ -1,7 +1,11 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
+import ca.cgjennings.script.mozilla.javascript.Context;
+import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
+import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -24,8 +28,15 @@ public class TypeScriptServiceProvider {
      * instantiated in a separate thread.
      */
     public TypeScriptServiceProvider() {
+        Context cx = Context.enter();
         try {
             engine = new SEScriptEngine();
+            cx.setErrorReporter(new TSEngineErrorReporter(cx.getErrorReporter()));
+            cx.setGeneratingDebug(false);
+            cx.setGeneratingSource(false);
+            // can't generate code as Rhino has 64k limit
+            cx.setOptimizationLevel(1);
+
             // This file is stored in lib/typescript-services.jar to
             // reduce build times and prevent IDEs from trying to
             // process it for errors, code completions, etc.
@@ -38,6 +49,8 @@ public class TypeScriptServiceProvider {
             services = engine.getInterface(bridgeImpl, TypeScriptServices.class);
         } catch(ScriptException ex) {
             throw new AssertionError("failed to parse library", ex);
+        } finally {
+            if (cx != null) Context.exit();
         }
     }
 
@@ -75,6 +88,35 @@ public class TypeScriptServiceProvider {
             r.close();
         } catch(IOException ex) {
             throw new AssertionError("unable to load " + resourceFile, ex);
+        }
+    }
+
+    private static class TSEngineErrorReporter implements ErrorReporter {
+        private ErrorReporter parent;
+
+        TSEngineErrorReporter(ErrorReporter parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            StrangeEons.log.severe("error in TS service lib");
+            if (parent != null) {
+                parent.error(message, sourceName, line, lineSource, lineOffset);
+            }
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            StrangeEons.log.severe("runtime error in TS service lib");
+            if (parent != null) {
+                return parent.runtimeError(message, sourceName, line, lineSource, lineOffset);
+            }
+            return null;
         }
     }
 }
