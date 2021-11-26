@@ -1,8 +1,8 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole.ConsolePrintWriter;
-import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
-import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
 import java.util.ResourceBundle;
 import resources.Settings;
 
@@ -75,6 +75,6 @@ class WarningErrorReporter implements ErrorReporter {
     }
 
     static final String CODE_HAS_NO_SIDE_EFECTS = ResourceBundle.getBundle(
-            "ca/cgjennings/script/mozilla/javascript/resources/Messages"
+            "org/mozilla/javascript/resources/Messages"
     ).getString("msg.no.side.effects");
 }

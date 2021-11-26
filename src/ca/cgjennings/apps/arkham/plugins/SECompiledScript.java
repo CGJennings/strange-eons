@@ -23,11 +23,11 @@
  */
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.JavaScriptException;
-import ca.cgjennings.script.mozilla.javascript.RhinoException;
-import ca.cgjennings.script.mozilla.javascript.Script;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
 import ca.cgjennings.script.util.ExtendedScriptException;
 import javax.script.*;
 
@@ -54,7 +54,7 @@ final class SECompiledScript extends CompiledScript {
         } catch (JavaScriptException jse) {
             int line = (line = jse.lineNumber()) == 0 ? -1 : line;
             Object value = jse.getValue();
-            String str = (value != null && value.getClass().getName().equals("ca.cgjennings.script.mozilla.javascript.NativeError")
+            String str = (value != null && value.getClass().getName().equals("org.mozilla.javascript.NativeError")
                     ? value.toString()
                     : jse.toString());
             throw new ExtendedScriptException(jse, str, jse.sourceName(), line);

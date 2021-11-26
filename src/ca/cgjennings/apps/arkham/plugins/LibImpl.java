@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Scriptable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;

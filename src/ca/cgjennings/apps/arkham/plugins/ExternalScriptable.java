@@ -23,15 +23,15 @@
  */
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.script.mozilla.javascript.ConstProperties;
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.Function;
-import ca.cgjennings.script.mozilla.javascript.NativeJavaClass;
-import ca.cgjennings.script.mozilla.javascript.ScriptRuntime;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
-import ca.cgjennings.script.mozilla.javascript.ScriptableObject;
-import ca.cgjennings.script.mozilla.javascript.Undefined;
-import ca.cgjennings.script.mozilla.javascript.Wrapper;
+import org.mozilla.javascript.ConstProperties;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.NativeJavaClass;
+import org.mozilla.javascript.ScriptRuntime;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.Wrapper;
 import java.util.*;
 import javax.script.*;
 

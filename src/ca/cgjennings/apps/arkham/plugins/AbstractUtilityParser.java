@@ -1,19 +1,19 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.script.mozilla.javascript.CompilerEnvirons;
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.ContextFactory;
-import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
-import ca.cgjennings.script.mozilla.javascript.Parser;
-import ca.cgjennings.script.mozilla.javascript.ast.AstRoot;
-import ca.cgjennings.script.mozilla.javascript.ast.ErrorCollector;
+import org.mozilla.javascript.CompilerEnvirons;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.Parser;
+import org.mozilla.javascript.ast.AstRoot;
+import org.mozilla.javascript.ast.ErrorCollector;
 import java.util.logging.Level;
 
 /**
  * This abstract base class is used to build tools that aid script code
  * developers. It parses script files into an abstract syntax tree and then
- * {@linkplain #processTree(ca.cgjennings.script.mozilla.javascript.ast.AstRoot)
+ * {@linkplain #processTree(org.mozilla.javascript.ast.AstRoot)
  * provides the tree root} to the concrete subclass.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
