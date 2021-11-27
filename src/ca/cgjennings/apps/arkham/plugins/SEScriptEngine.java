@@ -68,10 +68,6 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         Context cx = enterContext();
         try {
             topLevel = new ImporterTopLevel(cx, false);
-            
-            new LazilyLoadedCtor(topLevel, "JSAdapter",
-                    "ca.cgjennings.apps.arkham.plugins.JSAdapter",
-                    false);
 
             // add top level functions
             String names[] = { /*"bindings", "scope",*/"sync"};
