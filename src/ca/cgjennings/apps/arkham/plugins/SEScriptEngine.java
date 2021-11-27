@@ -48,33 +48,31 @@ import javax.script.*;
  */
 public final class SEScriptEngine extends AbstractScriptEngine implements Invocable, Compilable {
 
-    /* Scope where standard JavaScript objects and our
+    /**
+     * Scope where standard JavaScript objects and our
      * extensions to it are stored. Note that these are not
-     * user defined engine level global variables. These are
-     * variables that have to be there on all compliant ECMAScript
-     * scopes. We put these standard objects in this top level.
+     * the per-engine global variables declared by the user,
+     * but the standard objects expected in all scopes.
      */
     private ScriptableObject topLevel;
 
-    /* map used to store indexed properties in engine scope
-     * refer to comment on 'indexedProps' in ExternalScriptable.java.
-     */
+    /** Map that stores user-defined indexed properties in engine scope. */
     private Map indexedProps;
-
-    private SEScriptEngineFactory factory;
     private final InterfaceImplementor implementor;
-    /**
-     * Creates a new instance of SEScriptEngine
-     */
-    public SEScriptEngine() {
+    private final SEScriptEngineFactory factory;
+
+    /** Creates a new script engine. */
+    SEScriptEngine(SEScriptEngineFactory factory) {
+        this.factory = Objects.requireNonNull(factory);
 
         Context cx = enterContext();
-
         try {
             topLevel = new ImporterTopLevel(cx, false);
+            
             new LazilyLoadedCtor(topLevel, "JSAdapter",
                     "ca.cgjennings.apps.arkham.plugins.JSAdapter",
                     false);
+
             // add top level functions
             String names[] = { /*"bindings", "scope",*/"sync"};
             topLevel.defineFunctionProperties(names, SEScriptEngine.class, ScriptableObject.DONTENUM);
@@ -163,11 +161,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
 
     @Override
     public ScriptEngineFactory getFactory() {
-        if (factory != null) {
-            return factory;
-        } else {
-            return new SEScriptEngineFactory();
-        }
+        return factory;
     }
 
     @Override
@@ -303,10 +297,6 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         return Context.enter();
     }
 
-    void setEngineFactory(SEScriptEngineFactory fac) {
-        factory = fac;
-    }
-
     Object[] wrapArguments(Object[] args) {
         if (args == null) {
             return Context.emptyArgs;
@@ -322,7 +312,6 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         if (result instanceof Wrapper) {
             result = ((Wrapper) result).unwrap();
         }
-
         return result instanceof Undefined ? null : result;
     }
 
@@ -347,7 +336,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
     /**
      * Information about a single frame on the script call stack.
      */
-    public final static class ScriptTraceElement {
+    public static final class ScriptTraceElement {
 
         private String file;
         private int line;
