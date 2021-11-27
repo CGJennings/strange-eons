@@ -6,11 +6,13 @@ import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
+import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.logging.Level;
 import javax.script.ScriptException;
+import javax.swing.SwingUtilities;
 
 /**
  * A low-level Java interface to TypeScript language services.
@@ -33,14 +35,10 @@ public class TypeScriptServiceProvider {
         StrangeEons.log.log(Level.INFO, "TS starting new service provider: {0}", Thread.currentThread());
         Context cx = Context.enter();
         try {
-            engine = new SEScriptEngine();
-            cx.setErrorReporter(new TSEngineErrorReporter(cx.getErrorReporter()));
-            cx.setDebugger(null, null);
-            cx.setGeneratingDebug(false);
-            cx.setGeneratingSource(false);
-            // can't generate code as Rhino has 64k limit
-            cx.setOptimizationLevel(-1);
-
+            if (!SwingUtilities.isEventDispatchThread()) {
+                SEScriptEngineFactory.makeCurrentThreadAUtilityThread();
+            }
+            engine = SEScriptEngineFactory.getStandardScriptEngine();
             // This file is stored in lib/typescript-services.jar to
             // reduce build times and prevent IDEs from trying to
             // process it for errors, code completions, etc.
