@@ -391,20 +391,20 @@ public class CodeEditor extends AbstractSupportEditor {
      * The file types that can be edited by a {@code CodeEditor}.
      */
     public static enum CodeType {
-        PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
-        JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
-        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, TypeScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
-        JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
-        PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
-        SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
-        CLASS_MAP("classmap", "prj-prop-class-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
-        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP, true),
-        SILHOUETTES("silhouettes", "prj-prop-sil", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
-        TILES("tiles", "prj-prop-tiles", TextEncoding.SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
-        HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
-        CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
-        PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE, false),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, false),
+        PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT),
+        JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT),
+        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, TypeScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT),
+        JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA),
+        PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES),
+        SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS),
+        CLASS_MAP("classmap", "prj-prop-class-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP),
+        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP),
+        SILHOUETTES("silhouettes", "prj-prop-sil", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES),
+        TILES("tiles", "prj-prop-tiles", TextEncoding.SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET),
+        HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML),
+        CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET),
+        PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE),
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT),
         ;
 
         private final String enc;
@@ -415,22 +415,32 @@ public class CodeEditor extends AbstractSupportEditor {
         private final String ext;
         private final String description;
 
+        /**
+         * Declare a new code type.
+         *
+         * @param extension file extension
+         * @param descKey string key for localized string that describes format
+         * @param defaultEncoding default text encoding, null for UTF-8
+         * @param tokenizer tokenizer to syntax highlight code, null for none
+         * @param navigator navigator implementation to list important document nodes, null for none
+         * @param icon icon that represents the file type
+         */
         private CodeType(
                 String extension, String descKey, String defaultEncoding,
                 Class<? extends Tokenizer> tokenizer, Class<? extends Navigator> navigator,
-                Icon icon, boolean escapeOnSave
+                Icon icon
         ) {
             if (extension == null) {
                 throw new NullPointerException("extension");
             }
             if (defaultEncoding == null) {
-                defaultEncoding = ProjectUtilities.ENC_UTF8;
+                defaultEncoding = TextEncoding.UTF8;
             }
             this.ext = extension;
             this.enc = defaultEncoding;
             this.tokenizer = tokenizer;
             this.icon = icon;
-            this.escapeOnSave = escapeOnSave;
+            this.escapeOnSave = !defaultEncoding.equals(TextEncoding.UTF8);
             this.description = string(descKey);
             this.navigator = navigator;
         }
