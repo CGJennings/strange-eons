@@ -17,6 +17,7 @@ import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.apps.arkham.project.Task;
+import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.i18n.PatternExceptionLocalizer;
 import ca.cgjennings.io.EscapedTextCodec;
 import ca.cgjennings.math.Interpolation;
@@ -237,10 +238,10 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public CodeEditor(File file, String encoding, CodeType codeType) throws IOException {
         this();
-        setFile(file);
-        codeType.initializeEditor(this);
-        this.encoding = encoding;
         type = codeType;
+        codeType.initializeEditor(this);
+        setFile(file);
+        this.encoding = encoding;
 
         readFile();
 
@@ -278,13 +279,28 @@ public class CodeEditor extends AbstractSupportEditor {
         this.encoding = encoding;
         type = codeType;
 
-        editor.setEditable(false);
         editor.setText(text);
         editor.select(0, 0);
         editor.getDocument().clearUndoHistory();
         setUnsavedChanges(false);
 
         editor.setComponentPopupMenu(createPopupMenu());
+        setReadOnly(true);
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        if (readOnly == editor.isEditable()) {
+            editor.setEditable(!readOnly);
+            Icon i = type.getIcon();
+            if (readOnly) {
+                i = ImageUtilities.createDisabledIcon(i);
+            }
+            setFrameIcon(i);
+        }
+    }
+
+    public boolean isReadOnly() {
+        return editor.isEditable();
     }
 
     /**
@@ -366,6 +382,7 @@ public class CodeEditor extends AbstractSupportEditor {
         text = unescape(text);
         editor.setText(text);
         refreshNavigator(text);
+        setUnsavedChanges(false);
     }
 
     /**
@@ -385,7 +402,8 @@ public class CodeEditor extends AbstractSupportEditor {
         HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
         CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
         PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE, false),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true);
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true),
+        ;
 
         private String enc;
         private Class<? extends Tokenizer> tokenizer;
@@ -460,6 +478,59 @@ public class CodeEditor extends AbstractSupportEditor {
 
         public boolean getAutomaticCharacterEscaping() {
             return escapeOnSave;
+        }
+
+        /**
+         * If this file type should be processed automatically after writing
+         * it, perform that processing.
+         */
+        public boolean processAfterWrite(File source, String text) {
+            if (source == null) return false;
+
+            if (this == TYPESCRIPT) {
+                ca.cgjennings.apps.arkham.plugins.typescript.TypeScript.transpile(text, transpiled -> {
+                    final File js = this.getDependentFile(source);
+                    try {
+                        ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
+                    } catch(IOException ex) {
+                        StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+                    }
+                    refreshDependentFiles(this, js);
+                });
+                return false;
+            }
+
+            return true;
+        }
+
+        /**
+         * If this type generates another editable file type, returns the file
+         * name that the specified file would generate. For example, for
+         * {@code source.ts} this might return {@code source.js}.
+         *
+         * @param source the file containing source code of this type
+         * @return the file that compiled code should be written to, or null
+         * if this file type does not generate code
+         */
+        public File getDependentFile(File source) {
+            if (source == null || this != TYPESCRIPT) return null;
+            return ProjectUtilities.changeExtension(source, "js");
+        }
+
+        /**
+         * Given a file of this type, if that file's contents are controlled
+         * by another file that currently exists, returns that file.  For example, for
+         * {@code source.js} this might return {@code source.ts}.
+         *
+         * @param source the file that might be controlled by another file
+         * @return the file that controls the content of this file, or null
+         */
+        public File getDeterminativeFile(File source) {
+            if (source == null || this != JAVASCRIPT) return null;
+
+            File tsFile = ProjectUtilities.changeExtension(source, "ts");
+            if (tsFile.exists()) return tsFile;
+            return null;
         }
 
         private void initializeEditor(CodeEditor ce) {
@@ -1024,9 +1095,11 @@ public class CodeEditor extends AbstractSupportEditor {
     @Override
     public void setFile(File f) {
         super.setFile(f);
-        if (f != null && (!f.exists() || f.canWrite())) {
-            getEditor().setEditable(true);
+        boolean editable = false;
+        if (f != null && type.getDeterminativeFile(f) == null && (!f.exists() || f.canWrite())) {
+            editable = true;
         }
+        setReadOnly(!editable);
     }
 
 	private void closeBtncloseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtncloseClicked
@@ -1425,16 +1498,32 @@ public class CodeEditor extends AbstractSupportEditor {
         String text = editor.getText();
         ProjectUtilities.copyReader(new StringReader(escape(text)), f, encoding);
         refreshNavigator(text);
+        if (type.processAfterWrite(f, text)) {
+            refreshDependentFiles(type, f);
+        }
+    }
 
-        if(getCodeType() == CodeType.TYPESCRIPT) {
-            ca.cgjennings.apps.arkham.plugins.typescript.TypeScript.transpile(text, transpiled -> {
-                try {
-                    File js = ProjectUtilities.changeExtension(f, "js");
-                    ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
-                } catch(IOException ex) {
-                    StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+    /**
+     * Call to reload files that depend on this file and were changed when it
+     * was saved. This is called immediately if {@link CodeType#processAfterWrite}
+     * returns true. Otherwise it can be called manually if processing completes
+     * in another thread.
+     *
+     * @param f the file for which editors should be reloaded
+     */
+    private static void refreshDependentFiles(CodeType type, File f) {
+        File generated = type.getDependentFile(f);
+        if (generated != null) {
+            StrangeEonsEditor[] showingGenerated = StrangeEons.getWindow().getEditorsShowingFile(generated);
+            for (StrangeEonsEditor ed : showingGenerated) {
+                if (ed instanceof CodeEditor) {
+                    try {
+                        ((CodeEditor) ed).refresh();
+                    } catch(IOException ioe) {
+                        StrangeEons.log.log(Level.SEVERE, "failed to reload", ioe);
+                    }
                 }
-            });
+            }
         }
     }
 
