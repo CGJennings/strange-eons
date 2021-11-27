@@ -56,10 +56,10 @@ public class HTMLTokenizer extends Tokenizer {
         // we need to restore quoteType to match the correct character
         if (token == TokenType.INTERNAL2) {
             quoteType = '\'';
-            token = TokenType.LITERAL3;
+            token = TokenType.LITERAL_SPECIAL_1;
         } else if (token == TokenType.INTERNAL3) {
             quoteType = '"';
-            token = TokenType.LITERAL3;
+            token = TokenType.LITERAL_SPECIAL_1;
         }
 
         loop:
@@ -99,7 +99,7 @@ public class HTMLTokenizer extends Tokenizer {
                             break;
                     }
                     break;
-                case LITERAL3: // string literal inside a tag
+                case LITERAL_SPECIAL_1: // string literal inside a tag
                     if (c == quoteType) {
                         quoteType = '\0';
                         addToken(i1 - lastOffset, token);
@@ -120,7 +120,7 @@ public class HTMLTokenizer extends Tokenizer {
                         quoteType = c;
                         addToken(i - lastOffset, token);
                         lastOffset = lastKeyword = i;
-                        token = TokenType.LITERAL3;
+                        token = TokenType.LITERAL_SPECIAL_1;
                     }
                     break;
                 case KEYWORD1: // Inside a tag
@@ -173,7 +173,7 @@ public class HTMLTokenizer extends Tokenizer {
                                 doKeyword(line, i, c);
                                 addToken(i - lastOffset, TokenType.PLAIN);
                                 lastOffset = lastKeyword = i;
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
                             }
                             break;
                         case '\'':
@@ -183,7 +183,7 @@ public class HTMLTokenizer extends Tokenizer {
                                 doKeyword(line, i, c);
                                 addToken(i - lastOffset, TokenType.PLAIN);
                                 lastOffset = lastKeyword = i;
-                                token = TokenType.LITERAL2;
+                                token = TokenType.LITERAL_STRING2;
                             }
                             break;
                         case '/':
@@ -209,20 +209,21 @@ public class HTMLTokenizer extends Tokenizer {
                             break;
                     }
                     break;
-                case LITERAL1: // JavaScript "..."
+                case LITERAL_STRING1: // JavaScript "..."
                     if (backslash) {
                         backslash = false;
                     } else if (c == '"') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL1);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING1);
                         lastOffset = lastKeyword = i1;
                         token = TokenType.INTERNAL1;
                     }
                     break;
-                case LITERAL2: // JavaScript '...'
+
+                case LITERAL_STRING2: // JavaScript '...'
                     if (backslash) {
                         backslash = false;
                     } else if (c == '\'') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL1);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING1);
                         lastOffset = lastKeyword = i1;
                         token = TokenType.INTERNAL1;
                     }
@@ -241,8 +242,8 @@ public class HTMLTokenizer extends Tokenizer {
         }
 
         switch (token) {
-            case LITERAL1:
-            case LITERAL2:
+            case LITERAL_STRING1:
+            case LITERAL_STRING2:
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.INTERNAL1;
                 break;
@@ -254,10 +255,11 @@ public class HTMLTokenizer extends Tokenizer {
                 doKeyword(line, length, '\0');
                 addToken(length - lastOffset, TokenType.PLAIN);
                 break;
-            case LITERAL3:
-                addToken(length - lastOffset, TokenType.LITERAL3);
+            case LITERAL_SPECIAL_1:
+                addToken(length - lastOffset, TokenType.LITERAL_SPECIAL_1);
                 token = quoteType == '\'' ? TokenType.INTERNAL2 : TokenType.INTERNAL3;
                 break;
+
             default:
                 addToken(length - lastOffset, token);
                 break;

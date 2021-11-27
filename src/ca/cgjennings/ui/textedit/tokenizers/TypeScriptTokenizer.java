@@ -40,7 +40,7 @@ public class TypeScriptTokenizer extends Tokenizer {
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
-        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL1, TokenType.LITERAL2);
+        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL_STRING1, TokenType.LITERAL_STRING2);
     }
 
     @Override
@@ -97,7 +97,27 @@ public class TypeScriptTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '\'':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING2;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '`':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING3;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -108,7 +128,7 @@ public class TypeScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL5;
+                                    token = TokenType.LITERAL_SPECIAL_2;
                                     lastOffset = lastKeyword = i;
                                 }
                             }
@@ -126,19 +146,9 @@ public class TypeScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL3;
+                                    token = TokenType.LITERAL_SPECIAL_1;
                                     lastOffset = lastKeyword = i;
                                 }
-                            }
-                            break;
-                        case '\'':
-                            doKeyword(line, i);
-                            if (backslash) {
-                                backslash = false;
-                            } else {
-                                addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL2;
-                                lastOffset = lastKeyword = i;
                             }
                             break;
                         case ':':
@@ -180,7 +190,7 @@ public class TypeScriptTokenizer extends Tokenizer {
                                 if (lastWasRegExpPunct) {
                                     addToken(i - lastOffset, token);
                                     lastOffset = lastKeyword = i;
-                                    token = TokenType.LITERAL4;
+                                    token = TokenType.LITERAL_REGEX;
                                 }
                             }
                             break;
@@ -205,7 +215,7 @@ public class TypeScriptTokenizer extends Tokenizer {
                         }
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '"') {
@@ -214,17 +224,27 @@ public class TypeScriptTokenizer extends Tokenizer {
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL2:
+                case LITERAL_STRING2:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '\'') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL2);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING2);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL3:
-                case LITERAL5:
+                case LITERAL_STRING3:
+                    if (backslash) {
+                        backslash = false;
+                    } else if (c == '`') {
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING3);
+                        token = TokenType.PLAIN;
+                        lastOffset = lastKeyword = i1;
+                    }
+                    break;
+
+                case LITERAL_SPECIAL_1:
+                case LITERAL_SPECIAL_2:
                     if (!(Character.isJavaIdentifierPart(c) || c == '-')) {
                         addToken(i - lastOffset, token);
                         token = TokenType.PLAIN;
@@ -232,7 +252,7 @@ public class TypeScriptTokenizer extends Tokenizer {
                         --i;
                     }
                     break;
-                case LITERAL4:
+                case LITERAL_REGEX:
                     // Regular Expression Literal
                     if (backslash) {
                         backslash = false;
@@ -243,12 +263,13 @@ public class TypeScriptTokenizer extends Tokenizer {
                             ++i;
                             c1 = (i1 == length) ? '\0' : array[i1];
                         }
-                        addToken(i1 - lastOffset, TokenType.LITERAL4);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_REGEX);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     backslash = false;
                     break;
+
 
                 case INVALID:
                     // When a token is marked invalid within this loop it is
@@ -278,9 +299,9 @@ public class TypeScriptTokenizer extends Tokenizer {
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.PLAIN;
                 break;
-            case LITERAL1:
-            case LITERAL2:
-            case LITERAL4:
+            case LITERAL_STRING1:
+            case LITERAL_STRING2:
+            case LITERAL_REGEX:
                 if (backslash) {
                     addToken(length - lastOffset, token);
                 } else {
@@ -289,8 +310,8 @@ public class TypeScriptTokenizer extends Tokenizer {
                 }
                 break;
 
-            case LITERAL3:
-            case LITERAL5:
+            case LITERAL_SPECIAL_1:
+            case LITERAL_SPECIAL_2:
             case KEYWORD2:
                 addToken(length - lastOffset, token);
                 if (!backslash) {
@@ -419,8 +440,9 @@ public class TypeScriptTokenizer extends Tokenizer {
             tsKeywords.add("abstract", TokenType.KEYWORD1);
             tsKeywords.add("class", TokenType.KEYWORD1);
             tsKeywords.add("enum", TokenType.KEYWORD1);
-            tsKeywords.add("import", TokenType.KEYWORD1);
-            tsKeywords.add("export", TokenType.KEYWORD1);
+            tsKeywords.add("import", TokenType.KEYWORD2);
+            tsKeywords.add("export", TokenType.KEYWORD2);
+            tsKeywords.add("from", TokenType.KEYWORD1);
             tsKeywords.add("extends", TokenType.KEYWORD1);
             tsKeywords.add("final", TokenType.KEYWORD1);
             tsKeywords.add("implements", TokenType.KEYWORD1);

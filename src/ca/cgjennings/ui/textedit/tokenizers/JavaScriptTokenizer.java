@@ -58,7 +58,7 @@ public class JavaScriptTokenizer extends Tokenizer {
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
-        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL1, TokenType.LITERAL2);
+        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL_STRING1, TokenType.LITERAL_STRING2);
     }
 
     @Override
@@ -115,7 +115,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -126,7 +126,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL5;
+                                    token = TokenType.LITERAL_SPECIAL_2;
                                     lastOffset = lastKeyword = i;
                                 }
                             }
@@ -145,7 +145,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL3;
+                                    token = TokenType.LITERAL_SPECIAL_1;
                                     lastOffset = lastKeyword = i;
                                 }
                             }
@@ -156,7 +156,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL2;
+                                token = TokenType.LITERAL_STRING2;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -199,7 +199,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 if (lastWasRegExpPunct) {
                                     addToken(i - lastOffset, token);
                                     lastOffset = lastKeyword = i;
-                                    token = TokenType.LITERAL4;
+                                    token = TokenType.LITERAL_REGEX;
                                 }
                             }
                             break;
@@ -224,7 +224,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                         }
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '"') {
@@ -233,17 +233,18 @@ public class JavaScriptTokenizer extends Tokenizer {
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL2:
+                case LITERAL_STRING2:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '\'') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL2);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING2);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL3:
-                case LITERAL5:
+
+                case LITERAL_SPECIAL_1:
+                case LITERAL_SPECIAL_2:
                     if (!(Character.isJavaIdentifierPart(c) || c == '-')) {
                         addToken(i - lastOffset, token);
                         token = TokenType.PLAIN;
@@ -251,7 +252,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                         --i;
                     }
                     break;
-                case LITERAL4:
+                case LITERAL_REGEX:
                     // Regular Expression Literal
                     if (backslash) {
                         backslash = false;
@@ -262,12 +263,13 @@ public class JavaScriptTokenizer extends Tokenizer {
                             ++i;
                             c1 = (i1 == length) ? '\0' : array[i1];
                         }
-                        addToken(i1 - lastOffset, TokenType.LITERAL4);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_REGEX);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     backslash = false;
                     break;
+
 
                 case INVALID:
                     // When a token is marked invalid within this loop it is
@@ -297,9 +299,9 @@ public class JavaScriptTokenizer extends Tokenizer {
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.PLAIN;
                 break;
-            case LITERAL1:
-            case LITERAL2:
-            case LITERAL4:
+            case LITERAL_STRING1:
+            case LITERAL_STRING2:
+            case LITERAL_REGEX:
                 if (backslash) {
                     addToken(length - lastOffset, token);
                 } else {
@@ -308,8 +310,8 @@ public class JavaScriptTokenizer extends Tokenizer {
                 }
                 break;
 
-            case LITERAL3:
-            case LITERAL5:
+            case LITERAL_SPECIAL_1:
+            case LITERAL_SPECIAL_2:
             case KEYWORD2:
                 addToken(length - lastOffset, token);
                 if (!backslash) {
