@@ -290,7 +290,9 @@ public class CodeEditor extends AbstractSupportEditor {
 
     public void setReadOnly(boolean readOnly) {
         if (readOnly == editor.isEditable()) {
-            editor.setEditable(!readOnly);
+            final boolean editable = !readOnly;
+            editor.setCaretBlinkEnabled(editable);
+            editor.setEditable(editable);
             Icon i = type.getIcon();
             if (readOnly) {
                 i = ImageUtilities.createDisabledIcon(i);
@@ -402,15 +404,16 @@ public class CodeEditor extends AbstractSupportEditor {
         HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
         CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
         PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE, false),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true),
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, false),
         ;
 
-        private String enc;
-        private Class<? extends Tokenizer> tokenizer;
-        private Class<? extends Navigator> navigator;
-        private Icon icon;
-        private boolean escapeOnSave;
-        private String ext, description;
+        private final String enc;
+        private final Class<? extends Tokenizer> tokenizer;
+        private final Class<? extends Navigator> navigator;
+        private final Icon icon;
+        private final boolean escapeOnSave;
+        private final String ext;
+        private final String description;
 
         private CodeType(
                 String extension, String descKey, String defaultEncoding,
@@ -430,6 +433,20 @@ public class CodeEditor extends AbstractSupportEditor {
             this.escapeOnSave = escapeOnSave;
             this.description = string(descKey);
             this.navigator = navigator;
+        }
+
+        private static final CodeType[] readOnlyValues = values();
+
+        /** Return the type of this file, based on its extension, or null. */
+        public static CodeType forFile(File f) {
+            if (f == null) return null;
+            String ext = ProjectUtilities.getFileExtension(f);
+            for (int i=0; i<readOnlyValues.length; ++i) {
+                if (readOnlyValues[i].getExtension().equals(ext)) {
+                    return readOnlyValues[i];
+                }
+            }
+            return null;
         }
 
         public String getExtension() {
@@ -484,23 +501,25 @@ public class CodeEditor extends AbstractSupportEditor {
          * If this file type should be processed automatically after writing
          * it, perform that processing.
          */
-        public boolean processAfterWrite(File source, String text) {
-            if (source == null) return false;
+        void processAfterWrite(CodeEditor host, File source, String text) {
+            if (source == null) return;
 
             if (this == TYPESCRIPT) {
-                ca.cgjennings.apps.arkham.plugins.typescript.TypeScript.transpile(text, transpiled -> {
+                host.startedCodeGeneration();
+                TypeScript.transpile(text, transpiled -> {
                     final File js = this.getDependentFile(source);
                     try {
                         ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
+                        StrangeEons.log.fine("wrote transpiled code");
                     } catch(IOException ex) {
                         StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
                     }
-                    refreshDependentFiles(this, js);
+                    host.refreshDependentFiles(this, js);
+                    host.finishedCodeGeneration();
                 });
-                return false;
             }
 
-            return true;
+            return;
         }
 
         /**
@@ -533,6 +552,13 @@ public class CodeEditor extends AbstractSupportEditor {
             return null;
         }
 
+        /**
+         * Returns whether this code type represents runnable script code.
+         */
+        public boolean isRunnable() {
+            return this == JAVASCRIPT || this == AUTOMATION_SCRIPT || this == TYPESCRIPT;
+        }
+
         private void initializeEditor(CodeEditor ce) {
             JSourceCodeEditor ed = ce.getEditor();
             Tokenizer t = createTokenizer();
@@ -547,6 +573,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 EnumSet<TokenType> toSpellCheck = t.getNaturalLanguageTokenTypes();
                 if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
                     ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
+                    SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = Settings.getUser().getBoolean("spelling-code-enabled");
                 }
             }
 
@@ -1063,7 +1090,7 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         }
         if (command == Commands.RUN_FILE || command == Commands.DEBUG_FILE) {
-            if (getCodeType().normalize() == CodeType.JAVASCRIPT) {
+            if (getCodeType().normalize().isRunnable()) {
                 if (command == Commands.DEBUG_FILE) {
                     return ScriptDebugging.isInstalled();
                 }
@@ -1498,9 +1525,7 @@ public class CodeEditor extends AbstractSupportEditor {
         String text = editor.getText();
         ProjectUtilities.copyReader(new StringReader(escape(text)), f, encoding);
         refreshNavigator(text);
-        if (type.processAfterWrite(f, text)) {
-            refreshDependentFiles(type, f);
-        }
+        type.processAfterWrite(this, f, text);
     }
 
     /**
@@ -1511,7 +1536,7 @@ public class CodeEditor extends AbstractSupportEditor {
      *
      * @param f the file for which editors should be reloaded
      */
-    private static void refreshDependentFiles(CodeType type, File f) {
+    private void refreshDependentFiles(CodeType type, File f) {
         File generated = type.getDependentFile(f);
         if (generated != null) {
             StrangeEonsEditor[] showingGenerated = StrangeEons.getWindow().getEditorsShowingFile(generated);
@@ -1751,7 +1776,7 @@ public class CodeEditor extends AbstractSupportEditor {
             menu.addSeparator();
         }
 
-        if (type == CodeType.JAVASCRIPT) {
+        if (type.isRunnable()) {
             menu.add(Commands.RUN_FILE);
             if (ScriptDebugging.isInstalled()) {
                 menu.add(Commands.DEBUG_FILE);
@@ -2033,6 +2058,56 @@ public class CodeEditor extends AbstractSupportEditor {
         return getEditor().getDocumentLength();
     }
 
+    private int activeCodeGenerationRequests = 0;
+    private int pendingActionAfterCodeGeneration = 0;
+    private static final int POST_GEN_NO_ACTION = 0;
+    private static final int POST_GEN_RUN = 1;
+    private static final int POST_GEN_DEBUG = 2;
+
+    /**
+     * Called after a save when code generation starts. Allows generated code
+     * to be acted on once generation finishes, even if in another thread.
+     * Must be called on EDT.
+     */
+    private void startedCodeGeneration() {
+        if (!EventQueue.isDispatchThread()) {
+            throw new AssertionError();
+        }
+        ++activeCodeGenerationRequests;
+    }
+
+    /**
+     * Called after a save when code generation ends. Allows generated code
+     * to be acted on once generation finishes, even if in another thread.
+     * Must be called on EDT.
+     */
+    private void finishedCodeGeneration() {
+        if (!EventQueue.isDispatchThread()) {
+            throw new AssertionError();
+        }
+        if (activeCodeGenerationRequests > 0) {
+            --activeCodeGenerationRequests;
+            if (activeCodeGenerationRequests == 0) {
+                int actionWas = pendingActionAfterCodeGeneration;
+                pendingActionAfterCodeGeneration = POST_GEN_NO_ACTION;
+                switch (actionWas) {
+                    case POST_GEN_RUN:
+                        run(false);
+                        break;
+                    case POST_GEN_DEBUG:
+                        run(true);
+                        break;
+                    case POST_GEN_NO_ACTION:
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+            }
+        } else {
+            throw new AssertionError();
+        }
+    }
+
     /**
      * Run the current script.
      *
@@ -2048,6 +2123,14 @@ public class CodeEditor extends AbstractSupportEditor {
         if (f != null) {
             if (hasUnsavedChanges()) {
                 save();
+            }
+            if (activeCodeGenerationRequests > 0) {
+                StrangeEons.log.fine("deferring code execution until generation complete");
+                pendingActionAfterCodeGeneration = debugIfAvailable ? POST_GEN_DEBUG : POST_GEN_RUN;
+                return;
+            }
+            if (type.getDependentFile(f) != null) {
+                f = type.getDependentFile(f);
             }
             if (p != null) {
                 m = p.findMember(f);
