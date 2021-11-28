@@ -149,7 +149,7 @@ public final class ScriptMonkey {
         }
 
         // create the script engine factory and load the initial optimization settings
-        scriptEngineFactory = new SEScriptEngineFactory();
+        scriptEngineFactory = SEScriptEngineFactory.getStandardFactory();
         updateScriptEngineOpimizationSettings();
 
         // wait for parallel init of console to complete

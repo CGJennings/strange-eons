@@ -32,7 +32,7 @@ public class JavaTokenizer extends Tokenizer {
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
-        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL1);
+        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL_STRING1);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class JavaTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -79,7 +79,7 @@ public class JavaTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL2;
+                                token = TokenType.LITERAL_STRING2;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -140,7 +140,7 @@ public class JavaTokenizer extends Tokenizer {
                         }
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '"') {
@@ -149,16 +149,16 @@ public class JavaTokenizer extends Tokenizer {
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL2:
+                case LITERAL_STRING2:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '\'') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL1);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING1);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-//			    case TokenType.LITERAL3:
+//			    case TokenType.LITERAL_SPECIAL_1:
 //				if( !Character.isDigit(c) ) {
 //
 //				}
@@ -172,8 +172,8 @@ public class JavaTokenizer extends Tokenizer {
             doKeyword(line, length, '\0');
         }
         switch (token) {
-            case LITERAL1:
-            case LITERAL2:
+            case LITERAL_STRING1:
+            case LITERAL_STRING2:
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.PLAIN;
                 break;

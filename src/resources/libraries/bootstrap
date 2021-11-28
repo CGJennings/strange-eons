@@ -53,4 +53,5 @@ const useLibrary = (function () {
   Function.prototype.dontEnum('subclass');
   return uselibrary;
 })();
+var exports = {};
 useLibrary('common');

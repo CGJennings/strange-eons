@@ -87,7 +87,7 @@ public class CSSTokenizer extends Tokenizer {
                         case ':':
                             addToken(i - lastOffset, token);
                             addToken(1, TokenType.PLAIN);
-                            token = TokenType.LITERAL1;
+                            token = TokenType.LITERAL_STRING1;
                             lastOffset = i + 1;
                             break;
                         case '}':
@@ -106,7 +106,7 @@ public class CSSTokenizer extends Tokenizer {
                             break;
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     switch (c) {
                         case ';':
                             addToken(i - lastOffset, token);
@@ -117,12 +117,12 @@ public class CSSTokenizer extends Tokenizer {
                         case '\'':
                             addToken(i - lastOffset, token);
                             lastOffset = i;
-                            token = TokenType.LITERAL2;
+                            token = TokenType.LITERAL_STRING2;
                             break;
                         case '\"':
                             addToken(i - lastOffset, token);
                             lastOffset = i;
-                            token = TokenType.LITERAL3;
+                            token = TokenType.LITERAL_SPECIAL_1;
                             break;
                         case '}':
                             addToken(i - lastOffset, token);
@@ -140,18 +140,18 @@ public class CSSTokenizer extends Tokenizer {
                             break;
                     }
                     break;
-                case LITERAL2:
+                case LITERAL_STRING2:
                     if (c == '\'') {
                         addToken(i - lastOffset, token);
                         lastOffset = i;
-                        token = TokenType.LITERAL1;
+                        token = TokenType.LITERAL_STRING1;
                     }
                     break;
-                case LITERAL3:
+                case LITERAL_SPECIAL_1:
                     if (c == '\"') {
                         addToken(i - lastOffset, token);
                         lastOffset = i;
-                        token = TokenType.LITERAL1;
+                        token = TokenType.LITERAL_STRING1;
                     }
                     break;
                 default:
@@ -165,8 +165,8 @@ public class CSSTokenizer extends Tokenizer {
                 addToken(length - lastOffset, TokenType.KEYWORD1);
                 break;
 
-            case LITERAL2:
-            case LITERAL3:
+            case LITERAL_STRING2:
+            case LITERAL_SPECIAL_1:
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.PLAIN;
                 break;

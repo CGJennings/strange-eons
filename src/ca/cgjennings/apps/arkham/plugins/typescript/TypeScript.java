@@ -82,7 +82,8 @@ public final class TypeScript {
             for(;;) {
                 Request next = queue.poll(365L, TimeUnit.DAYS);
                 if(next == null) continue;
-                StrangeEons.log.log(Level.INFO, "received {0} request", next.type);
+                StrangeEons.log.log(Level.INFO, "TS service request: {0}", next.type);
+                long startTime = System.currentTimeMillis();
                 switch(next.type) {
                     case VERSION:
                         reply(next, tss.getVersion());
@@ -97,6 +98,7 @@ public final class TypeScript {
                     default:
                         throw new AssertionError();
                 }
+                StrangeEons.log.log(Level.INFO, "TS service request completed in {0} ms", System.currentTimeMillis() - startTime );
             }
         } catch(InterruptedException ie) {
             StrangeEons.log.warning("thread forced to exit");

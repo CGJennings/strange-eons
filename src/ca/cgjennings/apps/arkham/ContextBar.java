@@ -1063,6 +1063,17 @@ public final class ContextBar {
     }
 
     /**
+     * Removes a previously registered button by its ID.
+     * Has no effect if no such button is registered.
+     *
+     * @param id the ID of the button to remove
+     */
+    public static void unregisterButton(final String id) {
+       final Button b = templates.get(id) ;
+       if (b != null) unregisterButton(b);
+    }
+
+    /**
      * Removes a previously registered button.
      *
      * @param button the button to remove from the registry

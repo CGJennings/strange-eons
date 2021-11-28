@@ -7,14 +7,14 @@ import java.util.EnumSet;
 import javax.swing.text.Segment;
 
 /**
- * Tokenizer for editing JavaScript source files.
+ * Tokenizer for editing TypeScript source files.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 2.1
+ * @since 3.3
  */
-public class JavaScriptTokenizer extends Tokenizer {
+public class TypeScriptTokenizer extends Tokenizer {
 
-    public JavaScriptTokenizer() {
+    public TypeScriptTokenizer() {
         keywords = getKeywords();
     }
 
@@ -37,24 +37,6 @@ public class JavaScriptTokenizer extends Tokenizer {
         return completer;
     }
     private static CodeCompleter completer;
-
-    @Override
-    public WordDefiner getWordDefiner() {
-        return WORD_DEFINER;
-    }
-    private static final WordDefiner WORD_DEFINER = (int codePoint) -> {
-        if (Character.isAlphabetic(codePoint)) {
-            return true;
-        }
-        switch (codePoint) {
-            case '$':
-            case '#':
-            case '_':
-            case '@':
-                return true;
-        }
-        return false;
-    };
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
@@ -119,6 +101,26 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 lastOffset = lastKeyword = i;
                             }
                             break;
+                        case '\'':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING2;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '`':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING3;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
                         case '$':
                             if (!Character.isJavaIdentifierStart(cPrev)) {
                                 doKeyword(line, i);
@@ -132,8 +134,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                             }
                             break;
                         case '@':
-                        case '#':
-                            // @ and # cannot appear *inside* a var name, only at start
+                            // @ cannot appear *inside* a var name, only at start
                             if (Character.isJavaIdentifierPart(cPrev) && i > offset) {
                                 doKeyword(line, i);
                                 addToken(i - lastOffset, token);
@@ -148,16 +149,6 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     token = TokenType.LITERAL_SPECIAL_1;
                                     lastOffset = lastKeyword = i;
                                 }
-                            }
-                            break;
-                        case '\'':
-                            doKeyword(line, i);
-                            if (backslash) {
-                                backslash = false;
-                            } else {
-                                addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL_STRING2;
-                                lastOffset = lastKeyword = i;
                             }
                             break;
                         case ':':
@@ -238,6 +229,15 @@ public class JavaScriptTokenizer extends Tokenizer {
                         backslash = false;
                     } else if (c == '\'') {
                         addToken(i1 - lastOffset, TokenType.LITERAL_STRING2);
+                        token = TokenType.PLAIN;
+                        lastOffset = lastKeyword = i1;
+                    }
+                    break;
+                case LITERAL_STRING3:
+                    if (backslash) {
+                        backslash = false;
+                    } else if (c == '`') {
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING3);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
@@ -352,132 +352,141 @@ public class JavaScriptTokenizer extends Tokenizer {
     }
 
     public static KeywordMap getKeywords() {
-        if (jsKeywords == null) {
-            jsKeywords = new KeywordMap(false);
-            jsKeywords.add("function", TokenType.KEYWORD1);
-            jsKeywords.add("var", TokenType.KEYWORD1);
-            jsKeywords.add("const", TokenType.KEYWORD1);
-            jsKeywords.add("void", TokenType.KEYWORD1);
+        if (tsKeywords == null) {
+            tsKeywords = new KeywordMap(false);
+            tsKeywords.add("function", TokenType.KEYWORD1);
+            tsKeywords.add("var", TokenType.KEYWORD1);
+            tsKeywords.add("const", TokenType.KEYWORD1);
 
-            jsKeywords.add("else", TokenType.KEYWORD1);
-            jsKeywords.add("for", TokenType.KEYWORD1);
-            jsKeywords.add("if", TokenType.KEYWORD1);
-            jsKeywords.add("in", TokenType.KEYWORD1);
-            jsKeywords.add("new", TokenType.KEYWORD1);
-            jsKeywords.add("delete", TokenType.KEYWORD1);
-            jsKeywords.add("return", TokenType.KEYWORD1);
-            jsKeywords.add("do", TokenType.KEYWORD1);
-            jsKeywords.add("while", TokenType.KEYWORD1);
-            jsKeywords.add("with", TokenType.KEYWORD1);
-            jsKeywords.add("break", TokenType.KEYWORD1);
-            jsKeywords.add("switch", TokenType.KEYWORD1);
-            jsKeywords.add("case", TokenType.KEYWORD1);
-            jsKeywords.add("continue", TokenType.KEYWORD1);
-            jsKeywords.add("default", TokenType.KEYWORD1);
+            tsKeywords.add("else", TokenType.KEYWORD1);
+            tsKeywords.add("for", TokenType.KEYWORD1);
+            tsKeywords.add("if", TokenType.KEYWORD1);
+            tsKeywords.add("in", TokenType.KEYWORD1);
+            tsKeywords.add("new", TokenType.KEYWORD1);
+            tsKeywords.add("delete", TokenType.KEYWORD1);
+            tsKeywords.add("return", TokenType.KEYWORD1);
+            tsKeywords.add("do", TokenType.KEYWORD1);
+            tsKeywords.add("while", TokenType.KEYWORD1);
+            tsKeywords.add("with", TokenType.KEYWORD1);
+            tsKeywords.add("break", TokenType.KEYWORD1);
+            tsKeywords.add("switch", TokenType.KEYWORD1);
+            tsKeywords.add("case", TokenType.KEYWORD1);
+            tsKeywords.add("continue", TokenType.KEYWORD1);
+            tsKeywords.add("default", TokenType.KEYWORD1);
 
-            jsKeywords.add("try", TokenType.KEYWORD1);
-            jsKeywords.add("throw", TokenType.KEYWORD1);
-            jsKeywords.add("catch", TokenType.KEYWORD1);
-            jsKeywords.add("finally", TokenType.KEYWORD1);
-            jsKeywords.add("instanceof", TokenType.KEYWORD1);
-            jsKeywords.add("typeof", TokenType.KEYWORD1);
+            tsKeywords.add("try", TokenType.KEYWORD1);
+            tsKeywords.add("throw", TokenType.KEYWORD1);
+            tsKeywords.add("catch", TokenType.KEYWORD1);
+            tsKeywords.add("finally", TokenType.KEYWORD1);
+            tsKeywords.add("instanceof", TokenType.KEYWORD1);
+            tsKeywords.add("typeof", TokenType.KEYWORD1);
 
-            jsKeywords.add("null", TokenType.KEYWORD1);
-            jsKeywords.add("this", TokenType.KEYWORD1);
-            jsKeywords.add("true", TokenType.KEYWORD1);
-            jsKeywords.add("false", TokenType.KEYWORD1);
-            jsKeywords.add("undefined", TokenType.KEYWORD1);
+            tsKeywords.add("null", TokenType.KEYWORD1);
+            tsKeywords.add("this", TokenType.KEYWORD1);
+            tsKeywords.add("true", TokenType.KEYWORD1);
+            tsKeywords.add("false", TokenType.KEYWORD1);
+            tsKeywords.add("undefined", TokenType.KEYWORD1);
 
             // standard global objects, functions and properties
-            jsKeywords.add("eval", TokenType.KEYWORD2);
-            jsKeywords.add("decodeURI", TokenType.KEYWORD2);
-            jsKeywords.add("decodeURIComponent", TokenType.KEYWORD2);
-            jsKeywords.add("encodeURI", TokenType.KEYWORD2);
-            jsKeywords.add("encodeURIComponent", TokenType.KEYWORD2);
-            jsKeywords.add("isFinite", TokenType.KEYWORD2);
-            jsKeywords.add("isNaN", TokenType.KEYWORD2);
-            jsKeywords.add("parseFloat", TokenType.KEYWORD2);
-            jsKeywords.add("parseInt", TokenType.KEYWORD2);
-            jsKeywords.add("Infinity", TokenType.KEYWORD2);
-            jsKeywords.add("NaN", TokenType.KEYWORD2);
+            tsKeywords.add("eval", TokenType.KEYWORD2);
+            tsKeywords.add("decodeURI", TokenType.KEYWORD2);
+            tsKeywords.add("decodeURIComponent", TokenType.KEYWORD2);
+            tsKeywords.add("encodeURI", TokenType.KEYWORD2);
+            tsKeywords.add("encodeURIComponent", TokenType.KEYWORD2);
+            tsKeywords.add("isFinite", TokenType.KEYWORD2);
+            tsKeywords.add("isNaN", TokenType.KEYWORD2);
+            tsKeywords.add("parseFloat", TokenType.KEYWORD2);
+            tsKeywords.add("parseInt", TokenType.KEYWORD2);
+            tsKeywords.add("Infinity", TokenType.KEYWORD2);
+            tsKeywords.add("NaN", TokenType.KEYWORD2);
             // arguments is only valid in function scope
-            jsKeywords.add("arguments", TokenType.KEYWORD2);
+            tsKeywords.add("arguments", TokenType.KEYWORD2);
 
-            jsKeywords.add("Object", TokenType.KEYWORD2);
-            jsKeywords.add("Array", TokenType.KEYWORD2);
-            jsKeywords.add("Boolean", TokenType.KEYWORD2);
-            jsKeywords.add("Date", TokenType.KEYWORD2);
-            jsKeywords.add("Error", TokenType.KEYWORD2);
-            jsKeywords.add("EvalError", TokenType.KEYWORD2);
-            jsKeywords.add("RangeError", TokenType.KEYWORD2);
-            jsKeywords.add("ReferenceError", TokenType.KEYWORD2);
-            jsKeywords.add("SyntaxError", TokenType.KEYWORD2);
-            jsKeywords.add("TypeError", TokenType.KEYWORD2);
-            jsKeywords.add("URIError", TokenType.KEYWORD2);
-            jsKeywords.add("Function", TokenType.KEYWORD2);
-            jsKeywords.add("Math", TokenType.KEYWORD2);
-            jsKeywords.add("Number", TokenType.KEYWORD2);
-            jsKeywords.add("RegExp", TokenType.KEYWORD2);
-            jsKeywords.add("String", TokenType.KEYWORD2);
+            tsKeywords.add("Object", TokenType.KEYWORD2);
+            tsKeywords.add("Array", TokenType.KEYWORD2);
+            tsKeywords.add("Boolean", TokenType.KEYWORD2);
+            tsKeywords.add("Date", TokenType.KEYWORD2);
+            tsKeywords.add("Error", TokenType.KEYWORD2);
+            tsKeywords.add("EvalError", TokenType.KEYWORD2);
+            tsKeywords.add("RangeError", TokenType.KEYWORD2);
+            tsKeywords.add("ReferenceError", TokenType.KEYWORD2);
+            tsKeywords.add("SyntaxError", TokenType.KEYWORD2);
+            tsKeywords.add("TypeError", TokenType.KEYWORD2);
+            tsKeywords.add("URIError", TokenType.KEYWORD2);
+            tsKeywords.add("Function", TokenType.KEYWORD2);
+            tsKeywords.add("Math", TokenType.KEYWORD2);
+            tsKeywords.add("Number", TokenType.KEYWORD2);
+            tsKeywords.add("RegExp", TokenType.KEYWORD2);
+            tsKeywords.add("String", TokenType.KEYWORD2);
+
+            // TS
+            tsKeywords.add("any", TokenType.KEYWORD2);
+            tsKeywords.add("boolean", TokenType.KEYWORD2);
+            tsKeywords.add("string", TokenType.KEYWORD2);
+            tsKeywords.add("void", TokenType.KEYWORD2);
 
             // Newer versions of JS
-            jsKeywords.add("debugger", TokenType.KEYWORD1);
-            jsKeywords.add("yield", TokenType.KEYWORD1);
-            jsKeywords.add("let", TokenType.KEYWORD1);
-            jsKeywords.add("each", TokenType.KEYWORD1);
-            jsKeywords.add("get", TokenType.KEYWORD1);
-            jsKeywords.add("set", TokenType.KEYWORD1);
+            tsKeywords.add("debugger", TokenType.KEYWORD1);
+            tsKeywords.add("yield", TokenType.KEYWORD1);
+            tsKeywords.add("let", TokenType.KEYWORD1);
+            tsKeywords.add("each", TokenType.KEYWORD1);
+            tsKeywords.add("get", TokenType.KEYWORD1);
+            tsKeywords.add("set", TokenType.KEYWORD1);
             
-            jsKeywords.add("of", TokenType.KEYWORD1);
-            jsKeywords.add("in", TokenType.KEYWORD1);
+            tsKeywords.add("of", TokenType.KEYWORD1);
+            tsKeywords.add("in", TokenType.KEYWORD1);
 
+            // TS
+            tsKeywords.add("abstract", TokenType.KEYWORD1);
+            tsKeywords.add("class", TokenType.KEYWORD1);
+            tsKeywords.add("enum", TokenType.KEYWORD1);
+            tsKeywords.add("import", TokenType.KEYWORD2);
+            tsKeywords.add("export", TokenType.KEYWORD2);
+            tsKeywords.add("from", TokenType.KEYWORD1);
+            tsKeywords.add("extends", TokenType.KEYWORD1);
+            tsKeywords.add("final", TokenType.KEYWORD1);
+            tsKeywords.add("implements", TokenType.KEYWORD1);
+            tsKeywords.add("interface", TokenType.KEYWORD1);
+            tsKeywords.add("private", TokenType.KEYWORD1);
+            tsKeywords.add("protected", TokenType.KEYWORD1);
+            tsKeywords.add("public", TokenType.KEYWORD1);
+            tsKeywords.add("static", TokenType.KEYWORD1);
+            tsKeywords.add("super", TokenType.KEYWORD1);
+            tsKeywords.add("type", TokenType.KEYWORD1);
+            tsKeywords.add("typeof", TokenType.KEYWORD1);
+            tsKeywords.add("as", TokenType.KEYWORD1);
 
             // unimplemented reserved words
-            jsKeywords.add("abstract", TokenType.INVALID);
-            jsKeywords.add("boolean", TokenType.INVALID);
-            jsKeywords.add("byte", TokenType.INVALID);
-            jsKeywords.add("char", TokenType.INVALID);
-            jsKeywords.add("class", TokenType.INVALID);
-            jsKeywords.add("double", TokenType.INVALID);
-            jsKeywords.add("enum", TokenType.INVALID);
-            jsKeywords.add("export", TokenType.INVALID);
-            jsKeywords.add("extends", TokenType.INVALID);
-            jsKeywords.add("final", TokenType.INVALID);
-            jsKeywords.add("float", TokenType.INVALID);
-            jsKeywords.add("goto", TokenType.INVALID);
-            jsKeywords.add("implements", TokenType.INVALID);
-            jsKeywords.add("import", TokenType.INVALID);
-            jsKeywords.add("int", TokenType.INVALID);
-            jsKeywords.add("interface", TokenType.INVALID);
-            jsKeywords.add("long", TokenType.INVALID);
-            jsKeywords.add("native", TokenType.INVALID);
-            jsKeywords.add("package", TokenType.INVALID);
-            jsKeywords.add("private", TokenType.INVALID);
-            jsKeywords.add("protected", TokenType.INVALID);
-            jsKeywords.add("public", TokenType.INVALID);
-            jsKeywords.add("short", TokenType.INVALID);
-            jsKeywords.add("static", TokenType.INVALID);
-            jsKeywords.add("super", TokenType.INVALID);
-            jsKeywords.add("synchronized", TokenType.INVALID);
-            jsKeywords.add("throws", TokenType.INVALID);
-            jsKeywords.add("transient", TokenType.INVALID);
-            jsKeywords.add("volatile", TokenType.INVALID);
+            tsKeywords.add("byte", TokenType.INVALID);
+            tsKeywords.add("char", TokenType.INVALID);
+            tsKeywords.add("double", TokenType.INVALID);
+            tsKeywords.add("float", TokenType.INVALID);
+            tsKeywords.add("goto", TokenType.INVALID);
+            tsKeywords.add("int", TokenType.INVALID);
+            tsKeywords.add("long", TokenType.INVALID);
+            tsKeywords.add("native", TokenType.INVALID);
+            tsKeywords.add("package", TokenType.INVALID);
+            tsKeywords.add("short", TokenType.INVALID);
+            tsKeywords.add("synchronized", TokenType.INVALID);
+            tsKeywords.add("throws", TokenType.INVALID);
+            tsKeywords.add("transient", TokenType.INVALID);
+            tsKeywords.add("volatile", TokenType.INVALID);
 
             // Rhino JavaScript stuff
-            jsKeywords.add("importClass", TokenType.KEYWORD2);
-            jsKeywords.add("importPackage", TokenType.KEYWORD2);
+            tsKeywords.add("importClass", TokenType.KEYWORD2);
+            tsKeywords.add("importPackage", TokenType.KEYWORD2);
 
             // SE global functions and properties
-            jsKeywords.add("useLibrary", TokenType.KEYWORD2);
+            tsKeywords.add("useLibrary", TokenType.KEYWORD2);
 
-            jsKeywords.add("Eons", TokenType.KEYWORD2);
-            jsKeywords.add("PluginContext", TokenType.KEYWORD2);
-            jsKeywords.add("Editor", TokenType.KEYWORD2);
-            jsKeywords.add("Component", TokenType.KEYWORD2);
-            jsKeywords.add("Console", TokenType.KEYWORD2);
-            jsKeywords.add("Patch", TokenType.KEYWORD2);
+            tsKeywords.add("Eons", TokenType.KEYWORD2);
+            tsKeywords.add("PluginContext", TokenType.KEYWORD2);
+            tsKeywords.add("Editor", TokenType.KEYWORD2);
+            tsKeywords.add("Component", TokenType.KEYWORD2);
+            tsKeywords.add("Console", TokenType.KEYWORD2);
+            tsKeywords.add("Patch", TokenType.KEYWORD2);
         }
-        return jsKeywords;
+        return tsKeywords;
     }
-    private static KeywordMap jsKeywords;
+    private static KeywordMap tsKeywords;
 }
