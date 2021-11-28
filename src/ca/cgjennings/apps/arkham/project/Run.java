@@ -1,6 +1,9 @@
 package ca.cgjennings.apps.arkham.project;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import java.io.File;
 import java.io.IOException;
@@ -44,10 +47,14 @@ public class Run extends TaskAction {
 
     @Override
     public boolean appliesTo(Project project, Task task, Member member) {
+        if (member == null) {
+            return false;
+        }
         if (debug && !ScriptDebugging.isInstalled()) {
             return false;
         }
-        return member != null && ProjectUtilities.matchExtension(member.getFile(), "js");
+        CodeEditor.CodeType ct = CodeEditor.CodeType.forFile(member.getFile());
+        return ct != null && ct.isRunnable();
     }
 
     @Override
@@ -77,7 +84,19 @@ public class Run extends TaskAction {
             throw new NullPointerException();
         }
         try {
-            ProjectUtilities.saveIfBeingEdited(f);
+            StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditorsShowingFile(f);
+            if (eds.length > 0 ) {
+                for (StrangeEonsEditor ed : eds) {
+                    if (ed instanceof CodeEditor) {
+                        ((CodeEditor) ed).run(debug);
+                        return true;
+                    }
+                }
+            }
+            CodeEditor.CodeType ct = CodeEditor.CodeType.forFile(member.getFile());
+            if (ct.getDependentFile(f) != null) {
+                f = ct.getDependentFile(f);
+            }
             ProjectUtilities.runScript(f, project, task, member, debug);
             return true;
         } catch (IOException e) {

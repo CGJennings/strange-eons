@@ -2924,7 +2924,7 @@ public final class Client extends javax.swing.JFrame {
         }
         private final JTextField idLookupField = new JTextField();
         private final TokenType[] acceptedIDs = new TokenType[]{
-            TokenType.PLAIN, TokenType.KEYWORD2, TokenType.LITERAL3, TokenType.LITERAL5
+            TokenType.PLAIN, TokenType.KEYWORD2, TokenType.LITERAL_SPECIAL_1, TokenType.LITERAL_SPECIAL_2
         };
     };
 

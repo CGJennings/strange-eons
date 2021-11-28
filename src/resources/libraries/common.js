@@ -422,6 +422,7 @@ function require(modulePath) {
     let module = {exports: {}};
     return arkham.plugins.LibImpl.require(globalThis["javax.script.filename"], modulePath, module, module.exports, require.cache);
 }
+require.cache = null;
 
 if (Packages.resources.Settings.shared.getYesNo("script-compatibility-mode")) {
     useLibrary("backwards-compatibility");

@@ -42,30 +42,26 @@ import javax.script.*;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
+    private static final String ENGINE_VERSION = "1.7.13-SE";
 
-    private static SEContextFactory contextFactory;
-
+    // global script engine behaviour
     private volatile static boolean warningsEnabled = true;
     private volatile static int optimizationLevel = 0;
     private volatile static boolean debugInfoEnabled = false;
 
-    private static final List<String> names;
-    private static final List<String> mimeTypes;
-    private static final List<String> extensions;
+    private static SEContextFactory globalContextFactory;
 
-    static {
-        names = Collections.unmodifiableList(Arrays.asList(
-                "rhino-se", "strange-rhino", "js", "JavaScript",
-                "javascript", "ECMAScript", "ecmascript"
-        ));
-        mimeTypes = Collections.unmodifiableList(Arrays.asList(
-                "application/javascript", "application/ecmascript",
-                "text/javascript", "text/ecmascript"
-        ));
-        extensions = Collections.unmodifiableList(Arrays.asList(
-                "js", "ajs"
-        ));
-    }
+    private static final List<String> names = Collections.unmodifiableList(Arrays.asList(
+        "rhino-se", "strange-rhino", "js", "JavaScript",
+        "javascript", "ECMAScript", "ecmascript"
+    ));
+    private static final List<String> mimeTypes = Collections.unmodifiableList(Arrays.asList(
+        "application/javascript", "application/ecmascript",
+        "text/javascript", "text/ecmascript"
+    ));
+    private static final List<String> extensions = Collections.unmodifiableList(Arrays.asList(
+      "js", "ajs"
+    ));
 
     /**
      * Creates a script engine factory for Strange Eons scripts.
@@ -73,8 +69,8 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
     public SEScriptEngineFactory() {
         synchronized (SEScriptEngineFactory.class) {
             if (!ContextFactory.hasExplicitGlobal()) {
-                contextFactory = new SEContextFactory();
-                ContextFactory.initGlobal(contextFactory);
+                globalContextFactory = new SEContextFactory();
+                ContextFactory.initGlobal(globalContextFactory);
             }
         }
     }
@@ -102,8 +98,9 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
             case ScriptEngine.ENGINE:
                 return "Strange Rhino";
             case ScriptEngine.ENGINE_VERSION:
+                return ENGINE_VERSION;
             case ScriptEngine.LANGUAGE_VERSION:
-                return "1.7.13-SE";
+                return "ES6-like";
             case ScriptEngine.LANGUAGE:
                 return "ECMAScript";
             case "THREADING":
@@ -113,22 +110,66 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
         }
     }
 
-    @Override
-    public ScriptEngine getScriptEngine() {
-        SEScriptEngine ret = new SEScriptEngine();
-        ret.setEngineFactory(this);
-        return ret;
+    /**
+     * Returns a standard shared instance of this factory.
+     * @return the standard script engine factory
+     * @see #getStandardScriptEngine()
+     */
+    public static SEScriptEngineFactory getStandardFactory() {
+        return shared;
     }
 
-    static class SEContextFactory extends ContextFactory {
+    /**
+     * Returns a standard script engine using the shared script engine factory.
+     * @return a new script engine
+     * @see #getStandardFactory()
+     */
+    public static SEScriptEngine getStandardScriptEngine() {
+        return shared.getScriptEngine();
+    }
+    private static final SEScriptEngineFactory shared = new SEScriptEngineFactory();
 
+    /**
+     * Returns a new script engine created by this factory instance.
+     * @return a new script engine
+     * @see #getStandardScriptEngine()
+     */
+    @Override
+    public SEScriptEngine getScriptEngine() {
+        return new SEScriptEngine(this);
+    }
+
+    /**
+     * Makes the current thread a "utility thread". A utility thread is
+     * a separate thread used to run an extensive JavaScript-based tool.
+     * Calling this alters the behaviour of all script engines created
+     * in the thread. For example, engines in the thread will ignore
+     * warnings regardless of the global warning preference.
+     */
+    public static void makeCurrentThreadAUtilityThread() {
+        isUtilityThread.set(true);
+    }
+
+    /**
+     * Returns whether the current thread is a standard thread or a utility thread.
+     * @return true if the current thread is a standard thread
+     */
+    public static boolean isStandardThread() {
+        return isUtilityThread.get() != Boolean.TRUE;
+    }
+
+    private static ThreadLocal<Boolean> isUtilityThread = new ThreadLocal<>();
+
+    private final static class SEContextFactory extends ContextFactory {
         public SEContextFactory() {
         }
 
         @Override
         protected Context makeContext() {
+            final boolean standardThread = isStandardThread();
+
             Context cx = super.makeContext();
-            final int opt = getOptimizationLevel();
+            final int opt = standardThread ? getOptimizationLevel() : -1;
             cx.setOptimizationLevel(opt);
             cx.setLanguageVersion(Context.VERSION_ES6);
 
@@ -141,11 +182,11 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
                 cx.setMaximumInterpreterStackDepth(1_000);
             }
 
-            if (opt < 1 || isDebugInfoEnabled()) {
+            if (debugInfoEnabled) {
                 cx.setGeneratingDebug(true);
             }
 
-            if (warningsEnabled) {
+            if (warningsEnabled && standardThread) {
                 ErrorReporter er = WarningErrorReporter.getShared(
                         cx.getErrorReporter()
                 );
@@ -163,12 +204,15 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
                     enable = false;
                     break;
                 case Context.FEATURE_LOCATION_INFORMATION_IN_ERROR:
-                case Context.FEATURE_STRICT_EVAL:
-                case Context.FEATURE_STRICT_VARS:
-                case Context.FEATURE_STRICT_MODE:
                 case Context.FEATURE_INTEGER_WITHOUT_DECIMAL_PLACE:
                     enable = true;
                     break;
+                case Context.FEATURE_STRICT_EVAL:
+                case Context.FEATURE_STRICT_VARS:
+                case Context.FEATURE_STRICT_MODE: {
+                    enable = isStandardThread();
+                    break;
+                }
                 default:
                     enable = super.hasFeature(cx, featureIndex);
             }
@@ -177,14 +221,24 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
     }
 
     /**
-     * Returns the context factory used by this factory to create scripting
-     * contexts. This is needed by the script debugger; it is not useful to
-     * plug-in developers.
+     * Returns the default context factory used by instances of this factory
+     * to create scripting contexts. This is needed by the script debugger;
+     * it is not useful to plug-in developers.
      *
      * @return the script context factory
      */
     public static ContextFactory getContextFactory() {
-        return contextFactory;
+        return globalContextFactory;
+    }
+
+    /**
+     * Returns a short string that describes the version of script engines
+     * produced by this factory.
+     *
+     * @return the engine version string
+     */
+    public static String getVersion() {
+        return ENGINE_VERSION;
     }
 
     @Override
