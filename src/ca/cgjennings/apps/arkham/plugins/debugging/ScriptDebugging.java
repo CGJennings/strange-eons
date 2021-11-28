@@ -4,7 +4,7 @@ import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.TextEncoding;
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.util.CommandFormatter;

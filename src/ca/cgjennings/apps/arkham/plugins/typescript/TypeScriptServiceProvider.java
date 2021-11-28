@@ -2,11 +2,11 @@ package ca.cgjennings.apps.arkham.plugins.typescript;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngine;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;

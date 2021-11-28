@@ -1,6 +1,7 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole.ConsolePrintWriter;
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
 import java.util.ResourceBundle;
@@ -11,7 +12,7 @@ import resources.Settings;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-class WarningErrorReporter implements ErrorReporter {
+public final class WarningErrorReporter implements ErrorReporter {
 
     private ErrorReporter parent;
 
@@ -65,7 +66,7 @@ class WarningErrorReporter implements ErrorReporter {
      * @param warning true if the error is a warning
      * @return true if the error should be ignored
      */
-    static boolean acceptError(String message, boolean warning) {
+    public static boolean acceptError(String message, boolean warning) {
         // The default implementation ignores "Code has no side effects" warnings;
         // this happens whenever we eval a script file
         if(WarningErrorReporter.CODE_HAS_NO_SIDE_EFECTS.equals(message)) return false;

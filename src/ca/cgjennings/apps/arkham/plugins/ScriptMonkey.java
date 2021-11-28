@@ -1,5 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SettingBindings;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.TextEncoding;

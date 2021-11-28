@@ -1,5 +1,7 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
+import ca.cgjennings.apps.arkham.plugins.engine.AbstractUtilityParser;
+import ca.cgjennings.apps.arkham.plugins.engine.WarningErrorReporter;
 import ca.cgjennings.apps.arkham.editors.NavigationPoint;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.ast.AstRoot;

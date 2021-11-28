@@ -1,6 +1,7 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.layout.TextStyle;
 import org.mozilla.javascript.Context;
@@ -26,7 +27,7 @@ import resources.Settings.Colour;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-class SettingBindings implements Bindings {
+public class SettingBindings implements Bindings {
 
     private Bindings parent;
     private volatile Settings settings;

@@ -1,4 +1,4 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import org.mozilla.javascript.CompilerEnvirons;

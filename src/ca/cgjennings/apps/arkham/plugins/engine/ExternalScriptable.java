@@ -21,8 +21,9 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import org.mozilla.javascript.ConstProperties;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;

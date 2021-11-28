@@ -21,7 +21,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import org.mozilla.javascript.Context;
