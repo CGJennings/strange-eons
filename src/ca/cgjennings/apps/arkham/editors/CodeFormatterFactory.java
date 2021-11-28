@@ -48,6 +48,7 @@ public final class CodeFormatterFactory {
                 break;
             case AUTOMATION_SCRIPT:
             case JAVASCRIPT:
+            case TYPESCRIPT:
                 if (js == null) {
                     js = new JSFormatter();
                 }
