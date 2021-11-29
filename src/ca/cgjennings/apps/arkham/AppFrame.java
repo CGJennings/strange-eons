@@ -281,6 +281,8 @@ final class AppFrame extends StrangeEonsAppWindow {
             } finally {
                 setDefaultCursor();
             }
+
+            app.runStartupTasks();
         });
         delayedStartupActions.setRepeats(false);
         delayedStartupActions.start();
