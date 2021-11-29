@@ -1,6 +1,7 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.apps.arkham.commands.Commands;
+import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -16,6 +17,7 @@ import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
+import javax.swing.UIManager;
 import resources.AcceleratorTable;
 import resources.ResourceKit;
 
@@ -40,6 +42,8 @@ public class JHelpButton extends JLabel {
         setIcon(icon);
         super.setText("");
         setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        final Color fg = UIManager.getColor(Theme.LINK_LABEL_FOREGROUND);
+        setForeground(fg == null ? Color.BLUE : fg);
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -76,7 +80,6 @@ public class JHelpButton extends JLabel {
             Font f = getFont();
             Map<TextAttribute, Object> m = new HashMap<>();
             m.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-            m.put(TextAttribute.FOREGROUND, Color.BLUE);
             f = f.deriveFont(m);
             setFont(f);
             fontSet = true;
