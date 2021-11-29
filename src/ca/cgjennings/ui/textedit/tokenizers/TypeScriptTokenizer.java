@@ -353,90 +353,13 @@ public class TypeScriptTokenizer extends Tokenizer {
 
     public static KeywordMap getKeywords() {
         if (tsKeywords == null) {
-            tsKeywords = new KeywordMap(false);
-            tsKeywords.add("function", TokenType.KEYWORD1);
-            tsKeywords.add("var", TokenType.KEYWORD1);
-            tsKeywords.add("const", TokenType.KEYWORD1);
+            tsKeywords = new KeywordMap(JavaScriptTokenizer.getKeywords());
 
-            tsKeywords.add("else", TokenType.KEYWORD1);
-            tsKeywords.add("for", TokenType.KEYWORD1);
-            tsKeywords.add("if", TokenType.KEYWORD1);
-            tsKeywords.add("in", TokenType.KEYWORD1);
-            tsKeywords.add("new", TokenType.KEYWORD1);
-            tsKeywords.add("delete", TokenType.KEYWORD1);
-            tsKeywords.add("return", TokenType.KEYWORD1);
-            tsKeywords.add("do", TokenType.KEYWORD1);
-            tsKeywords.add("while", TokenType.KEYWORD1);
-            tsKeywords.add("with", TokenType.KEYWORD1);
-            tsKeywords.add("break", TokenType.KEYWORD1);
-            tsKeywords.add("switch", TokenType.KEYWORD1);
-            tsKeywords.add("case", TokenType.KEYWORD1);
-            tsKeywords.add("continue", TokenType.KEYWORD1);
-            tsKeywords.add("default", TokenType.KEYWORD1);
-
-            tsKeywords.add("try", TokenType.KEYWORD1);
-            tsKeywords.add("throw", TokenType.KEYWORD1);
-            tsKeywords.add("catch", TokenType.KEYWORD1);
-            tsKeywords.add("finally", TokenType.KEYWORD1);
-            tsKeywords.add("instanceof", TokenType.KEYWORD1);
-            tsKeywords.add("typeof", TokenType.KEYWORD1);
-
-            tsKeywords.add("null", TokenType.KEYWORD1);
-            tsKeywords.add("this", TokenType.KEYWORD1);
-            tsKeywords.add("true", TokenType.KEYWORD1);
-            tsKeywords.add("false", TokenType.KEYWORD1);
-            tsKeywords.add("undefined", TokenType.KEYWORD1);
-
-            // standard global objects, functions and properties
-            tsKeywords.add("eval", TokenType.KEYWORD2);
-            tsKeywords.add("decodeURI", TokenType.KEYWORD2);
-            tsKeywords.add("decodeURIComponent", TokenType.KEYWORD2);
-            tsKeywords.add("encodeURI", TokenType.KEYWORD2);
-            tsKeywords.add("encodeURIComponent", TokenType.KEYWORD2);
-            tsKeywords.add("isFinite", TokenType.KEYWORD2);
-            tsKeywords.add("isNaN", TokenType.KEYWORD2);
-            tsKeywords.add("parseFloat", TokenType.KEYWORD2);
-            tsKeywords.add("parseInt", TokenType.KEYWORD2);
-            tsKeywords.add("Infinity", TokenType.KEYWORD2);
-            tsKeywords.add("NaN", TokenType.KEYWORD2);
-            // arguments is only valid in function scope
-            tsKeywords.add("arguments", TokenType.KEYWORD2);
-
-            tsKeywords.add("Object", TokenType.KEYWORD2);
-            tsKeywords.add("Array", TokenType.KEYWORD2);
-            tsKeywords.add("Boolean", TokenType.KEYWORD2);
-            tsKeywords.add("Date", TokenType.KEYWORD2);
-            tsKeywords.add("Error", TokenType.KEYWORD2);
-            tsKeywords.add("EvalError", TokenType.KEYWORD2);
-            tsKeywords.add("RangeError", TokenType.KEYWORD2);
-            tsKeywords.add("ReferenceError", TokenType.KEYWORD2);
-            tsKeywords.add("SyntaxError", TokenType.KEYWORD2);
-            tsKeywords.add("TypeError", TokenType.KEYWORD2);
-            tsKeywords.add("URIError", TokenType.KEYWORD2);
-            tsKeywords.add("Function", TokenType.KEYWORD2);
-            tsKeywords.add("Math", TokenType.KEYWORD2);
-            tsKeywords.add("Number", TokenType.KEYWORD2);
-            tsKeywords.add("RegExp", TokenType.KEYWORD2);
-            tsKeywords.add("String", TokenType.KEYWORD2);
-
-            // TS
             tsKeywords.add("any", TokenType.KEYWORD2);
             tsKeywords.add("boolean", TokenType.KEYWORD2);
             tsKeywords.add("string", TokenType.KEYWORD2);
             tsKeywords.add("void", TokenType.KEYWORD2);
 
-            // Newer versions of JS
-            tsKeywords.add("debugger", TokenType.KEYWORD1);
-            tsKeywords.add("yield", TokenType.KEYWORD1);
-            tsKeywords.add("let", TokenType.KEYWORD1);
-            tsKeywords.add("each", TokenType.KEYWORD1);
-            tsKeywords.add("get", TokenType.KEYWORD1);
-            tsKeywords.add("set", TokenType.KEYWORD1);
-            
-            tsKeywords.add("of", TokenType.KEYWORD1);
-            tsKeywords.add("in", TokenType.KEYWORD1);
-
-            // TS
             tsKeywords.add("abstract", TokenType.KEYWORD1);
             tsKeywords.add("class", TokenType.KEYWORD1);
             tsKeywords.add("enum", TokenType.KEYWORD1);
@@ -455,36 +378,6 @@ public class TypeScriptTokenizer extends Tokenizer {
             tsKeywords.add("type", TokenType.KEYWORD1);
             tsKeywords.add("typeof", TokenType.KEYWORD1);
             tsKeywords.add("as", TokenType.KEYWORD1);
-
-            // unimplemented reserved words
-            tsKeywords.add("byte", TokenType.INVALID);
-            tsKeywords.add("char", TokenType.INVALID);
-            tsKeywords.add("double", TokenType.INVALID);
-            tsKeywords.add("float", TokenType.INVALID);
-            tsKeywords.add("goto", TokenType.INVALID);
-            tsKeywords.add("int", TokenType.INVALID);
-            tsKeywords.add("long", TokenType.INVALID);
-            tsKeywords.add("native", TokenType.INVALID);
-            tsKeywords.add("package", TokenType.INVALID);
-            tsKeywords.add("short", TokenType.INVALID);
-            tsKeywords.add("synchronized", TokenType.INVALID);
-            tsKeywords.add("throws", TokenType.INVALID);
-            tsKeywords.add("transient", TokenType.INVALID);
-            tsKeywords.add("volatile", TokenType.INVALID);
-
-            // Rhino JavaScript stuff
-            tsKeywords.add("importClass", TokenType.KEYWORD2);
-            tsKeywords.add("importPackage", TokenType.KEYWORD2);
-
-            // SE global functions and properties
-            tsKeywords.add("useLibrary", TokenType.KEYWORD2);
-
-            tsKeywords.add("Eons", TokenType.KEYWORD2);
-            tsKeywords.add("PluginContext", TokenType.KEYWORD2);
-            tsKeywords.add("Editor", TokenType.KEYWORD2);
-            tsKeywords.add("Component", TokenType.KEYWORD2);
-            tsKeywords.add("Console", TokenType.KEYWORD2);
-            tsKeywords.add("Patch", TokenType.KEYWORD2);
         }
         return tsKeywords;
     }

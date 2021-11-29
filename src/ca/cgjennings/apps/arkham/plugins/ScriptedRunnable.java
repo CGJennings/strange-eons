@@ -46,7 +46,7 @@ public class ScriptedRunnable implements Runnable {
     @Override
     public void run() {
         ScriptDebugging.prepareToEnterContext();
-        SEScriptEngineFactory.getContextFactory().enterContext();
+        Context.enter();
         try {
             value = scriptedThread.run();
         } catch (Throwable t) {

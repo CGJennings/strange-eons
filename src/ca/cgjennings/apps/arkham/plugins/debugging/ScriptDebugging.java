@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.mozilla.javascript.ContextFactory;
 import resources.Settings;
 
 /**
@@ -278,7 +279,7 @@ public class ScriptDebugging {
 
         @Override
         public void prepareToEnterContext() {
-            DebuggingCallback.create(SEScriptEngineFactory.getContextFactory());
+            DebuggingCallback.create(ContextFactory.getGlobal());
         }
 
         @Override

@@ -1,18 +1,20 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
+import javax.script.CompiledScript;
+import javax.script.ScriptContext;
+import javax.script.ScriptEngine;
+import javax.script.ScriptException;
 import org.mozilla.javascript.Context;
-import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
-import javax.script.*;
 
-final class SECompiledScript extends CompiledScript {
+final class CompiledScriptImpl extends CompiledScript {
 
     private final SEScriptEngine engine;
     private final Script script;
 
-    SECompiledScript(SEScriptEngine engine, Script script) {
+    CompiledScriptImpl(SEScriptEngine engine, Script script) {
         this.engine = engine;
         this.script = script;
     }

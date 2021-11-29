@@ -79,9 +79,6 @@ public class SettingBindings implements Bindings {
         return name.substring(1).replace('_', '-');
     }
 
-//	private String keyToVar( String name ) {
-//		return "$" + name.replace( '-', '_' );
-//	}
     @Override
     @SuppressWarnings("fallthrough")
     public Object put(String name, Object value) {
@@ -312,11 +309,11 @@ public class SettingBindings implements Bindings {
 
     /**
      * A magic variable is a function for producing the value of a variable. For
-     * example, the {@code Editor} magic variable is a function that
-     * returns the active editor (or {@code null}). Magic variables are
-     * stored in a secondary map that is consulted after the primary map fails.
-     * (If the name of a magic variable is assigned a normal value, that value
-     * will thus supercede the magic variable.)
+     * example, the {@code Editor} magic variable is a function that returns the
+     * active editor (or {@code null}). Magic variables are stored in a
+     * secondary map that is consulted after the primary map fails. (If the name
+     * of a magic variable is assigned a normal value, that value will thus
+     * supercede the magic variable.)
      */
     private interface MagicVariable {
 
@@ -565,9 +562,9 @@ public class SettingBindings implements Bindings {
      * Sets whether the bindings will report $-notation variables that have a
      * {@code null} value are undefined.
      *
-     * @param enable if {@code true}, {@code null} setting variables
-     * will not be "contained" by the map, resulting in additional warnings when
-     * script warnings are enabled
+     * @param enable if {@code true}, {@code null} setting variables will not be
+     * "contained" by the map, resulting in additional warnings when script
+     * warnings are enabled
      * @see #containsKey(java.lang.Object)
      */
     public static void setUndeclaredSettingWarningsEnabled(boolean enable) {

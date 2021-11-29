@@ -110,7 +110,7 @@ public final class CodeFormatterFactory {
             try {
                 if (engine == null) {
                     InputStream in = getClass().getResourceAsStream(sourceFile);
-                    engine = SEScriptEngineFactory.getStandardScriptEngine();
+                    engine = SEScriptEngineFactory.getDefaultScriptEngine();
                     engine.eval(new InputStreamReader(in, TextEncoding.SOURCE_CODE));
                     in.close();
                 }

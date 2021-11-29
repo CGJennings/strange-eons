@@ -38,7 +38,7 @@ public class TypeScriptServiceProvider {
             if (!SwingUtilities.isEventDispatchThread()) {
                 SEScriptEngineFactory.makeCurrentThreadAUtilityThread();
             }
-            engine = SEScriptEngineFactory.getStandardScriptEngine();
+            engine = SEScriptEngineFactory.getDefaultScriptEngine();
             // This file is stored in lib/typescript-services.jar to
             // reduce build times and prevent IDEs from trying to
             // process it for errors, code completions, etc.

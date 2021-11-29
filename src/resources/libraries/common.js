@@ -39,11 +39,11 @@ if (Settings.shared.getBoolean('script-warnings')) {
     Error.warn = function warn(message, frame) {
         message = message || "unspecified warning";
         frame = frame == null || frame != frame ? 1 : Math.max(0, -frame);
-        let stack = useLibrary.__engine.getStackTrace();
+        let stack = arkham.plugins.LibImpl.getScriptTrace();
         frame = Math.min(Math.max(0, stack.length - 1), frame);
         org.mozilla.javascript.Context.reportWarning(
                 message, stack[frame].file, stack[frame].line, null, -1
-                );
+        );
     };
     Error.deprecated = function deprecated(message, frame) {
         message = '[DEPRECATED] ' + (message || "unspecified feature");

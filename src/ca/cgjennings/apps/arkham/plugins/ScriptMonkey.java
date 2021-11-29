@@ -125,7 +125,7 @@ public final class ScriptMonkey {
             optLevel = 9;
         }
         SEScriptEngineFactory.setOptimizationLevel(optLevel);
-        SEScriptEngineFactory.setWarningReportingEnabled(s.getYesNo("script-warnings"));
+        SEScriptEngineFactory.setWarningsEnabled(s.getYesNo("script-warnings"));
     }
 
     private synchronized static void initScriptSystem() {
@@ -151,7 +151,7 @@ public final class ScriptMonkey {
         }
 
         // create the script engine factory and load the initial optimization settings
-        scriptEngineFactory = SEScriptEngineFactory.getStandardFactory();
+        scriptEngineFactory = SEScriptEngineFactory.getDefaultFactory();
         updateScriptEngineOpimizationSettings();
 
         // wait for parallel init of console to complete
