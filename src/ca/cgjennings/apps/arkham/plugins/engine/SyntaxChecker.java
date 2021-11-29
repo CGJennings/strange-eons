@@ -1,5 +1,7 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
+import ca.cgjennings.apps.arkham.plugins.engine.AbstractUtilityParser;
+import ca.cgjennings.apps.arkham.plugins.engine.WarningErrorReporter;
 import ca.cgjennings.apps.arkham.editors.NavigationPoint;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.ast.AstRoot;
@@ -92,8 +94,8 @@ public class SyntaxChecker extends AbstractUtilityParser {
      * Subclasses may use this to filter for specific error messages.
      *
      * @param message the error message
-     * @param warning {@code true} if the message is a warning rather than
-     * an error
+     * @param warning {@code true} if the message is a warning rather than an
+     * error
      * @param offset the offset into the script
      * @param length the length of code that is affected
      * @return {@code true} if the error should be included in the results
@@ -125,8 +127,8 @@ public class SyntaxChecker extends AbstractUtilityParser {
          * @param offset the offset from the document start at which the error
          * occurs
          * @param length the number of characters affected by the error
-         * @param warning {@code true} if the error is a warning rather
-         * than a true error
+         * @param warning {@code true} if the error is a warning rather than a
+         * true error
          */
         public SyntaxError(String message, boolean warning, int offset, int length) {
             this.offset = offset;
@@ -146,8 +148,8 @@ public class SyntaxChecker extends AbstractUtilityParser {
         }
 
         /**
-         * Returns {@code true} if this error is a warning rather than a
-         * true error.
+         * Returns {@code true} if this error is a warning rather than a true
+         * error.
          *
          * @return {@code true} for warning messages
          */
@@ -253,8 +255,7 @@ public class SyntaxChecker extends AbstractUtilityParser {
          * Updates the highlighter with the current set of errors, as returned
          * from {@link #parse(java.lang.String)}.
          *
-         * @param errors the new set of errors to display (may be
-         * {@code null})
+         * @param errors the new set of errors to display (may be {@code null})
          */
         public void update(JSourceCodeEditor editor, SyntaxError[] errors) {
             this.editor = editor;

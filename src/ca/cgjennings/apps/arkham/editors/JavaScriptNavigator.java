@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.plugins.SyntaxChecker;
+import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
 import org.mozilla.javascript.Node;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.ArrayLiteral;

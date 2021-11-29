@@ -420,6 +420,25 @@ public class JavaScriptTokenizer extends Tokenizer {
             jsKeywords.add("RegExp", TokenType.KEYWORD2);
             jsKeywords.add("String", TokenType.KEYWORD2);
 
+            jsKeywords.add("JSON", TokenType.KEYWORD2);
+            jsKeywords.add("Symbol", TokenType.KEYWORD2);
+            jsKeywords.add("Set", TokenType.KEYWORD2);
+            jsKeywords.add("Map", TokenType.KEYWORD2);
+            jsKeywords.add("WeakSet", TokenType.KEYWORD2);
+            jsKeywords.add("WeakMap", TokenType.KEYWORD2);
+            jsKeywords.add("ArrayBuffer", TokenType.KEYWORD2);
+            jsKeywords.add("Int8Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint8Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint8ClampedArray", TokenType.KEYWORD2);
+            jsKeywords.add("Int16Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint16Array", TokenType.KEYWORD2);
+            jsKeywords.add("Int32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Float32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Float64Array", TokenType.KEYWORD2);
+            jsKeywords.add("DataView", TokenType.KEYWORD2);
+
+
             // Newer versions of JS
             jsKeywords.add("debugger", TokenType.KEYWORD1);
             jsKeywords.add("yield", TokenType.KEYWORD1);
@@ -470,6 +489,9 @@ public class JavaScriptTokenizer extends Tokenizer {
             // SE global functions and properties
             jsKeywords.add("useLibrary", TokenType.KEYWORD2);
 
+            jsKeywords.add("global", TokenType.KEYWORD2);
+            jsKeywords.add("self", TokenType.KEYWORD2);
+            jsKeywords.add("globalThis", TokenType.KEYWORD2);
             jsKeywords.add("Eons", TokenType.KEYWORD2);
             jsKeywords.add("PluginContext", TokenType.KEYWORD2);
             jsKeywords.add("Editor", TokenType.KEYWORD2);
