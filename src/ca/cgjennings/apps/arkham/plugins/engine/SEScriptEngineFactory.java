@@ -16,7 +16,7 @@ import org.mozilla.javascript.ContextFactory;
  */
 public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
 
-    private static final String ENGINE_VERSION = "1.7.13-SE";
+    private static final String ENGINE_VERSION = "1.7.14rc1p1-SE";
 
     private static final SEScriptEngineFactory shared = new SEScriptEngineFactory();
     private static ContextFactoryImpl globalContextFactory;
