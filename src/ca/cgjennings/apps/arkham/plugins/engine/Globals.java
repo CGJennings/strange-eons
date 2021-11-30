@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.LinkedList;
@@ -49,5 +50,17 @@ final class Globals {
             return new Synchronizer((Function) args[0]);
         }
         throw Context.reportRuntimeError("not a function");
+    }
+
+    /**
+     * Stops the running script by throwing a special exception recognized by
+     * {@link ScriptMonkey}.
+     */
+    public static void exit() {
+        throw new BreakException();
+    }
+
+    @SuppressWarnings("serial")
+    private static class BreakException extends ThreadDeath {
     }
 }

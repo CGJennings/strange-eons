@@ -20,8 +20,6 @@ const Region2D = Settings.Region2D;
 const Font = java.awt.Font;
 const URL = java.net.URL;
 
-const exit = arkham.plugins.ScriptMonkey.breakScript;
-
 Error.error = function error(exception) {
     // previously we had to jump through hoops to get a stack trace;
     // now this is basically shorthand for throwing an error
