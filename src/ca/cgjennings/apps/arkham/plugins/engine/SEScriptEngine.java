@@ -37,11 +37,15 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
      */
     SEScriptEngine(SEScriptEngineFactory factory) {
         this.factory = Objects.requireNonNull(factory);
+        // wrap bindings created by AbstractScriptEngine
+        Bindings raw = context.getBindings(ScriptContext.ENGINE_SCOPE);
+        context.setBindings(new SettingBindings(raw), ScriptContext.ENGINE_SCOPE);
 
         final Context cx = Context.enter();
         try {
-            topLevel = new ImporterTopLevel(cx, false);
-            Globals.defineIn(topLevel);
+            ImporterTopLevel global = new ImporterTopLevel(cx, false);
+            Globals.defineIn(global);
+            topLevel = global;
         } finally {
             Context.exit();
         }

@@ -41,14 +41,14 @@ final class ContextFactoryImpl extends ContextFactory {
                 break;
             case Context.FEATURE_LOCATION_INFORMATION_IN_ERROR:
             case Context.FEATURE_INTEGER_WITHOUT_DECIMAL_PLACE:
+            case Context.FEATURE_MEMBER_EXPR_AS_FUNCTION_NAME:
                 enable = true;
                 break;
             case Context.FEATURE_STRICT_EVAL:
             case Context.FEATURE_STRICT_VARS:
-            case Context.FEATURE_STRICT_MODE: {
+            case Context.FEATURE_STRICT_MODE:
                 enable = SEScriptEngineFactory.isStandardThread();
                 break;
-            }
             case Context.FEATURE_WARNING_AS_ERROR:
                 enable = SEScriptEngineFactory.getWarningsAreTreatedAsErrors();
                 break;
