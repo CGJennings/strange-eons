@@ -590,7 +590,6 @@ public final class ScriptMonkey {
      * @param settings the settings that will be visible in the global scope
      */
     public void setSettingProvider(Settings settings) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setSettings(settings);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setSettings(settings);
     }
 
@@ -601,7 +600,7 @@ public final class ScriptMonkey {
      * @return the settings that are visible in the global scope
      */
     public Settings getSettingProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getSettings();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getSettings();
     }
 
     /**
@@ -613,7 +612,6 @@ public final class ScriptMonkey {
      * global scope
      */
     public void setUiLangProvider(Language language) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setUILanguage(language);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setUILanguage(language);
     }
 
@@ -624,7 +622,7 @@ public final class ScriptMonkey {
      * @return the interface language that is visible in the global scope
      */
     public Language getUiLangProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getUILanguage();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getUILanguage();
     }
 
     /**
@@ -636,7 +634,6 @@ public final class ScriptMonkey {
      * global scope
      */
     public void setGameLangProvider(Language language) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setGameLanguage(language);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setGameLanguage(language);
     }
 
@@ -647,7 +644,7 @@ public final class ScriptMonkey {
      * @return the game language that is visible in the global scope
      */
     public Language getGameLangProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getGameLanguage();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getGameLanguage();
     }
 
     /**
@@ -661,19 +658,19 @@ public final class ScriptMonkey {
         ScriptEngine engine = SEScriptEngineFactory.getDefaultScriptEngine();
 
         // INSTALL SUPPORT FOR $-NOTATION
-        Bindings parentBindings = engine.getBindings(ScriptContext.GLOBAL_SCOPE);
-        if (parentBindings == null) {
-            engine.setBindings(engine.createBindings(), ScriptContext.GLOBAL_SCOPE);
-        } else if (!(parentBindings instanceof SettingBindings)) {
-            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.GLOBAL_SCOPE);
-        }
-
-        parentBindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-        if (parentBindings == null) {
-            engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
-        } else if (!(parentBindings instanceof SettingBindings)) {
-            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.ENGINE_SCOPE);
-        }
+//        Bindings parentBindings = engine.getBindings(ScriptContext.GLOBAL_SCOPE);
+//        if (parentBindings == null) {
+//            engine.setBindings(engine.createBindings(), ScriptContext.GLOBAL_SCOPE);
+//        } else if (!(parentBindings instanceof SettingBindings)) {
+//            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.GLOBAL_SCOPE);
+//        }
+//
+//        Bindings parentBindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+//        if (parentBindings == null) {
+//            engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
+//        } else if (!(parentBindings instanceof SettingBindings)) {
+//            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.ENGINE_SCOPE);
+//        }
 
         // EVALUATE THE BOOTSTRAP LIBRARY (WHICH DEFINES useLibrary AND IMPORTS common.js)
         if (BOOTSTRAP_LIBRARY == null) {
