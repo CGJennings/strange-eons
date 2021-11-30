@@ -403,30 +403,32 @@ public class JavaScriptTokenizer extends Tokenizer {
             // arguments is only valid in function scope
             jsKeywords.add("arguments", TokenType.KEYWORD2);
 
-            jsKeywords.add("Object", TokenType.KEYWORD2);
             jsKeywords.add("Array", TokenType.KEYWORD2);
+            jsKeywords.add("ArrayBuffer", TokenType.KEYWORD2);
+            jsKeywords.add("BigInt", TokenType.KEYWORD2);
             jsKeywords.add("Boolean", TokenType.KEYWORD2);
             jsKeywords.add("Date", TokenType.KEYWORD2);
             jsKeywords.add("Error", TokenType.KEYWORD2);
             jsKeywords.add("EvalError", TokenType.KEYWORD2);
+            jsKeywords.add("Function", TokenType.KEYWORD2);
+            jsKeywords.add("JSON", TokenType.KEYWORD2);
+            jsKeywords.add("Math", TokenType.KEYWORD2);
+            jsKeywords.add("Map", TokenType.KEYWORD2);
+            jsKeywords.add("Number", TokenType.KEYWORD2);
+            jsKeywords.add("Object", TokenType.KEYWORD2);
+            jsKeywords.add("Promise", TokenType.KEYWORD2);
             jsKeywords.add("RangeError", TokenType.KEYWORD2);
             jsKeywords.add("ReferenceError", TokenType.KEYWORD2);
+            jsKeywords.add("RegExp", TokenType.KEYWORD2);
+            jsKeywords.add("Set", TokenType.KEYWORD2);
+            jsKeywords.add("String", TokenType.KEYWORD2);
+            jsKeywords.add("Symbol", TokenType.KEYWORD2);
             jsKeywords.add("SyntaxError", TokenType.KEYWORD2);
             jsKeywords.add("TypeError", TokenType.KEYWORD2);
             jsKeywords.add("URIError", TokenType.KEYWORD2);
-            jsKeywords.add("Function", TokenType.KEYWORD2);
-            jsKeywords.add("Math", TokenType.KEYWORD2);
-            jsKeywords.add("Number", TokenType.KEYWORD2);
-            jsKeywords.add("RegExp", TokenType.KEYWORD2);
-            jsKeywords.add("String", TokenType.KEYWORD2);
-
-            jsKeywords.add("JSON", TokenType.KEYWORD2);
-            jsKeywords.add("Symbol", TokenType.KEYWORD2);
-            jsKeywords.add("Set", TokenType.KEYWORD2);
-            jsKeywords.add("Map", TokenType.KEYWORD2);
             jsKeywords.add("WeakSet", TokenType.KEYWORD2);
             jsKeywords.add("WeakMap", TokenType.KEYWORD2);
-            jsKeywords.add("ArrayBuffer", TokenType.KEYWORD2);
+
             jsKeywords.add("Int8Array", TokenType.KEYWORD2);
             jsKeywords.add("Uint8Array", TokenType.KEYWORD2);
             jsKeywords.add("Uint8ClampedArray", TokenType.KEYWORD2);
