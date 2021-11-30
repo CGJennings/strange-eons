@@ -155,8 +155,8 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
 
     /**
      * Fire a tab closing event for each tab in reverse order, except the tab at
-     * {@code index}. If autoclosing is enabled, each tab will be closed
-     * after its event fires.
+     * {@code index}. If autoclosing is enabled, each tab will be closed after
+     * its event fires.
      *
      * @param index
      */
@@ -198,23 +198,4 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
             }
         }
     }
-
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame();
-//				JCloseableTabbedPane tab = new JCloseableTabbedPane();
-//				tab.add( "Hello", new JLabel("FIRST") );
-//				tab.add( "there", new JLabel("SECOND"));
-//				tab.add( "Jim", new JLabel("THIRD"));
-//				tab.setDirty( 2, true );
-//				f.add(tab);
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }
