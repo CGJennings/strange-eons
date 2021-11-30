@@ -1,5 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SettingBindings;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.TextEncoding;
@@ -32,8 +34,7 @@ import resources.ResourceKit;
 import resources.Settings;
 
 /**
- * A {@code ScriptMonkey} manages the execution of a script from Strange
- * Eons.
+ * A {@code ScriptMonkey} manages the execution of a script from Strange Eons.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -65,8 +66,8 @@ public final class ScriptMonkey {
     public static final String CLEAR_CONSOLE_ON_RUN_KEY = "clear-script-console";
 
     /**
-     * Creates a new {@code ScriptMonkey} that can be used to execute
-     * script code.
+     * Creates a new {@code ScriptMonkey} that can be used to execute script
+     * code.
      *
      * @param scriptFileName the identifier to associate with the code that will
      * be executed; this will be reported as the script's file name in error
@@ -74,8 +75,6 @@ public final class ScriptMonkey {
      * @see #setInternalFileName(java.lang.String)
      */
     public ScriptMonkey(String scriptFileName) {
-        initScriptSystem();
-
         engine = createScriptEngine();
         engine.put(ScriptEngine.FILENAME, scriptFileName);
         engine.put(VAR_FILE, scriptFileName);
@@ -91,8 +90,8 @@ public final class ScriptMonkey {
      * is running, this will normally be the same name as the other, true,
      * identifier. But when running a script "on demand", as from the project
      * <b>Run</b> command or the <b>Quickscript</b> window, then the
-     * {@code ScriptMonkey} will typically be constructed using the file
-     * name "Quickscript", because many scripts check for this and change their
+     * {@code ScriptMonkey} will typically be constructed using the file name
+     * "Quickscript", because many scripts check for this and change their
      * behaviour accordingly. (For example, the source code for a plug-in might
      * run a test of the plug-in functionality.) However, in this case the
      * script will also report the identifier "Quickscript" in error messages,
@@ -107,12 +106,6 @@ public final class ScriptMonkey {
     }
 
     private static void updateScriptEngineOpimizationSettings() {
-        if (scriptEngineFactory == null) {
-            initScriptSystem();
-            // return since initScriptSystem will call us again after setting SEF to non-null
-            return;
-        }
-
         Settings s = Settings.getShared();
 
         int optLevel = s.getInt("script-optimization-level");
@@ -123,50 +116,25 @@ public final class ScriptMonkey {
             optLevel = 9;
         }
         SEScriptEngineFactory.setOptimizationLevel(optLevel);
-        SEScriptEngineFactory.setWarningReportingEnabled(s.getYesNo("script-warnings"));
+        SEScriptEngineFactory.setWarningsEnabled(s.getYesNo("script-warnings"));
     }
 
-    private synchronized static void initScriptSystem() {
-        // already initialized
-        if (scriptEngineFactory != null) {
-            return;
+    static {
+        // initialize the script system
+        if (!EventQueue.isDispatchThread()) {
+            throw new AssertionError("script system must be initialized in EDT");
         }
+
+        // load the initial optimization settings
+        updateScriptEngineOpimizationSettings();
 
         // listen for changes to the optimization settings
         Preferences.addPreferenceUpdateListener(ScriptMonkey::updateScriptEngineOpimizationSettings);
 
-        // create the shared console; if not called from EDT we will initialize
-        // the system in parallel
-        if (!EventQueue.isDispatchThread()) {
-            EventQueue.invokeLater(() -> {
-                ScriptConsole c = new ScriptConsole(StrangeEons.getWindow());
-                c.setIconImages(StrangeEonsAppWindow.getApplicationFrameIcons());
-                console = c;
-            });
-        } else {
-            console = new ScriptConsole(StrangeEons.getWindow());
-            console.setIconImages(StrangeEonsAppWindow.getApplicationFrameIcons());
-        }
-
-        // create the script engine factory and load the initial optimization settings
-        scriptEngineFactory = SEScriptEngineFactory.getStandardFactory();
-        updateScriptEngineOpimizationSettings();
-
-        // wait for parallel init of console to complete
-        if (console == null) {
-            long start = System.currentTimeMillis();
-            while (console == null) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                }
-                if (System.currentTimeMillis() - start > 30_000) {
-                    throw new AssertionError("timeout while waiting for console window");
-                }
-            }
-        }
+        // create the shared console
+        console = new ScriptConsole(StrangeEons.getWindow());
+        console.setIconImages(StrangeEonsAppWindow.getApplicationFrameIcons());
     }
-    private static SEScriptEngineFactory scriptEngineFactory = null;
 
     /**
      * Returns the shared script console.
@@ -174,7 +142,6 @@ public final class ScriptMonkey {
      * @return the script output window
      */
     public static ScriptConsole getSharedConsole() {
-        initScriptSystem();
         return console;
     }
 
@@ -199,8 +166,7 @@ public final class ScriptMonkey {
      */
     public static final String VAR_EDITOR = "Editor";
     /**
-     * The reserved variable name for the source file name
-     * ({@code sourcefile}).
+     * The reserved variable name for the source file name ({@code sourcefile}).
      */
     public static final String VAR_FILE = "sourcefile";
 
@@ -314,10 +280,10 @@ public final class ScriptMonkey {
 
     /**
      * Call a script function. If the function does not exist, an error message
-     * is displayed and a {@code NoSuchMethodException} exception is
-     * returned. If a script error occurs, the error is printed on the console
-     * and returned. Otherwise, the return value of the function (or
-     * {@code null}) is returned.
+     * is displayed and a {@code NoSuchMethodException} exception is returned.
+     * If a script error occurs, the error is printed on the console and
+     * returned. Otherwise, the return value of the function (or {@code null})
+     * is returned.
      *
      * @param method the name of a script function
      * @param args the arguments to pass to the function
@@ -362,28 +328,11 @@ public final class ScriptMonkey {
     /**
      * Binds the specified {@link PluginContext} to the global scope.
      *
-     * @param pluginContext the plug-in context to bind (may be
-     * {@code null})
+     * @param pluginContext the plug-in context to bind (may be {@code null})
      * @see PluginContextFactory
      */
     public void bind(PluginContext pluginContext) {
         engine.put(VAR_CONTEXT, pluginContext);
-    }
-
-    /**
-     * Throws a special exception used to interrupt script execution.
-     *
-     * @deprecated This method is called indirectly from within scripts to cause
-     * the script to exit. It must be public to be visible to scripts; it is not
-     * intended for other purposes and should not be called by user code.
-     */
-    @Deprecated
-    public static void breakScript() {
-        throw new BreakException();
-    }
-
-    @SuppressWarnings("serial")
-    private static class BreakException extends ThreadDeath {
     }
 
     /**
@@ -399,8 +348,6 @@ public final class ScriptMonkey {
             });
             return;
         }
-
-        initScriptSystem();
 
         boolean fullStackTrace = Settings.getShared().getYesNo("script-full-exception-trace");
 
@@ -515,8 +462,8 @@ public final class ScriptMonkey {
      * {@code false} otherwise.
      *
      * @param resource the resource file containing the script
-     * @return {@code true} if a breakpoint should be set at the start of
-     * the script
+     * @return {@code true} if a breakpoint should be set at the start of the
+     * script
      */
     public static boolean runResourceScript(String resource, boolean debug) {
         InputStream in = null;
@@ -560,11 +507,11 @@ public final class ScriptMonkey {
 
     /**
      * Runs a resource creation script stored in a resource file. The script is
-     * evaluated and then its {@code createResource()} method is invoked.
-     * The result of that function is then returned. If there is an error
-     * loading or running the script, a {@code null} value is returned. If
-     * the script is missing, an error message is shown. If there is an error in
-     * the script, it is displayed in the output console.
+     * evaluated and then its {@code createResource()} method is invoked. The
+     * result of that function is then returned. If there is an error loading or
+     * running the script, a {@code null} value is returned. If the script is
+     * missing, an error message is shown. If there is an error in the script,
+     * it is displayed in the output console.
      *
      * @param resource the resource file containing the script
      * @return the object returned from {@code createResource()}, or
@@ -643,7 +590,6 @@ public final class ScriptMonkey {
      * @param settings the settings that will be visible in the global scope
      */
     public void setSettingProvider(Settings settings) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setSettings(settings);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setSettings(settings);
     }
 
@@ -654,20 +600,18 @@ public final class ScriptMonkey {
      * @return the settings that are visible in the global scope
      */
     public Settings getSettingProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getSettings();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getSettings();
     }
 
     /**
      * Sets the {@link Language} object that is used to look up interface
-     * strings with <tt>@<i>string_key</i></tt> syntax. Passing
-     * {@code null} will reset the language to
-     * {@code Language.getInterface()}.
+     * strings with <tt>@<i>string_key</i></tt> syntax. Passing {@code null}
+     * will reset the language to {@code Language.getInterface()}.
      *
      * @param language the UI language whose strings will be visible in the
      * global scope
      */
     public void setUiLangProvider(Language language) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setUILanguage(language);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setUILanguage(language);
     }
 
@@ -678,19 +622,18 @@ public final class ScriptMonkey {
      * @return the interface language that is visible in the global scope
      */
     public Language getUiLangProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getUILanguage();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getUILanguage();
     }
 
     /**
      * Sets the {@link Language} object that is used to look up game strings
-     * with <tt>#<i>string_key</i></tt> syntax. Passing {@code null} will
-     * reset the language to {@code Language.getGame()}.
+     * with <tt>#<i>string_key</i></tt> syntax. Passing {@code null} will reset
+     * the language to {@code Language.getGame()}.
      *
      * @param language the game language whose strings will be visible in the
      * global scope
      */
     public void setGameLangProvider(Language language) {
-        ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).setGameLanguage(language);
         ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).setGameLanguage(language);
     }
 
@@ -701,7 +644,7 @@ public final class ScriptMonkey {
      * @return the game language that is visible in the global scope
      */
     public Language getGameLangProvider() {
-        return ((SettingBindings) engine.getBindings(ScriptContext.GLOBAL_SCOPE)).getGameLanguage();
+        return ((SettingBindings) engine.getBindings(ScriptContext.ENGINE_SCOPE)).getGameLanguage();
     }
 
     /**
@@ -711,26 +654,23 @@ public final class ScriptMonkey {
      * @return an initialized script engine
      */
     private ScriptEngine createScriptEngine() {
-        initScriptSystem();
-
-        // CREATE A NEW SEScriptEngine TO USE FOR EVALUATING SCRIPTS
         updateScriptEngineOpimizationSettings();
-        ScriptEngine engine = scriptEngineFactory.getScriptEngine();
+        ScriptEngine engine = SEScriptEngineFactory.getDefaultScriptEngine();
 
         // INSTALL SUPPORT FOR $-NOTATION
-        Bindings parentBindings = engine.getBindings(ScriptContext.GLOBAL_SCOPE);
-        if (parentBindings == null) {
-            engine.setBindings(engine.createBindings(), ScriptContext.GLOBAL_SCOPE);
-        } else if (!(parentBindings instanceof SettingBindings)) {
-            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.GLOBAL_SCOPE);
-        }
-
-        parentBindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
-        if (parentBindings == null) {
-            engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
-        } else if (!(parentBindings instanceof SettingBindings)) {
-            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.ENGINE_SCOPE);
-        }
+//        Bindings parentBindings = engine.getBindings(ScriptContext.GLOBAL_SCOPE);
+//        if (parentBindings == null) {
+//            engine.setBindings(engine.createBindings(), ScriptContext.GLOBAL_SCOPE);
+//        } else if (!(parentBindings instanceof SettingBindings)) {
+//            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.GLOBAL_SCOPE);
+//        }
+//
+//        Bindings parentBindings = engine.getBindings(ScriptContext.ENGINE_SCOPE);
+//        if (parentBindings == null) {
+//            engine.setBindings(engine.createBindings(), ScriptContext.ENGINE_SCOPE);
+//        } else if (!(parentBindings instanceof SettingBindings)) {
+//            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.ENGINE_SCOPE);
+//        }
 
         // EVALUATE THE BOOTSTRAP LIBRARY (WHICH DEFINES useLibrary AND IMPORTS common.js)
         if (BOOTSTRAP_LIBRARY == null) {
@@ -839,8 +779,8 @@ public final class ScriptMonkey {
 
     /**
      * Returns {@code true} if a library identifier is actually a URL. For
-     * example, it would return {@code false} for "imageutils", but
-     * {@code true} for "res://my/library.js".
+     * example, it would return {@code false} for "imageutils", but {@code true}
+     * for "res://my/library.js".
      *
      * @param s the identifier to check
      * @return {@code true} if the identifier is not a simple library name

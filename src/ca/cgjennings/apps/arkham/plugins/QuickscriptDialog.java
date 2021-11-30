@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
 import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;

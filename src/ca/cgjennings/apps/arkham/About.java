@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.i18n.IntegerPluralizer;
 import ca.cgjennings.platform.DesktopIntegration;
 import ca.cgjennings.text.SETemplateProcessor;

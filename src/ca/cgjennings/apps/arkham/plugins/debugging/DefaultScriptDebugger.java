@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
-import ca.cgjennings.apps.arkham.plugins.NoOpErrorReporter;
+import ca.cgjennings.apps.arkham.plugins.engine.NoOpErrorReporter;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.debugging.DebuggingCallback.DebugEventListener;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;

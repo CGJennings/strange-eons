@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import org.mozilla.javascript.Context;
@@ -45,7 +46,7 @@ public class ScriptedRunnable implements Runnable {
     @Override
     public void run() {
         ScriptDebugging.prepareToEnterContext();
-        SEScriptEngineFactory.getContextFactory().enterContext();
+        Context.enter();
         try {
             value = scriptedThread.run();
         } catch (Throwable t) {

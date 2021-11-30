@@ -1,15 +1,13 @@
 /*
- common.js - version 26
+ common.js - version 27
  Core functionality included in every script.
  */
 
 const ca = Packages.ca;
 const gamedata = Packages.gamedata;
 const resources = Packages.resources;
-
-const arkham = Packages.ca.cgjennings.apps.arkham;
+const arkham = ca.cgjennings.apps.arkham;
 const swing = javax.swing;
-
 const ResourceKit = resources.ResourceKit;
 const Language = resources.Language;
 const Settings = resources.Settings;
@@ -19,8 +17,6 @@ const Region = Settings.Region;
 const Region2D = Settings.Region2D;
 const Font = java.awt.Font;
 const URL = java.net.URL;
-
-const exit = arkham.plugins.ScriptMonkey.breakScript;
 
 Error.error = function error(exception) {
     // previously we had to jump through hoops to get a stack trace;
@@ -32,18 +28,18 @@ Error.error = function error(exception) {
     } else if (exception instanceof Error) {
         throw exception;
     }
-    throw new Error(exception.toString());
+    throw new Error(String(exception));
 };
 
 if (Settings.shared.getBoolean('script-warnings')) {
     Error.warn = function warn(message, frame) {
         message = message || "unspecified warning";
         frame = frame == null || frame != frame ? 1 : Math.max(0, -frame);
-        let stack = useLibrary.__engine.getStackTrace();
+        let stack = arkham.plugins.LibImpl.getScriptTrace();
         frame = Math.min(Math.max(0, stack.length - 1), frame);
         org.mozilla.javascript.Context.reportWarning(
                 message, stack[frame].file, stack[frame].line, null, -1
-                );
+        );
     };
     Error.deprecated = function deprecated(message, frame) {
         message = '[DEPRECATED] ' + (message || "unspecified feature");
@@ -56,7 +52,7 @@ if (Settings.shared.getBoolean('script-warnings')) {
 }
 
 Error.handleUncaught = function handleUncaught(exception) {
-    if (exception['javaException'] instanceof arkham.plugins.ScriptMonkey.BreakException) {
+    if (exception['javaException'] != null && exception['javaException'] instanceof java.lang.ThreadDeath) {
         throw exception;
     }
     let rex = exception['rhinoException'];
@@ -334,37 +330,37 @@ const assert = arkham.plugins.debugging.ScriptDebugging.isInstalled()
 // LANGUAGE EXTENSIONS (documented in javascript.doc)
 //
 
-Array.from = function from(o) {
-    let a;
-    if (o instanceof java.lang.Iterable) {
-        o = o.iterator();
-    }
-    if (o instanceof java.util.Iterator) {
-        a = [];
-        while (o.hasNext()) {
-            a[a.length] = o.next();
-        }
-        return a;
-    }
-    if (o instanceof java.util.Enumeration) {
-        a = [];
-        while (o.hasMoreElements()) {
-            a[a.length] = o.nextElement();
-        }
-        return a;
-    }
-    if (o['length'] !== undefined) {
-        return Array.prototype.slice.call(o);
-    }
-    a = [];
-    while (o[a.length] !== undefined) {
-        a[a.length] = o[a.length];
-    }
-    if (a.length === 0) {
-        throw new TypeError('Not an array-like object.');
-    }
-    return a;
-};
+//Array.from = function from(o) {
+//    let a;
+//    if (o instanceof java.lang.Iterable) {
+//        o = o.iterator();
+//    }
+//    if (o instanceof java.util.Iterator) {
+//        a = [];
+//        while (o.hasNext()) {
+//            a[a.length] = o.next();
+//        }
+//        return a;
+//    }
+//    if (o instanceof java.util.Enumeration) {
+//        a = [];
+//        while (o.hasMoreElements()) {
+//            a[a.length] = o.nextElement();
+//        }
+//        return a;
+//    }
+//    if (o['length'] !== undefined) {
+//        return Array.prototype.slice.call(o);
+//    }
+//    a = [];
+//    while (o[a.length] !== undefined) {
+//        a[a.length] = o[a.length];
+//    }
+//    if (a.length === 0) {
+//        throw new TypeError('Not an array-like object.');
+//    }
+//    return a;
+//};
 
 Number.prototype.toInt = function toInt(n) {
     if (!n)
@@ -396,16 +392,16 @@ Number.prototype.dontEnum('toInt', 'toLong', 'toFloat');
 RegExp.prototype.dontEnum('quote', 'quoteReplacement');
 
 
-String.prototype.replaceAll = function replaceAll(pattern, replacement) {
-    return this.replace(
-            new RegExp(RegExp.quote(pattern), 'g'),
-            RegExp.quoteReplacement(replacement)
-            );
-};
-
-String.prototype.dontEnum(
-        'replaceAll'
-        );
+//String.prototype.replaceAll = function replaceAll(pattern, replacement) {
+//    return this.replace(
+//            new RegExp(RegExp.quote(pattern), 'g'),
+//            RegExp.quoteReplacement(replacement)
+//            );
+//};
+//
+//String.prototype.dontEnum(
+//        'replaceAll'
+//        );
 
 Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
