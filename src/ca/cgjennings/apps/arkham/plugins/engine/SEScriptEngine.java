@@ -40,8 +40,9 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
 
         final Context cx = Context.enter();
         try {
-            topLevel = new ImporterTopLevel(cx, false);
-            Globals.defineIn(topLevel);
+            ImporterTopLevel global = new ImporterTopLevel(cx, false);
+            Globals.defineIn(global);
+            topLevel = global;
         } finally {
             Context.exit();
         }
