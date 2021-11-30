@@ -13,8 +13,8 @@ import java.util.Locale;
 class LineBreakIterator extends BreakIteratorAdpater {
 
     /**
-     * Create an iterator that wraps the standard line
-     * {@code BreakIterator} for the default locale.
+     * Create an iterator that wraps the standard line {@code BreakIterator} for
+     * the default locale.
      */
     public LineBreakIterator() {
         bi = BreakIterator.getLineInstance();
@@ -32,10 +32,6 @@ class LineBreakIterator extends BreakIteratorAdpater {
         }
         char curr = ci.next();
 
-        if (prev == '\u2019' && !Character.isWhitespace(curr)) {
-            return false;
-        }
-
-        return true;
+        return !(prev == '\u2019' && !Character.isWhitespace(curr));
     }
 }

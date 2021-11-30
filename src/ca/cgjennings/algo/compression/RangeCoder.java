@@ -13,6 +13,9 @@ import java.util.Arrays;
 
 abstract class RangeCoder {
 
+    public RangeCoder() {
+    }
+
     static final int SHIFT_BITS = 8;
     static final int TOP_MASK = 0xFF000000;
     static final int BIT_MODEL_TOTAL_BITS = 11;

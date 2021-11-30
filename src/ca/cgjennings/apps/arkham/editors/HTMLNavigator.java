@@ -56,7 +56,6 @@ public class HTMLNavigator implements Navigator {
                 }
                 if (m.start(9) >= 0) {
                     list.add(new NavigationPoint("<TABLE>", null, m.start(9), scope, NavigationPoint.ICON_CROSS));
-                    continue;
                 }
             }
         } catch (Throwable t) {

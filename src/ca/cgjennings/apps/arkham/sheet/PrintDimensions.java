@@ -89,12 +89,12 @@ public final class PrintDimensions {
     }
 
     /**
-     * Returns {@code true} if {@code obj} is a print dimensions
-     * instance that represents the same printed size as this instance.
+     * Returns {@code true} if {@code obj} is a print dimensions instance that
+     * represents the same printed size as this instance.
      *
      * @param obj the object to compare this to
-     * @return {@code true} if and only if they are print dimensions of the
-     * same size, within one one hundred thousandth of a point in any dimension
+     * @return {@code true} if and only if they are print dimensions of the same
+     * size, within one one hundred thousandth of a point in any dimension
      */
     @Override
     public boolean equals(Object obj) {
@@ -109,22 +109,19 @@ public final class PrintDimensions {
     }
 
     /**
-     * Returns {@code true} if {@code other} represents the same
-     * printed size as this.
+     * Returns {@code true} if {@code other} represents the same printed size as
+     * this.
      *
      * @param other the object to compare this to
-     * @return {@code true} if and only if they are print dimensions of the
-     * same size, within one one hundred thousandth of a point in any dimension
+     * @return {@code true} if and only if they are print dimensions of the same
+     * size, within one one hundred thousandth of a point in any dimension
      */
     public boolean equals(PrintDimensions other) {
         final double EPSILON = 0.00001;
         if (Math.abs(this.w - other.w) > EPSILON) {
             return false;
         }
-        if (Math.abs(this.h - other.h) > EPSILON) {
-            return false;
-        }
-        return true;
+        return Math.abs(this.h - other.h) <= EPSILON;
     }
 
     @Override

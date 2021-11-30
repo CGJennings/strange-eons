@@ -10,10 +10,10 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * Shapes the left and right margins of rendered text. The shape is defined in
- * terms of insets relative to the original margins. A {@code PageShape}
- * returns insets based on the range of Y-positions covered by a line of text.
- * Positive inset values always reduce the margins; negative values increase
- * them. A zero inset leaves the margin unchanged.
+ * terms of insets relative to the original margins. A {@code PageShape} returns
+ * insets based on the range of Y-positions covered by a line of text. Positive
+ * inset values always reduce the margins; negative values increase them. A zero
+ * inset leaves the margin unchanged.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -73,9 +73,9 @@ public class PageShape {
 
     /**
      * A standard shape that causes the text to conform to its layout rectangle.
-     * This is the default shape for a {@code MarkupRenderer}. It works
-     * just as if using {@code new InsetShape(0,0)}, although it may use an
-     * optimized implementation.
+     * This is the default shape for a {@code MarkupRenderer}. It works just as
+     * if using {@code new InsetShape(0,0)}, although it may use an optimized
+     * implementation.
      */
     public static final PageShape RECTANGLE_SHAPE = new PageShape() {
         @Override
@@ -94,8 +94,8 @@ public class PageShape {
     };
 
     /**
-     * A {@code PageShape} that returns constant inset values regardless of
-     * the Y-position. This is sometimes useful when creating a
+     * A {@code PageShape} that returns constant inset values regardless of the
+     * Y-position. This is sometimes useful when creating a
      * {@code CompoundShape}.
      */
     public static class InsetShape extends PageShape {
@@ -133,10 +133,10 @@ public class PageShape {
     }
 
     /**
-     * A {@code PageShape} that switches between two
-     * {@code PageShape}s at a specified Y-position. This may be used to
-     * build more complex shapes from simpler ones. Either or both of the shapes
-     * may themselves be {@code CompoundShape}s.
+     * A {@code PageShape} that switches between two {@code PageShape}s at a
+     * specified Y-position. This may be used to build more complex shapes from
+     * simpler ones. Either or both of the shapes may themselves be
+     * {@code CompoundShape}s.
      * <p>
      * The following example uses a compound shape to create a "plus" or "double
      * cup" shape, that is, a cup shape that handles four corners instead of
@@ -337,10 +337,7 @@ public class PageShape {
             if (xp1 != other.xp1) {
                 return false;
             }
-            if (xp2 != other.xp2) {
-                return false;
-            }
-            return true;
+            return xp2 == other.xp2;
         }
     }
 
@@ -379,13 +376,13 @@ public class PageShape {
 
     /**
      * A {@code PageShape} that takes its form from a drawing shape
-     * ({@code java.awt.Shape}). The result is similar to scan converting
-     * the source shape and adjusting the text margins to the first "on pixel"
-     * in each scan row (from the left or right edge depending on the margin).
+     * ({@code java.awt.Shape}). The result is similar to scan converting the
+     * source shape and adjusting the text margins to the first "on pixel" in
+     * each scan row (from the left or right edge depending on the margin).
      * Notes:
      * <ol>
-     * <li> Creating a {@code GeometricShape} is fairly expensive; they
-     * should be reused where possible.
+     * <li> Creating a {@code GeometricShape} is fairly expensive; they should
+     * be reused where possible.
      * <li> A page shape only modifies the left and right margins of a line;
      * unlike a drawing shape, a line of text cannot contain any interior gaps.
      * </ol>

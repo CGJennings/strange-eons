@@ -148,8 +148,8 @@ final class ProjectWatcher {
 
     /**
      * Processes events from the file watcher, bundling them up into a queue of
-     * {@code PendingUpdate}s which will be acted on in the EDT after a
-     * brief delay.
+     * {@code PendingUpdate}s which will be acted on in the EDT after a brief
+     * delay.
      */
     private void processEvents() {
         StrangeEons.log.info("started watching project " + project.getName());
@@ -206,8 +206,8 @@ final class ProjectWatcher {
     /**
      * Adds an entry to the update queue. This method is a bit smarter than
      * adding an entry explicitly since it can coalesce entries. This reduces
-     * the number of calls to {@code Member.synchronizeImpl}, which is
-     * fairly expensive.
+     * the number of calls to {@code Member.synchronizeImpl}, which is fairly
+     * expensive.
      *
      * @param kind the kind of event to add
      * @param m the member that the event applies to
@@ -343,10 +343,7 @@ final class ProjectWatcher {
             if (kind != other.kind) {
                 return false;
             }
-            if (!member.equals(other.member)) {
-                return false;
-            }
-            return true;
+            return member.equals(other.member);
         }
 
         @Override

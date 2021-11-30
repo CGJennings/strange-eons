@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.lang.model.SourceVersion;
-import javax.script.ScriptEngine;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JScrollBar;

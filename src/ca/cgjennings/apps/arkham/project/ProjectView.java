@@ -1731,10 +1731,8 @@ public final class ProjectView extends javax.swing.JPanel {
                 // which ends up returning null here. In this case we simply verify
                 // that the data flavor is correct. This method will be called
                 // again when an attempt is made to actually import the data.
-                if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    return true;
-                }
-                return false;
+
+                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
             }
 
             // can't move a file into its immediate parent

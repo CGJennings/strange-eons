@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.TextEncoding;
-import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.util.CommandFormatter;
@@ -249,8 +248,7 @@ public class ScriptDebugging {
         public void startClient() throws IOException;
 
         /**
-         * Returns {@code true} if the debugging client is currently
-         * running.
+         * Returns {@code true} if the debugging client is currently running.
          *
          * @return {@code true} if the client is active
          */
@@ -314,7 +312,7 @@ public class ScriptDebugging {
             final String port = String.valueOf(server.getPort());
 
             String userOverride = Settings.getUser().get("script-debug-client-launch", null);
-            if(userOverride != null) {
+            if (userOverride != null) {
                 CommandFormatter cf = new DefaultCommandFormatter();
                 cf.setVariable('h', host);
                 cf.setVariable('p', port);

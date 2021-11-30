@@ -14,6 +14,9 @@ package ca.cgjennings.algo.compression;
  */
 class CRC32Hash {
 
+    protected CRC32Hash() {
+    }
+
     private static final int CRC32_POLY = 0xEDB88320;
 
     static final int[] crcTable = new int[256];

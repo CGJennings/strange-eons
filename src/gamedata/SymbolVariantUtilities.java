@@ -119,7 +119,7 @@ public final class SymbolVariantUtilities {
 
     private static void extractTransparent(int[] pixels, int min, int max) {
         for (int i = 0; i < pixels.length; ++i) {
-            pixels[i] = pixels[i] & 0xff00_0000;
+            pixels[i] &= 0xff00_0000;
         }
     }
 

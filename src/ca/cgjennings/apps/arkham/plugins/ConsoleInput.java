@@ -1,8 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.plugins.ScriptConsole;
-import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.BorderLayout;
@@ -20,8 +18,8 @@ import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 
 /**
- * Adds a simple input field to a script console to evaluate script code.
- * Press Escape to toggle closed.
+ * Adds a simple input field to a script console to evaluate script code. Press
+ * Escape to toggle closed.
  */
 public final class ConsoleInput extends javax.swing.JPanel {
 

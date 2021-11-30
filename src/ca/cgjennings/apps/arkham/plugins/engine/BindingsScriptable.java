@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
-import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import org.mozilla.javascript.ConstProperties;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;

@@ -76,10 +76,7 @@ public final class WarningErrorReporter implements ErrorReporter {
             return false;
         }
         // ignore missing ; warnings
-        if (message.contains(" ; ") && Settings.getUser().getYesNo("script-ignore-missing-semicolons")) {
-            return false;
-        }
-        return true;
+        return !(message.contains(" ; ") && Settings.getUser().getYesNo("script-ignore-missing-semicolons"));
     }
 
     static final String CODE_HAS_NO_SIDE_EFECTS = ResourceBundle.getBundle(

@@ -55,10 +55,6 @@ public class AddLocale extends TaskAction {
         if (!ProjectUtilities.matchExtension(member, "html")) {
             return false;
         }
-        if (!(member.getParent() instanceof Task)) {
-            return false;
-        }
-
-        return true;
+        return member.getParent() instanceof Task;
     }
 }
