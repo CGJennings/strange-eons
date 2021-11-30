@@ -119,16 +119,13 @@ public final class ScriptMonkey {
         SEScriptEngineFactory.setWarningsEnabled(s.getYesNo("script-warnings"));
     }
 
-    private static final SEScriptEngineFactory scriptEngineFactory;
-
     static {
         // initialize the script system
         if (!EventQueue.isDispatchThread()) {
             throw new AssertionError("script system must be initialized in EDT");
         }
 
-        // create the script engine factory and load the initial optimization settings
-        scriptEngineFactory = SEScriptEngineFactory.getDefaultFactory();
+        // load the initial optimization settings
         updateScriptEngineOpimizationSettings();
 
         // listen for changes to the optimization settings
@@ -661,7 +658,7 @@ public final class ScriptMonkey {
      */
     private ScriptEngine createScriptEngine() {
         updateScriptEngineOpimizationSettings();
-        ScriptEngine engine = scriptEngineFactory.getScriptEngine();
+        ScriptEngine engine = SEScriptEngineFactory.getDefaultScriptEngine();
 
         // INSTALL SUPPORT FOR $-NOTATION
         Bindings parentBindings = engine.getBindings(ScriptContext.GLOBAL_SCOPE);
