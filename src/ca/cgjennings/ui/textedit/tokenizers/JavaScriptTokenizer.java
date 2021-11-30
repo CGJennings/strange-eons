@@ -119,6 +119,26 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 lastOffset = lastKeyword = i;
                             }
                             break;
+                        case '\'':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING2;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '`':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING3;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
                         case '$':
                             if (!Character.isJavaIdentifierStart(cPrev)) {
                                 doKeyword(line, i);
@@ -148,16 +168,6 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     token = TokenType.LITERAL_SPECIAL_1;
                                     lastOffset = lastKeyword = i;
                                 }
-                            }
-                            break;
-                        case '\'':
-                            doKeyword(line, i);
-                            if (backslash) {
-                                backslash = false;
-                            } else {
-                                addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL_STRING2;
-                                lastOffset = lastKeyword = i;
                             }
                             break;
                         case ':':
@@ -238,6 +248,15 @@ public class JavaScriptTokenizer extends Tokenizer {
                         backslash = false;
                     } else if (c == '\'') {
                         addToken(i1 - lastOffset, TokenType.LITERAL_STRING2);
+                        token = TokenType.PLAIN;
+                        lastOffset = lastKeyword = i1;
+                    }
+                    break;
+                case LITERAL_STRING3:
+                    if (backslash) {
+                        backslash = false;
+                    } else if (c == '`') {
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING3);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
