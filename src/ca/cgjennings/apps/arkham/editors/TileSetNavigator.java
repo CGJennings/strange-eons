@@ -32,7 +32,6 @@ public class TileSetNavigator implements Navigator {
             while (m.find()) {
                 String line = m.group(1).trim();
                 if (line.startsWith("#") || line.startsWith("!")) {
-                    continue;
                 } else if (line.isEmpty()) {
                     newTileState = true;
                 } else if (newTileState) {

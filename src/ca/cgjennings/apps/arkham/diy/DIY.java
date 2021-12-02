@@ -46,24 +46,23 @@ import resources.Settings;
  * functionality to an object that implements the {@link Handler} interface.
  * This object is typically derived from script code, and so terms like "script"
  * and "script function" will be used throughout this document to refer to the
- * parts of the component that are implemented by the {@code Handler}
- * proxy, but it should be understood that compiled code can also subclass DIY
- * and provide its own {@code Handler} instance.
+ * parts of the component that are implemented by the {@code Handler} proxy, but
+ * it should be understood that compiled code can also subclass DIY and provide
+ * its own {@code Handler} instance.
  *
  * <a name='locked'><b>Restricted Properties:</b></a>
  * Several properties of DIY components are <i>restricted</i>. Attempts to
  * change a restricted property except from your script's {@code create} or
- * {@code onRead} functions will cause an
- * {@code IllegalStateException} to be thrown. Restricted properties
- * control the component's basic structure and features, such as the number of
- * faces it consists of. These properties cannot be changed dynamically: they
- * are normally set within the component's {@code create} script function
- * and never changed again. To allow cards to evolve over time, they can also be
- * changed within the script's {@code onRead} function. So for example, a
- * component that starts with no portrait could later add one by checking for
- * the previous version in the {@code onRead} function (see
- * {@link #setVersion}), and if found, defining a portrait key (see
- * {@link #setPortraitKey}).
+ * {@code onRead} functions will cause an {@code IllegalStateException} to be
+ * thrown. Restricted properties control the component's basic structure and
+ * features, such as the number of faces it consists of. These properties cannot
+ * be changed dynamically: they are normally set within the component's
+ * {@code create} script function and never changed again. To allow cards to
+ * evolve over time, they can also be changed within the script's {@code onRead}
+ * function. So for example, a component that starts with no portrait could
+ * later add one by checking for the previous version in the {@code onRead}
+ * function (see {@link #setVersion}), and if found, defining a portrait key
+ * (see {@link #setPortraitKey}).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -151,8 +150,8 @@ public class DIY extends AbstractGameComponent implements Handler {
 
         /**
          * Returns the number of faces (sheets) that are used by this face
-         * style. For example, {@code SHARED_FACE.getFaceCount()} would
-         * return 2, while {@code SIX_FACES.getFaceCount()} would return 6.
+         * style. For example, {@code SHARED_FACE.getFaceCount()} would return
+         * 2, while {@code SIX_FACES.getFaceCount()} would return 6.
          *
          * @return the number of sheets associated with this face style
          */
@@ -261,9 +260,9 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Creates a new DIY component that will call into the given handler. If the
      * game code represents a registered game, the new component's settings will
-     * inherit from the settings for that game. If the {@code debug}
-     * flag is set to {@code true}, then a breakpoint will be set at the
-     * start of handler script.
+     * inherit from the settings for that game. If the {@code debug} flag is set
+     * to {@code true}, then a breakpoint will be set at the start of handler
+     * script.
      *
      * @param handlerScript the location of the script resource that defines the
      * handler functions that will be called by this component to perform
@@ -290,14 +289,13 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * This helper method can be called to create a new component for testing
      * purposes using just a {@link Handler} implementation. (This method is
-     * called by the {@code testDIYScript()} function in the
-     * {@code diy} script library.) Note that if you save a test instance,
-     * the saved file will not open correctly since the component will not know
-     * what script file to load to recreate the handler.
+     * called by the {@code testDIYScript()} function in the {@code diy} script
+     * library.) Note that if you save a test instance, the saved file will not
+     * open correctly since the component will not know what script file to load
+     * to recreate the handler.
      *
      * @param h the handler instance to test
-     * @param gameCode a game to associate with the component, or
-     * {@code null}
+     * @param gameCode a game to associate with the component, or {@code null}
      * @return a new DIY instance that will call into the provided handler
      */
     public static DIY createTestInstance(Handler h, String gameCode) {
@@ -400,10 +398,10 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     /**
      * Returns the resource name used to create a {@link Handler} for this
-     * component, or {@code null} if the component was created directly
-     * from a {@link Handler} instance. Typically the resource used to create a
-     * handler is a script file, but it can also be the name of a class on the
-     * class path that implements the {@code Handler} interface.
+     * component, or {@code null} if the component was created directly from a
+     * {@link Handler} instance. Typically the resource used to create a handler
+     * is a script file, but it can also be the name of a class on the class
+     * path that implements the {@code Handler} interface.
      *
      * @return the resource used to create this component, or {@code null}
      */
@@ -714,10 +712,9 @@ public class DIY extends AbstractGameComponent implements Handler {
      * {@linkplain Language#string(java.lang.String) looked up} using the active
      * user interface language
      * {@linkplain #getSheetTitles() whenever the titles are requested}. This
-     * allows you to set a custom sheet title once (during
-     * {@code onCreate}) and yet get a correctly localized title when the
-     * resulting component is saved and later reopened using a different
-     * language setting.
+     * allows you to set a custom sheet title once (during {@code onCreate}) and
+     * yet get a correctly localized title when the resulting component is saved
+     * and later reopened using a different language setting.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
@@ -745,11 +742,11 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Returns a copy of the human-readable names of the sheets used by this
      * component. A typical result would be something like
-     * {@code ["Front Face", "Back Face"]}, localized for the user
-     * interface language. Note that, since this returns a copy of the current
-     * titles, changing the values of the returned array will have no effect on
-     * the titles used by this component. To change a sheet title, you must
-     * instead call {@link #setSheetTitle(int, java.lang.String)}.
+     * {@code ["Front Face", "Back Face"]}, localized for the user interface
+     * language. Note that, since this returns a copy of the current titles,
+     * changing the values of the returned array will have no effect on the
+     * titles used by this component. To change a sheet title, you must instead
+     * call {@link #setSheetTitle(int, java.lang.String)}.
      *
      * <p>
      * If no custom sheet titles have ever been set on this component, then this
@@ -950,9 +947,9 @@ public class DIY extends AbstractGameComponent implements Handler {
     // IF IT CHANGES, THE ARRAYS WILL NEED TO BE ADAPTED ON DESERIALIZATION
     private static final int MAX_FACES = 8;
 
-
     /**
      * Returns the DIY's feature bit flags.
+     *
      * @return a bit mask of enabled features
      */
     final int getFlags() {
@@ -973,11 +970,9 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if the component's sheet uses translucent
-     * pixels.
+     * Returns {@code true} if the component's sheet uses translucent pixels.
      *
-     * @return {@code true} if the component's sheets include an alpha
-     * channel
+     * @return {@code true} if the component's sheets include an alpha channel
      * @see #setTransparentFaces
      */
     public final boolean getTransparentFaces() {
@@ -1010,14 +1005,14 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets whether faces can change in size. If {@code true}, then
-     * transparent faces will also automatically be enabled. When this option is
-     * enabled, sheets have their edges trimmed of transparent pixels before
-     * being returned. The easiest way to implement variably-sized faces is to
-     * use a template image that matches the largest possible size that is
-     * desired; if no maximum size is known ahead of time, you must replace the
-     * template image with an appropriately sized template at the start of each
-     * rendering pass.
+     * Sets whether faces can change in size. If {@code true}, then transparent
+     * faces will also automatically be enabled. When this option is enabled,
+     * sheets have their edges trimmed of transparent pixels before being
+     * returned. The easiest way to implement variably-sized faces is to use a
+     * template image that matches the largest possible size that is desired; if
+     * no maximum size is known ahead of time, you must replace the template
+     * image with an appropriately sized template at the start of each rendering
+     * pass.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
@@ -1084,13 +1079,13 @@ public class DIY extends AbstractGameComponent implements Handler {
      * Sets the base portrait key for this component. The base portrait key is
      * used to compose a group of setting keys that control the built-in
      * portrait manager. The key will be {@code null} if custom portrait
-     * handling is enabled, and trying to set the key to non-{@code null}
-     * value while custom portrait handling is enabled will result in an
-     * {@code IllegalStateException} being thrown. When custom portrait
-     * handling is disabled, setting the key to {@code null} will disable
-     * portraits for the component ({@link #getPortraitCount()} will return 0).
-     * If the key is non-{@code null}, then the following keys will be
-     * referred to when setting up the portrait system:
+     * handling is enabled, and trying to set the key to non-{@code null} value
+     * while custom portrait handling is enabled will result in an
+     * {@code IllegalStateException} being thrown. When custom portrait handling
+     * is disabled, setting the key to {@code null} will disable portraits for
+     * the component ({@link #getPortraitCount()} will return 0). If the key is
+     * non-{@code null}, then the following keys will be referred to when
+     * setting up the portrait system:
      * <dl>
      * <dt><i>xxx</i>-portrait-template
      * <dd>the resource file that contains the default portrait image
@@ -1117,8 +1112,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      *
      * @param portraitKey the base portrait key, or {@code null} to disable
      * portraits
-     * @throws IllegalStateException if the key is not {@code null} and
-     * custom portrait handling is enabled
+     * @throws IllegalStateException if the key is not {@code null} and custom
+     * portrait handling is enabled
      * @see #setCustomPortraitHandling
      * @see #getPortrait
      * @see #setFaceStyle
@@ -1132,8 +1127,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if portrait areas will be filled with solid
-     * white before painting the portrait.
+     * Returns {@code true} if portrait areas will be filled with solid white
+     * before painting the portrait.
      *
      * @return {@code true} if background filling is enabled
      */
@@ -1162,8 +1157,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * Returns {@code true} if the minimum portrait scale is used for newly
      * installed portrait images.
      *
-     * @return {@code true} if the minimum portrait scale method is used
-     * for new portrait images
+     * @return {@code true} if the minimum portrait scale method is used for new
+     * portrait images
      * @see #setPortraitScaleUsesMinimum
      */
     public final boolean getPortraitScaleUsesMinimum() {
@@ -1171,18 +1166,18 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets how the portrait's initial scale is determined. If
-     * {@code false}, the default, the initial scale is the smallest scale
-     * that completely covers the portrait's clip region. If {@code true},
-     * then the initial scale will be the smallest scale that causes either the
-     * top and bottom edge of the image or the left and right edge of the image
-     * to touch the corresponding edges of the clipping region.
+     * Sets how the portrait's initial scale is determined. If {@code false},
+     * the default, the initial scale is the smallest scale that completely
+     * covers the portrait's clip region. If {@code true}, then the initial
+     * scale will be the smallest scale that causes either the top and bottom
+     * edge of the image or the left and right edge of the image to touch the
+     * corresponding edges of the clipping region.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *
-     * @param useMinimum {@code true} to set the minimum portrait scale
-     * method for new portrait images
+     * @param useMinimum {@code true} to set the minimum portrait scale method
+     * for new portrait images
      * @see #getPortraitScaleUsesMinimum
      */
     public final void setPortraitScaleUsesMinimum(boolean useMinimum) {
@@ -1190,8 +1185,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if the portrait is clipped to the clip region
-     * when drawn with {@link DIYSheet#paintPortrait(java.awt.Graphics2D)}.
+     * Returns {@code true} if the portrait is clipped to the clip region when
+     * drawn with {@link DIYSheet#paintPortrait(java.awt.Graphics2D)}.
      *
      * @return {@code true} if clipping is enabled
      * @see #setPortraitClipping
@@ -1201,12 +1196,12 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets whether the portrait is clipped. If {@code true} (the default),
-     * then no part of the portrait image that lies outside of the clip region
-     * will be drawn when {@link DIYSheet#paintPortrait(java.awt.Graphics2D)} is
-     * used to draw the portrait. If {@code false}, then the portrait can
-     * "escape" from the clip region and draw over any surrounding content. When
-     * set to {@code false}, the minimum scaling option is often also set.
+     * Sets whether the portrait is clipped. If {@code true} (the default), then
+     * no part of the portrait image that lies outside of the clip region will
+     * be drawn when {@link DIYSheet#paintPortrait(java.awt.Graphics2D)} is used
+     * to draw the portrait. If {@code false}, then the portrait can "escape"
+     * from the clip region and draw over any surrounding content. When set to
+     * {@code false}, the minimum scaling option is often also set.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
@@ -1227,8 +1222,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * stencil (described below). The provided image should be the same size as
      * the clip rectangle. The image's alpha channel should match the
      * translucency of any graphics drawn over the portrait region.
-     * Alternatively, the stencil can be set to {@code null} to indicate
-     * that the portrait is not occluded.
+     * Alternatively, the stencil can be set to {@code null} to indicate that
+     * the portrait is not occluded.
      *
      * <p>
      * If no clip stencil is set, a default mechanism will be used to create
@@ -1251,8 +1246,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * <p>
      * <b>Note:</b> Explicit clip stencils are not saved with the component, but
      * must be restored when the component is read from a file. A simple way to
-     * handle this is to set the clip stencil in {@code createInterface},
-     * as this is called whether the component is new or being read from a file.
+     * handle this is to set the clip stencil in {@code createInterface}, as
+     * this is called whether the component is new or being read from a file.
      *
      * <p>
      * If the component uses custom portrait handling, calling this method will
@@ -1291,8 +1286,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * <b>Note:</b> Explicit clip stencil regions are not saved with the
      * component, but must be restored when the component is read from a file. A
      * simple way to handle this is to set the region in
-     * {@code createInterface}, as this is called whether the component is
-     * new or being read from a file.
+     * {@code createInterface}, as this is called whether the component is new
+     * or being read from a file.
      *
      * <p>
      * If the component uses custom portrait handling, calling this method will
@@ -1317,8 +1312,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if marker portrait areas will be filled with
-     * solid white before painting the marker portrait.
+     * Returns {@code true} if marker portrait areas will be filled with solid
+     * white before painting the marker portrait.
      *
      * @return {@code true} if background filling is enabled
      * @see #setMarkerBackgroundFilled
@@ -1354,11 +1349,11 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if the minimum portrait scale is used on the
-     * marker for newly installed portrait images.
+     * Returns {@code true} if the minimum portrait scale is used on the marker
+     * for newly installed portrait images.
      *
-     * @return {@code true} if the minimum portrait scale method is used
-     * for new portrait images
+     * @return {@code true} if the minimum portrait scale method is used for new
+     * portrait images
      * @see #setMarkerScaleUsesMinimum
      * @throws IllegalStateException if the face style is not
      * {@code CARD_AND_MARKER}
@@ -1377,8 +1372,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *
-     * @param useMinimum {@code true} to set the minimum portrait scale
-     * method for new portrait images
+     * @param useMinimum {@code true} to set the minimum portrait scale method
+     * for new portrait images
      * @see #getMarkerScaleUsesMinimum
      * @throws IllegalStateException if the face style is not
      * {@code CARD_AND_MARKER}
@@ -1391,8 +1386,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Returns {@code true} if the marker portrait is clipped to the clip
-     * region when drawn with
+     * Returns {@code true} if the marker portrait is clipped to the clip region
+     * when drawn with
      * {@link DIYSheet#paintMarkerPortrait(java.awt.Graphics2D)}.
      *
      * @return {@code true} if clipping is enabled
@@ -1412,14 +1407,13 @@ public class DIY extends AbstractGameComponent implements Handler {
      * default), then no part of the portrait image that lies outside of the
      * clip region will be drawn when
      * {@link DIYSheet#paintMarkerPortrait(java.awt.Graphics2D)} is used to draw
-     * the portrait. If {@code false}, then the portrait can "escape" from
-     * the clip region and draw over any surrounding content.
+     * the portrait. If {@code false}, then the portrait can "escape" from the
+     * clip region and draw over any surrounding content.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *
-     * @param clipping {@code true} if the marker portrait should be
-     * clipped
+     * @param clipping {@code true} if the marker portrait should be clipped
      * @see #getMarkerClipping
      * @see #setMarkerScaleUsesMinimum
      * @throws IllegalStateException if the face style is not
@@ -1534,19 +1528,19 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Sets whether this component's script will provide its own portrait
      * handling code or whether the built-in portrait management system will be
-     * used. The default is {@code false} (use the built-in system), which
-     * is suitable in most cases. If set to {@code true}, the component
-     * script must define functions to implement the {@link PortraitProvider}
-     * interface, and the component will delegate to these functions when its
-     * own {@link #getPortraitCount()} and {@link #getPortrait(int)} methods are
+     * used. The default is {@code false} (use the built-in system), which is
+     * suitable in most cases. If set to {@code true}, the component script must
+     * define functions to implement the {@link PortraitProvider} interface, and
+     * the component will delegate to these functions when its own
+     * {@link #getPortraitCount()} and {@link #getPortrait(int)} methods are
      * called.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *
      * @param scripted whether portrait handling will be provided by the
-     * component's built-in portrait management ({@code false}) or by
-     * script code ({@code true})
+     * component's built-in portrait management ({@code false}) or by script
+     * code ({@code true})
      * @see #isCustomPortraitHandling
      * @see PortraitProvider
      * @see DefaultPortrait
@@ -1558,9 +1552,9 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * Returns the number of portraits provided by this component. If custom
      * portrait handling is enabled, then this returns the number of portraits
-     * reported by the script's {@code getPortraitCount} function.
-     * Otherwise, it returns 0 if no portrait key is set, 1 if a portrait key is
-     * set, or 2 if a portrait key is set <i>and</i> the face style is
+     * reported by the script's {@code getPortraitCount} function. Otherwise, it
+     * returns 0 if no portrait key is set, 1 if a portrait key is set, or 2 if
+     * a portrait key is set <i>and</i> the face style is
      * {@code CARD_AND_MARKER}.
      *
      * @return the number of portraits available from {@link #getPortrait}
@@ -1585,8 +1579,8 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     /**
      * Returns the specified {@link Portrait}. If custom portrait handling is
-     * enabled, then this calls the script's {@code getPortrait} function
-     * to retrieve the portrait to return. Otherwise it will return a built-in
+     * enabled, then this calls the script's {@code getPortrait} function to
+     * retrieve the portrait to return. Otherwise it will return a built-in
      * portrait implementation: if no portrait key is set, then no portraits are
      * available. Otherwise, the built-in portrait can be fetched using an index
      * of 0. If the face style is {@link FaceStyle#CARD_AND_MARKER}, then the
@@ -2002,7 +1996,7 @@ public class DIY extends AbstractGameComponent implements Handler {
      * @return the portrait image
      * @see #getPortrait
      * @see Portrait
-     */    
+     */
     public final BufferedImage getPortraitImage() {
         return getPortrait(0).getImage();
     }
@@ -2208,8 +2202,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * completely covers the clip region.
      *
      * @param image the image to compute the ideal scale for
-     * @param clipKeyType use "portrait" or {@code null} for the portrait
-     * clip region, "marker" for the marker clip region
+     * @param clipKeyType use "portrait" or {@code null} for the portrait clip
+     * region, "marker" for the marker clip region
      * @return the ideal scale for the image based on the portrait clip region
      */
     @Override
@@ -2241,8 +2235,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * This is overridden to use the portrait key to determine the clip region.
      *
      * @param image the image to compute the minimum scale for
-     * @param clipKeyType use "portrait" or {@code null} for the portrait
-     * clip region, "marker" for the marker clip region
+     * @param clipKeyType use "portrait" or {@code null} for the portrait clip
+     * region, "marker" for the marker clip region
      * @return the minimum scale for the image based on the portrait clip region
      * @see #setPortraitScaleUsesMinimum
      */
@@ -2294,8 +2288,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code onClear} function. This should not be
-     * called directly; instead, call {@link #clearAll}.
+     * Calls the script's {@code onClear} function. This should not be called
+     * directly; instead, call {@link #clearAll}.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2320,8 +2314,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code create} function. This should not be
-     * called directly.
+     * Calls the script's {@code create} function. This should not be called
+     * directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2347,8 +2341,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code createInterface} function. This should not
-     * be called directly.
+     * Calls the script's {@code createInterface} function. This should not be
+     * called directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2372,8 +2366,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code createFrontPainter} function. This should
-     * not be called directly.
+     * Calls the script's {@code createFrontPainter} function. This should not
+     * be called directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2397,8 +2391,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code createBackPainter} function. This should
-     * not be called directly.
+     * Calls the script's {@code createBackPainter} function. This should not be
+     * called directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2422,8 +2416,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code paintFront} function. This should not be
-     * called directly.
+     * Calls the script's {@code paintFront} function. This should not be called
+     * directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2448,8 +2442,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code paintBack} function. This should not be
-     * called directly.
+     * Calls the script's {@code paintBack} function. This should not be called
+     * directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2474,8 +2468,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code onRead} function. This should not be
-     * called directly.
+     * Calls the script's {@code onRead} function. This should not be called
+     * directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2500,8 +2494,8 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Calls the script's {@code onWrite} function. This should not be
-     * called directly.
+     * Calls the script's {@code onWrite} function. This should not be called
+     * directly.
      *
      * Exceptions thrown by the script function will be caught and reported in
      * the script console.
@@ -2700,8 +2694,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * It automatically converts old "x-" style property names to the new naming
      * style. (For example, <tt>x-my-setting</tt> becomes <tt>MySetting</tt>.)
      *
-     * @deprecated This should only be called in an {@code onRead} function
-     * when upgrading very old DIY components.
+     * @deprecated This should only be called in an {@code onRead} function when
+     * upgrading very old DIY components.
      */
     @Deprecated
     public final void upgradeOldPropertyNames() {
@@ -2725,7 +2719,7 @@ public class DIY extends AbstractGameComponent implements Handler {
                     }
                 }
                 replaceKeys.add(b.toString());
-                replaceValues.add(value.toString());
+                replaceValues.add(value);
             }
         }
         for (int i = 0; i < replaceKeys.size(); ++i) {

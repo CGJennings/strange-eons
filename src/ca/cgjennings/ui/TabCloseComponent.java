@@ -1,5 +1,6 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.graphics.ImageUtilities;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -12,12 +13,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
 import resources.ResourceKit;
@@ -198,14 +202,25 @@ public class TabCloseComponent extends JPanel {
         return pane.getToolTipTextAt(i);
     }
 
+    private static final int ICON_COUNT = 6;
+    private static final Icon[] buttonIcons = new Icon[ICON_COUNT];
+
+    static {
+        final boolean dm = UIManager.getBoolean("useDarkTheme");
+        for (int i = 0; i < ICON_COUNT; ++i) {
+            BufferedImage im = ResourceKit.getImage("icons/ui/controls/close" + i + ".png");
+            if (dm) {
+                im = ImageUtilities.invert(im);
+            }
+            buttonIcons[i] = new ImageIcon(im);
+        }
+
+    }
+
     class TabButton extends JButton implements ActionListener {
 
         public TabButton() {
-            for (int i = 0; i < ICON_COUNT; ++i) {
-                buttonImages[i] = ResourceKit.getIcon("ui/controls/close" + i + ".png");
-            }
-
-            setPreferredSize(new Dimension(buttonImages[0].getIconWidth() + 1, buttonImages[0].getIconWidth() + 1));
+            setPreferredSize(new Dimension(buttonIcons[0].getIconWidth() + 1, buttonIcons[0].getIconWidth() + 1));
             // Make it look the same under all LaFs
             setUI(new BasicButtonUI());
             // Make transparent
@@ -234,12 +249,11 @@ public class TabCloseComponent extends JPanel {
             if (dirty) {
                 icon += 3;
             }
-            buttonImages[icon].paintIcon(this, g, 1, 1);
+            buttonIcons[icon].paintIcon(this, g, 1, 1);
         }
 
         boolean isRolledOver = false;
         private boolean dirty = false;
-        private final Icon[] buttonImages = new Icon[ICON_COUNT];
 
         public boolean isDirty() {
             return dirty;
@@ -289,6 +303,4 @@ public class TabCloseComponent extends JPanel {
             }
         }
     };
-
-    private static final int ICON_COUNT = 6;
 }

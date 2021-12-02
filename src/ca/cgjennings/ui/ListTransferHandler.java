@@ -216,10 +216,7 @@ public class ListTransferHandler extends TransferHandler {
         if (hasLocalArrayListFlavor(flavors)) {
             return true;
         }
-        if (hasSerialArrayListFlavor(flavors)) {
-            return true;
-        }
-        return false;
+        return hasSerialArrayListFlavor(flavors);
     }
 
     @Override
@@ -270,10 +267,7 @@ public class ListTransferHandler extends TransferHandler {
             if (localArrayListFlavor.equals(flavor)) {
                 return true;
             }
-            if (serialArrayListFlavor.equals(flavor)) {
-                return true;
-            }
-            return false;
+            return serialArrayListFlavor.equals(flavor);
         }
     }
 }

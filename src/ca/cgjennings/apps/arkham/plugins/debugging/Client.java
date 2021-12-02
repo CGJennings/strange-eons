@@ -161,8 +161,8 @@ public final class Client extends javax.swing.JFrame {
      *
      * @param command the command to perform
      * @param args the arguments (may be {@code null} if no arguments)
-     * @return the result of the command as an array of lines, or
-     * {@code null} if there was an error
+     * @return the result of the command as an array of lines, or {@code null}
+     * if there was an error
      * @throws NullPointerException if {@code name} is null
      * @throws IllegalArgumentException if the number of arguments is incorrect
      */
@@ -202,8 +202,8 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Returns {@code true} if a script is currently interrupted.
      *
-     * @return {@code true} if connected to a server and the client has
-     * detected that the server has reached a breakpoint
+     * @return {@code true} if connected to a server and the client has detected
+     * that the server has reached a breakpoint
      */
     private boolean isInterrupted() {
         threadAssert();
@@ -221,8 +221,8 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Actively checks whether the connection is still valid. Typically, this is
-     * called after {@link #perform} returns {@code null} to check whether
-     * a connection is still valid. If the connection appears to be broken, this
+     * called after {@link #perform} returns {@code null} to check whether a
+     * connection is still valid. If the connection appears to be broken, this
      * method will set the connection flag to {@code false} (see
      * {@link #isConnected()}), then start a thread that will attempt to
      * reconnect automatically.
@@ -242,7 +242,7 @@ public final class Client extends javax.swing.JFrame {
         connected = false;
         updateToolState();
 
-        if(autoConnect) {
+        if (autoConnect) {
             showPanel("connecting");
             Thread connectThread = new Thread(() -> {
                 // already tried once
@@ -283,8 +283,8 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Sets the content of the file display to {@code sourceText} and
-     * scrolls to the indicated line.
+     * Sets the content of the file display to {@code sourceText} and scrolls to
+     * the indicated line.
      *
      * @param sourceText the source code of the file to display (may be
      * {@code null})
@@ -1563,9 +1563,9 @@ public final class Client extends javax.swing.JFrame {
     }
 
     /**
-     * Ensures that the entries in {@code model} match the list of strings.
-     * If possible, the selection is maintained. Returns {@code true} if
-     * the model had to be changed.
+     * Ensures that the entries in {@code model} match the list of strings. If
+     * possible, the selection is maintained. Returns {@code true} if the model
+     * had to be changed.
      *
      * @param values the list of strings that the model must match
      * @param model a model to synchronize with the list
@@ -2341,10 +2341,10 @@ public final class Client extends javax.swing.JFrame {
         DiscoveryDialog dd = new DiscoveryDialog(this);
         dd.setVisible(true);
         DiscoveryService.ServerInfo info = dd.getSelectedServer();
-        if(info != null) {
+        if (info != null) {
             hostField.setText(info.address.getHostName());
             portField.setValue(info.port);
-            if(connectBtn.isEnabled()) {
+            if (connectBtn.isEnabled()) {
                 connectBtn.doClick(0);
             }
         }
@@ -2375,8 +2375,8 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Returns the actual stack frame index for a stack frame argument. If
-     * {@code index} is less than 0, it will return the selected stack
-     * frame. The result is clamped the the number of frames.
+     * {@code index} is less than 0, it will return the selected stack frame.
+     * The result is clamped the the number of frames.
      *
      * @param stackFrame the index to correct
      * @return the actual index for this index parameter
@@ -2399,8 +2399,8 @@ public final class Client extends javax.swing.JFrame {
      *
      * @param command the command to perform
      * @param args the arguments (may be {@code null} if no arguments)
-     * @return the result of the command as an array of lines, or
-     * {@code null} if there was an error
+     * @return the result of the command as an array of lines, or {@code null}
+     * if there was an error
      * @throws NullPointerException if {@code name} is null
      * @throws IllegalArgumentException if the number of arguments is incorrect
      */
@@ -2420,11 +2420,11 @@ public final class Client extends javax.swing.JFrame {
      * is not restricted to commands enumerated by {@code Command}.
      *
      * @param name the raw string that names the command
-     * @param raw if {@code true}, the server reply is sent back verbatim
-     * (only used for debugging)
+     * @param raw if {@code true}, the server reply is sent back verbatim (only
+     * used for debugging)
      * @param args the arguments (may be {@code null} if no arguments)
-     * @return the result of the command as an array of lines, or
-     * {@code null} if there was an error
+     * @return the result of the command as an array of lines, or {@code null}
+     * if there was an error
      * @throws NullPointerException if {@code name} is null
      */
     String[] send(String name, boolean raw, String... args) {
@@ -2527,7 +2527,7 @@ public final class Client extends javax.swing.JFrame {
     public static void main(final String args[]) {
         ClientArguments arguments = new ClientArguments();
         arguments.parse(null, args);
-        if(arguments.search) {
+        if (arguments.search) {
             searchForClients(arguments.host);
             System.exit(0);
         }
@@ -2538,10 +2538,10 @@ public final class Client extends javax.swing.JFrame {
             } catch (Exception e) {
             }
             Client client = new Client();
-            if(arguments.host != null) {
+            if (arguments.host != null) {
                 client.host = arguments.host.trim();
             }
-            if(arguments.port >= 1 && arguments.port <= 65535) {
+            if (arguments.port >= 1 && arguments.port <= 65535) {
                 client.port = arguments.port;
             }
             client.setVisible(true);
@@ -2554,14 +2554,14 @@ public final class Client extends javax.swing.JFrame {
             ds.setDiscoveryConsumer(info -> {
                 // since multi-threaded, entire description must use just one println
                 System.out.println(
-                        "Host:         " + info.address.getHostName() + ", port " + info.port + '\n' +
-                        "ID:           " + info.pid + '.' + info.hash + '\n' +
-                        "Version:      build " + info.buildNumber + " (" + info.version + ")\n" +
-                        "Test bundles: " + info.testBundle + "\n"
+                        "Host:         " + info.address.getHostName() + ", port " + info.port + '\n'
+                        + "ID:           " + info.pid + '.' + info.hash + '\n'
+                        + "Version:      build " + info.buildNumber + " (" + info.version + ")\n"
+                        + "Test bundles: " + info.testBundle + "\n"
                 );
             });
             ds.search();
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.err.println(e.getLocalizedMessage());
             System.exit(20);
         }
@@ -3016,12 +3016,12 @@ public final class Client extends javax.swing.JFrame {
 
         /**
          * Updates whether this line info represents the line as being a valid
-         * breakpoint and having a break set, and returns {@code true} if
-         * this changes the internal state of this object. This does not effect
+         * breakpoint and having a break set, and returns {@code true} if this
+         * changes the internal state of this object. This does not effect
          * whether the line has a breakpoint on the server.
          *
-         * @param breakable if {@code true} represents that the line should
-         * be breakable
+         * @param breakable if {@code true} represents that the line should be
+         * breakable
          * @param breakpoint if {@code true} represents that the line has a
          * breakpoint set
          * @return {@code true} if the internal representation of the line
@@ -3075,10 +3075,7 @@ public final class Client extends javax.swing.JFrame {
             if ((this.file == null) ? (other.file != null) : !this.file.equals(other.file)) {
                 return false;
             }
-            if (this.line != other.line) {
-                return false;
-            }
-            return true;
+            return this.line == other.line;
         }
 
         @Override
@@ -3384,11 +3381,10 @@ public final class Client extends javax.swing.JFrame {
 
     /**
      * Convert a sequence of expression names separated by null characters into
-     * a tree path in the scope tree. If {@code openPath} is
-     * {@code true}, the scope nodes will be opened as the path is decoded.
-     * This is necessary when the tree is being updated after reaching a new
-     * breakpoint since the tree model might be new and thus not have the
-     * necessary children installed.
+     * a tree path in the scope tree. If {@code openPath} is {@code true}, the
+     * scope nodes will be opened as the path is decoded. This is necessary when
+     * the tree is being updated after reaching a new breakpoint since the tree
+     * model might be new and thus not have the necessary children installed.
      *
      * @param expr the expression to expand
      * @param openPath if {@code true} expands the tree as it goes
@@ -3596,8 +3592,8 @@ public final class Client extends javax.swing.JFrame {
      * {@code INFO_TABLE_LIST_UPDATE_DELAY} ms have elapsed since the last
      * update.
      *
-     * @param force if {@code true}, forces the list to be updated no
-     * matter how recently this was last called
+     * @param force if {@code true}, forces the list to be updated no matter how
+     * recently this was last called
      */
     private void updateInfoTableList(boolean force) {
         if (force) {

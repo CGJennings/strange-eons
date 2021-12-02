@@ -229,7 +229,6 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
                         if (isComment) {
                             state = 1;
                             lastCommentStart = lineOffset;
-                            continue;
                         } else if (!line.isEmpty()) {
                             String key = line.substring(0, keySplit(line)).trim();
                             if (key.charAt(key.length() - 1) == '\\') {
@@ -1041,10 +1040,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         if (key.lang != null && searchText.matcher(key.lang).find()) {
             return true;
         }
-        if (key.ctry != null && searchText.matcher(key.ctry).find()) {
-            return true;
-        }
-        return false;
+        return key.ctry != null && searchText.matcher(key.ctry).find();
     }
 
     @Override

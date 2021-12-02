@@ -21,9 +21,8 @@ import java.awt.geom.Point2D;
 public class TextStroke implements Stroke {
 
     /**
-     * The {@code Style} determines how the text is placed fitted to the
-     * path when the length of the text and the length of a path are not the
-     * same.
+     * The {@code Style} determines how the text is placed fitted to the path
+     * when the length of the text and the length of a path are not the same.
      */
     public enum Style {
         /**
@@ -88,8 +87,8 @@ public class TextStroke implements Stroke {
      * and the flattened curve
      * @param limit log<sub>2</sub> of the maximum number of line segments that
      * will be generated for any curved segment of the path
-     * @throws IllegalArgumentException if {@code flatness} or
-     * {@code limit} is less than 0
+     * @throws IllegalArgumentException if {@code flatness} or {@code limit} is
+     * less than 0
      */
     public TextStroke(String text, Font font, TextStroke.Style style, double flatness, int limit) {
         if (flatness < 0d) {
@@ -126,8 +125,8 @@ public class TextStroke implements Stroke {
     }
 
     /**
-     * Returns {@code true} if the text is drawn inside-out, that is, if
-     * the direction that the glyphs protrude from the path is flipped.
+     * Returns {@code true} if the text is drawn inside-out, that is, if the
+     * direction that the glyphs protrude from the path is flipped.
      *
      * @return {@code true} if the glyph direction should be flipped
      */
@@ -175,8 +174,7 @@ public class TextStroke implements Stroke {
     }
 
     /**
-     * Returns {@code true} if the text is treated as a left-to-right
-     * language.
+     * Returns {@code true} if the text is treated as a left-to-right language.
      *
      * @return {@code true} if the bidi order is treated as left-to-right
      */
@@ -209,11 +207,9 @@ public class TextStroke implements Stroke {
     }
 
     private void createGlyphVector() {
-        int flags;
-        if (leftToRight) {
-            flags = Font.LAYOUT_LEFT_TO_RIGHT | Font.LAYOUT_NO_START_CONTEXT | Font.LAYOUT_NO_LIMIT_CONTEXT;
-        } else {
-            flags = Font.LAYOUT_RIGHT_TO_LEFT | Font.LAYOUT_NO_START_CONTEXT | Font.LAYOUT_NO_LIMIT_CONTEXT;
+        int flags = Font.LAYOUT_NO_START_CONTEXT | Font.LAYOUT_NO_LIMIT_CONTEXT;
+        if (!leftToRight) {
+            flags |= Font.LAYOUT_RIGHT_TO_LEFT;
         }
         final char[] string = text.toCharArray();
         glyphVector = font.layoutGlyphVector(frc, string, 0, string.length, flags);

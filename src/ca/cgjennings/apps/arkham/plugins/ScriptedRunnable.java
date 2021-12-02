@@ -1,15 +1,14 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import org.mozilla.javascript.Context;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A {@code Runnable} that can execute script code in another thread. This
- * can be used to parallelize script code using {@link SplitJoin}. It is also
- * used by the {@code threads} library to support with script code.
+ * A {@code Runnable} that can execute script code in another thread. This can
+ * be used to parallelize script code using {@link SplitJoin}. It is also used
+ * by the {@code threads} library to support with script code.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -19,8 +18,8 @@ public class ScriptedRunnable implements Runnable {
     /**
      * A runnable that executes the script code represented by the specified
      * {@code ScriptedRunnable.Future} instance. From script code, a
-     * {@code ScriptedRunnable} can be instantiated by passing any function
-     * to this constructor. A trivial example:
+     * {@code ScriptedRunnable} can be instantiated by passing any function to
+     * this constructor. A trivial example:
      * <pre>
      * importClass( ca.cgjennings.apps.arkham.plugins.ScriptedRunnable );
      * importClass( ca.cgjennings.apps.arkham.plugins.ScriptedRunnable.Future );
@@ -61,8 +60,7 @@ public class ScriptedRunnable implements Runnable {
     /**
      * Returns the return value of the script function. If an exception was
      * thrown by the function, it will be thrown when this is called. If the
-     * function has not completed or returned no value, returns
-     * {@code null}.
+     * function has not completed or returned no value, returns {@code null}.
      *
      * @return the return value of the function, or {@code null}
      */

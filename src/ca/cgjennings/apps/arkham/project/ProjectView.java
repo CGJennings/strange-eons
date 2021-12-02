@@ -56,6 +56,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -114,8 +115,8 @@ public final class ProjectView extends javax.swing.JPanel {
     /**
      * The property name of a property change event that is fired when this view
      * is about to close. To listen for the active project being closed, rather
-     * than a specific view, register a {@code ProjectEventListener} with
-     * the application window instead.
+     * than a specific view, register a {@code ProjectEventListener} with the
+     * application window instead.
      *
      * @see ca.cgjennings.apps.arkham.StrangeEonsAppWindow.ProjectEventListener
      */
@@ -135,8 +136,8 @@ public final class ProjectView extends javax.swing.JPanel {
     private static final String PROJECT_FIRST_ROW = "first-row";
 
     /**
-     * Returns the view of the currently open project, or {@code null} if
-     * there is no open project.
+     * Returns the view of the currently open project, or {@code null} if there
+     * is no open project.
      *
      * @return the view of the open project
      */
@@ -815,9 +816,9 @@ public final class ProjectView extends javax.swing.JPanel {
 
     /**
      * Sets an accelerator used by this view for a {@code TaskAction}. If
-     * {@code command} is true, then a key stroke should represent a plain
-     * key (such as "F1"); a modifier key prefix will be added automatically
-     * based on the platform.
+     * {@code command} is true, then a key stroke should represent a plain key
+     * (such as "F1"); a modifier key prefix will be added automatically based
+     * on the platform.
      *
      * @param ta the action to set an accelerator for
      * @param keystroke a description of the accelerator key
@@ -1730,10 +1731,8 @@ public final class ProjectView extends javax.swing.JPanel {
                 // which ends up returning null here. In this case we simply verify
                 // that the data flavor is correct. This method will be called
                 // again when an attempt is made to actually import the data.
-                if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    return true;
-                }
-                return false;
+
+                return support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
             }
 
             // can't move a file into its immediate parent
@@ -1887,7 +1886,7 @@ public final class ProjectView extends javax.swing.JPanel {
                                     bytesDownloaded += bytesRead;
                                     bd.setProgressCurrent(bytesDownloaded);
                                 }
-                                
+
                             } catch (IOException e) {
                                 cancelDownload = true;
                                 ErrorDialog.displayError(string(""), e);
@@ -2129,9 +2128,7 @@ public final class ProjectView extends javax.swing.JPanel {
 
         public FileTransferable(File[] files) {
             this.files = new LinkedList<>();
-            for (File f : files) {
-                this.files.add(f);
-            }
+            this.files.addAll(Arrays.asList(files));
         }
 
         public FileTransferable(Member[] members) {
@@ -2396,8 +2393,7 @@ public final class ProjectView extends javax.swing.JPanel {
      *
      * @param viewTab the view tab instance to register
      * @throws NullPointerException if the view tab is {@code null}
-     * @throws IllegalArgumentException if the view tab's name is
-     * {@code null}
+     * @throws IllegalArgumentException if the view tab's name is {@code null}
      * @see ViewTab#getViewTabName()
      */
     public static void registerViewTab(ViewTab viewTab) {

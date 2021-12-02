@@ -289,7 +289,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
             b.append("</font> )");
             id = b.toString();
         } else {
-            id = id + "()";
+            id += "()";
         }
 
         int offset = fn.getAbsolutePosition();

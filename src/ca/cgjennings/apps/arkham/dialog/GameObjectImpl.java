@@ -333,10 +333,7 @@ class GameObjectImpl implements GameObject {
         if (type.isArray()) {
             return isWrappedType(type.getComponentType());
         }
-        if (type.getPackage().getName().startsWith("ca.cgjennings")) {
-            return true;
-        }
-        return false;
+        return type.getPackage().getName().startsWith("ca.cgjennings");
     }
 
     @Override

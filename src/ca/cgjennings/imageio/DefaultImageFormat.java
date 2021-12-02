@@ -64,10 +64,7 @@ class DefaultImageFormat implements WritableImageFormat {
             return false;
         }
         final DefaultImageFormat other = (DefaultImageFormat) obj;
-        if ((this.ext == null) ? (other.ext != null) : !this.ext.equals(other.ext)) {
-            return false;
-        }
-        return true;
+        return !((this.ext == null) ? (other.ext != null) : !this.ext.equals(other.ext));
     }
 
     @Override

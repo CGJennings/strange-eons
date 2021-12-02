@@ -13,8 +13,6 @@ import org.mozilla.javascript.RhinoException;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.Undefined;
-import org.mozilla.javascript.Wrapper;
 
 /**
  * Implementation of {@code ScriptEngine} for Strange Rhino, the modified

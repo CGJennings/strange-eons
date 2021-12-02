@@ -13,8 +13,7 @@ import resources.ResourceKit;
 /**
  * Provides the information needed to allow the user to select a theme, and for
  * the {@link ThemeInstaller} to install a selected theme. These objects are
- * usually created by the {@link BundleInstaller} when the application
- * starts.
+ * usually created by the {@link BundleInstaller} when the application starts.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -154,10 +153,7 @@ public final class InstalledTheme extends InstalledBundleObject {
             return false;
         }
         final InstalledTheme other = (InstalledTheme) obj;
-        if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-            return false;
-        }
-        return true;
+        return !((this.name == null) ? (other.name != null) : !this.name.equals(other.name));
     }
 
     @Override

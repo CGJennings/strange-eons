@@ -1,14 +1,11 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Objects;
 import javax.script.Bindings;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
-import javax.script.ScriptException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.RhinoException;
@@ -18,6 +15,7 @@ import resources.Language;
 
 /**
  * Utility methods that ease that support the script engine implementation.
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 final class EngineUtilities {

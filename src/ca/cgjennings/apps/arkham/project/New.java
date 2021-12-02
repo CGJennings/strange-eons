@@ -29,8 +29,8 @@ public class New extends TaskActionTree {
     }
 
     /**
-     * A useful class for adding actions to {@code New}. It is not
-     * required: you can use any {@link TaskAction}.
+     * A useful class for adding actions to {@code New}. It is not required: you
+     * can use any {@link TaskAction}.
      */
     public static class NewAction extends TaskAction {
 
@@ -199,9 +199,8 @@ public class New extends TaskActionTree {
         }
 
         /**
-         * Returns {@code true} if the target is any kind of folder
-         * (including a project or task) and the task type restrictions (if any)
-         * are met.
+         * Returns {@code true} if the target is any kind of folder (including a
+         * project or task) and the task type restrictions (if any) are met.
          *
          * {@inheritDoc}
          */
@@ -384,14 +383,13 @@ public class New extends TaskActionTree {
          * @param key a UI text key for the component; if the key has the
          * "app-new-" prefix this may be left off
          * @param className the fully qualified name of the component class; or,
-         * if no package is specified, the {@code arkham.component} package
-         * is used by default
+         * if no package is specified, the {@code arkham.component} package is
+         * used by default
          * @param taskType the type of task that must be active for the action
          * to apply, or {@code null}
          * @param taskSubtype the type of task subtype that must be active for
          * the action to apply, or {@code null}
-         * @throws NullPointerException if the key or class name is
-         * {@code null}
+         * @throws NullPointerException if the key or class name is {@code null}
          * @throws IllegalArgumentException if the specified class does not
          * exist
          */
@@ -464,10 +462,7 @@ public class New extends TaskActionTree {
             if (taskType != null && !taskType.equals(s.get(Task.KEY_TYPE))) {
                 return false;
             }
-            if (taskSubtype != null && !taskSubtype.equals(s.get(Task.KEY_SUBTYPE))) {
-                return false;
-            }
-            return true;
+            return !(taskSubtype != null && !taskSubtype.equals(s.get(Task.KEY_SUBTYPE)));
         }
 
         @Override

@@ -37,8 +37,8 @@ public class IIOWritePanel extends javax.swing.JPanel {
     /**
      * Creates a new panel for configuring image writing options.
      *
-     * @param fullComplexityMode if {@code true}, compression mode options
-     * will be shown
+     * @param fullComplexityMode if {@code true}, compression mode options will
+     * be shown
      */
     public IIOWritePanel(boolean fullComplexityMode) {
         initComponents();
@@ -214,8 +214,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
 
     /**
      * Use this panel to configure the features of an image writer. The writers
-     * {@code IOWriteParam} will replace the one currently being edited, if
-     * any.
+     * {@code IOWriteParam} will replace the one currently being edited, if any.
      *
      * @param iw the writer to configure
      */
@@ -436,8 +435,8 @@ public class IIOWritePanel extends javax.swing.JPanel {
 
     /**
      * This package private class implements a thin abstraction layer over an
-     * {@code ImageWriteParam} instance. It is used by classes in this
-     * package to manage compression options when writing images.
+     * {@code ImageWriteParam} instance. It is used by classes in this package
+     * to manage compression options when writing images.
      *
      * @author Chris Jennings <https://cgjennings.ca/contact>
      * @since 3.0
@@ -480,10 +479,8 @@ public class IIOWritePanel extends javax.swing.JPanel {
                 if (mode == ImageWriteParam.MODE_COPY_FROM_METADATA) {
                     isProgressive = false;
                     iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
-                } else if (mode == ImageWriteParam.MODE_DISABLED) {
-                    isProgressive = false;
                 } else {
-                    isProgressive = true;
+                    isProgressive = mode != ImageWriteParam.MODE_DISABLED;
                 }
             } else {
                 isProgressive = false;
