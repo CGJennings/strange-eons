@@ -92,7 +92,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
      * @return true if the current thread is a standard thread
      */
     public static boolean isStandardThread() {
-        return !isUtilityThread.get().equals(Boolean.TRUE);
+        return !Boolean.TRUE.equals(isUtilityThread.get());
     }
 
     /**
