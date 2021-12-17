@@ -4,6 +4,7 @@ package ca.cgjennings.apps.arkham.component.conversion;
  * Provides default implementations for the {@link ConversionTrigger} interface.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public abstract class AbstractConversionTrigger implements ConversionTrigger {
 
@@ -30,5 +31,10 @@ public abstract class AbstractConversionTrigger implements ConversionTrigger {
     @Override
     public String getRequiredExtensionId() {
         return requiredExtensionId;
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + ", cause " + getCause();
     }
 }

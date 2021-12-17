@@ -8,6 +8,7 @@ package ca.cgjennings.apps.arkham.component.conversion;
  * from {@link #getCause()}.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class UpgradeConversionTrigger extends AbstractConversionTrigger {
 

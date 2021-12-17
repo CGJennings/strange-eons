@@ -137,6 +137,7 @@ bug-osx-font-registration-families = Linux Libertine,Times New Roman,Serif
 # spelling dictionary library and set the game locale to a
 # supported language.
 spelling-enabled = yes
+spelling-code-enabled = yes
 
 
 

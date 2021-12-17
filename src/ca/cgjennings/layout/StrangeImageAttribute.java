@@ -134,9 +134,6 @@ final class StrangeImageAttribute extends GraphicAttribute {
         if (getAlignment() != rhs.getAlignment()) {
             return false;
         }
-        if (!image.equals(rhs.image)) {
-            return false;
-        }
-        return true;
+        return image.equals(rhs.image);
     }
 }

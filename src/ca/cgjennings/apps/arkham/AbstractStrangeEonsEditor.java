@@ -256,7 +256,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
                         Member m = p.findMember(f);
                         if (m != null) {
                             try {
-                                source = URLDecoder.decode(m.getURL().toExternalForm(), "UTF-8");
+                                source = URLDecoder.decode(m.getURL().toExternalForm(), "utf-8");
                             } catch (UnsupportedEncodingException uee) {
                             }
                         }

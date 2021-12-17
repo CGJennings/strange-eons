@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.StringWriter;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -48,8 +49,8 @@ public class Shell {
      * Changes the working directory that will be used to execute subsequent
      * commands.
      *
-     * @param dir the directory; if {@code null}, use the working directory
-     * of the parent process
+     * @param dir the directory; if {@code null}, use the working directory of
+     * the parent process
      */
     public synchronized void directory(File dir) {
         pb.directory(dir);
@@ -123,13 +124,13 @@ public class Shell {
     }
 
     /**
-     * Executes a command. If non-{@code null}, the contents of
-     * {@code stdin} will be used as the input stream for the command.
+     * Executes a command. If non-{@code null}, the contents of {@code stdin}
+     * will be used as the input stream for the command.
      *
      * @param commandTokens an array of command arguments
      * @param stdin the standard input stream content, or {@code null}
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -146,13 +147,13 @@ public class Shell {
     }
 
     /**
-     * Executes a command. If non-{@code null}, the contents of
-     * {@code stdin} will be used as the input stream for the command.
+     * Executes a command. If non-{@code null}, the contents of {@code stdin}
+     * will be used as the input stream for the command.
      *
      * @param commandTokens an list of command arguments
      * @param stdin the standard input stream content, or {@code null}
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -167,8 +168,8 @@ public class Shell {
      * Executes a command.
      *
      * @param commandTokens an list of command arguments
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -180,15 +181,15 @@ public class Shell {
     }
 
     /**
-     * Executes a command as a superuser, if possible. If non-{@code null},
-     * the contents of {@code stdin} will be used as the input stream for
-     * the command.
+     * Executes a command as a superuser, if possible. If non-{@code null}, the
+     * contents of {@code stdin} will be used as the input stream for the
+     * command.
      *
      * @param commandTokens an array of command arguments
      * @param stdin the standard input stream content, or {@code null}
      * @param password the superuser account password
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -209,15 +210,15 @@ public class Shell {
     }
 
     /**
-     * Executes a command as a superuser, if possible. If non-{@code null},
-     * the contents of {@code stdin} will be used as the input stream for
-     * the command.
+     * Executes a command as a superuser, if possible. If non-{@code null}, the
+     * contents of {@code stdin} will be used as the input stream for the
+     * command.
      *
      * @param commandTokens an array of command arguments
      * @param stdin the standard input stream content, or {@code null}
      * @param password the superuser account password
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -233,8 +234,8 @@ public class Shell {
      * Executes a command.
      *
      * @param commandTokens an array of command arguments
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      */
@@ -248,8 +249,8 @@ public class Shell {
      *
      * @param command a command string
      * @param stdin the standard input stream content, or {@code null}
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      * @see #commandFormatter()
@@ -266,8 +267,8 @@ public class Shell {
      * and arguments using the built-in {@link CommandFormatter}.
      *
      * @param command a command string
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      * @see #commandFormatter()
@@ -287,8 +288,8 @@ public class Shell {
      * @param command a command string
      * @param stdin the standard input stream content, or {@code null}
      * @param password the superuser account password
-     * @return the outcome of the command, or {@code null} if a timeout is
-     * set and the command timed out
+     * @return the outcome of the command, or {@code null} if a timeout is set
+     * and the command timed out
      * @throws IOException if an I/O error occurs; typically this occurs if the
      * command is not found
      * @see #commandFormatter()
@@ -454,8 +455,8 @@ public class Shell {
 
     /**
      * Build a list of command tokens from an array. If {@code append} is
-     * {@code true}, the tokens are appended to the current list.
-     * Otherwise, the current list is cleared before adding the tokens.
+     * {@code true}, the tokens are appended to the current list. Otherwise, the
+     * current list is cleared before adding the tokens.
      *
      * @param tokens the command tokens to append
      * @param append if {@code true}, do not clear the existing token list
@@ -468,19 +469,6 @@ public class Shell {
             command.add("cmd");
             command.add("/c");
         }
-        for (String t : tokens) {
-            command.add(t);
-        }
+        command.addAll(Arrays.asList(tokens));
     }
-
-//	public static void main(String[] args) {
-//		Shell sh = new Shell();
-//		sh.directory( new File( "d:\\" ) );
-//		try {
-//			System.err.println( sh.exec( new String[] { "start", "factory.wav" }, null ) );
-//			System.err.println( sh.exec( new String[] { "java", "-version" }, null ) );
-//		} catch( IOException e ) {
-//			e.printStackTrace();
-//		}
-//	}
 }

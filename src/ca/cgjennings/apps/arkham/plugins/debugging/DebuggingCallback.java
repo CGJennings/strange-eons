@@ -1,14 +1,14 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.script.mozilla.javascript.ContextFactory;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim.ContextData;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim.SourceInfo;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim.StackFrame;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.GuiCallback;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.ScopeProvider;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.tools.debugger.Dim;
+import org.mozilla.javascript.tools.debugger.Dim.ContextData;
+import org.mozilla.javascript.tools.debugger.Dim.SourceInfo;
+import org.mozilla.javascript.tools.debugger.Dim.StackFrame;
+import org.mozilla.javascript.tools.debugger.GuiCallback;
+import org.mozilla.javascript.tools.debugger.ScopeProvider;
 
 /**
  * Processes Rhino debugging events for the {@link ScriptDebugger}.
@@ -222,7 +222,7 @@ class DebuggingCallback {
                 return "null";
             }
             if (!(obj instanceof Scriptable)) {
-                if (obj instanceof ca.cgjennings.script.mozilla.javascript.Undefined) {
+                if (obj instanceof org.mozilla.javascript.Undefined) {
                     return "undefined";
                 }
                 return obj.toString();

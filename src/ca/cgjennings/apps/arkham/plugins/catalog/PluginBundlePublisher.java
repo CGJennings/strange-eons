@@ -8,22 +8,11 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import static ca.cgjennings.apps.arkham.StrangeEons.log;
 import ca.cgjennings.apps.arkham.plugins.PluginBundle;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Enumeration;
 import java.util.Locale;
-import java.util.SortedMap;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
 import java.util.logging.Level;
-import java.util.zip.ZipEntry;
-import resources.Settings;
 
 /**
  * Utility methods for converting plug-in bundles to and from published catalog

@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.algo.ProgressListener;
 import ca.cgjennings.algo.SplitJoin;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +12,6 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
@@ -285,7 +285,7 @@ public final class DiscoveryService {
      *   a proper debug server reply, or the server information if one is detected
      */
     private static ServerInfo readProbeReply(Socket s) throws IOException {
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), StandardCharsets.UTF_8))) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), TextEncoding.DEBUGGER_CS))) {
             String magic = in.readLine();
             if ("SEDP3 OK".equals(magic)) {
                 return new ServerInfo(s.getInetAddress(), s.getPort(), in.readLine(), in.readLine(), in.readLine(), in.readLine(), in.readLine());
@@ -294,5 +294,5 @@ public final class DiscoveryService {
         }
     }
 
-    private static final byte[] PROBE_BYTES = "SEDP3\nSERVERINFO\n".getBytes(StandardCharsets.UTF_8);
+    private static final byte[] PROBE_BYTES = "SEDP3\nSERVERINFO\n".getBytes(TextEncoding.DEBUGGER_CS);
 }

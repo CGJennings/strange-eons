@@ -232,7 +232,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         handGroup = new javax.swing.ButtonGroup();
         closeBtn = new javax.swing.JButton();
         jSplitPane2 = new javax.swing.JSplitPane();
-        deckAndPlayMasterContainer = new javax.swing.JPanel();
+        deckAndPlayOuterContainer = new javax.swing.JPanel();
         deckPanel = new javax.swing.JPanel();
         deckLabel = new javax.swing.JLabel();
         deckScroll = new javax.swing.JScrollPane();
@@ -326,17 +326,17 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         deckList.setCellRenderer( renderer );
         deckList.setDragEnabled(true);
         deckList.setDropMode(javax.swing.DropMode.INSERT);
-        deckList.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                deckListMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                deckListMouseReleased(evt);
-            }
-        });
         deckList.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 deckListMouseDragged(evt);
+            }
+        });
+        deckList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                deckListMouseReleased(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                deckListMousePressed(evt);
             }
         });
         deckScroll.setViewportView(deckList);
@@ -891,22 +891,22 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         gridBagConstraints.ipady = 8;
         handPanel.add(midColumnSpacer, gridBagConstraints);
 
-        javax.swing.GroupLayout deckAndPlayMasterContainerLayout = new javax.swing.GroupLayout(deckAndPlayMasterContainer);
-        deckAndPlayMasterContainer.setLayout(deckAndPlayMasterContainerLayout);
-        deckAndPlayMasterContainerLayout.setHorizontalGroup(
-            deckAndPlayMasterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(deckAndPlayMasterContainerLayout.createSequentialGroup()
+        javax.swing.GroupLayout deckAndPlayOuterContainerLayout = new javax.swing.GroupLayout(deckAndPlayOuterContainer);
+        deckAndPlayOuterContainer.setLayout(deckAndPlayOuterContainerLayout);
+        deckAndPlayOuterContainerLayout.setHorizontalGroup(
+            deckAndPlayOuterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(deckAndPlayOuterContainerLayout.createSequentialGroup()
                 .addComponent(deckPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(handPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 410, Short.MAX_VALUE))
+                .addComponent(handPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
         );
-        deckAndPlayMasterContainerLayout.setVerticalGroup(
-            deckAndPlayMasterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        deckAndPlayOuterContainerLayout.setVerticalGroup(
+            deckAndPlayOuterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(deckPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(handPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        jSplitPane2.setLeftComponent(deckAndPlayMasterContainer);
+        jSplitPane2.setLeftComponent(deckAndPlayOuterContainer);
 
         sheetPanel.setMinimumSize(new java.awt.Dimension(100, 2));
         sheetPanel.setPreferredSize(new java.awt.Dimension(387, 416));
@@ -1374,7 +1374,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
-    private javax.swing.JPanel deckAndPlayMasterContainer;
+    private javax.swing.JPanel deckAndPlayOuterContainer;
     private javax.swing.JLabel deckLabel;
     private javax.swing.JList<Card> deckList;
     private javax.swing.JPanel deckPanel;

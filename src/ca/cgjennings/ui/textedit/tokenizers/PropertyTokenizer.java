@@ -31,7 +31,7 @@ public class PropertyTokenizer extends Tokenizer {
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
-        return EnumSet.of(TokenType.COMMENT1, TokenType.LITERAL1);
+        return EnumSet.of(TokenType.COMMENT1, TokenType.LITERAL_STRING1);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PropertyTokenizer extends Tokenizer {
                                 addToken(i - lastOffset, TokenType.KEYWORD1);
                                 addToken(1, TokenType.PLAIN);
                                 lastOffset = i + 1;
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
                             }
                             break;
                         case ':':
@@ -75,21 +75,21 @@ public class PropertyTokenizer extends Tokenizer {
                                     addToken(i - lastOffset, TokenType.KEYWORD1);
                                     addToken(1, TokenType.PLAIN);
                                     lastOffset = i + 1;
-                                    token = TokenType.LITERAL1;
+                                    token = TokenType.LITERAL_STRING1;
                                 }
                             }
                             break;
                         case ' ':
                             if (spacesBreakKey && nonWhitespace && (i == offset || array[i - 1] != '\\')) {
                                 addToken(i - lastOffset, TokenType.KEYWORD1);
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
                                 lastOffset = i;
                             }
                             break;
 
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     switch (c) {
                         case '#':
                         case '!':
@@ -110,11 +110,11 @@ public class PropertyTokenizer extends Tokenizer {
         }
 
         setTokenizationContinuedOnNextLine(false);
-        if (token == TokenType.LITERAL1) {
+        if (token == TokenType.LITERAL_STRING1) {
             if (length == 0 || array[length - 1] != '\\') {
                 token = TokenType.PLAIN;
             } else {
-                token = TokenType.LITERAL1;
+                token = TokenType.LITERAL_STRING1;
                 setTokenizationContinuedOnNextLine(true);
             }
         } else {

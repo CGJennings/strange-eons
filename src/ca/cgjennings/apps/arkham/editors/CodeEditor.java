@@ -6,6 +6,7 @@ import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.MarkupTargetFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
@@ -16,6 +17,7 @@ import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.apps.arkham.project.Task;
+import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.i18n.PatternExceptionLocalizer;
 import ca.cgjennings.io.EscapedTextCodec;
 import ca.cgjennings.math.Interpolation;
@@ -38,6 +40,7 @@ import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
 import ca.cgjennings.ui.textedit.tokenizers.ResourceFileTokenizer;
+import ca.cgjennings.ui.textedit.tokenizers.TypeScriptTokenizer;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -59,6 +62,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.EnumSet;
 import java.util.List;
@@ -234,10 +238,10 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public CodeEditor(File file, String encoding, CodeType codeType) throws IOException {
         this();
-        setFile(file);
-        codeType.initializeEditor(this);
-        this.encoding = encoding;
         type = codeType;
+        codeType.initializeEditor(this);
+        setFile(file);
+        this.encoding = encoding;
 
         readFile();
 
@@ -275,13 +279,30 @@ public class CodeEditor extends AbstractSupportEditor {
         this.encoding = encoding;
         type = codeType;
 
-        editor.setEditable(false);
         editor.setText(text);
         editor.select(0, 0);
         editor.getDocument().clearUndoHistory();
         setUnsavedChanges(false);
 
         editor.setComponentPopupMenu(createPopupMenu());
+        setReadOnly(true);
+    }
+
+    public void setReadOnly(boolean readOnly) {
+        if (readOnly == editor.isEditable()) {
+            final boolean editable = !readOnly;
+            editor.setCaretBlinkEnabled(editable);
+            editor.setEditable(editable);
+            Icon i = type.getIcon();
+            if (readOnly) {
+                i = ImageUtilities.createDisabledIcon(i);
+            }
+            setFrameIcon(i);
+        }
+    }
+
+    public boolean isReadOnly() {
+        return editor.isEditable();
     }
 
     /**
@@ -296,28 +317,31 @@ public class CodeEditor extends AbstractSupportEditor {
     public static Charset checkFileForBOM(File f) throws IOException {
         try (FileInputStream in = new FileInputStream(f)) {
             int b0 = in.read();
-            if (b0 == 0xEE) {
-                if (in.read() == 0xBB && in.read() == 0xBF) {
-                    return Charset.forName("UTF-8");
-                }
-            } else if (b0 == 0xFE) {
-                if (in.read() == 0xFF) {
-                    return Charset.forName("UTF-16BE");
-                }
-            } else if (b0 == 0xFF) {
-                if (in.read() == 0xFE) {
-                    if (in.read() == 0x00) {
+            switch (b0) {
+                case 0xEE:
+                    if (in.read() == 0xBB && in.read() == 0xBF) {
+                        return StandardCharsets.UTF_8;
+                    }   break;
+                case 0xFE:
+                    if (in.read() == 0xFF) {
+                        return StandardCharsets.UTF_16BE;
+                    }   break;
+                case 0xFF:
+                    if (in.read() == 0xFE) {
                         if (in.read() == 0x00) {
-                            return Charset.forName("UTF-32LE");
+                            if (in.read() == 0x00) {
+                                return Charset.forName("UTF-32LE");
+                            }
+                        } else {
+                            return StandardCharsets.UTF_16LE;
                         }
-                    } else {
-                        return Charset.forName("UTF-16LE");
-                    }
-                }
-            } else if (b0 == 0x00) {
-                if (in.read() == 0x00 && in.read() == 0xFE && in.read() == 0xFF) {
-                    return Charset.forName("UTF-32BE");
-                }
+                    }   break;
+                case 0x00:
+                    if (in.read() == 0x00 && in.read() == 0xFE && in.read() == 0xFF) {
+                        return Charset.forName("UTF-32BE");
+                    }   break;
+                default:
+                    break;
             }
         }
         return null;
@@ -360,52 +384,79 @@ public class CodeEditor extends AbstractSupportEditor {
         text = unescape(text);
         editor.setText(text);
         refreshNavigator(text);
+        setUnsavedChanges(false);
     }
 
     /**
      * The file types that can be edited by a {@code CodeEditor}.
      */
     public static enum CodeType {
-        PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT, false),
-        JAVASCRIPT("js", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT, false),
-        TYPESCRIPT("ts", "prj-prop-typescript", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT, false),
-        JAVA("java", "prj-prop-java", ProjectUtilities.ENC_SCRIPT, JavaTokenizer.class, null, MetadataSource.ICON_JAVA, true),
-        PROPERTIES("properties", "prj-prop-props", ProjectUtilities.ENC_UI_PROPERTIES, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES, true),
-        SETTINGS("settings", "prj-prop-txt", ProjectUtilities.ENC_SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS, true),
-        CLASS_MAP("classmap", "prj-prop-class-map", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP, true),
-        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP, true),
-        SILHOUETTES("silhouettes", "prj-prop-sil", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES, true),
-        TILES("tiles", "prj-prop-tiles", ProjectUtilities.ENC_SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET, true),
-        HTML("html", "pa-new-html", null, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML, false),
-        CSS("css", "prj-prop-css", null, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET, false),
-        PLAIN_UTF8("utf8", "prj-prop-utf8", null, null, null, MetadataSource.ICON_FILE, false),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", ProjectUtilities.ENC_SCRIPT, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT, true);
+        PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT),
+        JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT),
+        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, TypeScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT),
+        JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA),
+        PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES),
+        SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS),
+        CLASS_MAP("classmap", "prj-prop-class-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP),
+        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP),
+        SILHOUETTES("silhouettes", "prj-prop-sil", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES),
+        TILES("tiles", "prj-prop-tiles", TextEncoding.SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET),
+        HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML),
+        CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET),
+        PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE),
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT),
+        ;
 
-        private String enc;
-        private Class<? extends Tokenizer> tokenizer;
-        private Class<? extends Navigator> navigator;
-        private Icon icon;
-        private boolean escapeOnSave;
-        private String ext, description;
+        private final String enc;
+        private final Class<? extends Tokenizer> tokenizer;
+        private final Class<? extends Navigator> navigator;
+        private final Icon icon;
+        private final boolean escapeOnSave;
+        private final String ext;
+        private final String description;
 
+        /**
+         * Declare a new code type.
+         *
+         * @param extension file extension
+         * @param descKey string key for localized string that describes format
+         * @param defaultEncoding default text encoding, null for UTF-8
+         * @param tokenizer tokenizer to syntax highlight code, null for none
+         * @param navigator navigator implementation to list important document nodes, null for none
+         * @param icon icon that represents the file type
+         */
         private CodeType(
                 String extension, String descKey, String defaultEncoding,
                 Class<? extends Tokenizer> tokenizer, Class<? extends Navigator> navigator,
-                Icon icon, boolean escapeOnSave
+                Icon icon
         ) {
             if (extension == null) {
                 throw new NullPointerException("extension");
             }
             if (defaultEncoding == null) {
-                defaultEncoding = ProjectUtilities.ENC_UTF8;
+                defaultEncoding = TextEncoding.UTF8;
             }
             this.ext = extension;
             this.enc = defaultEncoding;
             this.tokenizer = tokenizer;
             this.icon = icon;
-            this.escapeOnSave = escapeOnSave;
+            this.escapeOnSave = !defaultEncoding.equals(TextEncoding.UTF8);
             this.description = string(descKey);
             this.navigator = navigator;
+        }
+
+        private static final CodeType[] readOnlyValues = values();
+
+        /** Return the type of this file, based on its extension, or null. */
+        public static CodeType forFile(File f) {
+            if (f == null) return null;
+            String ext = ProjectUtilities.getFileExtension(f);
+            for (int i=0; i<readOnlyValues.length; ++i) {
+                if (readOnlyValues[i].getExtension().equals(ext)) {
+                    return readOnlyValues[i];
+                }
+            }
+            return null;
         }
 
         public String getExtension() {
@@ -456,6 +507,68 @@ public class CodeEditor extends AbstractSupportEditor {
             return escapeOnSave;
         }
 
+        /**
+         * If this file type should be processed automatically after writing
+         * it, perform that processing.
+         */
+        void processAfterWrite(CodeEditor host, File source, String text) {
+            if (source == null) return;
+
+            if (this == TYPESCRIPT) {
+                host.startedCodeGeneration();
+                TypeScript.transpile(text, transpiled -> {
+                    final File js = this.getDependentFile(source);
+                    try {
+                        ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
+                        StrangeEons.log.fine("wrote transpiled code");
+                    } catch(IOException ex) {
+                        StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+                    }
+                    host.refreshDependentFiles(this, js);
+                    host.finishedCodeGeneration();
+                });
+            }
+
+            return;
+        }
+
+        /**
+         * If this type generates another editable file type, returns the file
+         * name that the specified file would generate. For example, for
+         * {@code source.ts} this might return {@code source.js}.
+         *
+         * @param source the file containing source code of this type
+         * @return the file that compiled code should be written to, or null
+         * if this file type does not generate code
+         */
+        public File getDependentFile(File source) {
+            if (source == null || this != TYPESCRIPT) return null;
+            return ProjectUtilities.changeExtension(source, "js");
+        }
+
+        /**
+         * Given a file of this type, if that file's contents are controlled
+         * by another file that currently exists, returns that file.  For example, for
+         * {@code source.js} this might return {@code source.ts}.
+         *
+         * @param source the file that might be controlled by another file
+         * @return the file that controls the content of this file, or null
+         */
+        public File getDeterminativeFile(File source) {
+            if (source == null || this != JAVASCRIPT) return null;
+
+            File tsFile = ProjectUtilities.changeExtension(source, "ts");
+            if (tsFile.exists()) return tsFile;
+            return null;
+        }
+
+        /**
+         * Returns whether this code type represents runnable script code.
+         */
+        public boolean isRunnable() {
+            return this == JAVASCRIPT || this == AUTOMATION_SCRIPT || this == TYPESCRIPT;
+        }
+
         private void initializeEditor(CodeEditor ce) {
             JSourceCodeEditor ed = ce.getEditor();
             Tokenizer t = createTokenizer();
@@ -470,6 +583,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 EnumSet<TokenType> toSpellCheck = t.getNaturalLanguageTokenTypes();
                 if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
                     ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
+                    SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = Settings.getUser().getBoolean("spelling-code-enabled");
                 }
             }
 
@@ -986,7 +1100,7 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         }
         if (command == Commands.RUN_FILE || command == Commands.DEBUG_FILE) {
-            if (getCodeType().normalize() == CodeType.JAVASCRIPT) {
+            if (getCodeType().normalize().isRunnable()) {
                 if (command == Commands.DEBUG_FILE) {
                     return ScriptDebugging.isInstalled();
                 }
@@ -1018,9 +1132,11 @@ public class CodeEditor extends AbstractSupportEditor {
     @Override
     public void setFile(File f) {
         super.setFile(f);
-        if (f != null && (!f.exists() || f.canWrite())) {
-            getEditor().setEditable(true);
+        boolean editable = false;
+        if (f != null && type.getDeterminativeFile(f) == null && (!f.exists() || f.canWrite())) {
+            editable = true;
         }
+        setReadOnly(!editable);
     }
 
 	private void closeBtncloseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtncloseClicked
@@ -1419,16 +1535,30 @@ public class CodeEditor extends AbstractSupportEditor {
         String text = editor.getText();
         ProjectUtilities.copyReader(new StringReader(escape(text)), f, encoding);
         refreshNavigator(text);
+        type.processAfterWrite(this, f, text);
+    }
 
-        if(getCodeType() == CodeType.TYPESCRIPT) {
-            ca.cgjennings.apps.arkham.plugins.typescript.TypeScript.transpile(text, transpiled -> {
-                try {
-                    File js = ProjectUtilities.changeExtension(f, "js");
-                    ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
-                } catch(IOException ex) {
-                    StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+    /**
+     * Call to reload files that depend on this file and were changed when it
+     * was saved. This is called immediately if {@link CodeType#processAfterWrite}
+     * returns true. Otherwise it can be called manually if processing completes
+     * in another thread.
+     *
+     * @param f the file for which editors should be reloaded
+     */
+    private void refreshDependentFiles(CodeType type, File f) {
+        File generated = type.getDependentFile(f);
+        if (generated != null) {
+            StrangeEonsEditor[] showingGenerated = StrangeEons.getWindow().getEditorsShowingFile(generated);
+            for (StrangeEonsEditor ed : showingGenerated) {
+                if (ed instanceof CodeEditor) {
+                    try {
+                        ((CodeEditor) ed).refresh();
+                    } catch(IOException ioe) {
+                        StrangeEons.log.log(Level.SEVERE, "failed to reload", ioe);
+                    }
                 }
-            });
+            }
         }
     }
 
@@ -1656,7 +1786,7 @@ public class CodeEditor extends AbstractSupportEditor {
             menu.addSeparator();
         }
 
-        if (type == CodeType.JAVASCRIPT) {
+        if (type.isRunnable()) {
             menu.add(Commands.RUN_FILE);
             if (ScriptDebugging.isInstalled()) {
                 menu.add(Commands.DEBUG_FILE);
@@ -1938,6 +2068,56 @@ public class CodeEditor extends AbstractSupportEditor {
         return getEditor().getDocumentLength();
     }
 
+    private int activeCodeGenerationRequests = 0;
+    private int pendingActionAfterCodeGeneration = 0;
+    private static final int POST_GEN_NO_ACTION = 0;
+    private static final int POST_GEN_RUN = 1;
+    private static final int POST_GEN_DEBUG = 2;
+
+    /**
+     * Called after a save when code generation starts. Allows generated code
+     * to be acted on once generation finishes, even if in another thread.
+     * Must be called on EDT.
+     */
+    private void startedCodeGeneration() {
+        if (!EventQueue.isDispatchThread()) {
+            throw new AssertionError();
+        }
+        ++activeCodeGenerationRequests;
+    }
+
+    /**
+     * Called after a save when code generation ends. Allows generated code
+     * to be acted on once generation finishes, even if in another thread.
+     * Must be called on EDT.
+     */
+    private void finishedCodeGeneration() {
+        if (!EventQueue.isDispatchThread()) {
+            throw new AssertionError();
+        }
+        if (activeCodeGenerationRequests > 0) {
+            --activeCodeGenerationRequests;
+            if (activeCodeGenerationRequests == 0) {
+                int actionWas = pendingActionAfterCodeGeneration;
+                pendingActionAfterCodeGeneration = POST_GEN_NO_ACTION;
+                switch (actionWas) {
+                    case POST_GEN_RUN:
+                        run(false);
+                        break;
+                    case POST_GEN_DEBUG:
+                        run(true);
+                        break;
+                    case POST_GEN_NO_ACTION:
+                        break;
+                    default:
+                        throw new AssertionError();
+                }
+            }
+        } else {
+            throw new AssertionError();
+        }
+    }
+
     /**
      * Run the current script.
      *
@@ -1953,6 +2133,14 @@ public class CodeEditor extends AbstractSupportEditor {
         if (f != null) {
             if (hasUnsavedChanges()) {
                 save();
+            }
+            if (activeCodeGenerationRequests > 0) {
+                StrangeEons.log.fine("deferring code execution until generation complete");
+                pendingActionAfterCodeGeneration = debugIfAvailable ? POST_GEN_DEBUG : POST_GEN_RUN;
+                return;
+            }
+            if (type.getDependentFile(f) != null) {
+                f = type.getDependentFile(f);
             }
             if (p != null) {
                 m = p.findMember(f);

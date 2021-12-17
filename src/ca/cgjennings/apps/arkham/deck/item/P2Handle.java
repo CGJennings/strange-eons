@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 
 /**
- * Adjusts the master point (location) of a line.
+ * Adjusts the secondary point (location) of a line.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

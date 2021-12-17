@@ -4,9 +4,9 @@ const useLibrary = (function () {
   delete ENGINE_OBJECT;
   delete SCRIPT_MONKEY_OBJECT;
   let libs = new java.util.HashSet();
-  let dontEnumMethod = java.lang.Class.forName('ca.cgjennings.script.mozilla.javascript.ScriptableObject')
+  let dontEnumMethod = java.lang.Class.forName('org.mozilla.javascript.ScriptableObject')
     .getMethod('setAttributes', java.lang.String, java.lang.Integer.TYPE);
-  let DONTENUM = new java.lang.Integer(Packages.ca.cgjennings.script.mozilla.javascript.ScriptableObject.DONTENUM);
+  let DONTENUM = new java.lang.Integer(Packages.org.mozilla.javascript.ScriptableObject.DONTENUM);
   let uselibrary = function useLibrary(library) {
     if (!libs.contains(library)) {
       monkey.includeLibrary(engine, library);
@@ -53,4 +53,5 @@ const useLibrary = (function () {
   Function.prototype.dontEnum('subclass');
   return uselibrary;
 })();
+var exports = {};
 useLibrary('common');

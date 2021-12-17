@@ -18,7 +18,6 @@ import ca.cgjennings.ui.table.IconRenderer;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Insets;

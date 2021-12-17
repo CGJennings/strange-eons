@@ -8,6 +8,7 @@ import ca.cgjennings.apps.arkham.diy.SBTextField;
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
 import ca.cgjennings.apps.arkham.plugins.PluginContext;
 import ca.cgjennings.ui.JHelpButton;
+import ca.cgjennings.ui.JLinkLabel;
 import ca.cgjennings.ui.JTip;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Component;
@@ -15,7 +16,6 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -149,7 +149,11 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @param c
      */
     static void style(JComponent c) {
+        c.setOpaque(true);
         c.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
+        if (c instanceof JLinkLabel || c instanceof JHelpButton) {
+            return;
+        }
         c.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
         if(c instanceof JLabel) {
             JLabel label = (JLabel) c;
@@ -161,13 +165,13 @@ public class FillInPreferenceCategory implements PreferenceCategory {
         } else if(c instanceof JScrollPane) {
             c.setOpaque(true);
         }
+
         for(int i=0; i<c.getComponentCount(); ++i) {
             Component kid = c.getComponent(i);
             if(kid instanceof JPanel || kid instanceof JLabel || kid instanceof JCheckBox || kid instanceof JRadioButton || kid instanceof JScrollPane) {
                 style((JComponent) kid);
             }
         }
-        c.setOpaque(true);
     }
     private static final float defaultLabelFontSize;
     static {

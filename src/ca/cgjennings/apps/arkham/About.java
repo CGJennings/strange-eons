@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.i18n.IntegerPluralizer;
 import ca.cgjennings.platform.DesktopIntegration;
 import ca.cgjennings.text.SETemplateProcessor;
@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.lang.model.SourceVersion;
-import javax.script.ScriptEngine;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JScrollBar;
@@ -137,9 +136,7 @@ final class About extends javax.swing.JDialog {
         html.append("<html><table border=0 cellspacing=0 cellpadding=0>");
 
         buildRow(html, plain, "Strange Eons", StrangeEons.getVersionString());
-
-        buildRow(html, plain, "Java Runtime", System.getProperty("java.version"));
-
+        buildRow(html, plain, "Java runtime", System.getProperty("java.version"));
         Object jdk = null;
         try {
             JavaCompiler javac = ToolProvider.getSystemJavaCompiler();
@@ -157,12 +154,9 @@ final class About extends javax.swing.JDialog {
             }
         } catch (Throwable t) {
         }
-        buildRow(html, plain, "Compiler Engine", jdk);
-
-        Object scriptEngVer = new SEScriptEngineFactory().getParameter(ScriptEngine.ENGINE_VERSION);
-        buildRow(html, plain, "Script Engine", scriptEngVer);
-
-        buildRow(html, plain, "User Folder", StrangeEons.getUserStorageFile(null));
+        buildRow(html, plain, "Compiler engine", jdk);
+        buildRow(html, plain, "Script engine", SEScriptEngineFactory.getVersion());
+        buildRow(html, plain, "User folder", StrangeEons.getUserStorageFile(null));
         html.append("</table>");
 
         final String plainText = plain.toString();

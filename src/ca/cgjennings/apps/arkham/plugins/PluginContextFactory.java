@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import static ca.cgjennings.apps.arkham.plugins.PluginContext.MENU;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.lang.reflect.InvocationTargetException;

@@ -7,6 +7,7 @@ import ca.cgjennings.spelling.ui.LookupServiceProvider;
 import ca.cgjennings.spelling.ui.LookupServices;
 import ca.cgjennings.spelling.ui.UserDictionaryDialog;
 import ca.cgjennings.ui.JIconComboBox;
+import ca.cgjennings.ui.textedit.SpellingHighlighter;
 import java.awt.Component;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -61,6 +62,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
         javax.swing.JLabel spellingSect = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         userDictBtn = new javax.swing.JButton();
+        enableCodeSpellingCheck = new javax.swing.JCheckBox();
 
         setBackground(java.awt.Color.white);
 
@@ -110,6 +112,11 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
 
         enableSpellingCheck.setBackground(java.awt.Color.white);
         enableSpellingCheck.setText(string( "sd-b-spelling-enable" )); // NOI18N
+        enableSpellingCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enableSpellingCheckActionPerformed(evt);
+            }
+        });
 
         spellingSect.setFont(spellingSect.getFont().deriveFont(spellingSect.getFont().getStyle() | java.awt.Font.BOLD, spellingSect.getFont().getSize()+3));
         spellingSect.setForeground(new java.awt.Color(135, 103, 5));
@@ -125,6 +132,8 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
             }
         });
 
+        enableCodeSpellingCheck.setText(string("sd-b-spelling-code-enable")); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -133,6 +142,8 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(languageSect)
+                    .addComponent(thesaurusSect)
+                    .addComponent(spellingSect)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,11 +153,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(uiLangCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(gameLangCombo, 0, 336, Short.MAX_VALUE)))))
-                    .addComponent(thesaurusSect)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(gameLangCombo, 0, 336, Short.MAX_VALUE)))
                             .addComponent(thesListLabel)
                             .addComponent(thesLabel1)
                             .addComponent(thesLabel2)
@@ -154,17 +161,14 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(servicePrefsBtn)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addComponent(spellingSect)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(enableSpellingCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(userDictBtn)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(21, 21, 21)
-                                .addComponent(jLabel1))
-                            .addComponent(userDictBtn))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                                .addComponent(enableCodeSpellingCheck))
+                            .addComponent(jLabel1))))
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,9 +186,11 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
                 .addGap(18, 18, 18)
                 .addComponent(spellingSect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enableSpellingCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
                 .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(enableSpellingCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(enableCodeSpellingCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(userDictBtn)
                 .addGap(13, 13, 13)
@@ -227,7 +233,12 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
             d.setVisible(true);
 	}//GEN-LAST:event_userDictBtnActionPerformed
 
+    private void enableSpellingCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enableSpellingCheckActionPerformed
+        enableCodeSpellingCheck.setEnabled(enableSpellingCheck.isSelected());
+    }//GEN-LAST:event_enableSpellingCheckActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox enableCodeSpellingCheck;
     private javax.swing.JCheckBox enableSpellingCheck;
     private javax.swing.JComboBox gameLangCombo;
     private javax.swing.JLabel jLabel1;
@@ -304,7 +315,9 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
 
         // Spelling
         spellEnable = s.getBoolean("spelling-enabled");
+        spellCodeEnable = s.getBoolean("spelling-code-enabled");
         enableSpellingCheck.setSelected(spellEnable);
+        enableCodeSpellingCheck.setSelected(spellCodeEnable);
 
         // Look-up Services
         LookupServices.addServiceRegistrationListener(new LookupServices.ServiceRegistrationListener() {
@@ -348,12 +361,18 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
 
         boolean newSpellingEnable = enableSpellingCheck.isSelected();
         if (newSpellingEnable != spellEnable) {
-            s.set("spelling-enabled", newSpellingEnable ? "yes" : "no");
+            s.setBoolean("spelling-enabled", newSpellingEnable);
             if (newSpellingEnable) {
                 SpellingChecker.getSharedInstance().installDefaultPolicy();
             } else {
                 SpellingChecker.getSharedInstance().setPolicy(new AcceptPolicy());
             }
+        }
+        boolean newCodeSpellingEnabled = enableCodeSpellingCheck.isSelected();
+        if (newCodeSpellingEnabled != spellCodeEnable) {
+            s.setBoolean("spelling-code-enabled", newCodeSpellingEnabled);
+            SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = newCodeSpellingEnabled;
+            StrangeEons.getWindow().repaint(1000);
         }
     }
 
@@ -374,6 +393,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
 
     private boolean restart;
     private boolean spellEnable;
+    private boolean spellCodeEnable;
 
     @Override
     public boolean isRestartRequired() {

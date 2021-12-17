@@ -12,7 +12,7 @@ import java.awt.geom.QuadCurve2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Adjusts the master point (location) of a line.
+ * Adjusts the primary point (location) of a line.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

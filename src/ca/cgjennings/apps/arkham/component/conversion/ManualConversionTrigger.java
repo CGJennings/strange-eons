@@ -6,6 +6,7 @@ package ca.cgjennings.apps.arkham.component.conversion;
  * {@code "manual"} from {@link #getCause()}.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ManualConversionTrigger extends AbstractConversionTrigger {
 
@@ -41,5 +42,12 @@ public class ManualConversionTrigger extends AbstractConversionTrigger {
     @Override
     public String getCause() {
         return "manual";
+    }
+
+    @Override
+    public String toString() {
+        String s = super.toString();
+        if (group != null) s += ", group $" + group;
+        return s;
     }
 }

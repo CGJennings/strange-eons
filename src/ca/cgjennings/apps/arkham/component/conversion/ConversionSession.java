@@ -34,6 +34,7 @@ import resources.Settings;
  * return the instance itself, so that they can be chained easily.
  *
  * @author Henrik Rostedt
+ * @since 3.3
  */
 public class ConversionSession {
 
@@ -59,6 +60,11 @@ public class ConversionSession {
         this.source = source;
         this.target = target;
         copyPortraitPossible = source instanceof PortraitProvider && target instanceof PortraitProvider;
+        StrangeEons.log.info(
+                "conversion from type " + source.getClassName() +
+                " to type " + target.getClassName() +
+                ": " + trigger
+        );
     }
 
     /**
@@ -100,6 +106,7 @@ public class ConversionSession {
     public void cancel(String reason) {
         cancelled = true;
         cancelReason = reason;
+        StrangeEons.log.info("cancelling: " + reason);
     }
 
     /**

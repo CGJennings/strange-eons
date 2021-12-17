@@ -1,20 +1,21 @@
 package ca.cgjennings.apps.arkham.plugins.debugging;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.plugins.NoOpErrorReporter;
+import ca.cgjennings.apps.arkham.TextEncoding;
+import ca.cgjennings.apps.arkham.plugins.engine.NoOpErrorReporter;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.debugging.DebuggingCallback.DebugEventListener;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.ErrorReporter;
-import ca.cgjennings.script.mozilla.javascript.EvaluatorException;
-import ca.cgjennings.script.mozilla.javascript.Function;
-import ca.cgjennings.script.mozilla.javascript.NativeJavaObject;
-import ca.cgjennings.script.mozilla.javascript.Script;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
-import ca.cgjennings.script.mozilla.javascript.Undefined;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim.SourceInfo;
-import ca.cgjennings.script.mozilla.javascript.tools.debugger.Dim.StackFrame;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.Function;
+import org.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Script;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.tools.debugger.Dim.SourceInfo;
+import org.mozilla.javascript.tools.debugger.Dim.StackFrame;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -387,8 +388,8 @@ public final class DefaultScriptDebugger {
     private void service(Socket client, IsolatedServerThread thread) throws IOException {
         PrintWriter w = null;
         try {
-            BufferedReader r = new BufferedReader(new InputStreamReader(client.getInputStream()));
-            w = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), "utf-8")));
+            BufferedReader r = new BufferedReader(new InputStreamReader(client.getInputStream(), TextEncoding.DEBUGGER_CS));
+            w = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream(), TextEncoding.DEBUGGER_CS)));
 
             String protocol = r.readLine();
             if (!"SEDP3".equals(protocol)) {

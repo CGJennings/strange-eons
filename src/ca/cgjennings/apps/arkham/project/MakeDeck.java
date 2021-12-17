@@ -64,7 +64,7 @@ public class MakeDeck extends TaskAction {
                     BusyDialog.getCurrentDialog().setStatusText(string("pa-makedeck-busy-read", m.getFile().getName()));
                     packer.add(m.getFile(), copies.getCopyCount(m.getFile()));
                 }
-                
+
                 Deck deck = packer.createLayout();
                 try {
                     if (!packer.isCancelled()) {
@@ -93,10 +93,7 @@ public class MakeDeck extends TaskAction {
         if (NewTaskType.DECK_TYPE.equals(type)) {
             return true;
         }
-        if (NewTaskType.FACTORY_TYPE.equals(type)) {
-            return true;
-        }
-        return false;
+        return NewTaskType.FACTORY_TYPE.equals(type);
     }
 
 }

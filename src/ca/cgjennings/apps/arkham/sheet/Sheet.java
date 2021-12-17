@@ -2129,7 +2129,7 @@ public abstract class Sheet<G extends GameComponent> {
      * the index of the symbol to return. If the string is invalid, the 0th
      * symbol is used.
      *
-     * Several versions of the master image registered with the
+     * Several versions of the image registered with the
      * {@link Expansion} may be maintained. Each such version is optimized for
      * drawing at a certain size (in effect, each version is best for a
      * different sheet resolution). Which version is returned will be determined
@@ -2171,29 +2171,28 @@ public abstract class Sheet<G extends GameComponent> {
             }
         }
 
-        BufferedImage master = expansion.getSymbol(index);
-        if (master == null || master.getWidth() <= targetWidth) {
-            return master;
+        BufferedImage original = expansion.getSymbol(index);
+        if (original == null || original.getWidth() <= targetWidth) {
+            return original;
         }
 
         BufferedImage[] mipmap;
         synchronized (mipmapMap) {
-            mipmap = mipmapMap.get(master);
+            mipmap = mipmapMap.get(original);
 
             if (mipmap == null) {
-                int levels = Math.min(
-                        31 - Integer.numberOfLeadingZeros(master.getWidth()),
-                        31 - Integer.numberOfLeadingZeros(master.getHeight())
+                int levels = Math.min(31 - Integer.numberOfLeadingZeros(original.getWidth()),
+                        31 - Integer.numberOfLeadingZeros(original.getHeight())
                 );
                 mipmap = new BufferedImage[levels];
-                mipmap[0] = master;
+                mipmap[0] = original;
                 for (int i = 1; i < levels; ++i) {
                     mipmap[i] = ImageUtilities.resample(
                             mipmap[i - 1], mipmap[i - 1].getWidth() / 2, mipmap[i - 1].getHeight() / 2,
                             false, RenderingHints.VALUE_INTERPOLATION_BICUBIC, null
                     );
                 }
-                mipmapMap.put(master, mipmap);
+                mipmapMap.put(original, mipmap);
             }
         }
 

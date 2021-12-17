@@ -58,7 +58,7 @@ public class JavaScriptTokenizer extends Tokenizer {
 
     @Override
     public EnumSet<TokenType> getNaturalLanguageTokenTypes() {
-        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL1, TokenType.LITERAL2);
+        return EnumSet.of(TokenType.COMMENT1, TokenType.COMMENT2, TokenType.LITERAL_STRING1, TokenType.LITERAL_STRING2);
     }
 
     @Override
@@ -115,7 +115,27 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 backslash = false;
                             } else {
                                 addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL1;
+                                token = TokenType.LITERAL_STRING1;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '\'':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING2;
+                                lastOffset = lastKeyword = i;
+                            }
+                            break;
+                        case '`':
+                            doKeyword(line, i);
+                            if (backslash) {
+                                backslash = false;
+                            } else {
+                                addToken(i - lastOffset, token);
+                                token = TokenType.LITERAL_STRING3;
                                 lastOffset = lastKeyword = i;
                             }
                             break;
@@ -126,7 +146,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL5;
+                                    token = TokenType.LITERAL_SPECIAL_2;
                                     lastOffset = lastKeyword = i;
                                 }
                             }
@@ -145,19 +165,9 @@ public class JavaScriptTokenizer extends Tokenizer {
                                     backslash = false;
                                 } else {
                                     addToken(i - lastOffset, token);
-                                    token = TokenType.LITERAL3;
+                                    token = TokenType.LITERAL_SPECIAL_1;
                                     lastOffset = lastKeyword = i;
                                 }
-                            }
-                            break;
-                        case '\'':
-                            doKeyword(line, i);
-                            if (backslash) {
-                                backslash = false;
-                            } else {
-                                addToken(i - lastOffset, token);
-                                token = TokenType.LITERAL2;
-                                lastOffset = lastKeyword = i;
                             }
                             break;
                         case ':':
@@ -199,7 +209,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                                 if (lastWasRegExpPunct) {
                                     addToken(i - lastOffset, token);
                                     lastOffset = lastKeyword = i;
-                                    token = TokenType.LITERAL4;
+                                    token = TokenType.LITERAL_REGEX;
                                 }
                             }
                             break;
@@ -224,7 +234,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                         }
                     }
                     break;
-                case LITERAL1:
+                case LITERAL_STRING1:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '"') {
@@ -233,17 +243,27 @@ public class JavaScriptTokenizer extends Tokenizer {
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL2:
+                case LITERAL_STRING2:
                     if (backslash) {
                         backslash = false;
                     } else if (c == '\'') {
-                        addToken(i1 - lastOffset, TokenType.LITERAL2);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING2);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     break;
-                case LITERAL3:
-                case LITERAL5:
+                case LITERAL_STRING3:
+                    if (backslash) {
+                        backslash = false;
+                    } else if (c == '`') {
+                        addToken(i1 - lastOffset, TokenType.LITERAL_STRING3);
+                        token = TokenType.PLAIN;
+                        lastOffset = lastKeyword = i1;
+                    }
+                    break;
+
+                case LITERAL_SPECIAL_1:
+                case LITERAL_SPECIAL_2:
                     if (!(Character.isJavaIdentifierPart(c) || c == '-')) {
                         addToken(i - lastOffset, token);
                         token = TokenType.PLAIN;
@@ -251,7 +271,7 @@ public class JavaScriptTokenizer extends Tokenizer {
                         --i;
                     }
                     break;
-                case LITERAL4:
+                case LITERAL_REGEX:
                     // Regular Expression Literal
                     if (backslash) {
                         backslash = false;
@@ -262,12 +282,13 @@ public class JavaScriptTokenizer extends Tokenizer {
                             ++i;
                             c1 = (i1 == length) ? '\0' : array[i1];
                         }
-                        addToken(i1 - lastOffset, TokenType.LITERAL4);
+                        addToken(i1 - lastOffset, TokenType.LITERAL_REGEX);
                         token = TokenType.PLAIN;
                         lastOffset = lastKeyword = i1;
                     }
                     backslash = false;
                     break;
+
 
                 case INVALID:
                     // When a token is marked invalid within this loop it is
@@ -297,9 +318,9 @@ public class JavaScriptTokenizer extends Tokenizer {
                 addToken(length - lastOffset, TokenType.INVALID);
                 token = TokenType.PLAIN;
                 break;
-            case LITERAL1:
-            case LITERAL2:
-            case LITERAL4:
+            case LITERAL_STRING1:
+            case LITERAL_STRING2:
+            case LITERAL_REGEX:
                 if (backslash) {
                     addToken(length - lastOffset, token);
                 } else {
@@ -308,8 +329,8 @@ public class JavaScriptTokenizer extends Tokenizer {
                 }
                 break;
 
-            case LITERAL3:
-            case LITERAL5:
+            case LITERAL_SPECIAL_1:
+            case LITERAL_SPECIAL_2:
             case KEYWORD2:
                 addToken(length - lastOffset, token);
                 if (!backslash) {
@@ -401,22 +422,43 @@ public class JavaScriptTokenizer extends Tokenizer {
             // arguments is only valid in function scope
             jsKeywords.add("arguments", TokenType.KEYWORD2);
 
-            jsKeywords.add("Object", TokenType.KEYWORD2);
             jsKeywords.add("Array", TokenType.KEYWORD2);
+            jsKeywords.add("ArrayBuffer", TokenType.KEYWORD2);
+            jsKeywords.add("BigInt", TokenType.KEYWORD2);
             jsKeywords.add("Boolean", TokenType.KEYWORD2);
             jsKeywords.add("Date", TokenType.KEYWORD2);
             jsKeywords.add("Error", TokenType.KEYWORD2);
             jsKeywords.add("EvalError", TokenType.KEYWORD2);
+            jsKeywords.add("Function", TokenType.KEYWORD2);
+            jsKeywords.add("JSON", TokenType.KEYWORD2);
+            jsKeywords.add("Math", TokenType.KEYWORD2);
+            jsKeywords.add("Map", TokenType.KEYWORD2);
+            jsKeywords.add("Number", TokenType.KEYWORD2);
+            jsKeywords.add("Object", TokenType.KEYWORD2);
+            jsKeywords.add("Promise", TokenType.KEYWORD2);
             jsKeywords.add("RangeError", TokenType.KEYWORD2);
             jsKeywords.add("ReferenceError", TokenType.KEYWORD2);
+            jsKeywords.add("RegExp", TokenType.KEYWORD2);
+            jsKeywords.add("Set", TokenType.KEYWORD2);
+            jsKeywords.add("String", TokenType.KEYWORD2);
+            jsKeywords.add("Symbol", TokenType.KEYWORD2);
             jsKeywords.add("SyntaxError", TokenType.KEYWORD2);
             jsKeywords.add("TypeError", TokenType.KEYWORD2);
             jsKeywords.add("URIError", TokenType.KEYWORD2);
-            jsKeywords.add("Function", TokenType.KEYWORD2);
-            jsKeywords.add("Math", TokenType.KEYWORD2);
-            jsKeywords.add("Number", TokenType.KEYWORD2);
-            jsKeywords.add("RegExp", TokenType.KEYWORD2);
-            jsKeywords.add("String", TokenType.KEYWORD2);
+            jsKeywords.add("WeakSet", TokenType.KEYWORD2);
+            jsKeywords.add("WeakMap", TokenType.KEYWORD2);
+
+            jsKeywords.add("Int8Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint8Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint8ClampedArray", TokenType.KEYWORD2);
+            jsKeywords.add("Int16Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint16Array", TokenType.KEYWORD2);
+            jsKeywords.add("Int32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Uint32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Float32Array", TokenType.KEYWORD2);
+            jsKeywords.add("Float64Array", TokenType.KEYWORD2);
+            jsKeywords.add("DataView", TokenType.KEYWORD2);
+
 
             // Newer versions of JS
             jsKeywords.add("debugger", TokenType.KEYWORD1);
@@ -468,6 +510,9 @@ public class JavaScriptTokenizer extends Tokenizer {
             // SE global functions and properties
             jsKeywords.add("useLibrary", TokenType.KEYWORD2);
 
+            jsKeywords.add("global", TokenType.KEYWORD2);
+            jsKeywords.add("self", TokenType.KEYWORD2);
+            jsKeywords.add("globalThis", TokenType.KEYWORD2);
             jsKeywords.add("Eons", TokenType.KEYWORD2);
             jsKeywords.add("PluginContext", TokenType.KEYWORD2);
             jsKeywords.add("Editor", TokenType.KEYWORD2);

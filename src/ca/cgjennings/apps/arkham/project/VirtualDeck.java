@@ -48,10 +48,7 @@ public class VirtualDeck extends TaskAction {
         if (NewTaskType.DECK_TYPE.equals(type)) {
             return true;
         }
-        if (NewTaskType.FACTORY_TYPE.equals(type)) {
-            return true;
-        }
-        return false;
+        return NewTaskType.FACTORY_TYPE.equals(type);
     }
 
 }

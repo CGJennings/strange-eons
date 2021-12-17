@@ -95,7 +95,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     }
 
     private boolean cancel;
-    private final TabInfo[] masterList;
+    private final TabInfo[] listOfAllOpenTabs;
     private final DefaultListModel<TabInfo> model;
 
     /**
@@ -108,12 +108,12 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         PlatformSupport.makeAgnosticDialog(this, saveAllBtn, cancelBtn);
 
         StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditors();
-        masterList = new TabInfo[eds.length];
+        listOfAllOpenTabs = new TabInfo[eds.length];
         model = new DefaultListModel<>();
         for (int i = 0; i < eds.length; ++i) {
-            masterList[i] = new TabInfo(i, eds[i]);
+            listOfAllOpenTabs[i] = new TabInfo(i, eds[i]);
             if (eds[i].hasUnsavedChanges()) {
-                model.addElement(masterList[i]);
+                model.addElement(listOfAllOpenTabs[i]);
             }
         }
         fileList.setModel(model);
@@ -129,15 +129,11 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         }
         // write list of tabs to open next time
         StringBuilder v = new StringBuilder(256);
-        for (TabInfo ti : masterList) {
+        for (TabInfo ti : listOfAllOpenTabs) {
             String token = null;
             if (ti.file != null) {
                 token = "F " + ti.file.getAbsolutePath();
             }
-            // no longer store URLs since browsing externalized
-//            else if (ti.editor instanceof APIBrowser) {
-//                token = "U " + ((APIBrowser) ti.editor).getURL();
-//            }
             if (token != null) {
                 if (v.length() > 0) {
                     v.append('\0');

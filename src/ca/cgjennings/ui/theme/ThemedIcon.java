@@ -25,9 +25,9 @@ public class ThemedIcon implements Icon {
      * Creates a new themed icon. The icon's image will normally be obtained as
      * if loading an image with the {@link ResourceKit}, but if a theme is
      * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then
-     * it will not be loaded until the first time it is needed. Otherwise, the
-     * image will be loaded immediately.
+     * themed version. If {@code deferLoading} is {@code true}, then it will not
+     * be loaded until the first time it is needed. Otherwise, the image will be
+     * loaded immediately.
      *
      * @param resource the resource identifier for the icon
      * @see Theme#applyThemeToImage(java.lang.String)
@@ -40,9 +40,9 @@ public class ThemedIcon implements Icon {
      * Creates a new themed icon. The icon's image will normally be obtained as
      * if loading an image with the {@link ResourceKit}, but if a theme is
      * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then
-     * it will not be loaded until the first time it is needed. Otherwise, the
-     * image will start loading immediately.
+     * themed version. If {@code deferLoading} is {@code true}, then it will not
+     * be loaded until the first time it is needed. Otherwise, the image will
+     * start loading immediately.
      *
      * @param resource the resource identifier for the icon
      * @param deferLoading if {@code true}, the image is loaded lazily
@@ -96,8 +96,10 @@ public class ThemedIcon implements Icon {
     }
     private volatile BufferedImage im;
 
-    private final BufferedImage getDisabledImage() {
-        if (dim != null) return dim;
+    private BufferedImage getDisabledImage() {
+        if (dim != null) {
+            return dim;
+        }
 
         BufferedImage im = getImage();
         BufferedImageOp op = (BufferedImageOp) UIManager.get(Theme.DISABLED_ICON_FILTER);

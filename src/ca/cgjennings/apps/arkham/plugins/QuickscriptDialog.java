@@ -1,7 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
 import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
@@ -335,7 +337,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
     public static String readScriptFile(File f) throws IOException {
         BufferedReader in = null;
         try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(f), "utf-8"));
+            in = new BufferedReader(new InputStreamReader(new FileInputStream(f), TextEncoding.SCRIPT_CODE_CS));
             int buff = (int) f.length();
             if (buff <= 0) {
                 buff = 2_048;
@@ -388,7 +390,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         // try to write code to a recovery file in case we lock up
         Writer out = null;
         try {
-            out = new OutputStreamWriter(new FileOutputStream(RECOVERY_FILE), "utf-8");
+            out = new OutputStreamWriter(new FileOutputStream(RECOVERY_FILE), TextEncoding.SCRIPT_CODE_CS);
             out.write(code);
             // if we just wrote the very first recovery file, add an exit
             // task to delete it at shutdown

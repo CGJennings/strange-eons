@@ -1,10 +1,11 @@
-package ca.cgjennings.apps.arkham.plugins;
+package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.layout.TextStyle;
-import ca.cgjennings.script.mozilla.javascript.Context;
-import ca.cgjennings.script.mozilla.javascript.NativeJavaObject;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.NativeJavaObject;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
@@ -26,7 +27,7 @@ import resources.Settings.Colour;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-class SettingBindings implements Bindings {
+public class SettingBindings implements Bindings {
 
     private Bindings parent;
     private volatile Settings settings;
@@ -78,9 +79,6 @@ class SettingBindings implements Bindings {
         return name.substring(1).replace('_', '-');
     }
 
-//	private String keyToVar( String name ) {
-//		return "$" + name.replace( '-', '_' );
-//	}
     @Override
     @SuppressWarnings("fallthrough")
     public Object put(String name, Object value) {
@@ -311,11 +309,11 @@ class SettingBindings implements Bindings {
 
     /**
      * A magic variable is a function for producing the value of a variable. For
-     * example, the {@code Editor} magic variable is a function that
-     * returns the active editor (or {@code null}). Magic variables are
-     * stored in a secondary map that is consulted after the primary map fails.
-     * (If the name of a magic variable is assigned a normal value, that value
-     * will thus supercede the magic variable.)
+     * example, the {@code Editor} magic variable is a function that returns the
+     * active editor (or {@code null}). Magic variables are stored in a
+     * secondary map that is consulted after the primary map fails. (If the name
+     * of a magic variable is assigned a normal value, that value will thus
+     * supercede the magic variable.)
      */
     private interface MagicVariable {
 
@@ -564,9 +562,9 @@ class SettingBindings implements Bindings {
      * Sets whether the bindings will report $-notation variables that have a
      * {@code null} value are undefined.
      *
-     * @param enable if {@code true}, {@code null} setting variables
-     * will not be "contained" by the map, resulting in additional warnings when
-     * script warnings are enabled
+     * @param enable if {@code true}, {@code null} setting variables will not be
+     * "contained" by the map, resulting in additional warnings when script
+     * warnings are enabled
      * @see #containsKey(java.lang.Object)
      */
     public static void setUndeclaredSettingWarningsEnabled(boolean enable) {

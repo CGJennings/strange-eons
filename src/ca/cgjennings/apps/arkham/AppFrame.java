@@ -19,8 +19,8 @@ import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.Listing;
 import ca.cgjennings.apps.arkham.project.*;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.script.mozilla.javascript.JavaScriptException;
-import ca.cgjennings.script.mozilla.javascript.RhinoException;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.RhinoException;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.dnd.FileDrop;
@@ -281,6 +281,8 @@ final class AppFrame extends StrangeEonsAppWindow {
             } finally {
                 setDefaultCursor();
             }
+
+            app.runStartupTasks();
         });
         delayedStartupActions.setRepeats(false);
         delayedStartupActions.start();

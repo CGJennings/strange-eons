@@ -268,11 +268,10 @@ public class JUtilities {
      * Adds listeners for all addXXXListener methods on a component that print
      * information to a selected output stream.
      *
-     * @param out the stream to print to ({@code System.err} if
-     * {@code null})
+     * @param out the stream to print to ({@code System.err} if {@code null})
      * @param component the component to add listeners to
-     * @param includeAllMoveEvents if {@code true}, low-level cursor
-     * movements are included
+     * @param includeAllMoveEvents if {@code true}, low-level cursor movements
+     * are included
      * @param recursive if {@code true}, listeners are added recursively to
      * children
      */
@@ -340,7 +339,6 @@ public class JUtilities {
                                     }
                                     try {
                                         Thread.sleep(millisLeft + 2);
-                                        continue;
                                     } catch (InterruptedException e) {
                                         break;
                                     }
@@ -443,11 +441,11 @@ public class JUtilities {
     private static HashMap<JRootPane, Integer> waitMap = new HashMap<>();
 
     /**
-     * Returns {@code true} if the mouse button with the indicated number
-     * is down. If the button number is greater than the number of buttons
-     * recognized by this JVM, {@code false} is returned. Buttons from 1 to
-     * 3 can always be recognized; higher-numbered buttons may be recognized.
-     * The highest possible button number that might be recognized is
+     * Returns {@code true} if the mouse button with the indicated number is
+     * down. If the button number is greater than the number of buttons
+     * recognized by this JVM, {@code false} is returned. Buttons from 1 to 3
+     * can always be recognized; higher-numbered buttons may be recognized. The
+     * highest possible button number that might be recognized is
      * {@link java.awt.MouseInfo#getNumberOfButtons()}. Button numbers higher
      * than this can be safely requested but will return {@code false}.
      *
@@ -468,8 +466,8 @@ public class JUtilities {
     }
 
     /**
-     * Returns {@code true} if the left mouse button was held down during
-     * the given {@code InputEvent}.
+     * Returns {@code true} if the left mouse button was held down during the
+     * given {@code InputEvent}.
      *
      * @param e the event to test
      * @return {@code true} is mouse button was down
@@ -479,8 +477,8 @@ public class JUtilities {
     }
 
     /**
-     * Returns {@code true} if the middle mouse button was held down during
-     * the given {@code InputEvent}.
+     * Returns {@code true} if the middle mouse button was held down during the
+     * given {@code InputEvent}.
      *
      * @param e the event to test
      * @return {@code true} is mouse button was down
@@ -490,8 +488,8 @@ public class JUtilities {
     }
 
     /**
-     * Returns {@code true} if the right mouse button was held down during
-     * the given {@code InputEvent}.
+     * Returns {@code true} if the right mouse button was held down during the
+     * given {@code InputEvent}.
      *
      * @param e the event to test
      * @return {@code true} is mouse button was down
@@ -501,9 +499,8 @@ public class JUtilities {
     }
 
     /**
-     * Returns {@code true} if the "back" mouse button was held down during
-     * the given {@code InputEvent} and this button can be detected by this
-     * JVM.
+     * Returns {@code true} if the "back" mouse button was held down during the
+     * given {@code InputEvent} and this button can be detected by this JVM.
      *
      * @param e the event to test
      * @return {@code true} is mouse button was down
@@ -514,9 +511,8 @@ public class JUtilities {
     }
 
     /**
-     * Returns {@code true} if the "forward" mouse button was held down
-     * during the given {@code InputEvent} and this button can be detected
-     * by this JVM.
+     * Returns {@code true} if the "forward" mouse button was held down during
+     * the given {@code InputEvent} and this button can be detected by this JVM.
      *
      * @param e the event to test
      * @return {@code true} is mouse button was down
@@ -570,8 +566,7 @@ public class JUtilities {
      * the window having a smaller title bar.
      *
      * @param window the window to make into a utility window
-     * @return {@code true} if the attempt succeeds, {@code false}
-     * otherwise
+     * @return {@code true} if the attempt succeeds, {@code false} otherwise
      */
     public static boolean makeUtilityWindow(Window window) {
         if (window == null) {
@@ -614,12 +609,11 @@ public class JUtilities {
     /**
      * Returns a border that is the composition of any number of other borders.
      * Unlike {@code BorderFactory.createCompoundBorder}, this method can
-     * compose an arbitrary number of borders. In no case will {@code null}
-     * be returned; if no borders are passed in, an empty border will be
-     * returned. If one border is passed in, it is returned unchanged. If two
-     * borders are passed in, a simple compound border will be returned.
-     * Otherwise, a nested compound border that composes the borders is
-     * returned.
+     * compose an arbitrary number of borders. In no case will {@code null} be
+     * returned; if no borders are passed in, an empty border will be returned.
+     * If one border is passed in, it is returned unchanged. If two borders are
+     * passed in, a simple compound border will be returned. Otherwise, a nested
+     * compound border that composes the borders is returned.
      *
      * @param outerToInner the borders to compose
      * @return a border that composes all of the requested borders into a single
@@ -745,8 +739,8 @@ public class JUtilities {
      *
      * @param bar the menu bar to search
      * @param accel the accelerator key stroke to check for
-     * @return {@code true} if the accelerator is used by an item in the
-     * menu bar
+     * @return {@code true} if the accelerator is used by an item in the menu
+     * bar
      */
     public static boolean isAcceleratorInUse(JMenuBar bar, KeyStroke accel) {
         for (int i = 0; i < bar.getMenuCount(); ++i) {

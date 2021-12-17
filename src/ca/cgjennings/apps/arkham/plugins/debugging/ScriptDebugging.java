@@ -3,12 +3,9 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
-import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
-import ca.cgjennings.apps.arkham.plugins.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
-import ca.cgjennings.apps.arkham.project.Open;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.io.StreamPump;
 import ca.cgjennings.util.CommandFormatter;
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -16,6 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.mozilla.javascript.ContextFactory;
 import resources.Settings;
 
 /**
@@ -153,13 +151,13 @@ public class ScriptDebugging {
         if (location.startsWith("script:")) {
             location = location.substring("script:".length());
             try {
-                source = ProjectUtilities.getResourceText(location, "utf-8");
+                source = ProjectUtilities.getResourceText(location, TextEncoding.SOURCE_CODE);
             } catch (IOException e) {
             }
         } else if (location.startsWith("diy:")) {
             location = location.substring("diy:".length());
             try {
-                source = ProjectUtilities.getResourceText(location, "utf-8");
+                source = ProjectUtilities.getResourceText(location, TextEncoding.SOURCE_CODE);
             } catch (IOException e) {
             }
         } else {
@@ -250,8 +248,7 @@ public class ScriptDebugging {
         public void startClient() throws IOException;
 
         /**
-         * Returns {@code true} if the debugging client is currently
-         * running.
+         * Returns {@code true} if the debugging client is currently running.
          *
          * @return {@code true} if the client is active
          */
@@ -280,7 +277,7 @@ public class ScriptDebugging {
 
         @Override
         public void prepareToEnterContext() {
-            DebuggingCallback.create(SEScriptEngineFactory.getContextFactory());
+            DebuggingCallback.create(ContextFactory.getGlobal());
         }
 
         @Override
@@ -315,7 +312,7 @@ public class ScriptDebugging {
             final String port = String.valueOf(server.getPort());
 
             String userOverride = Settings.getUser().get("script-debug-client-launch", null);
-            if(userOverride != null) {
+            if (userOverride != null) {
                 CommandFormatter cf = new DefaultCommandFormatter();
                 cf.setVariable('h', host);
                 cf.setVariable('p', port);

@@ -78,11 +78,11 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns the {@code Class} instance that represents the original
-         * type of the property. For example, if the property being read has
-         * type {@code float} then the object returned by {#link
-         * getValue()} will be a {@code Float} instance and the type
-         * returned by this method will be {@code float.class}.
+         * Returns the {@code Class} instance that represents the original type
+         * of the property. For example, if the property being read has type
+         * {@code float} then the object returned by {#link getValue()} will be
+         * a {@code Float} instance and the type returned by this method will be
+         * {@code float.class}.
          *
          * @return the actual type of the captured property value, as declared
          * in its getter method
@@ -92,8 +92,8 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns the {@code Class} object for the {@link Style} interface
-         * that this property belongs to.
+         * Returns the {@code Class} object for the {@link Style} interface that
+         * this property belongs to.
          *
          * @return the style interface that the property is declared in
          */
@@ -102,11 +102,11 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns {@code true} if the property has had different values
-         * during the life of this capture.
+         * Returns {@code true} if the property has had different values during
+         * the life of this capture.
          *
-         * @return {@code true} if different values have been captured for
-         * this property
+         * @return {@code true} if different values have been captured for this
+         * property
          */
         public boolean isConflicted() {
             return conflicted;
@@ -131,14 +131,14 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
         }
 
         /**
-         * Returns {@code true} if the specified object is a
-         * {@code Property} with the same name and value. (If this returns
-         * {@code true} the type and style must match unless the contract
-         * for {@link Style} has been violated.)
+         * Returns {@code true} if the specified object is a {@code Property}
+         * with the same name and value. (If this returns {@code true} the type
+         * and style must match unless the contract for {@link Style} has been
+         * violated.)
          *
          * @param obj the object to compare this property with
-         * @return {@code true} if the object represents the same property
-         * and has an equal value
+         * @return {@code true} if the object represents the same property and
+         * has an equal value
          */
         @Override
         public boolean equals(Object obj) {
@@ -152,10 +152,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
             if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
                 return false;
             }
-            if (this.value != other.value && (this.value == null || !this.value.equals(other.value))) {
-                return false;
-            }
-            return true;
+            return !(this.value != other.value && (this.value == null || !this.value.equals(other.value)));
         }
     }
 
@@ -339,8 +336,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
 
     /**
      * Returns a set of the style classes that have been captured. For example,
-     * to test if the set contains a master opacity, you could use the following
-     * code:
+     * to test if the set contains a opacity, you could use the following code:
      * <pre>
      * getCapturedStyles().contains( OpacityStyle.class );
      * </pre>
@@ -381,8 +377,8 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * captured.
      *
      * @param name the property name, which must be non-{@code null}
-     * @return the value of the property, or {@code null} if it has not
-     * been captured
+     * @return the value of the property, or {@code null} if it has not been
+     * captured
      */
     public Property getProperty(String name) {
         if (name == null) {
@@ -405,8 +401,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * method is used primarily to define a capture that represents a set of
      * style defaults.
      *
-     * @param style the {@code Style} interface that the property belongs
-     * to
+     * @param style the {@code Style} interface that the property belongs to
      * @param name the name of the property
      * @param value the property's new value (the type of this object must be
      * appropriate for the an object with the correct type for the property that
@@ -555,8 +550,7 @@ public final class StyleCapture implements Iterable<StyleCapture.Property>, Styl
      * Returns {@code true} if the global style clipboard contains style
      * information.
      *
-     * @return {@code true} if non-empty captures have previously been
-     * copied.
+     * @return {@code true} if non-empty captures have previously been copied.
      */
     public static synchronized boolean canPaste() {
         return styleClip != null;

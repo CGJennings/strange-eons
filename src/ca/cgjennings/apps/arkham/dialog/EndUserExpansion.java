@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.dialog;
 
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
@@ -824,7 +825,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
     private void addString(JarOutputStream z, String path, String s) throws IOException {
         ZipEntry e = new ZipEntry(path);
         z.putNextEntry(e);
-        z.write(s.getBytes("utf-8"));
+        z.write(s.getBytes(TextEncoding.SOURCE_CODE));
         z.closeEntry();
     }
 

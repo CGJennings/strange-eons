@@ -27,10 +27,7 @@ public class Rename extends TaskAction {
 
     @Override
     public boolean appliesToSelection(Member[] members) {
-        if (members.length != 1) {
-            return false;
-        }
-        return true;
+        return members.length == 1;
     }
 
     @Override
@@ -76,9 +73,8 @@ public class Rename extends TaskAction {
      *
      * @param member the member to rename
      * @param newFile the file object that specifies the new file name
-     * @param subfolders if member is a folder, and this is
-     * non-{@code null}, then it is a slash-separated list of subfolders to
-     * create
+     * @param subfolders if member is a folder, and this is non-{@code null},
+     * then it is a slash-separated list of subfolders to create
      * @return the new file
      * @throws IllegalArgumentException if the member is not a folder and
      * subfolders is not null
@@ -213,27 +209,26 @@ public class Rename extends TaskAction {
 
         /**
          * Called when a file is renamed or deleted through the project system.
-         * The value of {@code oldFile} is always the file that was
-         * changed. If the file is being renamed, then {@code newFile} is
-         * the new (and current) name of the file. If the file is being deleted,
-         * then {@code newFile} will be {@code null}. The value of
-         * {@code newMember} may be the project member instance of the
-         * {@code newFile}, if one has already been created. Whether or not
-         * it is {@code null} depends on the source of the rename action.
-         * When a file is renamed with the rename action, it should be
-         * available. When the file is being moved by a drag or paste in the
-         * project pane, it will be {@code null} since the tree is not
-         * updated until the entire operation is completed. If you need to
-         * access the new member and the value is {@code null}, you can
-         * post an {@code EventQueue.invokeLater} event that calls
+         * The value of {@code oldFile} is always the file that was changed. If
+         * the file is being renamed, then {@code newFile} is the new (and
+         * current) name of the file. If the file is being deleted, then
+         * {@code newFile} will be {@code null}. The value of {@code newMember}
+         * may be the project member instance of the {@code newFile}, if one has
+         * already been created. Whether or not it is {@code null} depends on
+         * the source of the rename action. When a file is renamed with the
+         * rename action, it should be available. When the file is being moved
+         * by a drag or paste in the project pane, it will be {@code null} since
+         * the tree is not updated until the entire operation is completed. If
+         * you need to access the new member and the value is {@code null}, you
+         * can post an {@code EventQueue.invokeLater} event that calls
          * {@code Project.findMember( newFile )} to locate it.
          *
          * @param p the project in which the command was issued
          * @param newMember the new member associated with the file, if
          * available
          * @param oldFile the original file name
-         * @param newFile the new file name, or {@code null} if the file
-         * was deleted
+         * @param newFile the new file name, or {@code null} if the file was
+         * deleted
          */
         public void fileRenamed(Project p, Member newMember, File oldFile, File newFile);
     }

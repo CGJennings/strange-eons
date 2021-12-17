@@ -1,15 +1,19 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.script.mozilla.javascript.Scriptable;
+import java.io.CharArrayWriter;
+import org.mozilla.javascript.Scriptable;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Formatter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.script.ScriptException;
+import org.mozilla.javascript.Context;
 import resources.ResPath;
 
 /**
@@ -37,12 +41,6 @@ public final class LibImpl {
     private static final int GR_TIME = 5;
     /** Group containing the conversion code such as d or f. */
     private static final int GR_CONV = 6;
-
-    
-
-
-
-
     
     /**
      * Formats a string using C-style % format codes. The result is nearly
@@ -311,5 +309,85 @@ public final class LibImpl {
         }
         cache.put(modulePath, cache, exported);
         return exported;
+    }
+
+    /**
+     * Information about a single frame on the script call stack.
+     */
+    public static final class ScriptTraceElement {
+
+        private String file;
+        private int line;
+
+        public ScriptTraceElement(String file, int line) {
+            if (file == null) {
+                throw new NullPointerException("file");
+            }
+            this.file = file;
+            this.line = line;
+        }
+
+        public String getFile() {
+            return file;
+        }
+
+        public int getLine() {
+            return line;
+        }
+
+        @Override
+        public String toString() {
+            return file + ":" + line;
+        }
+    }
+
+    /**
+     * Return an array of {@link ScriptTraceElement}s that represents the script
+     * stack frames for the current thread.
+     *
+     * @return returns a script stack trace for the current thread
+     */
+    public static ScriptTraceElement[] getScriptTrace() {
+        List<ScriptTraceElement> stack = new LinkedList<>();
+
+        CharArrayWriter writer = new CharArrayWriter();
+        try {
+            Context.throwAsScriptRuntimeEx(new RuntimeException());
+        } catch (Throwable t) {
+            t.printStackTrace(new PrintWriter(writer));
+        }
+
+        String s = writer.toString();
+        int open = -1;
+        int close = -1;
+        int colon = -1;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == ':') {
+                colon = i;
+            } else if (c == '(') {
+                open = i;
+            } else if (c == ')') {
+                close = i;
+            } else if (c == '\n' && open != -1 && close != -1 && colon != -1
+                    && open < colon && colon < close) {
+                String file = s.substring(open + 1, colon);
+                if (!file.endsWith(".java")) {
+                    int line = -1;
+                    String lineStr = s.substring(colon + 1, close);
+                    try {
+                        line = Integer.parseInt(lineStr);
+                        if (line < 0) {
+                            line = 0;
+                        }
+                        stack.add(new ScriptTraceElement(file, line));
+                    } catch (NumberFormatException e) {
+                    }
+                }
+                open = close = colon = -1;
+            }
+        }
+
+        return stack.toArray(new ScriptTraceElement[stack.size()]);
     }
 }

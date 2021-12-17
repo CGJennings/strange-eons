@@ -10,12 +10,9 @@ import ca.cgjennings.apps.arkham.deck.item.OutlinedTile;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.deck.item.RotatableTile;
 import ca.cgjennings.apps.arkham.deck.item.Tile;
-import ca.cgjennings.io.EscapedLineReader;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -85,34 +82,6 @@ public class TileSet {
      */
     public static Set<Entry> getTileSetEntries() {
         return Collections.unmodifiableSet(entries);
-    }
-
-    /**
-     * Creates a suitable reader for a tile set resource.
-     *
-     * @param resource the resource location of the tile set
-     * @return a line reader that handles
-     */
-    public static EscapedLineReader createReader(String resource) {
-        URL url = null;
-        url = resources.ResourceKit.composeResourceURL(resource);
-        if (url == null) {
-            die(resource, null);
-            return null;
-        }
-        InputStream in = null;
-        try {
-            in = url.openStream();
-        } catch (IOException e) {
-            die(resource, e);
-            return null;
-        }
-
-        return new EscapedLineReader(in, Charset.forName("utf-8"));
-    }
-
-    private static void die(String resource, Throwable e) {
-        ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError(resources.Language.string("rk-err-data-resource", resource), e);
     }
 
     /**
@@ -384,7 +353,7 @@ public class TileSet {
 
         /**
          * Returns the prototype page item for this tile set entry. This is the
-         * master item that appears in the deck editor's list of components.
+         * main item that appears in the deck editor's list of components.
          *
          * @return the prototype item for display in the deck editor
          */

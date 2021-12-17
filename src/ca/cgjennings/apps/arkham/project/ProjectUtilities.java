@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.BusyDialog;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.Subprocess;
@@ -424,19 +425,19 @@ public class ProjectUtilities {
     /**
      * The encoding used to store settings files.
      */
-    public static final String ENC_SETTINGS = "ISO-8859-15";
+    public static final String ENC_SETTINGS = TextEncoding.SETTINGS;
     /**
      * The encoding used to store script files (UTF-8).
      */
-    public static final String ENC_SCRIPT = "UTF-8";
+    public static final String ENC_SCRIPT = TextEncoding.SOURCE_CODE;
     /**
      * The encoding used to store properties (UI text).
      */
-    public static final String ENC_UI_PROPERTIES = "ISO-8859-1";
+    public static final String ENC_UI_PROPERTIES = TextEncoding.STRINGS;
     /**
      * The UTF-8 encoding.
      */
-    public static final String ENC_UTF8 = "UTF-8";
+    public static final String ENC_UTF8 = TextEncoding.UTF8;
 
     /**
      * Create a ZIP output stream for writing a plug-in bundle or ZIP archive.

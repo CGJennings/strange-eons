@@ -32,11 +32,7 @@ public class TintFilter extends TintOverlayFilter {
         sFactor = s;
         bFactor = b;
 
-        if (Math.abs(h) < 0.5f / 255f && Math.abs(s - 1) < 0.5f / 255f && Math.abs(b - 1) < 0.5f / 255f) {
-            identity = true;
-        } else {
-            identity = false;
-        }
+        identity = Math.abs(h) < 0.5f / 255f && Math.abs(s - 1) < 0.5f / 255f && Math.abs(b - 1) < 0.5f / 255f;
     }
 
     public int adjustColor(int argb) {
