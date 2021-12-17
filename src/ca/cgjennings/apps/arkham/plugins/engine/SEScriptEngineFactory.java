@@ -20,7 +20,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
 
     private static final SEScriptEngineFactory shared = new SEScriptEngineFactory();
     private static ContextFactoryImpl globalContextFactory;
-    private static ThreadLocal<Boolean> isUtilityThread = new ThreadLocal<>();
+    private static final ThreadLocal<Boolean> isUtilityThread = new ThreadLocal<>();
 
     volatile static boolean warningsEnabled = true;
     volatile static boolean warningsAreErrors = false;
@@ -92,7 +92,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
      * @return true if the current thread is a standard thread
      */
     public static boolean isStandardThread() {
-        return isUtilityThread.get() != Boolean.TRUE;
+        return !isUtilityThread.get().equals(Boolean.TRUE);
     }
 
     /**
@@ -124,7 +124,7 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
      * @see #getWarningsEnabled()
      */
     public static void setWarningsEnabled(boolean warningsEnabled) {
-        warningsEnabled = warningsEnabled;
+        SEScriptEngineFactory.warningsEnabled = warningsEnabled;
     }
 
     /**
