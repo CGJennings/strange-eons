@@ -65,8 +65,12 @@ public class ImageExporter {
         return em;
     }
 
-    /** Stores summary information about each exported image, for creating the readme file. */
+    /**
+     * Stores summary information about each exported image, for creating the
+     * readme file.
+     */
     private static final class ItemData {
+
         public String name;
         public String link;
         public PrintDimensions dimensions;
@@ -289,7 +293,7 @@ public class ImageExporter {
 
         imageWriter.setPixelsPerInch((float) targetDPI);
         makeEntry(sheetSuffix, i);
-        itemData.get(itemData.size()-1).joined = markJoinedInImageData;
+        itemData.get(itemData.size() - 1).joined = markJoinedInImageData;
         state = WROTEIMAGE;
     }
 
@@ -337,7 +341,7 @@ public class ImageExporter {
             ItemData data = new ItemData();
             data.name = fileName;
             data.link = fileName;
-            data.dimensions = new PrintDimensions(image, targetDPI);
+            data.dimensions = new PrintDimensions(image, targetDPI, 0d);
             data.pixelWidth = image.getWidth();
             itemData.add(data);
             try {
@@ -392,7 +396,9 @@ public class ImageExporter {
 
         comments = ResourceKit.makeStringHTMLSafe(comments.trim())
                 .replace("\n\n", "<p>").replace("\n", "<br>");
-        if(!comments.isEmpty()) comments = "<strong>" + gl.get("comments-label") + "</strong> " + comments;
+        if (!comments.isEmpty()) {
+            comments = "<strong>" + gl.get("comments-label") + "</strong> " + comments;
+        }
 
         // if the format is one that can be displayed in all Web browsers,
         //   use <img> tags, otherwise we will create links to the files.
@@ -409,15 +415,14 @@ public class ImageExporter {
         );
         tp.setCondition("showPrintButton", imagesUseDisplayableFormat);
 
-
         String printSizes = "";
         String screenSizes = "";
         String imageLinks = "";
-        for (int i=0, len=itemData.size(); i<len; ++i) {
+        for (int i = 0, len = itemData.size(); i < len; ++i) {
             ItemData item = itemData.get(i);
-            if(imagesUseDisplayableFormat) {
-                boolean isMarker = hasMarker && i == itemData.size()-1;
-                String cssClassName = "file" + (i+1);
+            if (imagesUseDisplayableFormat) {
+                boolean isMarker = hasMarker && i == itemData.size() - 1;
+                String cssClassName = "file" + (i + 1);
                 String imgTag = makeImageTag(item.link, cssClassName, item.joined);
                 printSizes += makeCssPrintWidth(cssClassName, item.dimensions);
                 screenSizes += makeCssScreenWidth(cssClassName, targetDPI, item.pixelWidth);
@@ -468,7 +473,9 @@ public class ImageExporter {
     }
 
     private static String makeCssScreenWidth(String cssClassName, double targetDPI, int pixelWidth) {
-        if(targetDPI <= 150d) return "";
+        if (targetDPI <= 150d) {
+            return "";
+        }
         pixelWidth = (int) Math.round(150d * pixelWidth / targetDPI);
         return '.' + cssClassName + "{width:" + pixelWidth + "px}";
     }

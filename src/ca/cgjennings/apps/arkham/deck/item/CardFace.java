@@ -51,8 +51,8 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
 
     /**
-     * Create a {@code CardFace} that can be used on a temporary deck.
-     * Temporary decks cannot be saved but can be printed.
+     * Create a {@code CardFace} that can be used on a temporary deck. Temporary
+     * decks cannot be saved but can be printed.
      *
      * @param name the name to use for the face
      * @param face the sheet to display
@@ -81,8 +81,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
 
     /**
-     * Returns {@code true} if the automatic bleed margin feature is
-     * enabled.
+     * Returns {@code true} if the automatic bleed margin feature is enabled.
      *
      * @return {@code true} if an automatic bleed margin is enabled
      * @see #setAutoBleedMarginEnabled(boolean)
@@ -103,11 +102,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
 
     @Override
     public double getBleedMargin() {
-        double bm = sheet.getBleedMargin();
-        if (bm == 0d && autoMargin) {
-            bm = sheet.getSyntheticBleedMargin();
-        }
-        return bm;
+        return sheet.getRenderedBleedMargin();
     }
 
     @Override
@@ -125,20 +120,12 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
 
     @Override
     protected double getUprightWidth() {
-        double uw = sheet.getPrintDimensions().getWidth();
-        if (autoMargin && sheet.getBleedMargin() == 0) {
-            uw += sheet.getSyntheticBleedMargin() * 2d;
-        }
-        return uw;
+        return sheet.getPrintDimensions().getWidth();
     }
 
     @Override
     protected double getUprightHeight() {
-        double uh = sheet.getPrintDimensions().getHeight();
-        if (autoMargin && sheet.getBleedMargin() == 0) {
-            uh += sheet.getSyntheticBleedMargin() * 2d;
-        }
-        return uh;
+        return sheet.getPrintDimensions().getHeight();
     }
 
     @Override
@@ -158,11 +145,11 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
 
     /**
-     * Clears cached representation of the card face. The next time it is
-     * drawn, the sheet will be asked to redraw it from the component instance
-     * linked with the sheet. This is not suitable if the linked component
-     * needs to change (for example, if the file that the component is stored
-     * in is overwritten with a new component). In this case, see
+     * Clears cached representation of the card face. The next time it is drawn,
+     * the sheet will be asked to redraw it from the component instance linked
+     * with the sheet. This is not suitable if the linked component needs to
+     * change (for example, if the file that the component is stored in is
+     * overwritten with a new component). In this case, see
      * {@link #refresh(ca.cgjennings.apps.arkham.component.GameComponent)}.
      *
      * @return true if the refresh was successful
@@ -183,7 +170,9 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
      * @return {@code true} if the existing component was replaced
      */
     public boolean refresh(GameComponent component) {
-        if(component == null) return false;
+        if (component == null) {
+            return false;
+        }
         final Sheet<?>[] sheets = component.getSheets();
 
         // this is sometimes getting called with components with no sheets;
