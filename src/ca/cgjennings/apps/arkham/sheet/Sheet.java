@@ -89,6 +89,7 @@ public abstract class Sheet<G extends GameComponent> {
 
     private BufferedImage template;
     private BufferedImage image;
+    private BufferedImage finishedImage;
     private double dpi;
     private double upsampleFactor = 1d;
     private double preferredUpsample = 1d;
@@ -376,6 +377,7 @@ public abstract class Sheet<G extends GameComponent> {
 
             if (changeFlag || dirtyCacheHint) { // i.e. hasChanged or target/resolution is different
                 StrangeEons.setWaitCursor(true);
+                finishedImage = null;
                 try {
                     final boolean logPainting = StrangeEons.log.isLoggable(Level.INFO);
                     if (logPainting) {
@@ -415,7 +417,12 @@ public abstract class Sheet<G extends GameComponent> {
         } finally {
             drawLock = false;
         }
-        return applyFinishingOptions(image, target, resolution);
+        
+        if (finishedImage == null) {
+            finishedImage = applyFinishingOptions(image, target, resolution);
+        }
+        
+        return finishedImage;
     }
     private long paintTimeNanos;
 
@@ -567,7 +574,7 @@ public abstract class Sheet<G extends GameComponent> {
      * Returns the actual bleed margin width that will be rendered for this
      * sheet. This may be less than the user bleed margin. The returned value is
      * always a physical width; if the user margin is negative, this will return
-     * 0.
+     * zero.
      *
      * @return a non-negative width in points
      * @see #setUserBleedMargin(double)
@@ -576,36 +583,6 @@ public abstract class Sheet<G extends GameComponent> {
         return Math.max(0, isTransparent() ? Math.min(getBleedMargin(), getUserBleedMargin()) : getUserBleedMargin());
     }
 
-    /**
-     * Returns an image of the sheet content as it should appear when printed or
-     * exported. If the component has a designed bleed margin (that is, if
-     * {@link #getBleedMargin()} returns a positive value), then this is
-     * equivalent to {@code paint( target, resolution )}. Otherwise, the image
-     * returned by that method will be passed to
-     * {@link #synthesizeBleedMargin(java.awt.image.BufferedImage, boolean, double)}
-     * as a starting image, and the sheet will be given the opportunity to
-     * modify the base image, or not, with a synthetic bleed margin. Note that
-     * the method is called even if the parameter {@code synthesizeBleedMargin}
-     * is {@code false}; some sheet implementations may choose to decorate the
-     * image when a bleed margin is not requested, for example, by adding
-     * rounded corners.
-     *
-     * @param target the target hint to use for painting
-     * @param resolution the resolution of the returned image, or -1 for the
-     * sheet's default resolution
-     * @param synthesizeBleedMargin whether to synthesize bleed margins or not
-     * @return an image representing the content of the component face
-     * represented by this sheet
-     * @throws NullPointerException if target is {@code null}
-     * @throws IllegalArgumentException if the resolution is less than 1 but not
-     * the special default value (-1)
-     * @throws ConcurrentModificationException if the sheet is already being
-     * painted
-     * @see #paintSheet
-     * @see #applyContextHints
-     * @since 3.0.3680
-     * @deprecated use [@link #paint(RenderTarget, double, EdgeStyle)} instead
-     */
     /**
      * Renders the sheet image, including any designed bleed margin. If there is
      * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
@@ -1762,6 +1739,7 @@ public abstract class Sheet<G extends GameComponent> {
     public void freeCachedResources() {
         checkUnlocked();
         image = null;
+        finishedImage = null;
     }
 
     //
