@@ -13,7 +13,7 @@ import resources.Settings;
  * <b>View</b> menu. Objects that wish to modify their behaviour based on the
  * view quality setting should always use the static {@link #get()} method of
  * this class to obtain the current setting and not try to read the value
- * directly from settings itself.
+ * directly from settings themselves.
  *
  * <p>
  * Objects can be notified when the view quality changes by registering a

@@ -801,7 +801,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         jSeparator38 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenu viewQualityMenu =  new ViewQualityMenu() ;
         javax.swing.JMenu previewBackdropItem =  new PreviewBackgroundMenu() ;
-        cardEdgeMenu = new CardEdgeMenu();
+        cardEdgeMenu = new FinishStyleMenu();
         javax.swing.JPopupMenu.Separator jSeparator19 = new javax.swing.JPopupMenu.Separator();
         viewContextBarItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator22 = new javax.swing.JPopupMenu.Separator();

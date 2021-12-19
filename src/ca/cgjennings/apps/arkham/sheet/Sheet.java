@@ -364,6 +364,7 @@ public abstract class Sheet<G extends GameComponent> {
                 throw new IllegalArgumentException("resolution < 1: " + resolution);
             }
 
+            final boolean logPainting = StrangeEons.log.isLoggable(Level.INFO);
             dirtyCacheHint = target != activeTarget;
             activeTarget = target;
 
@@ -375,11 +376,11 @@ public abstract class Sheet<G extends GameComponent> {
                 dirtyCacheHint = true;
             }
 
-            if (changeFlag || dirtyCacheHint) { // i.e. hasChanged or target/resolution is different
+            // content marked changed or target/resolution is different
+            if (changeFlag || dirtyCacheHint) {
                 StrangeEons.setWaitCursor(true);
                 finishedImage = null;
                 try {
-                    final boolean logPainting = StrangeEons.log.isLoggable(Level.INFO);
                     if (logPainting) {
                         paintTimeNanos = System.nanoTime();
                     }
@@ -404,7 +405,8 @@ public abstract class Sheet<G extends GameComponent> {
                     if (logPainting) {
                         paintTimeNanos = System.nanoTime() - paintTimeNanos;
                         StrangeEons.log.log(Level.INFO, "rendered {0} in {1} ms at {2} dpi, {3} target", new Object[]{
-                            getGameComponent().getName(), paintTimeNanos / 1000000d,
+                            getGameComponent().getName(),
+                            paintTimeNanos / 1000000d,
                             getPaintingResolution(),
                             target.toString()
                         });
@@ -414,12 +416,23 @@ public abstract class Sheet<G extends GameComponent> {
                     StrangeEons.setWaitCursor(false);
                 }
             }
+            
+            // re-rendered base image or finish option changed
+            if (finishedImage == null) {
+                if (logPainting) {
+                    paintTimeNanos = System.nanoTime();
+                }            
+                finishedImage = applyFinishingOptions(image, target, resolution);
+                if (logPainting) {
+                    paintTimeNanos = System.nanoTime() - paintTimeNanos;
+                    StrangeEons.log.log(Level.INFO, "applied card finish {0} in {1} ms", new Object[]{
+                        FinishStyle.fromSheet(this).name(),
+                        paintTimeNanos / 1000000d
+                    });
+                }                
+            }            
         } finally {
             drawLock = false;
-        }
-        
-        if (finishedImage == null) {
-            finishedImage = applyFinishingOptions(image, target, resolution);
         }
         
         return finishedImage;
@@ -553,7 +566,7 @@ public abstract class Sheet<G extends GameComponent> {
         }
         if (bleedMargin != marginInPoints) {
             bleedMargin = marginInPoints;
-            markChanged();
+            finishedImage = null;
         }
     }
 
