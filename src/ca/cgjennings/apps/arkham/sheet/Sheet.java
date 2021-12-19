@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.sheet;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.graphics.ImageUtilities;
@@ -24,8 +25,10 @@ import java.awt.Stroke;
 import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -410,6 +413,8 @@ public abstract class Sheet<G extends GameComponent> {
                             target.toString()
                         });
                     }
+                } catch (Exception ex) {
+                    StrangeEons.log.log(Level.SEVERE, "uncaught exception while painting sheet " + this, ex);
                 } finally {
                     changeFlag = false;
                     StrangeEons.setWaitCursor(false);
@@ -523,8 +528,9 @@ public abstract class Sheet<G extends GameComponent> {
         return sheetImage;
     }
 
-    public static boolean DEBUG_BLEED_MARGIN = true;
-    public static boolean DEBUG_UNSAFE_AREA = true;
+    public static boolean DEBUG_BLEED_MARGIN = false;
+    public static boolean DEBUG_UNSAFE_AREA = false;
+    public static boolean DEBUG_PORTRAIT_REGION = false;
 
     /**
      * Sets the ideal bleed margin for this sheet, in points. The possible
@@ -1478,6 +1484,10 @@ public abstract class Sheet<G extends GameComponent> {
         if (applyHints) {
             applyContextHints(g);
         }
+        
+        if (DEBUG_PORTRAIT_REGION) {
+            g = PortraitDebugPainter.createFor(g);
+        }
 
         if (isPrototype) {
             g = new PrototypingGraphics2D(g);
@@ -1889,6 +1899,79 @@ public abstract class Sheet<G extends GameComponent> {
         g.setFont(f);
         g.drawString(text, x, y);
     }
+
+    /**
+     * A helper function that can be called from custom portrait painting code to
+     * draw the portrait debug box, if enabled.
+     *
+     * @param g the sheet graphics context
+     * @param region the portrait region rectangle
+     * @param portrait the portrait instance
+     * @since 3.3
+     */
+    public static void drawPortraitBox(Graphics2D g, Rectangle2D region, Portrait portrait) {
+        if (!DEBUG_PORTRAIT_REGION) {
+            return;
+        }
+        drawPortraitBox(
+                g, region, portrait.getImage(), portrait.getPanX(),
+                portrait.getPanY(), portrait.getScale(), portrait.getRotation()
+        );
+    }
+
+    /**
+     * A helper function that can be called from custom portrait painting code to
+     * draw the portrait debug box, if enabled. This version can be used by
+     * any portrait painting code, even if it does not use a {@link Portrait}
+     * instance.
+     *
+     * @param g the sheet graphics context
+     * @param region the portrait region rectangle
+     * @param portraitImage the image being drawn as a portrait
+     * @param panX the horizontal offset of the image from centre
+     * @param panY the vertical offset of the image from centre
+     * @param scale the scale factor of the image
+     * @param angle the rotation angle of the image, in degrees
+     * @since 3.3
+     */
+    public static void drawPortraitBox(Graphics2D g, Rectangle2D region, BufferedImage portraitImage, double panX, double panY, double scale, double angle) {
+        if (!DEBUG_PORTRAIT_REGION) {
+            return;
+        }
+        PortraitDebugPainter.add(g, region, portraitImage, panX, panY, scale, angle);
+
+//        Paint oldPaint = g.getPaint();
+//        Stroke oldStroke = g.getStroke();
+//        AffineTransform oldXform = g.getTransform();
+//
+//        try {
+//            g.setColor(Color.CYAN);
+//            g.setStroke(new BasicStroke(1f));
+//            g.draw(region);
+//            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, new float[]{4f, 4f}, 0f));
+//
+//            final double scaledWidth = portraitImage.getWidth() * scale;
+//            final double scaledHeight = portraitImage.getHeight() * scale;
+//            final double centerX = scaledWidth / 2d;
+//            final double centerY = scaledHeight / 2d;
+//            final double regionX = region.getCenterX();
+//            final double regionY = region.getCenterY();
+//
+//            AffineTransform xform = AffineTransform.getTranslateInstance(
+//                    regionX - centerX + panX,
+//                    regionY - centerY + panY
+//            );
+//            xform.concatenate(AffineTransform.getRotateInstance(angle * DEGREES_TO_RADIANS, centerX, centerY));
+//            xform.concatenate(AffineTransform.getScaleInstance(scale, scale));
+//            g.setColor(Color.MAGENTA);
+//            g.draw(new Path2D.Double(new Rectangle2D.Double(0, 0, portraitImage.getWidth(), portraitImage.getHeight()), xform));
+//        } finally {
+//            g.setTransform(oldXform);
+//            g.setStroke(oldStroke);
+//            g.setPaint(oldPaint);
+//        }
+    }
+    private static final double DEGREES_TO_RADIANS = -0.0174532925d;
 
     /**
      * Draws text within a region; if the text is wider than the region, it will

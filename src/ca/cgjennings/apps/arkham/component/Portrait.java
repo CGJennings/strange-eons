@@ -19,24 +19,22 @@ import java.util.EnumSet;
 public interface Portrait {
 
     /**
-     * Sets the image used by the portrait.The value of {@code resource}
- is an identifier such as a local path to an image file or a URL. Either
- {@code null} or an empty string is a special identifier that
-     * requests a default image that depends on the component and portrait
-     * number.
+     * Sets the image used by the portrait.The value of {@code resource} is an
+     * identifier such as a local path to an image file or a URL. Either
+     * {@code null} or an empty string is a special identifier that requests a
+     * default image that depends on the component and portrait number.
      * <p>
      * When a new portrait is set, the scale, pan, and rotation values will be
      * changed to suit the new image. If you wish to keep these fixed, you must
      * store these values in temporary variables before setting them image, and
      * then restore them once this method returns.
      * <p>
-     * If an image cannot be obtained from {@code resource} (for example,
-     * if the file it names does not exist or is invalid), then a special error
-     * image is substituted.
+     * If an image cannot be obtained from {@code resource} (for example, if the
+     * file it names does not exist or is invalid), then a special error image
+     * is substituted.
      *
      * @param resource an identifier user to locate the image (a file or URL)
-     * @throws NullPointerException if {@code resource} is
-     * {@code null}
+     * @throws NullPointerException if {@code resource} is {@code null}
      */
     public void setSource(String resource);
 
@@ -129,9 +127,9 @@ public interface Portrait {
     public void setPan(Point2D pan);
 
     /**
-     * Returns the pan value as a {@code Point2D}. The pan values will be
-     * stored in {@code dest}; if {@code null}, a new point object
-     * will be allocated and returned.
+     * Returns the pan value as a {@code Point2D}. The pan values will be stored
+     * in {@code dest}; if {@code null}, a new point object will be allocated
+     * and returned.
      *
      * @param dest a point object to store the pan value in
      * @return the point object that contains the pan value

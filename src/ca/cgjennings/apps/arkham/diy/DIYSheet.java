@@ -335,22 +335,22 @@ public final class DIYSheet extends Sheet<DIY> {
             g.setPaint(p);
         }
 
-        Portrait p = diy.getPortrait(0);
-        BufferedImage portrait = p.getImage();
+        Portrait portrait = diy.getPortrait(0);
+        BufferedImage portraitImage = portrait.getImage();
 
-        double scale = p.getScale();
-        double panX = p.getPanX();
-        double panY = p.getPanY();
+        double scale = portrait.getScale();
+        double panX = portrait.getPanX();
+        double panY = portrait.getPanY();
 
-        double scaledWidth = portrait.getWidth() * scale;
-        double scaledHeight = portrait.getHeight() * scale;
+        double scaledWidth = portraitImage.getWidth() * scale;
+        double scaledHeight = portraitImage.getHeight() * scale;
 
         double centerX = scaledWidth / 2d;
         double centerY = scaledHeight / 2d;
         double regionX = portraitRect.getX() + portraitRect.getWidth() / 2d;
         double regionY = portraitRect.getY() + portraitRect.getHeight() / 2d;
 
-        g.drawImage(portrait,
+        g.drawImage(portraitImage,
                 (int) (regionX - centerX + panX /*+ 0.5d*/),
                 (int) (regionY - centerY + panY /*+ 0.5d*/),
                 (int) (scaledWidth + 0.5d),
@@ -361,6 +361,8 @@ public final class DIYSheet extends Sheet<DIY> {
         if (obeyClip) {
             g.setClip(oldClip);
         }
+        
+        Sheet.drawPortraitBox(g, portraitRect, portrait);
     }
 
     /**

@@ -802,6 +802,11 @@ final class AppFrame extends StrangeEonsAppWindow {
         javax.swing.JMenu viewQualityMenu =  new ViewQualityMenu() ;
         javax.swing.JMenu previewBackdropItem =  new PreviewBackgroundMenu() ;
         cardEdgeMenu = new FinishStyleMenu();
+        javax.swing.JPopupMenu.Separator jSeparator39 = new javax.swing.JPopupMenu.Separator();
+        viewRegionBoxesItem = new javax.swing.JCheckBoxMenuItem();
+        viewPortraitBoxesItem = new javax.swing.JCheckBoxMenuItem();
+        viewEdgeOutlinesItem = new javax.swing.JCheckBoxMenuItem();
+        viewUnsafeRegionsItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator19 = new javax.swing.JPopupMenu.Separator();
         viewContextBarItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator22 = new javax.swing.JPopupMenu.Separator();
@@ -1115,6 +1120,25 @@ final class AppFrame extends StrangeEonsAppWindow {
         cardEdgeMenu.setText(string("app-card-edge")); // NOI18N
         cardEdgeMenu.setName("cardEdgeMenu"); // NOI18N
         viewMenu.add(cardEdgeMenu);
+
+        jSeparator39.setName("jSeparator39"); // NOI18N
+        viewMenu.add(jSeparator39);
+
+        viewRegionBoxesItem.setAction(Commands.VIEW_REGION_BOXES);
+        viewRegionBoxesItem.setName("viewRegionBoxesItem"); // NOI18N
+        viewMenu.add(viewRegionBoxesItem);
+
+        viewPortraitBoxesItem.setAction(Commands.VIEW_PORTRAIT_BOXES);
+        viewPortraitBoxesItem.setName("viewPortraitBoxesItem"); // NOI18N
+        viewMenu.add(viewPortraitBoxesItem);
+
+        viewEdgeOutlinesItem.setAction(Commands.VIEW_EDGE_BOXES);
+        viewEdgeOutlinesItem.setName("viewEdgeOutlinesItem"); // NOI18N
+        viewMenu.add(viewEdgeOutlinesItem);
+
+        viewUnsafeRegionsItem.setAction(Commands.VIEW_UNSAFE_BOXES);
+        viewUnsafeRegionsItem.setName("viewUnsafeRegionsItem"); // NOI18N
+        viewMenu.add(viewUnsafeRegionsItem);
 
         jSeparator19.setName("jSeparator19"); // NOI18N
         viewMenu.add(jSeparator19);
@@ -2352,7 +2376,11 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenu toolboxMenu;
     private javax.swing.JMenu variantMenu;
     private javax.swing.JCheckBoxMenuItem viewContextBarItem;
+    private javax.swing.JCheckBoxMenuItem viewEdgeOutlinesItem;
     private javax.swing.JMenu viewMenu;
+    private javax.swing.JCheckBoxMenuItem viewPortraitBoxesItem;
+    private javax.swing.JCheckBoxMenuItem viewRegionBoxesItem;
+    private javax.swing.JCheckBoxMenuItem viewUnsafeRegionsItem;
     private javax.swing.JMenu windowMenu;
     // End of variables declaration//GEN-END:variables
 

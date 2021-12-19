@@ -10,7 +10,7 @@ nbdist/
 
 **/node_modules/
 
-Thumbs.db
+**/Thumbs.db
 
 # Log files
 *.log
