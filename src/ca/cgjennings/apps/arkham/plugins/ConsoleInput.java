@@ -30,7 +30,7 @@ public final class ConsoleInput extends javax.swing.JPanel {
         con = console;
         initComponents();
 
-        final boolean dark = ThemeInstaller.getInstalledTheme().isDark();
+        final boolean dark = ThemeInstaller.isDark();
         Color bg = dark ? Color.BLACK : Color.WHITE;
         Color fg = dark ? Color.WHITE : Color.BLACK;
         setBackground(bg);

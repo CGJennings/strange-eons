@@ -60,7 +60,7 @@ public final class PortraitControl extends JComponent {
             MARGIN_COLOR = UIManager.getColor(Theme.EDITOR_TAB_BACKGROUND);
         }
         if (MARGIN_COLOR == null) {
-            MARGIN_COLOR = ThemeInstaller.getInstalledTheme().isDark() ? Color.DARK_GRAY : Color.LIGHT_GRAY;
+            MARGIN_COLOR = ThemeInstaller.isDark() ? Color.DARK_GRAY : Color.LIGHT_GRAY;
         }
         BACKGROUND_COLOR = MARGIN_COLOR.darker().darker();
 
