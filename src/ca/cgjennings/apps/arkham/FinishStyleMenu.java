@@ -10,7 +10,7 @@ import javax.swing.JRadioButtonMenuItem;
  * A menu that displays options for choosing a {@link ViewQuality}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
+ * @since 3.3
  */
 @SuppressWarnings("serial")
 final class FinishStyleMenu extends JMenu {
