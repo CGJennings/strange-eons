@@ -10,7 +10,6 @@ import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.layout.MarkupRenderer;
 import gamedata.Expansion;
 import gamedata.Game;
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -416,12 +415,12 @@ public abstract class Sheet<G extends GameComponent> {
                     StrangeEons.setWaitCursor(false);
                 }
             }
-            
+
             // re-rendered base image or finish option changed
             if (finishedImage == null) {
                 if (logPainting) {
                     paintTimeNanos = System.nanoTime();
-                }            
+                }
                 finishedImage = applyFinishingOptions(image, target, resolution);
                 if (logPainting) {
                     paintTimeNanos = System.nanoTime() - paintTimeNanos;
@@ -429,12 +428,12 @@ public abstract class Sheet<G extends GameComponent> {
                         FinishStyle.fromSheet(this).name(),
                         paintTimeNanos / 1000000d
                     });
-                }                
-            }            
+                }
+            }
         } finally {
             drawLock = false;
         }
-        
+
         return finishedImage;
     }
     private long paintTimeNanos;
@@ -493,7 +492,10 @@ public abstract class Sheet<G extends GameComponent> {
                             w - safeBleedPx * 2, h - safeBleedPx * 2,
                             radiusPx, radiusPx
                     );
-                    final Shape unsafe = ShapeUtilities.subtract(new Rectangle2D.Float(0, 0, iw, ih), safe);
+                    final Shape universe = cut
+                            ? new RoundRectangle2D.Float(0, 0, iw, ih, radiusPx, radiusPx)
+                            : new Rectangle2D.Float(0, 0, iw, ih);
+                    final Shape unsafe = ShapeUtilities.subtract(universe, safe);
 
                     g.fill(unsafe);
 
