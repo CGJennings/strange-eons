@@ -35,6 +35,7 @@ final class FinishStyleMenu extends JMenu {
             group.add(this);
             if (style == current) {
                 setSelected(true);
+                FinishStyleMenu.this.setIcon(getIcon());
             }
         }
         
