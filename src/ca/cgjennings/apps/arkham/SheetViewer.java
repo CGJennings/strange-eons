@@ -1,7 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import ca.cgjennings.apps.arkham.sheet.EdgeStyle;
 import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -68,7 +67,14 @@ public class SheetViewer extends AbstractViewer {
 
             final long start = System.nanoTime();
             final boolean hadChanges = sheet.hasChanged();
-            FinishStyle.applyPreviewStyleToSheet(sheet);
+            
+            // if preview style > 0 and current UBM > 0, do not change
+            // so that the user can play with it programmatically for testing
+            final FinishStyle fs = FinishStyle.getPreviewStyle();
+            if (!(sheet.getUserBleedMargin() > 0d && fs.getSuggestedBleedMargin() > 0d)) {
+                FinishStyle.applyPreviewStyleToSheet(sheet);
+            }
+            
             BufferedImage image = sheet.paint(
                     rt, upsampleFactor * sheet.getTemplateResolution()
             );

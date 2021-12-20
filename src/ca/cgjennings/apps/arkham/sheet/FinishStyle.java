@@ -72,6 +72,15 @@ public enum FinishStyle implements IconProvider {
         }
         target.setUserBleedMargin(ubm);
     }
+    
+    /**
+     * Returns the suggested user bleed margin for this setting.
+     * @return the user bleed margin to use for this option, or a suggested
+     * margin for type {@link #MARGIN}.
+     */
+    public double getSuggestedBleedMargin() {
+        return bleedBase;
+    }
 
     /**
      * Convert this to a

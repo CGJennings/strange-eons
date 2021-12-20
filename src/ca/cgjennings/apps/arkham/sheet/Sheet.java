@@ -635,63 +635,6 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns an image of the sheet content as it should appear when printed or
-     * exported. The provided {@link EdgeStyle} determines how bleed is handled.
-     *
-     * @param target the target hint to use for painting
-     * @param resolution the resolution of the returned image, or -1 for the
-     * sheet's default resolution
-     * @param edgeStyle the edge style to apply to the sheet
-     * @return an image representing the content of the component face
-     * represented by this sheet
-     * @throws NullPointerException if target is {@code null}
-     * @throws IllegalArgumentException if the resolution is less than 1 but not
-     * the special default value (-1)
-     * @throws ConcurrentModificationException if the sheet is already being
-     * painted
-     * @see #paintSheet
-     * @see #applyContextHints
-     */
-    public final BufferedImage paint(RenderTarget target, double resolution, EdgeStyle edgeStyle) {
-//        BufferedImage bi = paint(target, resolution);
-//        boolean bleedIncluded = getBleedMargin() > 0d;
-        double m;
-        switch (edgeStyle) {
-            case BLEED:
-                m = 9d;
-                break;
-//                if (bleedIncluded) {
-//                    return bi;
-//                }
-//                return synthesizeBleedMargin(bi, true, resolution);
-            case NO_BLEED:
-                m = 0d;
-                break;
-//                if (bleedIncluded) {
-//                    return removeBleedMargin(bi, resolution);
-//                }
-//                return bi;
-            case CUT:
-                m = -1d;
-                break;
-//                if (bleedIncluded) {
-//                    bi = removeBleedMargin(bi, resolution);
-//                }
-//                return cutCorners(bi, resolution);
-            case HIGHLIGHT:
-                m = 18d;
-                break;
-//                return highlightEdge(bi, resolution);
-            default:
-                m = 4d;
-                break;
-//                return bi;
-        }
-        setUserBleedMargin(m);
-        return paint(target, resolution);
-    }
-
-    /**
      * Paints standard sheet overlays: on paint code and expansion symbols.
      */
     private void paintSheetOverlays() {
@@ -1692,72 +1635,6 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Removes any included bleed margin from the image.
-     *
-     * @param sheetImage the image, previously returned from
-     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
-     * to remove the bleed margin from
-     * @param resolution the resolution, in pixels per inch, of the sheet image
-     * @return a new image without the bleed margin, or the original image
-     */
-    protected BufferedImage removeBleedMargin(BufferedImage sheetImage, double resolution) {
-        final double margin = getBleedMargin();
-        if (margin == 0d) {
-            return sheetImage;
-        }
-
-        final int m = (int) Math.ceil(margin / 72d * resolution);
-        final int m2 = m * 2;
-        final int w = sheetImage.getWidth() - m2;
-        final int h = sheetImage.getHeight() - m2;
-
-        BufferedImage bi = new BufferedImage(w, h, sheetImage.getType());
-        Graphics2D g = bi.createGraphics();
-        try {
-            g.drawImage(sheetImage, 0, 0, w, h, m, m, w + m, h + m, null);
-        } finally {
-            g.dispose();
-        }
-        return bi;
-    }
-
-    /**
-     * Draws the outline of the card onto the image. Uses the bleed margin and
-     * corner radius values to trace the card edge. If both values are 0, the
-     * outline will simply follow the edge of the image. Intended for debugging
-     * or checking bleed margins.
-     *
-     * @param sheetImage the image, previously returned from
-     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
-     * to add the outline to
-     * @param resolution the resolution, in pixels per inch, of the sheet image
-     * @return a new image with the outline drawn onto it
-     */
-    protected BufferedImage highlightEdge(BufferedImage sheetImage, double resolution) {
-        final double margin = getBleedMargin();
-        final double radius = getCornerRadius();
-
-        final int m = (int) Math.ceil(margin / 72d * resolution);
-        final int m2 = m * 2;
-        final int r = (int) Math.ceil(radius / 72d * resolution);
-        final int w = sheetImage.getWidth();
-        final int h = sheetImage.getHeight();
-
-        BufferedImage bi = new BufferedImage(w, h, sheetImage.getType());
-        Graphics2D g = bi.createGraphics();
-        try {
-            g.drawImage(sheetImage, 0, 0, null);
-            g.setPaint(Color.RED);
-            g.setStroke(new BasicStroke(4));
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.draw(new RoundRectangle2D.Float(m, m, w - m2, h - m2, r, r));
-        } finally {
-            g.dispose();
-        }
-        return bi;
-    }
-
-    /**
      * Releases cached resources used in sheet drawing, freeing up memory for
      * other purposes.
      */
@@ -1939,37 +1816,6 @@ public abstract class Sheet<G extends GameComponent> {
             return;
         }
         PortraitDebugPainter.add(g, region, portraitImage, panX, panY, scale, angle);
-
-//        Paint oldPaint = g.getPaint();
-//        Stroke oldStroke = g.getStroke();
-//        AffineTransform oldXform = g.getTransform();
-//
-//        try {
-//            g.setColor(Color.CYAN);
-//            g.setStroke(new BasicStroke(1f));
-//            g.draw(region);
-//            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f, new float[]{4f, 4f}, 0f));
-//
-//            final double scaledWidth = portraitImage.getWidth() * scale;
-//            final double scaledHeight = portraitImage.getHeight() * scale;
-//            final double centerX = scaledWidth / 2d;
-//            final double centerY = scaledHeight / 2d;
-//            final double regionX = region.getCenterX();
-//            final double regionY = region.getCenterY();
-//
-//            AffineTransform xform = AffineTransform.getTranslateInstance(
-//                    regionX - centerX + panX,
-//                    regionY - centerY + panY
-//            );
-//            xform.concatenate(AffineTransform.getRotateInstance(angle * DEGREES_TO_RADIANS, centerX, centerY));
-//            xform.concatenate(AffineTransform.getScaleInstance(scale, scale));
-//            g.setColor(Color.MAGENTA);
-//            g.draw(new Path2D.Double(new Rectangle2D.Double(0, 0, portraitImage.getWidth(), portraitImage.getHeight()), xform));
-//        } finally {
-//            g.setTransform(oldXform);
-//            g.setStroke(oldStroke);
-//            g.setPaint(oldPaint);
-//        }
     }
     private static final double DEGREES_TO_RADIANS = -0.0174532925d;
 

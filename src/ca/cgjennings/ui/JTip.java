@@ -184,12 +184,12 @@ public class JTip extends JLabel {
     }
 
 //	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
+//		java.awt.EventQueue.invokeLater( new Runnable() {
 //			@Override
 //			public void run() {
-//				JFrame f = new JFrame();
+//				javax.swing.JFrame f = new javax.swing.JFrame();
 //				f.add( new JTip( "Hullo. This is a test tip." ) );
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
+//				f.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
 //				f.pack();
 //				f.setLocationRelativeTo( null );
 //				f.setVisible( true );

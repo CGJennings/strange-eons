@@ -208,6 +208,8 @@ imexport-progressive = yes
 imexport-dpi = 300
 imexport-combine = no
 imexport-suppress-backs = no
+imexport-finish = square
+imexport-bleed-margin = 9
 
 # If yes then the program will either launch the application registered for
 # exported file types or display their location in the file system.

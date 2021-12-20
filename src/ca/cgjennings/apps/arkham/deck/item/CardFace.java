@@ -5,7 +5,6 @@ import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.deck.DeckDeserializationSupport;
-import ca.cgjennings.apps.arkham.sheet.EdgeStyle;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
@@ -130,7 +129,8 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
 
     @Override
     protected BufferedImage renderImage(RenderTarget target, double resolution) {
-        return sheet.paint(target, resolution, autoMargin ? EdgeStyle.BLEED : EdgeStyle.RAW);
+        sheet.setCornerRadius(autoMargin ? 9d : 0d);
+        return sheet.paint(target, resolution);
     }
 
     @Override

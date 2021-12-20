@@ -1,7 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
-import ca.cgjennings.apps.arkham.sheet.EdgeStyle;
 import ca.cgjennings.apps.arkham.sheet.PrintDimensions;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
@@ -70,7 +69,6 @@ public class ImageExporter {
      * readme file.
      */
     private static final class ItemData {
-
         public String name;
         public String link;
         public PrintDimensions dimensions;
@@ -88,7 +86,7 @@ public class ImageExporter {
     private boolean hasMarker;
     private Sheet<?> lastFace; // track last face written for face suppression
     private boolean suppressSimpleFaces;
-    private EdgeStyle edgeStyle;
+    private double userBleedMargin;
     private boolean joinPerformed;
     private BufferedImage joinImageLHS;
     private ExportContainer exporter;
@@ -171,7 +169,7 @@ public class ImageExporter {
         joinPerformed = false;
 
         suppressSimpleFaces = efd.isFaceSuppressionEnabled();
-        edgeStyle = efd.getEdgeStyle();
+        userBleedMargin = efd.getUserBleedMargin();
 
         itemData = new LinkedList<>();
         this.comments = comments;
@@ -253,7 +251,8 @@ public class ImageExporter {
         }
 
         // within this lock we change, draw, and restore the sheet settings
-        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI, edgeStyle);
+        face.setUserBleedMargin(userBleedMargin);
+        BufferedImage i = face.paint(RenderTarget.EXPORT, renderDPI);
 
         if (oversampled) {
             // bilinear scaling produces fewer JPEG artifacts than bicubic
