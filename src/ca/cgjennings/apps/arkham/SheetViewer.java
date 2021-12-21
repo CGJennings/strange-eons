@@ -68,8 +68,9 @@ public class SheetViewer extends AbstractViewer {
             final long start = System.nanoTime();
             final boolean hadChanges = sheet.hasChanged();
             
-            // if preview style > 0 and current UBM > 0, do not change
-            // so that the user can play with it programmatically for testing
+            // if preview style UBM > 0 and sheet UBM > 0, do not change:
+            // this is a little hack so that the user can play with
+            // the UBM programmatically for testing and design
             final FinishStyle fs = FinishStyle.getPreviewStyle();
             if (!(sheet.getUserBleedMargin() > 0d && fs.getSuggestedBleedMargin() > 0d)) {
                 FinishStyle.applyPreviewStyleToSheet(sheet);

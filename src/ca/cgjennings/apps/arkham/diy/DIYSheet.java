@@ -46,7 +46,9 @@ public final class DIYSheet extends Sheet<DIY> {
         this.diy = diy;
         this.index = index;
         diyFlags = diy.getFlags();
-        setCornerRadius(diy.getCornerRadius());
+        if (diy.hasExplicitCornerRadius) {
+            setCornerRadius(diy.getCornerRadius());
+        }
     }
 
     /**
@@ -452,7 +454,7 @@ public final class DIYSheet extends Sheet<DIY> {
 
     @Override
     public double getBleedMargin() {
-        return diy.getBleedMargin();
+        return diy.hasExplicitBleedMargin ? diy.getBleedMargin() : super.getBleedMargin();
     }
 
     @Override
