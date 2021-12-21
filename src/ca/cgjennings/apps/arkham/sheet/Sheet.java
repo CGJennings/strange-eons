@@ -471,7 +471,7 @@ public abstract class Sheet<G extends GameComponent> {
 
         if (userBleedPx > designBleedPx) {
             final int marginToSynthesize = userBleedPx - designBleedPx;
-            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, marginToSynthesize);
+            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, useTemplateForSynth ? getTemplateImage() : null, marginToSynthesize);
         } else if (userBleedPx < designBleedPx) {
             final int insetPx = userBleedPx - designBleedPx;
             sheetImage = ImageUtilities.pad(sheetImage, insetPx, insetPx, insetPx, insetPx);
@@ -532,6 +532,22 @@ public abstract class Sheet<G extends GameComponent> {
 
         return sheetImage;
     }
+    
+    /**
+     * Calling this method sets an internal flag allowing the template image
+     * to be used for bleed margin synthesis. This can improve the quality
+     * of the synthesized margin since the synthesized material will not include
+     * text and other painted content. However, some card designs modify the
+     * template on the fly: for example, with tinting or by substituting
+     * different graphics based on a user selection. Since this would
+     * result in a glaringly wrong bleed margin and Strange Eons cannot know
+     * if this may occur, it will not use the template unless explicitly told
+     * that this is safe by calling this method.
+     */
+    public void allowTemplateUseInBleedSynthesis() {
+        useTemplateForSynth = true;
+    }
+    private boolean useTemplateForSynth = false;
 
     public static boolean DEBUG_BLEED_MARGIN = false;
     public static boolean DEBUG_UNSAFE_AREA = false;
@@ -637,7 +653,7 @@ public abstract class Sheet<G extends GameComponent> {
             BufferedImage bi = paint(target, resolution);
             if (designedMargin == 0d && synthesizeBleedMargin) {
                 final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
-                bi = EdgeFinishing.synthesizeMargin(bi, m);
+                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
             }
             return bi;
         } finally {
@@ -1150,7 +1166,7 @@ public abstract class Sheet<G extends GameComponent> {
      * added when printed or placed in a deck. If this method returns
      * {@code true}, then crop marks will be created automatically around the
      * edges of the face; the bleed margin of these marks is determined by
-     * {@link #getBleedMargin()}. In certain circumstances, some of these crop
+     * {@link #getRenderedBleedMargin()}. In certain circumstances, some of these crop
      * marks will be converted automatically into fold marks. Typically, this
      * happens when the front and back face of a card are snapped next to each
      * other such that folding along the line indicated by the crop mark would
@@ -1651,7 +1667,7 @@ public abstract class Sheet<G extends GameComponent> {
             final int h = sheetImage.getHeight();
             // use standard 9 point margin
             final int m = Math.min((int) Math.ceil(9d / 72d * resolution), Math.min(w, h));
-            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, m);
+            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, null, m);
         }
         return sheetImage;
     }

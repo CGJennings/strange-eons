@@ -8,9 +8,8 @@ import java.awt.image.BufferedImage;
 
 /**
  * Uses heuristics to quickly in-paint a margin onto an existing image that
- * matches the existing image. (This is a utility class that offloads the
- * bleed margin synthesis code to make the {@link Sheet} class easier to
- * maintain.)
+ * matches the existing image. (This is a utility class that offloads the bleed
+ * margin synthesis code to make the {@link Sheet} class easier to maintain.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.3
@@ -19,19 +18,20 @@ final class EdgeFinishing {
 
     private EdgeFinishing() {
     }
-    
+
     /**
-     * Returns a copy of the image that is clipped to the specified corner radius.
-     * 
+     * Returns a copy of the image that is clipped to the specified corner
+     * radius.
+     *
      * @param image the image to have its corners rounded
      * @param arcRadiusPx the radius of the corner cut, in pixels
      * @return an image with cut corners, or the original image
      */
-    public static BufferedImage cutCorners(BufferedImage image, RenderTarget target, int arcRadiusPx) {
+    public static BufferedImage cutCorners(final BufferedImage image, final RenderTarget target, final int arcRadiusPx) {
         if (arcRadiusPx <= 0) {
             return image;
         }
-        
+
         final int w = image.getWidth();
         final int h = image.getHeight();
 
@@ -54,17 +54,19 @@ final class EdgeFinishing {
      * default heuristics to choose the best method.
      *
      * @param image the image to pad
+     * @param template the optional template image to use; this can improve the
+     * quality of the result
      * @param marginPx the number of additional pixels to add to each edge.
      * @return the padded image
      */
-    public static BufferedImage synthesizeMargin(BufferedImage image, int marginPx) {
+    public static BufferedImage synthesizeMargin(BufferedImage image, BufferedImage template, int marginPx) {
         if (marginPx <= 0) {
             return image;
         }
         if (hasInferredSolidBorder(image)) {
             image = extendSolidBorder(image, marginPx);
         } else {
-            image = extendByMirroring(image, marginPx);
+            image = extendByMirroring(image, template, marginPx);
         }
         return image;
     }
@@ -73,10 +75,12 @@ final class EdgeFinishing {
      * Synthesizes a solid border by mirroring the specified image.
      *
      * @param image the source image
+     * @param template the optional template image to use; this can improve the
+     * quality of the result
      * @param m the margin to add to each edge in pixels
      * @return the extended image
      */
-    private static BufferedImage extendByMirroring(BufferedImage image, final int m) {
+    private static BufferedImage extendByMirroring(final BufferedImage image, BufferedImage template, final int m) {
         final int w = image.getWidth();
         final int h = image.getHeight();
         final int m2 = m * 2;
@@ -84,22 +88,95 @@ final class EdgeFinishing {
         BufferedImage bi = new BufferedImage(w + m2, h + m2, image.getType());
         Graphics2D g = bi.createGraphics();
         try {
-            g.drawImage(image, m - w, m - h, m, m, w, h, 0, 0, null);
-            g.drawImage(image, m, m - h, m + w, m, 0, h, w, 0, null);
-            g.drawImage(image, m + w, m - h, m + w + w, m, w, h, 0, 0, null);
-
-            g.drawImage(image, m - w, m, m, m + h, w, 0, 0, h, null);
-            g.drawImage(image, m + w, m, m + w + w, m + h, w, 0, 0, h, null);
-
-            g.drawImage(image, m - w, m + h, m, m + h + h, w, h, 0, 0, null);
-            g.drawImage(image, m, m + h, m + w, m + h + h, 0, h, w, 0, null);
-            g.drawImage(image, m + w, m + h, m + w + w, m + h + h, w, h, 0, 0, null);
-
-            g.drawImage(image, m, m, null);
+            blitMirrors(g, image, w, h, m, true);
+            if (template != null) {
+                blitMirrors(g, template, w, h, m, false);
+            }
         } finally {
             g.dispose();
         }
         return bi;
+    }
+
+    /**
+     * Tile the image over the margins, using mirror images to ensure that edges
+     * that are touching will match up.
+     * 
+     * @param g the graphics context to paint into
+     * @param image the image to tile
+     * @param w the width of the rendered face (without margins)
+     * @param h the height of the rendered face (without margins)
+     * @param m the margin width (in pixels)
+     * @param blitCenter if false, the image will not be painted over the
+     * centre (where the non-synthesized part will be drawn)
+     */
+    private static void blitMirrors(final Graphics2D g, final BufferedImage image, final int w, final int h, final int m, boolean blitCenter) {
+        if (m > w || m > h) {
+            tileMirrors(g, image, w, h, m, blitCenter);
+            return;
+        }
+
+        final int sw = image.getWidth();
+        final int sh = image.getHeight();
+
+        g.drawImage(image, m - w, m - h, m, m, sw, sh, 0, 0, null);
+        g.drawImage(image, m, m - h, m + w, m, 0, sh, sw, 0, null);
+        g.drawImage(image, m + w, m - h, m + w + w, m, sw, sh, 0, 0, null);
+
+        g.drawImage(image, m - w, m, m, m + h, sw, 0, 0, sh, null);
+        g.drawImage(image, m + w, m, m + w + w, m + h, sw, 0, 0, sh, null);
+
+        g.drawImage(image, m - w, m + h, m, m + h + h, sw, sh, 0, 0, null);
+        g.drawImage(image, m, m + h, m + w, m + h + h, 0, sh, sw, 0, null);
+        g.drawImage(image, m + w, m + h, m + w + w, m + h + h, sw, sh, 0, 0, null);
+
+        if (blitCenter) {
+            g.drawImage(image, m, m, null);
+        }
+    }
+
+    /**
+     * Handles the rare case that the image must be tiled multiple times
+     * per margin.
+     */
+    private static void tileMirrors(final Graphics2D g, final BufferedImage image, final int w, final int h, final int m, boolean blitCenter) {
+        final int sw = image.getWidth();
+        final int sh = image.getHeight();
+
+        // calculate how many copies are needed to cover the left and top margin
+        int xn = m / w + 1;
+        int yn = m / h + 1;
+        // and the total number of copies including both margins and the content
+        int xMax = xn * 2 + 1;
+        int yMax = yn * 2 + 1;
+
+        int y0 = -yn * h + m;
+        boolean flipY = (yn & 1) == 1;
+        for (int y = 0; y < yMax; ++y, y0 += h) {
+            int x0 = -xn * w + m;
+            boolean flipX = (xn & 1) == 1;
+            for (int x = 0; x < xMax; ++x, x0 += w) {
+                if (y0 == 0 && x0 == 0 && !blitCenter) {
+                    continue;
+                }
+
+                int sx0 = 0, sx1 = sw;
+                int sy0 = 0, sy1 = sh;
+                if (flipX) {
+                    sx0 = sw;
+                    sx1 = 0;
+                }
+                if (flipY) {
+                    sy0 = sh;
+                    sy1 = 0;
+                }
+
+                g.drawImage(image, x0, y0, x0 + w, y0 + h, sx0, sy0, sx1, sy1, null);
+
+                flipX = !flipX;
+            }
+            flipY = !flipY;
+        }
     }
 
     /**
@@ -115,7 +192,7 @@ final class EdgeFinishing {
         final int w = sheetImage.getWidth();
         final int h = sheetImage.getHeight();
         final int m2 = m * 2;
-        
+
         BufferedImage bi = ImageUtilities.createCompatibleIntRGBFormat(sheetImage, w + m2, h + m2);
         Graphics2D g = bi.createGraphics();
         try {
