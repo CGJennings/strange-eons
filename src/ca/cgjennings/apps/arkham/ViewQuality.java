@@ -132,12 +132,12 @@ public enum ViewQuality {
             ViewQuality old = current;
             current = newQuality;
             StrangeEonsAppWindow app = StrangeEons.getWindow();
+            RawSettings.setUserSetting(KEY, current.name().toLowerCase(Locale.CANADA));
             if (app == null) {
                 StrangeEons.log.warning("null window");
             } else {
                 app.propertyChange(StrangeEonsAppWindow.VIEW_QUALITY_PROPERTY, old, current);
             }
-            RawSettings.setUserSetting(KEY, current.name().toLowerCase(Locale.CANADA));
         }
     }
 

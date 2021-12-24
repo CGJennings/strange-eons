@@ -414,38 +414,11 @@ public class CommandLineParser {
         }
 
         try {
-//			if( Modifier.isFinal( field.getModifiers() ) ) {
-//				boolean wasAccessible = field.isAccessible();
-//				field.setAccessible( true );
-//				field.set( target, v );
-//				field.setAccessible( wasAccessible );
-//			} else {
             field.set(target, v);
-//			}
         } catch (Exception e) {
             // the fields are already known to be public and the types are verified
             // before writing to the field, so no exception should be possible
             throw new AssertionError(e);
         }
     }
-
-//	private static class Test  {
-//		public boolean blarg;
-//		public String s;
-//		public File f;
-//		public int copies;
-//		public TimeUnit unit;
-//	}
-//
-//	public static void main( String[] args ) {
-//		Test t = new Test();
-//		CommandLineParser c = new CommandLineParser();
-//		c.parse( t, "left0", "--s", "str", "--f", "d:\\x", "--copies", "6", "left1", "left2", "--unit", "Microseconds"  );
-//		System.out.println( c.getPlainArguments() );
-//		System.out.println( t.blarg );
-//		System.out.println( t.f );
-//		System.out.println( t.s );
-//		System.out.println( t.copies );
-//		System.out.println( t.unit );
-//	}
 }

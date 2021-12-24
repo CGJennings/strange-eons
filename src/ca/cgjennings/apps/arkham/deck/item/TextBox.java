@@ -250,7 +250,7 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     }
 
     @Override
-    protected void clearCachedImages() {
+    public void clearCachedImages() {
         cachedRendering = null;
         cachedResolution = -1000d;
         cachedQuality2 = null;

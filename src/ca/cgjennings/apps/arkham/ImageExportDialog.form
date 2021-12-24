@@ -86,7 +86,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="resolutionLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="resolutionLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="finishLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -159,7 +159,7 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="resolutionLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="finishLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="edgeFinishCombo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -279,7 +279,7 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="resolutionLabel1">
+        <Component class="javax.swing.JLabel" name="finishLabel">
           <Properties>
             <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
               <ComponentRef name="edgeFinishCombo"/>

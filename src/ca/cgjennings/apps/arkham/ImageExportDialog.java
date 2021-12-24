@@ -215,7 +215,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         unitCombo = new javax.swing.JComboBox();
         suppressBackBtn = new javax.swing.JCheckBox();
         formatWarning = new ca.cgjennings.ui.JWarningLabel();
-        javax.swing.JLabel resolutionLabel1 = new javax.swing.JLabel();
+        javax.swing.JLabel finishLabel = new javax.swing.JLabel();
         edgeFinishCombo = new JIconComboBox(FinishStyle.values());
         bleedWidthLabel = new javax.swing.JLabel();
         bleedWidthField = new javax.swing.JSpinner();
@@ -285,8 +285,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         formatWarning.setText(string("exf-warn-format")); // NOI18N
 
-        resolutionLabel1.setLabelFor(edgeFinishCombo);
-        resolutionLabel1.setText(string("exf-l-edge-finish")); // NOI18N
+        finishLabel.setLabelFor(edgeFinishCombo);
+        finishLabel.setText(string("exf-l-edge-finish")); // NOI18N
 
         edgeFinishCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -311,7 +311,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addContainerGap()
                         .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(resolutionLabel)
-                            .addComponent(resolutionLabel1))
+                            .addComponent(finishLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(customPanelLayout.createSequentialGroup()
@@ -368,7 +368,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(resolutionLabel1)
+                    .addComponent(finishLabel)
                     .addComponent(edgeFinishCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)

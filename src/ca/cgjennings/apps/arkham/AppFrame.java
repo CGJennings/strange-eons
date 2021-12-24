@@ -520,15 +520,14 @@ final class AppFrame extends StrangeEonsAppWindow {
                     Component c = menu.getMenuComponent(i);
 
                     if (c instanceof JMenu) {
-                        JMenu item = (JMenu) c;
-                        boolean enable = updateSubmenu(item);
-                        item.setEnabled(enable);
+                        JMenu submenu = (JMenu) c;
+                        boolean enable = updateSubmenu(submenu);
+                        submenu.setEnabled(enable);
                         enableThisMenu |= enable;
                     } else if (c instanceof JMenuItem) {
                         JMenuItem item = (JMenuItem) c;
                         if (item.getAction() instanceof AbstractCommand) {
-                            AbstractCommand command = (AbstractCommand) item.getAction();
-                            command.update();
+                            ((AbstractCommand) item.getAction()).update();
                         }
                         enableThisMenu |= item.isEnabled();
                     }

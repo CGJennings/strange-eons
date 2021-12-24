@@ -470,8 +470,10 @@ public abstract class Sheet<G extends GameComponent> {
         final int designBleedPx = (int) Math.ceil(getBleedMargin() / 72d * resolution);
 
         if (userBleedPx > designBleedPx) {
-            final int marginToSynthesize = userBleedPx - designBleedPx;
-            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, useTemplateForSynth ? getTemplateImage() : null, marginToSynthesize);
+            if (isMarginSynthesisAllowed()) {
+                final int marginToSynthesize = userBleedPx - designBleedPx;
+                sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, useTemplateForSynth ? getTemplateImage() : null, marginToSynthesize);
+            }
         } else if (userBleedPx < designBleedPx) {
             final int insetPx = userBleedPx - designBleedPx;
             sheetImage = ImageUtilities.pad(sheetImage, insetPx, insetPx, insetPx, insetPx);
@@ -549,6 +551,17 @@ public abstract class Sheet<G extends GameComponent> {
     }
     private boolean useTemplateForSynth = false;
 
+    /**
+     * Returns whether the sheet is allowed to synthesize a bleed margin
+     * when the designed margin is less than the user-requested margin.
+     * The base class returns true.
+     * 
+     * @return true if the sheet can synthesize a missing bleed margin
+     */
+    public boolean isMarginSynthesisAllowed() {
+        return !isTransparent();
+    }    
+
     public static boolean DEBUG_BLEED_MARGIN = false;
     public static boolean DEBUG_UNSAFE_AREA = false;
     public static boolean DEBUG_PORTRAIT_REGION = false;
@@ -622,44 +635,48 @@ public abstract class Sheet<G extends GameComponent> {
      * @see #setUserBleedMargin(double)
      */
     public double getRenderedBleedMargin() {
-        return Math.max(0, isTransparent() ? Math.min(getBleedMargin(), getUserBleedMargin()) : getUserBleedMargin());
+        if (isMarginSynthesisAllowed()) {
+            return Math.max(0, getUserBleedMargin());
+        }
+        return Math.max(0, Math.min(getBleedMargin(), getUserBleedMargin()));
     }
 
-    /**
-     * Renders the sheet image, including any designed bleed margin. If there is
-     * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
-     * point false margin will be synthesized (if the sheet image is
-     * compatible).
-     *
-     * @deprecated Use {@link #setUserBleedMargin(double)} to set the desired
-     * bleed margin size, then call
-     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)} to
-     * paint the image.
-     *
-     * @param target the target hint to use for painting
-     * @param resolution the resolution of the returned image, or -1 for the
-     * sheet's default resolution
-     * @param synthesizeBleedMargin true to synthesize a standard bleed margin
-     * if none is included
-     * @return a rendered image of the sheet
-     * @since 3.0.3680
-     */
-    @Deprecated
-    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
-        final double oldUserBleed = getUserBleedMargin();
-        try {
-            final double designedMargin = getBleedMargin();
-            setUserBleedMargin(designedMargin);
-            BufferedImage bi = paint(target, resolution);
-            if (designedMargin == 0d && synthesizeBleedMargin) {
-                final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
-                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
-            }
-            return bi;
-        } finally {
-            setUserBleedMargin(oldUserBleed);
-        }
-    }
+
+//    /**
+//     * Renders the sheet image, including any designed bleed margin. If there is
+//     * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
+//     * point false margin will be synthesized (if the sheet image is
+//     * compatible).
+//     *
+//     * @deprecated Use {@link #setUserBleedMargin(double)} to set the desired
+//     * bleed margin size, then call
+//     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)} to
+//     * paint the image.
+//     *
+//     * @param target the target hint to use for painting
+//     * @param resolution the resolution of the returned image, or -1 for the
+//     * sheet's default resolution
+//     * @param synthesizeBleedMargin true to synthesize a standard bleed margin
+//     * if none is included
+//     * @return a rendered image of the sheet
+//     * @since 3.0.3680
+//     */
+//    @Deprecated
+//    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
+//        final double oldUserBleed = getUserBleedMargin();
+//        try {
+//            final double designedMargin = getBleedMargin();
+//            setUserBleedMargin(designedMargin);
+//            BufferedImage bi = paint(target, resolution);
+//            if (designedMargin == 0d && synthesizeBleedMargin) {
+//                final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
+//                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
+//            }
+//            return bi;
+//        } finally {
+//            setUserBleedMargin(oldUserBleed);
+//        }
+//    }
 
     /**
      * Paints standard sheet overlays: on paint code and expansion symbols.

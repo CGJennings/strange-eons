@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
+import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
@@ -14,38 +15,48 @@ import javax.swing.JRadioButtonMenuItem;
  */
 @SuppressWarnings("serial")
 final class FinishStyleMenu extends JMenu {
+
     private final ButtonGroup group = new ButtonGroup();
     private FinishStyle current;
-    
+
     public FinishStyleMenu() {
         current = FinishStyle.getPreviewStyle();
-        
-        add(new FinishItem(FinishStyle.ROUND));
-        add(new FinishItem(FinishStyle.SQUARE));
-        add(new FinishItem(FinishStyle.MARGIN));
+        for (FinishStyle fs : FinishStyle.values()) {
+            addFor(fs);
+        }
     }
 
-    private final class FinishItem extends JRadioButtonMenuItem {
-        private FinishStyle style;
-        
-        public FinishItem(FinishStyle fs) {
-            this.style = fs;
-            setText(fs.toString());
-            setIcon(fs.getIcon());
-            group.add(this);
-            if (style == current) {
-                setSelected(true);
+    private void addFor(final FinishStyle style) {
+        AbstractCommand a = new AbstractCommand() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                current = style;
+                style.setAsPreviewStyle();
+                StrangeEons.getWindow().redrawPreviews();
                 FinishStyleMenu.this.setIcon(getIcon());
+                FinishStyleMenu.this.setDisabledIcon(getDisabledIcon());
             }
+
+            @Override
+            public void update() {
+                boolean enable = false;
+                StrangeEonsEditor editor = StrangeEons.getActiveEditor();
+                if (editor instanceof AbstractGameComponentEditor) {
+                    AbstractGameComponentEditor ed = (AbstractGameComponentEditor) editor;
+                    enable = ed.getGameComponent().isDeckLayoutSupported();
+                }
+                setEnabled(enable);
+            }
+        };
+        a.setName(style.toString());
+        a.setIcon(style.getIcon());
+
+        JRadioButtonMenuItem item = new JRadioButtonMenuItem(a);
+        group.add(item);
+        if (style == current) {
+            item.setSelected(true);
+            setIcon(getIcon());
         }
-        
-        @Override
-        protected void fireActionPerformed(ActionEvent event) {
-            current = style;
-            style.setAsPreviewStyle();
-            StrangeEons.getWindow().redrawPreviews();
-            super.fireActionPerformed(event);
-            FinishStyleMenu.this.setIcon(getIcon());
-        }
+        add(item);
     }
 }

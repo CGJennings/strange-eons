@@ -335,12 +335,4 @@ public class ScrapBook {
             this(Arrays.asList(content));
         }
     }
-
-//	public static void main( String[] args ) {
-//		System.out.println( "Text: " + getText() );
-//		System.out.println( "Image: " + getImage() );
-//		System.out.print( "File List: " );
-//		File[] files = getFiles();
-//		for( int i=0; i<files.length; ++i ) System.out.println( files[i] ); System.out.println( files.length );
-//	}
 }

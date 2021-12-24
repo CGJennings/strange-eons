@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.component.ComponentMetadata;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
+import ca.cgjennings.apps.arkham.deck.item.BleedMarginStyle;
 import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.Curve;
 import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
@@ -14,6 +15,7 @@ import ca.cgjennings.apps.arkham.deck.item.Line;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.deck.item.SimpleGroup;
 import ca.cgjennings.apps.arkham.deck.item.StyleApplicator;
+import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import gamedata.Game;
 import java.awt.Color;
@@ -35,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import resources.CoreComponents;
@@ -47,12 +50,13 @@ import resources.Settings;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public class Deck implements Serializable, GameComponent, Cloneable {
+public class Deck implements Serializable, GameComponent, BleedMarginStyle, Cloneable {
 
     static final long serialVersionUID = 4_560_886_736_606_557_242L;
 
     /**
-     *     */
+     * Creates a new, empty deck using the default paper size.
+     */
     public Deck() {
         paper = PaperSets.getDefaultPaper(null);
         printerPaper = paper;
@@ -98,8 +102,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * Adds a {@code PropertyChangeListener} to the deck. The listener is
      * registered for all properties. The same listener object may be added more
      * than once, and will be called as many times as it is added. If
-     * {@code listener} is null, no exception is thrown and no action is
-     * taken.
+     * {@code listener} is null, no exception is thrown and no action is taken.
      *
      * @param pcl the listener to add
      */
@@ -108,8 +111,8 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Removes a {@code PropertyChangeListener} from the deck. This removes
-     * a listener that was registered for all properties. If the listener was
+     * Removes a {@code PropertyChangeListener} from the deck. This removes a
+     * listener that was registered for all properties. If the listener was
      * added more than once, it will be notified one less time after being
      * removed. If the listener is {@code null}, or was never added, no
      * exception is thrown and no action is taken.
@@ -257,8 +260,8 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Unselects all currently selected page items, if any.
      *
-     * @param replaceReselectSet if {@code true}, the group used to store
-     * the "reselection" items is replaced
+     * @param replaceReselectSet if {@code true}, the group used to store the
+     * "reselection" items is replaced
      */
     private void clearSelectionImpl(boolean replaceReselectSet) {
         Page oldpage = getSelectionPage();
@@ -886,7 +889,8 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     private float cropMarkPrintWidth = 0.25f;
     private double cropMarkLength = 14d;
     private double cropMarkDistance = 4d;
-    private boolean autoBleed = false;
+    private FinishStyle finish = FinishStyle.SQUARE;
+    private double bleedMargin = 9d;
 
     @Override
     public Deck clone() {
@@ -914,8 +918,8 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Returns whether publisher's marks are displayed for the deck.
      *
-     * @return if {@code true}, publisher's marks will be generated for
-     * objects in the deck
+     * @return if {@code true}, publisher's marks will be generated for objects
+     * in the deck
      */
     public boolean getPublishersMarksEnabled() {
         return cropMarksEnabled;
@@ -1067,7 +1071,7 @@ public class Deck implements Serializable, GameComponent, Cloneable {
         }
     }
 
-    private static final int CURRENT_VERSION = 11;
+    private static final int CURRENT_VERSION = 12;
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(CURRENT_VERSION);
@@ -1118,7 +1122,10 @@ public class Deck implements Serializable, GameComponent, Cloneable {
         out.writeDouble(cropMarkDistance);
 
         // Version 11
-        out.writeBoolean(autoBleed);
+        // out.writeBoolean(autoBleed);
+        // Version 12
+        out.writeObject(finish.name());
+        out.writeDouble(bleedMargin);
 
         markSaved();
     }
@@ -1160,17 +1167,12 @@ public class Deck implements Serializable, GameComponent, Cloneable {
 
             final ObjectInputStream ois = in;
             final Throwable[] loadException = new Throwable[1];
-//			new BusyDialog( StrangeEons.getWindow(), string( "busy-fetching" ), new Runnable() {
-//				@Override
-//				public void run() {
             try {
                 if (version >= 3) {
                     int totalObjects = ois.readInt();
-//							BusyDialog.getCurrentDialog().setProgressMaximum( totalObjects );
                     int pageCount = ois.readInt();
                     pages = new ArrayList<>(Math.max(8, pageCount + 4));
                     for (int i = 0; i < pageCount; ++i) {
-//								BusyDialog.getCurrentDialog().setStatusText( string( "de-load-obj", i + 1, pageCount ) );
                         pages.add((Page) ois.readObject());
                     }
                 } else {
@@ -1179,8 +1181,6 @@ public class Deck implements Serializable, GameComponent, Cloneable {
             } catch (OutOfMemoryError | Exception e) {
                 loadException[0] = e;
             }
-//				}
-//			});
             if (loadException[0] != null) {
                 Throwable t = loadException[0];
                 if (t instanceof RuntimeException) {
@@ -1267,10 +1267,21 @@ public class Deck implements Serializable, GameComponent, Cloneable {
                 cropMarkDistance = 4d;
             }
 
-            if (version >= 11) {
-                autoBleed = in.readBoolean();
+            if (version >= 12) {
+                String finishName = (String) in.readObject();
+                try {
+                    finish = FinishStyle.valueOf(finishName);
+                } catch (Exception ex) {
+                    finish = FinishStyle.SQUARE;
+                }
+                bleedMargin = in.readDouble();
             } else {
-                autoBleed = false;
+                boolean autoBleed = false;
+                if (version == 11) {
+                    autoBleed = in.readBoolean();
+                }
+                finish = autoBleed ? FinishStyle.MARGIN : FinishStyle.SQUARE;
+                bleedMargin = 9d;
             }
 
             // replace any paths that were relocated with their new paths
@@ -1774,8 +1785,8 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     /**
      * Sets the colour of the border that is drawn around virtual pages.
      *
-     * @param borderColor the split border colour; {@code null} is treated
-     * as black
+     * @param borderColor the split border colour; {@code null} is treated as
+     * black
      * @see #getSplitBorderColor
      * @see #setPaperSplitting
      */
@@ -1797,37 +1808,88 @@ public class Deck implements Serializable, GameComponent, Cloneable {
      * {@linkplain CardFace#setAutoBleedMarginEnabled(boolean) associated property}
      * in each card face in the deck.
      *
+     * @deprecated Use
+     * {@link #setFinishStyle(ca.cgjennings.apps.arkham.sheet.FinishStyle)} and
+     * {@link #setBleedMarginWidth(double)}.
+     *
      * @param enable the value to apply to the synthetic bleed margin property
      * of card faces
      * @see #isAutoBleedMarginEnabled()
      */
+    @Deprecated
     public void setAutoBleedMarginEnabled(boolean enable) {
-        if (enable != autoBleed) {
-            autoBleed = enable;
-            for (int i = 0; i < getPageCount(); ++i) {
-                Page p = getPage(i);
-                for (int j = 0; j < p.getCardCount(); ++j) {
-                    PageItem pi = p.getCard(j);
-                    if (pi instanceof CardFace) {
-                        ((CardFace) pi).setAutoBleedMarginEnabled(enable);
-                    }
-                }
-            }
-            markUnsavedChanges();
-            firePropertyChange("autoBleedMarginEnabled", !enable, enable);
-        }
+//        if (enable != autoBleed) {
+//            autoBleed = enable;
+//            for (int i = 0; i < getPageCount(); ++i) {
+//                Page p = getPage(i);
+//                for (int j = 0; j < p.getCardCount(); ++j) {
+//                    PageItem pi = p.getCard(j);
+//                    if (pi instanceof CardFace) {
+//                        ((CardFace) pi).setAutoBleedMarginEnabled(enable);
+//                    }
+//                }
+//            }
+//            markUnsavedChanges();
+//            firePropertyChange("autoBleedMarginEnabled", !enable, enable);
+//        }
     }
 
     /**
-     * Returns {@code true} if synthetic bleed margins are the default for
-     * this deck.
+     * Returns {@code true} if synthetic bleed margins are the default for this
+     * deck.
      *
-     * @return {@code true} if card faces should use synthetic bleed
-     * margins by default
+     * @deprecated Use {@link #getFinishStyle()} and
+     * {@link #getBleedMarginWidth()}.
+     *
+     * @return {@code true} if card faces should use synthetic bleed margins by
+     * default
      * @see #setAutoBleedMarginEnabled(boolean)
      */
+    @Deprecated
     public boolean isAutoBleedMarginEnabled() {
-        return autoBleed;
+//        return finish == FinishStyle.MARGIN;
+return false;
+    }
+
+    @Override
+    public FinishStyle getFinishStyle() {
+        return finish;
+    }
+
+    @Override
+    public void setFinishStyle(FinishStyle style) {
+        finish = Objects.requireNonNull(style, "deck finish cannot be default");
+    }
+
+    @Override
+    public double getBleedMarginWidth() {
+        return bleedMargin;
+    }
+
+    @Override
+    public void setBleedMarginWidth(double widthInPoints) {
+        if (widthInPoints <= 0d) {
+            throw new IllegalArgumentException("widthInPoints <= 0: " + widthInPoints);
+        }
+        bleedMargin = widthInPoints;
+    }
+
+    /**
+     * Applies the current deck default finish options to all compatible items
+     * in the deck.
+     */
+    public void applyFinishStyleToItems() {
+        for (int i = 0; i < getPageCount(); ++i) {
+            Page p = getPage(i);
+            for (int j = 0; j < p.getCardCount(); ++j) {
+                PageItem pi = p.getCard(j);
+                if (pi instanceof BleedMarginStyle) {
+                    BleedMarginStyle bmi = (BleedMarginStyle) pi;
+                    bmi.setBleedMarginWidth(bleedMargin);
+                    bmi.setFinishStyle(finish);
+                }
+            }
+        }
     }
 
     public static interface SelectionChangeListener {
@@ -1841,12 +1903,22 @@ public class Deck implements Serializable, GameComponent, Cloneable {
         if (selectionListeners == null) {
             selectionListeners = new HashSet<>();
         }
+        removeSelectionListener(l);
         selectionListeners.add(new WeakReference<>(l));
     }
 
     public void removeSelectionListener(SelectionChangeListener l) {
         if (selectionListeners != null) {
-            selectionListeners.remove(l);
+            WeakReference<SelectionChangeListener> found = null;
+            for (WeakReference<SelectionChangeListener> cl : selectionListeners) {
+                if (cl.get() == l) {
+                    found = cl;
+                    break;
+                }
+            }
+            if (found != null) {
+                selectionListeners.remove(found);
+            }
         }
     }
 
@@ -1927,15 +1999,15 @@ public class Deck implements Serializable, GameComponent, Cloneable {
     }
 
     /**
-     * Returns {@code true} if a given file represents a game component
-     * that can be placed in a deck. For recent file format versions, this can
-     * be determined without fully opening the file by
+     * Returns {@code true} if a given file represents a game component that can
+     * be placed in a deck. For recent file format versions, this can be
+     * determined without fully opening the file by
      * {@linkplain ComponentMetadata#isDeckLayoutSupported() examining its metadata}.
      * For older files, the component must first be read in. If for any reason
      * the value cannot be read from the file, {@code false} is returned.
      *
-     * @return returns {@code true} if the game component in the specified
-     * file can be placed in a deck
+     * @return returns {@code true} if the game component in the specified file
+     * can be placed in a deck
      * @see GameComponent#isDeckLayoutSupported()
      */
     public static boolean isDeckLayoutSupported(File f) {

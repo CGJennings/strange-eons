@@ -34,7 +34,7 @@ public enum FinishStyle implements IconProvider {
     MARGIN(9d);
 
     private FinishStyle(double baseUserBleedValue) {
-        bleedBase = baseUserBleedValue;
+        bleedBase = baseUserBleedValue;    
     }
 
     private double bleedBase;

@@ -85,9 +85,13 @@ final class EdgeFinishing {
         final int h = image.getHeight();
         final int m2 = m * 2;
 
-        BufferedImage bi = new BufferedImage(w + m2, h + m2, image.getType());
+        BufferedImage bi = new BufferedImage(w + m2, h + m2, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = bi.createGraphics();
         try {
+            if (image.getTransparency() != BufferedImage.OPAQUE) {
+                g.setColor(Color.WHITE);
+                g.fillRect(0, 0, w + m2, h + m2);
+            }
             blitMirrors(g, image, w, h, m, true);
             if (template != null) {
                 blitMirrors(g, template, w, h, m, false);

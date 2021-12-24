@@ -323,7 +323,7 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     }
 
     @Override
-    protected void clearCachedImages() {
+    public void clearCachedImages() {
         borderShape = null;
         super.clearCachedImages();
     }

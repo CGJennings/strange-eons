@@ -4,7 +4,10 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.deck.DeckDeserializationSupport;
+import ca.cgjennings.apps.arkham.deck.Page;
+import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.apps.arkham.sheet.UndecoratedCardBack;
@@ -22,11 +25,12 @@ import static resources.Language.string;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public class CardFace extends AbstractRenderedItem implements DependentPageItem, EditablePageItem {
+public class CardFace extends AbstractRenderedItem implements DependentPageItem, EditablePageItem, BleedMarginStyle {
 
     private String path;
     private int sheetIndex;
-    private boolean autoMargin = false;
+    private FinishStyle finish = FinishStyle.SQUARE;
+    private double bleedMargin = 9d;
     protected transient Sheet sheet;
     protected transient String name;
 
@@ -64,29 +68,44 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         this.name = name == null ? "" : name;
     }
 
-    /**
-     * Sets whether the face will generate an automatic nine point bleed margin,
-     * if supported by the card face.
-     *
-     * @param enable whether automatic bleed margin should be enabled, where
-     * supported
-     * @see #isAutoBleedMarginEnabled()
-     */
-    public void setAutoBleedMarginEnabled(boolean enable) {
-        if (enable != autoMargin) {
-            autoMargin = enable;
+    @Override
+    public FinishStyle getFinishStyle() {
+        return finish;
+    }
+
+    @Override
+    public void setFinishStyle(FinishStyle style) {
+        transitionAutoMarginOnFirstRender = false;
+        if (style == null) {
+            Page p = getPage();
+            if (p != null) {
+                Deck d = p.getDeck();
+                style = d.getFinishStyle();
+                setBleedMarginWidth(d.getBleedMarginWidth());
+            }
+        }
+        if (style != finish) {
+            finish = style;
             clearCachedImages();
+            itemChanged();
         }
     }
 
-    /**
-     * Returns {@code true} if the automatic bleed margin feature is enabled.
-     *
-     * @return {@code true} if an automatic bleed margin is enabled
-     * @see #setAutoBleedMarginEnabled(boolean)
-     */
-    public boolean isAutoBleedMarginEnabled() {
-        return autoMargin;
+    @Override
+    public double getBleedMarginWidth() {
+        return bleedMargin;
+    }
+
+    @Override
+    public void setBleedMarginWidth(double widthInPoints) {
+        transitionAutoMarginOnFirstRender = false;
+        if (bleedMargin != widthInPoints) {
+            bleedMargin = widthInPoints;
+            if (finish != FinishStyle.ROUND && finish != FinishStyle.SQUARE) {
+                clearCachedImages();
+                itemChanged();
+            }
+        }
     }
 
     @Override
@@ -129,7 +148,41 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
 
     @Override
     protected BufferedImage renderImage(RenderTarget target, double resolution) {
-        sheet.setCornerRadius(autoMargin ? 9d : 0d);
+        // update margin settings from old deck file:
+        // this would either render the exact designed bleed margin, or,
+        // if no designed margin, render no margin or a 9pt synthesized option
+        // depending on a deck option; the synthesis option is indicated by
+        // setting the finishe to MARGIN (otherwise it is SQUARE)
+        if (transitionAutoMarginOnFirstRender) {
+            transitionAutoMarginOnFirstRender = false;
+            double designedMargin = sheet.getBleedMargin();
+
+            // if card has no designed margin and synthesis was requested,
+            // set to synthesize a margin
+            if (designedMargin == 0d) {
+                // set the bleed to a default in case they enable bleed later;
+                // if synthesis was requested, the style will be MARGIN and
+                // it will be rendered right away; otherwise we set the preferred
+                // default in case the user enables bleed later
+                bleedMargin = 9d;
+            } // otherwise set the margin to the exact designed size
+            else {
+                finish = FinishStyle.MARGIN;
+                bleedMargin = designedMargin;
+            }
+        }
+
+        double ubm;
+        FinishStyle fs = finish;
+        if (fs == null) {
+            fs = FinishStyle.SQUARE;
+        }
+        if (fs == FinishStyle.MARGIN) {
+            ubm = bleedMargin;
+        } else {
+            ubm = fs.getSuggestedBleedMargin();
+        }
+        sheet.setUserBleedMargin(ubm);
         return sheet.paint(target, resolution);
     }
 
@@ -156,6 +209,8 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
      */
     @Override
     public boolean refresh() {
+        sheet.markChanged();
+        sheet.freeCachedResources();
         clearCachedImages();
         itemChanged();
         return true;
@@ -214,7 +269,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         }
     }
 
-    private static final int CARD_FACE_VERSION = 2;
+    private static final int CARD_FACE_VERSION = 3;
 
     @Override
     protected boolean scaleMipMapUpAtHighZoom(RenderTarget target, double resolution) {
@@ -230,7 +285,8 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         out.writeObject(name);
         out.writeObject(path);
         out.writeInt(sheetIndex);
-        out.writeBoolean(autoMargin);
+        out.writeObject(finish == null ? null : finish.name());
+        out.writeDouble(bleedMargin);
     }
 
     @Override
@@ -242,12 +298,40 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         name = (String) in.readObject();
         path = (String) in.readObject();
         sheetIndex = in.readInt();
-        if (version >= 2) {
-            autoMargin = in.readBoolean();
-        } else {
-            autoMargin = false;
+
+        if (version >= 3) {
+            finish = null;
+            String finishName = (String) in.readObject();
+            if (finishName != null) {
+                try {
+                    finish = FinishStyle.valueOf(finishName);
+                } catch (IllegalArgumentException iae) {
+                    StrangeEons.log.warning("bad finish style");
+                }
+            }
+            bleedMargin = in.readDouble();
+            transitionAutoMarginOnFirstRender = false;
+        } else /* (version == 1 || version == 2) */ {
+            // convert old synthetic bleed option to something reasonable
+            boolean autoMargin = false;
+            if (version == 2) {
+                autoMargin = in.readBoolean();
+            }
+            bleedMargin = 9d;
+            if (autoMargin) {
+                finish = FinishStyle.MARGIN;
+            } else {
+                finish = FinishStyle.SQUARE;
+            }
+            transitionAutoMarginOnFirstRender = true;
         }
     }
+    /**
+     * Set during loading if card is from an old version. This indicates that
+     * the edge finish needs to be upgraded once the sheet is available.
+     * See {@link #renderImage(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)}
+     */
+    private transient boolean transitionAutoMarginOnFirstRender = false;
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         if (path == null || path.length() == 0) {
