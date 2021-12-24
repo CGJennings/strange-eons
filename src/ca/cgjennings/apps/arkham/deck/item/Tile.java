@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.deck.item;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.ViewQuality;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
@@ -101,7 +102,7 @@ public class Tile extends AbstractRenderedItem {
     }
 
     @Override
-    protected void clearCachedImages() {
+    public void clearCachedImages() {
         super.clearCachedImages();
         cachedTileImage = null;
     }
@@ -263,7 +264,7 @@ public class Tile extends AbstractRenderedItem {
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         readImpl(in);
         if (identifier == null) {
-            System.out.println("X");
+            StrangeEons.log.warning("null tile identifier");
         }
     }
     private static final long serialVersionUID = 8_472_020_379_348_654_470L;

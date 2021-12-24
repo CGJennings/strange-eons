@@ -246,7 +246,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
      * {@code super.clearCachedImages}) if the {@link #renderImage}
      * implementation caches results.
      */
-    protected void clearCachedImages() {
+    public void clearCachedImages() {
         cachedOrientation = -1;
         cachedSourceImageRef = null;
         cachedOrientedImageRef = null;

@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.Objects;
 
 /**
  * A page layout of card sheets.
@@ -26,7 +27,8 @@ public final class Page implements Serializable, Cloneable {
     }
 
     /**
-     *     */
+     *
+     */
     public Page(Deck deck) {
         this.deck = deck;
     }
@@ -49,22 +51,24 @@ public final class Page implements Serializable, Cloneable {
     /**
      * Add a new PageItem to this page.
      */
-    public void addCard(PageItem card) {
-        addCard(card, true);
+    public void addCard(PageItem pageItem) {
+        addCard(pageItem, true);
     }
 
-    public void addCard(PageItem card, boolean fit) {
-        assert (!cards.contains(card));
+    public void addCard(PageItem pageItem, boolean fit) {
+        assert (!cards.contains(Objects.requireNonNull(pageItem, "pageItem")));
 
-        if (deck.isAutoBleedMarginEnabled() && card instanceof CardFace) {
-            ((CardFace) card).setAutoBleedMarginEnabled(true);
+        if (pageItem instanceof CardFace) {
+            CardFace cf = (CardFace) pageItem;
+            cf.setBleedMarginWidth(deck.getBleedMarginWidth());
+            cf.setFinishStyle(deck.getFinishStyle());
         }
 
-        card.setPage(this);
-        cards.add(card);
+        pageItem.setPage(this);
+        cards.add(pageItem);
 
         if (fit) {
-            fitCard(card);
+            fitCard(pageItem);
         } else {
             refreshView();
         }
@@ -174,7 +178,7 @@ public final class Page implements Serializable, Cloneable {
                 }
             }
         }
-        if(emergencyBrake >= FIT_LOOP_LIMIT) {
+        if (emergencyBrake >= FIT_LOOP_LIMIT) {
             card.setLocation(p);
         }
 
@@ -387,8 +391,10 @@ public final class Page implements Serializable, Cloneable {
         Rectangle2D r = card.getRectangle();
         for (int i = cards.size() - 1; i >= 0; --i) {
             PageItem candidate = cards.get(i);
-            if(candidate == card) continue;
-            if(r.intersects(candidate.getRectangle())) {
+            if (candidate == card) {
+                continue;
+            }
+            if (r.intersects(candidate.getRectangle())) {
                 return candidate;
             }
         }

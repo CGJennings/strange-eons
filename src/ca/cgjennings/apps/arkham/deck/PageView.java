@@ -7,7 +7,10 @@ import ca.cgjennings.apps.arkham.ViewQuality;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
+import ca.cgjennings.apps.arkham.deck.item.AbstractRenderedItem;
+import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.CustomTile;
+import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
 import ca.cgjennings.apps.arkham.deck.item.DragHandle;
 import ca.cgjennings.apps.arkham.deck.item.EditablePageItem;
 import ca.cgjennings.apps.arkham.deck.item.Group;
@@ -276,14 +279,14 @@ public final class PageView extends JComponent {
     public static final double LOW_DPI = 96;
 
     void forceRerender() {
-        BufferedImage dummy = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = dummy.createGraphics();
-        try {
-            for (int i = 0; i < page.getCardCount(); ++i) {
-                page.getCard(i).paint(g, RenderTarget.PREVIEW, 1d);
+        for (int i = 0; i < page.getCardCount(); ++i) {
+            PageItem pi = page.getCard(i);
+            if (pi instanceof AbstractRenderedItem) {
+                ((AbstractRenderedItem) pi).clearCachedImages();
             }
-        } finally {
-            g.dispose();
+            if (pi instanceof DependentPageItem) {
+                ((DependentPageItem) pi).refresh();
+            }
         }
         repaint();
     }
@@ -364,7 +367,7 @@ public final class PageView extends JComponent {
     protected void paintComponent(Graphics g1) {
         Graphics2D g = ((Graphics2D) g1);
 
-        frameTime = System.currentTimeMillis();
+        frameTime = System.nanoTime();
         AffineTransform oldAT = g.getTransform();
 
         ViewQuality viewQuality = editable ? ViewQuality.get() : ViewQuality.ULTRAHIGH;
@@ -581,21 +584,22 @@ public final class PageView extends JComponent {
         // draw view clip for debugging (use negative markAdj to make visible)
 //		g.setPaint( Color.RED );
 //		g.draw( viewClip );
-        frameTime = System.currentTimeMillis() - frameTime;
         if (DEBUG_DRAW) {
-            double time = frameTime;
-            if (time == 0d) {
-                time = 1d;
-            }
-            String debug = String.format("X: %.1f   Y: %.1f  Scale: %.2f%%  Res: %.0f ppi  FPS: %.1f",
-                    tx, ty, scale * 100f, scale * 72d, 1000d / frameTime
+            frameTime = System.nanoTime() - frameTime;
+            final double fps = 1000000000d / (double) frameTime;
+            String debug = String.format("X: %.1f   Y: %.1f  Scale: %.2f%%  Res: %.0f ppi  FPS: %.0f",
+                    tx, ty, scale * 100f, scale * 72d, fps
             );
             g.setTransform(oldAT);
             g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 16));
             g.setColor(Color.BLACK);
             g.drawString(debug, 14, 14);
+            g.drawString(debug, 14, 15);
             g.drawString(debug, 14, 16);
+            g.drawString(debug, 15, 14);
+            g.drawString(debug, 15, 16);
             g.drawString(debug, 16, 14);
+            g.drawString(debug, 16, 15);
             g.drawString(debug, 16, 16);
             g.setColor(Color.WHITE);
             g.drawString(debug, 15, 15);

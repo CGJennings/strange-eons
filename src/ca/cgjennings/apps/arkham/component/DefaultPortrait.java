@@ -846,8 +846,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
         // note that the pan value is relative to the center of the clip region;
         // i.e. a pan of (0,0) always centers the image
-        final double regionX = r.getX() + r.getWidth() / 2d;
-        final double regionY = r.getY() + r.getHeight() / 2d;
+        final double regionX = r.getCenterX();
+        final double regionY = r.getCenterY();
 
         if (angle != 0 && features.contains(Feature.ROTATE)) {
             AffineTransform xform = AffineTransform.getTranslateInstance(regionX - centerX + x, regionY - centerY + y);
@@ -866,6 +866,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         if (obeyClip) {
             g.setClip(oldClip);
         }
+        
+        Sheet.drawPortraitBox(g, r, this);
     }
 
     /** Converts angle measures and direction to match the portrait panel specs. */

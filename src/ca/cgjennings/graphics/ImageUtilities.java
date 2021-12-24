@@ -9,6 +9,7 @@ import ca.cgjennings.graphics.filters.TrimFilter;
 import ca.cgjennings.graphics.filters.TurnAndFlipFilter;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -137,8 +138,7 @@ public final class ImageUtilities {
      * specified format, it is returned unchanged.
      *
      * @param im the image to be provided in the specified format
-     * @param type the {@code BufferedImage.TYPE_*} value for the desired
-     * format
+     * @param type the {@code BufferedImage.TYPE_*} value for the desired format
      * @return the original image, or a copy converted to the requested format
      */
     public static BufferedImage ensureImageHasType(BufferedImage im, int type) {
@@ -201,14 +201,14 @@ public final class ImageUtilities {
      * Defines a new custom cursor for use with a {@link Toolkit}, based on the
      * specified image.
      *
-     * @param toolkit the toolkit on which to define the cursor
-     * ({@code null} for default)
+     * @param toolkit the toolkit on which to define the cursor ({@code null}
+     * for default)
      * @param image the image to use for the cursor
      * @param hotspotX the x-coordinate of the cursor's hotspot (the image
      * offset where clicks occur)
      * @param hotspotY the y-coordinate of the cursor's hotspot
-     * @param name the custom cursor name, for accessibility, or
-     * {@code null} to generate a name
+     * @param name the custom cursor name, for accessibility, or {@code null} to
+     * generate a name
      * @return a custom cursor as close to the requested form as allowed by the
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
@@ -254,14 +254,14 @@ public final class ImageUtilities {
 
     /**
      * Returns a {@link BufferedImage} that is equivalent to a specified
-     * {@link Image}. If the image is already a {@code BufferedImage}, it
-     * is returned unmodified. Otherwise, a new {@code BufferedImage} will
-     * be created and the contents of the image copied into it. If necessary,
-     * the method will wait until the image has finished downloading.
+     * {@link Image}. If the image is already a {@code BufferedImage}, it is
+     * returned unmodified. Otherwise, a new {@code BufferedImage} will be
+     * created and the contents of the image copied into it. If necessary, the
+     * method will wait until the image has finished downloading.
      *
      * @param image the image to convert
-     * @return the original image, converted into a {@code BufferedImage}
-     * if it is not already of that type
+     * @return the original image, converted into a {@code BufferedImage} if it
+     * is not already of that type
      */
     public static BufferedImage imageToBufferedImage(Image image) {
         if (image == null) {
@@ -305,8 +305,8 @@ public final class ImageUtilities {
     }
 
     /**
-     * Creates an icon from {@code image} that is constrained to
-     * {@code size} by {@code size} pixels.
+     * Creates an icon from {@code image} that is constrained to {@code size} by
+     * {@code size} pixels.
      *
      * @param image the image to create an icon from
      * @param size the maximum width and height of the icon
@@ -325,10 +325,9 @@ public final class ImageUtilities {
 
     /**
      * Ensures that the supplied icon has the specified size. If the source icon
-     * is {@code null}, {@code null} is returned. Otherwise, if the
-     * icon has the correct dimensions it is returned. If not, a new icon is
-     * created as if by calling {@link #createIconForSize} on an image of the
-     * icon.
+     * is {@code null}, {@code null} is returned. Otherwise, if the icon has the
+     * correct dimensions it is returned. If not, a new icon is created as if by
+     * calling {@link #createIconForSize} on an image of the icon.
      *
      * @param icon the image to create an icon from
      * @param size the desired width and height of the icon
@@ -353,7 +352,9 @@ public final class ImageUtilities {
      * @return the content of the icon, as an image
      */
     public static BufferedImage iconToImage(Icon i) {
-        if (i == null) return null;
+        if (i == null) {
+            return null;
+        }
         if (i instanceof ThemedIcon) {
             return ((ThemedIcon) i).getImage();
         }
@@ -380,7 +381,9 @@ public final class ImageUtilities {
      * @return a version of the icon with a suitable "disabled" effect applied
      */
     public static ImageIcon createDisabledIcon(Icon src) {
-        if (src == null) return null;
+        if (src == null) {
+            return null;
+        }
         return new ImageIcon(createDisabledImage(iconToImage(src)));
     }
 
@@ -388,10 +391,13 @@ public final class ImageUtilities {
      * Returns a "disabled" version of an image.
      *
      * @param src the image to convert
-     * @return a version of the image with a suitable default "disabled" effect applied
+     * @return a version of the image with a suitable default "disabled" effect
+     * applied
      */
     public static BufferedImage createDisabledImage(BufferedImage src) {
-        if (src == null) return null;
+        if (src == null) {
+            return null;
+        }
 
         if (disFilter == null) {
             synchronized (ImageUtilities.class) {
@@ -433,7 +439,9 @@ public final class ImageUtilities {
      * @return a version of the icon with a ghosting effect applied
      */
     public static ImageIcon createGhostedIcon(Icon src) {
-        if (src == null) return null;
+        if (src == null) {
+            return null;
+        }
         synchronized (ImageUtilities.class) {
             if (csFilter == null) {
                 csFilter = new CheckeredScreenFilter();
@@ -450,7 +458,9 @@ public final class ImageUtilities {
      * @return a greyscale version of the icon
      */
     public static ImageIcon createDesaturatedIcon(Icon src) {
-        if (src == null) return null;
+        if (src == null) {
+            return null;
+        }
         return new ImageIcon(desaturate(iconToImage(src)));
     }
 
@@ -535,17 +545,17 @@ public final class ImageUtilities {
     }
 
     /**
-     * Resample an image. If {@code multipass} is {@code true}, then
-     * the method <i>may</i> split the resampling into multiple passes in order
-     * to increase the quality of the result. The quality of the interpolation
-     * is also controlled by the hint values, which must be one of the
+     * Resample an image. If {@code multipass} is {@code true}, then the method
+     * <i>may</i> split the resampling into multiple passes in order to increase
+     * the quality of the result. The quality of the interpolation is also
+     * controlled by the hint values, which must be one of the
      * {@code RenderingHints.VALUE_INTERPOLATION_*} values, or else
-     * {@code null}. (If a hint is {@code null}, a slow area-averaging
-     * algorithm will be used.) The hints determine the type of interpolation
-     * used at each stage; the final pass hint is always used exactly once
-     * (unless the image is already the requested size). The intermediate hint
-     * is used for all other passes, if any. The following table shows some
-     * suggested combinations of values, in order from fastest/lowest quality to
+     * {@code null}. (If a hint is {@code null}, a slow area-averaging algorithm
+     * will be used.) The hints determine the type of interpolation used at each
+     * stage; the final pass hint is always used exactly once (unless the image
+     * is already the requested size). The intermediate hint is used for all
+     * other passes, if any. The following table shows some suggested
+     * combinations of values, in order from fastest/lowest quality to
      * slowest/highest quality:
      * <table>
      * <caption>Suggested resampling combinations</caption>
@@ -824,11 +834,11 @@ public final class ImageUtilities {
     /**
      * Returns an image that is identical to a source image except that it is
      * padded by blank pixels around the outside. The returned image is always
-     * of type {@code TYPE_INT_ARGB}. Margins can be negative, in which
-     * case rows or columns are removed from the outside of the image. If the
-     * margins are such that the width or height becomes less than 1, a blank 1
-     * by 1 pixel image is returned. If the margin is 0 on all sides and the
-     * image type is suitable, the source image is returned.
+     * of type {@code TYPE_INT_ARGB}. Margins can be negative, in which case
+     * rows or columns are removed from the outside of the image. If the margins
+     * are such that the width or height becomes less than 1, a blank 1 by 1
+     * pixel image is returned. If the margin is 0 on all sides and the image
+     * type is suitable, the source image is returned.
      *
      * @param source the source image
      * @param top the number of pixels to add to the top edge
@@ -883,10 +893,10 @@ public final class ImageUtilities {
      * returned that is flipped horizontally and/or vertically.
      *
      * @param source the image to create a mirrored version of
-     * @param horiz if {@code true}, the image is mirrored horizontally
-     * (i.e., on the y axis)
-     * @param vert if {@code true}, the image is mirrored vertically (i.e.,
-     * on the x axis)
+     * @param horiz if {@code true}, the image is mirrored horizontally (i.e.,
+     * on the y axis)
+     * @param vert if {@code true}, the image is mirrored vertically (i.e., on
+     * the x axis)
      * @return the mirrored version of the image
      * @see TurnAndFlipFilter
      */
@@ -928,10 +938,10 @@ public final class ImageUtilities {
      * the reverse order of the parameters; that is, the first parameter will be
      * drawn overtop of the second, the second over the third and so forth. The
      * images will be drawn directly onto the last image in the list. If this is
-     * {@code null}, a new image will be created with a width and height
-     * equal to the maximum width and maximum height of all of the other images.
-     * The last image in the last (possibly newly created if it was
-     * {@code null}) is returned from the method.
+     * {@code null}, a new image will be created with a width and height equal
+     * to the maximum width and maximum height of all of the other images. The
+     * last image in the last (possibly newly created if it was {@code null}) is
+     * returned from the method.
      *
      * @param images a series of images to paint over each other
      * @return the bottom image, or a new image if the bottom (last) image was
@@ -1009,9 +1019,9 @@ public final class ImageUtilities {
     }
 
     /**
-     * Returns {@code true} if every pixel in this image is fully opaque.
-     * If the image has no alpha channel, then {@code true} is returned
-     * immediately. Otherwise, the image is checked pixel-by-pixel.
+     * Returns {@code true} if every pixel in this image is fully opaque. If the
+     * image has no alpha channel, then {@code true} is returned immediately.
+     * Otherwise, the image is checked pixel-by-pixel.
      *
      * @param bi the image to check
      * @return {@code true} if and only if every pixel is opaque

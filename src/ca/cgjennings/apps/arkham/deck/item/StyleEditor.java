@@ -129,7 +129,6 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
 
     private void handleStyleChange() {
         updateTimeLatest = System.currentTimeMillis();
-//		System.err.println(updateTimeLatest);
         updateDelay.restart();
     }
 

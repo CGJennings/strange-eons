@@ -208,6 +208,8 @@ imexport-progressive = yes
 imexport-dpi = 300
 imexport-combine = no
 imexport-suppress-backs = no
+imexport-finish = square
+imexport-bleed-margin = 9
 
 # If yes then the program will either launch the application registered for
 # exported file types or display their location in the file system.
@@ -220,6 +222,15 @@ source-navigator-size = 200
 
 # The backdrop for component previews: 0=dark, 1=light, 2=checker
 preview-backdrop = 0
+
+# The type of finish to apply to component previews:
+#   round  = round corners (where specified, otherwise equivalent to square)
+#   square = no bleed margin, squared corners (usually fastest)
+#   margin = add bleed margin if possible, synthesizing if design has none
+preview-finish = round
+# The bleed margin size to use for component previews when finish is bleed
+preview-bleed-margin = 9
+
 
 # The following settings are combined to create the four quality settings in the
 # preview menu:

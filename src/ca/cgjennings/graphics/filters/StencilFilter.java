@@ -120,16 +120,4 @@ public class StencilFilter extends AbstractRowwiseFilter {
     private int stWidth, stHeight;
     private boolean replaceAlpha = true;
     private boolean currentSourceIsOpaque;
-
-//	public static void main(String[] args) {
-//		for( int i=Integer.MIN_VALUE; i<= Integer.MAX_VALUE; ++i ) {
-//			int o = (i>>24) & 0xff;
-//			int n = (i>>>24);
-//			if( o != n ) {
-//				System.out.println("no match: " + i);
-//				break;
-//			}
-//		}
-//		System.out.println("done");
-//	}
 }

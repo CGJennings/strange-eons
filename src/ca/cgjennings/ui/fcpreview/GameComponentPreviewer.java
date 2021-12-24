@@ -75,6 +75,8 @@ public class GameComponentPreviewer extends ImagePreviewer {
                 if (Thread.currentThread().isInterrupted()) {
                     return null;
                 }
+                sheets[0].setPrototypeRenderingModeEnabled(false);
+                sheets[0].setUserBleedMargin(-1d);
                 return sheets[0].paint(RenderTarget.PREVIEW, 96d);
             default:
                 throw new AssertionError("unknown metadata type result");

@@ -10,6 +10,7 @@ import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.ImageUtilities;
@@ -20,8 +21,10 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
 import ca.cgjennings.spelling.ui.JSpellingTextField;
 import ca.cgjennings.ui.JCloseableTabbedPane;
+import ca.cgjennings.ui.JIconComboBox;
 import ca.cgjennings.ui.JLabelledField;
 import ca.cgjennings.ui.JReorderableTabbedPane;
+import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.TabbedPaneReorderListener;
 import ca.cgjennings.ui.dnd.AbstractDragAndDropHandler;
@@ -80,6 +83,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -99,6 +103,7 @@ import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.text.DefaultFormatter;
 import resources.Language;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -151,6 +156,11 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         pageTab.addTab("", ResourceKit.getIcon("ui/deck/add-page.png"), new JPanel(), string("de-l-add-page"));
         optionLabel.setText(" ");
         localizeForPlatform();
+        {
+            // update bleed margin immediately on click
+            JFormattedTextField field = ((JSpinner.DefaultEditor)bleedMarginSpinner.getEditor()).getTextField();
+            ((DefaultFormatter) field.getFormatter()).setCommitsOnValidEdit(true);
+        }
 
         // Workaround:
         // Default preview splitter gets sized slightly too small
@@ -615,7 +625,9 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             cropPrintWeightField.setValue(deck.getPublishersMarkPrintWidth());
             deck.updateCropMarkManagers();
 
-            fakeBleedCheck.setSelected(deck.isAutoBleedMarginEnabled());
+            edgeFinishCombo.setSelectedItem(deck.getFinishStyle());
+            bleedMarginSpinner.setValue(deck.getBleedMarginWidth());
+            JUtilities.enable(deck.getFinishStyle() == FinishStyle.MARGIN, bleedMarginLabel, bleedMarginSpinner);
 
             super.populateFieldsFromComponent();
         } finally {
@@ -636,6 +648,14 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             PageView v = deck.getPage(i).getView();
             if (v != null) {
                 v.forceRerender();
+            }
+        }
+        final int nFaces = facesList.getModel().getSize();
+        for (int i=0; i<nFaces; ++i) {
+            PageItem pi = facesList.getModel().getElementAt(i);
+            if (pi instanceof CardFace) {
+                CardFace face = (CardFace) pi;
+                face.clearCachedImages();
             }
         }
     }
@@ -1226,7 +1246,13 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         jLabel9 = new javax.swing.JLabel();
         cropPrintWeightField = new javax.swing.JSpinner();
         jLabel10 = new javax.swing.JLabel();
-        fakeBleedCheck = new javax.swing.JCheckBox();
+        javax.swing.JLabel finishLabel = new javax.swing.JLabel();
+        edgeFinishCombo = new JIconComboBox<>(FinishStyle.values())
+        ;
+        bleedMarginLabel = new javax.swing.JLabel();
+        bleedMarginSpinner = new javax.swing.JSpinner();
+        applyFinishToDeck = new javax.swing.JButton();
+        ca.cgjennings.ui.JTip applyAllTip = new ca.cgjennings.ui.JTip();
         commentPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         commentField = new JSpellingTextArea();
@@ -1507,12 +1533,33 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        fakeBleedCheck.setText(string("de-l-fake-bleed")); // NOI18N
-        fakeBleedCheck.addActionListener(new java.awt.event.ActionListener() {
+        finishLabel.setLabelFor(edgeFinishCombo);
+        finishLabel.setText(string("de-l-default-finish")); // NOI18N
+
+        edgeFinishCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                fakeBleedCheckActionPerformed(evt);
+                edgeFinishComboActionPerformed(evt);
             }
         });
+
+        bleedMarginLabel.setLabelFor(bleedMarginSpinner);
+        bleedMarginLabel.setText(string("de-l-bleed-margin")); // NOI18N
+
+        bleedMarginSpinner.setModel(new javax.swing.SpinnerNumberModel(9.0d, 0.25d, 36.0d, 0.25d));
+        bleedMarginSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                bleedMarginSpinnerStateChanged(evt);
+            }
+        });
+
+        applyFinishToDeck.setText(string("de-l-apply-finish-to-all")); // NOI18N
+        applyFinishToDeck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                applyFinishToDeckActionPerformed(evt);
+            }
+        });
+
+        applyAllTip.setTipText(string("de-tip-apply-finish-to-all")); // NOI18N
 
         javax.swing.GroupLayout cropPanelLayout = new javax.swing.GroupLayout(cropPanel);
         cropPanel.setLayout(cropPanelLayout);
@@ -1525,8 +1572,21 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                         .addGap(21, 21, 21)
                         .addComponent(cropMeasurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(showCropCheck)
-                    .addComponent(fakeBleedCheck))
-                .addContainerGap(35, Short.MAX_VALUE))
+                    .addComponent(finishLabel)
+                    .addGroup(cropPanelLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(cropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(cropPanelLayout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(bleedMarginLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bleedMarginSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edgeFinishCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(cropPanelLayout.createSequentialGroup()
+                                .addComponent(applyFinishToDeck)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(applyAllTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
         cropPanelLayout.setVerticalGroup(
             cropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1536,8 +1596,18 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cropMeasurePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fakeBleedCheck)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(finishLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(edgeFinishCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(cropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bleedMarginLabel)
+                    .addComponent(bleedMarginSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(cropPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(applyFinishToDeck)
+                    .addComponent(applyAllTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         mainControlTab.addTab(string( "de-l-pub-marks" ), cropPanel); // NOI18N
@@ -1765,7 +1835,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                     .addComponent(addCardsBtn)
                     .addComponent(remCardsBtn))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cardTileTab, javax.swing.GroupLayout.DEFAULT_SIZE, 358, Short.MAX_VALUE)
+                .addComponent(cardTileTab, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(findPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -2153,13 +2223,19 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         }
     }//GEN-LAST:event_gameComboActionPerformed
 
-    private void fakeBleedCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fakeBleedCheckActionPerformed
-        deck.setAutoBleedMarginEnabled(fakeBleedCheck.isSelected());
-        PageView v = deck.getActivePage().getView();
-        if (v != null) {
-            v.repaint();
-        }
-    }//GEN-LAST:event_fakeBleedCheckActionPerformed
+    private void applyFinishToDeckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_applyFinishToDeckActionPerformed
+        deck.applyFinishStyleToItems();
+    }//GEN-LAST:event_applyFinishToDeckActionPerformed
+
+    private void edgeFinishComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edgeFinishComboActionPerformed
+        FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
+        deck.setFinishStyle(fs);
+        JUtilities.enable(fs == FinishStyle.MARGIN, bleedMarginLabel, bleedMarginSpinner);
+    }//GEN-LAST:event_edgeFinishComboActionPerformed
+
+    private void bleedMarginSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_bleedMarginSpinnerStateChanged
+        deck.setBleedMarginWidth((double) bleedMarginSpinner.getValue());
+    }//GEN-LAST:event_bleedMarginSpinnerStateChanged
 
     private boolean searchListIndices(String criteria, JList list, DefaultListModel model, int start, int end) {
         for (int i = start; i < end; ++i) {
@@ -2336,6 +2412,9 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addCardsBtn;
     private javax.swing.JMenuItem addCardsItem;
+    private javax.swing.JButton applyFinishToDeck;
+    private javax.swing.JLabel bleedMarginLabel;
+    private javax.swing.JSpinner bleedMarginSpinner;
     private javax.swing.JList<PageItem> boardBitsList;
     private javax.swing.JScrollPane boardBitsScroll;
     private javax.swing.JPopupMenu cardListMenu;
@@ -2353,9 +2432,9 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JPanel deckPanel;
     private javax.swing.JList<PageItem> decorationsList;
     private javax.swing.JScrollPane decorationsScroll;
+    private javax.swing.JComboBox<FinishStyle> edgeFinishCombo;
     private javax.swing.JList<PageItem> facesList;
     private javax.swing.JScrollPane facesScroll;
-    private javax.swing.JCheckBox fakeBleedCheck;
     private javax.swing.JTextField findField;
     private javax.swing.JPanel findPanel;
     private ca.cgjennings.ui.JGameCombo gameCombo;
@@ -2641,7 +2720,8 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
                     list.setEnabled(false);
                     sel = sel.clone();
                     if (sel instanceof CardFace) {
-                        ((CardFace) sel).setAutoBleedMarginEnabled(deck.isAutoBleedMarginEnabled());
+//TODO  finish                      
+//                        ((CardFace) sel).setAutoBleedMarginEnabled(deck.isAutoBleedMarginEnabled());
                     }
                     token = new DragToken<>(sel, ImageUtilities.iconToImage(sel.getThumbnailIcon()), 0, 0);
                 }

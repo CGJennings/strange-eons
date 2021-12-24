@@ -6,7 +6,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 
-// TODO: provide a proper implementation
 /**
  * This filter adds or removes space around the outside of an image. The pixel
  * values of added space depend on the {@link EdgeHandling} mode.
@@ -83,8 +82,7 @@ public final class MarginFilter extends AbstractImageFilter {
      * image.
      *
      * @param edgeMode the edge handling mode
-     * @throws NullPointerException if the edge handling mode is
-     * {@code null}
+     * @throws NullPointerException if the edge handling mode is {@code null}
      */
     public void setEdgeHandling(EdgeHandling edgeMode) {
         if (edgeMode == null) {
@@ -189,37 +187,4 @@ public final class MarginFilter extends AbstractImageFilter {
 
         return dest;
     }
-
-//	public static void main( String[] args ) {
-//		BufferedImage src = new BufferedImage( 3, 3, BufferedImage.TYPE_INT_RGB );
-//		int[] p = new int[] {
-//		 0xff0000, 0x00ffff, 0x0000ff,
-//		 0xffff00, 0xffffff, 0xff00ff,
-//		 0x7700ff, 0x00ff77, 0xff7700,
-//		};
-//		AbstractImageFilter.setARGB( src, p );
-//
-////		MarginFilter mf = new MarginFilter( 1, 1, 1, 1 );
-//		MarginFilter mf = new MarginFilter( 3, 3, 3, 3 );
-//		mf.setEdgeHandling( EdgeHandling.EXTEND );
-//		final BufferedImage bi = mf.filter( src, null );
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				int w = bi.getWidth()*16;
-//				int h = bi.getHeight()*16;
-//				BufferedImage zoom = new BufferedImage( w, h, BufferedImage.TYPE_INT_RGB );
-//				Graphics2D g  = zoom.createGraphics();
-//				try {
-//					g.setRenderingHint( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR );
-//					g.drawImage( bi, 0, 0, w, h, null);
-//				} finally {
-//					g.dispose();
-//				}
-//				ImageViewer iv = new ImageViewer( null, zoom, true );
-//				iv.setVisible( true );
-//			}
-//		});
-//
-//	}
 }
