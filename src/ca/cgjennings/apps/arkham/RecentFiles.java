@@ -1,19 +1,20 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.Rename;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
+import java.util.Collections;
 import java.util.LinkedList;
-import javax.swing.Icon;
+import java.util.List;
+import java.util.Objects;
+import java.util.logging.Level;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
+import javax.swing.JOptionPane;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import static resources.Language.string;
@@ -33,137 +34,201 @@ public class RecentFiles {
     /**
      * The maximum number of recent files that will be tracked.
      */
-    public static final int MAXIMUM_LIST_SIZE = 25;
+    public static final int MAXIMUM_LIST_SIZE = 100;
 
-    private static final LinkedList<File> files = new LinkedList<>();
-
-    static {
-        // init the list from preferences
-        for (int i = 0; i < MAXIMUM_LIST_SIZE; ++i) {
-            String file = RawSettings.getUserSetting("recent-file-" + (i + 1));
-            if (file == null) {
-                break;
+    private static final LinkedList<File> projects = new LinkedList<>();
+    private static final List<File> publicProjects = Collections.unmodifiableList(projects);
+    private static final LinkedList<File> docs = new LinkedList<>();
+    private static final List<File> publicDocs = Collections.unmodifiableList(docs);
+    
+    private static final String KEY_PROJECT_LIST = "recent-project-";
+    private static final String KEY_DOCUMENT_LIST = "recent-document-";
+    
+    /**
+     * Reads the file lists from previously stored user settings.
+     */
+    private static void initializeFileLists() {
+        String key = KEY_PROJECT_LIST;
+        List<File> list = projects;
+        for (int listIt=0; listIt<2; ++listIt) {
+            for (int i=1; i <= MAXIMUM_LIST_SIZE; ++i) {
+                String path = RawSettings.getUserSetting(key + i);
+                if (path == null) break;
+                list.add(new File(path));
             }
-            files.add(new File(file));
+            
+            key = KEY_DOCUMENT_LIST;
+            list = docs;
         }
-
-        // listen for project files to be renamed and update accordingly
-        Rename.addRenameListener((Project p, Member newMember, File oldFile, File newFile) -> {
-            synchronized (RecentFiles.class) {
-                int index = files.indexOf(oldFile);
-                if (index >= 0) {
-                    // we don't adjust the list on file deletion, so if
-                    // the file is replaced it will still work
-                    if (newFile != null) {
-                        files.set(index, newFile);
-                        save();
-                    }
+        installExitTask();
+    }    
+    
+    /**
+     * Converts an old combined file list into separate lists of documents
+     * and projects. This requires checking whether or not an entry is a directory,
+     * which means it can take some time if the entry is located on a server.
+     * For this reason, the lists are initially left empty and the conversion is
+     * performed in a background thread.
+     */
+    private static void transitionOldFileList() {
+        StrangeEons.log.info("updating format of recent file list, menu may be empty for several seconds");
+        new Thread(() -> {
+            final List<File> uProjects = new LinkedList<>();
+            final List<File> uDocs = new LinkedList<>();
+            
+            for (int i = 0; i < MAXIMUM_LIST_SIZE; ++i) {
+                final String key = "recent-file-" + (i + 1);
+                String path = RawSettings.getUserSetting(key);
+                if (path == null) {
+                    break;
+                }
+                RawSettings.removeUserSetting(key);
+                File file = new File(path);
+                if (!file.exists()) continue;
+                
+                List<File> uDest = uDocs;
+                if (file.isDirectory() || file.getName().endsWith(".seproject")) {
+                    uDest = uProjects;
+                }
+                if (!uDest.contains(file)) {
+                    uDest.add(file);
                 }
             }
+            EventQueue.invokeLater(() -> {
+                // by the time this runs, the list could have already been
+                // modified, so we need to check for duplicates
+                List<File> source = uProjects;
+                List<File> dest = projects;
+                for (int listIt = 0; listIt<2; ++listIt) {
+                    for (File f : source) {
+                        if (!dest.contains(f)) {
+                            dest.add(f);
+                        }
+                    }
+                    source = uDocs;
+                    dest = docs;
+                }
+                StrangeEons.log.info("recent file list updated");
+                installExitTask();
+            });
+        }).start();
+    }
+    
+    private static void installExitTask() {
+        StrangeEons.getApplication().addExitTask(new Runnable() {
+            @Override
+            public void run() {
+                String key = KEY_PROJECT_LIST;
+                List<File> list = projects;
+                for (int listIt=0; listIt<2; ++listIt) {
+                    for (int i=1; i <= MAXIMUM_LIST_SIZE; ++i) {
+                        if (i <= list.size()) {
+                            RawSettings.setUserSetting(key + i, list.get(i-1).getAbsolutePath());
+                        } else {
+                            RawSettings.removeUserSetting(key + i);
+                        }
+                    }
+                    RawSettings.removeUserSetting(key + (MAXIMUM_LIST_SIZE+1));
+
+                    key = KEY_DOCUMENT_LIST;
+                    list = docs;
+                }
+            }
+            @Override
+            public String toString() {
+                return "storing lists of recent documents";
+            } 
         });
     }
-
-    private static void save() {
-        prune();
-        int size = files.size();
-        for (int i = 0; i < MAXIMUM_LIST_SIZE; ++i) {
-            String key = "recent-file-" + (i + 1);
-            if (i >= size) {
-                RawSettings.removeUserSetting(key);
-            } else {
-                RawSettings.setUserSetting(key, files.get(i).toString());
-            }
-        }
-    }
-
-    /**
-     * Adds a file to the recent file list. If the file is already in the list,
-     * it is moved to the start.
-     *
-     * @param file the file to add to the list
-     */
-    public static synchronized void add(File file) {
-        if (file == null) {
+    
+    private static void handleFileRename(File oldFile, File newFile) {
+        // if the file is being deleted, we don't remove it at this point
+        // as it might be about to be replaced
+        if (newFile == null) return;
+        
+        if (!EventQueue.isDispatchThread()) {
+            EventQueue.invokeLater(() -> handleFileRename(oldFile, newFile));
             return;
         }
-
-        files.remove(file);
-        files.addFirst(file);
-        if (files.size() >= MAXIMUM_LIST_SIZE) {
-            files.removeLast();
-        }
-        save();
-    }
-
-    /**
-     * Removes a file from the list. Has no effect if the file is not on the
-     * list.
-     *
-     * @param file the file to remove
-     */
-    public static synchronized void remove(File file) {
-        if (files.remove(file)) {
-            save();
-        }
-    }
-
-    /**
-     * Returns {@code true} if the specified file is a member of the list.
-     *
-     * @param file the file to check for
-     * @return {@code true} if the list contains the file
-     */
-    public static synchronized boolean contains(File file) {
-        return files.contains(file);
-    }
-
-    /**
-     * Removes entries for which the target file no longer exists.
-     */
-    private static synchronized void prune() {
-        for (Iterator<File> it = files.iterator(); it.hasNext();) {
-            File f = it.next();
-            try {
-                if (!f.exists()) {
-                    it.remove();
-                }
-            } catch (SecurityException ex) {
-                // assume that it might exist, but stop trying to prune
-                // in case this would introduce a long delay in the UI thread
-                return;
+        
+        List<File> list = projects;
+        for (int listIt=0; listIt<2; ++listIt) {
+            int i = list.indexOf(oldFile);
+            if (i >= 0) {
+                list.set(i, newFile);
+                StrangeEons.log.log(Level.INFO, "updated recent file entry for {0}", newFile.getName());
             }
+            list = docs;
+        }        
+    }
+    
+    private static void installRenameListener() {
+        Rename.addRenameListener((Project p, Member newMember, File oldFile, File newFile) -> handleFileRename(oldFile, newFile));
+    }
+
+
+    static {
+        boolean hasOldList = RawSettings.getUserSetting("recent-file-1") != null;
+        if (hasOldList) {
+            transitionOldFileList();
+        } else {
+            initializeFileLists();
+        }
+        installRenameListener();
+    }
+    
+    /** Returns an immutable list of recently opened document files. */
+    public static List<File> getRecentDocuments() {
+        return publicDocs;
+    }
+    
+    /** Returns an immutable list of recently opened project files. */
+    public static List<File> getRecentProjects() {
+        return publicProjects;
+    }
+    
+    /**
+     * Adds an entry to the list of recent projects.
+     * @param file the non-null project directory or package file to add
+     */
+    public static void addRecentProject(final File file) {
+        addRecent(file, true);
+    }
+    
+    /**
+     * Adds an entry to the list of recent documents.
+     * @param file the non-null document file to add
+     */
+    public static void addRecentDocument(final File file) {
+        addRecent(file, false);
+    }
+    
+    private static void addRecent(final File file, final boolean isProject) {
+        Objects.requireNonNull(file);
+        if (!EventQueue.isDispatchThread()) {
+            EventQueue.invokeLater(() -> addRecent(file, isProject));
+            return;
+        }
+        LinkedList<File> list = isProject ? projects : docs;
+        list.remove(file);
+        list.addFirst(file);
+        while (list.size() > MAXIMUM_LIST_SIZE) {
+            list.removeLast();
         }
     }
-
+    
     /**
-     * Returns an iterator over the recent file list.
-     *
-     * @return an iterator that returns that iterates over the file list in
-     * order from most recently used to least recently used
+     * Clear all recent documents and projects.
      */
-    public static synchronized Iterator<File> iterator() {
-        return new LinkedList<>(files).iterator();
+    public static void clear() {
+        if (!EventQueue.isDispatchThread()) {
+            EventQueue.invokeLater(RecentFiles::clear);
+            return;
+        }
+        projects.clear();
+        docs.clear();
     }
-
-    /**
-     * Clears the list of recently used files.
-     */
-    public static synchronized void clear() {
-        files.clear();
-        save();
-    }
-
-    /**
-     * Returns the number of files available in the list. Note that this may not
-     * be the same number as the number that the user wishes to display.
-     *
-     * @return the number of available recent files
-     * @see #getNumberOfFilesToDisplay()
-     */
-    public static synchronized int size() {
-        return files.size();
-    }
-
+    
     /**
      * Returns the maximum number of files that the user wishes to include in
      * the recent file list. This will be a number between 0 and
@@ -201,7 +266,15 @@ public class RecentFiles {
             clearItem = new JMenuItem(string("app-clear-recent")) {
                 @Override
                 protected void fireActionPerformed(ActionEvent event) {
-                    clear();
+                    final int choice = JOptionPane.showConfirmDialog(
+                            StrangeEons.getWindow(),
+                            string("app-clear-recent-verify"),
+                            string("app-clear-recent"),
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    if (choice == JOptionPane.YES_OPTION) {
+                        clear();
+                    }
                     super.fireActionPerformed(event);
                 }
             };
@@ -214,7 +287,7 @@ public class RecentFiles {
                         setEnabled(true);
                     } else {
                         setVisible(true);
-                        setEnabled(files.size() > 0);
+                        setEnabled(docs.size() + projects.size() > 0);
                     }
                 }
 
@@ -230,112 +303,72 @@ public class RecentFiles {
 
         @Override
         protected void fireMenuSelected() {
+            final int maxItems = getNumberOfFilesToDisplay();            
+            int numItems = 0;
+
+            // count out the items to include, up the maximum number
+            LinkedList<RecentFileItem> projItems = new LinkedList<>();
+            LinkedList<RecentFileItem> docItems = new LinkedList<>();
+            for (int i=0; numItems < maxItems; ++i) {
+                if (i < projects.size()) {
+                    projItems.add(new RecentFileItem(projects.get(i), true));
+                    ++numItems;
+                } else if (i >= docs.size()) {
+                    // no more projects OR documents available,
+                    // break to avoid infinite loop
+                    break;
+                }
+                
+                if (numItems == maxItems) break;
+                
+                if (i < docs.size()) {
+                    docItems.add(new RecentFileItem(docs.get(i), false));
+                    ++numItems;
+                }
+            }
+            
             removeAll();
-            int maxItems = getNumberOfFilesToDisplay();
-            synchronized (RecentFiles.class) {
-                RecentFiles.prune();
-                // get N recent files, separating into files and projects
-                LinkedList<File> projects = new LinkedList<>();
-                LinkedList<File> otherFiles = new LinkedList<>();
-                int n = 0;
-                for (File f : files) {
-                    if (n == maxItems) {
-                        break;
-                    }
-                    try {
-                        if (isProjectFile(f, false)) {
-                            projects.add(f);
-                            ++n;
-                            continue;
-                        }
-                    } catch (IOException ioe) {
-                        // assume non-project file, so at least it is listed
-                    }
-                    otherFiles.add(f);
-                    ++n;
-                }
-                for (File f : projects) {
-                    add(new RecentFileItem(f));
-                }
-                if (projects.size() > 0 && otherFiles.size() > 0) {
+            List<RecentFileItem> group = projItems;
+            for (int listIt = 0; listIt<2; ++listIt) {
+                if (!group.isEmpty()) {
+                    for (RecentFileItem item : group) {
+                        add(item);
+                    }                    
                     addSeparator();
                 }
-                for (File f : otherFiles) {
-                    add(new RecentFileItem(f));
-                }
+                group = docItems;
             }
-            if (getMenuComponentCount() == 0) {
-                clearItem.setEnabled(false);
-                add(clearItem);
-            } else {
-                add(separator);
-                clearItem.setEnabled(true);
-                add(clearItem);
-            }
+            add(clearItem);
+            clearItem.setEnabled(projItems.size() + docItems.size() > 0);
+
             super.fireMenuSelected();
         }
 
         private final JMenuItem clearItem;
-        private final JPopupMenu.Separator separator = new JPopupMenu.Separator();
     }
 
     @SuppressWarnings("serial")
     private static class RecentFileItem extends JMenuItem {
-
         private File file;
+        private boolean isProject;
 
-        public RecentFileItem(File f) {
+        public RecentFileItem(File f, boolean isProject) {
             super(f.getName());
             file = f;
+            this.isProject = isProject;
             setToolTipText(f.getPath());
-            Icon icon = MetadataSource.ICON_BLANK;
-            try {
-                if (isProjectFile(f, false)) {
-                    icon = MetadataSource.ICON_PROJECT;
-                }
-            } catch (IOException e) {
-            }
-            setIcon(icon);
+            setIcon(isProject ? MetadataSource.ICON_PROJECT : MetadataSource.ICON_BLANK);
         }
 
         @Override
         protected void fireActionPerformed(ActionEvent event) {
             StrangeEonsAppWindow w = StrangeEons.getWindow();
-
-            try {
-                if (isProjectFile(file, true)) {
-                    w.setOpenProject(file);
-                    return;
-                }
-            } catch (IOException e) {
-                ErrorDialog.displayError(string("app-err-open", file.getName()), e);
-                return;
+            if (isProject) {
+                w.setOpenProject(file);
+            } else {
+                w.openFile(file);
             }
-
-            w.openFile(file);
             super.fireActionPerformed(event);
-        }
-    }
-
-    /**
-     * Returns {@code true} is a file is (likely) a project. This method may be
-     * faster than calling {@link Project#isProjectFolder(java.io.File)} and
-     * {@link Project#isProjectPackage(java.io.File)}, but it may sometimes
-     * produce false positives as well.
-     *
-     * @param file the file to test
-     * @param thorough if {@code false}, a quick test is performed; if
-     * {@code true}, a more thorough test is performed
-     * @return {@code true} if the file is likely a project
-     */
-    static boolean isProjectFile(File file, boolean thorough) throws IOException {
-        if (file == null || !file.exists()) {
-            return false;
-        }
-        if (thorough) {
-            return Project.isProjectFolder(file) || Project.isProjectPackage(file);
-        } else {
-            return file.isDirectory() || file.getName().endsWith(".seproject");
         }
     }
 }

@@ -450,7 +450,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 if (f == null) {
                     f = p.getFile();
                 }
-                RecentFiles.add(f);
+                RecentFiles.addRecentProject(f);
                 createProjectView(p, true);
                 project = p;
             }
@@ -1934,7 +1934,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             }
             project = proj;
             createProjectView(proj, showOpenAnimation);
-            RecentFiles.add(projectFolder);
+            RecentFiles.addRecentProject(projectFolder);
 
             // fire project event
             Object[] li = listeners.getListenerList();
@@ -2106,7 +2106,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             editor.setFrameIcon(newEditorDialog.getIconForComponent(gameComponent));
         }
 
-        RecentFiles.add(f);
+        RecentFiles.addRecentDocument(f);
         editor.handleOpenRequest(gameComponent, f);
         newEditorDialog.setVisible(false);
         return editor;
