@@ -392,16 +392,13 @@ Number.prototype.dontEnum('toInt', 'toLong', 'toFloat');
 RegExp.prototype.dontEnum('quote', 'quoteReplacement');
 
 
-//String.prototype.replaceAll = function replaceAll(pattern, replacement) {
-//    return this.replace(
-//            new RegExp(RegExp.quote(pattern), 'g'),
-//            RegExp.quoteReplacement(replacement)
-//            );
-//};
-//
-//String.prototype.dontEnum(
-//        'replaceAll'
-//        );
+String.prototype.replaceAll = function replaceAll(pattern, replacement) {
+    return this.replace(
+        new RegExp(RegExp.quote(pattern), 'g'),
+        RegExp.quoteReplacement(replacement)
+    );
+};
+String.prototype.dontEnum('replaceAll');
 
 Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
