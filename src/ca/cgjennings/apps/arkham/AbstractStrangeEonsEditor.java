@@ -553,7 +553,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
             try {
                 saveImpl(f);
                 setUnsavedChanges(false);
-                RecentFiles.add(f);
+                RecentFiles.addRecentDocument(f);
             } catch (Exception e) {
                 ErrorDialog.displayError(string("ae-err-save"), e);
             } finally {

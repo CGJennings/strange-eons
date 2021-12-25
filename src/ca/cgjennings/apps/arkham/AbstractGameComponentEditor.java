@@ -449,7 +449,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
             try {
                 final File file = getFile();
                 saveImpl(file);
-                RecentFiles.add(file);
+                RecentFiles.addRecentDocument(file);
             } catch (Exception e) {
                 ErrorDialog.displayError(string("ae-err-save"), e);
             } finally {
