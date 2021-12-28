@@ -152,6 +152,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     public DeckEditor(Deck d) {
         boolean wasSaved = !d.hasUnsavedChanges();
         initComponents();
+        findLabel.setBackground(findField.getBackground());
         ((JLabelledField) findField).setLabel(string("de-l-search"));
         pageTab.addTab("", ResourceKit.getIcon("ui/deck/add-page.png"), new JPanel(), string("de-l-add-page"));
         optionLabel.setText(" ");
@@ -1274,10 +1275,9 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         otherScroll = new javax.swing.JScrollPane();
         otherList = new PageItemList();
         findPanel = new javax.swing.JPanel();
-        javax.swing.JLabel findLabel = new javax.swing.JLabel();
+        findLabel = new javax.swing.JLabel();
         StyleUtilities.small( findLabel );
         findField =  new JLabelledField() ;
-        ((JLabelledField) findField).setTextForeground( new Color(0,0,4) );
         rhsPanel = new javax.swing.JPanel();
         pageTab =  new DeckPageTabbedPane();
         optionLabel = new javax.swing.JLabel();
@@ -1769,7 +1769,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         findPanel.setBackground(java.awt.Color.white);
         findPanel.setLayout(new java.awt.GridBagLayout());
 
-        findLabel.setBackground(java.awt.Color.white);
         findLabel.setDisplayedMnemonic('f');
         findLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         findLabel.setIcon( ResourceKit.getIcon( "ui/find-sm.png" ) );
@@ -1784,7 +1783,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         gridBagConstraints.weighty = 1.0;
         findPanel.add(findLabel, gridBagConstraints);
 
-        findField.setBackground( Color.WHITE );
         findField.setFont(findField.getFont().deriveFont(findField.getFont().getSize()-1f));
         findField.setBorder(null);
         findField.addActionListener(new java.awt.event.ActionListener() {
@@ -2436,6 +2434,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JList<PageItem> facesList;
     private javax.swing.JScrollPane facesScroll;
     private javax.swing.JTextField findField;
+    private javax.swing.JLabel findLabel;
     private javax.swing.JPanel findPanel;
     private ca.cgjennings.ui.JGameCombo gameCombo;
     private javax.swing.JLabel jLabel10;
