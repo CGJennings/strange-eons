@@ -1141,6 +1141,10 @@ public abstract class Sheet<G extends GameComponent> {
     public double getBleedMargin() {
         if (designedBleedCache < 0d) {            
             designedBleedCache = getGameComponent().getSettings().getDouble(keybase + "-bleed-margin", 0d);
+            if (designedBleedCache < 0d) {
+                StrangeEons.log.warning("ignoring invalid bleed margin: " + keybase + " (" + designedBleedCache + ')' );
+                designedBleedCache = 0d;
+            }
         }
         return designedBleedCache;
     }
