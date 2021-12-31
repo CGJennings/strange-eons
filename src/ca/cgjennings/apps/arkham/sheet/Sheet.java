@@ -44,7 +44,7 @@ import resources.Settings.ParseError;
 /**
  * An abstract base class for objects that paint one face (side) of a
  * {@link GameComponent}.Subclasses must provide a <i>template key</i>
- before the sheet can be used. This is normally {@linkplain #Sheet(ca.cgjennings.apps.arkham.component.GameComponent, java.lang.String)
+ * before the sheet can be used. This is normally {@linkplain #Sheet(ca.cgjennings.apps.arkham.component.GameComponent, java.lang.String)
  * provided during construction}, but sheets with more complex initialization
  * may delay this step and call
  * {@link #initializeTemplate(java.lang.String) initializeTemplate} later to set
@@ -178,16 +178,17 @@ public abstract class Sheet<G extends GameComponent> {
      * <li> The default region for drawing expansion symbols, if any, is read
      * from <i>templateKey</i>{@code -expsym}.
      * <li> The template image resolution, in pixels per inch, is read from
-     * <i>templateKey</i>@code -ppi}; if undefined, the default is 150 ppi.
-     * (The suffix {@code -dpi} can also be used.)
+     * <i>templateKey</i>@code -ppi}; if undefined, the default is 150 ppi. (The
+     * suffix {@code -dpi} can also be used.)
      * <li> The preferred display upsample factor is read from
      * <i>templateKey</i>{@code -upsample}; if undefined, the default is 1; this
      * is multiplied by the template resolution to determine the default
      * resolution for rendering. The default resolution is used by the preview
      * window; components with extremely small text can be made more legible by
      * increasing this value.
-     * <li> The initial corner radius is set from <i>templateKey</i>{@code -corner-radius};
-     * if undefined the default is 0. See also {@link #getBleedMargin()}.
+     * <li> The initial corner radius is set from
+     * <i>templateKey</i>{@code -corner-radius}; if undefined the default is 0.
+     * See also {@link #getBleedMargin()}.
      * </ol>
      *
      * @param templateKey the base key name to use to initialize the template
@@ -207,7 +208,7 @@ public abstract class Sheet<G extends GameComponent> {
         if (templateKey.endsWith("-template")) {
             keybase = keybase.substring(0, keybase.length() - "-template".length());
         }
-        
+
         StrangeEons.log.log(Level.INFO, "created sheet for base key prefix \"{0}-\"", keybase);
 
         expsymKey = keybase + "-expsym";
@@ -534,17 +535,17 @@ public abstract class Sheet<G extends GameComponent> {
 
         return sheetImage;
     }
-    
+
     /**
-     * Calling this method sets an internal flag allowing the template image
-     * to be used for bleed margin synthesis. This can improve the quality
-     * of the synthesized margin since the synthesized material will not include
-     * text and other painted content. However, some card designs modify the
-     * template on the fly: for example, with tinting or by substituting
-     * different graphics based on a user selection. Since this would
-     * result in a glaringly wrong bleed margin and Strange Eons cannot know
-     * if this may occur, it will not use the template unless explicitly told
-     * that this is safe by calling this method.
+     * Calling this method sets an internal flag allowing the template image to
+     * be used for bleed margin synthesis. This can improve the quality of the
+     * synthesized margin since the synthesized material will not include text
+     * and other painted content. However, some card designs modify the template
+     * on the fly: for example, with tinting or by substituting different
+     * graphics based on a user selection. Since this would result in a
+     * glaringly wrong bleed margin and Strange Eons cannot know if this may
+     * occur, it will not use the template unless explicitly told that this is
+     * safe by calling this method.
      */
     public void allowTemplateUseInBleedSynthesis() {
         useTemplateForSynth = true;
@@ -552,15 +553,15 @@ public abstract class Sheet<G extends GameComponent> {
     private boolean useTemplateForSynth = false;
 
     /**
-     * Returns whether the sheet is allowed to synthesize a bleed margin
-     * when the designed margin is less than the user-requested margin.
-     * The base class returns true.
-     * 
+     * Returns whether the sheet is allowed to synthesize a bleed margin when
+     * the designed margin is less than the user-requested margin. The base
+     * class returns true.
+     *
      * @return true if the sheet can synthesize a missing bleed margin
      */
     public boolean isMarginSynthesisAllowed() {
         return !isTransparent();
-    }    
+    }
 
     public static boolean DEBUG_BLEED_MARGIN = false;
     public static boolean DEBUG_UNSAFE_AREA = false;
@@ -641,43 +642,42 @@ public abstract class Sheet<G extends GameComponent> {
         return Math.max(0, Math.min(getBleedMargin(), getUserBleedMargin()));
     }
 
-
-//    /**
-//     * Renders the sheet image, including any designed bleed margin. If there is
-//     * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
-//     * point false margin will be synthesized (if the sheet image is
-//     * compatible).
-//     *
-//     * @deprecated Use {@link #setUserBleedMargin(double)} to set the desired
-//     * bleed margin size, then call
-//     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)} to
-//     * paint the image.
-//     *
-//     * @param target the target hint to use for painting
-//     * @param resolution the resolution of the returned image, or -1 for the
-//     * sheet's default resolution
-//     * @param synthesizeBleedMargin true to synthesize a standard bleed margin
-//     * if none is included
-//     * @return a rendered image of the sheet
-//     * @since 3.0.3680
-//     */
-//    @Deprecated
-//    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
-//        final double oldUserBleed = getUserBleedMargin();
-//        try {
-//            final double designedMargin = getBleedMargin();
-//            setUserBleedMargin(designedMargin);
-//            BufferedImage bi = paint(target, resolution);
-//            if (designedMargin == 0d && synthesizeBleedMargin) {
-//                final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
-//                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
-//            }
-//            return bi;
-//        } finally {
-//            setUserBleedMargin(oldUserBleed);
-//        }
-//    }
-
+    /**
+     * Renders the sheet image, including any designed bleed margin. If there is
+     * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
+     * point false margin will be synthesized (if the sheet image is
+     * compatible).
+     *
+     * @deprecated Use {@link #setUserBleedMargin(double)} to set the desired
+     * bleed margin size, then call
+     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)} to
+     * paint the image.
+     *
+     * @param target the target hint to use for painting
+     * @param resolution the resolution of the returned image, or -1 for the
+     * sheet's default resolution
+     * @param synthesizeBleedMargin true to synthesize a standard bleed margin
+     * if none is included
+     * @return a rendered image of the sheet
+     * @since 3.0.3680
+     */
+    @Deprecated
+    public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
+        final double oldUserBleed = getUserBleedMargin();
+        try {
+            final double designedMargin = getBleedMargin();
+            setUserBleedMargin(designedMargin);
+            BufferedImage bi = paint(target, resolution);
+            if (designedMargin == 0d && synthesizeBleedMargin) {
+                final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
+                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
+            }
+            return bi;
+        } finally {
+            setUserBleedMargin(oldUserBleed);
+        }
+    }
+    
     /**
      * Paints standard sheet overlays: on paint code and expansion symbols.
      */
@@ -1132,17 +1132,18 @@ public abstract class Sheet<G extends GameComponent> {
      * </pre>
      *
      * <p>
-     * The base class looks up the setting <i>templateKey</i>{@code -bleed-margin}
-     * to determine the bleed margin, defaulting to 0 if none is defined.
+     * The base class looks up the setting
+     * <i>templateKey</i>{@code -bleed-margin} to determine the bleed margin,
+     * defaulting to 0 if none is defined.
      *
      * @return the size of the bleed margin, in points (1 point = 1/72 inch)
      * @see #hasCropMarks
      */
     public double getBleedMargin() {
-        if (designedBleedCache < 0d) {            
+        if (designedBleedCache < 0d) {
             designedBleedCache = getGameComponent().getSettings().getDouble(keybase + "-bleed-margin", 0d);
             if (designedBleedCache < 0d) {
-                StrangeEons.log.warning("ignoring invalid bleed margin: " + keybase + " (" + designedBleedCache + ')' );
+                StrangeEons.log.warning("ignoring invalid bleed margin: " + keybase + " (" + designedBleedCache + ')');
                 designedBleedCache = 0d;
             }
         }
@@ -1187,11 +1188,11 @@ public abstract class Sheet<G extends GameComponent> {
      * added when printed or placed in a deck. If this method returns
      * {@code true}, then crop marks will be created automatically around the
      * edges of the face; the bleed margin of these marks is determined by
-     * {@link #getRenderedBleedMargin()}. In certain circumstances, some of these crop
-     * marks will be converted automatically into fold marks. Typically, this
-     * happens when the front and back face of a card are snapped next to each
-     * other such that folding along the line indicated by the crop mark would
-     * produce a complete two-sided card.
+     * {@link #getRenderedBleedMargin()}. In certain circumstances, some of
+     * these crop marks will be converted automatically into fold marks.
+     * Typically, this happens when the front and back face of a card are
+     * snapped next to each other such that folding along the line indicated by
+     * the crop mark would produce a complete two-sided card.
      *
      * <p>
      * The base class implementation returns {@code true}.
