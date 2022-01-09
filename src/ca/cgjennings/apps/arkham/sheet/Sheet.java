@@ -527,6 +527,17 @@ public abstract class Sheet<G extends GameComponent> {
                 if (DEBUG_BLEED_MARGIN) {
                     g.setColor(Color.YELLOW);
                     g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
+                    final float fWidth = (float) upsampleFactor;
+                    g.setStroke(new BasicStroke(
+                            fWidth,
+                            BasicStroke.CAP_BUTT,
+                            BasicStroke.JOIN_ROUND,
+                            0f,
+                            new float[] { fWidth * 8f },
+                            0f
+                    ));
+                    g.setColor(BROWN);
+                    g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
                 }
             } finally {
                 g.dispose();
@@ -535,6 +546,7 @@ public abstract class Sheet<G extends GameComponent> {
 
         return sheetImage;
     }
+    private static final Color BROWN = new Color(0xe65100);
 
     /**
      * Calling this method sets an internal flag allowing the template image to
