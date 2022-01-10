@@ -1135,17 +1135,17 @@ public class DIY extends AbstractGameComponent implements Handler {
      * non-{@code null}, then the following keys will be referred to when
      * setting up the portrait system:
      * <dl>
-     * <dt><i>xxx</i>-portrait-template
+     * <dt><i>x</i>-portrait-template
      * <dd>the resource file that contains the default portrait image
-     * <dt><i>xxx</i>-portrait-clip-region
+     * <dt><i>x</i>-portrait-clip-region
      * <dd>this is the region where the portrait will be drawn on the card
-     * <dt><i>xxx</i>-portrait-scale
+     * <dt><i>x</i>-portrait-scale
      * <dd>if defined, sets the scale for the default portrait; otherwise the
      * scale is determined automatically to fit the portrait in the clip region
      * (a scale of 1 = 100%)
-     * <dt><i>xxx</i>-portrait-panx
+     * <dt><i>x</i>-portrait-panx
      * <dd>if defined, the horizontal pan of the default portrait (default is 0)
-     * <dt><i>xxx</i>-portrait-pany
+     * <dt><i>x</i>-portrait-pany
      * <dd>if defined, the vertical pan of the default portrait (default is 0)
      * </dl>
      *

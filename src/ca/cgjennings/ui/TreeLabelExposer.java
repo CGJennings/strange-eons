@@ -45,12 +45,8 @@ public class TreeLabelExposer {
             exposePath(tree.getPathForLocation(e.getX(), e.getY()));
         }
     };
-    private final TreeSelectionListener selectionListener = new TreeSelectionListener() {
-        @Override
-        public void valueChanged(TreeSelectionEvent e) {
-            exposePath(path); // redraw row when selection state changes
-        }
-    };
+    // redraw row when selection state changes
+    private final TreeSelectionListener selectionListener = (e) -> exposePath(path);
     private JComponent helper = new JComponent() {
         @Override
         public void paint(Graphics g1) {

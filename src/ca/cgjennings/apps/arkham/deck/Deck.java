@@ -373,12 +373,14 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void undoImpl() {
             selectionGroupPage[g] = oPage;
             selectionGroup[g] = oSel;
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void redoImpl() {
             selectionGroupPage[g] = nPage;
             selectionGroup[g] = nSel;

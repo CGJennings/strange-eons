@@ -927,15 +927,11 @@ public final class ContextBar {
     }
     private boolean pointerIsOverBar;
 
-    private Timer autoexpandTimer = new Timer(750, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (window != null && isCollapsed()) {
-                setCollapsed(false);
-            }
+    private Timer autoexpandTimer = new Timer(750, (evt) -> {
+        if (window != null && isCollapsed()) {
+            setCollapsed(false);
         }
     });
-
     {
         autoexpandTimer.setRepeats(false);
     }

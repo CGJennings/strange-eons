@@ -181,7 +181,7 @@ public class RawSettings {
     public synchronized static void writeUserSettings() {
         writeRequested = true;
     }
-    private static boolean writeRequested;
+    private static boolean writeRequested = false;
     private static boolean writePending;
 
     /**
@@ -219,13 +219,10 @@ public class RawSettings {
     private static final int PREF_WRITE_DELAY = 30 * 1_000;
 
     static {
-        Timer prefWriter = new Timer(PREF_WRITE_DELAY, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                synchronized (RawSettings.class) {
-                    if (writeRequested) {
-                        writeUserSettingsImmediately();
-                    }
+        Timer prefWriter = new Timer(PREF_WRITE_DELAY, (e) -> {
+            synchronized (RawSettings.class) {
+                if (writeRequested) {
+                    writeUserSettingsImmediately();
                 }
             }
         });
@@ -444,7 +441,7 @@ public class RawSettings {
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             StrangeEons.log.log(Level.SEVERE, "unable to read migration key list", e);
             return false;
         } finally {
@@ -526,7 +523,7 @@ public class RawSettings {
         }
         try {
             return limit((String) Base64.decodeToObject(obfuscatedText));
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new AssertionError("Internal Error: decoding failure");
         }
     }

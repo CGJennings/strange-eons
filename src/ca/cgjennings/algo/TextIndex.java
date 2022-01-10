@@ -140,19 +140,9 @@ public class TextIndex implements Iterable<String> {
         Set<String> getResultSet(TextIndex ti);
     }
 
-    private static final Result ANYTHING = new Result() {
-        @Override
-        public Set<String> getResultSet(TextIndex ti) {
-            return new HashSet<>(Arrays.asList(ti.ids));
-        }
-    };
+    private static final Result ANYTHING = (ti) -> new HashSet<>(Arrays.asList(ti.ids));
 
-    private static final Result NOTHING = new Result() {
-        @Override
-        public Set<String> getResultSet(TextIndex ti) {
-            return new HashSet<>();
-        }
-    };
+    private static final Result NOTHING = (ti) -> new HashSet<>();
 
     private static class ResultSet implements Result {
 

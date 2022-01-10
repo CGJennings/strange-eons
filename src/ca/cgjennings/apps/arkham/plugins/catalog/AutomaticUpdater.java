@@ -291,11 +291,8 @@ public class AutomaticUpdater {
             final boolean fiAppUpdate = (foundSEUpdate || foundSEExperimentalUpdate);
             final boolean fiPlugUpdate = pluginUpdates;
             if (fiNewPlugins || fiAppUpdate || fiPlugUpdate) {
-                Runnable updateMessage = new Runnable() {
-                    @Override
-                    public void run() {
-                        new UpdateMessage(fiAppUpdate, fiPlugUpdate, fiNewPlugins);
-                    }
+                Runnable updateMessage = () -> {
+                    new UpdateMessage(fiAppUpdate, fiPlugUpdate, fiNewPlugins);
                 };
                 if (background) {
                     EventQueue.invokeLater(updateMessage);
