@@ -637,7 +637,7 @@ abstract class LZMAEncoder extends LZMACoder {
          * {@code PRICE_UPDATE_INTERVAL} many lengths have been encoded
          * with the same posState.
          */
-        private static final int PRICE_UPDATE_INTERVAL = 32; // FIXME?
+        private static final int PRICE_UPDATE_INTERVAL = 32;
 
         private final int[] counters;
         private final int[][] prices;
