@@ -35,7 +35,7 @@ public class JExpansionList extends JIconList<Expansion> {
         if (game == null) {
             game = Game.getAllGamesInstance();
         }
-        DefaultListModel list = new DefaultListModel();
+        DefaultListModel<Expansion> list = new DefaultListModel<>();
         Expansion[] exps = Expansion.getExpansionsForGame(game, includeGenerics);
         for (Expansion e : exps) {
             list.addElement(e);
