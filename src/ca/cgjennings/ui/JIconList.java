@@ -4,6 +4,7 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 /**
@@ -54,8 +55,23 @@ public class JIconList<T> extends JList<T> {
 
     private Icon defaultIcon;
 
+    /**
+     * Creates an {@link IconRenderer} cast to a renderer for the specified
+     * type. The type may or may not be an {@link IconProvider}; if the actual
+     * values seen by the renderer are icon providers, their icons are used as
+     * icons for the list items.
+     * 
+     * @param <E> the desired item type
+     * @return a list cell renderer for the specified type that renders icons
+     * for icon provider items
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> ListCellRenderer<E> createRenderer() {
+        ListCellRenderer<?> r = new IconRenderer();
+        return (ListCellRenderer<E>) r;
+    }
+    
     public static class IconRenderer extends DefaultListCellRenderer {
-
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);

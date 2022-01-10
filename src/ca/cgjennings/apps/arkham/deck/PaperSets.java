@@ -693,11 +693,11 @@ public final class PaperSets {
      * @return a combo box model of the requested papers
      * @throws NullPointerException if the paper set is {@code null}
      */
-    public static DefaultComboBoxModel setToComboBoxModel(Set<PaperProperties> papers) {
+    public static DefaultComboBoxModel<PaperProperties> setToComboBoxModel(Set<PaperProperties> papers) {
         if (papers == null) {
             throw new NullPointerException("papers");
         }
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        DefaultComboBoxModel<PaperProperties> m = new DefaultComboBoxModel<>();
         for (PaperProperties pp : papers) {
             m.addElement(pp);
         }
@@ -712,12 +712,12 @@ public final class PaperSets {
      * @return a list model of the requested papers
      * @throws NullPointerException if the paper set is {@code null}
      */
-    public static DefaultListModel setToListModel(Set<PaperProperties> papers) {
+    public static DefaultListModel<PaperProperties> setToListModel(Set<PaperProperties> papers) {
         if (papers == null) {
             throw new NullPointerException("papers");
         }
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PaperProperties> m = new DefaultListModel<>();
         for (PaperProperties pp : papers) {
             m.addElement(pp);
         }
@@ -752,7 +752,7 @@ public final class PaperSets {
      *
      * @return a list cell renderer for sets of paper properties instances
      */
-    public static ListCellRenderer createListCellRenderer() {
-        return new JIconList.IconRenderer();
+    public static ListCellRenderer<PaperProperties> createListCellRenderer() {
+        return JIconList.createRenderer();
     }
 }
