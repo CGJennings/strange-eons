@@ -9,7 +9,7 @@ import javax.swing.text.Document;
  * specifies a {@code getDocument} method that allows nesting-aware code to
  * access the document(s) being wrapped.
  *
- * @author Christopher G. Jennings
+ * @author Chris Jennings
  */
 public interface NestingDocument extends Document {
 

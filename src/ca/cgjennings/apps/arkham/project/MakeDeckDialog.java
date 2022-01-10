@@ -32,6 +32,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         getBoolean("deck-pack-twoside", doubleSideCheck);
         getBoolean("deck-pack-group", groupsCheck);
+        getBoolean("deck-pack-bleed-margin", bleedCheck);
         qualitySlider.setValue(Settings.getUser().getInt("deck-pack-layout-quality") + 1);
     }
 
@@ -63,6 +64,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
         doubleSideCheck = new javax.swing.JCheckBox();
         groupsCheck = new javax.swing.JCheckBox();
         customPaperBtn = new javax.swing.JButton();
+        bleedCheck = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string( "pa-makedeck" )); // NOI18N
@@ -155,6 +157,9 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
             }
         });
 
+        bleedCheck.setSelected(true);
+        bleedCheck.setText(string("pa-makedeck-bleed-margin")); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -162,6 +167,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(bleedCheck)
                     .addComponent(groupsCheck)
                     .addComponent(doubleSideCheck)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -178,12 +184,12 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
                                 .addComponent(paperSizeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(customPaperBtn)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(deckField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,7 +202,10 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGap(18, 18, 18)
                 .addComponent(doubleSideCheck)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(groupsCheck))
+                .addComponent(groupsCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bleedCheck)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -243,6 +252,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
 	}//GEN-LAST:event_customPaperBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox bleedCheck;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton customPaperBtn;
     private javax.swing.JTextField deckField;
@@ -284,8 +294,10 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
         packer.setPaper((PaperProperties) paperSizeCombo.getSelectedItem());
         packer.setLayoutDoubleSided(doubleSideCheck.isSelected());
         packer.setGroupingEnabled(groupsCheck.isSelected());
+        packer.setBleedMarginEnabled(bleedCheck.isSelected());
         setBoolean("deck-pack-twoside", doubleSideCheck);
         setBoolean("deck-pack-group", groupsCheck);
+        setBoolean("deck-pack-bleed-margin", bleedCheck);
         Settings.getUser().set("deck-pack-layout-quality", "" + (qualitySlider.getValue() - 1));
         dispose();
     }

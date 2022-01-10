@@ -19,7 +19,7 @@ import javax.swing.plaf.InsetsUIResource;
 /**
  * The Yuggoth theme is a built-in dark mode theme.
  * 
- * @author Christopher G. Jennings <https://cgjennings.ca/contact>
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class YuggothTheme extends Theme {
     public YuggothTheme() {

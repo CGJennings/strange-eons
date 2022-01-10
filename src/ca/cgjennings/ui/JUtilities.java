@@ -53,6 +53,20 @@ public class JUtilities {
     }
 
     /**
+     * Enable or disable a group list of components.
+     */
+    public static void enable(boolean enable, JComponent... components) {
+        for (JComponent c : components) {
+            if (c != null) c.setEnabled(enable);
+        }
+    }
+    public static void enable(boolean enable, JComponent component1, JComponent component2) {
+        component1.setEnabled(enable);
+        component2.setEnabled(enable);
+    }
+    
+
+    /**
      * Recursively enable or disable a tree of components.
      *
      * @param component the root of the component tree

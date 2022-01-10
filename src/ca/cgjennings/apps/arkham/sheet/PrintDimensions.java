@@ -33,10 +33,13 @@ public final class PrintDimensions {
      * @param pixelWidth the width, in pixels
      * @param pixelHeight the height, in pixels
      * @param pixelsPerInch the print resolution, in pixels per inch
+     * @param bleedMargin the size of any additional bleed margin, measured in
+     * points
      */
-    public PrintDimensions(int pixelWidth, int pixelHeight, double pixelsPerInch) {
-        w = (pixelWidth / pixelsPerInch) * 72d;
-        h = (pixelHeight / pixelsPerInch) * 72d;
+    public PrintDimensions(int pixelWidth, int pixelHeight, double pixelsPerInch, double bleedMargin) {
+        bleedMargin *= 2d;
+        w = (pixelWidth / pixelsPerInch) * 72d + bleedMargin;
+        h = (pixelHeight / pixelsPerInch) * 72d + bleedMargin;
     }
 
     /**
@@ -44,10 +47,12 @@ public final class PrintDimensions {
      *
      * @param image the image whose pixel width and height will be used
      * @param pixelsPerInch the print resolution, in pixels per inch
+     * @param bleedMargin the size of any additional bleed margin, measured in
+     * points
      * @throws NullPointerException if {@code image} is {@code null}
      */
-    public PrintDimensions(BufferedImage image, double pixelsPerInch) {
-        this(image.getWidth(), image.getHeight(), pixelsPerInch);
+    public PrintDimensions(BufferedImage image, double pixelsPerInch, double bleedMargin) {
+        this(image.getWidth(), image.getHeight(), pixelsPerInch, bleedMargin);
     }
 
     /**

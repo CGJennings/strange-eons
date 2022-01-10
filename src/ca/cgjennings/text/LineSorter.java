@@ -193,22 +193,6 @@ public class LineSorter {
         }
     }
 
-//	public static void main( String[] args ) {
-//		String[] lines = new String[]{
-//				"beta",
-//				"gamma",
-//				"alpha",
-//				"alpha      99",
-//				"alpha 1",
-//				"alpha    9A",
-//				"alpha   01",
-//		};
-//		LineSorter s = new SemanticSorter( Locale.getDefault(), Collator.PRIMARY, true );
-//		lines = s.sort( lines );
-//		for( int i=0; i<lines.length; ++i ) {
-//			System.out.println( lines[i] );
-//		}
-//	}
     private static class ReverseComparator implements Comparator {
 
         private final Comparator cmp;

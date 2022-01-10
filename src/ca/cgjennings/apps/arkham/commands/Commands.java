@@ -27,6 +27,7 @@ import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.ConfigureUpdatesDialog;
 import ca.cgjennings.apps.arkham.project.ProjectView;
+import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
@@ -333,10 +334,10 @@ public class Commands {
         }
     };
     /**
-     * Toggles visibility of region boxes on game component previews, which help
+     * Toggles visibility of region boxes on game component previews, which helps
      * when debugging component layouts.
      */
-    public static final AbstractToggleCommand VIEW_REGION_BOXES = new AbstractToggleCommand("app-show-regions") {
+    public static final AbstractToggleCommand VIEW_REGION_BOXES = new AbstractToggleCommand("app-show-regions", "ui/view/region-boxes.png") {
         {
             final boolean debug = Settings.getShared().getYesNo(KEY_SHOW_DEBUG_BOXES);
             MarkupRenderer.DEBUG = debug;
@@ -347,11 +348,74 @@ public class Commands {
         public void actionPerformed(ActionEvent event) {
             final boolean debug = isSelected();
             MarkupRenderer.DEBUG = debug;
-            Settings.getUser().set(KEY_SHOW_DEBUG_BOXES, debug ? "yes" : "no");
+            Settings.getUser().setYesNo(KEY_SHOW_DEBUG_BOXES, debug);
             StrangeEons.getWindow().redrawPreviews();
         }
         private static final String KEY_SHOW_DEBUG_BOXES = "show-debug-boxes";
     };
+    
+    /**
+     * Toggles visibility of region boxes on game component previews, which helps
+     * when debugging component layouts.
+     */
+    public static final AbstractToggleCommand VIEW_PORTRAIT_BOXES = new AbstractToggleCommand("app-show-portrait-boxes", "ui/view/portrait-boxes.png") {
+        {
+            final boolean debug = Settings.getShared().getYesNo(KEY_SHOW_PORTRAIT_BOXES);
+            Sheet.DEBUG_PORTRAIT_REGION = debug;
+            setSelected(debug);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            final boolean debug = isSelected();
+            Sheet.DEBUG_PORTRAIT_REGION = debug;
+            Settings.getUser().setYesNo(KEY_SHOW_PORTRAIT_BOXES, debug);
+            StrangeEons.getWindow().redrawPreviews();
+        }
+        private static final String KEY_SHOW_PORTRAIT_BOXES = "show-portrait-debug-boxes";
+    };
+    
+    /**
+     * Toggles visibility of bleed margin box on game component previews, which helps
+     * when debugging component layouts.
+     */
+    public static final AbstractToggleCommand VIEW_UNSAFE_BOXES = new AbstractToggleCommand("app-show-margin-boxes", "ui/view/margin-boxes.png") {
+        {
+            final boolean debug = Settings.getShared().getYesNo(KEY_SHOW_MARGIN_DEBUG_BOXES);
+            Sheet.DEBUG_UNSAFE_AREA = debug;
+            setSelected(debug);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            final boolean debug = isSelected();
+            Sheet.DEBUG_UNSAFE_AREA = debug;
+            Settings.getUser().setYesNo(KEY_SHOW_MARGIN_DEBUG_BOXES, debug);
+            StrangeEons.getWindow().redrawPreviews();
+        }
+        private static final String KEY_SHOW_MARGIN_DEBUG_BOXES = "show-margin-debug-boxes";
+    };
+    
+    /**
+     * Toggles visibility of card outline on game component previews, which helps
+     * when debugging component layouts.
+     */
+    public static final AbstractToggleCommand VIEW_EDGE_BOXES = new AbstractToggleCommand("app-show-edge-boxes", "ui/view/edge-boxes.png") {
+        {
+            final boolean debug = Settings.getShared().getYesNo(KEY_SHOW_EDGE_DEBUG_BOXES);
+            Sheet.DEBUG_BLEED_MARGIN = debug;
+            setSelected(debug);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            final boolean debug = isSelected();
+            Sheet.DEBUG_BLEED_MARGIN = debug;
+            Settings.getUser().setYesNo(KEY_SHOW_EDGE_DEBUG_BOXES, debug);
+            StrangeEons.getWindow().redrawPreviews();
+        }
+        private static final String KEY_SHOW_EDGE_DEBUG_BOXES = "show-edge-debug-boxes";
+    };     
 
     /**
      * Creates a new expansion symbol.

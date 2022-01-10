@@ -142,7 +142,7 @@ const sprintf = function sprintf() {
     return arkham.plugins.LibImpl.sprintf(
             loc, arguments[firstObj - 1],
             Array.prototype.slice.call(arguments, firstObj)
-            );
+    );
 };
 
 const print = function print() {
@@ -211,7 +211,7 @@ const string = function string(key) {
                 useLibrary.__$.getUiLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-                );
+        );
     }
     return str;
 };
@@ -228,7 +228,7 @@ const gstring = function gstring(key) {
                 useLibrary.__$.getGameLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-                );
+        );
     }
     return str;
 };
@@ -251,7 +251,7 @@ const $ = function $(key) {
 
 const Patch = {
     apply() {
-        if (arguments.length % 2 != 0) {
+        if (arguments.length % 2 !== 0) {
             Error.error(string('scriptlib-common-patchargs'));
         }
         let s = Settings.user;
@@ -287,7 +287,7 @@ const Patch = {
         }
     },
     card() {
-        if (arguments.length < 3 || arguments.length % 2 != 1) {
+        if (arguments.length < 3 || arguments.length % 2 !== 1) {
             Error.error('Patch.card(): invalid number of arguments: ' + arguments.length);
         }
         let privateSettings = arguments[0].settings;
@@ -319,7 +319,7 @@ const debug = arkham.plugins.debugging.ScriptDebugging.isInstalled()
 const assert = arkham.plugins.debugging.ScriptDebugging.isInstalled()
         ? function assert(condition, message) {
             if (!condition) {
-                message = "ASSERTION FAILURE" + (message == null ? "" : ": " + message);
+                message = "ASSERTION FAILURE" + (message == null ? "" : ": " + String(message));
                 debug(message);
                 throw new Error(message);
             }
@@ -389,19 +389,14 @@ Number.prototype.dontEnum('toInt', 'toLong', 'toFloat');
     RegExp.quote = (s) => s.replace(esc, '\\$1');
     RegExp.quoteReplacement = (s) => s.replace(qesc, '$$$$');
 }
-RegExp.prototype.dontEnum('quote', 'quoteReplacement');
 
-
-//String.prototype.replaceAll = function replaceAll(pattern, replacement) {
-//    return this.replace(
-//            new RegExp(RegExp.quote(pattern), 'g'),
-//            RegExp.quoteReplacement(replacement)
-//            );
-//};
-//
-//String.prototype.dontEnum(
-//        'replaceAll'
-//        );
+String.prototype.replaceAll = function replaceAll(pattern, replacement) {
+    return this.replace(
+        new RegExp(RegExp.quote(pattern), 'g'),
+        RegExp.quoteReplacement(replacement)
+    );
+};
+String.prototype.dontEnum('replaceAll');
 
 Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);

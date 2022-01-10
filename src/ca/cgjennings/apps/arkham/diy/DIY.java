@@ -207,6 +207,9 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     private int flags = 0;
     private double bleedMargin = 0d;
+    boolean hasExplicitBleedMargin = false;
+    private double cornerRadius = 0d;
+    boolean hasExplicitCornerRadius = false;
     private double[][] customFoldMarks = null;
     private HighResolutionMode highResMode = HighResolutionMode.ENABLE;
     private Sheet.DeckSnappingHint deckSnappingHint = Sheet.DeckSnappingHint.CARD;
@@ -792,8 +795,17 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets the size of the bleed margin for this component, in points. (The
-     * default is 0.)
+     * Sets the size of the bleed margin for this component, in points.
+     * This can be set if the component's template images include
+     * a bleed margin as part of their design so that Strange Eons will take
+     * this into account when rendering sheets with bleed margins enabled.
+     * This will affect all of the component's faces (sheets).
+     * (The default is 0, meaning there is no bleed margin included in the design.)
+     * 
+     * <p>
+     * If no bleed margin is set using this method, each sheet will use
+     * a bleed margin set by the setting key
+     * <i>templateKey</i>{@code -bleed-margin}, or 0 if the key is not set.
      *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
@@ -808,7 +820,43 @@ public class DIY extends AbstractGameComponent implements Handler {
         if (marginInPoints < 0d) {
             throw new IllegalArgumentException("bleed margin cannot be negative: " + marginInPoints);
         }
+        hasExplicitBleedMargin = true;
         bleedMargin = marginInPoints;
+    }
+
+    /**
+     * Returns the corner radius for this component, in points.
+     *
+     * @return the component's corner radius, in points
+     */
+    public double getCornerRadius() {
+        return cornerRadius;
+    }
+
+    /**
+     * Sets the radius for rounding the corners of this component, in points.
+     * This will affect all of the component's faces (sheets).
+     * (The default is 0, leaving the corners sharp.)
+     *
+     * <p>If no corner radius is set using this method, each sheet will use
+     * a separate radius set by the setting key
+     * <i>templateKey</i>{@code -corner-radius}, or 0 if the key is not set.
+     * 
+     * <p>
+     * <b>This is a <a href='#locked'>restricted property</a>.</b>
+     *
+     * @param radiusInPoints the new corner radius; this is used to round the
+     * corners of the component when trimming the edges.
+     * @throws IllegalArgumentException if the radius is negative
+     * @see #getCornerRadius
+     */
+    public void setCornerRadius(double radiusInPoints) {
+        checkPropertyLock();
+        if (radiusInPoints < 0d) {
+            throw new IllegalArgumentException("corner radius cannot be negative: " + radiusInPoints);
+        }
+        hasExplicitCornerRadius = true;
+        cornerRadius = radiusInPoints;
     }
 
     /**
@@ -2106,7 +2154,7 @@ public class DIY extends AbstractGameComponent implements Handler {
             case PLAIN_BACK:
                 sheets = new Sheet[]{
                     new DIYSheet(this, frontTemplateKey + "-template", 0),
-                    new UndecoratedCardBack(this, backTemplateKey + "-template")
+                    new UndecoratedCardBack(this, backTemplateKey + "-template", bleedMargin, cornerRadius)
                 };
                 createFrontPainter(this, (DIYSheet) sheets[0]);
                 break;
@@ -2539,7 +2587,7 @@ public class DIY extends AbstractGameComponent implements Handler {
         return "DIY{script=" + getHandlerScript() + ", faceStyle=" + getFaceStyle() + '}';
     }
 
-    private static final int CURRENT_VERSION = 8;
+    private static final int CURRENT_VERSION = 9;
     private static final long serialVersionUID = 6_385_243_435_343_478_156L;
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -2575,7 +2623,10 @@ public class DIY extends AbstractGameComponent implements Handler {
         out.writeObject(portraitKey);
         out.writeInt(flags);
         out.writeObject(deckSnappingHint);
+        out.writeDouble(cornerRadius);
+        out.writeBoolean(hasExplicitCornerRadius);
         out.writeDouble(bleedMargin);
+        out.writeBoolean(hasExplicitBleedMargin);
         out.writeObject(highResMode);
         out.writeObject(customFoldMarks);
 
@@ -2653,12 +2704,26 @@ public class DIY extends AbstractGameComponent implements Handler {
             deckSnappingHint = Sheet.DeckSnappingHint.CARD;
         }
 
+        if (version >= 9) {
+            cornerRadius = in.readDouble();
+            hasExplicitCornerRadius = in.readBoolean();
+        } else {
+            cornerRadius = 0d;
+            hasExplicitCornerRadius = false;
+        }
+
         if (version >= 3) {
             bleedMargin = in.readDouble();
+            if (version >= 9) {
+                hasExplicitBleedMargin = in.readBoolean();
+            } else {
+                hasExplicitBleedMargin = bleedMargin != 0d;
+            }
             highResMode = (HighResolutionMode) in.readObject();
             customFoldMarks = (double[][]) in.readObject();
         } else {
             bleedMargin = 0d;
+            hasExplicitBleedMargin = false;
             highResMode = HighResolutionMode.ENABLE;
             customFoldMarks = null;
         }

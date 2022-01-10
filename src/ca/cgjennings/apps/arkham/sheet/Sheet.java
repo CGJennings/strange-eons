@@ -2,10 +2,12 @@ package ca.cgjennings.apps.arkham.sheet;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.PrototypingGraphics2D;
+import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.layout.MarkupRenderer;
 import gamedata.Expansion;
 import gamedata.Game;
@@ -24,6 +26,7 @@ import java.awt.font.GlyphVector;
 import java.awt.font.TextAttribute;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -40,8 +43,8 @@ import resources.Settings.ParseError;
 
 /**
  * An abstract base class for objects that paint one face (side) of a
- * {@link GameComponent}. Subclasses must provide a <i>template key</i>
- * before the sheet can be used. This is normally  {@linkplain #Sheet(ca.cgjennings.apps.arkham.component.GameComponent, java.lang.String)
+ * {@link GameComponent}.Subclasses must provide a <i>template key</i>
+ * before the sheet can be used. This is normally {@linkplain #Sheet(ca.cgjennings.apps.arkham.component.GameComponent, java.lang.String)
  * provided during construction}, but sheets with more complex initialization
  * may delay this step and call
  * {@link #initializeTemplate(java.lang.String) initializeTemplate} later to set
@@ -56,17 +59,18 @@ import resources.Settings.ParseError;
  * {@code BufferedImage}.
  *
  * <p>
- * This class provides a number of static helper methods for drawing tasks that
- * are commonly needed when drawing components, such as drawing text within
- * rectangular regions of the face  ({@link #drawTitle(java.awt.Graphics2D, java.lang.String, java.awt.Rectangle, java.awt.Font, float, int) drawTitle},
+ * This class provides a number of helper methods for drawing tasks that are
+ * commonly needed when drawing components, such as drawing text within
+ * rectangular regions of the face null ({@link #drawTitle(java.awt.Graphics2D, java.lang.String, java.awt.Rectangle, java.awt.Font, float, int) drawTitle},
  * {@link #fitTitle(java.awt.Graphics2D, java.lang.String, java.awt.Rectangle, java.awt.Font, float, int) fitTitle}
  * {@link #drawOutlinedTitle(java.awt.Graphics2D, java.lang.String, java.awt.Rectangle, java.awt.Font, float, float, java.awt.Paint, java.awt.Paint, int, boolean) drawOutlinedTitle},
  * {@link #drawRotatedTitle(java.awt.Graphics2D, java.lang.String, java.awt.Rectangle, java.awt.Font, float, int, int) drawRotatedTitle}),
  * performing custom handling of expansion symbols
  * ({@link #getExpansionSymbol getExpansionSymbol}, {@link #parseExpansionList parseExpansionList}),
- * and setting up markup text boxes  ({@link #doStandardRendererInitialization doStandardRendererInitialization},
+ * and setting up markup text boxes null ({@link #doStandardRendererInitialization doStandardRendererInitialization},
  * {@link #setNamesForRenderer setNamesForRenderer}).
  *
+ * @param <G> the type of component for which this is a sheet
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public abstract class Sheet<G extends GameComponent> {
@@ -78,8 +82,7 @@ public abstract class Sheet<G extends GameComponent> {
      * that key will be executed as script code and then the function with this
      * name ("onPaint") will be called. The function is passed a graphics
      * context for the sheet image buffer, a reference to the game component,
-     * and a reference to this sheet. Plug-ins can use this to produce special
-     * effects or to customize existing component types.
+     * and a reference to this sheet.
      */
     public static final String ON_PAINT_EVENT_METHOD = "onPaint";
 
@@ -87,9 +90,12 @@ public abstract class Sheet<G extends GameComponent> {
 
     private BufferedImage template;
     private BufferedImage image;
+    private BufferedImage finishedImage;
     private double dpi;
     private double upsampleFactor = 1d;
     private double preferredUpsample = 1d;
+    // the ideal user-preferred bleed margin width in points
+    private double bleedMargin = 0d;
 
     // stores the template key set with initializeTemplate
     private String templateKey;
@@ -98,6 +104,7 @@ public abstract class Sheet<G extends GameComponent> {
 
     // set by markChanged
     private boolean changeFlag = true;
+
     /**
      * The key used to fetch the expansion symbol region; this is normally set
      * automatically by {@link #initializeTemplate}. However, subclasses can
@@ -122,9 +129,6 @@ public abstract class Sheet<G extends GameComponent> {
         }
     }
 
-    private Sheet() {
-    } // subclasses *must* provide a component
-
     /**
      * Creates a component face for a game component. Concrete subclasses must
      * call {@link #initializeTemplate} at some point in their constructor.
@@ -140,8 +144,8 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Creates a component face for a game component that will use a template
-     * image defined by the value of the {@code templateKey} setting. Note
-     * that the sheet is not required to actually use the template image. For
+     * image defined by the value of the {@code templateKey} setting. Note that
+     * the sheet is not required to actually use the template image. For
      * example, the actual template image that gets drawn may be selected from
      * one of several different images depending on settings in the associated
      * game component.
@@ -170,19 +174,21 @@ public abstract class Sheet<G extends GameComponent> {
      * <li> The {@link Settings} of the game component associated with this
      * sheet are fetched to look up the keys below.
      * <li> The template image is loaded using <i>templateKey</i>.
-     * <li> If <i>templateKey</i> ends with {@code -template}, this is
-     * removed.
+     * <li> If <i>templateKey</i> ends with {@code -template}, this is removed.
      * <li> The default region for drawing expansion symbols, if any, is read
-     * from {@code <i>templateKey</i>-expsym}.
+     * from <i>templateKey</i>{@code -expsym}.
      * <li> The template image resolution, in pixels per inch, is read from
-     * {@code <i>templateKey</i>-ppi}; if undefined, the default is 150
-     * ppi. (The suffix {@code -dpi} can also be used.)
+     * <i>templateKey</i>@code -ppi}; if undefined, the default is 150 ppi. (The
+     * suffix {@code -dpi} can also be used.)
      * <li> The preferred display upsample factor is read from
-     * {@code <i>templateKey</i>-upsample}; if undefined, the default is 1;
-     * this is multiplied by the template resolution to determine the default
+     * <i>templateKey</i>{@code -upsample}; if undefined, the default is 1; this
+     * is multiplied by the template resolution to determine the default
      * resolution for rendering. The default resolution is used by the preview
      * window; components with extremely small text can be made more legible by
      * increasing this value.
+     * <li> The initial corner radius is set from
+     * <i>templateKey</i>{@code -corner-radius}; if undefined the default is 0.
+     * See also {@link #getBleedMargin()}.
      * </ol>
      *
      * @param templateKey the base key name to use to initialize the template
@@ -203,6 +209,8 @@ public abstract class Sheet<G extends GameComponent> {
             keybase = keybase.substring(0, keybase.length() - "-template".length());
         }
 
+        StrangeEons.log.log(Level.INFO, "created sheet for base key prefix \"{0}-\"", keybase);
+
         expsymKey = keybase + "-expsym";
 
         if (settings.get(keybase + "-ppi") != null) {
@@ -216,6 +224,8 @@ public abstract class Sheet<G extends GameComponent> {
         if (settings.get(keybase + "-upsample") != null) {
             preferredUpsample = settings.getDouble(keybase + "-upsample");
         }
+
+        setCornerRadius(settings.getDouble(keybase + "-corner-radius", 0d));
 
         image = null;
         markChanged();
@@ -264,8 +274,8 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * If this sheet represents an embedded marker, returns the layout style of
-     * the marker. For regular sheets, this method returns {@code null}.
-     * (The base class returns {@code null}.)
+     * the marker. For regular sheets, this method returns {@code null}. (The
+     * base class returns {@code null}.)
      *
      * @return the token style of the embedded token, or {@code null} for
      * standard sheets
@@ -277,14 +287,15 @@ public abstract class Sheet<G extends GameComponent> {
     private boolean isPrototype = Settings.getUser().getBoolean("render-as-prototype");
 
     /**
-     * Sets whether the sheet is rendered in prototype mode, with a white background
-     * and only text and shapes (no images).
+     * Sets whether the sheet is rendered in prototype mode, with a white
+     * background and only text and shapes (no images). This feature is called
+     * "ink saver" in the UI.
      *
      * @param prototype true if prototype mode should be enabled
      */
     public void setPrototypeRenderingModeEnabled(boolean prototype) {
         checkUnlocked();
-        if(isPrototype != prototype) {
+        if (isPrototype != prototype) {
             isPrototype = prototype;
             markChanged();
             image = null;
@@ -292,7 +303,8 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns whether prototype rendering mode is enabled.
+     * Returns whether prototype rendering mode is enabled. This feature is
+     * called "ink saver" in the UI.
      *
      * @return true if prototype rendering is enabled
      */
@@ -311,8 +323,7 @@ public abstract class Sheet<G extends GameComponent> {
      * Returns an image of the sheet content. The caller must not modify the
      * contents of the returned image, as the image may be reused to speed up
      * subsequent paint requests. (If you need to modify the returned image,
-     * make a copy first and modify the copy; see
-     * {@link ImageUtilities#copy(java.awt.image.BufferedImage)}.)
+     * {@linkplain ImageUtilities#copy(java.awt.image.BufferedImage) use a copy}.)
      *
      * <p>
      * If the sheet needs to be redrawn to satisfy the request, this method will
@@ -320,11 +331,6 @@ public abstract class Sheet<G extends GameComponent> {
      * component-specific content. It will then execute the game component's on
      * paint event handler ({@link ScriptMonkey#ON_PAINT_EVENT_KEY}), if any,
      * and perform default expansion symbol drawing before returning the image.
-     *
-     * <p>
-     * The target is a hint to the sheet as to how the result will be used.
-     * Several methods in this class will take advantage of this hint
-     * automatically, and it is also passed to {@link #paintSheet}.
      *
      * <p>
      * The resolution parameter determines the resolution of the result, in
@@ -364,6 +370,7 @@ public abstract class Sheet<G extends GameComponent> {
                 throw new IllegalArgumentException("resolution < 1: " + resolution);
             }
 
+            final boolean logPainting = StrangeEons.log.isLoggable(Level.INFO);
             dirtyCacheHint = target != activeTarget;
             activeTarget = target;
 
@@ -375,22 +382,22 @@ public abstract class Sheet<G extends GameComponent> {
                 dirtyCacheHint = true;
             }
 
-            if (changeFlag || dirtyCacheHint) { // i.e. hasChanged or target/resolution is different
+            // content marked changed or target/resolution is different
+            if (changeFlag || dirtyCacheHint) {
                 StrangeEons.setWaitCursor(true);
+                finishedImage = null;
                 try {
-                    long nanos = 0L;
-                    final boolean logPainting = StrangeEons.log.isLoggable(Level.INFO);
                     if (logPainting) {
-                        nanos = System.nanoTime();
+                        paintTimeNanos = System.nanoTime();
                     }
 
                     // if the card is transparent, we need to recreate the bitmap
-                    // on each draw to prevent overdraw
+                    // on each paint to prevent overdraw
                     if (isTransparent()) {
                         image = null;
                     }
 
-                    if(isPrototype && image != null) {
+                    if (isPrototype && image != null) {
                         fillPrototypeModeBackground(image);
                     }
 
@@ -402,24 +409,43 @@ public abstract class Sheet<G extends GameComponent> {
                     }
 
                     if (logPainting) {
-                        nanos = System.nanoTime() - nanos;
-                        StrangeEons.log.log(
-                                Level.INFO, "rendered {0} in {1} ms at {2} dpi, {3} target", new Object[]{
-                                    getGameComponent().getName(), nanos / 1000000d,
-                                    getPaintingResolution(),
-                                    target.toString()
-                                });
+                        paintTimeNanos = System.nanoTime() - paintTimeNanos;
+                        StrangeEons.log.log(Level.INFO, "rendered {0} in {1} ms at {2} dpi, {3} target", new Object[]{
+                            getGameComponent().getName(),
+                            paintTimeNanos / 1000000d,
+                            getPaintingResolution(),
+                            target.toString()
+                        });
                     }
+                } catch (Exception ex) {
+                    StrangeEons.log.log(Level.SEVERE, "uncaught exception while painting sheet " + this, ex);
                 } finally {
                     changeFlag = false;
                     StrangeEons.setWaitCursor(false);
                 }
             }
+
+            // re-rendered base image or finish option changed
+            if (finishedImage == null) {
+                if (logPainting) {
+                    paintTimeNanos = System.nanoTime();
+                }
+                finishedImage = applyFinishingOptions(image, target, resolution);
+                if (logPainting) {
+                    paintTimeNanos = System.nanoTime() - paintTimeNanos;
+                    StrangeEons.log.log(Level.INFO, "applied card finish {0} in {1} ms", new Object[]{
+                        FinishStyle.fromSheet(this).name(),
+                        paintTimeNanos / 1000000d
+                    });
+                }
+            }
         } finally {
             drawLock = false;
         }
-        return image;
+
+        return finishedImage;
     }
+    private long paintTimeNanos;
 
     // if rendering is not active, this tracks the target of the last request
     // to help set the dirtyCacheHint; while a rendering is active, this
@@ -430,41 +456,240 @@ public abstract class Sheet<G extends GameComponent> {
     private boolean dirtyCacheHint;
 
     /**
-     * Returns an image of the sheet content as it should appear when printed or
-     * exported. If the component has a designed bleed margin (that is, if
-     * {@link #getBleedMargin()} returns a positive value), then this is
-     * equivalent to {@code paint( target, resolution )}. Otherwise, the
-     * image returned by that method will be passed to
-     * {@link #synthesizeBleedMargin(java.awt.image.BufferedImage, boolean, double)}
-     * as a starting image, and the sheet will be given the opportunity to
-     * modify the base image, or not, with a synthetic bleed margin. Note that
-     * the method is called even if the parameter
-     * {@code synthesizeBleedMargin} is {@code false}; some sheet
-     * implementations may choose to decorate the image when a bleed margin is
-     * not requested, for example, by adding rounded corners.
+     * Applies finishing options such as bleed margin adjustment and corner cuts
+     * to a painted sheet.
+     *
+     * @param sheetImage a rendered sheet image
+     * @param target a target describing the general quality and purpose
+     * @param resolution the desired image resolution, in pixels per inch
+     * @return the original image, or a new image that has been modified to
+     * apply the selected finishing options
+     */
+    protected BufferedImage applyFinishingOptions(BufferedImage sheetImage, RenderTarget target, double resolution) {
+        final boolean cut = getUserBleedMargin() == -1d && getCornerRadius() > 0d;
+        final int userBleedPx = (int) Math.ceil(getRenderedBleedMargin() / 72d * resolution);
+        final int designBleedPx = (int) Math.ceil(getBleedMargin() / 72d * resolution);
+
+        if (userBleedPx > designBleedPx) {
+            if (isMarginSynthesisAllowed()) {
+                final int marginToSynthesize = userBleedPx - designBleedPx;
+                sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, useTemplateForSynth ? getTemplateImage() : null, marginToSynthesize);
+            }
+        } else if (userBleedPx < designBleedPx) {
+            final int insetPx = userBleedPx - designBleedPx;
+            sheetImage = ImageUtilities.pad(sheetImage, insetPx, insetPx, insetPx, insetPx);
+        }
+
+        if (cut) {
+            final int radiusPx = (int) Math.ceil(getCornerRadius() / 72d * resolution);
+            sheetImage = EdgeFinishing.cutCorners(sheetImage, target, radiusPx);
+        }
+
+        if (DEBUG_BLEED_MARGIN || DEBUG_UNSAFE_AREA) {
+            Graphics2D g = sheetImage.createGraphics();
+            final int safeBleedPx = Math.max((int) Math.ceil(9d / 72d * resolution), userBleedPx);
+            try {
+                final int iw = sheetImage.getWidth();
+                final int ih = sheetImage.getHeight();
+                final int x = userBleedPx;
+                final int y = userBleedPx;
+                final int w = iw - userBleedPx * 2;
+                final int h = ih - userBleedPx * 2;
+                final int radiusPx = (int) Math.ceil(getCornerRadius() / 72d * resolution);
+                g.setStroke(new BasicStroke((float) upsampleFactor));
+
+                if (DEBUG_UNSAFE_AREA) {
+                    g.setColor(new Color(0x33ff0000, true));
+                    final Shape safe = new RoundRectangle2D.Float(
+                            x + safeBleedPx, y + safeBleedPx,
+                            w - safeBleedPx * 2, h - safeBleedPx * 2,
+                            radiusPx, radiusPx
+                    );
+                    final Shape universe = cut
+                            ? new RoundRectangle2D.Float(0, 0, iw, ih, radiusPx, radiusPx)
+                            : new Rectangle2D.Float(0, 0, iw, ih);
+                    final Shape unsafe = ShapeUtilities.subtract(universe, safe);
+
+                    g.fill(unsafe);
+
+                    g.setColor(Color.RED);
+                    g.setClip(unsafe);
+                    final int max = Math.max(iw, ih) * 2;
+                    final int delta = 24 * Math.max(1, (int) Math.ceil(upsampleFactor));
+                    for (int off = 0; off < max; off += delta) {
+                        g.drawLine(0, off, off, 0);
+                    }
+
+                    g.setClip(null);
+                    g.draw(safe);
+                }
+
+                if (DEBUG_BLEED_MARGIN) {
+                    g.setColor(Color.YELLOW);
+                    g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
+                    final float fWidth = (float) upsampleFactor;
+                    g.setStroke(new BasicStroke(
+                            fWidth,
+                            BasicStroke.CAP_BUTT,
+                            BasicStroke.JOIN_ROUND,
+                            0f,
+                            new float[] { fWidth * 8f },
+                            0f
+                    ));
+                    g.setColor(BROWN);
+                    g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
+                }
+            } finally {
+                g.dispose();
+            }
+        }
+
+        return sheetImage;
+    }
+    private static final Color BROWN = new Color(0xe65100);
+
+    /**
+     * Calling this method sets an internal flag allowing the template image to
+     * be used for bleed margin synthesis. This can improve the quality of the
+     * synthesized margin since the synthesized material will not include text
+     * and other painted content. However, some card designs modify the template
+     * on the fly: for example, with tinting or by substituting different
+     * graphics based on a user selection. Since this would result in a
+     * glaringly wrong bleed margin and Strange Eons cannot know if this may
+     * occur, it will not use the template unless explicitly told that this is
+     * safe by calling this method.
+     */
+    public void allowTemplateUseInBleedSynthesis() {
+        useTemplateForSynth = true;
+    }
+    private boolean useTemplateForSynth = false;
+
+    /**
+     * Returns whether the sheet is allowed to synthesize a bleed margin when
+     * the designed margin is less than the user-requested margin. The base
+     * class returns true.
+     *
+     * @return true if the sheet can synthesize a missing bleed margin
+     */
+    public boolean isMarginSynthesisAllowed() {
+        return !isTransparent();
+    }
+
+    public static boolean DEBUG_BLEED_MARGIN = false;
+    public static boolean DEBUG_UNSAFE_AREA = false;
+    public static boolean DEBUG_PORTRAIT_REGION = false;
+
+    /**
+     * Sets the ideal bleed margin for this sheet, in points. The possible
+     * values and their effects are:
+     *
+     * <table>
+     * <tr><th>{@code marginInPoints} <th>Effect</tr>
+     * <tr><td>{@code >  0} <td>Include a bleed margin of this width. If the
+     * designed bleed margin is too small, missing content will be synthesized
+     * using a simple algorithm. If the designed bleed margin is larger, the
+     * extra material will be cropped off.</tr>
+     * <tr><td>{@code =  0} <td>Do not include a bleed margin. If there is a
+     * designed bleed margin, it will be cropped off.</tr>
+     * <tr><td>{@code = -1} <td>Do not include a bleed margin. If the sheet has
+     * a positive corner radius, the final sheet image will "cut" the card
+     * corners.
+     * </table>
+     *
+     * <p>
+     * The sheet will attempt to honour the requested margin. Values of 0 and -1
+     * are always rendered exactly. In some cases where the requested size is
+     * larger than the designed bleed margin, it is not possible to synthesize a
+     * reasonable bleed margin. In such cases, the actual bleed margin will be
+     * limited to the designed bleed margin width. The true margin width can be
+     * obtained by calling {@link #getRenderedBleedMargin()}.
+     *
+     * <p>
+     * The recommended standard margin is 9 points, as this is compatible with
+     * virtually all commercial printers.
+     *
+     * @param marginInPoints the target bleed margin in points, or -1 to inset
+     * the card edges to the boundary described by the corner radius
+     * @see #getRenderedBleedMargin()
+     * @see #getBleedMargin()
+     * @see #getCornerRadius()
+     * @see #getUserBleedMargin()
+     */
+    public void setUserBleedMargin(double marginInPoints) {
+        if (bleedMargin < 0d && bleedMargin != -1d) {
+            throw new IllegalArgumentException("marginInPoints must be >= 0 or exactly -1: " + marginInPoints);
+        }
+        if (bleedMargin != marginInPoints) {
+            bleedMargin = marginInPoints;
+            finishedImage = null;
+        }
+    }
+
+    /**
+     * Returns the ideal bleed margin for this sheet, in points. Refer to
+     * {@link #setUserBleedMargin(double)} for a description of the possible
+     * return values and their implications.
+     *
+     * @return the ideal bleed margin, or -1 for a 0 bleed margin with cut
+     * corners
+     * @see #setUserBleedMargin(double)
+     */
+    public double getUserBleedMargin() {
+        return bleedMargin;
+    }
+
+    /**
+     * Returns the actual bleed margin width that will be rendered for this
+     * sheet. This may be less than the user bleed margin. The returned value is
+     * always a physical width; if the user margin is negative, this will return
+     * zero.
+     *
+     * @return a non-negative width in points
+     * @see #setUserBleedMargin(double)
+     */
+    public double getRenderedBleedMargin() {
+        if (isMarginSynthesisAllowed()) {
+            return Math.max(0, getUserBleedMargin());
+        }
+        return Math.max(0, Math.min(getBleedMargin(), getUserBleedMargin()));
+    }
+
+    /**
+     * Renders the sheet image, including any designed bleed margin. If there is
+     * no designed bleed margin and {@code synthesizeBleedMargin} is true, a 9
+     * point false margin will be synthesized (if the sheet image is
+     * compatible).
+     *
+     * @deprecated Use {@link #setUserBleedMargin(double)} to set the desired
+     * bleed margin size, then call
+     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)} to
+     * paint the image.
      *
      * @param target the target hint to use for painting
      * @param resolution the resolution of the returned image, or -1 for the
      * sheet's default resolution
-     * @return an image representing the content of the component face
-     * represented by this sheet
-     * @throws NullPointerException if target is {@code null}
-     * @throws IllegalArgumentException if the resolution is less than 1 but not
-     * the special default value (-1)
-     * @throws ConcurrentModificationException if the sheet is already being
-     * painted
-     * @see #paintSheet
-     * @see #applyContextHints
+     * @param synthesizeBleedMargin true to synthesize a standard bleed margin
+     * if none is included
+     * @return a rendered image of the sheet
      * @since 3.0.3680
      */
+    @Deprecated
     public final BufferedImage paint(RenderTarget target, double resolution, boolean synthesizeBleedMargin) {
-        BufferedImage bi = paint(target, resolution);
-        if (getBleedMargin() <= 0d) {
-            bi = synthesizeBleedMargin(bi, synthesizeBleedMargin, resolution);
+        final double oldUserBleed = getUserBleedMargin();
+        try {
+            final double designedMargin = getBleedMargin();
+            setUserBleedMargin(designedMargin);
+            BufferedImage bi = paint(target, resolution);
+            if (designedMargin == 0d && synthesizeBleedMargin) {
+                final int m = Math.min((int) Math.ceil(designedMargin / 72d * resolution), Math.min(bi.getWidth(), bi.getHeight()));
+                bi = EdgeFinishing.synthesizeMargin(bi, null, m);
+            }
+            return bi;
+        } finally {
+            setUserBleedMargin(oldUserBleed);
         }
-        return bi;
     }
-
+    
     /**
      * Paints standard sheet overlays: on paint code and expansion symbols.
      */
@@ -493,9 +718,7 @@ public abstract class Sheet<G extends GameComponent> {
         try {
             applyContextHints(g);
             if (onPaintSourceCode != null) {
-                //
-                // NOTE: the use of != instead of !String.equals is intentional
-                //
+                // NOTE: not using String.equals is intentional
                 if (onPaintSourceCode != cacheOnPaintSource || cacheOnPaintMonkey == null) {
                     cacheOnPaintMonkey = new ScriptMonkey(ScriptMonkey.ON_PAINT_EVENT_KEY);
                     cacheOnPaintMonkey.eval(onPaintSourceCode);
@@ -517,6 +740,9 @@ public abstract class Sheet<G extends GameComponent> {
                     final Expansion expansion = Expansion.get(expValue);
                     Expansion[] expansions;
                     if (expansion != null) {
+                        if (oneExp == null) {
+                            oneExp = new Expansion[1];
+                        }
                         oneExp[0] = expansion;
                         expansions = oneExp;
                     } else {
@@ -602,7 +828,7 @@ public abstract class Sheet<G extends GameComponent> {
     }
     // an array to hold a single expansion, used in the common case when there
     // is only one expansion selected
-    private Expansion[] oneExp = new Expansion[1];
+    private Expansion[] oneExp;
     private String cacheOnPaintSource;
     private ScriptMonkey cacheOnPaintMonkey;
 
@@ -617,11 +843,10 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns {@code true} if the sheet is currently marked as out of
-     * date.
+     * Returns {@code true} if the sheet is currently marked as out of date.
      *
-     * @return {@code true} if the {@link #markChanged()} has been called
-     * since the last time the card was drawn
+     * @return {@code true} if the {@link #markChanged()} has been called since
+     * the last time the card was drawn
      */
     public final boolean hasChanged() {
         return changeFlag;
@@ -637,8 +862,8 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns {@code true} if the sheets for this card are transparent.
-     * The base class returns {@code false}; subclasses that want to create
+     * Returns {@code true} if the sheets for this card are transparent. The
+     * base class returns {@code false}; subclasses that want to create
      * non-rectangular card faces must override this method. When this method
      * returns {@code true}, the framework guarantees the following:
      * <ol>
@@ -656,9 +881,9 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns {@code true} if the sheets created by this card can vary in
-     * size. Subclasses that wish to create variably-sized sheets must override
-     * this method to return {@code true}.
+     * Returns {@code true} if the sheets created by this card can vary in size.
+     * Subclasses that wish to create variably-sized sheets must override this
+     * method to return {@code true}.
      *
      * <p>
      * Typically a variably-sized sheet is also transparent. When this is the
@@ -813,7 +1038,7 @@ public abstract class Sheet<G extends GameComponent> {
                     cst = DEFAULT_SNAPTO;
                     break;
                 case INLAY:
-                    cst = TILE_SNAPTO;
+                    cst = INLAY_SNAPTO;
                     break;
                 case OVERLAY:
                     cst = PageItem.SnapClass.SNAP_SET_NONE;
@@ -844,8 +1069,8 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Returns a hint describing how this sheet should behave when snapped in a
-     * deck. The default is {@code CARD}, meaning that the sheet behaves
-     * like one face of a playing card.
+     * deck. The default is {@code CARD}, meaning that the sheet behaves like
+     * one face of a playing card.
      *
      * @return a hint describing the default behaviour of this face when it is
      * snapped against other objects in a deck
@@ -855,14 +1080,46 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
+     * Returns the size of the <em>designed</em> bleed margin included on each
+     * edge of the component, in points. A
+     * <a href="http://se3docs.cgjennings.ca/um-deck-pubmarks.html#bleed-margins">bleed
+     * margin</a>
+     * adds extra content to the edges of the component to allow for imperfect
+     * cuts when cutting the component from a larger sheet of paper. By
+     * returning a positive value, you indicate that your design already
+     * includes a bleed margin of the specified size. (Usually, the graphics for
+     * a designed bleed margin are built into the template image.)
+     *
+     * <p>
+     * By default, this method returns 0, meaning that the design includes no
+     * margin. When the designed margin is 0, or if its size if too small,
+     * Strange Eons will attempt to synthesize bleed margin graphics, with
+     * results of varying quality.
+     *
+     * <p>
+     * Strange Eons will not synthesize a bleed margin for transparent sheet
+     * images. (That is, if {@link #isTransparent()} is true.)
+     *
+     * <p>
+     *
+     * content as part o
+     *
+     *
+     * Returning a positive value * indicates that your component graphics
+     * include
+     *
+     *
+     *
+     *
+     *
      * Returns the size of the margin around the component edge that should be
      * cropped off, measured in points. (The bleed margin will be the same on
      * all sides.) This allows you to create components with an extra margin
      * that allows for slight misalignment when cutting. The height of the card
      * after cutting will be the height of the card produced by the sheet, less
      * twice this margin. Likewise for the width. If {@link #hasCropMarks()}
-     * returns {@code true}, then the automatic crop marks will be moved
-     * toward the inside of this card by an amount equal to the bleed margin.
+     * returns {@code true}, then the automatic crop marks will be moved toward
+     * the inside of this card by an amount equal to the bleed margin.
      * <p>
      * In the example below, the actual card to be cut and kept is indicated by
      * the blank area, while the X'd area indicates the bleed margin. Card
@@ -887,25 +1144,67 @@ public abstract class Sheet<G extends GameComponent> {
      * </pre>
      *
      * <p>
-     * The base class defines a margin of 0.
+     * The base class looks up the setting
+     * <i>templateKey</i>{@code -bleed-margin} to determine the bleed margin,
+     * defaulting to 0 if none is defined.
      *
      * @return the size of the bleed margin, in points (1 point = 1/72 inch)
      * @see #hasCropMarks
      */
     public double getBleedMargin() {
-        return 0d;
+        if (designedBleedCache < 0d) {
+            designedBleedCache = getGameComponent().getSettings().getDouble(keybase + "-bleed-margin", 0d);
+            if (designedBleedCache < 0d) {
+                StrangeEons.log.warning("ignoring invalid bleed margin: " + keybase + " (" + designedBleedCache + ')');
+                designedBleedCache = 0d;
+            }
+        }
+        return designedBleedCache;
     }
+    private double designedBleedCache = -1d;
+
+    /**
+     * Returns the radius that should be used to round the corners of the
+     * component, measured in points. This allows you to specify how the corners
+     * of the component will be rounded when the trimmed edge style is selected.
+     * The default is a radius of 0, meaning there is no rounding.
+     *
+     * @return the size of the corner radius, in points (1 point = 1/72 inch)
+     */
+    public double getCornerRadius() {
+        return cornerRadius;
+    }
+
+    /**
+     * Sets the corner radius used to round corners of the component, measured
+     * in points. Subclasses can use this instead of overriding
+     * {@link #getCornerRadius()} and design tools can use this to help
+     * developers find the right radius for their design.
+     *
+     * @param radiusInPoints the new, non-negative radius to set
+     */
+    public void setCornerRadius(double radiusInPoints) {
+        if (radiusInPoints < 0d) {
+            throw new IllegalArgumentException("negative radius: " + radiusInPoints);
+        }
+        if (cornerRadius != radiusInPoints) {
+            cornerRadius = radiusInPoints;
+            markChanged();
+        }
+    }
+
+    private double cornerRadius = 0d;
 
     /**
      * Returns true if this sheet should have automatic crop and fold marks
      * added when printed or placed in a deck. If this method returns
-     * {@code true}, then crop marks will be created automatically around
-     * the edges of the face; the bleed margin of these marks is determined by
-     * {@link #getBleedMargin()}. In certain circumstances, some of these crop
-     * marks will be converted automatically into fold marks. Typically, this
-     * happens when the front and back face of a card are snapped next to each
-     * other such that folding along the line indicated by the crop mark would
-     * produce a complete two-sided card.
+     * {@code true}, then crop marks will be created automatically around the
+     * edges of the face; the bleed margin of these marks is determined by
+     * {@link #getRenderedBleedMargin()}. In certain circumstances, some of
+     * these crop marks will be converted automatically into fold marks.
+     * Typically, this happens when the front and back face of a card are
+     * snapped next to each other such that folding along the line indicated by
+     * the crop mark would produce a complete two-sided card.
      *
      * <p>
      * The base class implementation returns {@code true}.
@@ -917,11 +1216,10 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns {@code true} if this sheet should have special fold marks
-     * added when printed. When this returns {@code true}, one or more fold
-     * marks will be shown at locations determined by {@link #getFoldMarks}.
-     * This can be used to produce complex 3D components that require assembly
-     * before use.
+     * Returns {@code true} if this sheet should have special fold marks added
+     * when printed.When this returns {@code true} one or more fold marks will
+     * be shown at locations determined by {@link #getFoldMarks}. This can be
+     * used to produce complex 3D components that require assembly before use.
      *
      * <p>
      * Note that the fold marks produced by this method are completely
@@ -930,6 +1228,9 @@ public abstract class Sheet<G extends GameComponent> {
      *
      * <p>
      * The base class returns {@code false}.
+     *
+     * @return true if {@link #getFoldMarks} should be consulted for the
+     * location of special fold marks
      */
     public boolean hasFoldMarks() {
         return false;
@@ -938,16 +1239,15 @@ public abstract class Sheet<G extends GameComponent> {
     /**
      * Returns an array that describes the extra fold marks that should appear
      * on this face when it is placed in a deck. This method is only called if
-     * {@link #hasFoldMarks} returns {@code true}. It should return an
-     * array of double values. Each fold mark to be added by the deck is
-     * described by a sequence of four doubles in the array. The first pair is
-     * the location of a start point for the fold mark (in x, y order). The
-     * location is relative to the width and height of the face, so for example
-     * the pair (0.5, 0) would start a fold mark in the center of the top edge.
-     * The second pair is a unit vector that describes the direction that the
-     * fold mark should extend from the start point. (Recall that a unit vector
-     * is a vector of length one, that is, sqrt(x<sup>2</sup>+y<sup>2</sup>) ==
-     * 1.)
+     * {@link #hasFoldMarks} returns {@code true}. It should return an array of
+     * double values. Each fold mark to be added by the deck is described by a
+     * sequence of four doubles in the array. The first pair is the location of
+     * a start point for the fold mark (in x, y order). The location is relative
+     * to the width and height of the face, so for example the pair (0.5, 0)
+     * would start a fold mark in the center of the top edge. The second pair is
+     * a unit vector that describes the direction that the fold mark should
+     * extend from the start point. (Recall that a unit vector is a vector of
+     * length one, that is, sqrt(x<sup>2</sup>+y<sup>2</sup>) == 1.)
      * <p>
      * Fold marks typically come in pairs, one on each side of the face. For
      * example, the following fold mark array would indicate the face should be
@@ -966,14 +1266,20 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Return the printed size of the sheet, measured in points.
+     * Return the printed size of the sheet, measured in points. The returned
+     * size will account for the current bleed margin settings.
+     *
+     * <p>
+     * The base class implementation is only valid for fixed-size sheets.
+     * Variable-sized sheets must override this method to return the correct
+     * size.
      *
      * @return the dimensions of the bounding rectangle of this sheet when
      * printed
      */
     public PrintDimensions getPrintDimensions() {
         if (!isVariableSize()) {
-            return new PrintDimensions(template, getTemplateResolution());
+            return new PrintDimensions(template, getTemplateResolution(), getRenderedBleedMargin());
         }
 
         throw new UnsupportedOperationException("called base class getPrintDimensions() implementation on variable-size component: " + this);
@@ -1080,8 +1386,10 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Returns the resolution that the sheet is being painted at, in pixels per
-     * inch. If called when the sheet is not being painted, returns the value
+     * inch.If called when the sheet is not being painted, returns the value
      * that was active during the last paint request.
+     *
+     * @return the current or most recently used resolution, in pixels per inch
      */
     public final double getPaintingResolution() {
         return dpi * upsampleFactor;
@@ -1109,8 +1417,7 @@ public abstract class Sheet<G extends GameComponent> {
      * Creates a graphics context that can be used to draw this sheet. The
      * context will be scaled for the current resolution and set up
      * appropriately for the current rendering target. This is a convenience
-     * method equivalent to calling
-     * {@code createGraphics( null, true, true )}.
+     * method equivalent to calling {@code createGraphics( null, true, true )}.
      *
      * <p>
      * <b>Safe only when painting</b>
@@ -1123,33 +1430,33 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * This method creates a graphics context for drawing sheet graphics. If the
-     * {@code bufferSource} is {@code null}, then the returned
-     * graphics context will draw to this sheet's internal sheet image buffer.
-     * Alternatively, passing in a {@code BufferedImage} of your choice
-     * will create a graphics context for that image as if by calling
-     * {@code bufferSource.createGraphics()}, and then apply scaling and
-     * hints as described below. This allows you to create intermediate images
-     * as part of the rendering process.
+     * {@code bufferSource} is {@code null}, then the returned graphics context
+     * will draw to this sheet's internal sheet image buffer. Alternatively,
+     * passing in a {@code BufferedImage} of your choice will create a graphics
+     * context for that image as if by calling
+     * {@code bufferSource.createGraphics()}, and then apply scaling and hints
+     * as described below. This allows you to create intermediate images as part
+     * of the rendering process.
      *
      * <p>
-     * If {@code scaleForResolution} is {@code true}, the graphics
-     * context will be scaled so that 1 unit in the context is equal to 1 pixel
-     * in the template image. This assumes that the passed-in image has been
-     * scaled according to the upsample factor. (The internal sheet image buffer
-     * is always correctly scaled, as will an image obtained by calling
+     * If {@code scaleForResolution} is {@code true}, the graphics context will
+     * be scaled so that 1 unit in the context is equal to 1 pixel in the
+     * template image. This assumes that the passed-in image has been scaled
+     * according to the upsample factor. (The internal sheet image buffer is
+     * always correctly scaled, as will an image obtained by calling
      * {@link #createTemporaryImage(int, int, boolean)}.) If the context is not
      * scaled now, it can be scaled later by calling {@link #applyContextScale}.
      *
      * <p>
-     * If {@code applyHints} is {@code true}, then the graphics
-     * context's rendering settings will be initialized for the active target as
-     * if by calling {@link #applyContextHints}.
+     * If {@code applyHints} is {@code true}, then the graphics context's
+     * rendering settings will be initialized for the active target as if by
+     * calling {@link #applyContextHints}.
      *
      * <p>
      * The caller is responsible for disposing of the returned graphics context.
      * To ensure that the context is always disposed of properly, the drawing
-     * code should be placed in a {@code try} block, and
-     * {@code dispose()} called in the {@code finally} clause, e.g.:
+     * code should be placed in a {@code try} block, and {@code dispose()}
+     * called in the {@code finally} clause, e.g.:
      * <pre>
      * Graphics2D g = sheet.createGraphics( null, true, true );
      * try {
@@ -1162,12 +1469,12 @@ public abstract class Sheet<G extends GameComponent> {
      * <p>
      * <b>Safe only when painting</b>
      *
-     * @param bufferSource the image to create a context for, or
-     * {@code null} to draw on the sheet image
-     * @param scaleForResolution if {@code true}, the context is scaled to
-     * suit the current resolution
-     * @param applyHints if {@code true}, rendering hints suited to the
-     * current target will be applied to the context
+     * @param bufferSource the image to create a context for, or {@code null} to
+     * draw on the sheet image
+     * @param scaleForResolution if {@code true}, the context is scaled to suit
+     * the current resolution
+     * @param applyHints if {@code true}, rendering hints suited to the current
+     * target will be applied to the context
      * @return a graphics context for the requested destination, optionally
      * scaled and hinted
      * @see #applyContextScale(java.awt.Graphics2D)
@@ -1193,7 +1500,11 @@ public abstract class Sheet<G extends GameComponent> {
             applyContextHints(g);
         }
 
-        if(isPrototype) {
+        if (DEBUG_PORTRAIT_REGION) {
+            g = PortraitDebugPainter.createFor(g);
+        }
+
+        if (isPrototype) {
             g = new PrototypingGraphics2D(g);
         }
 
@@ -1216,7 +1527,7 @@ public abstract class Sheet<G extends GameComponent> {
                 (isTransparent() && !isPrototype) ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB
         );
 
-        if(isPrototype) {
+        if (isPrototype) {
             fillPrototypeModeBackground(image);
         }
     }
@@ -1297,10 +1608,9 @@ public abstract class Sheet<G extends GameComponent> {
      * relative to the template image. The dimensions of the actual image will
      * be scaled for the current drawing resolution. (To get a suitable graphics
      * context for the image, use
-     * {@code createGraphics( tempImage, true, true )}.) Passing 0 for
-     * either the width or height is equivalent to using
-     * {@code getTemplateWidth()} or {@code getTemplateHeight()},
-     * respectively.
+     * {@code createGraphics( tempImage, true, true )}.) Passing 0 for either
+     * the width or height is equivalent to using {@code getTemplateWidth()} or
+     * {@code getTemplateHeight()}, respectively.
      *
      * <p>
      * <b>Safe only when painting</b>
@@ -1309,11 +1619,11 @@ public abstract class Sheet<G extends GameComponent> {
      * cover, or 0 to cover the entire width
      * @param templateHeight the height of the area of the template image to
      * cover, or 0 to cover the entire height
-     * @param includeAlphaChannel if {@code true}, the temporary image will
-     * have an alpha channel (pixels can be translucent or transparent)
+     * @param includeAlphaChannel if {@code true}, the temporary image will have
+     * an alpha channel (pixels can be translucent or transparent)
      * @return an image that can be used to render temporary results that cover
-     * a region that is {@code templateWidth} by
-     * {@code templateHeight} pixels on the template image
+     * a region that is {@code templateWidth} by {@code templateHeight} pixels
+     * on the template image
      * @throws IllegalArgumentException if the given width or height is less
      * than one
      */
@@ -1352,14 +1662,14 @@ public abstract class Sheet<G extends GameComponent> {
      * ways: if the relevant game component attributes change, or if the
      * requested target or resolution change. This method tests the second
      * condition: during a call to {@link #paint}, if this method returns
-     * {@code true} then the target or resolution have changed since the
-     * last call.
+     * {@code true} then the target or resolution have changed since the last
+     * call.
      *
      * <p>
      * <b>Safe only when painting</b>
      *
-     * @return {@code true} if the target or resolution may have changed
-     * since the last time the sheet was rendered
+     * @return {@code true} if the target or resolution may have changed since
+     * the last time the sheet was rendered
      */
     public final boolean isCachedTemporaryImageInvalid() {
         return dirtyCacheHint;
@@ -1384,180 +1694,17 @@ public abstract class Sheet<G extends GameComponent> {
      */
     abstract protected void paintSheet(RenderTarget target);
 
-    /**
-     * Returns the size of the synthetic bleed margin produced by this sheet, in
-     * points.
-     *
-     * @return the size of the synthetic bleed margin, or zero
-     * @see #synthesizeBleedMargin
-     */
-    public double getSyntheticBleedMargin() {
-        return isTransparent() ? 0d : 9d;
-    }
-
-    /**
-     * Generates a simulated bleed margin for components that do not provide
-     * one. The method is called with an already-rendered sheet image to which a
-     * margin should be added. If the component type does not allow a synthetic
-     * bleed margin, or if the margin size is zero, the original image may be
-     * returned. Otherwise, it should create a new image, larger than the
-     * original, that contains the original image in the center and the desired
-     * margin around the outside.
-     *
-     * <p>
-     * If the sheet has an explicit bleed margin, as indicated by
-     * {@link #getBleedMargin()} returning a non-zero value, then that margin is
-     * built into the component design. The explicit margin should be respected,
-     * and this method should not be called.
-     *
-     * <p>
-     * The base class implementation will synthesize an adequate 9&nbsp;pt bleed
-     * margin for a wide variety of components. It operates as follows:
-     * <ul>
-     * <li> If the sheet {@linkplain #isTransparent() is transparent}, then the
-     * sheet image is returned unmodified.
-     * <li> If, after sampling a few pixels around the outside of the image, the
-     * sheet appears to have a border of a single solid colour, then that border
-     * is extended on all sides by the margin size. If the sheet has rounded
-     * corners, these are painted over.
-     * <li> Otherwise, a margin is synthesized by mirroring the sheet image into
-     * the surrounding space.
-     * </ul>
-     *
-     * @param sheetImage the image, previously returned from
-     * {@link #paint(ca.cgjennings.apps.arkham.sheet.RenderTarget, double) paint}
-     * to synthesize a margin for
-     * @param synthesize if {@code true}, then the border should be
-     * synthesized; if {@code false}, subclasses may decorate the the image
-     * to accordingly (for example, by painting on rounded corners)
-     * @param resolution the resolution, in pixels per inch, of the sheet image
-     * @return a new image with the requested margin, or
-     */
+    @Deprecated
     protected BufferedImage synthesizeBleedMargin(BufferedImage sheetImage, boolean synthesize, double resolution) {
-        final double margin = getSyntheticBleedMargin();
-        if (!synthesize || margin == 0d) {
-            return sheetImage;
+        if (synthesize) {
+            final int w = sheetImage.getWidth();
+            final int h = sheetImage.getHeight();
+            // use standard 9 point margin
+            final int m = Math.min((int) Math.ceil(9d / 72d * resolution), Math.min(w, h));
+            sheetImage = EdgeFinishing.synthesizeMargin(sheetImage, null, m);
         }
-
-        final int w = sheetImage.getWidth();
-        final int h = sheetImage.getHeight();
-        final int m = Math.min((int) Math.ceil(margin / 72d * resolution), Math.min(w, h));
-        final int m2 = m * 2;
-
-        // heuristic to infer if the card has a solid border
-        boolean solid = false;
-        int rgb = sheetImage.getRGB(w / 2, 0);
-        if (similar(rgb, sheetImage.getRGB(w / 2, h - 1))) {
-            if (similar(rgb, sheetImage.getRGB(0, h / 3))) {
-                if (similar(rgb, sheetImage.getRGB(w - 1, h / 3))) {
-                    if (similar(rgb, sheetImage.getRGB(0, h * 2 / 3))) {
-                        if (similar(rgb, sheetImage.getRGB(w - 1, h * 2 / 3))) {
-                            solid = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        BufferedImage bi = new BufferedImage(sheetImage.getWidth() + m2, sheetImage.getHeight() + m2, sheetImage.getType());
-        Graphics2D g = bi.createGraphics();
-        try {
-            if (solid) {
-                g.setColor(new Color(rgb, true));
-                g.fillRect(0, 0, m, h + m2);
-                g.fillRect(w + m, 0, m, h + m2);
-                g.fillRect(m, 0, w, m);
-                g.fillRect(m, h + m, w, m);
-
-                g.drawImage(sheetImage, m, m, null);
-
-                // fill corners
-                final int w1 = w - 1;
-                final int h1 = h - 1;
-                boolean fillCorners = false;
-                if (!similar(rgb, sheetImage.getRGB(0, 0)) && !similar(rgb, sheetImage.getRGB(w1, 0)) && !similar(rgb, sheetImage.getRGB(0, h1)) && !similar(rgb, sheetImage.getRGB(w1, h1))) {
-                    fillCorners = true;
-                }
-                if (fillCorners) {
-                    int j;
-                    int[] xp = new int[3];
-                    int[] yp = new int[3];
-                    g.translate(m, m);
-
-                    j = findInset(sheetImage, rgb, 0, 0, 1, 0);
-                    xp[1] = j;
-                    j = findInset(sheetImage, rgb, 0, 0, 0, 1);
-                    yp[2] = j;
-                    g.fillPolygon(xp, yp, 3);
-
-                    yp[0] = h;
-                    j = findInset(sheetImage, rgb, 0, h1, 0, -1);
-                    xp[1] = 0;
-                    yp[1] = j;
-                    j = findInset(sheetImage, rgb, 0, h1, 1, 0);
-                    xp[2] = j;
-                    yp[2] = h;
-                    g.fillPolygon(xp, yp, 3);
-
-                    xp[0] = w;
-                    xp[1] = w;
-                    j = findInset(sheetImage, rgb, w1, h1, 0, -1);
-                    yp[1] = j;
-                    j = findInset(sheetImage, rgb, w1, h1, -1, 0);
-                    xp[2] = j;
-                    g.fillPolygon(xp, yp, 3);
-
-                    yp[0] = 0;
-                    j = findInset(sheetImage, rgb, w1, 0, -1, 0);
-                    xp[1] = j;
-                    yp[1] = 0;
-                    j = findInset(sheetImage, rgb, w1, 0, 0, 1);
-                    xp[2] = w;
-                    yp[2] = j;
-                    g.fillPolygon(xp, yp, 3);
-                }
-            } else {
-                g.drawImage(sheetImage, m - w, m - h, m, m, w, h, 0, 0, null);
-                g.drawImage(sheetImage, m, m - h, m + w, m, 0, h, w, 0, null);
-                g.drawImage(sheetImage, m + w, m - h, m + w + w, m, w, h, 0, 0, null);
-
-                g.drawImage(sheetImage, m - w, m, m, m + h, w, 0, 0, h, null);
-                g.drawImage(sheetImage, m + w, m, m + w + w, m + h, w, 0, 0, h, null);
-
-                g.drawImage(sheetImage, m - w, m + h, m, m + h + h, w, h, 0, 0, null);
-                g.drawImage(sheetImage, m, m + h, m + w, m + h + h, 0, h, w, 0, null);
-                g.drawImage(sheetImage, m + w, m + h, m + w + w, m + h + h, w, h, 0, 0, null);
-
-                g.drawImage(sheetImage, m, m, null);
-            }
-        } finally {
-            g.dispose();
-        }
-        return bi;
+        return sheetImage;
     }
-
-    private static int findInset(BufferedImage bi, int rgb, int x0, int y0, int dx, int dy) {
-        int limit = Math.min(bi.getWidth(), bi.getHeight()) / 3;
-        for (int i = 0; i < limit; ++i) {
-            if (similar(rgb, bi.getRGB(x0, y0))) {
-                break;
-            }
-            x0 += dx;
-            y0 += dy;
-        }
-        return dx == 0 ? y0 : x0;
-    }
-
-    private static boolean similar(int rgb1, int rgb2) {
-        int da = (rgb1 >>> 24) - (rgb2 >>> 24);
-        int dr = ((rgb1 >> 16) & 0xff) - ((rgb2 >> 16) & 0xff);
-        int dg = ((rgb1 >> 8) & 0xff) - ((rgb2 >> 8) & 0xff);
-        int db = (rgb1 & 0xff) - (rgb2 & 0xff);
-
-        return (da * da + dr * dr + dg * dg + db * db) <= MAX_DIST;
-    }
-
-    private static int MAX_DIST = 36;
 
     /**
      * Releases cached resources used in sheet drawing, freeing up memory for
@@ -1566,6 +1713,7 @@ public abstract class Sheet<G extends GameComponent> {
     public void freeCachedResources() {
         checkUnlocked();
         image = null;
+        finishedImage = null;
     }
 
     //
@@ -1702,6 +1850,47 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
+     * A helper function that can be called from custom portrait painting code
+     * to draw the portrait debug box, if enabled.
+     *
+     * @param g the sheet graphics context
+     * @param region the portrait region rectangle
+     * @param portrait the portrait instance
+     * @since 3.3
+     */
+    public static void drawPortraitBox(Graphics2D g, Rectangle2D region, Portrait portrait) {
+        if (!DEBUG_PORTRAIT_REGION) {
+            return;
+        }
+        drawPortraitBox(
+                g, region, portrait.getImage(), portrait.getPanX(),
+                portrait.getPanY(), portrait.getScale(), portrait.getRotation()
+        );
+    }
+
+    /**
+     * A helper function that can be called from custom portrait painting code
+     * to draw the portrait debug box, if enabled. This version can be used by
+     * any portrait painting code, even if it does not use a {@link Portrait}
+     * instance.
+     *
+     * @param g the sheet graphics context
+     * @param region the portrait region rectangle
+     * @param portraitImage the image being drawn as a portrait
+     * @param panX the horizontal offset of the image from centre
+     * @param panY the vertical offset of the image from centre
+     * @param scale the scale factor of the image
+     * @param angle the rotation angle of the image, in degrees
+     * @since 3.3
+     */
+    public static void drawPortraitBox(Graphics2D g, Rectangle2D region, BufferedImage portraitImage, double panX, double panY, double scale, double angle) {
+        if (!DEBUG_PORTRAIT_REGION) {
+            return;
+        }
+        PortraitDebugPainter.add(g, region, portraitImage, panX, panY, scale, angle);
+    }
+
+    /**
      * Draws text within a region; if the text is wider than the region, it will
      * be scaled down to fit. The text will be centered vertically and the
      * horizontal alignment is determined by the alignment parameter, which can
@@ -1760,8 +1949,8 @@ public abstract class Sheet<G extends GameComponent> {
      * @param outlineColor the colour of the outline
      * @param alignment the horizontal alignment of the text within the
      * rectangle
-     * @param outlineUnderneath if {@code true}, the outline is drawn
-     * underneath the text, otherwise overtop of it
+     * @param outlineUnderneath if {@code true}, the outline is drawn underneath
+     * the text, otherwise overtop of it
      */
     public void drawOutlinedTitle(Graphics2D g, String text, Rectangle region, Font font, float maxSize, float outlineSize, Paint textColor, Paint outlineColor, int alignment, boolean outlineUnderneath) {
         Font f = font.deriveFont(maxSize * (float) dpi / 72f);
@@ -1850,7 +2039,7 @@ public abstract class Sheet<G extends GameComponent> {
      * @param maxSize the point size to use for the text
      * @param alignment the horizontal alignment of the text within the
      * rectangle
-     * @param turns the number of turns to make, or one of the <tt>ROTATE</tt>
+     * @param turns the number of turns to make, or one of the {@code ROTATE}
      * constants defined in this class
      */
     public void drawRotatedTitle(Graphics2D g, String text, Rectangle region, Font font, float maxSize, int alignment, int turns) {
@@ -1940,26 +2129,23 @@ public abstract class Sheet<G extends GameComponent> {
 
     /**
      * Returns the symbol to be painted on cards for an expansion. If the
-     * expansion requested is {@code null}, then {@code null} is
-     * returned.
+     * expansion requested is {@code null}, then {@code null} is returned.
      *
      * <p>
-     * If the variant string is {@code null} or indicates boolean
-     * {@code false}, then the expansion's 0th symbol is returned. If it
-     * indicates boolean {@code true}, then the expansion's 1st symbol is
-     * returned. Otherwise, the string is interpreted as an integer indicating
-     * the index of the symbol to return. If the string is invalid, the 0th
-     * symbol is used.
+     * If the variant string is {@code null} or indicates boolean {@code false},
+     * then the expansion's 0th symbol is returned. If it indicates boolean
+     * {@code true}, then the expansion's 1st symbol is returned. Otherwise, the
+     * string is interpreted as an integer indicating the index of the symbol to
+     * return. If the string is invalid, the 0th symbol is used.
      *
-     * Several versions of the image registered with the
-     * {@link Expansion} may be maintained. Each such version is optimized for
-     * drawing at a certain size (in effect, each version is best for a
-     * different sheet resolution). Which version is returned will be determined
-     * by the {@code targetWidth} parameter. If possible, the returned image's
-     * width will be between {@code targetWidth} and {@code 2 * targetWidth}.
-     * Typically, you should request a target width equal to the width of the
-     * region in which the symbol is painted, multiplied by
-     * {@link #getScalingFactor()}.
+     * Several versions of the image registered with the {@link Expansion} may
+     * be maintained. Each such version is optimized for drawing at a certain
+     * size (in effect, each version is best for a different sheet resolution).
+     * Which version is returned will be determined by the {@code targetWidth}
+     * parameter. If possible, the returned image's width will be between
+     * {@code targetWidth} and {@code 2 * targetWidth}. Typically, you should
+     * request a target width equal to the width of the region in which the
+     * symbol is painted, multiplied by {@link #getScalingFactor()}.
      *
      * @param expansion the expansion to obtain a symbol for
      * @param booleanOrIntegerVariant a string describing the desired variant
@@ -2003,7 +2189,8 @@ public abstract class Sheet<G extends GameComponent> {
             mipmap = mipmapMap.get(original);
 
             if (mipmap == null) {
-                int levels = Math.min(31 - Integer.numberOfLeadingZeros(original.getWidth()),
+                int levels = Math.min(
+                        31 - Integer.numberOfLeadingZeros(original.getWidth()),
                         31 - Integer.numberOfLeadingZeros(original.getHeight())
                 );
                 mipmap = new BufferedImage[levels];

@@ -8,21 +8,6 @@ import static java.lang.Math.*;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class Combinatorics {
-
-//	public static void main( String[] args ) {
-//		long start = System.nanoTime();
-//		for( int s = 1; s <= 20; ++s ) {
-//			for( int d = 1; d <= 20; ++d ) {
-//				if( s <= d ) {
-//					//System.err.format( "%03.1f%%  ", 100d * upperCumulativeDistribution( s, d, 1/6d ) );
-//					upperCumulativeDistribution( s, d, 1 / 6d );
-//				}
-//			}
-//			//System.err.println();
-//		}
-//		long stop = System.nanoTime();
-//		System.out.println( "" + ( stop - start ) + " ns" );
-//	}
     /**
      * The largest {@code n} such that {@code n}! &lt;=
      * {@code Long.MAX_VALUE}.

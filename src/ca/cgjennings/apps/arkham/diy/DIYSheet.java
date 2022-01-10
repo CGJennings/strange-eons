@@ -29,9 +29,9 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Creates a new sheet for a DIY component. A sheet is not normally created
      * directly, but is instead created by calling
-     * {@link DIY#createDefaultSheets()}. Unlike most sheets, a
-     * {@code DIYSheet} does not contain the sheet painting code itself,
-     * but instead defers painting to the component it was created for.
+     * {@link DIY#createDefaultSheets()}. Unlike most sheets, a {@code DIYSheet}
+     * does not contain the sheet painting code itself, but instead defers
+     * painting to the component it was created for.
      *
      * @param diy the component for which this sheet is being created
      * @param templateKey a template key name used to determine the basic
@@ -46,6 +46,9 @@ public final class DIYSheet extends Sheet<DIY> {
         this.diy = diy;
         this.index = index;
         diyFlags = diy.getFlags();
+        if (diy.hasExplicitCornerRadius) {
+            setCornerRadius(diy.getCornerRadius());
+        }
     }
 
     /**
@@ -108,21 +111,20 @@ public final class DIYSheet extends Sheet<DIY> {
     }
 
     /**
-     * Returns {@code true} if the current or most recent rendering was
-     * being done in high resolution mode. To return {@code true}, one of
-     * the following statements must hold:
+     * Returns {@code true} if the current or most recent rendering was being
+     * done in high resolution mode. To return {@code true}, one of the
+     * following statements must hold:
      * <ol>
-     * <li> the high resolution substitution mode is set to {@code FORCE},
-     * or
-     * <li> the high resolution substitution mode is set to {@code ENABLE},
-     * the render target is either {@code PRINT} or {@code EXPORT},
-     * and the requested resolution is greater than the resolution of the
-     * template image.
+     * <li> the high resolution substitution mode is set to {@code FORCE}, or
+     * <li> the high resolution substitution mode is set to {@code ENABLE}, the
+     * render target is either {@code PRINT} or {@code EXPORT}, and the
+     * requested resolution is greater than the resolution of the template
+     * image.
      * </ol>
      *
      * <p>
-     * When this method returns {@code true}, painting methods should use
-     * the highest resolution source images available.
+     * When this method returns {@code true}, painting methods should use the
+     * highest resolution source images available.
      *
      * @return {@code true} if in "high resolution" mode
      * @since 2.1a11
@@ -149,8 +151,8 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at its normal size at the specified location. This method
      * will perform automatic high resolution image substitution if there is a
-     * key with same name as {@code imageKey} but with
-     * {@code "-hires"} appended.
+     * key with same name as {@code imageKey} but with {@code "-hires"}
+     * appended.
      *
      * @param g the graphics context to use for painting
      * @param imageKey the settings key of the image
@@ -174,8 +176,8 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at a location and size that are taken from a region
      * setting. This method will perform automatic high resolution image
-     * substitution if there is a key with same name as {@code imageKey}
-     * but with {@code "-hires"} appended.
+     * substitution if there is a key with same name as {@code imageKey} but
+     * with {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param imageKey the settings key of the image
@@ -206,8 +208,7 @@ public final class DIYSheet extends Sheet<DIY> {
     /**
      * Paints an image at the specified location and size. This method will
      * perform automatic high resolution image substitution if there is a key
-     * with same name as {@code imageKey} but with {@code "-hires"}
-     * appended.
+     * with same name as {@code imageKey} but with {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param imageKey the settings key of the image
@@ -240,8 +241,7 @@ public final class DIYSheet extends Sheet<DIY> {
      * <tt>sharedKey</tt> and <tt>number</tt>, while the region is obtained by
      * concatenating <tt>"-region"</tt> to the shared key name. This method will
      * perform automatic high resolution image substitution if there is a key
-     * with same name as {@code sharedKey} but with {@code "-hires"}
-     * appended.
+     * with same name as {@code sharedKey} but with {@code "-hires"} appended.
      *
      * @param g the graphics context to use for painting
      * @param sharedKey the settings key of the image, and base name of the
@@ -337,22 +337,22 @@ public final class DIYSheet extends Sheet<DIY> {
             g.setPaint(p);
         }
 
-        Portrait p = diy.getPortrait(0);
-        BufferedImage portrait = p.getImage();
+        Portrait portrait = diy.getPortrait(0);
+        BufferedImage portraitImage = portrait.getImage();
 
-        double scale = p.getScale();
-        double panX = p.getPanX();
-        double panY = p.getPanY();
+        double scale = portrait.getScale();
+        double panX = portrait.getPanX();
+        double panY = portrait.getPanY();
 
-        double scaledWidth = portrait.getWidth() * scale;
-        double scaledHeight = portrait.getHeight() * scale;
+        double scaledWidth = portraitImage.getWidth() * scale;
+        double scaledHeight = portraitImage.getHeight() * scale;
 
         double centerX = scaledWidth / 2d;
         double centerY = scaledHeight / 2d;
         double regionX = portraitRect.getX() + portraitRect.getWidth() / 2d;
         double regionY = portraitRect.getY() + portraitRect.getHeight() / 2d;
 
-        g.drawImage(portrait,
+        g.drawImage(portraitImage,
                 (int) (regionX - centerX + panX /*+ 0.5d*/),
                 (int) (regionY - centerY + panY /*+ 0.5d*/),
                 (int) (scaledWidth + 0.5d),
@@ -363,6 +363,8 @@ public final class DIYSheet extends Sheet<DIY> {
         if (obeyClip) {
             g.setClip(oldClip);
         }
+        
+        Sheet.drawPortraitBox(g, portraitRect, portrait);
     }
 
     /**
@@ -452,7 +454,7 @@ public final class DIYSheet extends Sheet<DIY> {
 
     @Override
     public double getBleedMargin() {
-        return diy.getBleedMargin();
+        return diy.hasExplicitBleedMargin ? diy.getBleedMargin() : super.getBleedMargin();
     }
 
     @Override
@@ -479,7 +481,7 @@ public final class DIYSheet extends Sheet<DIY> {
         // could be anything... we'll have to render the image and then measure
         BufferedImage bi = paint(RenderTarget.PRINT, getTemplateResolution());
         double ppi = getPaintingResolution();
-        return new PrintDimensions(bi, ppi);
+        return new PrintDimensions(bi, ppi, getRenderedBleedMargin());
     }
 
     @Override

@@ -99,17 +99,24 @@ public class ThemeInstaller {
     }
 
     private static Theme installed;
-
     /**
-     * Returns the installed theme, or {@code null} if no theme is
-     * installed. This will only be {@code null} if themes have not been
-     * installed yet, or if the user theme could not be installed and the
-     * built-in fallback theme could not be instantiated.
+     * Returns the installed theme.
      *
      * @return the installed theme
      */
     public static Theme getInstalledTheme() {
         return installed;
+    }
+    
+    /**
+     * Convenience that returns whether the installed theme is dark, that
+     * returns a default if no theme is installed.
+     * 
+     * @return whether the installed theme is dark, or a default if none
+     * is installed
+     */
+    public static boolean isDark() {
+       return installed == null ? false : installed.isDark();
     }
 
     /**

@@ -424,6 +424,58 @@
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
               </AuxValues>
             </Menu>
+            <Menu class="javax.swing.JMenu" name="cardEdgeMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
+                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-card-edge" replaceFormat="string(&quot;{key}&quot;)"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="cardEdgeMenu" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new FinishStyleMenu()"/>
+              </AuxValues>
+            </Menu>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator39">
+              <Properties>
+                <Property name="name" type="java.lang.String" value="jSeparator39" noResource="true"/>
+              </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+              </AuxValues>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="viewRegionBoxesItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Commands.VIEW_REGION_BOXES" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="viewRegionBoxesItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="viewPortraitBoxesItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Commands.VIEW_PORTRAIT_BOXES" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="viewPortraitBoxesItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="viewEdgeOutlinesItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Commands.VIEW_EDGE_BOXES" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="viewEdgeOutlinesItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="viewUnsafeRegionsItem">
+              <Properties>
+                <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                  <Connection code="Commands.VIEW_UNSAFE_BOXES" type="code"/>
+                </Property>
+                <Property name="name" type="java.lang.String" value="viewUnsafeRegionsItem" noResource="true"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator19">
               <Properties>
                 <Property name="name" type="java.lang.String" value="jSeparator19" noResource="true"/>

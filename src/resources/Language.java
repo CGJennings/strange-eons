@@ -828,7 +828,7 @@ public class Language implements Iterable<String> {
     }
 
     private static BufferedImage makeIconText(String text, Font f) {
-        final boolean isDark = ThemeInstaller.getInstalledTheme().isDark();
+        final boolean isDark = ThemeInstaller.isDark();
         BufferedImage bi = new BufferedImage(FLAG_SIZE * 2, FLAG_SIZE * 2, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
         try {

@@ -12,6 +12,7 @@ import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.dialog.ImageViewer;
 import ca.cgjennings.apps.arkham.diy.DIY;
+import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import java.awt.Color;
@@ -45,6 +46,7 @@ public class DeckPacker {
     private PaperProperties paper;
     private PaperProperties[] paperSizes;
     private boolean groupCardPairs = true;
+    private boolean addBleedMargin = true;
 
     /**
      * Creates a new deck packer. The layout initially contains no game
@@ -138,7 +140,7 @@ public class DeckPacker {
         if (gc.getClass() == DIY.class) {
             klass += ':' + ((DIY) gc).getHandlerScript();
         }
-
+        
         for (int i = 0; i < sheets.length; ++i) {
             int index = i;
             CardFace front, back = null;
@@ -164,37 +166,6 @@ public class DeckPacker {
 
             addCard(new Card(f, index, klass, front, back));
         }
-
-//		Sheet[] sheets = gc.getSheets() == null ? gc.createDefaultSheets() : gc.getSheets();
-//
-//		int num = sheets.length;
-//		CardFace[] faces = new CardFace[ num ];
-//
-//		String path = f.getAbsolutePath();
-//
-//		String klass = gc.getClass().getName();
-//		if( klass == null ) klass = "";
-//
-//		for( int i=0; i<num; ++i ) {
-//			faces[i] = new CardFace( gc, path, i );
-//		}
-//
-//		if( num == 1 ) {
-//			addCard( new Card( f, 0, klass, faces[0], null ) );
-//			return;
-//		}
-//
-//		// if odd # of faces, add last one with a double (investigator token)
-//		// then decrease # of faces to prevent IOOB in loop
-//		if( (num & 1) == 1 ) {
-//			CardFace flipped = new CardFace( gc, path, num-1 );
-//			flipped.flip();
-//			addCard( new Card( f, 0, klass, faces[num-1], flipped ) );
-//			--num;
-//		}
-//		for( int i=0; i<num; i += 2 ) {
-//			addCard( new Card( f, 0, klass, faces[i], faces[i+1] ) );
-//		}
     }
 
     /**
@@ -306,6 +277,12 @@ public class DeckPacker {
     public Deck createLayout() {
         cancelled = false;
         Deck deck = new Deck();
+        if (addBleedMargin) {
+            final FinishStyle finishStyle = addBleedMargin ? FinishStyle.MARGIN : FinishStyle.SQUARE;
+            final double bleedMargin = addBleedMargin ? 9d : 0d;
+            deck.setFinishStyle(finishStyle);
+            deck.setBleedMarginWidth(bleedMargin);
+        }
         deck.setPaperProperties(paper);
         layout(deck);
         return deck;
@@ -749,6 +726,24 @@ public class DeckPacker {
      */
     public void setGroupingEnabled(boolean groupCardPairs) {
         this.groupCardPairs = groupCardPairs;
+    }
+    
+    /**
+     * Returns {@code true} if bleed margins should be added to faces.
+     * 
+     * @return {@code true} if bleed margins are enabled
+     */
+    public boolean isBleedMarginEnabled() {
+        return addBleedMargin;
+    }
+    
+    /**
+     * Sets whether bleed margins should be added to card faces.
+     * 
+     * @param bleedMargin 
+     */
+    public void setBleedMarginEnabled(boolean bleedMargin) {
+        this.addBleedMargin = bleedMargin;
     }
 
     /**

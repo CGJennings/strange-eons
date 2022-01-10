@@ -13,7 +13,7 @@ import resources.Settings;
  * <b>View</b> menu. Objects that wish to modify their behaviour based on the
  * view quality setting should always use the static {@link #get()} method of
  * this class to obtain the current setting and not try to read the value
- * directly from settings itself.
+ * directly from settings themselves.
  *
  * <p>
  * Objects can be notified when the view quality changes by registering a
@@ -132,12 +132,12 @@ public enum ViewQuality {
             ViewQuality old = current;
             current = newQuality;
             StrangeEonsAppWindow app = StrangeEons.getWindow();
+            RawSettings.setUserSetting(KEY, current.name().toLowerCase(Locale.CANADA));
             if (app == null) {
                 StrangeEons.log.warning("null window");
             } else {
                 app.propertyChange(StrangeEonsAppWindow.VIEW_QUALITY_PROPERTY, old, current);
             }
-            RawSettings.setUserSetting(KEY, current.name().toLowerCase(Locale.CANADA));
         }
     }
 

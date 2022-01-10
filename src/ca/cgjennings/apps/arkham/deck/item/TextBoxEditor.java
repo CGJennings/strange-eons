@@ -5,6 +5,8 @@ import ca.cgjennings.apps.arkham.MarkupTargetFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
 import ca.cgjennings.ui.StyleUtilities;
+import ca.cgjennings.ui.theme.ThemeInstaller;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.KeyEvent;
 import javax.swing.Action;
@@ -33,6 +35,10 @@ public final class TextBoxEditor extends javax.swing.JDialog implements java.awt
     TextBoxEditor(java.awt.Frame parent, TextBox card) {
         super(parent, false);
         initComponents();
+        if (ThemeInstaller.isDark()) {
+            instructions.setBackground(Color.BLACK);
+            instructions.setForeground(Color.WHITE);
+        }
 
         MarkupTargetFactory.enableTargeting(textArea, true);
         textArea.putClientProperty(ContextBar.BAR_LEADING_SIDE_PROPERTY, true);
@@ -79,13 +85,13 @@ public final class TextBoxEditor extends javax.swing.JDialog implements java.awt
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane();
         textArea = new JSpellingTextArea();
-        jLabel1 = new javax.swing.JLabel();
+        instructions = new javax.swing.JLabel();
 
         setUndecorated(true);
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 0, 1, new java.awt.Color(128, 128, 128)));
+        scrollPane.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 0, 1, new java.awt.Color(128, 128, 128)));
 
         textArea.setColumns(20);
         textArea.setLineWrap(true);
@@ -93,19 +99,19 @@ public final class TextBoxEditor extends javax.swing.JDialog implements java.awt
         textArea.setTabSize(4);
         textArea.setWrapStyleWord(true);
         textArea.addKeyListener(this);
-        jScrollPane1.setViewportView(textArea);
+        scrollPane.setViewportView(textArea);
 
-        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        getContentPane().add(scrollPane, java.awt.BorderLayout.CENTER);
 
-        jLabel1.setBackground(new java.awt.Color(215, 229, 242));
-        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
-        jLabel1.setText(string("de-text-box-relabel-help")); // NOI18N
-        jLabel1.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(128, 128, 128)), javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(128, 128, 128)), javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2))));
-        jLabel1.setOpaque(true);
-        getContentPane().add(jLabel1, java.awt.BorderLayout.SOUTH);
+        instructions.setBackground(new java.awt.Color(215, 229, 242));
+        instructions.setFont(instructions.getFont().deriveFont(instructions.getFont().getSize()-1f));
+        instructions.setText(string("de-text-box-relabel-help")); // NOI18N
+        instructions.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 1, new java.awt.Color(128, 128, 128)), javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, new java.awt.Color(128, 128, 128)), javax.swing.BorderFactory.createEmptyBorder(1, 2, 1, 2))));
+        instructions.setOpaque(true);
+        getContentPane().add(instructions, java.awt.BorderLayout.SOUTH);
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-372)/2, (screenSize.height-191)/2, 372, 191);
+        setSize(new java.awt.Dimension(372, 191));
+        setLocationRelativeTo(null);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -162,8 +168,7 @@ public final class TextBoxEditor extends javax.swing.JDialog implements java.awt
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel instructions;
     private javax.swing.JTextArea textArea;
     // End of variables declaration//GEN-END:variables
 }

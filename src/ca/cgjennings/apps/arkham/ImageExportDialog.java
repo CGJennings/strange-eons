@@ -1,9 +1,11 @@
 package ca.cgjennings.apps.arkham;
 
+import ca.cgjennings.apps.arkham.sheet.FinishStyle;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import ca.cgjennings.imageio.WritableImageFormat;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.JIconComboBox;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.RightAlignedListRenderer;
 import java.awt.Component;
@@ -28,7 +30,6 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
-
     private WritableImageFormat[] wifs;
     private String[] formats;
     private SimpleImageWriter[] writers;
@@ -195,7 +196,6 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fmtGroup = new javax.swing.ButtonGroup();
         autoGroup = new javax.swing.ButtonGroup();
         customPanel = new javax.swing.JPanel();
         iowpPanel = new ca.cgjennings.imageio.IIOWritePanel();
@@ -215,7 +215,11 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         unitCombo = new javax.swing.JComboBox();
         suppressBackBtn = new javax.swing.JCheckBox();
         formatWarning = new ca.cgjennings.ui.JWarningLabel();
-        synthBleedCheck = new javax.swing.JCheckBox();
+        javax.swing.JLabel finishLabel = new javax.swing.JLabel();
+        edgeFinishCombo = new JIconComboBox(FinishStyle.values());
+        bleedWidthLabel = new javax.swing.JLabel();
+        bleedWidthField = new javax.swing.JSpinner();
+        bleedWidthUnit = new javax.swing.JLabel();
         mainPanel = new javax.swing.JPanel();
         postOnlineBtn = new javax.swing.JRadioButton();
         printBtn = new javax.swing.JRadioButton();
@@ -239,18 +243,18 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         formatLabel.setText(string("exf-l-format")); // NOI18N
 
         resolutionLabel.setLabelFor(dpiCombo);
-        resolutionLabel.setText(string("exf-l-dpi")); // NOI18N
+        resolutionLabel.setText(string("exf-l-resolution")); // NOI18N
 
         dpiCombo.setEditable(true);
         dpiCombo.setRenderer( new RightAlignedListRenderer() );
-        dpiCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dpiComboActionPerformed(evt);
-            }
-        });
         dpiCombo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 dpiComboFocusLost(evt);
+            }
+        });
+        dpiCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dpiComboActionPerformed(evt);
             }
         });
 
@@ -281,22 +285,50 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         formatWarning.setText(string("exf-warn-format")); // NOI18N
 
-        synthBleedCheck.setText(string("de-l-fake-bleed")); // NOI18N
+        finishLabel.setLabelFor(edgeFinishCombo);
+        finishLabel.setText(string("exf-l-edge-finish")); // NOI18N
+
+        edgeFinishCombo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                edgeFinishComboActionPerformed(evt);
+            }
+        });
+
+        bleedWidthLabel.setLabelFor(bleedWidthField);
+        bleedWidthLabel.setText(string("exf-l-bleed-margin")); // NOI18N
+
+        bleedWidthField.setModel(new javax.swing.SpinnerNumberModel(9.0d, 0.25d, 36.0d, 0.25d));
+
+        bleedWidthUnit.setText(string("iid-cb-unit2")); // NOI18N
 
         javax.swing.GroupLayout customPanelLayout = new javax.swing.GroupLayout(customPanel);
         customPanel.setLayout(customPanelLayout);
         customPanelLayout.setHorizontalGroup(
             customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(customPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(synthBleedCheck)
-                    .addComponent(resolutionLabel)
-                    .addComponent(joinImagesBox)
-                    .addComponent(formatLabel)
-                    .addComponent(suppressBackBtn)
+                .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(customPanelLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                        .addContainerGap()
+                        .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(resolutionLabel)
+                            .addComponent(finishLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(customPanelLayout.createSequentialGroup()
+                                .addComponent(dpiCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(unitCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(edgeFinishCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(customPanelLayout.createSequentialGroup()
+                                .addComponent(bleedWidthLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bleedWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bleedWidthUnit))))
+                    .addGroup(customPanelLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
                         .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(iowpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(customPanelLayout.createSequentialGroup()
@@ -304,14 +336,17 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(formatTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(formatWarning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(customPanelLayout.createSequentialGroup()
-                                .addComponent(dpiCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(unitCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(formatWarning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(customPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(suppressBackBtn))
+                    .addGroup(customPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(formatLabel))
+                    .addGroup(customPanelLayout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(joinImagesBox)))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         customPanelLayout.setVerticalGroup(
             customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -323,22 +358,28 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addComponent(formatTip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(formatCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(formatWarning, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(iowpPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(resolutionLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(resolutionLabel)
                     .addComponent(dpiCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(unitCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(resolutionHelp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(finishLabel)
+                    .addComponent(edgeFinishCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(customPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(bleedWidthLabel)
+                    .addComponent(bleedWidthField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bleedWidthUnit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(joinImagesBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(suppressBackBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(synthBleedCheck)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         mainPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string("exf-l-basic"))); // NOI18N
@@ -542,9 +583,14 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     boolean isFaceSuppressionEnabled() {
         return suppressBackBtn.isSelected();
     }
-
-    boolean isSyntheticBleedMarginEnabled() {
-        return synthBleedCheck.isSelected();
+    
+    double getUserBleedMargin() {
+        FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
+        double ubm = fs.getSuggestedBleedMargin();
+        if (fs == FinishStyle.MARGIN) {
+            ubm = (Double) bleedWidthField.getValue();
+        }
+        return ubm;
     }
 
 	private void exportTypeActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_exportTypeActionPerformed
@@ -570,27 +616,30 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             // they will be cleared and disabled further below
             joinImagesBox.setSelected(false);
             suppressBackBtn.setSelected(false);
-            synthBleedCheck.setSelected(false);
             switch (sel) {
                 case 0:
                     setFormat("jpg");
                     iowpPanel.setCompressionQuality(largeFormatHint ? 0.40f : 0.50f);
                     iowpPanel.setProgressiveScanEnabled(true);
-                    setResolution(largeFormatHint ? 100 : 125);
+                    setResolution(largeFormatHint ? 125 : 150);
                     suppressBackBtn.setSelected(true);
+                    edgeFinishCombo.setSelectedItem(FinishStyle.SQUARE);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 1:
                     setFormat("png");
                     iowpPanel.setProgressiveScanEnabled(false);
                     setResolution(300);
+                    edgeFinishCombo.setSelectedItem(FinishStyle.MARGIN);
+                    bleedWidthField.setValue(9d);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 2:
                     setFormat("jpg");
                     iowpPanel.setCompressionQuality(0.75f);
                     iowpPanel.setProgressiveScanEnabled(true);
-                    setResolution(150);
+                    setResolution(200);
+                    edgeFinishCombo.setSelectedItem(FinishStyle.SQUARE);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 3:
@@ -625,7 +674,12 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         setResolution(s.getInt(KEY_DPI));
         joinImagesBox.setSelected(s.getYesNo(KEY_COMBINE));
         suppressBackBtn.setSelected(s.getYesNo(KEY_SUPPRESS));
-        synthBleedCheck.setSelected(s.getYesNo(KEY_SYNTHETIC_BLEED));
+        edgeFinishCombo.setSelectedItem(FinishStyle.fromSetting(s.get(KEY_FINISH_STYLE)));
+        try {
+            bleedWidthField.setValue(s.getDouble(KEY_BLEED_MARGIN, 9d));
+        } catch (IllegalArgumentException iae) {
+            bleedWidthField.setValue(9d);
+        }
     }
 
     private void saveCustomSettings() {
@@ -640,7 +694,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         if (multipleFacesHint) {
             s.setYesNo(KEY_SUPPRESS, suppressBackBtn.isSelected());
         }
-        s.setYesNo(KEY_SYNTHETIC_BLEED, synthBleedCheck.isSelected());
+        s.set(KEY_FINISH_STYLE, ((FinishStyle) edgeFinishCombo.getSelectedItem()).toSetting());
+        s.setDouble(KEY_BLEED_MARGIN, (Double) bleedWidthField.getValue());
     }
 
     private static final String KEY_FORMAT = "imexport-format";
@@ -649,7 +704,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private static final String KEY_DPI = "imexport-dpi";
     private static final String KEY_COMBINE = "imexport-combine";
     private static final String KEY_SUPPRESS = "imexport-suppress-backs";
-    private static final String KEY_SYNTHETIC_BLEED = "imexport-synthetic-bleed";
+    private static final String KEY_FINISH_STYLE = "imexport-finish";
+    private static final String KEY_BLEED_MARGIN = "imexport-bleed-margin";
 
 	private void unitComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_unitComboActionPerformed
             int unit = unitCombo.getSelectedIndex();
@@ -714,17 +770,28 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 	}//GEN-LAST:event_configDestinationBtnActionPerformed
 
 	private void destinationComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_destinationComboActionPerformed
-            configDestinationBtn.setEnabled(destinationCombo.isEnabled() && getExportContainer().isConfigurable());
+            final boolean hasOptions = destinationCombo.isEnabled() && getExportContainer().isConfigurable();
+            configDestinationBtn.setEnabled(hasOptions);
+            configDestinationBtn.setVisible(hasOptions);
+            updateFormatWarning();
 	}//GEN-LAST:event_destinationComboActionPerformed
-
+        
     private void suppressBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppressBackBtnActionPerformed
-        if(suppressBackBtn.isSelected()) {
+        if (suppressBackBtn.isSelected()) {
             joinImagesBox.setSelected(false);
             joinImagesBox.setEnabled(false);
         } else {
-            joinImagesBox.setEnabled(allowJoinHint);
+            joinImagesBox.setEnabled(allowJoinHint && customBtn.isSelected());
         }
     }//GEN-LAST:event_suppressBackBtnActionPerformed
+
+    private void edgeFinishComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edgeFinishComboActionPerformed
+        final boolean enable = edgeFinishCombo.getSelectedItem() == FinishStyle.MARGIN;
+        bleedWidthLabel.setEnabled(enable);
+        bleedWidthField.setEnabled(enable);
+        bleedWidthUnit.setEnabled(enable);
+        updateFormatWarning();
+    }//GEN-LAST:event_edgeFinishComboActionPerformed
     private boolean dpiComboIsUpdating;
 
     private int[] ppiOptions = new int[]{
@@ -808,13 +875,29 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     }
 
     private void updateFormatWarning() {
+        String warning = null;
         String fmt = getFormat();
         ExportContainer ec = getExportContainer();
-        formatWarning.setVisible(!ec.isFileFormatSupported(fmt.toLowerCase(Locale.CANADA)));
+        FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
+        boolean fmtHasAlpha = getImageWriter().isTransparencySupported();
+        
+        if (!ec.isFileFormatSupported(fmt.toLowerCase(Locale.ROOT))) {
+            warning = string("exf-warn-format");
+        } else if (fs == FinishStyle.ROUND && !fmtHasAlpha) {
+            warning = string("exf-warn-transparency");
+        }
+        
+        if (warning != null) {
+            formatWarning.setText(warning);
+        }
+        formatWarning.setVisible(warning != null);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup autoGroup;
+    private javax.swing.JSpinner bleedWidthField;
+    private javax.swing.JLabel bleedWidthLabel;
+    private javax.swing.JLabel bleedWidthUnit;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JRadioButton compatibleBtn;
     private javax.swing.JButton configDestinationBtn;
@@ -823,7 +906,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JComboBox destinationCombo;
     private javax.swing.JLabel destinationLabel;
     private javax.swing.JComboBox dpiCombo;
-    private javax.swing.ButtonGroup fmtGroup;
+    private javax.swing.JComboBox<FinishStyle> edgeFinishCombo;
     private javax.swing.JComboBox formatCombo;
     private ca.cgjennings.ui.JTip formatTip;
     private ca.cgjennings.ui.JWarningLabel formatWarning;
@@ -834,18 +917,13 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JRadioButton postOnlineBtn;
     private javax.swing.JRadioButton printBtn;
     private javax.swing.JCheckBox suppressBackBtn;
-    private javax.swing.JCheckBox synthBleedCheck;
     private javax.swing.JComboBox unitCombo;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void handleOKAction(ActionEvent e) {
         ok = true;
-        saveBasicSettings();
-        if (customBtn.isSelected()) {
-            saveCustomSettings();
-        }
-        dispose();
+        handleCancelAction(e);
     }
 
     @Override

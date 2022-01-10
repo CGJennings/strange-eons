@@ -268,16 +268,6 @@ public class Animation implements FrameComposer {
         return playing;
     }
 
-//	public static void main( String[] args ) {
-//		Animation a = new Animation( 0.5f ) {
-//			@Override
-//			public void composeFrame( float position ) {
-//				System.out.println( position );
-//			}
-//		};
-//		a.setMaxFrames( 5 );
-//		a.play();
-//	}
     /**
      * Returns the ideal play time for the animation.
      *

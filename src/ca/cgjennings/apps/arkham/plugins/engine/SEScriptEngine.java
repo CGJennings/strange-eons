@@ -167,10 +167,10 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
         BindingsScriptable newScope = new BindingsScriptable(scriptContext);
         newScope.setPrototype(topLevel);
         // predefine some common names for the global scope:
-        // Node.js "global", Web Worker "self", ECMAScript 2020 "globalThis"
+        // Node.js "global", Web Worker "self";
+        // ECMAScript 2020 "globalThis" is now standard in 1.7.14+
         newScope.addConst("global", newScope);
         newScope.addConst("self", newScope);
-        newScope.addConst("globalThis", newScope);
 
         return newScope;
     }

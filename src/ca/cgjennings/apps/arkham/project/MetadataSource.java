@@ -1155,6 +1155,7 @@ public class MetadataSource {
                         data[3] = String.format("%,d", sheets.length);
 
                         sheets[0].setPrototypeRenderingModeEnabled(false);
+                        sheets[0].setUserBleedMargin(-1d);
                         BufferedImage image = sheets[0].paint(RenderTarget.FAST_PREVIEW, 72d);
                         PrintDimensions dim = sheets[0].getPrintDimensions();
                         final int unit = Length.getDefaultUnit();

@@ -451,7 +451,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                 if (f == null) {
                     f = p.getFile();
                 }
-                RecentFiles.add(f);
+                RecentFiles.addRecentProject(f);
                 createProjectView(p, true);
                 project = p;
             }
@@ -521,15 +521,14 @@ final class AppFrame extends StrangeEonsAppWindow {
                     Component c = menu.getMenuComponent(i);
 
                     if (c instanceof JMenu) {
-                        JMenu item = (JMenu) c;
-                        boolean enable = updateSubmenu(item);
-                        item.setEnabled(enable);
+                        JMenu submenu = (JMenu) c;
+                        boolean enable = updateSubmenu(submenu);
+                        submenu.setEnabled(enable);
                         enableThisMenu |= enable;
                     } else if (c instanceof JMenuItem) {
                         JMenuItem item = (JMenuItem) c;
                         if (item.getAction() instanceof AbstractCommand) {
-                            AbstractCommand command = (AbstractCommand) item.getAction();
-                            command.update();
+                            ((AbstractCommand) item.getAction()).update();
                         }
                         enableThisMenu |= item.isEnabled();
                     }
@@ -802,6 +801,12 @@ final class AppFrame extends StrangeEonsAppWindow {
         jSeparator38 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenu viewQualityMenu =  new ViewQualityMenu() ;
         javax.swing.JMenu previewBackdropItem =  new PreviewBackgroundMenu() ;
+        cardEdgeMenu = new FinishStyleMenu();
+        javax.swing.JPopupMenu.Separator jSeparator39 = new javax.swing.JPopupMenu.Separator();
+        viewRegionBoxesItem = new javax.swing.JCheckBoxMenuItem();
+        viewPortraitBoxesItem = new javax.swing.JCheckBoxMenuItem();
+        viewEdgeOutlinesItem = new javax.swing.JCheckBoxMenuItem();
+        viewUnsafeRegionsItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator19 = new javax.swing.JPopupMenu.Separator();
         viewContextBarItem = new javax.swing.JCheckBoxMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator22 = new javax.swing.JPopupMenu.Separator();
@@ -1111,6 +1116,29 @@ final class AppFrame extends StrangeEonsAppWindow {
         previewBackdropItem.setText(string("app-backdrop")); // NOI18N
         previewBackdropItem.setName("previewBackdropItem"); // NOI18N
         viewMenu.add(previewBackdropItem);
+
+        cardEdgeMenu.setText(string("app-card-edge")); // NOI18N
+        cardEdgeMenu.setName("cardEdgeMenu"); // NOI18N
+        viewMenu.add(cardEdgeMenu);
+
+        jSeparator39.setName("jSeparator39"); // NOI18N
+        viewMenu.add(jSeparator39);
+
+        viewRegionBoxesItem.setAction(Commands.VIEW_REGION_BOXES);
+        viewRegionBoxesItem.setName("viewRegionBoxesItem"); // NOI18N
+        viewMenu.add(viewRegionBoxesItem);
+
+        viewPortraitBoxesItem.setAction(Commands.VIEW_PORTRAIT_BOXES);
+        viewPortraitBoxesItem.setName("viewPortraitBoxesItem"); // NOI18N
+        viewMenu.add(viewPortraitBoxesItem);
+
+        viewEdgeOutlinesItem.setAction(Commands.VIEW_EDGE_BOXES);
+        viewEdgeOutlinesItem.setName("viewEdgeOutlinesItem"); // NOI18N
+        viewMenu.add(viewEdgeOutlinesItem);
+
+        viewUnsafeRegionsItem.setAction(Commands.VIEW_UNSAFE_BOXES);
+        viewUnsafeRegionsItem.setName("viewUnsafeRegionsItem"); // NOI18N
+        viewMenu.add(viewUnsafeRegionsItem);
 
         jSeparator19.setName("jSeparator19"); // NOI18N
         viewMenu.add(jSeparator19);
@@ -1891,7 +1919,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             }
             project = proj;
             createProjectView(proj, showOpenAnimation);
-            RecentFiles.add(projectFolder);
+            RecentFiles.addRecentProject(projectFolder);
 
             // fire project event
             Object[] li = listeners.getListenerList();
@@ -2063,7 +2091,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             editor.setFrameIcon(newEditorDialog.getIconForComponent(gameComponent));
         }
 
-        RecentFiles.add(f);
+        RecentFiles.addRecentDocument(f);
         editor.handleOpenRequest(gameComponent, f);
         newEditorDialog.setVisible(false);
         return editor;
@@ -2284,6 +2312,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenuItem alignMiddleItem;
     private javax.swing.JMenuItem alignRightItem;
     private javax.swing.JMenuItem alignTopItem;
+    private javax.swing.JMenu cardEdgeMenu;
     private javax.swing.JMenu convertMenu;
     private javax.swing.JMenuItem createExpansionItem;
     private javax.swing.JMenu deckMenu;
@@ -2331,7 +2360,11 @@ final class AppFrame extends StrangeEonsAppWindow {
     private javax.swing.JMenu toolboxMenu;
     private javax.swing.JMenu variantMenu;
     private javax.swing.JCheckBoxMenuItem viewContextBarItem;
+    private javax.swing.JCheckBoxMenuItem viewEdgeOutlinesItem;
     private javax.swing.JMenu viewMenu;
+    private javax.swing.JCheckBoxMenuItem viewPortraitBoxesItem;
+    private javax.swing.JCheckBoxMenuItem viewRegionBoxesItem;
+    private javax.swing.JCheckBoxMenuItem viewUnsafeRegionsItem;
     private javax.swing.JMenu windowMenu;
     // End of variables declaration//GEN-END:variables
 
