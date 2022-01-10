@@ -228,7 +228,8 @@ public class ListTransferHandler extends TransferHandler {
             if (values.isEmpty()) {
                 return null;
             }
-            ArrayList alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList(values);
+            @SuppressWarnings("unchecked")
+            ArrayList<?> alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList<>(values);
             return new ListTransferable(alist);
         }
         return null;
