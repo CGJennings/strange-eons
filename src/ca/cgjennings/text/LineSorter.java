@@ -47,11 +47,12 @@ public class LineSorter {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     protected String[] sortTagged(String[] lines, TaggedLine[] tagged, Comparator cmp) {
         if (tagged == null) {
-            Arrays.sort(lines, cmp);
+            Arrays.sort(lines, (Comparator<String>) cmp);
         } else {
-            Arrays.sort(tagged, cmp);
+            Arrays.sort(tagged, (Comparator<TaggedLine>) cmp);
             String[] restored = new String[lines.length];
             for (int i = 0; i < tagged.length; ++i) {
                 restored[i] = lines[tagged[i].getIndex()];
