@@ -9,8 +9,6 @@ import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.platform.PlatformFileSystem;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.util.SortedProperties;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;

@@ -2,7 +2,6 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.platform.PlatformSupport;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import javax.imageio.ImageIO;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;

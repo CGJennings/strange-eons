@@ -31,7 +31,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import resources.Language;
 import static resources.Language.string;

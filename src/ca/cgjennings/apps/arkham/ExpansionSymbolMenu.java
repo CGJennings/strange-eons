@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import gamedata.Expansion;
 import gamedata.Game;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;

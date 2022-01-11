@@ -1,7 +1,5 @@
 package ca.cgjennings.algo.compression;
 
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Compressor factory supports programmatic selection and creation of
  * {@link Compressor} instances. For example, it can return a compressor that is

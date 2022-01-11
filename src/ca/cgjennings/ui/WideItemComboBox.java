@@ -1,7 +1,6 @@
 package ca.cgjennings.ui;
 
 import java.awt.Dimension;
-import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
