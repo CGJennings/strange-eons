@@ -1851,7 +1851,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
     @Deprecated
     public boolean isAutoBleedMarginEnabled() {
 //        return finish == FinishStyle.MARGIN;
-return false;
+        return false;
     }
 
     @Override

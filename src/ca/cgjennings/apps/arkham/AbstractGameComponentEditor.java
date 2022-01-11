@@ -105,7 +105,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Recursively adjust a tree of components in this editor for the host platform.
+     * Recursively adjust a tree of components in this editor for the host
+     * platform.
      *
      * @param root the root of the tree to localize
      * @see #localizeForPlatform()
@@ -323,8 +324,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * <li> if {@code newComponent} has an on-install event in its private
      * settings, then the on-install event is called
      * <li> the editor is updated to point to {@code newComponent} and it
-     * creates a new set of sheets from {@code newComponent} and installs
-     * them in the preview window
+     * creates a new set of sheets from {@code newComponent} and installs them
+     * in the preview window
      * <li> the current state of {@code newComponent} is copied from the
      * component to the editor controls
      * </ol>
@@ -581,8 +582,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * and {@link Commands#SPIN_OFF SPIN_OFF}.
      *
      * @param command the command to be performed
-     * @return {@code true} if this commandable wishes to handle the
-     * command (even if it cannot execute the command currently)
+     * @return {@code true} if this commandable wishes to handle the command
+     * (even if it cannot execute the command currently)
      * @see Commands
      */
     @Override
@@ -902,8 +903,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Adds a new {@code FieldPopulationListener} to this game component
-     * editor. A field population event is fired after the editor's controls are
+     * Adds a new {@code FieldPopulationListener} to this game component editor.
+     * A field population event is fired after the editor's controls are
      * modified to match the edited component. This typically happens as part of
      * setting the game component for the editor.
      *
@@ -972,7 +973,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      *
      * @param box the combo box whose labels should be localized
      * @param prefix a prefix string that will identify labels that are string
-     *     table keys
+     * table keys
      */
     public static void localizeComboBoxLabels(JComboBox<String> box, String prefix) {
         localizeComboBoxLabels(null, box, prefix);
@@ -988,7 +989,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param lang the language to use, or null for the interface language
      * @param box the combo box whose labels should be localized
      * @param prefix a prefix string that will identify labels that are string
-     *     table keys
+     * table keys
      */
     @SuppressWarnings("unchecked")
     public static void localizeComboBoxLabels(Language lang, JComboBox<String> box, String prefix) {
@@ -1014,11 +1015,10 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     /**
-     * Returns {@code true} if the edited game component has unsaved
-     * changes.
+     * Returns {@code true} if the edited game component has unsaved changes.
      *
-     * @return {@code true} if the game component has been edited since the
-     * last time it was saved
+     * @return {@code true} if the game component has been edited since the last
+     * time it was saved
      */
     @Override
     public boolean hasUnsavedChanges() {
@@ -1036,8 +1036,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * {@link #hasUnsavedChanges()} and the game component's
      * {@link GameComponent#hasUnsavedChanges()} will match.)
      *
-     * @param isDirty {@code true} if this game component has unsaved
-     * changes
+     * @param isDirty {@code true} if this game component has unsaved changes
      */
     @Override
     public void setUnsavedChanges(boolean isDirty) {
@@ -1115,7 +1114,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
                         }
                     } else if (style == null && i < sheets.length - 1) {
                         ++i;
-                        if(faces.get(i)) {
+                        if (faces.get(i)) {
                             back = new CardFace(gc.getFullName(), sheets[i], i);
                         }
                     }
@@ -1145,8 +1144,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * Returns the edited game component. If this editor is not editing a game
      * component, returns {@code null}.
      *
-     * @return the edited game component, or {@code null} if this editor is
-     * not editing a game component
+     * @return the edited game component, or {@code null} if this editor is not
+     * editing a game component
      */
     @Override
     public G getGameComponent() {
@@ -1222,7 +1221,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     @Override
     public boolean isCommandApplicable(AbstractCommand command) {
-        if(command == Commands.VIEW_INK_SAVER) {
+        if (command == Commands.VIEW_INK_SAVER) {
             return true;
         }
         return super.isCommandApplicable(command);
@@ -1230,13 +1229,13 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     @Override
     public void performCommand(AbstractCommand command) {
-        if(command == Commands.VIEW_INK_SAVER) {
+        if (command == Commands.VIEW_INK_SAVER) {
             GameComponent gc = getGameComponent();
-            if(gc != null) {
+            if (gc != null) {
                 Sheet[] sheets = gc.getSheets();
-                if(sheets != null) {
+                if (sheets != null) {
                     boolean enable = Commands.VIEW_INK_SAVER.isSelected();
-                    for(int i=0; i<sheets.length; ++i) {
+                    for (int i = 0; i < sheets.length; ++i) {
                         sheets[i].setPrototypeRenderingModeEnabled(enable);
                     }
                     redrawPreview();
@@ -1247,17 +1246,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         super.performCommand(command);
     }
 
-
-
-
-
-    
-    
-    
-    
-    
     private static final Set<? extends AWTKeyStroke> TEXT_FIELD_FORWARD_TRAVERSAL_KEYS = Collections.singleton(KeyStroke.getAWTKeyStroke("ctrl TAB"));
-    
+
     private static final Action EXPAND_ABBRV_ACTION = new AbstractAction("EXPAND_ABBRV") {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -1298,7 +1288,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
             }
             return (StrangeEonsEditor) parent;
         }
-    };    
+    };
 
     static {
         StrangeEons.getApplication().addPropertyChangeListener(StrangeEons.MARKUP_TARGET_PROPERTY, (PropertyChangeEvent evt) -> {

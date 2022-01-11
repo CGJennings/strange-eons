@@ -21,8 +21,8 @@ import java.util.Map.Entry;
  *
  * <p>
  * It is guaranteed that every cached object that has no other references to it
- * will be cleared before an {@code OutOfMemory} error is thrown. The cache
- * can also be {@linkplain #clear() cleared on demand}, and individual objects
+ * will be cleared before an {@code OutOfMemory} error is thrown. The cache can
+ * also be {@linkplain #clear() cleared on demand}, and individual objects
  * {@linkplain #remove(java.lang.Object) removed}.
  *
  * <p>
@@ -76,8 +76,8 @@ public abstract class AbstractResourceCache<I, R> {
      * <p>
      * If the requested resource does not exist, the result depends on the
      * subclass implementation. Some subclasses may return a default resource to
-     * stand in for the requested resource. Others may return {@code null}
-     * or throw an exception.
+     * stand in for the requested resource. Others may return {@code null} or
+     * throw an exception.
      *
      * @param identifier the identifier of the resource to obtain
      * @return the requested resource
@@ -200,8 +200,8 @@ public abstract class AbstractResourceCache<I, R> {
      * <p>
      * The base class will return the original identifier without changes.
      *
-     * @param identifier the non-{@code null}identifier to convert to
-     * canonical form
+     * @param identifier the non-{@code null}identifier to convert to canonical
+     * form
      * @return the canonical form of the identifier
      */
     protected I canonicalizeIdentifier(I identifier) {
@@ -212,10 +212,10 @@ public abstract class AbstractResourceCache<I, R> {
      * Returns {@code true} if this resource should be cached.
      *
      * <p>
-     * The base class returns {@code true}. Subclasses can override this if
-     * they wish to decide whether individual objects should be cached. For
-     * example, a subclass might only allow caching of objects if the identifier
-     * refers to a read-only storage facility.
+     * The base class returns {@code true}. Subclasses can override this if they
+     * wish to decide whether individual objects should be cached. For example,
+     * a subclass might only allow caching of objects if the identifier refers
+     * to a read-only storage facility.
      *
      * @param canonicalIdentifier the identifier of the resource object
      * @param loadedResource the resource object, as returned from
@@ -288,8 +288,8 @@ public abstract class AbstractResourceCache<I, R> {
      * instance is created and it is then registered so it can be looked up by
      * support tools.
      *
-     * @param allowClearing if {@code false}, then the returned metrics
-     * instance cannot be used to clear the cache
+     * @param allowClearing if {@code false}, then the returned metrics instance
+     * cannot be used to clear the cache
      * @return a new cache metrics instance that reflects the state of this
      * cache
      * @see ResourceKit#registerCacheMetrics

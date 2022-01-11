@@ -862,14 +862,14 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
                 getGlassPane().setVisible(false);
                 getGlassPane().setCursor(Cursor.getDefaultCursor());
             }
-            
+
             Document doc = progressField.getDocument();
             try {
                 doc.insertString(doc.getLength(), message + "\n", null);
             } catch (BadLocationException ex) {
                 throw new AssertionError();
             }
-            
+
             progressField.select(doc.getLength(), doc.getLength());
         });
     }

@@ -200,8 +200,8 @@ public class ImagePreviewer extends JPanel {
      * override this to create a custom previewer for a different file type.
      * Note that this is typically
      * <b>not</b> run from the event dispatch thread. If constructing the image
-     * fails for any reason, this method must return {@code null} and
-     * should not display an error message.
+     * fails for any reason, this method must return {@code null} and should not
+     * display an error message.
      *
      * @param f the file to compose a preview of
      * @return the preview image
@@ -218,8 +218,8 @@ public class ImagePreviewer extends JPanel {
     }
 
     /**
-     * Returns {@code true} if this file appears to be of a type for which
-     * a preview can be created.
+     * Returns {@code true} if this file appears to be of a type for which a
+     * preview can be created.
      *
      * @param o the file to check
      * @return {@code true} if previewing this file is expected to succeed
@@ -288,8 +288,8 @@ public class ImagePreviewer extends JPanel {
     public void setPreviewImage(BufferedImage i) {
         if (i == null) {
             if (nullImage == null) {
-                final String icon = "icons/" +
-                        (ThemeInstaller.isDark()
+                final String icon = "icons/"
+                        + (ThemeInstaller.isDark()
                         ? "fedora.png"
                         : "black-fedora.png");
                 nullImage = ResourceKit.getImage(icon);

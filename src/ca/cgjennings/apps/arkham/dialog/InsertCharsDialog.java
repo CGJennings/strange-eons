@@ -168,9 +168,11 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
                     case KeyEvent.VK_ENTER: {
                         Font f = getTableFont();
                         int cp = getCodePointForLocation(row, col);
-                        int delta=+1, switchAt=Character.MAX_CODE_POINT+1, switchTo=0;
-                        if(e.isShiftDown()) {
-                            switchTo = switchAt-1; switchAt = -1; delta = -1;
+                        int delta = +1, switchAt = Character.MAX_CODE_POINT + 1, switchTo = 0;
+                        if (e.isShiftDown()) {
+                            switchTo = switchAt - 1;
+                            switchAt = -1;
+                            delta = -1;
                         }
                         int i;
                         for (i = cp + delta; i != cp; i += delta) {
@@ -541,7 +543,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
                 if (name != null) {
                     if (name.contains(fragment)) {
                         int targetRow = getRowForCodePoint(testChar);
-                        if(targetRow >= 0) {
+                        if (targetRow >= 0) {
                             selectNearestValidRow(testChar);
                             return;
                         }
@@ -557,11 +559,12 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
         UIManager.getLookAndFeel().provideErrorFeedback(findField);
     }//GEN-LAST:event_findBtnActionPerformed
     private String selectedText;
-    
+
     /**
      * If the code point is in the table, it is selected. Otherwise the nearest
-     * valid row is "selected" by selecting column 0 so that the view scrolls
-     * to the row.
+     * valid row is "selected" by selecting column 0 so that the view scrolls to
+     * the row.
+     *
      * @param codePoint the code point to select or scroll near
      */
     private void selectNearestValidRow(int codePoint) {

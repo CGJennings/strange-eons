@@ -33,9 +33,9 @@ import java.util.concurrent.ExecutionException;
  * number of subproblems to create.
  * <li>Create an array or collection or Runnables or Callables, each of which
  * will complete one subproblem.
- * <li>Use one of the {@code run} or {@code evaluate} methods to
- * complete the subproblems (in parallel if possible). This will return when all
- * of the subproblems have been completed.
+ * <li>Use one of the {@code run} or {@code evaluate} methods to complete the
+ * subproblems (in parallel if possible). This will return when all of the
+ * subproblems have been completed.
  * <li>If necessary, combine the results of the subproblems.
  * </ol>
  *
@@ -70,8 +70,8 @@ public abstract class SplitJoin {
     };
 
     /**
-     * Returns a new {@code SplitJoin} instance suited to the platform.
-     * This instance is guaranteed not to be shared.
+     * Returns a new {@code SplitJoin} instance suited to the platform. This
+     * instance is guaranteed not to be shared.
      *
      * @return a new instance suitable for parallelizing CPU bound tasks
      */
@@ -84,16 +84,16 @@ public abstract class SplitJoin {
 
     /**
      * Returns a new {@code SplitJoin} instance that will use the specified
-     * number of threads. This instance is guaranteed not to be shared, and
-     * is guaranteed to employ up to the specified number of threads
-     * (depending on the number of subproblems).
+     * number of threads. This instance is guaranteed not to be shared, and is
+     * guaranteed to employ up to the specified number of threads (depending on
+     * the number of subproblems).
      *
      * @param nThreads the number of threads to be used
      * @return a new instance that uses the specified number of threads
      * @throws IllegalArgumentException if the number of threads is not positive
      */
     public static SplitJoin createInstance(int nThreads) {
-        if(nThreads < 1) {
+        if (nThreads < 1) {
             throw new IllegalArgumentException("nThreads " + nThreads);
         }
         if (nThreads == 1) {
@@ -143,9 +143,9 @@ public abstract class SplitJoin {
     public abstract <V> List<V> evaluate(Collection<? extends Callable<V>> subproblems) throws ExecutionException;
 
     /**
-     * Submits subproblems as if by {@code run( subproblems )}. However, if
-     * one of the subproblems throws an exception, it will be thrown as an
-     * unchecked {@code RuntimeException}.
+     * Submits subproblems as if by {@code run( subproblems )}. However, if one
+     * of the subproblems throws an exception, it will be thrown as an unchecked
+     * {@code RuntimeException}.
      *
      * @param subproblems the subproblems to complete
      * @throws RuntimeException if one of the subproblems throws an exception
@@ -162,9 +162,9 @@ public abstract class SplitJoin {
     }
 
     /**
-     * Submits subproblems as if by {@code run( subproblems )}. However, if
-     * one of the subproblems throws an exception, it will be thrown as an
-     * unchecked {@code RuntimeException}.
+     * Submits subproblems as if by {@code run( subproblems )}. However, if one
+     * of the subproblems throws an exception, it will be thrown as an unchecked
+     * {@code RuntimeException}.
      *
      * @param subproblems the subproblems to complete
      * @throws RuntimeException if one of the subproblems throws an exception
@@ -181,9 +181,9 @@ public abstract class SplitJoin {
     }
 
     /**
-     * Submits subproblems as if by {@code evaluate( subproblems )}.
-     * However, if one of the subproblems throws an exception, it will be thrown
-     * as an unchecked {@code RuntimeException}.
+     * Submits subproblems as if by {@code evaluate( subproblems )}. However, if
+     * one of the subproblems throws an exception, it will be thrown as an
+     * unchecked {@code RuntimeException}.
      *
      * @param <V> the type of the value returned by each subproblem
      * @param subproblems the subproblems to complete
@@ -202,22 +202,22 @@ public abstract class SplitJoin {
     }
 
     /**
-     * Runs a {@code task}. The task may be run in another thread, in which
-     * case this method <i>will not wait</i> for the task to complete. The
-     * purpose of this method is to reuse a thread that would normally have been
-     * used for split-join tasks instead of creating a new {@code Thread}
-     * yourself. If there is an idle split-join thread available, then this
-     * method generally has lower overhead than creating a new thread.
+     * Runs a {@code task}. The task may be run in another thread, in which case
+     * this method <i>will not wait</i> for the task to complete. The purpose of
+     * this method is to reuse a thread that would normally have been used for
+     * split-join tasks instead of creating a new {@code Thread} yourself. If
+     * there is an idle split-join thread available, then this method generally
+     * has lower overhead than creating a new thread.
      *
      * @param task the task to run in another thread
      */
     public abstract void execute(Runnable task);
 
     /**
-     * Provides a hint to this instance that it will no longer be used.
-     * Calling this is not required, but may free up resources sooner than
-     * not calling it would. The effect of continuing to use this
-     * {@code SplitJoin} after disposing of it is undefined.
+     * Provides a hint to this instance that it will no longer be used. Calling
+     * this is not required, but may free up resources sooner than not calling
+     * it would. The effect of continuing to use this {@code SplitJoin} after
+     * disposing of it is undefined.
      */
     public void dispose() {
     }
@@ -238,12 +238,11 @@ public abstract class SplitJoin {
 
     /**
      * Sets a hint as to whether the creation of higher than normal priority
-     * threads is allowed. If {@code true}, then {@code SplitJoin}
-     * instances <i>may try</i> to creates threads with above average priority.
-     * Note that even if enabled, this is not guaranteed to have an effect.
+     * threads is allowed. If {@code true}, then {@code SplitJoin} instances
+     * <i>may try</i> to creates threads with above average priority. Note that
+     * even if enabled, this is not guaranteed to have an effect.
      *
-     * @param enable {@code true} to allow higher than normal priority
-     * threads
+     * @param enable {@code true} to allow higher than normal priority threads
      */
     public static void setHighPriorityThreadHint(boolean enable) {
         synchronized (SplitJoin.class) {
@@ -273,13 +272,13 @@ public abstract class SplitJoin {
      * to {@code false}, future calls to {@link #getInstance()} or
      * {@link #createInstance()}
      * <i>that create a new instance rather than share an existing one</i>
-     * will return a {@code SplitJoin} implementation that executes
-     * subproblems serially in the calling thread. To guarantee that all
-     * {@code SplitJoin} instances run serially, this must value must be
-     * set before the first call to {@link #getInstance()}.
+     * will return a {@code SplitJoin} implementation that executes subproblems
+     * serially in the calling thread. To guarantee that all {@code SplitJoin}
+     * instances run serially, this must value must be set before the first call
+     * to {@link #getInstance()}.
      *
-     * @param enable allow parallel problem solving if {@code true},
-     * disable if {@code false} (default is {@code true})
+     * @param enable allow parallel problem solving if {@code true}, disable if
+     * {@code false} (default is {@code true})
      */
     public static void setParallelExecutionEnabled(boolean enable) {
         allowThreads = enable;

@@ -23,10 +23,9 @@ public interface DependentPageItem {
 
     /**
      * Indicates to the item that it should recreate its content because the
-     * external file has changed. This method should return {@code true} if
-     * the item is updated successfully, or {@code false} if the item could
-     * not be updated, typically because the new item is incompatible with the
-     * old one.
+     * external file has changed. This method should return {@code true} if the
+     * item is updated successfully, or {@code false} if the item could not be
+     * updated, typically because the new item is incompatible with the old one.
      *
      * @return {@code true} if the item was replaced
      */

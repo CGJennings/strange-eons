@@ -1166,7 +1166,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             if (evt == null) {
                 throw new AssertionError("needs true event");
             }
-            
+
             @SuppressWarnings("unchecked")
             JList<Card> sourceList = (JList<Card>) evt.getSource();
 
@@ -1501,6 +1501,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     };
 
     private class CardTransferable implements Transferable {
+
         private final CardTransferData data;
 
         public CardTransferable(DefaultListModel<Card> source, List<Card> cards) {

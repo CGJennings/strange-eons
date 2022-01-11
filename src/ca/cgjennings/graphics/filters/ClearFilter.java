@@ -34,8 +34,8 @@ public class ClearFilter extends AbstractPixelwiseFilter {
     }
 
     /**
-     * Creates a filter that uses the ARGB value specified by a
-     * {@code Color} instance.
+     * Creates a filter that uses the ARGB value specified by a {@code Color}
+     * instance.
      *
      * @param c the color to obtain an ARGB value from
      */

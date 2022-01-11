@@ -150,8 +150,7 @@ public class JGameFilterField extends JComboBox<Object> {
 //	}
     /**
      * Returns the current filter value. This is either a {@link Game}, or a
-     * filtering {@code String}, or {@code null} if the filter value
-     * is empty.
+     * filtering {@code String}, or {@code null} if the filter value is empty.
      *
      * @return a filter value based on the current selection
      */

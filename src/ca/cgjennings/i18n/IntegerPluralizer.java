@@ -20,13 +20,13 @@ import resources.Language;
  * {@link #create(java.util.Locale)}, you do not normally create a pluralizer
  * yourself. Instead, you obtain a pluralizer from the appropriate
  * {@link Language}. For example, to pluralize text in the user interface
- * language, you would call {@code Language.getInterface().getPluralizer()}
- * to get the pluralizer for the user interface language.
+ * language, you would call {@code Language.getInterface().getPluralizer()} to
+ * get the pluralizer for the user interface language.
  *
  * <p>
- * The most common way to set up your {@code .properties} file when you
- * want to add a pluralizable string is to add a key for the singular form, then
- * add a separate key with "-pl" on the end for the plural. For example:
+ * The most common way to set up your {@code .properties} file when you want to
+ * add a pluralizable string is to add a key for the singular form, then add a
+ * separate key with "-pl" on the end for the plural. For example:
  * <pre>
  * elephant-count = I see %d elephant.
  * elephant-count-pl = I see %d elephants.
@@ -34,17 +34,17 @@ import resources.Language;
  *
  * <p>
  * For locales with more than one plural form, additional keys would be defined
- * with the names {@code elephant-count-pl2},
- * {@code elephant-count-pl3}, and so on. Locales that don't have plural
- * forms would simply define the singular form key.
+ * with the names {@code elephant-count-pl2}, {@code elephant-count-pl3}, and so
+ * on. Locales that don't have plural forms would simply define the singular
+ * form key.
  *
  * <p>
- * Using a {@code Language} instance that has this {@code .properties}
- * file loaded, you could obtain a properly formatted and localized plural by
- * calling code similar to the following:
+ * Using a {@code Language} instance that has this {@code .properties} file
+ * loaded, you could obtain a properly formatted and localized plural by calling
+ * code similar to the following:
  * <pre>language.getPluralizer().pluralize( numElephants, "elephant-count", numElephants );</pre>
- * (The second {@code numElephants} argument is used to replace the
- * {@code %d} in the plural string.)
+ * (The second {@code numElephants} argument is used to replace the {@code %d}
+ * in the plural string.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -75,9 +75,9 @@ public class IntegerPluralizer {
      * <p>
      * The base class includes built-in support for a number of languages. If
      * none of these is suitable, then it will attempt to instantiate a class in
-     * this package with the name {@code IntegerPluralizer_<i>xx</i>},
-     * where <i>xx</i> is the language code for the locale. If this class cannot
-     * be found and instantiated, then a default pluralizer is returned that
+     * this package with the name {@code IntegerPluralizer_<i>xx</i>}, where
+     * <i>xx</i> is the language code for the locale. If this class cannot be
+     * found and instantiated, then a default pluralizer is returned that
      * follows the same rules as English.
      *
      * @param loc the locale, or {@code null} to use the default locale
@@ -140,8 +140,8 @@ public class IntegerPluralizer {
     private static final int DEFAULT = 0, CS = 1, FR = 2, PL = 3, RU = 4, ZH = 5;
 
     /**
-     * Returns the plural form index to use for {@code number}. For
-     * example, the English pluralizer returns plural form 0 (singular) if
+     * Returns the plural form index to use for {@code number}. For example, the
+     * English pluralizer returns plural form 0 (singular) if
      * {@code number == 1}, and otherwise returns 1 (first plural form).
      *
      * <p>
@@ -207,8 +207,8 @@ public class IntegerPluralizer {
     }
 
     /**
-     * Returns the plural form index to use for a {@code number}. This is
-     * the long-sized analogue to {@link #getPluralForm(int)}.
+     * Returns the plural form index to use for a {@code number}. This is the
+     * long-sized analogue to {@link #getPluralForm(int)}.
      *
      * @param number the number to choose a plural form for
      * @return the plural form index for the chosen number in this pluralizer's
@@ -276,10 +276,10 @@ public class IntegerPluralizer {
 
     /**
      * Returns a key name based on a plural form index and base key name parts.
-     * The value of {@code pluralForm} is 0 for the singular form, 1 for
-     * the first plural form, 2 for the second plural form, and so on. (The
-     * exact meaning of the plural form index is locale-dependent.) The returned
-     * key name is composed by following this pattern:
+     * The value of {@code pluralForm} is 0 for the singular form, 1 for the
+     * first plural form, 2 for the second plural form, and so on. (The exact
+     * meaning of the plural form index is locale-dependent.) The returned key
+     * name is composed by following this pattern:
      * <pre>
      * basePrefix + singularInfix     + baseSuffix      (plural form 0)
      * basePrefix + pluralInfix       + baseSuffix      (plural form 1)
@@ -326,24 +326,22 @@ public class IntegerPluralizer {
     /**
      * Returns an appropriate plural form string based on an integer value. A
      * set of keys is generated as if by calling
-     * {@code createKeys( resourceKeyBase, "", "", "-pl" )}. This means
-     * that the following keys will be used:<br>
-     * {@code <i>resourceKeyBase</i>} singular form<br>
-     * {@code <i>resourceKeyBase</i>-pl} first plural form<br>
+     * {@code createKeys( resourceKeyBase, "", "", "-pl" )}. This means that the
+     * following keys will be used:<br> {@code <i>resourceKeyBase</i>} singular
+     * form<br> {@code <i>resourceKeyBase</i>-pl} first plural form<br>
      * {@code <i>resourceKeyBase</i>-pl2} second plural form<br>
      * ...
      *
      * <p>
      * Of these keys, the appropriate key will be selected based on the value of
-     * {@code number}, and then the value of this key in
-     * {@code language} returned.
+     * {@code number}, and then the value of this key in {@code language}
+     * returned.
      *
      * @param language the language to use to look up the plural string
      * @param number the number to for which a plural form should be selected
      * @param resourceKeyBase the base key to use to generate a key set
      * @return the appropriate plural form, or an error message
-     * @throws NullPointerException if the language or base key is
-     * {@code null}
+     * @throws NullPointerException if the language or base key is {@code null}
      */
     public String pluralize(Language language, int number, String resourceKeyBase) {
         if (language == null) {
@@ -367,8 +365,8 @@ public class IntegerPluralizer {
 
     /**
      * Returns a pluralized string that has been formatted using the supplied
-     * objects. This is a convenience for calling {@code String.format} on
-     * the result of a call to {@link #pluralize(int, java.lang.String)}.
+     * objects. This is a convenience for calling {@code String.format} on the
+     * result of a call to {@link #pluralize(int, java.lang.String)}.
      *
      * @param number the number to for which a plural form should be selected
      * @param resourceKeyBase the base key to use to generate a key set
@@ -383,8 +381,8 @@ public class IntegerPluralizer {
 
     /**
      * Returns a pluralized string that has been formatted using the supplied
-     * objects. This is a convenience for calling {@code String.format} on
-     * the result of a call to
+     * objects. This is a convenience for calling {@code String.format} on the
+     * result of a call to
      * {@link #pluralize(resources.Language, int, java.lang.String)}.
      *
      * @param language the language to use to look up the plural string
@@ -393,8 +391,7 @@ public class IntegerPluralizer {
      * @param formatObjects the objects to use when formatting the resulting
      * string
      * @return a localized, pluralized, and formatted string
-     * @throws NullPointerException if the language or base key is
-     * {@code null}
+     * @throws NullPointerException if the language or base key is {@code null}
      */
     public String pluralize(Language language, int number, String resourceKeyBase, Object... formatObjects) {
         return String.format(language.getLocale(), pluralize(language, number, resourceKeyBase), formatObjects);
@@ -434,23 +431,23 @@ public class IntegerPluralizer {
     }
 
     /**
-     * If this returns {@code true}, then there is no built-in pluralizer
-     * for this pluralizer's locale and a default pluralizer is being used that
+     * If this returns {@code true}, then there is no built-in pluralizer for
+     * this pluralizer's locale and a default pluralizer is being used that
      * follows the same rules as English. When starting a translation, you can
      * test if pluralizer support needs to be added by running script code
      * similar to the following (where <i>ll</i> is the relevant language code):
      * <pre>println( ca.cgjennings.i18n.IntegerPluralizer.create( new java.util.Locale("<i>ll</i>") ).isFallbackPluralizer() );</pre>
-     * If this prints {@code true}, then you should request that
-     * pluralization support be added for your language. Alternatively, if you
-     * are familiar with Java, you can add support yourself by writing a class
-     * with the name {@code IntegerPluralizer_<i>ll</i>}. The class must be
-     * in the same package as this class, and it must subclass
-     * {@code IntegerPluralizer} and override the {@link #getPluralForm(int)},
+     * If this prints {@code true}, then you should request that pluralization
+     * support be added for your language. Alternatively, if you are familiar
+     * with Java, you can add support yourself by writing a class with the name
+     * {@code IntegerPluralizer_<i>ll</i>}. The class must be in the same
+     * package as this class, and it must subclass {@code IntegerPluralizer} and
+     * override the {@link #getPluralForm(int)},
      * {@link #getPluralFormCount()}, and {@link #getPluralFormDescription()}
      * methods to implement the pluralization rule for the locale.
      *
-     * @return {@code true} if pluralizer support for your locale needs to
-     * be added
+     * @return {@code true} if pluralizer support for your locale needs to be
+     * added
      */
     public final boolean isFallbackPluralizer() {
         return isDummy;

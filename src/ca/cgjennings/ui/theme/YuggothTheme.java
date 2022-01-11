@@ -18,10 +18,11 @@ import javax.swing.plaf.InsetsUIResource;
 
 /**
  * The Yuggoth theme is a built-in dark mode theme.
- * 
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class YuggothTheme extends Theme {
+
     public YuggothTheme() {
     }
 
@@ -41,21 +42,21 @@ public class YuggothTheme extends Theme {
 
         defaults.put(EDITOR_TAB_BACKGROUND, new Color(0x000000));
 
-        defaults.put( "control", new Color(0x171717) );
-        defaults.put( "info", new Color(128,128,128) );
-        defaults.put( "nimbusBase", new Color( 9, 15, 25) );
+        defaults.put("control", new Color(0x171717));
+        defaults.put("info", new Color(128, 128, 128));
+        defaults.put("nimbusBase", new Color(9, 15, 25));
 
-        defaults.put( "nimbusAlertYellow", new Color( 248, 187, 0) );
-        defaults.put( "nimbusDisabledText", new Color( 150, 150, 150) );
-        defaults.put( "nimbusFocus", new Color(115,164,209) );
-        defaults.put( "nimbusGreen", new Color(176,179,50) );
-        defaults.put( "nimbusInfoBlue", new Color( 66, 139, 221) );
-        defaults.put( "nimbusLightBackground", new Color( 18, 30, 49) );
-        defaults.put( "nimbusOrange", new Color(191,98,4) );
-        defaults.put( "nimbusRed", new Color(169,46,34) );
-        defaults.put( "nimbusSelectedText", new Color( 255, 255, 255) );
-        defaults.put( "nimbusSelectionBackground", new Color( 104, 93, 156) );
-        defaults.put( "text", new Color( 230, 230, 230) );
+        defaults.put("nimbusAlertYellow", new Color(248, 187, 0));
+        defaults.put("nimbusDisabledText", new Color(150, 150, 150));
+        defaults.put("nimbusFocus", new Color(115, 164, 209));
+        defaults.put("nimbusGreen", new Color(176, 179, 50));
+        defaults.put("nimbusInfoBlue", new Color(66, 139, 221));
+        defaults.put("nimbusLightBackground", new Color(18, 30, 49));
+        defaults.put("nimbusOrange", new Color(191, 98, 4));
+        defaults.put("nimbusRed", new Color(169, 46, 34));
+        defaults.put("nimbusSelectedText", new Color(255, 255, 255));
+        defaults.put("nimbusSelectionBackground", new Color(104, 93, 156));
+        defaults.put("text", new Color(230, 230, 230));
 
         ColorUIResource MENU = new ColorUIResource(0x111111);
         ColorUIResource MENU_TEXT = new ColorUIResource(0xffffff);
@@ -101,7 +102,7 @@ public class YuggothTheme extends Theme {
         defaults.put("MenuBar.background", MENU);
         defaults.put("PopupMenu.background", MENU);
         defaults.put("PopupMenu[Disabled].backgroundPainter", P_MENU);
-        defaults.put("PopupMenu[Enabled].backgroundPainter", P_MENU );
+        defaults.put("PopupMenu[Enabled].backgroundPainter", P_MENU);
         defaults.put("PopupMenuSeparator[Enabled].backgroundPainter", P_MENU);
         defaults.put("PopupMenuSeparator.contentMargins", new InsetsUIResource(2, 0, 3, 0));
         defaults.put("Menu.backgroundPainter", MENU);
@@ -122,32 +123,31 @@ public class YuggothTheme extends Theme {
         defaults.put("CheckBoxMenuItem[MouseOver+Selected].backgroundPainter", P_MENU_SELECTED);
 
         Object painter = defaults.get("CheckBoxMenuItem[MouseOver+Selected].checkIconPainter");
-        if(painter != null) {
+        if (painter != null) {
             defaults.put("CheckBoxMenuItem[Enabled+Selected].checkIconPainter", painter);
         }
         painter = defaults.get("RadioButtonMenuItem[MouseOver+Selected].checkIconPainter");
-        if(painter != null) {
+        if (painter != null) {
             defaults.put("RadioButtonMenuItem[Enabled+Selected].checkIconPainter", painter);
         }
         painter = defaults.get("Menu[Enabled+Selected].arrowIconPainter");
-        if(painter != null) {
+        if (painter != null) {
             defaults.put("Menu[Enabled].arrowIconPainter", painter);
         }
 
         defaults.put("SplitPane.background", new Color(0x1b1d22));
         defaults.put("TitledBorder.titleColor", new Color(0xeeffff));
     }
-    
 
     @Override
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
         modifyManagerDefaults(defaults);
     }
 
-
-
     private static class SolidPainter implements Painter<Component> {
+
         private final Paint paint;
+
         public SolidPainter(final Paint paint) {
             this.paint = Objects.requireNonNull(paint);
         }
@@ -160,6 +160,7 @@ public class YuggothTheme extends Theme {
     }
 
     private static class OutlinedPainter implements Painter<Component> {
+
         private final Paint paint, outline;
 
         public OutlinedPainter(final Paint paint, final Paint outline) {

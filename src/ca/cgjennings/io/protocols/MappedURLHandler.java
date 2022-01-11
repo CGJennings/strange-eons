@@ -109,7 +109,8 @@ public abstract class MappedURLHandler extends URLStreamHandler {
                 case "..":
                     if (out.size() > 0) {
                         out.removeLast();
-                    }   break;
+                    }
+                    break;
                 default:
                     out.add(segment);
                     break;

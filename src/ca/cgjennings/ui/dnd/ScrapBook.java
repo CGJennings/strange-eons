@@ -61,8 +61,8 @@ public class ScrapBook {
     /**
      * Returns whether there is text available on the clipboard.
      *
-     * @return {@code true} if the clipboard contains text (or can be
-     * converted to text)
+     * @return {@code true} if the clipboard contains text (or can be converted
+     * to text)
      */
     public static boolean isTextAvailable() {
         return available(DataFlavor.stringFlavor);
@@ -70,8 +70,8 @@ public class ScrapBook {
 
     /**
      * Returns the text stored in the system selection on platforms that support
-     * this feature. Returns {@code null} if the platform does not have a
-     * system selection or it does not have any text available.
+     * this feature. Returns {@code null} if the platform does not have a system
+     * selection or it does not have any text available.
      *
      * @return the system selection text
      */

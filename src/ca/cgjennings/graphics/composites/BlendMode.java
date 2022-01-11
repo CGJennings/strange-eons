@@ -16,9 +16,9 @@ import java.awt.image.ColorModel;
  * <b>Note:</b> Because this extends {@link AbstractARGBComposite}, it only
  * supports 32-bit integer (A)RGB colour models. To avoid potential problems, do
  * not apply this composite directly to a screen, printer, or other arbitrary
- * graphics context. Instead, create a temporary image in
- * {@code TYPE_INT_RGB} or {@code TYPE_INT_ARGB} mode, composite into
- * this image, and then draw the image to the destination.
+ * graphics context. Instead, create a temporary image in {@code TYPE_INT_RGB}
+ * or {@code TYPE_INT_ARGB} mode, composite into this image, and then draw the
+ * image to the destination.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -33,16 +33,15 @@ public abstract class BlendMode extends AbstractARGBComposite {
 
     /**
      * {@code Normal} mixes the source and destination using the weighted
-     * average {@code source/alpha + destination/(1-alpha)}.
-     * {@code Normal} is identical to the
-     * {@code AlphaComposite.SrcOver} composite. It is included here for
-     * completeness.
+     * average {@code source/alpha + destination/(1-alpha)}. {@code Normal} is
+     * identical to the {@code AlphaComposite.SrcOver} composite. It is included
+     * here for completeness.
      */
     public static final AlphaComposite Normal = AlphaComposite.SrcOver;
 
     /**
-     * For each channel, {@code Lighten} chooses the lighter of the source
-     * and destination values.
+     * For each channel, {@code Lighten} chooses the lighter of the source and
+     * destination values.
      */
     public static final BlendMode Lighten = new BlendMode() {
         @Override
@@ -128,8 +127,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code Darken} chooses the darker of the source
-     * and destination values.
+     * For each channel, {@code Darken} chooses the darker of the source and
+     * destination values.
      */
     public static final BlendMode Darken = new BlendMode() {
         @Override
@@ -309,8 +308,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     public static final BlendMode LinearDodge = Add;
 
     /**
-     * For each channel, {@code Subtract} subtracts the source value from
-     * the destination value.
+     * For each channel, {@code Subtract} subtracts the source value from the
+     * destination value.
      */
     public static final BlendMode Subtract = new BlendMode() {
         @Override
@@ -483,8 +482,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Exclusion} produces an effect similar to {@link #Difference},
-     * but lower in contrast.
+     * {@code Exclusion} produces an effect similar to {@link #Difference}, but
+     * lower in contrast.
      */
     public static final BlendMode Exclusion = new BlendMode() {
         @Override
@@ -570,9 +569,9 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Negation} produces a similar effect to {@link #Difference},
-     * but the values are inverted so that the destination becomes lighter
-     * rather than darker.
+     * {@code Negation} produces a similar effect to {@link #Difference}, but
+     * the values are inverted so that the destination becomes lighter rather
+     * than darker.
      */
     public static final BlendMode Negation = new BlendMode() {
         @Override
@@ -658,8 +657,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code Multiply} takes the product of the of the
-     * source and destination values. The result is always darker unless the
+     * For each channel, {@code Multiply} takes the product of the of the source
+     * and destination values. The result is always darker unless the
      * destination is black.
      */
     public static final BlendMode Multiply = new BlendMode() {
@@ -726,8 +725,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code Screen} takes the inverse product of the
-     * source and destination values. The result is always lighter unless the
+     * For each channel, {@code Screen} takes the inverse product of the source
+     * and destination values. The result is always lighter unless the
      * destination is white. Visually, the effect is comparable to projecting
      * one photographic slide over another.
      */
@@ -1531,9 +1530,9 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code SoftLight} either dodges or burns the
-     * values, depending on the source value. Visually, the effect is similar to
-     * shining a diffuse spotlight over the destination.
+     * For each channel, {@code SoftLight} either dodges or burns the values,
+     * depending on the source value. Visually, the effect is similar to shining
+     * a diffuse spotlight over the destination.
      */
     public static final BlendMode SoftLight = new BlendMode() {
         @Override
@@ -1630,10 +1629,9 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code LinearLight} either dodges or burns the
-     * values by adjusting brightness, depending on the source value. Visually,
-     * the effect is similar to shining a diffuse spotlight over the
-     * destination.
+     * For each channel, {@code LinearLight} either dodges or burns the values
+     * by adjusting brightness, depending on the source value. Visually, the
+     * effect is similar to shining a diffuse spotlight over the destination.
      */
     public static final BlendMode LinearLight = new BlendMode() {
         @Override
@@ -1719,8 +1717,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code PinLight} may replace the destination value
-     * with the source value. When the source value is light, the darker of the
+     * For each channel, {@code PinLight} may replace the destination value with
+     * the source value. When the source value is light, the darker of the
      * source and destination is selected. When the source value is dark, the
      * lighter of the source and destination is selected.
      */
@@ -1808,10 +1806,9 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code VividLight} either dodges or burns the
-     * values by adjusting contrast, depending on the source value. Visually,
-     * the effect is similar to shining a diffuse spotlight over the
-     * destination.
+     * For each channel, {@code VividLight} either dodges or burns the values by
+     * adjusting contrast, depending on the source value. Visually, the effect
+     * is similar to shining a diffuse spotlight over the destination.
      */
     public static final BlendMode VividLight = new BlendMode() {
         @Override
@@ -1878,10 +1875,10 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * For each channel, {@code HardMix} drives the value to either be
-     * fully off or fully on depending on the sum of the source and destination
-     * values. Thus, each pixel will be one of black, red, green, blue, yellow,
-     * cyan, magenta, or white.
+     * For each channel, {@code HardMix} drives the value to either be fully off
+     * or fully on depending on the sum of the source and destination values.
+     * Thus, each pixel will be one of black, red, green, blue, yellow, cyan,
+     * magenta, or white.
      */
     public static final BlendMode HardMix = new BlendMode() {
         @Override
@@ -1994,8 +1991,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Glow} has the same effect as {@link #Reflect}, but is used
-     * when the source and destination are reversed.
+     * {@code Glow} has the same effect as {@link #Reflect}, but is used when
+     * the source and destination are reversed.
      */
     public static final BlendMode Glow = new BlendMode() {
         @Override
@@ -2036,8 +2033,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Hue} mixes the hue of the source pixel but keeps the
-     * saturation and brightness of the destination.
+     * {@code Hue} mixes the hue of the source pixel but keeps the saturation
+     * and brightness of the destination.
      */
     public static final BlendMode Hue = new BlendMode() {
         @Override
@@ -2073,8 +2070,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Saturation} mixes the saturation of the source pixel but
-     * keeps the hue and brightness of the destination.
+     * {@code Saturation} mixes the saturation of the source pixel but keeps the
+     * hue and brightness of the destination.
      */
     public static final BlendMode Saturation = new BlendMode() {
         @Override
@@ -2110,8 +2107,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Color} mixes the hue and saturation of the source pixel but
-     * keeps the brightness of the destination.
+     * {@code Color} mixes the hue and saturation of the source pixel but keeps
+     * the brightness of the destination.
      */
     public static final BlendMode Color = new BlendMode() {
         @Override
@@ -2147,8 +2144,8 @@ public abstract class BlendMode extends AbstractARGBComposite {
     };
 
     /**
-     * {@code Luminosity} mixes the brightness of the source pixel but
-     * keeps the hue and saturation of the destination.
+     * {@code Luminosity} mixes the brightness of the source pixel but keeps the
+     * hue and saturation of the destination.
      */
     public static final BlendMode Luminosity = new BlendMode() {
         @Override

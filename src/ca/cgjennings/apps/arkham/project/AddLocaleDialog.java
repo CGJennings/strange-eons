@@ -620,7 +620,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
         if (localeMethodTab.getSelectedIndex() == 0) {
             List<LanguageCodeDescriptor> sel = locList.getSelectedValuesList();
             result = new Locale[sel.size()];
-            for(int i=0; i<result.length; ++i) {
+            for (int i = 0; i < result.length; ++i) {
                 result[i] = sel.get(i).getLocale();
             }
         } else {

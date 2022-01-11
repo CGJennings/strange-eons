@@ -74,8 +74,8 @@ class TAttachedEditor extends JInternalFrame {
 
     /**
      * Set the title used to describe this document in the tab strip or document
-     * window (depending on program settings). The {@code title} value may
-     * be {@code null}, which is equivalent to an empty title.
+     * window (depending on program settings). The {@code title} value may be
+     * {@code null}, which is equivalent to an empty title.
      *
      * @param title the text of the title to display
      */
@@ -96,11 +96,10 @@ class TAttachedEditor extends JInternalFrame {
 
     /**
      * Returns the title used to describe this editor. The returned value is
-     * never {@code null}; if a {@code null} title is set with
-     * {@link #setTitle} then this method returns an empty string.
+     * never {@code null}; if a {@code null} title is set with {@link #setTitle}
+     * then this method returns an empty string.
      *
-     * @return the current title, which is guaranteed not to be
-     * {@code null}
+     * @return the current title, which is guaranteed not to be {@code null}
      */
     @Override
     public String getTitle() {
@@ -160,8 +159,8 @@ class TAttachedEditor extends JInternalFrame {
     /**
      * Sets the tool tip text to display for the editor's tab.
      *
-     * @param toolTipText the text to display, or {@code null} to clear the
-     * tool tip
+     * @param toolTipText the text to display, or {@code null} to clear the tool
+     * tip
      */
     @Override
     public void setToolTipText(String toolTipText) {
@@ -228,11 +227,11 @@ class TAttachedEditor extends JInternalFrame {
 
     /**
      * Sets whether this editor is attached to the document tab strip. If
-     * {@code true}, the editor is attached; this is the default state for
-     * new editors. If {@code false}, the editor is detached from the tab
-     * strip. When detached, the editor appears in its own floating window
-     * separate from the main application window. The editor reattaches when the
-     * window is closed.
+     * {@code true}, the editor is attached; this is the default state for new
+     * editors. If {@code false}, the editor is detached from the tab strip.
+     * When detached, the editor appears in its own floating window separate
+     * from the main application window. The editor reattaches when the window
+     * is closed.
      *
      * @param attach if {@code true}, attaches the window to the tab strip
      */
@@ -292,8 +291,8 @@ class TAttachedEditor extends JInternalFrame {
     }
 
     /**
-     * Returns {@code true} if this editor is currently attached to the
-     * document tab strip.
+     * Returns {@code true} if this editor is currently attached to the document
+     * tab strip.
      *
      * @return {@code true} if the editor is attached
      * @see #setAttached(boolean)

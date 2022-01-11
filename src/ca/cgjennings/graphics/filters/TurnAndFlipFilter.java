@@ -63,8 +63,7 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
      */
     public static final int TURN_90_LEFT_FLIP_VERT = 7;
     /**
-     * Rotate 180 degrees and flip vertically (same as
-     * {@code TURN_0_FLIP}).
+     * Rotate 180 degrees and flip vertically (same as {@code TURN_0_FLIP}).
      */
     public static final int TURN_180_FLIP_VERT = 4;
     /**
@@ -123,8 +122,8 @@ public final class TurnAndFlipFilter extends AbstractImageFilter {
     /**
      * Sets the orientation of output images relative to source images.
      *
-     * @param orientation the {@code TURN_*} value that encodes how the
-     * image should be rotated and flipped
+     * @param orientation the {@code TURN_*} value that encodes how the image
+     * should be rotated and flipped
      */
     public void setOrientation(int orientation) {
         if (orientation < TURN_0 || orientation > TURN_90_RIGHT_FLIP_HORZ) {

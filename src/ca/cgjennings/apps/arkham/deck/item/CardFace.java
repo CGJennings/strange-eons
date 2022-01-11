@@ -328,8 +328,8 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     }
     /**
      * Set during loading if card is from an old version. This indicates that
-     * the edge finish needs to be upgraded once the sheet is available.
-     * See {@link #renderImage(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)}
+     * the edge finish needs to be upgraded once the sheet is available. See
+     * {@link #renderImage(ca.cgjennings.apps.arkham.sheet.RenderTarget, double)}
      */
     private transient boolean transitionAutoMarginOnFirstRender = false;
 

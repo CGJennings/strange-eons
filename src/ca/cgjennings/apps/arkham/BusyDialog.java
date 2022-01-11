@@ -70,8 +70,8 @@ public final class BusyDialog extends javax.swing.JDialog {
      * perform the specified operation in a separate thread. The dialog's parent
      * window will be the main application window. The dialog will include a
      * Cancel button that can be clicked by the user. When pressed, the
-     * specified listener's {@code actionPerformed} method will be called
-     * from the event dispatch thread.
+     * specified listener's {@code actionPerformed} method will be called from
+     * the event dispatch thread.
      *
      * @param title the initial title message
      * @param operation the operation to perform
@@ -85,10 +85,10 @@ public final class BusyDialog extends javax.swing.JDialog {
     /**
      * Creates a new busy dialog with the specified title message that will
      * perform the specified operation in a separate thread. The dialog's parent
-     * frame will default to the main application window if {@code null}.
-     * The dialog will include a Cancel button that can be clicked by the user.
-     * When pressed, the specified listener's {@code actionPerformed}
-     * method will be called from the event dispatch thread.
+     * frame will default to the main application window if {@code null}. The
+     * dialog will include a Cancel button that can be clicked by the user. When
+     * pressed, the specified listener's {@code actionPerformed} method will be
+     * called from the event dispatch thread.
      *
      * @param parent the parent frame
      * @param title the initial title message
@@ -173,9 +173,9 @@ public final class BusyDialog extends javax.swing.JDialog {
     /**
      * Sets the current progress value of the <i>current</i> busy dialog. This
      * version of the method will not actually update the progress more often
-     * than once per {@code delay} milliseconds. This prevents progress
-     * updates from dominating the time spent doing real work If no busy dialog
-     * is open, this method has no effect.
+     * than once per {@code delay} milliseconds. This prevents progress updates
+     * from dominating the time spent doing real work If no busy dialog is open,
+     * this method has no effect.
      *
      * <p>
      * This method can be called from any thread.
@@ -211,16 +211,15 @@ public final class BusyDialog extends javax.swing.JDialog {
      * called from the Runnable that was passed to a BusyDialog constructor,
      * then it will return the dialog that is displaying progress for that
      * Runnable. Otherwise, it returns the most recently created BusyDialog that
-     * is still open. If no BusyDialog is open, it will return
-     * {@code null}. The static methods
+     * is still open. If no BusyDialog is open, it will return {@code null}. The
+     * static methods
      * {@link #titleText}, {@link #statusText}, {@link #currentProgress}, and
      * {@link #maximumProgress} all modify the state of the current dialog.
      *
      * <p>
      * This method can be called from any thread.
      *
-     * @return the busy dialog that this thread should modify, or
-     * {@code null}
+     * @return the busy dialog that this thread should modify, or {@code null}
      */
     public static BusyDialog getCurrentDialog() {
         BusyDialogImpl curImpl = BusyDialogImpl.getCurrentDialog();
@@ -287,8 +286,8 @@ public final class BusyDialog extends javax.swing.JDialog {
      * long the task will take to complete.
      *
      * <p>
-     * When this method is called and the {@code maximumValue} is not
-     * negative, the current progress value is reset to 0.
+     * When this method is called and the {@code maximumValue} is not negative,
+     * the current progress value is reset to 0.
      *
      * <p>
      * This method can be called from any thread.
@@ -311,11 +310,11 @@ public final class BusyDialog extends javax.swing.JDialog {
     }
 
     /**
-     * Returns {@code true} if this dialog has a cancel button and it has
-     * been pressed by the user.
+     * Returns {@code true} if this dialog has a cancel button and it has been
+     * pressed by the user.
      *
-     * @return {@code true} if the user has indicated that they wish to
-     * cancel the operation
+     * @return {@code true} if the user has indicated that they wish to cancel
+     * the operation
      */
     public boolean isCancelled() {
         return impl.isCancelled();

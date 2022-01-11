@@ -1,14 +1,17 @@
 /*
-  uibindings.js - version 15
-  Create and manage bindings between controls and data.
-*/
+ uibindings.js - version 15
+ Create and manage bindings between controls and data.
+ */
 
-importClass( arkham.diy.SettingBackedControl );
+importClass(arkham.diy.SettingBackedControl);
 
-function Binding( name, uiControl, gameComponent, sheetsToUpdate ) {
-    if (!name) throw new Error('missing bind name');
-    if (!uiControl) throw new Error('missing uiControl');
-    if (!gameComponent) throw new Error('missing gameComponent');
+function Binding(name, uiControl, gameComponent, sheetsToUpdate) {
+    if (!name)
+        throw new Error('missing bind name');
+    if (!uiControl)
+        throw new Error('missing uiControl');
+    if (!gameComponent)
+        throw new Error('missing gameComponent');
 
     if (!(uiControl instanceof java.awt.Component) && !(uiControl instanceof swing.ButtonGroup))
         throw new Error('uiControl must be a Component or ButtonGroup');
@@ -79,31 +82,32 @@ Binding.prototype.initComponent = function initComponent() {
     }
 };
 
-Binding.prototype.controlToSetting = function controlToSetting( control ) {
-    if( control['text'] === undefined )
-        throw new Error( 'you must provide a binding class for this control: ' + this.name );
+Binding.prototype.controlToSetting = function controlToSetting(control) {
+    if (control['text'] === undefined)
+        throw new Error('you must provide a binding class for this control: ' + this.name);
     return control.text;
 };
 
-Binding.prototype.settingToControl = function settingToControl( value, uiControl ) {
-    if( !(uiControl['text'] === undefined) ) {
+Binding.prototype.settingToControl = function settingToControl(value, uiControl) {
+    if (!(uiControl['text'] === undefined)) {
         uiControl.text = value;
-        uiControl.select( 0, 0 );
+        uiControl.select(0, 0);
     } else {
-        throw new Error( 'you must provide a binding class for this control: ' + this.name );
+        throw new Error('you must provide a binding class for this control: ' + this.name);
     }
 };
 
 Binding.prototype.toString = function toString() {
     var s = 'Binding "' + this.name + '": [' + this.control.getClass().getSimpleName()
-         + ' -> ' + this.component.getClass().getSimpleName() + '], sheets: [';
+            + ' -> ' + this.component.getClass().getSimpleName() + '], sheets: [';
     var set = 0;
     var mask = this.sheetBits;
     var MAX_SHEETS = 31;
 
-    for( let i=0; i<MAX_SHEETS; ++i, mask >>= 1 ) {
-        if( (mask & 1) == 1 ) {
-            if( set++ > 0 ) s += ', ';
+    for (let i = 0; i < MAX_SHEETS; ++i, mask >>= 1) {
+        if ((mask & 1) == 1) {
+            if (set++ > 0)
+                s += ', ';
             s += i;
         }
     }
@@ -111,13 +115,13 @@ Binding.prototype.toString = function toString() {
     return s + ']';
 };
 
-function ActiveBinding( name, uiControl, gameComponent, sheetsToUpdate ) {
-    Binding.call( this, name, uiControl, gameComponent, sheetsToUpdate );
+function ActiveBinding(name, uiControl, gameComponent, sheetsToUpdate) {
+    Binding.call(this, name, uiControl, gameComponent, sheetsToUpdate);
     this.isActive = true;
     this.installActivationHandler();
 }
 
-ActiveBinding.subclass( Binding );
+ActiveBinding.subclass(Binding);
 
 ActiveBinding.prototype.installActivationHandler = function installActivationHandler() {
     try {
@@ -127,17 +131,18 @@ ActiveBinding.prototype.installActivationHandler = function installActivationHan
         });
     } catch (ex) {
         throw new Error(
-            'this control does not support an ActionListener: you must create ' +
-            'a custom ActiveBinding subclass or use a Binding instead'
-        );
+                'this control does not support an ActionListener: you must create ' +
+                'a custom ActiveBinding subclass or use a Binding instead'
+                );
     }
 };
 
 
 
 
-function Bindings( editor, gameComponent ) {
-    if( !gameComponent ) gameComponent = editor.gameComponent;
+function Bindings(editor, gameComponent) {
+    if (!gameComponent)
+        gameComponent = editor.gameComponent;
     this.bindings = [];
     this.activeBindings = [];
     this.editor = editor;
@@ -145,7 +150,7 @@ function Bindings( editor, gameComponent ) {
     this.alreadyBound = false;
 }
 
-Bindings.prototype.add = function add( name, control, sheets, bindClass ) {
+Bindings.prototype.add = function add(name, control, sheets, bindClass) {
     if (control instanceof swing.JScrollPane) {
         control = control.viewport.view;
     }
@@ -165,8 +170,8 @@ Bindings.prototype.add = function add( name, control, sheets, bindClass ) {
 };
 
 Bindings.prototype.addAll = function addAll() {
-    for( let i=0; i<arguments.length; ++i ) {
-        this.add.apply( arguments[i] );
+    for (let i = 0; i < arguments.length; ++i) {
+        this.add.apply(arguments[i]);
     }
 };
 
@@ -174,10 +179,10 @@ Bindings.prototype.createUpdateFunction = function createUpdateFunction() {
     var bindings = this.bindings;
     return function updateFunction() {
         let changed = false;
-        for( let i=0; i<bindings.length; ++i ) {
+        for (let i = 0; i < bindings.length; ++i) {
             try {
                 changed = changed || bindings[i].update();
-            } catch(ex) {
+            } catch (ex) {
                 Error.handleUncaught(ex);
             }
         }
@@ -227,14 +232,16 @@ Bindings.prototype.toString = function toString() {
     return s;
 };
 
-Bindings.getBindingClass = function getBindingClass( componentClass ) {
-    if (componentClass == null) return null;
+Bindings.getBindingClass = function getBindingClass(componentClass) {
+    if (componentClass == null)
+        return null;
     let type = Bindings._bindMap[ componentClass ];
-    if (!type) return Bindings.getBindingClass(componentClass.getSuperclass());
+    if (!type)
+        return Bindings.getBindingClass(componentClass.getSuperclass());
     return type;
 };
 
-Bindings.registerBindingClass = function registerBindingClass( componentClass, bindingClass ) {
+Bindings.registerBindingClass = function registerBindingClass(componentClass, bindingClass) {
     if (!(componentClass instanceof java.lang.Class)) {
         componentClass = java.lang.Class.forName(String(componentClass));
     }
@@ -346,7 +353,8 @@ IndexedComboBoxBinding.subclass(ActiveBinding);
 
 IndexedComboBoxBinding.prototype.controlToSetting = function controlToSetting(control) {
     var sel = control.selectedIndex;
-    if (sel < 0) return null;
+    if (sel < 0)
+        return null;
     return java.lang.Integer.toString(sel);
 };
 

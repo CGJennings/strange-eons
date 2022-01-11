@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
  * @since 3.2
  */
 final class ScriptRunnerModeHelper implements ScriptRunnerState {
+
     private static final int STATE_NOT_STARTED = -1;
     private static final int STATE_STARTED = 0;
     private static final int STATE_FINISHED = 1;
@@ -34,8 +35,9 @@ final class ScriptRunnerModeHelper implements ScriptRunnerState {
 
     /**
      * Creates a helper for the specified script file.
+     *
      * @param scriptFile the script file to run; typically that passed as the
-     *    script runner argument
+     * script runner argument
      */
     ScriptRunnerModeHelper(File scriptFile) {
         this.script = Objects.requireNonNull(scriptFile);

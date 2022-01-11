@@ -18,6 +18,7 @@ import javax.swing.border.AbstractBorder;
  */
 @SuppressWarnings("serial")
 public class ArcBorder extends AbstractBorder {
+
     public static final int ARC_LEFT_TOP = 0;
     public static final int ARC_TOP_RIGHT = 1;
     public static final int ARC_RIGHT_BOTTOM = 2;
@@ -39,7 +40,9 @@ public class ArcBorder extends AbstractBorder {
     }
 
     public ArcBorder(int arcEdges, Color color, int arcSize, int thickness, float hardening) {
-        if(color != null) setColor(color);
+        if (color != null) {
+            setColor(color);
+        }
         this.arcSize = arcSize;
         this.thickness = thickness;
         setHardening(hardening);

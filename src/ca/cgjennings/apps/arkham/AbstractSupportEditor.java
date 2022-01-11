@@ -12,8 +12,8 @@ import resources.ResourceKit;
 /**
  * Support editors are used to edit content other than game components. To
  * create a new support editor, override {@link #canPerformCommand}, if
- * necessary, to return {@code true} for all {@link DelegatedCommand}s that
- * you wish to support. Standard editor commands null ({@link #clearImpl() clear}, {@link #exportImpl export}, {@link #saveImpl save},
+ * necessary, to return {@code true} for all {@link DelegatedCommand}s that you
+ * wish to support. Standard editor commands null ({@link #clearImpl() clear}, {@link #exportImpl export}, {@link #saveImpl save},
  * {@link #printImpl}, and {@link #spinOffImpl spin off}) can be supported by
  * overriding the related implementation method. Other delegated commands can be
  * supported after overriding
@@ -30,8 +30,8 @@ import resources.ResourceKit;
  * To set the title used for the editor's tab (or window, depending on
  * settings), use {@link #setTitle}; to set the tab's icon, use
  * {@link #setFrameIcon}. When the user modifies the document, call
- * {@code setUnsavedChanges(&nbsp;true&nbsp;)} to update the document's
- * "dirty" state. (Do not set this if editing or saving is not supported.)
+ * {@code setUnsavedChanges(&nbsp;true&nbsp;)} to update the document's "dirty"
+ * state. (Do not set this if editing or saving is not supported.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -77,8 +77,8 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
      * standard commands: CLEAR, EXPORT, PRINT, SAVE, SAVE_AS.
      *
      * @param command the command to be performed
-     * @return {@code true} if this commandable wishes to handle the
-     * command (even if it cannot execute the command currently)
+     * @return {@code true} if this commandable wishes to handle the command
+     * (even if it cannot execute the command currently)
      * @see Commands
      */
     @Override
@@ -149,8 +149,8 @@ public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor im
      * Subclasses should override this to export the edited content if EXPORT is
      * a supported command. The value of {@code type} is the index of the
      * element in {@link #getExportExtensions()} for the file type that was
-     * selected by the user. The value of {@code file} is the destination
-     * file to write content to.
+     * selected by the user. The value of {@code file} is the destination file
+     * to write content to.
      *
      * @param type the index of the file format to export
      * @param file the file to write content to

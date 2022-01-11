@@ -6,7 +6,6 @@ package ca.cgjennings.imageio;
 //              package.
 //
 // Jan 28 2013: Made metadata writing optional and dispose() on finalization
-
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.imageio.IIOWritePanel.Parameters;
@@ -181,8 +180,7 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns {@code true} if one or more compression methods are
-     * supported.
+     * Returns {@code true} if one or more compression methods are supported.
      *
      * @return {@code true} if compression is supported
      */
@@ -230,10 +228,10 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Sets the compression type to use. If the type is {@code null}, a
-     * default type is selected. Otherwise, the type must be one of the types
-     * specified by {@link #getCompressionTypes()}. Changing the compression
-     * type may alter the quality descriptions and values.
+     * Sets the compression type to use. If the type is {@code null}, a default
+     * type is selected. Otherwise, the type must be one of the types specified
+     * by {@link #getCompressionTypes()}. Changing the compression type may
+     * alter the quality descriptions and values.
      *
      * @param type the name of the compression type to use
      */
@@ -243,9 +241,8 @@ public class SimpleImageWriter {
 
     /**
      * Return an array of locale-dependent descriptions of the available
-     * compression quality settings. This method may return {@code null},
-     * and must return {@code null} if {@link #getCompressionValues()}
-     * does.
+     * compression quality settings. This method may return {@code null}, and
+     * must return {@code null} if {@link #getCompressionValues()} does.
      *
      * @return an array of description {@code String}s, or {@code} null if there
      * are descriptions available
@@ -366,9 +363,9 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns {@code true} if the progressive scan setting can be changed.
-     * Some formats do not support progressive scans, while other formats
-     * support it inherently.
+     * Returns {@code true} if the progressive scan setting can be changed. Some
+     * formats do not support progressive scans, while other formats support it
+     * inherently.
      *
      * @return {@code true} if the progressive scan setting is alterable
      */
@@ -465,9 +462,9 @@ public class SimpleImageWriter {
     }
 
     /**
-     * Returns {@code true} if comment and resolution metadata will be
-     * written to output files. Metadata writing may not be supported for all
-     * file types.
+     * Returns {@code true} if comment and resolution metadata will be written
+     * to output files. Metadata writing may not be supported for all file
+     * types.
      *
      * @return if metadata writing is enabled
      */

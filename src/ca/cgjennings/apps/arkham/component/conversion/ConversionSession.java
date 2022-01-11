@@ -61,9 +61,9 @@ public class ConversionSession {
         this.target = target;
         copyPortraitPossible = source instanceof PortraitProvider && target instanceof PortraitProvider;
         StrangeEons.log.info(
-                "conversion from type " + source.getClassName() +
-                " to type " + target.getClassName() +
-                ": " + trigger
+                "conversion from type " + source.getClassName()
+                + " to type " + target.getClassName()
+                + ": " + trigger
         );
     }
 
@@ -194,8 +194,8 @@ public class ConversionSession {
      *
      * @param pairs the pairs of keys to copy
      * @return this conversion session
-     * @throws IllegalArgumentException if the array of key name pairs has an odd
-     *     length
+     * @throws IllegalArgumentException if the array of key name pairs has an
+     * odd length
      */
     public ConversionSession moveSettings(String... pairs) {
         Objects.requireNonNull(pairs, "pairs");
@@ -212,13 +212,13 @@ public class ConversionSession {
     }
 
     /**
-     * Sets one or more settings on the new component, based on the given
-     * (key, value) pairs.
+     * Sets one or more settings on the new component, based on the given (key,
+     * value) pairs.
      *
      * @param keyValuePairs
      * @return this conversion session
      * @throws IllegalArgumentException if the array of setting pairs has an odd
-     *     length
+     * length
      */
     public ConversionSession setSettings(String... keyValuePairs) {
         target.getSettings().setSettings(keyValuePairs);
@@ -467,17 +467,18 @@ public class ConversionSession {
 
     /**
      * Make a best-effort attempt to determine if the default catalog has a
-     * plug-in with the same UUID, and at least as new as the timestamp,
-     * as the specified ID.
+     * plug-in with the same UUID, and at least as new as the timestamp, as the
+     * specified ID.
      *
      * @param id the non-null ID to search for
-     * @return true if the plug-in, or a newer version, is definitely in the catalog
+     * @return true if the plug-in, or a newer version, is definitely in the
+     * catalog
      */
     private static boolean defaultCatalogIncludes(CatalogID id) {
         try {
             // look in the cached version first, if any
             Catalog cat = Catalog.getLocalCopy();
-            for (int searchLocation=0; searchLocation < 2; ++searchLocation) {
+            for (int searchLocation = 0; searchLocation < 2; ++searchLocation) {
                 if (cat != null) {
                     final int i = cat.findListingByUUID(id.getUUID());
                     if (i >= 0) {

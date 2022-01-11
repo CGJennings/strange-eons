@@ -358,8 +358,8 @@ public class TextIndexer implements MonitoredAlgorithm {
          *
          * @param sourceID the identifier of the document
          * @param url the URL to read the document from
-         * @param encodingHint the name of an encoding, or {@code null} to
-         * use a default encoding
+         * @param encodingHint the name of an encoding, or {@code null} to use a
+         * default encoding
          * @return the document text
          * @throws IOException if an error occurs while reading the document
          */

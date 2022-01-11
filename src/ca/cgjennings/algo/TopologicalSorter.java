@@ -21,9 +21,9 @@ import java.util.Set;
  * To create such an order, it is necessary that the dependency graph be
  * acyclic. That is, you cannot have a situation where A depends on B and B also
  * depends on A, directly or indirectly. For example, if A depends on B and C
- * and C depends on D and D depends on A, then there is a cycle A -&gt; C -&gt; D -&gt;
- * A. Attempting to sort a collection of objects that contain a cycle will throw
- * an exception.
+ * and C depends on D and D depends on A, then there is a cycle A -&gt; C -&gt;
+ * D -&gt; A. Attempting to sort a collection of objects that contain a cycle
+ * will throw an exception.
  *
  * @param <T> the type of object that will be sorted
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -39,8 +39,8 @@ public class TopologicalSorter<T extends DependencyRelation> {
      * Returns {@code true} if this sorter will assume that all required
      * elements are present in all collections that are to be sorted.
      *
-     * @return {@code true} if all required objects are to be included in
-     * the input to {@link #topSort}
+     * @return {@code true} if all required objects are to be included in the
+     * input to {@link #topSort}
      * @see #setAllPresent(boolean)
      */
     public boolean isAllPresent() {
@@ -49,34 +49,33 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Sets whether this sorter will assume that all possible elements are
-     * included in collections that it sorts. Setting this to {@code true}
-     * makes a guarantee that when sorting a collection, for all elements E in
-     * the collection, if E depends on F then F is also in the collection. In
-     * other words, everything that is required is already included in the
-     * collection passed to {@link #topSort}. Setting this to {@code true}
-     * may result in more efficient sorting, but if it is set to
-     * {@code true} when the condition does not hold then the sorted output
-     * will be incomplete.
+     * included in collections that it sorts. Setting this to {@code true} makes
+     * a guarantee that when sorting a collection, for all elements E in the
+     * collection, if E depends on F then F is also in the collection. In other
+     * words, everything that is required is already included in the collection
+     * passed to {@link #topSort}. Setting this to {@code true} may result in
+     * more efficient sorting, but if it is set to {@code true} when the
+     * condition does not hold then the sorted output will be incomplete.
      *
      * <p>
-     * When this is set to {@code false}, the sorter will detect the
-     * presence of required objects that were not part of the original
-     * collection and include them in the sorted output. Thus, the size of the
-     * sorted list may be larger than that of the unsorted list. A useful side
-     * effect of this feature is that if a single element is sorted, the result
-     * will be a list of all of the elements that are required (directly or
-     * indirectly) by that element.
+     * When this is set to {@code false}, the sorter will detect the presence of
+     * required objects that were not part of the original collection and
+     * include them in the sorted output. Thus, the size of the sorted list may
+     * be larger than that of the unsorted list. A useful side effect of this
+     * feature is that if a single element is sorted, the result will be a list
+     * of all of the elements that are required (directly or indirectly) by that
+     * element.
      *
-     * @param assumesAllPresent {@code true} if all required objects are to
-     * be included in the input to {@link #topSort}
+     * @param assumesAllPresent {@code true} if all required objects are to be
+     * included in the input to {@link #topSort}
      */
     public void setAllPresent(boolean assumesAllPresent) {
         this.assumesAllPresent = assumesAllPresent;
     }
 
     /**
-     * If {@code true}, then the sort order will also be ordered according
-     * to a lexicographic sort.
+     * If {@code true}, then the sort order will also be ordered according to a
+     * lexicographic sort.
      *
      * @return {@code true}
      * @see #setLexicographicallySorted(boolean)
@@ -87,8 +86,8 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
     /**
      * Sets whether collections will also be lexicographically sorted. When set
-     * to {@code true}, then at any point in the sorted list, the element
-     * at that position is the one that is lexicographically least of all of the
+     * to {@code true}, then at any point in the sorted list, the element at
+     * that position is the one that is lexicographically least of all of the
      * elements that could be placed there without violating the topological
      * ordering. For example, a topological sort of a collection of courses
      * could be further sorted lexicographically by their course number so that
@@ -117,8 +116,8 @@ public class TopologicalSorter<T extends DependencyRelation> {
      * enabled. If {@code null}, which is the default, the natural order is
      * used.
      *
-     * @param comparator the sorting comparator, or {@code null} for
-     * natural order
+     * @param comparator the sorting comparator, or {@code null} for natural
+     * order
      */
     public void setComparator(Comparator<T> comparator) {
         this.comparator = comparator;

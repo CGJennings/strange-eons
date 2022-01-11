@@ -195,8 +195,8 @@ public class MarkovText {
     }
 
     /**
-     * Append a random word to {@code b}, using the last {@code order}
-     * words in {@code b} as context.
+     * Append a random word to {@code b}, using the last {@code order} words in
+     * {@code b} as context.
      */
     private void chooseWord(StringBuilder b, int order) {
         if (order == 0) {
@@ -245,8 +245,8 @@ public class MarkovText {
     }
 
     /**
-     * Append the word starting at {@code text[ startIndex ]} to
-     * {@code b}, including the subsequent space.
+     * Append the word starting at {@code text[ startIndex ]} to {@code b},
+     * including the subsequent space.
      */
     private void appendWordAt(int startIndex, StringBuilder b) {
         do {
@@ -255,11 +255,10 @@ public class MarkovText {
     }
 
     /**
-     * Append a random letter to {@code b}, using the last
-     * {@code order} letters in {@code b} as context. The selected
-     * letter is also returned so that it can be used by the caller to select a
-     * stopping point (for example, after space has been selected a certain
-     * number of times).
+     * Append a random letter to {@code b}, using the last {@code order} letters
+     * in {@code b} as context. The selected letter is also returned so that it
+     * can be used by the caller to select a stopping point (for example, after
+     * space has been selected a certain number of times).
      */
     private char chooseLetter(StringBuilder b, int order) {
         char c;
@@ -302,9 +301,9 @@ public class MarkovText {
     private boolean orderReversion = false;
 
     /**
-     * Find the first entry in {@code suffixArray} that starts with the
-     * last {@code charsToMatch} characters in {@code b}. If no entry
-     * matches, returns -1.
+     * Find the first entry in {@code suffixArray} that starts with the last
+     * {@code charsToMatch} characters in {@code b}. If no entry matches,
+     * returns -1.
      */
     private int findFirstPrefix(Integer[] suffixArray, StringBuilder b, int charsToMatch) {
         // a binary search that finds the first matching entry
@@ -325,9 +324,8 @@ public class MarkovText {
     }
 
     /**
-     * Compare the last {@code charsToMatch} characters in {@code b}
-     * to the first {@code charsToMatch} characters at
-     * {@code suffixArray[suff]}.
+     * Compare the last {@code charsToMatch} characters in {@code b} to the
+     * first {@code charsToMatch} characters at {@code suffixArray[suff]}.
      */
     private int prefixCompare(Integer[] suffixArray, StringBuilder b, int charsToMatch, int suff) {
         int s = suffixArray[suff];

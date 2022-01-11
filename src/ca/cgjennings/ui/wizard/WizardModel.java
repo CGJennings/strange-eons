@@ -76,9 +76,8 @@ public interface WizardModel {
     boolean canGoBackward();
 
     /**
-     * Returns {@code true} if the wizard can be finished in its current
-     * state. This method must always return {@code false} when progress is
-     * blocked.
+     * Returns {@code true} if the wizard can be finished in its current state.
+     * This method must always return {@code false} when progress is blocked.
      *
      * @return whether the finish button should be enabled
      * @see #isProgressBlocked()
@@ -116,13 +115,13 @@ public interface WizardModel {
     /**
      * Sets whether or not progress is blocked. When progress is blocked,
      * {@link #canGoForward()} and {@link #canFinish()} must always return
-     * {@code false}. The progress blocking state can be cleared by calling
-     * this method with false, and is cleared automatically if the page changes.
+     * {@code false}. The progress blocking state can be cleared by calling this
+     * method with false, and is cleared automatically if the page changes.
      * Blocking provides a mechanism for individual pages to prevent progress if
      * they are missing required information.
      *
-     * @param block if {@code true}, prevents the user from going to the
-     * next page or finishing the dialog.
+     * @param block if {@code true}, prevents the user from going to the next
+     * page or finishing the dialog.
      */
     void setProgressBlocked(boolean block);
 

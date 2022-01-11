@@ -121,8 +121,8 @@ public enum RenderTarget {
     }
 
     /**
-     * Returns an appropriate {@code AffineTransformOp} interpolation type
-     * for this target.
+     * Returns an appropriate {@code AffineTransformOp} interpolation type for
+     * this target.
      *
      * @return an appropriate affine transform interpolation type
      */

@@ -71,10 +71,9 @@ public class MetadataSource {
     }
 
     /**
-     * Returns {@code true} if this source is intended to provide metadata
-     * for a given project member. The base class returns {@code true} for
-     * anything, as it provides the fallback implementation for unspecialized
-     * file types.
+     * Returns {@code true} if this source is intended to provide metadata for a
+     * given project member. The base class returns {@code true} for anything,
+     * as it provides the fallback implementation for unspecialized file types.
      *
      * @param m the member to check for applicability
      * @return {@code true} if this source can provide metadata about the
@@ -87,10 +86,10 @@ public class MetadataSource {
     /**
      * After locating the correct source for a given member, a specific instance
      * is requested by calling this method. The base class simply returns
-     * {@code this}, which shares the source with all members that it
-     * applies to. Subclasses may return an instance that is unique to a
-     * particular member. For example, they might supply a unique icon that is a
-     * thumbnail version of the member.
+     * {@code this}, which shares the source with all members that it applies
+     * to. Subclasses may return an instance that is unique to a particular
+     * member. For example, they might supply a unique icon that is a thumbnail
+     * version of the member.
      *
      * @param m the member to request a more specific source for
      * @return a source that provides the most specific available data for
@@ -386,8 +385,8 @@ public class MetadataSource {
      * as a {@link Map}. Unlike {@link #fillInMetadata}, this method will block:
      * the returned map will include all available metadata. The map's iterator
      * is guaranteed to return keys in the same order as they would have been
-     * added in by {@code fillInMetadata}. Be aware that the keys in this
-     * map are the names of the metadata entries, and that these are typically
+     * added in by {@code fillInMetadata}. Be aware that the keys in this map
+     * are the names of the metadata entries, and that these are typically
      * localized. Therefore, the key names will vary depending on the interface
      * locale.
      *
@@ -447,8 +446,8 @@ public class MetadataSource {
      *
      * @param m a member to obtain a character set for
      * @return the character set to use when reading the member as a character
-     * stream, or {@code null} if the member is not a kind of text file
-     * known to this source
+     * stream, or {@code null} if the member is not a kind of text file known to
+     * this source
      */
     public Charset getDefaultCharset(Member m) {
         if (m.isFolder()) {
@@ -457,7 +456,7 @@ public class MetadataSource {
         Charset encoding = null;
         for (int i = 0; i < KNOWN_TEXT_TYPES_MAP.length; i += 2) {
             if (m.getExtension().equals(KNOWN_TEXT_TYPES_MAP[i])) {
-                encoding = (Charset) KNOWN_TEXT_TYPES_MAP[i+1];
+                encoding = (Charset) KNOWN_TEXT_TYPES_MAP[i + 1];
                 break;
             }
         }
@@ -469,33 +468,25 @@ public class MetadataSource {
         return encoding;
     }
 
-    private static final Object[] KNOWN_TEXT_TYPES_MAP = new Object[] {
-      "txt", TextEncoding.UTF8_CS,
-      "text", TextEncoding.UTF8_CS,
-      "utf8", TextEncoding.UTF8_CS,
-
-      "htm", TextEncoding.HTML_CSS_CS,
-      "html", TextEncoding.HTML_CSS_CS,
-      "css", TextEncoding.HTML_CSS_CS,
-
-      "properties", TextEncoding.STRINGS_CS,
-      
-      "ajs", TextEncoding.SCRIPT_CODE_CS,
-      "js", TextEncoding.SCRIPT_CODE_CS,
-      "java", TextEncoding.SCRIPT_CODE_CS,
-      "ts", TextEncoding.SCRIPT_CODE_CS,
-      
-      "cardlayout", TextEncoding.CARD_LAYOUT_CS,
-      
-      "settings", TextEncoding.SETTINGS_CS,
-
-      "classmap", TextEncoding.PARSED_RESOURCE_CS,
-      "tiles", TextEncoding.PARSED_RESOURCE_CS,
-      "silhouettes", TextEncoding.PARSED_RESOURCE_CS,
-      "conversionmap", TextEncoding.PARSED_RESOURCE_CS,
-
-      "collection", TextEncoding.SETTINGS_CS,
-    };
+    private static final Object[] KNOWN_TEXT_TYPES_MAP = new Object[]{
+        "txt", TextEncoding.UTF8_CS,
+        "text", TextEncoding.UTF8_CS,
+        "utf8", TextEncoding.UTF8_CS,
+        "htm", TextEncoding.HTML_CSS_CS,
+        "html", TextEncoding.HTML_CSS_CS,
+        "css", TextEncoding.HTML_CSS_CS,
+        "properties", TextEncoding.STRINGS_CS,
+        "ajs", TextEncoding.SCRIPT_CODE_CS,
+        "js", TextEncoding.SCRIPT_CODE_CS,
+        "java", TextEncoding.SCRIPT_CODE_CS,
+        "ts", TextEncoding.SCRIPT_CODE_CS,
+        "cardlayout", TextEncoding.CARD_LAYOUT_CS,
+        "settings", TextEncoding.SETTINGS_CS,
+        "classmap", TextEncoding.PARSED_RESOURCE_CS,
+        "tiles", TextEncoding.PARSED_RESOURCE_CS,
+        "silhouettes", TextEncoding.PARSED_RESOURCE_CS,
+        "conversionmap", TextEncoding.PARSED_RESOURCE_CS,
+        "collection", TextEncoding.SETTINGS_CS,};
 
     /**
      * This interface is implemented by objects that want to access textual
@@ -531,8 +522,7 @@ public class MetadataSource {
          * allows the source to terminate expensive operations that are no
          * longer of interest. This may be called from any thread.
          *
-         * @return {@code true} if the consumer is still interested in this
-         * data
+         * @return {@code true} if the consumer is still interested in this data
          */
         public boolean isValid();
     }
@@ -692,30 +682,32 @@ public class MetadataSource {
         if (iconName == null) {
             if (null == type) {
                 icon = ICON_TASK;
-            } else switch (type) {
-                case NewTaskType.TASK_GROUP_TYPE:
-                    icon = ICON_TASK_GROUP;
-                    break;
-                case NewTaskType.CASEBOOK_TYPE:
-                    icon = ICON_TASK_CASEBOOK;
-                    break;
-                case NewTaskType.DECK_TYPE:
-                    icon = ICON_TASK_DECK;
-                    break;
-                case NewTaskType.DOCUMENTATION_TYPE:
-                    icon = ICON_TASK_DOCUMENTATION;
-                    break;
-                case NewTaskType.EXPANSION_BOARD_TYPE:
-                    icon = ICON_TASK_EXPBOARD;
-                    break;
-                case NewTaskType.FACTORY_TYPE:
-                    icon = ICON_TASK_FACTORY;
-                    break;
-                case NewTaskType.PLUGIN_TYPE:
-                    icon = ICON_TASK_PLUGIN;
-                    break;
-                default:
-                    break;
+            } else {
+                switch (type) {
+                    case NewTaskType.TASK_GROUP_TYPE:
+                        icon = ICON_TASK_GROUP;
+                        break;
+                    case NewTaskType.CASEBOOK_TYPE:
+                        icon = ICON_TASK_CASEBOOK;
+                        break;
+                    case NewTaskType.DECK_TYPE:
+                        icon = ICON_TASK_DECK;
+                        break;
+                    case NewTaskType.DOCUMENTATION_TYPE:
+                        icon = ICON_TASK_DOCUMENTATION;
+                        break;
+                    case NewTaskType.EXPANSION_BOARD_TYPE:
+                        icon = ICON_TASK_EXPBOARD;
+                        break;
+                    case NewTaskType.FACTORY_TYPE:
+                        icon = ICON_TASK_FACTORY;
+                        break;
+                    case NewTaskType.PLUGIN_TYPE:
+                        icon = ICON_TASK_PLUGIN;
+                        break;
+                    default:
+                        break;
+                }
             }
         } else {
             if (iconName.startsWith("res://")) {
@@ -1218,11 +1210,10 @@ public class MetadataSource {
         }
 
         /**
-         * If {@code autopause} is {@code true}, then
-         * {@code pause()} will be called before calling
-         * {@code fillInThreadedMetadataImpl}. If the property consumer
-         * becomes invalid during the pause, then the threaded metadata will not
-         * be requested.
+         * If {@code autopause} is {@code true}, then {@code pause()} will be
+         * called before calling {@code fillInThreadedMetadataImpl}. If the
+         * property consumer becomes invalid during the pause, then the threaded
+         * metadata will not be requested.
          *
          * @param autopause
          */
@@ -1251,15 +1242,15 @@ public class MetadataSource {
         private static Executor executor = Executors.newSingleThreadExecutor();
 
         /**
-         * Briefly pauses the current thread, then returns {@code false} if
-         * the property consumer is no longer valid or the thread was
-         * interrupted. This is called at the start of the background thread if
-         * the autopause option is enabled. It prevents the generation of
-         * expensive metadata when the user is quickly moving through the
-         * project members, such as when navigating the tree with the keyboard.
+         * Briefly pauses the current thread, then returns {@code false} if the
+         * property consumer is no longer valid or the thread was interrupted.
+         * This is called at the start of the background thread if the autopause
+         * option is enabled. It prevents the generation of expensive metadata
+         * when the user is quickly moving through the project members, such as
+         * when navigating the tree with the keyboard.
          *
-         * @return {@code true} if the thread should proceed with
-         * generating metadata
+         * @return {@code true} if the thread should proceed with generating
+         * metadata
          */
         protected boolean pause(PropertyConsumer pc) {
             if (Thread.interrupted()) {

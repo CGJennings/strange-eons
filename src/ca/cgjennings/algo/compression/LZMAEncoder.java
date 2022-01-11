@@ -149,11 +149,11 @@ abstract class LZMAEncoder extends LZMACoder {
      * match, and normal match. The symbol is indicated by the return value and
      * by the variable {@code back}.
      * <p>
-     * Literal: {@code back == -1} and return value is {@code 1}. The
-     * literal itself needs to be read from {@code lz} separately.
+     * Literal: {@code back == -1} and return value is {@code 1}. The literal
+     * itself needs to be read from {@code lz} separately.
      * <p>
-     * Repeated match: {@code back} is in the range [0, 3] and the return
-     * value is the length of the repeated match.
+     * Repeated match: {@code back} is in the range [0, 3] and the return value
+     * is the length of the repeated match.
      * <p>
      * Normal match: {@code back - REPS{@code  ({@code back - 4}) is the
      * distance of the match and the return value is the length of the match.
@@ -633,9 +633,8 @@ abstract class LZMAEncoder extends LZMACoder {
     class LengthEncoder extends LengthCoder {
 
         /**
-         * The prices are updated after at least
-         * {@code PRICE_UPDATE_INTERVAL} many lengths have been encoded
-         * with the same posState.
+         * The prices are updated after at least {@code PRICE_UPDATE_INTERVAL}
+         * many lengths have been encoded with the same posState.
          */
         private static final int PRICE_UPDATE_INTERVAL = 32;
 

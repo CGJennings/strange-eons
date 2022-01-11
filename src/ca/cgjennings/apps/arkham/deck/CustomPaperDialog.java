@@ -45,7 +45,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
     @SuppressWarnings("unchecked")
     public CustomPaperDialog(Component parent, PaperProperties defaultPaper, boolean physicalPapersOnly) {
         super(parent == null ? StrangeEons.getWindow() : SwingUtilities.getWindowAncestor(parent), ModalityType.APPLICATION_MODAL);
-        
+
         ListCellRenderer<?> r = new JIconList.IconRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

@@ -25,8 +25,8 @@ public interface DropHandler<T> {
      * @param token the token that was dragged
      * @param dropTarget the target that the token would be dropped on
      * @param location the location of the potential drop
-     * @return {@code true} if the handler would allow the drop,
-     * {@code false} otherwise
+     * @return {@code true} if the handler would allow the drop, {@code false}
+     * otherwise
      */
     boolean acceptDrop(DragManager<T> manager, JComponent dragSource, DragToken<T> token, JComponent dropTarget, Point location);
 
@@ -41,8 +41,8 @@ public interface DropHandler<T> {
      * @param token the token that was dragged
      * @param dropTarget the target that the token is being dropped on
      * @param location the location of the drop
-     * @return returns {@code true} if the drop was successful, or
-     * {@code false} if it could not be completed
+     * @return returns {@code true} if the drop was successful, or {@code false}
+     * if it could not be completed
      */
     boolean handleDrop(DragManager<T> manager, JComponent dragSource, DragToken<T> token, JComponent dropTarget, Point location);
 

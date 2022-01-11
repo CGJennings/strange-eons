@@ -22,6 +22,7 @@ import java.text.AttributedCharacterIterator;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class PrototypingGraphics2D extends AbstractGraphics2DAdapter {
+
     final private boolean drawText;
     final private boolean drawImages;
     final private boolean strokeShapes;
@@ -29,8 +30,8 @@ public final class PrototypingGraphics2D extends AbstractGraphics2DAdapter {
     final private boolean clearRects;
 
     /**
-     * Creates a new prototyping graphics context with default options:
-     * text and shapes are drawn, but images are not.
+     * Creates a new prototyping graphics context with default options: text and
+     * shapes are drawn, but images are not.
      *
      * @param unrestrictedGraphics a graphics context to modify
      */
@@ -39,15 +40,17 @@ public final class PrototypingGraphics2D extends AbstractGraphics2DAdapter {
     }
 
     /**
-     * Creates a new prototyping graphics context that selectively renders
-     * the specified elements.
+     * Creates a new prototyping graphics context that selectively renders the
+     * specified elements.
      *
      * @param unrestrictedGraphics a graphics context to modify
      * @param drawText if true, regular text is rendered
      * @param drawImages if true, bitmap images are rendered
-     * @param strokeShapes if true, lines, polygons, and shape outlines are drawn
+     * @param strokeShapes if true, lines, polygons, and shape outlines are
+     * drawn
      * @param fillShapes if true, polygons and other shapes are filled
-     * @param clearRects if true, regions are cleared when {@link #clearRect} is called
+     * @param clearRects if true, regions are cleared when {@link #clearRect} is
+     * called
      */
     public PrototypingGraphics2D(Graphics2D unrestrictedGraphics, boolean drawText, boolean drawImages, boolean strokeShapes, boolean fillShapes, boolean clearRects) {
         super(unrestrictedGraphics);
@@ -58,15 +61,16 @@ public final class PrototypingGraphics2D extends AbstractGraphics2DAdapter {
         this.fillShapes = fillShapes;
         this.clearRects = clearRects;
     }
-    
+
     @Override
     protected PrototypingGraphics2D createImpl(Graphics2D newG) {
         return new PrototypingGraphics2D(newG, drawText, drawImages, strokeShapes, fillShapes, clearRects);
     }
 
     /**
-     * Returns the graphics instance that this wraps. This can be used to
-     * ensure that some content is always rendered.
+     * Returns the graphics instance that this wraps. This can be used to ensure
+     * that some content is always rendered.
+     *
      * @return the non-prototype graphics that backs this instance
      */
     public Graphics2D getUnrestrictedGraphics() {

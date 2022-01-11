@@ -45,16 +45,15 @@ public interface TintingFilter extends BufferedImageOp {
     public void setFactors(float h, float s, float b);
 
     /**
-     * Returns {@code true} if applying this filter would have no effect.
-     * This can be used as an optimization hint.
+     * Returns {@code true} if applying this filter would have no effect. This
+     * can be used as an optimization hint.
      *
      * @return {@code true} if a filtered image would not change
      */
     public boolean isIdentity();
 
     /**
-     * Apply the filter to {@code source}, storing the result in
-     * {@code dest}.
+     * Apply the filter to {@code source}, storing the result in {@code dest}.
      *
      * @param source the source image
      * @param dest the destination image (may be {@code null})

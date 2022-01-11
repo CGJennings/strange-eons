@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 /**
- * A combination of {@code TextAttribute}s that represents a particular
- * style of text (a heading, for example).
+ * A combination of {@code TextAttribute}s that represents a particular style of
+ * text (a heading, for example).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -93,8 +93,7 @@ public class TextStyle {
     }
 
     /**
-     * Apply this style to a range of characters in an
-     * {@code AttributedString}.
+     * Apply this style to a range of characters in an {@code AttributedString}.
      *
      * @param s the string to the apply the attributes of the style to
      * @param beginPos the index of the first character in the range
@@ -175,12 +174,14 @@ public class TextStyle {
     public static final TextStyle KERNING_OFF = new TextStyle(TextAttribute.KERNING, 0);
     /**
      * A shared instance of a style that will enable optional ligature
-     * replacement. If this instance is modified, everyone using it is also affected.
+     * replacement. If this instance is modified, everyone using it is also
+     * affected.
      */
     public static final TextStyle LIGATURES_ON = new TextStyle(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
     /**
      * A shared instance of a style that will disable optional ligature
-     * replacement. If this instance is modified, everyone using it is also affected.
+     * replacement. If this instance is modified, everyone using it is also
+     * affected.
      */
     public static final TextStyle LIGATURES_OFF = new TextStyle(TextAttribute.LIGATURES, 0);
     /**

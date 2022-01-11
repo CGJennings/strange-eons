@@ -87,8 +87,8 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Create an empty language resource for a locale described by
-     * a locale description, such as {@code "en_CA"}.
+     * Create an empty language resource for a locale described by a locale
+     * description, such as {@code "en_CA"}.
      */
     public Language(String loc) {
         this(parseLocaleDescription(loc));
@@ -96,11 +96,11 @@ public class Language implements Iterable<String> {
 
     /**
      * Sets this language's parent. If a string cannot be found in this
-     * language's string table, and a non-{@code null} parent is defined,
-     * then the chain of parents will be searched to locate a definition.
+     * language's string table, and a non-{@code null} parent is defined, then
+     * the chain of parents will be searched to locate a definition.
      *
-     * @param parent the new parent to set; if {@code null} the existing
-     * parent (if any) is removed
+     * @param parent the new parent to set; if {@code null} the existing parent
+     * (if any) is removed
      * @throws IllegalArgumentException if setting the parent would create a
      * cycle (a language is directly or indirectly its own ancestor)
      */
@@ -116,9 +116,8 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns this language's parent, or {@code null} if it has no parent.
-     * The language's parent is consulted if this language does not define a
-     * string.
+     * Returns this language's parent, or {@code null} if it has no parent. The
+     * language's parent is consulted if this language does not define a string.
      *
      * @return the parent instance, or {@code null}
      */
@@ -128,8 +127,8 @@ public class Language implements Iterable<String> {
 
     /**
      * Changes the locale used by this language instance. If the supplied locale
-     * is {@code null}, the default locale is used. The supplied locale
-     * must include a language and may optionally include a region (country).
+     * is {@code null}, the default locale is used. The supplied locale must
+     * include a language and may optionally include a region (country).
      *
      * <p>
      * Variants are not supported. If the supplied locale includes a variant,
@@ -300,8 +299,7 @@ public class Language implements Iterable<String> {
      * Returns a formatted string defined in this language. Formatting flags in
      * the localized string will be filled in using the supplied arguments. The
      * formatting flags accepted by the method are exactly the same as those
-     * supported by {@code String.format} (similar to {@code sprintf}
-     * in C).
+     * supported by {@code String.format} (similar to {@code sprintf} in C).
      *
      * @param key the key for the localized formatting template
      * @param args the arguments to use to fill in the formatting template
@@ -339,8 +337,8 @@ public class Language implements Iterable<String> {
 
     /**
      * Explicitly sets a key to a fixed value, overriding the result that would
-     * be obtained from the loaded string tables. If value is {@code null},
-     * any value previously set with this method is removed.
+     * be obtained from the loaded string tables. If value is {@code null}, any
+     * value previously set with this method is removed.
      *
      * @param key the key to affect
      * @param value the new string value
@@ -556,7 +554,7 @@ public class Language implements Iterable<String> {
         String language, country;
 
         int i = code.indexOf('_');
-        if (i == -1 ) {
+        if (i == -1) {
             i = code.indexOf('-');
         }
         if (i == -1) {
@@ -581,18 +579,17 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns {@code true} if a locale description represents a valid
-     * locale. In order to be valid, a locale description must have one of the
-     * following forms, where x indicates a lower case letter and X indicates an
-     * upper case letter:<br>
+     * Returns {@code true} if a locale description represents a valid locale.
+     * In order to be valid, a locale description must have one of the following
+     * forms, where x indicates a lower case letter and X indicates an upper
+     * case letter:<br>
      * xx<br>
      * xx_XX<br>
      * Note that variants (further descriptions of the locale that may follow
      * the country code after an additional underscore) are not supported by
      * Strange Eons at this time.
      *
-     * @return {@code true} if the locale description is syntactically
-     * valid
+     * @return {@code true} if the locale description is syntactically valid
      */
     public static boolean isLocaleDescriptionValid(String description) {
         if (description == null) {
@@ -694,11 +691,11 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Returns a flag icon for the country part of locale {@code loc}. If
-     * the locale has no country part, or if no flag is available for the
-     * country, a blank placeholder icon will be returned. The placeholder icon
-     * is the same size as the flag icon would have been, if one was available.
-     * In no event will {@code null} be returned.
+     * Returns a flag icon for the country part of locale {@code loc}. If the
+     * locale has no country part, or if no flag is available for the country, a
+     * blank placeholder icon will be returned. The placeholder icon is the same
+     * size as the flag icon would have been, if one was available. In no event
+     * will {@code null} be returned.
      *
      * @param loc the locale to return a flag for
      * @return a small flag icon for the country of the requested locale, or a
@@ -770,8 +767,8 @@ public class Language implements Iterable<String> {
     /**
      * Returns an icon that represents the language and country of a locale. If
      * a representation for the language or country is not available, that part
-     * of the resulting icon will be blank. In no event will {@code null}
-     * be returned.
+     * of the resulting icon will be blank. In no event will {@code null} be
+     * returned.
      *
      * @param loc the locale to return a flag for
      * @return a small icon for the requested locale, or a blank icon
@@ -885,14 +882,13 @@ public class Language implements Iterable<String> {
     }
 
     /**
-     * Marks the locale {@code loc} as a "preferred locale" for game
-     * language purposes. This method is not normally called directly. Instead,
-     * plug-in authors will place a {@code game-languages} client property
-     * in their root file with a comma-separated list of all of the game locales
-     * supported by the plug-in. The bundle installer will automatically mark
-     * these as preferred when it loads the bundle. Preferred locales are given
-     * priority when the user selects languages in the {@link Preferences}
-     * dialog.
+     * Marks the locale {@code loc} as a "preferred locale" for game language
+     * purposes. This method is not normally called directly. Instead, plug-in
+     * authors will place a {@code game-languages} client property in their root
+     * file with a comma-separated list of all of the game locales supported by
+     * the plug-in. The bundle installer will automatically mark these as
+     * preferred when it loads the bundle. Preferred locales are given priority
+     * when the user selects languages in the {@link Preferences} dialog.
      * <p>
      * <b>Note:</b> Adding a locale that includes a country automatically
      * implies that the base locale with only a language and no country is also
@@ -916,8 +912,8 @@ public class Language implements Iterable<String> {
     private static final Set<Locale> prefGameLocs = Collections.synchronizedSet(new HashSet<Locale>());
 
     /**
-     * Checks that the locale is not {@code null}, has a language, and does
-     * not have a variant. If any of these conditions fails, an appropriate
+     * Checks that the locale is not {@code null}, has a language, and does not
+     * have a variant. If any of these conditions fails, an appropriate
      * exception is thrown.
      *
      * @param loc
@@ -964,7 +960,7 @@ public class Language implements Iterable<String> {
             if (!o1.getLanguage().equals(o2.getLanguage())) {
                 return col.compare(o1.getDisplayLanguage(), o2.getDisplayLanguage());
             }
-            
+
             // they are the same language; sort by country within language
             // since the display country for no country is blank, the locale
             // for the language alone will be listed first, as required
@@ -1050,14 +1046,14 @@ public class Language implements Iterable<String> {
      * the string.
      * <li> The locale description consists of the text after the first
      * underscore and up to the first period (.), if any. If there is no
-     * underscore, then the locale description is {@code null}. if there is
-     * no period, then the description continues to the end of the string. If
-     * there is no underscore in the file name, then the locale description is
+     * underscore, then the locale description is {@code null}. if there is no
+     * period, then the description continues to the end of the string. If there
+     * is no underscore in the file name, then the locale description is
      * {@code null}. Moreover, the locale is checked to determine if it is
      * valid, as described below. If the locale is not valid, then the locale
-     * description will be {@code null} and the part that would have been
-     * the locale description, including the initial underscore, will be
-     * included in the base name as if there were no underscore in the name.
+     * description will be {@code null} and the part that would have been the
+     * locale description, including the initial underscore, will be included in
+     * the base name as if there were no underscore in the name.
      * </ol>
      *
      */
@@ -1117,12 +1113,12 @@ public class Language implements Iterable<String> {
         public final String baseName;
         /**
          * The locale description that was parsed out of the file name, or
-         * {@code null} if there was no locale description. A
-         * {@code null} locale description indicates that the file is
-         * either not part of a family of localized files, or that it represents
-         * the default translation. If it is the default translation and other
-         * translations are available, other files in the same folder should
-         * have the same base name and extension.
+         * {@code null} if there was no locale description. A {@code null}
+         * locale description indicates that the file is either not part of a
+         * family of localized files, or that it represents the default
+         * translation. If it is the default translation and other translations
+         * are available, other files in the same folder should have the same
+         * base name and extension.
          */
         public final String localeDescription;
         /**
@@ -1183,13 +1179,11 @@ public class Language implements Iterable<String> {
         /**
          * Returns the localized file name for the parent locale, or
          * {@code null} if this file represents a default translation. For
-         * example, the parent of {@code file_en_CA.ext} is
-         * {@code file_en.ext}; The parent of {@code file_en.ext} is
-         * {@code file.ext}, and the parent of that file is
-         * {@code null}.
+         * example, the parent of {@code file_en_CA.ext} is {@code file_en.ext};
+         * The parent of {@code file_en.ext} is {@code file.ext}, and the parent
+         * of that file is {@code null}.
          *
-         * @return the next fallback translation for the file, or
-         * {@code null}
+         * @return the next fallback translation for the file, or {@code null}
          */
         public LocalizedFileName getParent() {
             if (localeDescription == null) {

@@ -22,15 +22,15 @@ public interface Commandable {
      * {@link #isCommandApplicable} if there is currently no selection to cut.
      *
      * @param command the command to be performed
-     * @return {@code true} if this commandable wishes to handle the
-     * command (even if it cannot execute the command currently)
+     * @return {@code true} if this commandable wishes to handle the command
+     * (even if it cannot execute the command currently)
      */
     boolean canPerformCommand(AbstractCommand command);
 
     /**
-     * Returns {@code true} if the {@code command} can be performed by
-     * this commandable in its current state. If {@link #canPerformCommand}
-     * would return false for this command, then this must also return false.
+     * Returns {@code true} if the {@code command} can be performed by this
+     * commandable in its current state. If {@link #canPerformCommand} would
+     * return false for this command, then this must also return false.
      *
      * @param command the command to be performed
      * @return {@code true} if this commandable can currently perform the

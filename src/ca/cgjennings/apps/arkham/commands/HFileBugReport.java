@@ -72,5 +72,5 @@ final class HFileBugReport extends AbstractCommand {
                 StrangeEons.getApplication().fileBugReport(null, null);
             });
         });
-	}
+    }
 }

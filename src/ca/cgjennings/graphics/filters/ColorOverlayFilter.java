@@ -63,9 +63,9 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
     }
 
     /**
-     * Returns the colour to overlay as a {@code Color} object. If the
-     * colour was set from a colour object, this is not guaranteed to be the
-     * same instance.
+     * Returns the colour to overlay as a {@code Color} object. If the colour
+     * was set from a colour object, this is not guaranteed to be the same
+     * instance.
      *
      * @return the colour value to be applied
      */
@@ -76,8 +76,8 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
     /**
      * Sets whether the alpha channel will be inverted. The default is
      * {@code false}, so that the overlay is applied to the interior of the
-     * shape(s) defined by the alpha channel. If set to {@code true}, the
-     * effect is to apply the overlay to the exterior of that shape.
+     * shape(s) defined by the alpha channel. If set to {@code true}, the effect
+     * is to apply the overlay to the exterior of that shape.
      *
      * @param invert if	{@code true}, alpha values are inverted
      */

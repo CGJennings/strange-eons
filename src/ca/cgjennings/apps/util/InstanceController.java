@@ -51,7 +51,8 @@ public class InstanceController implements Runnable {
                         out.writeInt(args.length);
                         for (String arg : args) {
                             out.writeUTF(arg);
-                        }   response = in.readUTF();
+                        }
+                        response = in.readUTF();
                     }
                 }
 

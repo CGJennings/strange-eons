@@ -258,9 +258,9 @@ public class Animation implements FrameComposer {
     }
 
     /**
-     * Returns {@code true} if the animation is still playing. (This will
-     * still be {@code true} after calling {@link #stop} until the
-     * animation actually halts.)
+     * Returns {@code true} if the animation is still playing. (This will still
+     * be {@code true} after calling {@link #stop} until the animation actually
+     * halts.)
      *
      * @return {@code true} if the animation is playing
      */

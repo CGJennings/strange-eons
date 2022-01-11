@@ -9,13 +9,13 @@ import java.util.Locale;
  * out undesired break points returned by a {@code java.text.BreakIterator}
  * instance.
  * <p>
- * It works by wrapping an existing base {@code BreakIterator} that returns
- * a superset of the desired break points. Before any potential break point is
+ * It works by wrapping an existing base {@code BreakIterator} that returns a
+ * superset of the desired break points. Before any potential break point is
  * returned from the adaptor, the adapter will validate it by calling
- * {@link #isBreakValidInternal(int)}. If that returns {@code true}, then
- * the break is returned to the caller. If it returns {@code false}, the
- * break will be filtered out. The next valid break in the same direction will
- * then be substituted until an acceptable break is found.
+ * {@link #isBreakValidInternal(int)}. If that returns {@code true}, then the
+ * break is returned to the caller. If it returns {@code false}, the break will
+ * be filtered out. The next valid break in the same direction will then be
+ * substituted until an acceptable break is found.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

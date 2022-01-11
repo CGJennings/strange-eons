@@ -96,8 +96,7 @@ public class ListItem implements IconProvider {
     }
 
     /**
-     * Returns this item's icon, or {@code null} if it doesn't have an
-     * icon.
+     * Returns this item's icon, or {@code null} if it doesn't have an icon.
      *
      * @return this item's icon, or {@code null}
      */
@@ -128,8 +127,8 @@ public class ListItem implements IconProvider {
     }
 
     /**
-     * Returns {@code true} if another object's string representation is
-     * equal to this item's setting value.
+     * Returns {@code true} if another object's string representation is equal
+     * to this item's setting value.
      *
      * @param obj the object to check for equality with this item
      * @return {@code true} if the object is not {@code null} and

@@ -32,10 +32,10 @@ import javax.swing.KeyStroke;
  * released, the text will return to the last valid key stroke.
  *
  * <p>
- * The {@code null} value is valid if there is no key stroke, as when
- * editing the key for a command with no accelerator assigned. This is displayed
- * as an empty field. By default, the Delete and Back Space keys will all set
- * the current key stroke to {@code null} if they are pressed unmodified.
+ * The {@code null} value is valid if there is no key stroke, as when editing
+ * the key for a command with no accelerator assigned. This is displayed as an
+ * empty field. By default, the Delete and Back Space keys will all set the
+ * current key stroke to {@code null} if they are pressed unmodified.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -157,8 +157,8 @@ public class JKeyStrokeField extends JTextField {
     /**
      * Sets the current key stroke to ks. Note that this may be used to set the
      * keystroke to a value that would otherwise be invalid. The value
-     * {@code null} may be used to indicate that no key stroke is set, and
-     * will be displayed to the user as an empty string.
+     * {@code null} may be used to indicate that no key stroke is set, and will
+     * be displayed to the user as an empty string.
      *
      * @param ks the key stroke to make current
      */
@@ -170,16 +170,16 @@ public class JKeyStrokeField extends JTextField {
     /**
      * Gets the current key stroke. This is the most recent of: the key stoke
      * set by {@link #setKeyStroke}, or the last key stroke typed by the user
-     * and accepted by {@link #filterKeyStroke}. This value can be
-     * {@code null}, meaning that no key stroke has been set.
+     * and accepted by {@link #filterKeyStroke}. This value can be {@code null},
+     * meaning that no key stroke has been set.
      */
     public KeyStroke getKeyStroke() {
         return lastValid;
     }
 
     /**
-     * Returns {@code true} if the key stroke will be accepted by the
-     * filtering policy.
+     * Returns {@code true} if the key stroke will be accepted by the filtering
+     * policy.
      *
      * @return {@code true} if filtering is disabled or the key stroke is
      * accepted
@@ -192,8 +192,8 @@ public class JKeyStrokeField extends JTextField {
     }
 
     /**
-     * If {@code true}, then the Delete and Back Space keys (without
-     * modifiers) will all be interpreted as a request to set the key stroke to
+     * If {@code true}, then the Delete and Back Space keys (without modifiers)
+     * will all be interpreted as a request to set the key stroke to
      * {@code null}, clearing the field.
      *
      * @return {@code true} if clear keys are enabled
@@ -216,9 +216,9 @@ public class JKeyStrokeField extends JTextField {
     private boolean defaultClearKeys = true;
 
     /**
-     * Returns {@code true} if the key stroke should be interpreted as a
-     * request to clear the field. Subclasses may override this to change the
-     * keys used by the default key clearing mechanism.
+     * Returns {@code true} if the key stroke should be interpreted as a request
+     * to clear the field. Subclasses may override this to change the keys used
+     * by the default key clearing mechanism.
      *
      * @param ks the key stroke that may be a clear key
      * @return {@code true} if the key should clear the field
@@ -235,16 +235,16 @@ public class JKeyStrokeField extends JTextField {
     /**
      * Accepts, rejects, or transforms key strokes. This method is called when a
      * key stroke has been completed. It may either return the key stroke (to
-     * accept it), substitute a different key stroke, or return
-     * {@code null} to reject the key stroke. Subclasses may override this
-     * to customize the set of keys that are accepted. The default behaviour is
-     * to reject key strokes if they consist only of modifiers or if they do not
-     * include at least one modifier other than Shift (except for the function
-     * keys, which are always accepted).
+     * accept it), substitute a different key stroke, or return {@code null} to
+     * reject the key stroke. Subclasses may override this to customize the set
+     * of keys that are accepted. The default behaviour is to reject key strokes
+     * if they consist only of modifiers or if they do not include at least one
+     * modifier other than Shift (except for the function keys, which are always
+     * accepted).
      *
      * @param ks the key stroke to filter
-     * @return {@code null} to reject the key stroke, otherwise the
-     * (possibly replaced) key stroke
+     * @return {@code null} to reject the key stroke, otherwise the (possibly
+     * replaced) key stroke
      */
     protected KeyStroke filterKeyStroke(KeyStroke ks) {
         if (!filterKeys) {
@@ -288,8 +288,8 @@ public class JKeyStrokeField extends JTextField {
      * display in a KeyStrokeField.
      *
      * @param s the string to parse
-     * @return the key stroke that matches the string, or {@code null} if
-     * the string could not be parsed
+     * @return the key stroke that matches the string, or {@code null} if the
+     * string could not be parsed
      */
     public static KeyStroke fromDisplayString(String s) {
         if (s == null || s.length() == 0) {
@@ -341,9 +341,9 @@ public class JKeyStrokeField extends JTextField {
      * key strokes by a KeyStrokeField. This consists of a series of zero or
      * more modifier key names with trailing plus symbols, followed by a key
      * name for the non-modifier key (if any) as given by
-     * {@code KeyEvent.getKeyText()}. For example: Ctrl+Shift+ (only the
-     * control and shift modifiers are held), or Ctrl+Alt+X (two modifiers and
-     * the non-modifier X are held). A null key stroke is converted to the empty
+     * {@code KeyEvent.getKeyText()}. For example: Ctrl+Shift+ (only the control
+     * and shift modifiers are held), or Ctrl+Alt+X (two modifiers and the
+     * non-modifier X are held). A null key stroke is converted to the empty
      * string.
      *
      * @param ks the key to convert

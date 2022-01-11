@@ -10,8 +10,8 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * A URL protocol handler for the {@code project:} protocol, which accesses
- * the contents of the open project.
+ * A URL protocol handler for the {@code project:} protocol, which accesses the
+ * contents of the open project.
  *
  * <p>
  * Note: the unusual class name is required for this class to be used by the
@@ -44,7 +44,7 @@ public class Handler extends ca.cgjennings.io.protocols.MappedURLHandler {
             StrangeEonsAppWindow af = StrangeEons.getApplication() == null ? null : StrangeEons.getWindow();
             if (af != null) {
                 Project p = af.getOpenProject();
-                if(p != null) {
+                if (p != null) {
                     URL projURL = p.getFile().toURI().toURL();
                     projURL = new URL(projURL, path);
                     return projURL.openConnection();

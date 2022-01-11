@@ -28,6 +28,7 @@ import resources.ResourceKit;
  */
 @SuppressWarnings("serial")
 public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDialog {
+
     private static final String PROJ_FOLDER_KEY = "default-project-folder";
 
     /**

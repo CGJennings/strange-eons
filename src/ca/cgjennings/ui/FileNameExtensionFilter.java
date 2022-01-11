@@ -104,12 +104,12 @@ public final class FileNameExtensionFilter extends FileFilter {
     }
 
     /**
-     * Returns {@code true} if the filter accepts the file; that is, if a
-     * file chooser using the filter would display the file.
+     * Returns {@code true} if the filter accepts the file; that is, if a file
+     * chooser using the filter would display the file.
      *
      * @param file the file to test
-     * @return {@code true} if the file represents a folder or matches one
-     * of the filter's extensions
+     * @return {@code true} if the file represents a folder or matches one of
+     * the filter's extensions
      */
     @Override
     public boolean accept(File file) {

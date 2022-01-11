@@ -49,14 +49,14 @@ public final class SupportPreferences {
     }
 
     /**
-     * Returns {@code true} if the user has requested that components
-     * should be validated more strictly. The exact interpretation of this is
-     * left up to the design support, but generally it means that borderline
-     * cases that may have simply been noted in the design support view ought to
-     * invalidate the component.
+     * Returns {@code true} if the user has requested that components should be
+     * validated more strictly. The exact interpretation of this is left up to
+     * the design support, but generally it means that borderline cases that may
+     * have simply been noted in the design support view ought to invalidate the
+     * component.
      *
-     * @return {@code true} if validation is enabled and the user has
-     * requested strict validation mode
+     * @return {@code true} if validation is enabled and the user has requested
+     * strict validation mode
      */
     public static boolean isStrictValidationEnabled() {
         Settings s = Settings.getUser();

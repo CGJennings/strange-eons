@@ -108,14 +108,14 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
 
     /**
      * Sets a list of preset values that the user can choose from.Setting an
- empty array has the same effect as passing null, namely, clearing the
- list of presets. Otherwise, the preset values are determined using pairs
- of elements are follows: The string value of the first element in each
- pair is used as the name to display for the preset value. If the second
- value in the pair is a float array, then its first three values determine
- the h, s, and b component of the preset value, respectively. Otherwise,
- the string value of the object is parsed into such an array using
- {@link Settings#tint(java.lang.String)}.
+     * empty array has the same effect as passing null, namely, clearing the
+     * list of presets. Otherwise, the preset values are determined using pairs
+     * of elements are follows: The string value of the first element in each
+     * pair is used as the name to display for the preset value. If the second
+     * value in the pair is a float array, then its first three values determine
+     * the h, s, and b component of the preset value, respectively. Otherwise,
+     * the string value of the object is parsed into such an array using
+     * {@link Settings#tint(java.lang.String)}.
      *
      * <p>
      * Examples:
@@ -786,9 +786,8 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     }
     /**
      * A shared "clipboard" for copying and pasting tint values across editors.
-     * If {@code clipB} is set to {@code NaN}, then nothing has been
-     * copied yet during this session. This scheme does not work across virtual
-     * machines.
+     * If {@code clipB} is set to {@code NaN}, then nothing has been copied yet
+     * during this session. This scheme does not work across virtual machines.
      */
     private static float clipH, clipS, clipB = Float.NaN;
     private int internalUpdate = 0;
@@ -884,12 +883,12 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
                 g.setComposite(AlphaComposite.SrcOver.derive(0.5f));
                 g.fillOval(1, 1, w - 3, h - 3);
                 g.drawOval(1, 1, w - 3, h - 3);
-                
+
                 g.setColor(Color.DARK_GRAY);
                 g.drawArc(1, 1, w - 3, h - 3, 45, -180);
                 g.setColor(Color.WHITE);
                 g.drawArc(1, 1, w - 3, h - 3, 45, 180);
-                
+
                 g.setComposite(oldComp);
                 g.drawOval(4, 4, w - 10, h - 10);
             };

@@ -65,8 +65,8 @@ public class AutomaticUpdater {
      * Returns {@code true} if, according to current settings, an automatic
      * update check is overdue.
      *
-     * @return {@code true} if the time since the last check is greater
-     * than the update check frequency set by the user
+     * @return {@code true} if the time since the last check is greater than the
+     * update check frequency set by the user
      */
     public static boolean isUpdateOverdue() {
         return getMillisecondsUntilNextCheck() < 0;
@@ -118,9 +118,9 @@ public class AutomaticUpdater {
     /**
      * Returns {@code true} if it can determine with certainty that an
      * application update is available. If no update is available, or if any
-     * error occurs, it will return {@code false}. This call bypasses the
-     * usual update infrastructure; for example, it does not reset the time
-     * until the next update check.
+     * error occurs, it will return {@code false}. This call bypasses the usual
+     * update infrastructure; for example, it does not reset the time until the
+     * next update check.
      *
      * @return {@code true} if an application update is available
      */
@@ -169,17 +169,16 @@ public class AutomaticUpdater {
      * The value of {@code updateAction} must be one of:
      * {@code ACTION_TELL_USER}, {@code ACTION_OPEN_CATALOG},
      * {@code ACTION_INSTALL_IMMEDIATELY}. If {@code allCatalogs} is
-     * {@code true}, then all catalogs in the user's catalog URL history
-     * will be checked. Otherwise, only the default catalog is checked. Returns
-     * a bitwise combination of {@code true} if any updates were found, or
+     * {@code true}, then all catalogs in the user's catalog URL history will be
+     * checked. Otherwise, only the default catalog is checked. Returns a
+     * bitwise combination of {@code true} if any updates were found, or
      * {@code false} otherwise.
      *
      * @param updateAction the action to take when updates are found
      * @param allCatalogs update from all catalogs in the catalog URL history,
      * not just the primary catalog
      * @return {@code true} if any updates were found
-     * @throws IllegalArgumentException if the {@code updateAction} is not
-     * valid
+     * @throws IllegalArgumentException if the {@code updateAction} is not valid
      */
     public static int performUpdate(int updateAction, boolean allCatalogs) {
         if (updateAction < ACTION_TELL_USER || updateAction > ACTION_INSTALL_IMMEDIATELY) {
@@ -502,13 +501,13 @@ public class AutomaticUpdater {
             if (automaticUpdateTimer == null) {
                 return;
             }
-            
+
             if (isUpdateOverdue()) {
                 StrangeEons.log.info("running automatic update check in background");
                 AutomaticUpdater.markUpdate();
                 AutomaticUpdater.performAutomaticUpdate();
             }
-            
+
             // this limits the checks to once per app run when set to "ALWAYS"
             // as otherwise you'd get a check every half hour
             if (getMillisecondsBetweenChecks() > (1_000L * 60L * 60L)) {

@@ -33,8 +33,8 @@ public final class ShapeUtilities {
      * @return the sum of the lengths of the line segments of the flattened
      * curve
      * @throws NullPointerException if shape is {@code null}
-     * @throws IllegalArgumentException if {@code flatness} or
-     * {@code limit} is less than 0
+     * @throws IllegalArgumentException if {@code flatness} or {@code limit} is
+     * less than 0
      */
     public static double pathLength(Shape shape) {
         return pathLength(shape, DEFAULT_FLATNESS, DEFAULT_LIMIT);
@@ -51,8 +51,8 @@ public final class ShapeUtilities {
      * @return the sum of the lengths of the line segments of the flattened
      * curve
      * @throws NullPointerException if shape is {@code null}
-     * @throws IllegalArgumentException if {@code flatness} or
-     * {@code limit} is less than 0
+     * @throws IllegalArgumentException if {@code flatness} or {@code limit} is
+     * less than 0
      */
     public static double pathLength(Shape shape, double flatness) {
         return pathLength(shape, flatness, DEFAULT_LIMIT);
@@ -71,8 +71,8 @@ public final class ShapeUtilities {
      * @return the sum of the lengths of the line segments of the flattened
      * curve
      * @throws NullPointerException if shape is {@code null}
-     * @throws IllegalArgumentException if {@code flatness} or
-     * {@code limit} is less than 0
+     * @throws IllegalArgumentException if {@code flatness} or {@code limit} is
+     * less than 0
      */
     @SuppressWarnings("fallthrough")
     public static double pathLength(Shape shape, double flatness, int limit) {
@@ -166,8 +166,8 @@ public final class ShapeUtilities {
      * Returns a {@link Shape} that is the exclusive or of the two shape
      * parameters: areas in one shape or the other will be included in the
      * returned shape, excluding areas that are present in both. This is
-     * equivalent to {@code union(lhs,subtract(lhs,rhs))}. Neither of
-     * original shapes will be modified.
+     * equivalent to {@code union(lhs,subtract(lhs,rhs))}. Neither of original
+     * shapes will be modified.
      *
      * @param lhs the primary shape
      * @param rhs the shape to intersect with the primary shape

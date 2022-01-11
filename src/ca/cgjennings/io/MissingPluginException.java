@@ -27,8 +27,8 @@ public class MissingPluginException extends IOException {
      * cross a package barrier.
      *
      * @param c code
-     * @param n if {@code null}, the value of {@code c} will be used
-     * as the message for the exception
+     * @param n if {@code null}, the value of {@code c} will be used as the
+     * message for the exception
      */
     public MissingPluginException(String c, String n) {
         super((n == null) ? c : Language.string("rk-err-missing-game", c, n));

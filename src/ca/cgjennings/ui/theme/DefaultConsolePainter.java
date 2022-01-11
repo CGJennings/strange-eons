@@ -31,7 +31,7 @@ class DefaultConsolePainter extends CachingPainter<JComponent> {
                 }
             }
             Color wave = background.brighter();
-            
+
             Paint p = g.getPaint();
             g.setPaint(background);
             g.fillRect(0, 0, w, h);

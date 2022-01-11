@@ -70,16 +70,16 @@ public class ProjectUtilities {
      * whether they apply to a member, along with its task and project. When a
      * task is selected, the member will be {@code null}. Likewise, then a
      * project is selected, the task will also be {@code null}. If a
-     * {@code TaskAction} does not wish to alter its behaviour when applied
-     * to these different member types, it can call this method to collapse
-     * these three parameters to a single value, the selected member (no matter
-     * the type).
+     * {@code TaskAction} does not wish to alter its behaviour when applied to
+     * these different member types, it can call this method to collapse these
+     * three parameters to a single value, the selected member (no matter the
+     * type).
      *
      * @param project the project
      * @param task the task within the project, or {@code null}
      * @param member the member within the task, or {@code null}
-     * @return the rightmost non-{@code null} parameter, or
-     * {@code null} if all parameters are {@code null}
+     * @return the rightmost non-{@code null} parameter, or {@code null} if all
+     * parameters are {@code null}
      */
     public static Member simplify(Project project, Task task, Member member) {
         Member m = member;
@@ -275,8 +275,8 @@ public class ProjectUtilities {
      *
      * @param a the first file to consider
      * @param b the second file to consider
-     * @return {@code true} if {@code a} and {@code b} are
-     * determined to be the same file
+     * @return {@code true} if {@code a} and {@code b} are determined to be the
+     * same file
      */
     public static boolean sameFile(File a, File b) {
         try {
@@ -443,14 +443,14 @@ public class ProjectUtilities {
     /**
      * Create a ZIP output stream for writing a plug-in bundle or ZIP archive.
      * In order to be a valid plug-in bundle, a valid <tt>eons-plugin</tt> file
-     * must be written into the archive's root folder. If {@code webSafe}
-     * is {@code false} and the archive contains no
-     * {@code eons-plugin} file, then the result will be a plain ZIP file
-     * that can be used to create a portable archive for other purposes.
+     * must be written into the archive's root folder. If {@code webSafe} is
+     * {@code false} and the archive contains no {@code eons-plugin} file, then
+     * the result will be a plain ZIP file that can be used to create a portable
+     * archive for other purposes.
      *
      * @param out the stream to write the archive to
-     * @param webSafe if {@code true}, a Web-safe bundle archive is created
-     * (do not use if creating a plain ZIP archive)
+     * @param webSafe if {@code true}, a Web-safe bundle archive is created (do
+     * not use if creating a plain ZIP archive)
      * @return the archive stream to write file data to
      * @throws IOException if an I/O error occurs while creating the archive
      * stream
@@ -467,8 +467,8 @@ public class ProjectUtilities {
      * will be written to a file.
      *
      * @param archive the path to the file that the archive will be written to
-     * @param webSafe if {@code true}, a Web-safe bundle archive is created
-     * (do not use if creating a plain ZIP archive)
+     * @param webSafe if {@code true}, a Web-safe bundle archive is created (do
+     * not use if creating a plain ZIP archive)
      * @return the archive stream to write file data to
      * @throws IOException if an I/O error occurs while creating the archive
      * stream
@@ -596,17 +596,14 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns {@code true} if the {@code possibleChild} has
-     * {@code container} as an ancestor. Returns {@code true} if the
-     * two files are equal. If either file is {@code null}, returns
-     * {@code false}.
+     * Returns {@code true} if the {@code possibleChild} has {@code container}
+     * as an ancestor. Returns {@code true} if the two files are equal. If
+     * either file is {@code null}, returns {@code false}.
      *
-     * @param container the parent file that may contain
-     * {@code possibleChild}
+     * @param container the parent file that may contain {@code possibleChild}
      * @param possibleChild the file to test
-     * @return {@code true} if and only if both files are
-     * non-{@code null} and {@code container} is a parent of
-     * {@code possibleChild}
+     * @return {@code true} if and only if both files are non-{@code null} and
+     * {@code container} is a parent of {@code possibleChild}
      */
     public static boolean contains(File container, File possibleChild) {
         while (possibleChild != null) {
@@ -619,10 +616,10 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns the {@code preferred} file name if it is not in use,
-     * otherwise generates a numbered variant of the name that does not already
-     * exist at the time the method is called. A typical use is to create an
-     * alternative target file if the target of a copy operation already exists.
+     * Returns the {@code preferred} file name if it is not in use, otherwise
+     * generates a numbered variant of the name that does not already exist at
+     * the time the method is called. A typical use is to create an alternative
+     * target file if the target of a copy operation already exists.
      *
      * @param preferred the ideal file that should be used if it is available
      * (does not exist)
@@ -681,17 +678,17 @@ public class ProjectUtilities {
     /**
      * Matches a file against a list of file extensions. If the file is not a
      * folder and it's file name matches any of the extensions, then this method
-     * returns {@code true}, otherwise {@code false}. The list of
-     * extensions should be one or more lowercase strings, each of which is a
-     * file extension without a '<tt>.</tt>' (e.g., <tt>png</tt>, <tt>eon</tt>,
+     * returns {@code true}, otherwise {@code false}. The list of extensions
+     * should be one or more lowercase strings, each of which is a file
+     * extension without a '<tt>.</tt>' (e.g., <tt>png</tt>, <tt>eon</tt>,
      * <tt>xml</tt>, etc.). Note that the file does not need to exist in order
      * to be matched by this function, but if it does exist, it must not be a
      * folder.
      *
      * @param f the file to be tested
      * @param extensions the candidate file extensions to be tested against
-     * @return {@code true} if {@code f} is not a folder and its name
-     * matches any of the given extensions
+     * @return {@code true} if {@code f} is not a folder and its name matches
+     * any of the given extensions
      */
     public static boolean matchExtension(File f, String... extensions) {
         if (f.isDirectory()) {
@@ -736,12 +733,12 @@ public class ProjectUtilities {
     }
 
     /**
-     * Returns a new file with the same name and path as {@code f} except
-     * that it will have the extension {@code newExtension}. If the name
-     * did not have an extension previously, a period and the new extension are
-     * appended. Otherwise, the last extension in the name is removed and the
-     * new extension appended to replace it. If the original file has a parent
-     * path, the new file will have the same parent.
+     * Returns a new file with the same name and path as {@code f} except that
+     * it will have the extension {@code newExtension}. If the name did not have
+     * an extension previously, a period and the new extension are appended.
+     * Otherwise, the last extension in the name is removed and the new
+     * extension appended to replace it. If the original file has a parent path,
+     * the new file will have the same parent.
      *
      * @param f the original file
      * @param newExtension the extension to use, {@code null} to remove the
@@ -855,8 +852,8 @@ public class ProjectUtilities {
      * {@code null} if there is no such resource.
      *
      * @param resource the path to the resource file to read
-     * @param encoding the text encoding, or {@code null} to use the
-     * default (ISO-8859-15)
+     * @param encoding the text encoding, or {@code null} to use the default
+     * (ISO-8859-15)
      * @return the text content of the file
      * @throws IOException if an I/O error occurs while reading the resource
      */
@@ -881,8 +878,8 @@ public class ProjectUtilities {
 
     /**
      * Returns the contents of a text file stored in resources as a string, or
-     * {@code null} if there is no such resource. The text must be encoded
-     * in UTF-8.
+     * {@code null} if there is no such resource. The text must be encoded in
+     * UTF-8.
      *
      * @param resource the path to the resource file to read
      * @return the text content of the file
@@ -963,19 +960,17 @@ public class ProjectUtilities {
     /**
      * Runs a script whose source text is stored in a file. The script's return
      * value, if any, is returned by this method. In the script, the variables
-     * {@code project}, {@code task}, and {@code member} will be
-     * bound to the values passed to this method. The script will be provided
-     * with a default {@code PluginContext} that is not associated with any
-     * plug-in.
+     * {@code project}, {@code task}, and {@code member} will be bound to the
+     * values passed to this method. The script will be provided with a default
+     * {@code PluginContext} that is not associated with any plug-in.
      *
      * @param script the file that contains the source text to execute
-     * @param project the project associated with the script, or
-     * {@code null}
+     * @param project the project associated with the script, or {@code null}
      * @param task the task associated with the script, or {@code null}
      * @param member the project member associated with the script, or
      * {@code null}
-     * @param debug if {@code true}, the script will be executed in debug
-     * mode if possible
+     * @param debug if {@code true}, the script will be executed in debug mode
+     * if possible
      * @return the script's return value; typically the value of the last
      * executed statement
      * @throws IOException if an I/O error occurs while reading the script
@@ -991,20 +986,18 @@ public class ProjectUtilities {
     /**
      * Runs a script whose source text is stored in a string. The script's
      * return value, if any, is returned by this method. In the script, the
-     * variables {@code project}, {@code task}, and
-     * {@code member} will be bound to the values passed to this method.
-     * The script will be provided with a default {@code PluginContext}
-     * that is not associated with any plug-in.
+     * variables {@code project}, {@code task}, and {@code member} will be bound
+     * to the values passed to this method. The script will be provided with a
+     * default {@code PluginContext} that is not associated with any plug-in.
      *
      * @param scriptName the source file name to be used to identify the script
      * @param script the source code of the script
-     * @param project the project associated with the script, or
-     * {@code null}
+     * @param project the project associated with the script, or {@code null}
      * @param task the task associated with the script, or {@code null}
      * @param member the project member associated with the script, or
      * {@code null}
-     * @param debug if {@code true}, the script will be executed in debug
-     * mode if possible
+     * @param debug if {@code true}, the script will be executed in debug mode
+     * if possible
      * @return the script's return value; typically the value of the last
      * executed statement
      */
@@ -1094,8 +1087,8 @@ public class ProjectUtilities {
      * Executes a shell command on the local system. The first string passed in
      * is the command name, and each subsequent string is an argument to pass to
      * the command. Any output from the command will appear in the script
-     * console. This method will return immediately; the command will run in
-     * the background.
+     * console. This method will return immediately; the command will run in the
+     * background.
      *
      * @param commandArray the command and arguments to use
      * @throws NullPointerException if the command array is {@code null}
@@ -1132,8 +1125,8 @@ public class ProjectUtilities {
     /**
      * Tries to save every open editor that is a member of the current project.
      *
-     * @param closeAfterSave if {@code true}, each file is closed after
-     * being saved
+     * @param closeAfterSave if {@code true}, each file is closed after being
+     * saved
      */
     public static void saveAllOpenProjectFiles(boolean closeAfterSave) {
         if (getView() == null) {

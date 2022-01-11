@@ -363,7 +363,7 @@ public final class DIYSheet extends Sheet<DIY> {
         if (obeyClip) {
             g.setClip(oldClip);
         }
-        
+
         Sheet.drawPortraitBox(g, portraitRect, portrait);
     }
 

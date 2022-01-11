@@ -30,7 +30,7 @@ public class DelegatedCommand extends AbstractCommand {
 
     public DelegatedCommand(String nameKey, String iconResource, String acceleratorKey) {
         super(nameKey, iconResource);
-        if(acceleratorKey != null) {
+        if (acceleratorKey != null) {
             final KeyStroke ks = AcceleratorTable.getApplicationTable().get(acceleratorKey);
             if (ks != null) {
                 setAccelerator(ks);
@@ -82,11 +82,11 @@ public class DelegatedCommand extends AbstractCommand {
     }
 
     /**
-     * Returns {@code true} if a default action is applicable. (The base
-     * class implementation returns {@code false}.)
+     * Returns {@code true} if a default action is applicable. (The base class
+     * implementation returns {@code false}.)
      *
-     * @return {@code true} if there is a default action and it is
-     * currently applicable
+     * @return {@code true} if there is a default action and it is currently
+     * applicable
      */
     public boolean isDefaultActionApplicable() {
         return false;

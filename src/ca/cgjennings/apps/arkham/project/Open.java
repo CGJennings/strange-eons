@@ -198,7 +198,9 @@ public class Open extends TaskAction {
         // check extension against known code types
         if (ed == null) {
             for (CodeEditor.CodeType type : CodeEditor.CodeType.values()) {
-                if (!type.getExtension().equals(ext)) continue;
+                if (!type.getExtension().equals(ext)) {
+                    continue;
+                }
                 ed = new CodeEditor(f, type);
             }
         }
@@ -441,8 +443,8 @@ public class Open extends TaskAction {
 
     /**
      * If you wish to add special handling for opening a file type, you may
-     * register an {@code InternalOpener} for it. The opener will be used
-     * to open files that it applies to if the open rule for the file is either
+     * register an {@code InternalOpener} for it. The opener will be used to
+     * open files that it applies to if the open rule for the file is either
      * {@link OpenRule#INTERNAL_OPEN} or {@link OpenRule#INTERNAL_EDIT}.
      */
     public interface InternalOpener {
@@ -452,8 +454,8 @@ public class Open extends TaskAction {
          * specified file.
          *
          * @param f the file to check
-         * @return {@code true} if the opener can open the file,
-         * {@code false} otherwise
+         * @return {@code true} if the opener can open the file, {@code false}
+         * otherwise
          */
         public boolean appliesTo(File f);
 

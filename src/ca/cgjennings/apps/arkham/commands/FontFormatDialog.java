@@ -43,7 +43,9 @@ import resources.ResourceKit;
  */
 @SuppressWarnings("serial")
 class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
+
     private class FontTokenRenderer extends DefaultListCellRenderer {
+
         private Font listFont, regListFont;
 
         @Override
@@ -113,7 +115,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         AbstractGameComponentEditor.localizeComboBoxLabels(widthCombo, null);
         AbstractGameComponentEditor.localizeComboBoxLabels(sizeTypeCombo, null);
-        
+
         familyList.setCellRenderer(new FontTokenRenderer());
 
         doneInit = true;

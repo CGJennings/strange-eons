@@ -17,14 +17,15 @@ import java.util.zip.InflaterInputStream;
  * A searchable reverse index of the words contained in a set of documents. Each
  * document is represented by a string (such as a URL) that identifies it. Given
  * a query, the index returns the set of IDs whose documents match the query. A
- * {@code TextIndex} is not constructed directly; the index data is
- * generated as a separate step and stored in a file, and the
- * {@code TextIndex} instance is created from that file.
+ * {@code TextIndex} is not constructed directly; the index data is generated as
+ * a separate step and stored in a file, and the {@code TextIndex} instance is
+ * created from that file.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
 public class TextIndex implements Iterable<String> {
+
     private final String[] stopWords;
     private final String[] words;
     private String[] ids;
@@ -98,8 +99,8 @@ public class TextIndex implements Iterable<String> {
     }
 
     /**
-     * A {@code Query} represents a query expression to be matched against
-     * a text index.
+     * A {@code Query} represents a query expression to be matched against a
+     * text index.
      */
     public static abstract class Query {
 
@@ -361,8 +362,7 @@ public class TextIndex implements Iterable<String> {
 
         /**
          * Returns the inverse of the set of documents containing the search
-         * term. This is equivalent to
-         * {@code new Not( this ).execute( ti )}.
+         * term. This is equivalent to {@code new Not( this ).execute( ti )}.
          *
          * @param ti the text index to match against
          * @return a result representing the documents that do not contain the
@@ -410,11 +410,11 @@ public class TextIndex implements Iterable<String> {
      * term = word | "(" query ")"
      * </pre> where a word is any word to be searched for (and not containing a
      * space or the reserved punctuation marks "|", "!", "(", or ")". The "|"
-     * symbol performs and {@code Or} query, sequential factors are
-     * combined into {@code And} queries, "!" applies a {@code Not}
-     * query to its argument, and parentheses may be used to group the query
-     * into subexpressions. Some examples:
-     * 
+     * symbol performs and {@code Or} query, sequential factors are combined
+     * into {@code And} queries, "!" applies a {@code Not} query to its
+     * argument, and parentheses may be used to group the query into
+     * subexpressions. Some examples:
+     *
      * <table border=0>
      * <caption>Examples</caption>
      * <tr><th>Query        <th>Find Documents Containing</tr>

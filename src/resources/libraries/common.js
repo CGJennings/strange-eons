@@ -39,7 +39,7 @@ if (Settings.shared.getBoolean('script-warnings')) {
         frame = Math.min(Math.max(0, stack.length - 1), frame);
         org.mozilla.javascript.Context.reportWarning(
                 message, stack[frame].file, stack[frame].line, null, -1
-        );
+                );
     };
     Error.deprecated = function deprecated(message, frame) {
         message = '[DEPRECATED] ' + (message || "unspecified feature");
@@ -142,7 +142,7 @@ const sprintf = function sprintf() {
     return arkham.plugins.LibImpl.sprintf(
             loc, arguments[firstObj - 1],
             Array.prototype.slice.call(arguments, firstObj)
-    );
+            );
 };
 
 const print = function print() {
@@ -211,7 +211,7 @@ const string = function string(key) {
                 useLibrary.__$.getUiLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-        );
+                );
     }
     return str;
 };
@@ -228,7 +228,7 @@ const gstring = function gstring(key) {
                 useLibrary.__$.getGameLangProvider().locale,
                 str,
                 Array.prototype.slice.call(arguments, 1)
-        );
+                );
     }
     return str;
 };
@@ -392,9 +392,9 @@ Number.prototype.dontEnum('toInt', 'toLong', 'toFloat');
 
 String.prototype.replaceAll = function replaceAll(pattern, replacement) {
     return this.replace(
-        new RegExp(RegExp.quote(pattern), 'g'),
-        RegExp.quoteReplacement(replacement)
-    );
+            new RegExp(RegExp.quote(pattern), 'g'),
+            RegExp.quoteReplacement(replacement)
+            );
 };
 String.prototype.dontEnum('replaceAll');
 

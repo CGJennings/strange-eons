@@ -39,8 +39,8 @@ public interface CacheMetrics {
     void clear();
 
     /**
-     * Returns {@code true} if the underlying cache supports clearing with
-     * the {@link #clear()} method.
+     * Returns {@code true} if the underlying cache supports clearing with the
+     * {@link #clear()} method.
      *
      * @return {@code true} if {@code clear()} affects the cache
      */

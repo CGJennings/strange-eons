@@ -8,9 +8,8 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 /**
- * A log record formatter that is less verbose than
- * {@code SimpleFormatter}. It only prints the time/date/location header
- * when the calling method changes.
+ * A log record formatter that is less verbose than {@code SimpleFormatter}. It
+ * only prints the time/date/location header when the calling method changes.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

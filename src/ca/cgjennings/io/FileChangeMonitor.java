@@ -119,8 +119,8 @@ public class FileChangeMonitor {
      *
      * @param listener the listener to notify when {@code file} changes
      * @param file the file to monitor
-     * @throws NullPointerException if {@code listener} or
-     * {@code file} is {@code null}
+     * @throws NullPointerException if {@code listener} or {@code file} is
+     * {@code null}
      * @throws IllegalStateException if this monitor has been {@link #dispose}d
      */
     public void addFileChangeListener(FileChangeListener listener, File file) {
@@ -133,18 +133,17 @@ public class FileChangeMonitor {
      * {@code updatePeriod} is an approximate <i>maximum</i> delay, in
      * milliseconds, before a change in file state is detected. The monitor does
      * not guarantee that {@code updatePeriod} will be honoured. If
-     * {@code listener} has already been registered to monitor
-     * {@code file}, the existing monitor will be removed and it will be
-     * replaced by one with the new {@code updatePeriod}. If the
-     * {@code updatePeriod} is 0, then the monitor is not added (it is
-     * removed if it already exists).
+     * {@code listener} has already been registered to monitor {@code file}, the
+     * existing monitor will be removed and it will be replaced by one with the
+     * new {@code updatePeriod}. If the {@code updatePeriod} is 0, then the
+     * monitor is not added (it is removed if it already exists).
      *
      * @param listener the listener to notify when {@code file} changes
      * @param file the file to monitor
      * @param updatePeriod the approximate maximum delay before change
      * notification takes place
-     * @throws NullPointerException if {@code listener} or
-     * {@code file} is {@code null}
+     * @throws NullPointerException if {@code listener} or {@code file} is
+     * {@code null}
      * @throws IllegalArgumentException if {@code updatePeriod} is negative
      * @throws IllegalStateException if this monitor has been {@link #dispose}d
      * of
@@ -273,8 +272,8 @@ public class FileChangeMonitor {
     }
 
     /**
-     * Converts a ({@code FileChangeListener}, {@code File}) pair into
-     * a unique identifying string.
+     * Converts a ({@code FileChangeListener}, {@code File}) pair into a unique
+     * identifying string.
      *
      * @param FileChangeListener the listener of the pair
      * @param File the file of the pair
@@ -285,8 +284,8 @@ public class FileChangeMonitor {
     }
 
     /**
-     * A {@code TimerTask} that polls files for changes and fires change
-     * events as needed.
+     * A {@code TimerTask} that polls files for changes and fires change events
+     * as needed.
      */
     private static class MonitorTask extends TimerTask {
 
@@ -308,8 +307,8 @@ public class FileChangeMonitor {
         /**
          * Update or initialize the records of the file's state.
          *
-         * @param fireEvent if {@code true}, fire a change event on the
-         * listener if state has changed
+         * @param fireEvent if {@code true}, fire a change event on the listener
+         * if state has changed
          */
         protected void updateFileState(boolean fireEvent) {
             boolean newExists;

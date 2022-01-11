@@ -13,16 +13,19 @@ var usesettings = useSettings;
 var subclass = (constructor, superConstructor) => constructor.subclass(superConstructor);
 var error = s => Error.error(s);
 error.handleUncaught = ex => Error.handleUncaught(ex);
-error.missingLibrary = function(shortName, fileName) {
+error.missingLibrary = function (shortName, fileName) {
     useLibrary.__threadassert();
     alert(string("scriptlib-missing-lib-alert", shortName, fileName), true);
     Error.error(string("scriptlib-missing-lib", fileName));
 };
-var hide = () => {Console.visible = false;};
+var hide = () => {
+    Console.visible = false;
+};
 
 
 // extension.js
-var offerToHideArkhamHorror = () => {};
+var offerToHideArkhamHorror = () => {
+};
 var GameData = {
     registerGame(code, gameName, iconImage) {
         if (iconImage != null && !(iconImage instanceof java.awt.BufferedImage)) {
@@ -30,7 +33,7 @@ var GameData = {
         }
         gamedata.Game.register(code, gameName, gameName, iconImage, null);
     },
-    
+
     registerExpansion(code, name, iconImage, cardImage, invCardImage) {
         const BI = java.awt.image.BufferedImage;
         if (iconImage == null) {
@@ -48,7 +51,7 @@ var GameData = {
         if (invCardImage == null) {
             invCardImage = ca.cgjennings.graphics.ImageUtilities.invert(
                     ca.cgjennings.graphics.ImageUtilities.desaturate(cardImage)
-            );
+                    );
         }
         if (!(invCardImage instanceof BI)) {
             invCardImage = ImageUtils.get(invCardImage.toString());
@@ -75,7 +78,7 @@ var GameData = {
 var availableFontFamilies = () => FontUtils.availableFontFamilies();
 var registerFontFamily = key => FontUtils.registerFontFamily(key);
 var findMatchingFamily = (families, defaultFamily) => FontUtils.findMatchingFamily(families, defaultFamily);
-var registerFontFamilyFromResources = function() {
+var registerFontFamilyFromResources = function () {
     return FontUtils.registerFontFamilyFromResources.apply(this, arguments);
 }
 

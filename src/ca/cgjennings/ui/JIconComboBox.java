@@ -20,7 +20,7 @@ public class JIconComboBox<E> extends JComboBox<E> {
     public JIconComboBox() {
         init();
     }
-    
+
     public JIconComboBox(E[] items) {
         super(items);
         init();

@@ -179,10 +179,9 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
     /**
      * Searches the component lists for the specified entry and selects the
-     * first instance of it, if any. Returns {@code true} if the class was
-     * found (and selected). The name must be a fully qualified class or script
-     * identifier, such as
-     * {@code ca.cgjennings.apps.arkham.component.Monster}.
+     * first instance of it, if any. Returns {@code true} if the class was found
+     * (and selected). The name must be a fully qualified class or script
+     * identifier, such as {@code ca.cgjennings.apps.arkham.component.Monster}.
      *
      * @param mapping the name of the class or script to select
      * @see gamedata.ClassMap.Entry#getMapping

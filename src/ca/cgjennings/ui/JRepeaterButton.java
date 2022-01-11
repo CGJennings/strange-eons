@@ -134,16 +134,16 @@ public class JRepeaterButton extends JButton {
      * {@code RELEASE_COMMAND} when the button is released. Default is
      * {@code false}.
      *
-     * @param fireEvent if {@code true}, a final event will be posted when
-     * the user releases the button
+     * @param fireEvent if {@code true}, a final event will be posted when the
+     * user releases the button
      */
     public void setFireEventOnRelease(boolean fireEvent) {
         fireOnRelease = fireEvent;
     }
 
     /**
-     * Returns {@code true} if the button will fire an action command when
-     * the button is released.
+     * Returns {@code true} if the button will fire an action command when the
+     * button is released.
      *
      * @return {@code true} if the event will be fired
      */

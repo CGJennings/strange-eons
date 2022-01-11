@@ -22,9 +22,10 @@ import java.util.logging.Level;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 class ThreadPoolSplitJoin extends SplitJoin {
+
     public ThreadPoolSplitJoin() {
         this(-1);
-    }  
+    }
 
     public ThreadPoolSplitJoin(int splitCount) {
         final int cpus = splitCount < 1 ? getIdealSplitCount() : splitCount;
@@ -103,7 +104,7 @@ class ThreadPoolSplitJoin extends SplitJoin {
 
     @Override
     public void dispose() {
-        if(this != SplitJoin.getInstance()) {
+        if (this != SplitJoin.getInstance()) {
             threadPool.shutdown();
         }
     }

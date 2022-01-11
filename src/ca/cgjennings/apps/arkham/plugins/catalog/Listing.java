@@ -145,8 +145,8 @@ public final class Listing implements Comparable<Listing> {
      * key_lang
      * key
      * </pre> The first key that is defined will be returned, or else
-     * {@code null} will be returned if the none of these keys are defined.
-     * For example, on a French system in Canada, when looking up the key
+     * {@code null} will be returned if the none of these keys are defined. For
+     * example, on a French system in Canada, when looking up the key
      * <tt>homepage</tt>, the following keys are searched (in order):
      * <tt>homepage_fr_CA</tt>,
      * <tt>homepage_fr</tt>, <tt>homepage</tt>.
@@ -178,8 +178,8 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Sets the value of the given key. If the value is set to
-     * {@code null}, the key will be removed.
+     * Sets the value of the given key. If the value is set to {@code null}, the
+     * key will be removed.
      *
      * @param key the name of the key to modify
      * @param value the new value of the key, or {@code null} to delete it
@@ -190,8 +190,7 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Returns the catalog ID for this listing, or {@code null} if none is
-     * set.
+     * Returns the catalog ID for this listing, or {@code null} if none is set.
      *
      * @return the catalog ID, or {@code null}
      */
@@ -214,8 +213,8 @@ public final class Listing implements Comparable<Listing> {
 
     /**
      * Returns the download file checksum string for this listing, or
-     * {@code null} if none is present. The checksum string can be used to
-     * check that the file downloaded correctly.
+     * {@code null} if none is present. The checksum string can be used to check
+     * that the file downloaded correctly.
      *
      * @return the checksum string or {@code null}
      */
@@ -250,11 +249,11 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Returns {@code true} if the checksum in this listing matches the
-     * checksum of a file. If this listing has no checksum, returns
-     * {@code true} without computing the file's checksum. Note that
-     * checksums should be computed against the actual file that is downloaded
-     * (typically a published bundle), not against any other forms.
+     * Returns {@code true} if the checksum in this listing matches the checksum
+     * of a file. If this listing has no checksum, returns {@code true} without
+     * computing the file's checksum. Note that checksums should be computed
+     * against the actual file that is downloaded (typically a published
+     * bundle), not against any other forms.
      *
      * @param f the file to compare to this listing's checksum
      * @return {@code true} if the file does not appear to be corrupt
@@ -355,8 +354,8 @@ public final class Listing implements Comparable<Listing> {
     public static final String COMMENT = "comment";
 
     /**
-     * Returns {@code null} if required fields are present, otherwise the
-     * key of the first missing field.
+     * Returns {@code null} if required fields are present, otherwise the key of
+     * the first missing field.
      *
      * @return the first missing required field, or {@code null}
      */
@@ -384,8 +383,8 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Returns {@code true} if and only if the listing has exactly the same
-     * keys and values as the specified listing. (This method is not named
+     * Returns {@code true} if and only if the listing has exactly the same keys
+     * and values as the specified listing. (This method is not named
      * {@code equals} to avoid confusion with
      * {@link #compareTo(ca.cgjennings.apps.arkham.plugins.catalog.Listing) compareTo},
      * which simply compares the names of the listings for sorting purposes.)
@@ -537,10 +536,9 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Returns {@code true} if the listing is hidden. A listing is hidden
-     * if its {@code hidden} property is set to {@code yes}, or if it
-     * is set to {@code depends} and the plug-in is either not installed or
-     * is up to date.
+     * Returns {@code true} if the listing is hidden. A listing is hidden if its
+     * {@code hidden} property is set to {@code yes}, or if it is set to
+     * {@code depends} and the plug-in is either not installed or is up to date.
      *
      * @return {@code true} if the listing should be hidden in the catalog
      */
@@ -567,13 +565,13 @@ public final class Listing implements Comparable<Listing> {
     }
 
     /**
-     * Returns {@code true} if this plug-in appears to be "new", that is,
-     * added recently and not seen by the user before. A listing is considered
-     * new if its timestamp is more recent than the timestamp of the newest
-     * bundle that was observed when the application was last run.
+     * Returns {@code true} if this plug-in appears to be "new", that is, added
+     * recently and not seen by the user before. A listing is considered new if
+     * its timestamp is more recent than the timestamp of the newest bundle that
+     * was observed when the application was last run.
      *
-     * @return {@code true} if this listing is considered "new";
-     * {@code false} otherwise
+     * @return {@code true} if this listing is considered "new"; {@code false}
+     * otherwise
      */
     public boolean isNew() {
         return AutomaticUpdater.isNew(getCatalogID());

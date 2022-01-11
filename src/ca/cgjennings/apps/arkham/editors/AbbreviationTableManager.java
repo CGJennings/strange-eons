@@ -33,8 +33,8 @@ public class AbbreviationTableManager {
      * Returns the shared abbreviation table for the given code type. If the
      * user has created a custom table, this will be returned. Otherwise, a
      * default table is returned if one exists (they are defined in
-     * {@code resources/abbrv}). If no default table exists, an empty table
-     * is returned.
+     * {@code resources/abbrv}). If no default table exists, an empty table is
+     * returned.
      *
      * <p>
      * <b>Note:</b> Tables returned from this method are shared and should
@@ -69,8 +69,8 @@ public class AbbreviationTableManager {
      * Returns the shared abbreviation table for the game with the specified
      * code. If the user has created a custom table, this will be returned.
      * Otherwise, a default table is returned if one exists (they are defined in
-     * {@code resources/abbrv}). If no default table exists, an empty table
-     * is returned.
+     * {@code resources/abbrv}). If no default table exists, an empty table is
+     * returned.
      *
      * <p>
      * <b>Note:</b> Tables returned from this method are shared and should
@@ -111,11 +111,13 @@ public class AbbreviationTableManager {
     private static String fileNameForGame(String code) {
         if (null == code) {
             return null;
-        } else switch (code) {
-            case Game.ALL_GAMES_CODE:
-                return "all-games";
-            default:
-                return "game-" + code;
+        } else {
+            switch (code) {
+                case Game.ALL_GAMES_CODE:
+                    return "all-games";
+                default:
+                    return "game-" + code;
+            }
         }
     }
 
@@ -222,14 +224,14 @@ public class AbbreviationTableManager {
     }
 
     /**
-     * Returns {@code true} if the specified code type is mapped to another
-     * type for the purposes of loading an abbreviation table. For example, the
-     * code type for automation scripts is mapped to the code type for regular
-     * script files, so they share a common set of definitions.
+     * Returns {@code true} if the specified code type is mapped to another type
+     * for the purposes of loading an abbreviation table. For example, the code
+     * type for automation scripts is mapped to the code type for regular script
+     * files, so they share a common set of definitions.
      *
      * @param type the code type to check for mapping
-     * @return {@code true} if the code type shares another type's
-     * abbreviation table
+     * @return {@code true} if the code type shares another type's abbreviation
+     * table
      */
     public static boolean isCodeTypeMapped(CodeType type) {
         if (type == null) {

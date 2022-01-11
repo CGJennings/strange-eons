@@ -70,7 +70,9 @@ public class CommandLineArguments implements Cloneable {
      */
     public File resfolder = null;
 
-    /** Script file to run in script mode; see {@link ScriptRunnerModeHelper}. */
+    /**
+     * Script file to run in script mode; see {@link ScriptRunnerModeHelper}.
+     */
     public File run = null;
 
     /**
@@ -78,45 +80,50 @@ public class CommandLineArguments implements Cloneable {
      */
     public boolean x = false;
 
-
     /**
-     * Non-standard quality-tuning option. <p>
-     * This option forces the method used to antialias (AA) text.
-     * Java attempts to read system-wide AA settings, but this often fails on
-     * Linux. So by default Strange Eons uses the default settings on
-     * Windows and macOS but will enforce LCD antialiasing otherwise.
-     * Setting this option forces a different method:
+     * Non-standard quality-tuning option.
+     * <p>
+     * This option forces the method used to antialias (AA) text. Java attempts
+     * to read system-wide AA settings, but this often fails on Linux. So by
+     * default Strange Eons uses the default settings on Windows and macOS but
+     * will enforce LCD antialiasing otherwise. Setting this option forces a
+     * different method:
      *
      * <dl>
-     *   <dt>auto</dt> <dd>use the value found in system settings</dd>
-     *   <dt>off</dt>  <dd>disable antialiasing</dd>
-     *   <dt>on</dt>   <dd>greyscale antialiasing for all fonts</dd>
-     *   <dt>gasp</dt> <dd>greyscale antialiasing based on the font's GASP table</dd>
-     *   <dt>lcd</dt>  <dd>subpixel antialiasing for the most common LCD layout (same as lcd_hrgb)</dd>
-     *   <dt>lcd_hbgr, lcd_vrgb, lcd_vbgr</dt>
-     *                 <dd>subpixel antialiasing for other LCD layouts</dd>
+     * <dt>auto</dt> <dd>use the value found in system settings</dd>
+     * <dt>off</dt>  <dd>disable antialiasing</dd>
+     * <dt>on</dt>   <dd>greyscale antialiasing for all fonts</dd>
+     * <dt>gasp</dt> <dd>greyscale antialiasing based on the font's GASP
+     * table</dd>
+     * <dt>lcd</dt>  <dd>subpixel antialiasing for the most common LCD layout
+     * (same as lcd_hrgb)</dd>
+     * <dt>lcd_hbgr, lcd_vrgb, lcd_vbgr</dt>
+     * <dd>subpixel antialiasing for other LCD layouts</dd>
      * </dl>
      */
     public String xAAText = null;
-   
+
     /**
-     * Non-standard development option. <p>
+     * Non-standard development option.
+     * <p>
      * This option prevents Strange Eons from checking the JRE version at
-     * startup. Normally, Strange Eons checks which version of
-     * Java it is running against and will refuse to start unless it is
-     * a known compatible version.
+     * startup. Normally, Strange Eons checks which version of Java it is
+     * running against and will refuse to start unless it is a known compatible
+     * version.
      */
     public boolean xDisableJreCheck = false;
 
     /**
-     * Non-standard development option. <p>
+     * Non-standard development option.
+     * <p>
      * This option causes an exception to be thrown during startup. It is used
      * to test how {@link ErrorDialog} handles uncaught startup exceptions.
      */
     public boolean xDebugException = false;
 
     /**
-     * Non-standard debugging option. <p>
+     * Non-standard debugging option.
+     * <p>
      * This option prevents Strange Eons from attempting to re-open the project
      * that was open the last time the application exited. This may be useful if
      * this is preventing the application from starting normally. This option is
@@ -125,7 +132,8 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableProjectRestore = false;
 
     /**
-     * Non-standard debugging option. <p>
+     * Non-standard debugging option.
+     * <p>
      * This option prevents Strange Eons from attempting to re-open the same
      * files that were in use the last time the application exited. This may be
      * useful if this is preventing the application from starting normally. This
@@ -134,14 +142,16 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableFileRestore = false;
 
     /**
-     * Non-standard debugging and performance option. <p>
+     * Non-standard debugging and performance option.
+     * <p>
      * This option disables animation effects that may not be played correctly
      * on some platforms.
      */
     public boolean xDisableAnimation = false;
 
     /**
-     * Non-standard debugging option. <p>
+     * Non-standard debugging option.
+     * <p>
      * If this option is set, certain initialization steps that are normally
      * performed in a separate thread to decrease startup time will instead be
      * performed in the main startup thread. Try setting this option if you
@@ -150,29 +160,33 @@ public class CommandLineArguments implements Cloneable {
     public boolean xDisableBackgroundInit = false;
 
     /**
-     * Non-standard debugging option. <p>
+     * Non-standard debugging option.
+     * <p>
      * Disables the use of threads to accelerate image filters in the package
-     * {@code ca.cgjennings.graphics.filters} and use of multiple threads
-     * by {@link ca.cgjennings.algo.SplitJoin}.
+     * {@code ca.cgjennings.graphics.filters} and use of multiple threads by
+     * {@link ca.cgjennings.algo.SplitJoin}.
      */
     public boolean xDisableFilterThreads = false;
 
     /**
-     * Non-standard debugging and development option. <p>
+     * Non-standard debugging and development option.
+     * <p>
      * Prevents plug-ins from being loaded. This can be used to facilitate
      * building an <em>application class-data sharing archive</em>.
      */
     public boolean xDisablePluginLoading = false;
 
     /**
-     * Non-standard debugging option. <p>
+     * Non-standard debugging option.
+     * <p>
      * This option disables use of the system menu bar on OS X. It has no effect
      * on other platforms.
      */
     public boolean xDisableSystemMenu = false;
 
     /**
-     * Non-standard debugging and performance option. <p>
+     * Non-standard debugging and performance option.
+     * <p>
      * This option attempts to enable the OpenGL rendering pipeline for graphics
      * instead of using the default pipeline. It may result in improved
      * performance on some systems, although it may also result in rendering
@@ -181,7 +195,8 @@ public class CommandLineArguments implements Cloneable {
     public boolean xOpenGL = false;
 
     /**
-     * Internal use option. <p>
+     * Internal use option.
+     * <p>
      * This option is not meant to be set by the user. It is supplied
      * automatically when the application is attempting to restart itself. The
      * supplied file is a temporary file locked by the application instance that
@@ -192,7 +207,8 @@ public class CommandLineArguments implements Cloneable {
     public File xRestartLock = null;
 
     /**
-     * Internal use options. <p>
+     * Internal use options.
+     * <p>
      * Allows some Windows launcher applications to enable "console mode"
      * without the option being rejected.
      */
@@ -223,44 +239,44 @@ public class CommandLineArguments implements Cloneable {
         CommandLineArguments cla = new CommandLineArguments();
         CommandLineParser p = new CommandLineParser();
         p.setUsageText(
-"Strange Eons " + StrangeEons.getEditionNumber() + " build " + StrangeEons.getBuildNumber() + '\n'
-+ "Use: [options...] [files...] where:\n"
-+ "[files...] is a list of zero or more files to open and\n"
-+ "[options...] may be one or more of:\n"
-+ "  --version             Prints the build number and exits.\n"
-+ "  --glang ll_RR         Sets preferred locale for game components. See (1).\n"
-+ "  --ulang ll_RR         Sets preferred locale for the user interface.\n"
-+ "  --logLevel level      Sets minimum severity of log messages. See (2).\n"
-+ "  --resFolder           Names a folder with additional application resources.\n"
-+ "  --pluginTest file(s)  Runs in test mode with this plug-in bundle; use " + File.pathSeparator + "\n"
-+ "                        to list multiple bundles.\n"
-+ "  --resetPrefs          Resets all preferences to their default values.\n"
-+ "  --migratePrefs        Forces preference migration from an earlier version.\n"
-+ "  --run file            Run the script file non-interactively.\n"
-+ "  --X                   Displays help for non-standard options and exits.\n"
-+ "\nNotes:\n"
-+ "  (1) Locales are defined using a two-letter ISO-639 language code, optionally\n"
-+ "      followed by an underscore and a two-letter ISO-3166 region code.\n"
-+ "  (2) Level is one of: off, severe, warning, info, config, all. The default\n"
-+ "      level is warning.\n"
-+ "\nOption names are not case sensitive."
+                "Strange Eons " + StrangeEons.getEditionNumber() + " build " + StrangeEons.getBuildNumber() + '\n'
+                + "Use: [options...] [files...] where:\n"
+                + "[files...] is a list of zero or more files to open and\n"
+                + "[options...] may be one or more of:\n"
+                + "  --version             Prints the build number and exits.\n"
+                + "  --glang ll_RR         Sets preferred locale for game components. See (1).\n"
+                + "  --ulang ll_RR         Sets preferred locale for the user interface.\n"
+                + "  --logLevel level      Sets minimum severity of log messages. See (2).\n"
+                + "  --resFolder           Names a folder with additional application resources.\n"
+                + "  --pluginTest file(s)  Runs in test mode with this plug-in bundle; use " + File.pathSeparator + "\n"
+                + "                        to list multiple bundles.\n"
+                + "  --resetPrefs          Resets all preferences to their default values.\n"
+                + "  --migratePrefs        Forces preference migration from an earlier version.\n"
+                + "  --run file            Run the script file non-interactively.\n"
+                + "  --X                   Displays help for non-standard options and exits.\n"
+                + "\nNotes:\n"
+                + "  (1) Locales are defined using a two-letter ISO-639 language code, optionally\n"
+                + "      followed by an underscore and a two-letter ISO-3166 region code.\n"
+                + "  (2) Level is one of: off, severe, warning, info, config, all. The default\n"
+                + "      level is warning.\n"
+                + "\nOption names are not case sensitive."
         );
         p.parse(cla, args);
 
         if (cla.x) {
             System.out.println(
-"Non-standard options:\n"
-+ "  --XAAText                 Force method of antialiasing onscreen text:\n"
-+ "                              auto|off|on|gasp|lcd|lcd_hbgr|lcd_vrgb|lcd_vbgr\n"
-+ "  --XDebugException         Throws a test exception during startup\n"
-+ "  --XDisableFileRestore     Do not re-open files in use at the last exit\n"
-+ "  --XDisableFilterThreads   Do not use threads to accelerate image filters\n"
-+ "  --XDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
-+ "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
-+ "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
-+ "  --XDisableAnimation       Do not use animation effects\n"
-+ "  --XDisableSystemMenu      Do not use system menu bar on OS X\n"
-+ "  --XOpenGL                 If possible use OpenGL instead of default renderer\n"
+                    "Non-standard options:\n"
+                    + "  --XAAText                 Force method of antialiasing onscreen text:\n"
+                    + "                              auto|off|on|gasp|lcd|lcd_hbgr|lcd_vrgb|lcd_vbgr\n"
+                    + "  --XDebugException         Throws a test exception during startup\n"
+                    + "  --XDisableFileRestore     Do not re-open files in use at the last exit\n"
+                    + "  --XDisableFilterThreads   Do not use threads to accelerate image filters\n"
+                    + "  --XDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
+                    + "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
+                    + "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
+                    + "  --XDisableAnimation       Do not use animation effects\n"
+                    + "  --XDisableSystemMenu      Do not use system menu bar on OS X\n"
+                    + "  --XOpenGL                 If possible use OpenGL instead of default renderer\n"
             );
             System.exit(0);
         }

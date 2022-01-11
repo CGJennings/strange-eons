@@ -66,13 +66,13 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
 
         abrvTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
             //				if( e.getValueIsAdjusting() ) return;
-            
+
             int row = abrvTable.getSelectedRow();
-            
+
             if (expField.hasFocus()) {
                 expFieldFocusLost(null);
             }
-            
+
             boolean enable;
             if (row < 0) {
                 enable = false;

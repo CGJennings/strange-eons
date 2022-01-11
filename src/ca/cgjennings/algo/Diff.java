@@ -15,8 +15,8 @@ package ca.cgjennings.algo;
  * the minimal number of steps.
  *
  * @param <E> the type of the elements that may be inserted, deleted, or
- * changed; for example, in a text file each element might be a
- * {@code String} representing a single line
+ * changed; for example, in a text file each element might be a {@code String}
+ * representing a single line
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.0
  */
@@ -25,8 +25,8 @@ public class Diff<E> {
     private DiffListener<E> li;
 
     /**
-     * Create a new {@code Diff} instance that uses a default listener that
-     * is useful for diagnostic purposes. For each element in the combined
+     * Create a new {@code Diff} instance that uses a default listener that is
+     * useful for diagnostic purposes. For each element in the combined
      * collection, this listener prints to the output stream one of the
      * following followed by the string value of the element in question:
      * <dl>
@@ -137,8 +137,8 @@ public class Diff<E> {
      * @param b an item from the changed collection being compared
      * @param originalIndex the index of {@code a} in the original sequence
      * @param changedIndex the index of {@code b} in the changed sequence
-     * @return {@code true} if the objects should be considered equal for
-     * the purposes of the diff operation
+     * @return {@code true} if the objects should be considered equal for the
+     * purposes of the diff operation
      */
     public boolean equal(E a, E b, int originalIndex, int changedIndex) {
         return a == null ? b == null : a.equals(b);

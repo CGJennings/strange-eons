@@ -28,11 +28,11 @@ import resources.ResourceKit;
  * This class requires that the
  * {@link CoreComponents#SVG_IMAGE_SUPPORT SVG_IMAGE_SUPPORT} core component be
  * installed, as that plug-in contains support code necessary to render the SVG
- * content. If that library is not installed, but the
- * {@code SVGVectorImage} constructor is called from the event dispatch
- * thread (EDT), then the user will be given the opportunity to immediately
- * download and install the missing component. If the user chooses not to, or if
- * the constructor is called from a thread other than the EDT, then a
+ * content. If that library is not installed, but the {@code SVGVectorImage}
+ * constructor is called from the event dispatch thread (EDT), then the user
+ * will be given the opportunity to immediately download and install the missing
+ * component. If the user chooses not to, or if the constructor is called from a
+ * thread other than the EDT, then a
  * {@link resources.CoreComponents.MissingCoreComponentException MissingCoreComponentException}
  * exception will be thrown from the constructor.
  *
@@ -203,9 +203,9 @@ public class SVGVectorImage extends AbstractVectorImage {
     }
 
     /**
-     * Returns {@code true} if the SVG core library is installed. Note that
-     * it is not required to call this before attempting to create an SVG image.
-     * If possible, the SVG core will be loaded on demand (see the class
+     * Returns {@code true} if the SVG core library is installed. Note that it
+     * is not required to call this before attempting to create an SVG image. If
+     * possible, the SVG core will be loaded on demand (see the class
      * description for details).
      *
      * @return {@code true} if SVG image file support is available
@@ -221,7 +221,7 @@ public class SVGVectorImage extends AbstractVectorImage {
      * libraries, ** * but it does not support as much of the SVG spec, is less
      * likely to be ** * kept up to date, and did not render content as well in
      * my testing. **
-****************************************************************************
+     * ***************************************************************************
      */
 
     /*
@@ -252,6 +252,6 @@ public class SVGVectorImage extends AbstractVectorImage {
     /**
      * ***************************************************************************
      ** End of SVG Salamander implementation. **
-****************************************************************************
+     * ***************************************************************************
      */
 }

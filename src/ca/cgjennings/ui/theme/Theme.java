@@ -74,8 +74,8 @@ public abstract class Theme {
     }
 
     /**
-     * Returns whether the theme is, on the whole, light-on-dark, similar
-     * to OS "dark modes". The base class returns {@code false}.
+     * Returns whether the theme is, on the whole, light-on-dark, similar to OS
+     * "dark modes". The base class returns {@code false}.
      *
      * @return true if the theme is a "dark mode" style theme
      * @since 3.2
@@ -283,8 +283,8 @@ public abstract class Theme {
      * Gives the theme the opportunity to modify a image to reflect the
      * installed theme. This version of the method is called in cases where
      * there is no resource identifier available for the image. The base class
-     * returns {@code source} unmodified. If you wish to modify images for
-     * your theme, it is important that you make your changes to a
+     * returns {@code source} unmodified. If you wish to modify images for your
+     * theme, it is important that you make your changes to a
      * <i>copy</i> of the original image to avoid corrupting the image cache.
      *
      * @param source the image to apply themeing to
@@ -298,14 +298,14 @@ public abstract class Theme {
 
     /**
      * A UI key that controls a boolean property that affects whether document
-     * tabs should switch their orientation. Set if tabs look wrong for a
-     * given L&F. 
+     * tabs should switch their orientation. Set if tabs look wrong for a given
+     * L&F.
      */
     public static final String ALTERNATE_DOCUMENT_TAB_ORIENTATION = "eons-alt-doc-tab-dir";
     /**
      * A UI key that contains the {@code Border} used for headings and
-     * subheadings. If {@code null}, a default algorithm is used to create
-     * a suitably themed border. The font for headings is based on the font used
+     * subheadings. If {@code null}, a default algorithm is used to create a
+     * suitably themed border. The font for headings is based on the font used
      * for titled borders, at a larger size. (If that font is not available, the
      * default font for labels is used.)
      *
@@ -313,8 +313,8 @@ public abstract class Theme {
      */
     public static final String HEADING_BORDER = "eons-heading-border";
     /**
-     * A UI key that contains the {@code Color} used for the background of
-     * the editor tabs.
+     * A UI key that contains the {@code Color} used for the background of the
+     * editor tabs.
      */
     public static final String EDITOR_TAB_BACKGROUND = "eons-editor-tab-background";
     /**
@@ -328,8 +328,8 @@ public abstract class Theme {
      */
     public static final String SIDEPANEL_TITLE_FOREGROUND = "eons-title-foreground";
     /**
-     * A UI key that contains the {@code Color} used for the border drawn
-     * around fields that accept a file drop when files are dragged over them.
+     * A UI key that contains the {@code Color} used for the border drawn around
+     * fields that accept a file drop when files are dragged over them.
      */
     public static final String FILE_DROP_BORDER = "FileDrop.borderColor";
     /**
@@ -362,8 +362,7 @@ public abstract class Theme {
      */
     public static final String CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT = "eons-cycle-margin";
     /**
-     * UI key for console background colour; used if painter is
-     * {@code null}.
+     * UI key for console background colour; used if painter is {@code null}.
      */
     public static final String CONSOLE_BACKROUND = "eons-conbg";
     /**
@@ -451,13 +450,13 @@ public abstract class Theme {
      */
     public static final String PROJECT_NOTES_TAB_BACKGROUND = "eons-projnotestab-bg";
     /**
-     * UI key for the background colour used for project view headers
-     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     * UI key for the background colour used for project view headers (Project
+     * Files, Add New Task..., Properties/Notes, etc.)
      */
     public static final String PROJECT_HEADER_BACKGROUND = "eons-projhead-bg";
     /**
-     * UI key for the background colour used for project view headers
-     * (Project Files, Add New Task..., Properties/Notes, etc.)
+     * UI key for the background colour used for project view headers (Project
+     * Files, Add New Task..., Properties/Notes, etc.)
      */
     public static final String PROJECT_HEADER_FOREGROUND = "eons-projhead-fg";
     /**
@@ -474,8 +473,8 @@ public abstract class Theme {
     public static final String PREFS_HEADING = "eons-pref-head";
     /**
      * UI key for the "head banner" foreground colour. This is a rectangular
-     * banner with higher contrast than a standard label-on-panel.
-     * The most prominent example is the {@link MultiCloseDialog}.
+     * banner with higher contrast than a standard label-on-panel. The most
+     * prominent example is the {@link MultiCloseDialog}.
      */
     public static final String HEAD_BANNER_FOREGROUND = "eons-headbanner-fg";
     /**

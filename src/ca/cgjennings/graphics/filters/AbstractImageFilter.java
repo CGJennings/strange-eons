@@ -11,11 +11,11 @@ import javax.imageio.ImageIO;
 /**
  * An abstract base class for filtering images. While {@code BufferedImageOp}s
  * are generally designed to operate on images that use any storage format or
- * colour model, {@code AbstractImageFilter} is optimized to work with
- * 32-bit ARGB image data ({@code BufferedImage.TYPE_INT_ARGB}). Images
- * stored in other formats will typically be converted to and from ARGB data as
- * necessary. This greatly simplifies the task of writing an image filter,
- * though at the cost of conversion (when required).
+ * colour model, {@code AbstractImageFilter} is optimized to work with 32-bit
+ * ARGB image data ({@code BufferedImage.TYPE_INT_ARGB}). Images stored in other
+ * formats will typically be converted to and from ARGB data as necessary. This
+ * greatly simplifies the task of writing an image filter, though at the cost of
+ * conversion (when required).
  *
  * <p>
  * This base class provides default implementations for many methods of
@@ -27,13 +27,12 @@ import javax.imageio.ImageIO;
  *
  * <p>
  * <b>Performance note:</b> As a side effect of automatic conversion, image
- * types other than {@code TYPE_INT_ARGB} and {@code TYPE_INT_RGB}
- * will become <i>unmanaged images</i> as a result of the filtering process.
- * Unmanaged images cannot be hardware accelerated, and thus are typically much
- * slower to draw. The best way to maximize performance is to ensure that all
- * images are in one of the optimal formats. If you are unsure about a
- * particular image, use
- * {@link ImageUtilities#ensureIntRGBFormat(java.awt.image.BufferedImage)}.
+ * types other than {@code TYPE_INT_ARGB} and {@code TYPE_INT_RGB} will become
+ * <i>unmanaged images</i> as a result of the filtering process. Unmanaged
+ * images cannot be hardware accelerated, and thus are typically much slower to
+ * draw. The best way to maximize performance is to ensure that all images are
+ * in one of the optimal formats. If you are unsure about a particular image,
+ * use {@link ImageUtilities#ensureIntRGBFormat(java.awt.image.BufferedImage)}.
  */
 public abstract class AbstractImageFilter implements BufferedImageOp {
 
@@ -646,8 +645,8 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
 
     /**
      * A work unit that performs pre- or post-processing on pixel data in an
-     * array. Override the run method and process {@code this.pixels} from
-     * index {@code this.start} to index {@code this.end-1}.
+     * array. Override the run method and process {@code this.pixels} from index
+     * {@code this.start} to index {@code this.end-1}.
      */
     static abstract class ArrayWorkUnit implements Runnable {
 

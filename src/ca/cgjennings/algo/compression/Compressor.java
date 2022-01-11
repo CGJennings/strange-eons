@@ -35,8 +35,8 @@ public interface Compressor {
      *
      * @param level the compression level from 0 to 9, with higher values
      * suggesting that the algorithm should try harder to compress the data
-     * @throws IllegalArgumentException if the requested {@code level} is
-     * out of range
+     * @throws IllegalArgumentException if the requested {@code level} is out of
+     * range
      */
     void setCompressionLevel(int level);
 
@@ -121,8 +121,8 @@ public interface Compressor {
      * compressed data.
      *
      * @param in the stream to read compressed data from
-     * @return a filter stream that will decompress data from {@code in} as
-     * it is read from
+     * @return a filter stream that will decompress data from {@code in} as it
+     * is read from
      * @throws IOException if an error occurs while creating the stream
      */
     InputStream filter(InputStream in) throws IOException;

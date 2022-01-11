@@ -23,8 +23,8 @@ import resources.ResourceKit;
  * (but not decks or case books). This dialog is used by the base printing
  * implementation in {@link AbstractGameComponentEditor}. A number of
  * package-visible members allow fetching the requested settings; after the
- * modal dialog returns, the value of {@code ok} is {@code true} if
- * the user wants to proceed with printing.
+ * modal dialog returns, the value of {@code ok} is {@code true} if the user
+ * wants to proceed with printing.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 0.90

@@ -51,8 +51,7 @@ import resources.Settings;
  * uninstalling bundles, enabling or disabling individual plug-ins.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0 (replaces
- * {@code ca.cgjennings.apps.arkham.plugins.impl.Manager)}
+ * @since 3.0 (replaces {@code ca.cgjennings.apps.arkham.plugins.impl.Manager)}
  */
 @SuppressWarnings("serial")
 public class PluginManager extends javax.swing.JDialog {
@@ -537,8 +536,8 @@ public class PluginManager extends javax.swing.JDialog {
 
     private void fillInBox(StringBuilder b, String text, boolean warn) {
         b.append("<p align='center' style='padding: 4px; border: 2px #")
-            .append(warn ? "ffa000" : "1565c0").append(" solid'>")
-            .append(text).append("</p>");
+                .append(warn ? "ffa000" : "1565c0").append(" solid'>")
+                .append(text).append("</p>");
     }
 
 	private void openPluginFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openPluginFolderBtnActionPerformed

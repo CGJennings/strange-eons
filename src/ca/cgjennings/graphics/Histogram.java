@@ -50,8 +50,8 @@ public class Histogram {
     }
 
     /**
-     * Returns {@code true} if pixels with an alpha of zero will not be
-     * included in the histogram.
+     * Returns {@code true} if pixels with an alpha of zero will not be included
+     * in the histogram.
      *
      * @return {@code true} if transparent pixels are ignored
      */
@@ -114,8 +114,8 @@ public class Histogram {
 
     /**
      * Measures the samples in an image and incorporates them into the histogram
-     * statistics. All channels indicated by the {@code channelMask} will
-     * be averaged together to determine the histogram bucket.
+     * statistics. All channels indicated by the {@code channelMask} will be
+     * averaged together to determine the histogram bucket.
      *
      * @param image the image to analyze
      */
@@ -126,8 +126,8 @@ public class Histogram {
     /**
      * Measures the samples in an array of pixel data and incorporates them into
      * the histogram statistics. All channels indicated by the
-     * {@code channelMask} will be averaged together to determine the
-     * histogram bucket.
+     * {@code channelMask} will be averaged together to determine the histogram
+     * bucket.
      *
      * @param image the image to analyze
      */

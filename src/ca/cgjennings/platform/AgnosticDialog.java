@@ -4,11 +4,11 @@ import java.awt.event.ActionEvent;
 
 /**
  * This interface is used by {@link PlatformSupport} to handle OK and Cancel
- * button {@code ActionEvent}s for swappable dialogs. An
- * {@code AgnosticDialog} can have the content and functionality of its
- * "OK" and "Cancel" buttons switched so that it looks correct on platforms that
- * order them differently. The term "dialog" is meant in a general sense. No
- * particular implementing class is assumed.
+ * button {@code ActionEvent}s for swappable dialogs. An {@code AgnosticDialog}
+ * can have the content and functionality of its "OK" and "Cancel" buttons
+ * switched so that it looks correct on platforms that order them differently.
+ * The term "dialog" is meant in a general sense. No particular implementing
+ * class is assumed.
  * <p>
  * This interface allows the designer to write the appropriate code for handling
  * "OK" (commit) and "Cancel" actions independently of the physical button they
@@ -26,8 +26,8 @@ import java.awt.event.ActionEvent;
  * Almost all existing dialogs can be converted to be agnostic with a minimum of
  * effort. The following steps are usually all that is required:
  * <ol>
- * <li> Add an {@code implements AgnosticDialog} to the root container
- * class for the dialog (usually a {@code JDialog} subclass).
+ * <li> Add an {@code implements AgnosticDialog} to the root container class for
+ * the dialog (usually a {@code JDialog} subclass).
  * <li> Add empty implementations for {@code handleOKAction} and
  * {@code handleCancelAction}.
  * <li> Move the existing {@code ActionEvent} listener code for the OK and
@@ -35,8 +35,8 @@ import java.awt.event.ActionEvent;
  * <li> Delete the original listeners and listener registration code (if using a
  * GUI designer, delete the event bindings in the designer).
  * <li> Add a call to
- * {@code PlatformSupport.makeAgnosticDialog( this, okBtn, cancelBtn )} (or
- * one of its variants) after the components are initialized but before they are
+ * {@code PlatformSupport.makeAgnosticDialog( this, okBtn, cancelBtn )} (or one
+ * of its variants) after the components are initialized but before they are
  * shown. This will usually be in the constructor.
  * </ol>
  * <p>

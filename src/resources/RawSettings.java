@@ -50,9 +50,9 @@ public class RawSettings {
     private static final File PREFERENCE_FILE = StrangeEons.getUserStorageFile("preferences");
 
     /**
-     * Returns the inherited value of the setting key, or {@code null} if
-     * it is not defined. This method will search both user settings and the
-     * global settings table, returning the first hit.
+     * Returns the inherited value of the setting key, or {@code null} if it is
+     * not defined. This method will search both user settings and the global
+     * settings table, returning the first hit.
      *
      * @param key the setting key to return the value of
      * @return the value of the key, or {@code null}
@@ -71,8 +71,8 @@ public class RawSettings {
 
     /**
      * Returns the value of a user setting. If the key is not defined in the
-     * user settings table, {@code null} will be returned. The global
-     * settings table is never consulted.
+     * user settings table, {@code null} will be returned. The global settings
+     * table is never consulted.
      *
      * @param key the user setting key to return the value of
      * @return the value of the key, or {@code null}
@@ -234,8 +234,7 @@ public class RawSettings {
      * components (although their value may also be overridden).
      *
      * @param resource the resource file to read settings from
-     * @throws NullPointerException if {@code resource} is
-     * {@code null}
+     * @throws NullPointerException if {@code resource} is {@code null}
      */
     public static void loadGlobalSettings(String resource) {
         if (resource == null) {
@@ -491,8 +490,7 @@ public class RawSettings {
      *
      * @param clearText the text to obfuscate
      * @return the obfuscated version of the text
-     * @throws NullPointerException if the clear text string is
-     * {@code null}
+     * @throws NullPointerException if the clear text string is {@code null}
      * @see #unobfuscate
      */
     public static String obfuscate(String clearText) {
@@ -511,8 +509,7 @@ public class RawSettings {
      *
      * @param obfuscatedText the obfuscated string
      * @return the original clear text
-     * @throws NullPointerException if the obfuscated string is
-     * {@code null}
+     * @throws NullPointerException if the obfuscated string is {@code null}
      * @see #obfuscate
      */
     public static String unobfuscate(String obfuscatedText) {

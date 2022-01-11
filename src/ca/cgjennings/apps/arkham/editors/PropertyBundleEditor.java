@@ -872,7 +872,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
                     try {
                         Rectangle2D pos = commentBlockField.modelToView(commentOffset);
                         if (pos != null) {
-                            commentBlockScroll.getViewport().setViewPosition(new Point(0, (int)pos.getY()));
+                            commentBlockScroll.getViewport().setViewPosition(new Point(0, (int) pos.getY()));
                         }
                     } catch (Exception e) {
                         StrangeEons.log.log(Level.WARNING, null, e);

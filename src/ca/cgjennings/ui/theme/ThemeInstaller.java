@@ -99,6 +99,7 @@ public class ThemeInstaller {
     }
 
     private static Theme installed;
+
     /**
      * Returns the installed theme.
      *
@@ -107,16 +108,16 @@ public class ThemeInstaller {
     public static Theme getInstalledTheme() {
         return installed;
     }
-    
+
     /**
      * Convenience that returns whether the installed theme is dark, that
      * returns a default if no theme is installed.
-     * 
-     * @return whether the installed theme is dark, or a default if none
-     * is installed
+     *
+     * @return whether the installed theme is dark, or a default if none is
+     * installed
      */
     public static boolean isDark() {
-       return installed == null ? false : installed.isDark();
+        return installed == null ? false : installed.isDark();
     }
 
     /**
@@ -133,11 +134,11 @@ public class ThemeInstaller {
         try {
             Theme theme = instantiateTheme();
             installImpl(theme);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             StrangeEons.log.log(Level.SEVERE, null, ex);
             try {
                 installImpl(new HydraTheme());
-            } catch(Exception ie) {
+            } catch (Exception ie) {
                 StrangeEons.log.log(Level.SEVERE, "unable to install fallback theme, things will be broken", ie);
                 System.exit(20);
             }
@@ -198,7 +199,7 @@ public class ThemeInstaller {
         // if testing a plug-in, override default with special testing theme
         if (BundleInstaller.hasTestBundles()) {
             boolean foundTheme = false;
-            for(File bundle : BundleInstaller.getTestBundles()) {
+            for (File bundle : BundleInstaller.getTestBundles()) {
                 if (bundle.getName().endsWith(BundleInstaller.THEME_FILE_EXT)) {
                     PluginBundle pb = BundleInstaller.getPluginBundle(bundle);
                     try {
@@ -215,7 +216,7 @@ public class ThemeInstaller {
                 }
             }
             // no test bundle was a theme, use the special test theme
-            if(!foundTheme && Settings.getShared().getYesNo(KEY_USE_TEST_THEME)) {
+            if (!foundTheme && Settings.getShared().getYesNo(KEY_USE_TEST_THEME)) {
                 themeClass = THEME_PLUGIN_TEST_THEME;
             }
         }
@@ -264,8 +265,8 @@ public class ThemeInstaller {
         UIManager.put(Theme.NOTES_FOREGROUND, Color.BLACK);
         UIManager.put(Theme.PROJECT_HEADER_BACKGROUND, Color.BLACK);
         UIManager.put(Theme.PROJECT_HEADER_FOREGROUND, Color.WHITE);
-        UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark? Color.BLACK : Color.WHITE);
-        UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark? Color.WHITE : Color.BLACK);
+        UIManager.put(Theme.PROJECT_FIND_BACKGROUND, dark ? Color.BLACK : Color.WHITE);
+        UIManager.put(Theme.PROJECT_FIND_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
         UIManager.put(Theme.PREFS_BACKGROUND, dark ? new Color(0x202020) : Color.WHITE);
         UIManager.put(Theme.PREFS_FOREGROUND, dark ? Color.WHITE : Color.BLACK);
         UIManager.put(Theme.PREFS_HEADING, new Color(135, 103, 5));

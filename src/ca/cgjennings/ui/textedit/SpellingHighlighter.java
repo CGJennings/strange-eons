@@ -32,7 +32,9 @@ public class SpellingHighlighter extends ErrorHighlighter {
     private EnumSet<TokenType> types;
     private Pattern regex;
 
-    /** If false, spelling error highlights in code editors are not drawn. */
+    /**
+     * If false, spelling error highlights in code editors are not drawn.
+     */
     public static boolean ENABLE_SPELLING_HIGHLIGHT = true;
 
     /**
@@ -80,7 +82,9 @@ public class SpellingHighlighter extends ErrorHighlighter {
 
     @Override
     public void paint(Graphics2D g, HighlightedLine hl) {
-        if (!ENABLE_SPELLING_HIGHLIGHT) return;
+        if (!ENABLE_SPELLING_HIGHLIGHT) {
+            return;
+        }
 
         Token token = hl.tokenList();
         if (token == null) {

@@ -14,43 +14,77 @@ import java.util.Arrays;
  * Minimal reader for PSD format image files. The individual layers are made
  * available as {@link ImageLayer} objects.
  *
- * @see <a href="https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/#50577409_pgfId-1055726">PSD specification</a>
+ * @see
+ * <a href="https://www.adobe.com/devnet-apps/photoshop/fileformatashtml/#50577409_pgfId-1055726">PSD
+ * specification</a>
  */
 public final class PSDImageReader {
-    /** Color modes employed by PSD images. */
+
+    /**
+     * Color modes employed by PSD images.
+     */
     public static enum ColorMode {
         BITMAP, GREYSCALE, INDEXED, RGB, CMYK, MULTICHANNEL, DUOTONE, LAB, UNKNOWN;
 
         @Override
         public String toString() {
             String s;
-            switch(this) {
-                case BITMAP: s = "Bitmap"; break;
-                case GREYSCALE: s = "Greyscale"; break;
-                case INDEXED: s = "Indexed"; break;
-                case RGB: s = "RGB"; break;
-                case CMYK: s = "CMYK"; break;
-                case MULTICHANNEL: s = "Multichannel"; break;
-                case DUOTONE: s = "Duotone"; break;
-                case LAB: s = "Lab"; break;
-                default: s = "unknown";
+            switch (this) {
+                case BITMAP:
+                    s = "Bitmap";
+                    break;
+                case GREYSCALE:
+                    s = "Greyscale";
+                    break;
+                case INDEXED:
+                    s = "Indexed";
+                    break;
+                case RGB:
+                    s = "RGB";
+                    break;
+                case CMYK:
+                    s = "CMYK";
+                    break;
+                case MULTICHANNEL:
+                    s = "Multichannel";
+                    break;
+                case DUOTONE:
+                    s = "Duotone";
+                    break;
+                case LAB:
+                    s = "Lab";
+                    break;
+                default:
+                    s = "unknown";
             }
             return s;
         }
     }
 
-    /** File format version. */
+    /**
+     * File format version.
+     */
     private int psdVersion;
     private ColorMode colorMode;
-    /** Number of channels, including alpha channels, from 1-56. */
+    /**
+     * Number of channels, including alpha channels, from 1-56.
+     */
     private int numChannels;
-    /** Image width in pixels. */
+    /**
+     * Image width in pixels.
+     */
     private int width;
-    /** Image height in pixels. */
+    /**
+     * Image height in pixels.
+     */
     private int height;
-    /** Channel depth in bits. */
+    /**
+     * Channel depth in bits.
+     */
     private int depth;
-    /** Number of image layers. */
+    /**
+     * Number of image layers.
+     */
     private int numLayers;
     private ImageLayer[] layers;
 
@@ -69,6 +103,7 @@ public final class PSDImageReader {
     private static final String MAGIC_IMAGE_RES_BLOCK = "8BIM";
 
     private static class RawLayer {
+
         int x, y, w, h;
         int numChannels;
         int[] channelId;
@@ -84,15 +119,15 @@ public final class PSDImageReader {
      * @throws IOException if an error occurs while reading the image
      */
     public PSDImageReader(File input) throws IOException {
-        try(InputStream ins = new FileInputStream(input)) {
+        try (InputStream ins = new FileInputStream(input)) {
             readImage(ins);
         }
     }
 
     /**
      * Returns the color mode used by the image file. This has no impact on the
-     * format of decoded images returned by this class, which are always
-     * 8-bit RGB.
+     * format of decoded images returned by this class, which are always 8-bit
+     * RGB.
      *
      * @return the color mode used by the file
      */
@@ -102,6 +137,7 @@ public final class PSDImageReader {
 
     /**
      * Returns the number of layers read from the image file.
+     *
      * @return the number of layers in the image
      */
     public int getLayerCount() {
@@ -152,16 +188,33 @@ public final class PSDImageReader {
 
     private static ColorMode decodeColorMode(int cm) {
         ColorMode m;
-        switch(cm) {
-            case 0: m = ColorMode.BITMAP; break;
-            case 1: m = ColorMode.GREYSCALE; break;
-            case 2: m = ColorMode.INDEXED; break;
-            case 3: m = ColorMode.RGB; break;
-            case 4: m = ColorMode.CMYK; break;
-            case 7: m = ColorMode.MULTICHANNEL; break;
-            case 8: m = ColorMode.DUOTONE; break;
-            case 9: m = ColorMode.LAB; break;
-            default: m = ColorMode.UNKNOWN;
+        switch (cm) {
+            case 0:
+                m = ColorMode.BITMAP;
+                break;
+            case 1:
+                m = ColorMode.GREYSCALE;
+                break;
+            case 2:
+                m = ColorMode.INDEXED;
+                break;
+            case 3:
+                m = ColorMode.RGB;
+                break;
+            case 4:
+                m = ColorMode.CMYK;
+                break;
+            case 7:
+                m = ColorMode.MULTICHANNEL;
+                break;
+            case 8:
+                m = ColorMode.DUOTONE;
+                break;
+            case 9:
+                m = ColorMode.LAB;
+                break;
+            default:
+                m = ColorMode.UNKNOWN;
         }
         return m;
     }
@@ -171,7 +224,9 @@ public final class PSDImageReader {
     }
 
     public static final class PSDFormatException extends IOException {
+
         private static final long serialVersionUID = 1L;
+
         public PSDFormatException(String message) {
             super(message);
         }
@@ -223,7 +278,7 @@ public final class PSDImageReader {
         int imageResourcesLen = readInt();
         skipBytes(imageResourcesLen);
 
-        if(colorMode != ColorMode.RGB) {
+        if (colorMode != ColorMode.RGB) {
             throw new PSDFormatException("Unsupported color mode: " + colorMode);
         }
 
@@ -275,7 +330,9 @@ public final class PSDImageReader {
         }
     }
 
-    /** Read each layer and extract image data. */
+    /**
+     * Read each layer and extract image data.
+     */
     private void readLayers() throws IOException {
         // read and convert each layer to BufferedImage
         layers = new ImageLayer[numLayers];
@@ -313,7 +370,9 @@ public final class PSDImageReader {
         }
     }
 
-    /** Read an image plane (channel), returning 8-bit data. */
+    /**
+     * Read an image plane (channel), returning 8-bit data.
+     */
     private byte[] readPlane(int w, int h) throws IOException {
         short[] lineLengths = null;
         boolean isRLECompressed = false;
@@ -410,7 +469,7 @@ public final class PSDImageReader {
             readListOfRLELineLengths(height * numLayerChannels);
         }
         layer.numChannels = numLayerChannels;
-        layer.channelId = Arrays.copyOf(new int[] {0,1,2,-1}, numLayerChannels);
+        layer.channelId = Arrays.copyOf(new int[]{0, 1, 2, -1}, numLayerChannels);
     }
 
     private short[] readListOfRLELineLengths(int nLines) throws IOException {
@@ -421,7 +480,9 @@ public final class PSDImageReader {
         return lineLengths;
     }
 
-    /** Combine individual color channel planes into a BufferedImage. */
+    /**
+     * Combine individual color channel planes into a BufferedImage.
+     */
     private BufferedImage createImageFromPlaneData(int w, int h, byte[] r, byte[] g, byte[] b, byte[] a) {
         if (w == 0 || h == 0) {
             BufferedImage im = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
@@ -431,9 +492,15 @@ public final class PSDImageReader {
 
         if (r == null || g == null || b == null) {
             byte[] zeroBytes = new byte[w * h];
-            if (r == null) r = zeroBytes;
-            if (g == null) g = zeroBytes;
-            if (b == null) b = zeroBytes;
+            if (r == null) {
+                r = zeroBytes;
+            }
+            if (g == null) {
+                g = zeroBytes;
+            }
+            if (b == null) {
+                b = zeroBytes;
+            }
         }
         if (a == null) {
             a = new byte[w * h];
@@ -442,14 +509,14 @@ public final class PSDImageReader {
 
         BufferedImage im = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
-        int i=0;
+        int i = 0;
         int[] rowArgb = new int[w];
-        for (int y=0; y<h; ++y) {
-            for (int x=0; x<w; ++x, ++i) {
+        for (int y = 0; y < h; ++y) {
+            for (int x = 0; x < w; ++x, ++i) {
                 rowArgb[x] = ((((int) a[i]) & 0xff) << 24)
-                           | ((((int) r[i]) & 0xff) << 16)
-                           | ((((int) g[i]) & 0xff) << 8)
-                           |  (((int) b[i]) & 0xff);
+                        | ((((int) r[i]) & 0xff) << 16)
+                        | ((((int) g[i]) & 0xff) << 8)
+                        | (((int) b[i]) & 0xff);
             }
             im.getRaster().setDataElements(0, y, w, 1, rowArgb);
         }
@@ -457,15 +524,20 @@ public final class PSDImageReader {
         return im;
     }
 
-
-    /** Read a single byte, throwing if not available. */
+    /**
+     * Read a single byte, throwing if not available.
+     */
     private int readByte() throws IOException {
         int b = input.read();
-        if(b < 0) throwInvalidFormat();
+        if (b < 0) {
+            throwInvalidFormat();
+        }
         return b;
     }
 
-    /** Read n bytes into an array, throwing if not available. */
+    /**
+     * Read n bytes into an array, throwing if not available.
+     */
     private void readBytes(byte[] bytes, int n) throws IOException {
         if (bytes == null) {
             return;
@@ -473,23 +545,31 @@ public final class PSDImageReader {
         int r = 0;
         do {
             int read = input.read(bytes, r, n - r);
-            if (read < 0) throwInvalidFormat();
+            if (read < 0) {
+                throwInvalidFormat();
+            }
             r += read;
         } while (r < n);
     }
 
-    /** Read big-endian 32-bit int, throwing if not available. */
+    /**
+     * Read big-endian 32-bit int, throwing if not available.
+     */
     private int readInt() throws IOException {
         return (((((readByte() << 8) | readByte()) << 8) | readByte()) << 8)
                 | readByte();
     }
 
-    /** Read big-endian 16-bit int, throwing if not available. */
+    /**
+     * Read big-endian 16-bit int, throwing if not available.
+     */
     private short readShort() throws IOException {
         return (short) ((readByte() << 8) | readByte());
     }
 
-    /** Read ASCII string of specified length, throwing if not available. */
+    /**
+     * Read ASCII string of specified length, throwing if not available.
+     */
     private String readString(int len) throws IOException {
         StringBuilder b = new StringBuilder(len);
         for (int i = 0; i < len; i++) {
@@ -498,7 +578,9 @@ public final class PSDImageReader {
         return b.toString();
     }
 
-    /** Skip n bytes of input, throwing if not available. */
+    /**
+     * Skip n bytes of input, throwing if not available.
+     */
     private void skipBytes(int n) throws IOException {
         for (int i = 0; i < n; i++) {
             readByte();

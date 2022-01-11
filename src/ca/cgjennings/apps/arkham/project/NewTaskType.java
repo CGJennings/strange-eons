@@ -101,8 +101,8 @@ public abstract class NewTaskType {
 
     /**
      * Returns a string that describes the subtype of task created by this
-     * {@code NewTaskType}. This can be {@code null} to indicate no
-     * subtype. (The default implementation returns {@code null}.) The
+     * {@code NewTaskType}. This can be {@code null} to indicate no subtype.
+     * (The default implementation returns {@code null}.) The
      * <tt>subtype</tt> setting of new tasks of this type will be set to the
      * value returned by this method if it is non-{@code null}.
      *
@@ -114,12 +114,11 @@ public abstract class NewTaskType {
 
     /**
      * Returns a string that identifies an image resource to be used to locate
-     * the icon image for this task type. If {@code null}, a default icon
-     * will be used based on the project type. If this value is
-     * non-{@code null}, then the <tt>icon</tt> setting of new tasks of
-     * this type will be set to the returned value. The icon used in the project
-     * view can be changed during {@link #initializeNewTask} by changing the
-     * value of this setting.
+     * the icon image for this task type. If {@code null}, a default icon will
+     * be used based on the project type. If this value is non-{@code null},
+     * then the <tt>icon</tt> setting of new tasks of this type will be set to
+     * the returned value. The icon used in the project view can be changed
+     * during {@link #initializeNewTask} by changing the value of this setting.
      *
      * @return the path to an image file in the application resources
      */
@@ -147,8 +146,8 @@ public abstract class NewTaskType {
      * successful. If it returns {@code false}, or the method throws an
      * exception, then the task folder will be deleted. If an exception was
      * thrown, then a generic error message will be displayed; if the method
-     * returns {@code false} then it is assumed that the method displayed
-     * its own, more specific message.
+     * returns {@code false} then it is assumed that the method displayed its
+     * own, more specific message.
      *
      * @param project the project that the task was added to
      * @param task the {@link Member} that represents the new task's folder
@@ -177,10 +176,8 @@ public abstract class NewTaskType {
      *
      * @param ntt the type to register
      * @throws NullPointerException if {@code ntt} is {@code null}
-     * @throws IllegalArgumentException if {@code ntt} is already
-     * registered
-     * @throws IllegalArgumentException if {@code ntt} uses a reserved type
-     * code
+     * @throws IllegalArgumentException if {@code ntt} is already registered
+     * @throws IllegalArgumentException if {@code ntt} uses a reserved type code
      */
     public static void register(NewTaskType ntt) {
         if (ntt == null) {
@@ -201,8 +198,7 @@ public abstract class NewTaskType {
      *
      * @param ntt the type to unregister
      * @throws NullPointerException if {@code ntt} is {@code null}
-     * @throws IllegalArgumentException if {@code ntt} is not already
-     * registered
+     * @throws IllegalArgumentException if {@code ntt} is not already registered
      */
     public static void unregister(NewTaskType ntt) {
         if (ntt == null) {
@@ -216,8 +212,7 @@ public abstract class NewTaskType {
     }
 
     /**
-     * Returns {@code true} if a new task type instance is currently
-     * registered.
+     * Returns {@code true} if a new task type instance is currently registered.
      *
      * @param ntt the type to look for
      * @return {@code true} if {@code ntt} has been registered
@@ -333,7 +328,7 @@ public abstract class NewTaskType {
                 if (newFile == null) {
                     return;
                 }
-                
+
                 Iterator<Task> ti = p.taskIterator();
                 while (ti.hasNext()) {
                     Task t = ti.next();

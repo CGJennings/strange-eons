@@ -153,11 +153,11 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     /**
      * Sets a wait cursor on the application frame. This method nests, so if a
      * wait cursor is set multiple times, the normal interaction cursor will not
-     * be restored until {@code setDefaultCursor()} is called a number of
-     * times equal to the number of times this method was called. This method
-     * should be paired with {@code setDefaultCursor()} using a
-     * {@code try ... finally} block to ensure that the cursor is properly
-     * restored even if an exception is thrown.:
+     * be restored until {@code setDefaultCursor()} is called a number of times
+     * equal to the number of times this method was called. This method should
+     * be paired with {@code setDefaultCursor()} using a {@code try ... finally}
+     * block to ensure that the cursor is properly restored even if an exception
+     * is thrown.:
      * <pre>
      * app.setWaitCursor();
      * try {
@@ -196,9 +196,9 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * files with unsaved changes. This method will only return if the user
      * cancels the exit action.
      * <p>
-     * If {@code restart} is {@code true}, then an attempt is made to
-     * relaunch the application after exiting. This may be useful, for example,
-     * when a plug-in update is pending.
+     * If {@code restart} is {@code true}, then an attempt is made to relaunch
+     * the application after exiting. This may be useful, for example, when a
+     * plug-in update is pending.
      *
      * @param restart restart after exit
      * @since 2.1a8
@@ -210,15 +210,15 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * restarted for optimal performance. The user will be allowed to choose
      * whether or not to restart.
      *
-     * @param message the reason for the restart; if {@code null}, a
-     * default message is displayed
+     * @param message the reason for the restart; if {@code null}, a default
+     * message is displayed
      * @since 2.1a8
      */
     public abstract void suggestRestart(String message);
 
     /**
-     * Returns the view of the open project, or {@code null} if no project
-     * is open.
+     * Returns the view of the open project, or {@code null} if no project is
+     * open.
      *
      * @return the open project's view, or {@code null}
      */
@@ -239,8 +239,8 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     /**
      * Adds a custom component to the top of the application window. The
      * component is added at a specific position with respect to the existing
-     * components. If {@code index} is -1, {@code comp} will be added
-     * to the end of the custom component bar. This is equivalent to
+     * components. If {@code index} is -1, {@code comp} will be added to the end
+     * of the custom component bar. This is equivalent to
      * {@code addCustomComponent( comp )}.
      *
      * @param comp the component to be added
@@ -267,8 +267,8 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      *
      * @param comp the component to remove
      * @throws NullPointerException if {@code comp} is {@code null}
-     * @throws IllegalArgumentException if {@code comp} has not been added
-     * as a custom component
+     * @throws IllegalArgumentException if {@code comp} has not been added as a
+     * custom component
      * @since 2.00a13
      */
     public abstract void removeCustomComponent(Component comp);
@@ -361,8 +361,8 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract void removeEditorListener(EditorListener el);
 
     /**
-     * Returns the current open {@link Project}, or {@code null} if no
-     * project is open.
+     * Returns the current open {@link Project}, or {@code null} if no project
+     * is open.
      *
      * @return the project currently open in the application window
      * @since 2.1 alpha 2
@@ -370,11 +370,10 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract Project getOpenProject();
 
     /**
-     * Opens the project contained in the folder {@code projectFolder}. If
-     * the project can be opened and there is already a project open in the
-     * editor, the current project is closed automatically before opening the
-     * new project. If the project cannot be opened, an error message is
-     * displayed.
+     * Opens the project contained in the folder {@code projectFolder}. If the
+     * project can be opened and there is already a project open in the editor,
+     * the current project is closed automatically before opening the new
+     * project. If the project cannot be opened, an error message is displayed.
      *
      * @param projectFolderOrCrateFile the base folder of a project or an
      * <tt>.seproject</tt> file containing a project

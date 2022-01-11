@@ -289,7 +289,6 @@ public class JavaScriptTokenizer extends Tokenizer {
                     backslash = false;
                     break;
 
-
                 case INVALID:
                     // When a token is marked invalid within this loop it is
                     // due to a bad variable name; keep going until we get to
@@ -459,7 +458,6 @@ public class JavaScriptTokenizer extends Tokenizer {
             jsKeywords.add("Float64Array", TokenType.KEYWORD2);
             jsKeywords.add("DataView", TokenType.KEYWORD2);
 
-
             // Newer versions of JS
             jsKeywords.add("debugger", TokenType.KEYWORD1);
             jsKeywords.add("yield", TokenType.KEYWORD1);
@@ -467,10 +465,9 @@ public class JavaScriptTokenizer extends Tokenizer {
             jsKeywords.add("each", TokenType.KEYWORD1);
             jsKeywords.add("get", TokenType.KEYWORD1);
             jsKeywords.add("set", TokenType.KEYWORD1);
-            
+
             jsKeywords.add("of", TokenType.KEYWORD1);
             jsKeywords.add("in", TokenType.KEYWORD1);
-
 
             // unimplemented reserved words
             jsKeywords.add("abstract", TokenType.INVALID);

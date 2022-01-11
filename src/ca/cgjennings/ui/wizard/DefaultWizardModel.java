@@ -60,8 +60,7 @@ public class DefaultWizardModel extends AbstractWizardModel {
      * {@link #getPageOrder()}; this method is provided for symmetry with
      * {@link #setPages}.
      *
-     * @return the current page order, or {@code null} if no pages have
-     * been set
+     * @return the current page order, or {@code null} if no pages have been set
      */
     public final JComponent[] getPages() {
         return getPageOrder();

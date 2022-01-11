@@ -158,7 +158,7 @@ class MessageDialog extends javax.swing.JDialog {
     private void updateWindowLocation() {
         Container parent = getParent();
         // fix: force window visibility if non-interactive
-        if(!StrangeEons.getWindow().isVisible()) {
+        if (!StrangeEons.getWindow().isVisible()) {
             StrangeEons.getWindow().setVisible(true);
         }
         Point screenLoc = parent.getLocationOnScreen();

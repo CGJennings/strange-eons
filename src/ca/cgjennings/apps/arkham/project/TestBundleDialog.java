@@ -327,12 +327,12 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JComboBox<LanguageCodeDescriptor> uiCombo;
     private javax.swing.JTextField uiLocField;
     // End of variables declaration//GEN-END:variables
-    
+
     private String determineLocaleCode(JComboBox picker, JTextField manual) {
         // if there is a valid value in the text field, use that
         // (if the user picked something, the field was updated to the selection)
         String locale = manual.getText().trim();
-        if(!Language.isLocaleDescriptionValid(locale)) {
+        if (!Language.isLocaleDescriptionValid(locale)) {
             // if the field is invalid, use whatever was last selected in the combo
             locale = ((LanguageCodeDescriptor) picker.getSelectedItem()).getCode();
         }
@@ -375,7 +375,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             // start with the custom launch string, if any
             boolean isOverriden = false;
             String userOverride = s.get("test-bundle-launch");
-            if(userOverride != null && !userOverride.isEmpty()) {
+            if (userOverride != null && !userOverride.isEmpty()) {
                 isOverriden = true;
                 CommandFormatter cf = new DefaultCommandFormatter();
                 testArgs.addAll(Arrays.asList(cf.formatCommand(userOverride)));
@@ -390,9 +390,8 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 "--glang", gLang,
                 "--ulang", uLang,
                 "--loglevel", loglevel,
-                "--plugintest",  bundle.getAbsolutePath(),
-            }));
-            if(doNotLoadPluginsCheck.isSelected()) {
+                "--plugintest", bundle.getAbsolutePath(),}));
+            if (doNotLoadPluginsCheck.isSelected()) {
                 testArgs.add("--xDisablePluginLoading");
             }
 
@@ -411,11 +410,14 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
         }
     }
 
-    /** Adds the contents of an argument field to the arg list, and updates the setting. */
+    /**
+     * Adds the contents of an argument field to the arg list, and updates the
+     * setting.
+     */
     private static void appendArgField(List<String> args, String key, String field) {
         field = field.trim();
         Settings.getUser().set(key, field);
-        if(!field.isEmpty()) {
+        if (!field.isEmpty()) {
             CommandFormatter cf = new CommandFormatter();
             String[] tokens = cf.formatCommand(field);
             args.addAll(Arrays.asList(tokens));

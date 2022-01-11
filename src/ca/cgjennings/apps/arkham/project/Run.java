@@ -23,8 +23,8 @@ public class Run extends TaskAction {
     /**
      * Creates a new run or debug action, depending on the specified parameter.
      *
-     * @param debugAction if {@code true}, creates a debug action rather
-     * than a plain run action
+     * @param debugAction if {@code true}, creates a debug action rather than a
+     * plain run action
      */
     public Run(boolean debugAction) {
         debug = debugAction;
@@ -66,11 +66,11 @@ public class Run extends TaskAction {
     }
 
     /**
-     * Run a script file as if using this action. The variables
-     * {@code project}, {@code task}, and {@code member} are
-     * passed to the script but may be {@code null} if the script does not
-     * rely on them. If the script is currently being edited by the application,
-     * any unsaved changes will be saved before running.
+     * Run a script file as if using this action. The variables {@code project},
+     * {@code task}, and {@code member} are passed to the script but may be
+     * {@code null} if the script does not rely on them. If the script is
+     * currently being edited by the application, any unsaved changes will be
+     * saved before running.
      *
      * @param f the script file to run
      * @param project the project instance to pass to the script
@@ -85,7 +85,7 @@ public class Run extends TaskAction {
         }
         try {
             StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditorsShowingFile(f);
-            if (eds.length > 0 ) {
+            if (eds.length > 0) {
                 for (StrangeEonsEditor ed : eds) {
                     if (ed instanceof CodeEditor) {
                         ((CodeEditor) ed).run(debug);

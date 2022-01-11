@@ -53,15 +53,15 @@ public interface ConversionTrigger {
      *
      * @param cause A non-null string describing the reason for the conversion.
      * @param targetClassName The non-null name of the class map class of the
-     *     new component.
+     * new component.
      * @param extensionName An optional description of the extension required by
-     *    the target component.
+     * the target component.
      * @param extensionId An optional UUID or CatalogID string of the extension
-     *     required by the target component.
+     * required by the target component.
      * @return A basic conversion trigger for the specified cause. The returned
-     *     trigger is guaranteed <em>not</em> to be an instance of
-     *     {@link AbstractConversionTrigger} (and by extension,
-     *     {@link UpgradeConversionTrigger}).
+     * trigger is guaranteed <em>not</em> to be an instance of
+     * {@link AbstractConversionTrigger} (and by extension,
+     * {@link UpgradeConversionTrigger}).
      */
     public static ConversionTrigger create(final String cause, final String targetClassName, final String extensionName, final String extensionId) {
         Objects.requireNonNull(cause, "cause");

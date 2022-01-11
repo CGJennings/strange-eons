@@ -5,20 +5,24 @@
 
 importClass(java.awt.image.BufferedImage);
 
-const ImageUtils = (function(){
+const ImageUtils = (function () {
     const valDimen = (dim) => {
-        if(isNaN(dim)) throw new TypeError("dimension is not a number: " + dim);
-        if(dim < 1 || dim > 40000) throw new RangeError("bad image dimension: " + dim);
+        if (isNaN(dim))
+            throw new TypeError("dimension is not a number: " + dim);
+        if (dim < 1 || dim > 40000)
+            throw new RangeError("bad image dimension: " + dim);
         return dim;
     };
 
     const valImage = (im) => {
-        if(!(im instanceof BufferedImage)) throw new TypeError("not an image: " + im);
+        if (!(im instanceof BufferedImage))
+            throw new TypeError("not an image: " + im);
         return im;
     };
 
     const valNum = (x) => {
-        if(isNaN(x)) throw new TypeError("coordinate is not a number: " + x);
+        if (isNaN(x))
+            throw new TypeError("coordinate is not a number: " + x);
         return x;
     };
 
@@ -31,8 +35,10 @@ const ImageUtils = (function(){
     };
 
     ImageUtils.createForResolution = function createForResolution(ppi, width, height, transparent) {
-        if(isNaN(ppi)) throw new TypeError("resolution is not a number" + ppi);
-        if(ppi <= 0) throw new RangeError("bad resolution " + ppi);
+        if (isNaN(ppi))
+            throw new TypeError("resolution is not a number" + ppi);
+        if (ppi <= 0)
+            throw new RangeError("bad resolution " + ppi);
         return ImageUtils.create(width / 72 * ppi, height / 72 * ppi, transparent);
     };
 
@@ -46,12 +52,14 @@ const ImageUtils = (function(){
             }
         } else {
             let url = resources.ResourceKit.composeResourceURL(resPath);
-            if (url) im = javax.imageio.ImageIO.read(url);
-            if (im) im = resources.ResourceKit.prepareNewImage(im);
+            if (url)
+                im = javax.imageio.ImageIO.read(url);
+            if (im)
+                im = resources.ResourceKit.prepareNewImage(im);
             if (im === null && !quietly) {
                 arkham.dialog.ErrorDialog.displayErrorOnce(
-                    resource, string("rk-err-image-resource", resource), null
-                );
+                        resource, string("rk-err-image-resource", resource), null
+                        );
             }
         }
         return im;
@@ -68,7 +76,8 @@ const ImageUtils = (function(){
     };
 
     ImageUtils.createIcon = function createIcon(image, size) {
-        if (isNaN(size)) size = 16;
+        if (isNaN(size))
+            size = 16;
         return ca.cgjennings.graphics.ImageUtilities.createIconForSize(valImage(image), size);
     };
 
@@ -121,7 +130,8 @@ const ImageUtils = (function(){
                 g.drawImage(image2, 0, image1.getHeight(), null);
             }
         } finally {
-            if (g) g.dispose();
+            if (g)
+                g.dispose();
         }
         return im;
     };
@@ -129,9 +139,9 @@ const ImageUtils = (function(){
     ImageUtils.resize = function resize(image, width, height, fast) {
         if (fast) {
             return ca.cgjennings.graphics.ImageUtilities.resample(
-                valImage(image), valDimen(width), valDimen(height), false,
-                java.awt.RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR, null
-            );
+                    valImage(image), valDimen(width), valDimen(height), false,
+                    java.awt.RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR, null
+                    );
         } else {
             return ca.cgjennings.graphics.ImageUtilities.resample(valImage(image), valDimen(width), valDimen(height));
         }
@@ -149,8 +159,8 @@ const ImageUtils = (function(){
         }
         let scale = Math.min(width / image.width, height / image.height);
         return ImageUtils.resize(
-            image, Math.round(image.width * scale), Math.round(image.height * scale), fast
-        );
+                image, Math.round(image.width * scale), Math.round(image.height * scale), fast
+                );
     };
 
     ImageUtils.crop = function crop(image, x, y, width, height) {
@@ -158,8 +168,10 @@ const ImageUtils = (function(){
         valNum(x);
         valNum(y);
 
-        if (width == null || width < 1 ) width = image.width - x;
-        if (height == null || height < 1) height = image.height - y;
+        if (width == null || width < 1)
+            width = image.width - x;
+        if (height == null || height < 1)
+            height = image.height - y;
         valDimen(width);
         valDimen(height);
 
@@ -178,9 +190,9 @@ const ImageUtils = (function(){
             left = bottom = right = top;
         }
         return ca.cgjennings.graphics.ImageUtilities.pad(
-            valImage(image),
-            valNum(top), valNum(left), valNum(bottom), valNum(right)
-        );
+                valImage(image),
+                valNum(top), valNum(left), valNum(bottom), valNum(right)
+                );
     };
 
     ImageUtils.tint = function tint(image, h, s, b) {
@@ -200,10 +212,10 @@ const ImageUtils = (function(){
 
     ImageUtils.mirror = function mirror(image, horiz, vert) {
         return ca.cgjennings.graphics.ImageUtilities.flip(
-            valImage(image),
-            horiz == null ? true : horiz,
-            vert == null ? false : vert
-        );
+                valImage(image),
+                horiz == null ? true : horiz,
+                vert == null ? false : vert
+                );
     };
 
     ImageUtils.invert = function invert(image) {
@@ -219,12 +231,14 @@ const ImageUtils = (function(){
     };
 
     ImageUtils.read = function read(file) {
-        if (file == null) throw new Error("missing file");
+        if (file == null)
+            throw new Error("missing file");
         if (!(file instanceof java.io.File)) {
             file = new java.io.File(String(file));
         }
         let image = javax.imageio.ImageIO.read(file);
-        if (image == null) throw new Error("unable to read file");
+        if (image == null)
+            throw new Error("unable to read file");
         return resources.ResourceKit.prepareNewImage(image);
     };
 
@@ -284,7 +298,7 @@ const ImageUtils = (function(){
         let type;
         let file = fc.selectedFile;
         let ext = arkham.project.ProjectUtilities.getFileExtension(file);
-        switch(ext) {
+        switch (ext) {
             case ImageUtils.FORMAT_JPEG:
             case ImageUtils.FORMAT_JPEG2000:
             case ImageUtils.FORMAT_GIF:
@@ -315,7 +329,8 @@ const ImageUtils = (function(){
         if (parent === undefined)
             parent = Eons.window;
         let d = new arkham.dialog.ImageViewer(parent, valImage(image), modal);
-        if (title != null) d.setTitle(title);
+        if (title != null)
+            d.setTitle(title);
         d.setLocationByPlatform(true);
         d.setVisible(true);
     };

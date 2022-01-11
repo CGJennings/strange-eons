@@ -34,8 +34,7 @@ final class CompletionUtilities {
     /**
      * If the specified editor is in a {@link CodeEditor} tab, and there is a
      * project open, and the tab is editing a file in that project, returns the
-     * project {@link Member} for the file. Otherwise, returns
-     * {@code null}.
+     * project {@link Member} for the file. Otherwise, returns {@code null}.
      *
      * @param editor the editor component
      * @return the project member being edited, or {@code null}
@@ -63,8 +62,8 @@ final class CompletionUtilities {
      *
      * @param prefix the prefix to test for
      * @param identifier the identifier to match against
-     * @return {@code true} if the start of the identifier matches the
-     * prefix, without considering letter case
+     * @return {@code true} if the start of the identifier matches the prefix,
+     * without considering letter case
      */
     public static boolean match(String prefix, String identifier) {
         int len = prefix.length();
@@ -83,7 +82,6 @@ final class CompletionUtilities {
         }
         return true;
     }
-
 
     /**
      * Script code counterpart of the {@link Character} class method.
@@ -113,8 +111,8 @@ final class CompletionUtilities {
      * @param set the set code alternatives to add matches to
      * @param prefix the word to complete (such as the prefix of a completion
      * context)
-     * @param checker the spelling checker to use for words; {@code null}
-     * for default
+     * @param checker the spelling checker to use for words; {@code null} for
+     * default
      */
     public static void addWords(JSourceCodeEditor ed, Set<CodeAlternative> set, String prefix, SpellingChecker checker) {
         int len = prefix.length();
@@ -133,8 +131,8 @@ final class CompletionUtilities {
      *
      * @param prefix the word to complete (such as the prefix of a completion
      * context)
-     * @param checker the spelling checker to use for words; {@code null}
-     * for default
+     * @param checker the spelling checker to use for words; {@code null} for
+     * default
      * @param includeUserDictionaries if {@code true}, then the method may
      * include user dictionaries (such as learned words); this may greatly
      * increase the time required by the function to return because user

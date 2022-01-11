@@ -25,12 +25,12 @@ public interface Plugin {
      * This method will be called once for each registered plug-in before any
      * other methods are called. It allows the plug-in to perform any required
      * initialization prior to the plug-in being shown. If initialization
-     * succeeds, it should return {@code true}. Otherwise, the plug-in will
-     * not be made available to the user. If this method returns
-     * {@code false}, a warning is logged but no other action is taken.
-     * This allows the plug-in the opportunity to display its own error message.
-     * If this method throws an exception, a dialog is displayed that will
-     * include the message text of the exception (if any).
+     * succeeds, it should return {@code true}. Otherwise, the plug-in will not
+     * be made available to the user. If this method returns {@code false}, a
+     * warning is logged but no other action is taken. This allows the plug-in
+     * the opportunity to display its own error message. If this method throws
+     * an exception, a dialog is displayed that will include the message text of
+     * the exception (if any).
      * <p>
      * Sometimes a plug-in is instantiated only in order to determine its name,
      * description, version, and type. In such cases, the plug-in's
@@ -49,8 +49,8 @@ public interface Plugin {
      *
      * @param context a {@link PluginContext} instance that can be accessed
      * during initialization
-     * @return {@code true} if the plug-in was initialized;
-     * {@code false} if initialization failed
+     * @return {@code true} if the plug-in was initialized; {@code false} if
+     * initialization failed
      */
     public boolean initializePlugin(PluginContext context);
 
@@ -66,11 +66,11 @@ public interface Plugin {
      * terminates abnormally.
      * <li>This method will never be called more than once for a given
      * <i>instance</i> of a plug-in. (More than one instance of an
-     * {@code ACTIVATED} or {@code INJECTED} plug-in may be created
-     * during a session.)
+     * {@code ACTIVATED} or {@code INJECTED} plug-in may be created during a
+     * session.)
      * <li>For {@code ACTIVATED} plug-ins that are currently showing,
-     * {@link #showPlugin} will be called with {@code false} (in order to
-     * hide the plug-in) before this method is called.
+     * {@link #showPlugin} will be called with {@code false} (in order to hide
+     * the plug-in) before this method is called.
      * </ol>
      */
     public void unloadPlugin();
@@ -78,11 +78,11 @@ public interface Plugin {
     /**
      * Returns the name that should be shown to the user for this plug-in,
      * ideally in the UI locale. This should be a short name that describes the
-     * plug-in's purpose in three words or less. If this is an
-     * {@code ACTIVATED} plug-in, the returned value should ideally be a
-     * verb phrase that describes the effect of activating the plug-in, such as
-     * "Select All Lines". It should not include extraneous information, such as
-     * the author's name; this kind of information can be included in the
+     * plug-in's purpose in three words or less. If this is an {@code ACTIVATED}
+     * plug-in, the returned value should ideally be a verb phrase that
+     * describes the effect of activating the plug-in, such as "Select All
+     * Lines". It should not include extraneous information, such as the
+     * author's name; this kind of information can be included in the
      * description string or, ideally, in the plug-in's catalogue description.
      *
      * @return a string that identifies this plug-in for end users
@@ -122,10 +122,10 @@ public interface Plugin {
      * Show (activate) or hide (deactivate) the plug-in. This method is most
      * often called when the user activates the plug-in's menu item.
      * <p>
-     * Typically, the value of {@code show} will be the opposite of the
-     * value currently returned by {@link #isPluginShowing}. If the plug-in uses
-     * a modeless dialog box, then {@code isPluginShowing} should thus
-     * return {@code true} when the dialog is showing.
+     * Typically, the value of {@code show} will be the opposite of the value
+     * currently returned by {@link #isPluginShowing}. If the plug-in uses a
+     * modeless dialog box, then {@code isPluginShowing} should thus return
+     * {@code true} when the dialog is showing.
      * <p>
      * If a modal dialog is shown, or if an operation that blocks the calling
      * thread is performed, then it will not be possible for the user to
@@ -133,9 +133,9 @@ public interface Plugin {
      * {@code isPluginShowing} can be implemented to simply return
      * {@code false}.
      * <p>
-     * <b>Notes:</b> This method is never called for {@code EXTENSION}
-     * plug-ins. It is only called once, after initialization, for
-     * {@code INJECTED} plug-ins.
+     * <b>Notes:</b> This method is never called for {@code EXTENSION} plug-ins.
+     * It is only called once, after initialization, for {@code INJECTED}
+     * plug-ins.
      *
      * @param context a valid {@link PluginContext}
      * @param show if {@code true} show/start the plug-in, otherwise,
@@ -145,8 +145,8 @@ public interface Plugin {
     public void showPlugin(PluginContext context, boolean show);
 
     /**
-     * Returns {@code true} if this plug-in's interface is currently
-     * showing, or, if it has no interface, if it is currently running.
+     * Returns {@code true} if this plug-in's interface is currently showing,
+     * or, if it has no interface, if it is currently running.
      * <p>
      * If the plug-in blocks the event thread when shown (for example, if it
      * displays a modal dialog), then this method can simply return
@@ -159,10 +159,10 @@ public interface Plugin {
     public boolean isPluginShowing();
 
     /**
-     * Returns {@code true} if it is currently valid to activate this
-     * plug-in by calling {@link #showPlugin}. For example, a plug-in that only
-     * works on components from a certain game might return {@code false}
-     * if the currently edited component is not from that game.
+     * Returns {@code true} if it is currently valid to activate this plug-in by
+     * calling {@link #showPlugin}. For example, a plug-in that only works on
+     * components from a certain game might return {@code false} if the
+     * currently edited component is not from that game.
      *
      * <p>
      * <b>Note:</b> Plug-ins must still check for any conditions that are
@@ -174,8 +174,8 @@ public interface Plugin {
      * <b>Scripted Plug-in Notes:</b> The default implementation returns
      * {@code true}.
      *
-     * @return {@code true} if the plug-in can be successfully and
-     * meaningfully activated
+     * @return {@code true} if the plug-in can be successfully and meaningfully
+     * activated
      */
     public boolean isPluginUsable();
 
@@ -193,8 +193,8 @@ public interface Plugin {
      * Return a string that describes the key stroke that is the preferred
      * default accelerator key for this plug-in. In most cases, you should
      * return {@code null} for no default accelerator. The user can always
-     * assign an accelerator key of their choice to an {@code ACTIVATED}
-     * plug-in through the plug-in manager dialog.
+     * assign an accelerator key of their choice to an {@code ACTIVATED} plug-in
+     * through the plug-in manager dialog.
      * <p>
      * The format of the string is similar to that used by
      * {@code javax.swing.KeyStroke}, but the special modifier
@@ -205,8 +205,8 @@ public interface Plugin {
      * another command.)
      *
      * <p>
-     * <b>Note:</b> An accelerator key is only meaningful for
-     * {@code ACTIVATED} plug-ins.
+     * <b>Note:</b> An accelerator key is only meaningful for {@code ACTIVATED}
+     * plug-ins.
      *
      * @return a description of the preferred default accelerator
      */
@@ -225,8 +225,8 @@ public interface Plugin {
      * <li>If the plug-in has a representative image (and the user enables this
      * feature), then that image will be used to create an icon for the menu
      * item.
-     * <li>If {@link #isPluginUsable()} returns {@code true}, the item will
-     * be enabled; otherwise disabled.
+     * <li>If {@link #isPluginUsable()} returns {@code true}, the item will be
+     * enabled; otherwise disabled.
      * <li>If the plug-in is showing, then the item will have a check mark,
      * otherwise it will not.
      * <li>If the menu item is selected by the user, then the plug-in will
@@ -238,11 +238,11 @@ public interface Plugin {
     public static final int ACTIVATED = 0;
 
     /**
-     * A plug-in type value. An {@code INJECTED} plug-in fills a role
-     * between the {@code ACTIVATED} and {@code EXTENSION} types. Like
-     * an {@code ACTIVATED} plug-in, it is loaded and unloaded on demand.
-     * However, like an {@code EXTENSION} plug-in, there is no explicit
-     * predetermined means to activate the effect (i.e., there is no
+     * A plug-in type value. An {@code INJECTED} plug-in fills a role between
+     * the {@code ACTIVATED} and {@code EXTENSION} types. Like an
+     * {@code ACTIVATED} plug-in, it is loaded and unloaded on demand. However,
+     * like an {@code EXTENSION} plug-in, there is no explicit predetermined
+     * means to activate the effect (i.e., there is no
      * <b>Toolbox</b>
      * menu item). Either the plug-in adds its own explicit activation
      * method(s), or the plug-in is activated passively.
@@ -259,10 +259,9 @@ public interface Plugin {
      *
      * <p>
      * When loaded, the {@link #showPlugin} method will be called once with
-     * {@code show == true}, at which time it should install its
-     * modifications. These should continue to take effect until
-     * {@link #unloadPlugin()} is called, at which time the modifications should
-     * be removed.
+     * {@code show == true}, at which time it should install its modifications.
+     * These should continue to take effect until {@link #unloadPlugin()} is
+     * called, at which time the modifications should be removed.
      */
     public static final int INJECTED = 1;
 

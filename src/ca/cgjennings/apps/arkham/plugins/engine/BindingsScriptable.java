@@ -23,7 +23,7 @@ import org.mozilla.javascript.SymbolScriptable;
 final class BindingsScriptable implements Scriptable, ConstProperties, SymbolScriptable {
 
     private final ScriptContext context;
-    private final Map<Object,Object> otherProps = new HashMap<>();
+    private final Map<Object, Object> otherProps = new HashMap<>();
     private final Set<String> constProps = new HashSet<>();
     private Scriptable parentScope;
     private Scriptable prototype;

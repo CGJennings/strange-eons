@@ -401,7 +401,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
     public boolean isRestartRequired() {
         return restart;
     }
-    
+
     private static LookupServiceProvider noOpLsp() {
         return new LookupServiceProvider() {
             @Override

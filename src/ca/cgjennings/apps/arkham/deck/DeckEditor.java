@@ -122,8 +122,8 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
     private Deck deck;
 
     /**
-     * Number of special item tabs not used to display tiles,
-     * i.e., tools and faces at positions 0 and 1.
+     * Number of special item tabs not used to display tiles, i.e., tools and
+     * faces at positions 0 and 1.
      */
     private static final int RESERVED_TABS = 2;
 
@@ -151,7 +151,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
         localizeForPlatform();
         {
             // update bleed margin immediately on click
-            JFormattedTextField field = ((JSpinner.DefaultEditor)bleedMarginSpinner.getEditor()).getTextField();
+            JFormattedTextField field = ((JSpinner.DefaultEditor) bleedMarginSpinner.getEditor()).getTextField();
             ((DefaultFormatter) field.getFormatter()).setCommitsOnValidEdit(true);
         }
 
@@ -174,7 +174,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             removeCurrentPage();
         });
 
-        tileSetLists = new PageItemList[] {
+        tileSetLists = new PageItemList[]{
             (PageItemList) toolsList, (PageItemList) facesList,
             (PageItemList) tilesList, (PageItemList) boardBitsList,
             (PageItemList) decorationsList, (PageItemList) otherList
@@ -232,7 +232,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
 
     /**
      * Return the deck instance the editor controls for non-interactive editing.
-     * 
+     *
      * @return the edited deck
      */
     public Deck getDeck() {
@@ -315,7 +315,8 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             try {
                 StrangeEons.log.log(Level.INFO, "Interrupting loader thread {0}", running);
                 running.join(500);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
             EventQueue.invokeLater(this::reloadTileSets);
             return;
         }
@@ -384,7 +385,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
                                         lists[set].setSelectedValue(pi, true);
                                     }
                                 });
-                            } catch(Throwable t) {
+                            } catch (Throwable t) {
                                 StrangeEons.log.log(Level.SEVERE, "Exception while loading " + pi.getName(), t);
                                 return;
                             }
@@ -511,7 +512,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
         tc();
         final PageView v = (PageView) pageTab.getSelectedComponent();
         final Page p = v.getPage();
-        for(PageItem pi : cards) {
+        for (PageItem pi : cards) {
             p.addCardFromTemplate(pi);
         }
     }
@@ -569,7 +570,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             }
         }
         final int nFaces = facesList.getModel().getSize();
-        for (int i=0; i<nFaces; ++i) {
+        for (int i = 0; i < nFaces; ++i) {
             PageItem pi = facesList.getModel().getElementAt(i);
             if (pi instanceof CardFace) {
                 CardFace face = (CardFace) pi;
@@ -610,18 +611,17 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
     /**
      * Creates an image containing the content of the specified deck page as if
      * it was printed at the specified resolution. The {@code pageBuffer}
-     * parameter can be {@code null}, in which case a suitable image will
-     * be created and returned. If you are creating images of multiple pages,
-     * you can pass {@code null} for the first call and then re-use the
-     * returned image for subsequent calls.
+     * parameter can be {@code null}, in which case a suitable image will be
+     * created and returned. If you are creating images of multiple pages, you
+     * can pass {@code null} for the first call and then re-use the returned
+     * image for subsequent calls.
      *
      * @param pageBuffer an image to draw the page content on; may be
      * {@code null}
      * @param pageIndex the page to draw
      * @param ppi the resolution to draw the page at
-     * @return the image that was drawn; the same value as
-     * {@code pageBuffer} if that parameter was non-{@code null},
-     * otherwise a new, suitable image
+     * @return the image that was drawn; the same value as {@code pageBuffer} if
+     * that parameter was non-{@code null}, otherwise a new, suitable image
      * @throws IllegalArgumentException if the page index is invalid or the
      * resolution is not positive
      * @throws OutOfMemoryError if there is insufficient memory to allocate the
@@ -685,16 +685,16 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
                         page = createPageImage(page, i, dpi);
                         export1.exportImage(String.valueOf(i + 1), page);
                     }
-                }catch (OutOfMemoryError oom) {
+                } catch (OutOfMemoryError oom) {
                     ErrorDialog.outOfMemory();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     ErrorDialog.displayError(string("rk-err-export"), e);
-                }catch (Exception e) {
+                } catch (Exception e) {
                     StrangeEons.log.log(Level.SEVERE, null, e);
                 } finally {
                     try {
                         export1.endExport();
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         ErrorDialog.displayError(string("rk-err-export"), e);
                     }
                 }
@@ -737,7 +737,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             }
             return ok;
         }
-        if(command == Commands.VIEW_INK_SAVER) {
+        if (command == Commands.VIEW_INK_SAVER) {
             return true;
         }
         return canPerformCommand(command);
@@ -759,21 +759,21 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             getDeck().copy();
         } else if (command == Commands.PASTE) {
             getDeck().paste();
-        } else if(command == Commands.VIEW_INK_SAVER) {
+        } else if (command == Commands.VIEW_INK_SAVER) {
             boolean enable = Commands.VIEW_INK_SAVER.isSelected();
-            for(int p=0, len=deck.getPageCount(); p<len; ++p) {
+            for (int p = 0, len = deck.getPageCount(); p < len; ++p) {
                 Page page = deck.getPage(p);
                 boolean needsRepaint = false;
-                for(int i=0, ilen=page.getCardCount(); i<ilen; ++i) {
+                for (int i = 0, ilen = page.getCardCount(); i < ilen; ++i) {
                     PageItem pi = page.getCard(i);
-                    if(pi instanceof CardFace) {
+                    if (pi instanceof CardFace) {
                         CardFace card = (CardFace) pi;
                         card.getSheet().setPrototypeRenderingModeEnabled(enable);
                         card.refresh();
                         needsRepaint = true;
                     }
                 }
-                if(needsRepaint) {
+                if (needsRepaint) {
                     getActivePageView().repaint();
                 }
             }
@@ -876,8 +876,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
      * platform-specific print dialog, if any, is displayed before printing
      * begins.
      *
-     * @param direct if {@code true}, no deck-specific print options are
-     * shown
+     * @param direct if {@code true}, no deck-specific print options are shown
      */
     public void print(boolean direct) {
         if (!isCommandApplicable(Commands.PRINT)) {
@@ -969,10 +968,10 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
     }
 
     /**
-     * The implementation of print(). If {@code printResolution} is set to
-     * a positive value, cards are prepared at that resolution. (This is set to
-     * an explicit value when exporting.) Otherwise, if it is less than 0, the
-     * card resolution is inferred from printer job settings.
+     * The implementation of print(). If {@code printResolution} is set to a
+     * positive value, cards are prepared at that resolution. (This is set to an
+     * explicit value when exporting.) Otherwise, if it is less than 0, the card
+     * resolution is inferred from printer job settings.
      *
      * @param g1 graphics instance for printing
      * @param pf page format to conform to
@@ -2248,8 +2247,8 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     }
 
     /**
-     * Update a changed card if it matches the path of {@code f}. Helper
-     * method for {@link #fileChanged}.
+     * Update a changed card if it matches the path of {@code f}. Helper method
+     * for {@link #fileChanged}.
      */
     private int possiblyRefreshCard(File f, PageItem c, GameComponent component) {
         tc();
@@ -2647,6 +2646,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private DragManager<PageItem> dragManager = new DragManager<>(dragAndDropHandler);
 
     private class PageItemList extends JList<PageItem> {
+
         public PageItemList() {
             super(new DefaultListModel<>());
             setCellRenderer(new PageItemRenderer());
@@ -2664,12 +2664,13 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         }
 
         @Override
-        public String getToolTipText( MouseEvent event ) {
-            int i = locationToIndex( event.getPoint() );
-            if( i >= 0 ) {
+        public String getToolTipText(MouseEvent event) {
+            int i = locationToIndex(event.getPoint());
+            if (i >= 0) {
                 PageItem c = getModel().getElementAt(i);
-                if( c instanceof DependentPageItem )
-                return ((DependentPageItem) c).getPath();
+                if (c instanceof DependentPageItem) {
+                    return ((DependentPageItem) c).getPath();
+                }
             }
             return super.getToolTipText(event);
         }

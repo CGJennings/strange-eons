@@ -82,9 +82,8 @@ public class Project extends TaskGroup {
 
     /**
      * Returns the {@link Member} instance pointed to by a URL. The URL protocol
-     * must either be {@code file:} or {@code project:}. If the file
-     * specified by the URL is not part of the project, {@code null} is
-     * returned.
+     * must either be {@code file:} or {@code project:}. If the file specified
+     * by the URL is not part of the project, {@code null} is returned.
      *
      * @param url the URL to locate a project member for
      * @return the project member described by the URL, or {@code null}
@@ -97,9 +96,10 @@ public class Project extends TaskGroup {
         switch (proto) {
             case "file":
                 try {
-                    toFind = new File(url.toURI());
-                } catch (URISyntaxException ex) {
-                }   break;
+                toFind = new File(url.toURI());
+            } catch (URISyntaxException ex) {
+            }
+            break;
             case "project":
                 String path = url.getHost() + '/' + url.getPath();
                 int skip;
@@ -115,8 +115,7 @@ public class Project extends TaskGroup {
 
     /**
      * Returns the {@link Member} instance that represents a file in a project.
-     * If the file is not part of the project, then {@code null} is
-     * returned.
+     * If the file is not part of the project, then {@code null} is returned.
      *
      * @param file the file to locate in the project's member tree
      * @return the project member for {@code file}, or {@code null}
@@ -223,9 +222,9 @@ public class Project extends TaskGroup {
 
     /**
      * Creates a new project folder with the specified project name. The project
-     * will be created as a subfolder of {@code projectFolder}. The
-     * returned file can be used to create a {@code Project} instance for
-     * the new project using the {@link #Project(java.io.File)} constructor.
+     * will be created as a subfolder of {@code projectFolder}. The returned
+     * file can be used to create a {@code Project} instance for the new project
+     * using the {@link #Project(java.io.File)} constructor.
      *
      * @param projectFolder the folder to create the project in
      * @param projectName the name of the new project
@@ -299,10 +298,10 @@ public class Project extends TaskGroup {
     /**
      * Writes the contents of this project to a package project ("crate") file.
      * A packaged project is essentially a ZIP archive that uses the file
-     * extension {@code .seproject}. When a packaged project is opened in
-     * the application, it will unpack the file to a temporary folder and open
-     * that folder as a project. When the project is closed, it will then copy
-     * the modified package back to the original package file. If a project was
+     * extension {@code .seproject}. When a packaged project is opened in the
+     * application, it will unpack the file to a temporary folder and open that
+     * folder as a project. When the project is closed, it will then copy the
+     * modified package back to the original package file. If a project was
      * opened from a package file, then {@link #getPackageFile()} will return a
      * non-{@code null} value.
      *
@@ -428,7 +427,7 @@ public class Project extends TaskGroup {
                     throw new IOException("No project folder in package");
                 }
                 pkgTemp = projFolder;
-            }catch (IOException e) {
+            } catch (IOException e) {
                 pkgThrow = e;
             }
         });

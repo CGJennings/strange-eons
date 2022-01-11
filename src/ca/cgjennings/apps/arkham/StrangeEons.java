@@ -669,7 +669,8 @@ public final class StrangeEons {
      * currently {@linkplain InstalledPlugin#setEnabled(boolean) enabled} will
      * be
      * {@linkplain Plugin#initializePlugin(ca.cgjennings.apps.arkham.plugins.PluginContext) started}.
-     * This method has no effect on null null null null null null null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
+     * This method has no effect on null null null null null null null null null
+     * null null     {@linkplain BundleInstaller#loadLibraryBundles libraries},
 	 * {@linkplain BundleInstaller#loadThemeBundles themes}, or
      * {@linkplain BundleInstaller#loadExtensionBundles extension plug-ins}.
      *

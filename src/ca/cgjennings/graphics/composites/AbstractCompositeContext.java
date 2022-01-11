@@ -12,12 +12,11 @@ import java.awt.image.WritableRaster;
  * This abstract implementation of {@code CompositeContext} is designed to
  * handle RGB/ARGB data. Subclasses must implement the abstract general case
  * method, and may optionally override other methods to provide special case
- * code for use when the {@code VALUE_ALPHA_INTERPOLATION_SPEED} hint is
- * set and/or the source and destination both have 4 bands (ARGB). The context
- * will transparently make use of multiple CPUs to increase compositing
- * performance, so subclasses must ensure that their implementations of
- * {@code compose} methods can be called concurrently from multiple
- * threads.
+ * code for use when the {@code VALUE_ALPHA_INTERPOLATION_SPEED} hint is set
+ * and/or the source and destination both have 4 bands (ARGB). The context will
+ * transparently make use of multiple CPUs to increase compositing performance,
+ * so subclasses must ensure that their implementations of {@code compose}
+ * methods can be called concurrently from multiple threads.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

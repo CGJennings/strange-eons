@@ -7,18 +7,19 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Construct paths to resource files from relative paths or
- * path elements.
+ * Construct paths to resource files from relative paths or path elements.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.2
  */
 public class ResPath {
+
     private String proto;
     private Path path;
 
     /**
      * Creates a resource path from the specified string.
+     *
      * @param path a non-null string describing a resource path
      */
     public ResPath(String path) {
@@ -27,7 +28,7 @@ public class ResPath {
 
     private ResPath(String proto, Path path) {
         this.path = Objects.requireNonNull(path).normalize();
-        if(this.path.startsWith("..")) {
+        if (this.path.startsWith("..")) {
             parse("");
         }
         this.proto = Objects.requireNonNull(proto);
@@ -36,13 +37,15 @@ public class ResPath {
     private void parse(String path) {
         proto = "";
         Matcher m = PAT_PROTOCOL.matcher(path);
-        if (m.find()) proto = m.group(1) + "//";
+        if (m.find()) {
+            proto = m.group(1) + "//";
+        }
         this.path = java.nio.file.FileSystems.getDefault().getPath(path.substring(proto.length())).normalize();
     }
-    
+
     /**
-     * Returns the path that results from appending zero or more
-     * path elements to this path.
+     * Returns the path that results from appending zero or more path elements
+     * to this path.
      *
      * @param parts the path elements to append to this path
      * @return the combined path
@@ -52,8 +55,8 @@ public class ResPath {
     }
 
     /**
-     * Returns the path that results from resolving a relative path against
-     * this path.
+     * Returns the path that results from resolving a relative path against this
+     * path.
      *
      * @param other the relative path
      * @return the resolved path
@@ -63,15 +66,19 @@ public class ResPath {
     }
 
     /**
-     * Returns the that results from resolving a relative path against
-     * this path.
+     * Returns the that results from resolving a relative path against this
+     * path.
      *
      * @param other the relative path
      * @return the resolved path
      */
     public ResPath resolve(ResPath other) {
-        if(!other.proto.isEmpty()) return other;
-        if(other.path.startsWith("/")) return new ResPath(proto, other.path);
+        if (!other.proto.isEmpty()) {
+            return other;
+        }
+        if (other.path.startsWith("/")) {
+            return new ResPath(proto, other.path);
+        }
         return new ResPath(proto, path.resolve(other.path));
     }
 
@@ -86,8 +93,8 @@ public class ResPath {
     }
 
     /**
-     * Returns the file or directory name, that is, the most deeply
-     * nested path component.
+     * Returns the file or directory name, that is, the most deeply nested path
+     * component.
      *
      * @return the file or directory name referenced by this path
      */
@@ -95,18 +102,26 @@ public class ResPath {
         return path.getFileName().toString();
     }
 
-    
-    /** Regex to extract the protocol part of a path, if any. */
+    /**
+     * Regex to extract the protocol part of a path, if any.
+     */
     private static final Pattern PAT_PROTOCOL = Pattern.compile("^([^:]*:)\\/*");
 
-    /** True if the path character must be transformed before returning a path string. */
+    /**
+     * True if the path character must be transformed before returning a path
+     * string.
+     */
     private static final boolean TRANSFORM = File.separatorChar != '/';
 
-    /** Returns a string representation of the resource path. */
+    /**
+     * Returns a string representation of the resource path.
+     */
     @Override
     public String toString() {
         String pathPart = path.toString();
-        if(TRANSFORM) pathPart = pathPart.replace(File.separatorChar, '/');
+        if (TRANSFORM) {
+            pathPart = pathPart.replace(File.separatorChar, '/');
+        }
         return proto + pathPart;
     }
 
@@ -115,11 +130,11 @@ public class ResPath {
      *
      * @param other the object to compare this object to
      * @return true if the paths are equal; false if they are not or the
-     *   parameter is not a path
+     * parameter is not a path
      */
     @Override
     public boolean equals(Object other) {
-        if(other instanceof ResPath) {
+        if (other instanceof ResPath) {
             ResPath rhs = (ResPath) other;
             return proto.equals(rhs.proto) && path.equals(rhs.path);
         }

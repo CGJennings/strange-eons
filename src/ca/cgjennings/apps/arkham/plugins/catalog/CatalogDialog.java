@@ -74,7 +74,10 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 public final class CatalogDialog extends javax.swing.JDialog implements AgnosticDialog {
-    /** Property that changes when the dialog switches to a new catalog. */
+
+    /**
+     * Property that changes when the dialog switches to a new catalog.
+     */
     public static final String CATALOG_PROPERTY = "catalog";
 
     /**
@@ -90,7 +93,10 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      */
     public static final String CATLINK_PREFIX = "eonscat:";
 
-    /** Empty catalog used whenever a valid catalog has not or could not be loaded. */
+    /**
+     * Empty catalog used whenever a valid catalog has not or could not be
+     * loaded.
+     */
     private final Catalog placeholderCatalog = new Catalog();
     private Catalog catalog = placeholderCatalog;
     private boolean doneInit = false;
@@ -401,9 +407,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     /**
-     * Selects all currently visible plug-ins for installation if possible.
-     * Does not affect the selection state of any plug-ins that are filtered
-     * out of the view.
+     * Selects all currently visible plug-ins for installation if possible. Does
+     * not affect the selection state of any plug-ins that are filtered out of
+     * the view.
      */
     public void selectFilteredListingsForInstallation() {
         if (catalog == placeholderCatalog) {
@@ -421,10 +427,10 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Sets a text message that will be displayed the next time the this dialog
-     * gains focus, or clears the current message if {@code null}. This can
-     * be used to provide an explanatory message or additional help when the
-     * dialog is being displayed under program control (for example, if the
-     * program is specifying the filter text).
+     * gains focus, or clears the current message if {@code null}. This can be
+     * used to provide an explanatory message or additional help when the dialog
+     * is being displayed under program control (for example, if the program is
+     * specifying the filter text).
      */
     public void setPopupText(String popupText) {
         this.popupText = popupText;
@@ -443,12 +449,12 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     /**
-     * Returns the current {@code eonscat:} link text that is on the
-     * clipboard, or {@code null} if the clipboard is empty or not an
-     * {@code eonscat:} link. On platforms with a system selection
-     * (primarily those based on the X Window System), the system selection is
-     * checked first. If there is no system selection or it does not contain a
-     * link, then then system clipboard is checked.
+     * Returns the current {@code eonscat:} link text that is on the clipboard,
+     * or {@code null} if the clipboard is empty or not an {@code eonscat:}
+     * link. On platforms with a system selection (primarily those based on the
+     * X Window System), the system selection is checked first. If there is no
+     * system selection or it does not contain a link, then then system
+     * clipboard is checked.
      *
      * @return a catalogue link, without the {@link #CATLINK_PREFIX}, if one is
      * present in the system selection or clipboard; otherwise {@code null}
@@ -498,7 +504,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                     // a selection so you could install plug-ins you
                     // can't see
                     clearItemActionPerformed(null);
-                    
+
                     if (e instanceof Catalog.CatalogIsLockedException) {
                         showPanel("locked");
                     } else {
@@ -1474,7 +1480,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
             final Model model = (Model) table.getModel();
             for (int i = 0; i < catalog.size(); ++i) {
                 // can't change state, so skip
-                if (!model.isCellEditable(i, COL_INSTALL)) continue;
+                if (!model.isCellEditable(i, COL_INSTALL)) {
+                    continue;
+                }
 
                 if (table.convertRowIndexToView(i) >= 0) {
                     catalog.setInstallFlag(i, true);

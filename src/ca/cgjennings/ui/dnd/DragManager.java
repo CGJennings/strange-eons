@@ -84,7 +84,7 @@ public final class DragManager<T> {
             dropCursor = DragSource.DefaultMoveDrop;
             noDropCursor = Cursor.getDefaultCursor();
             tokenVisible = true;
-        }        
+        }
         this.dragHandler = dragHandler;
         this.dropHandler = dropHandler;
     }
@@ -195,8 +195,7 @@ public final class DragManager<T> {
     /**
      * Returns {@code true} if drag token images are displayed.
      *
-     * @return {@code true} if the images associated with tokens are
-     * visible
+     * @return {@code true} if the images associated with tokens are visible
      */
     public boolean isTokenVisible() {
         return tokenVisible;
@@ -238,8 +237,8 @@ public final class DragManager<T> {
     }
 
     /**
-     * Ends a drag; if the specified target is {@code null}, the drag is
-     * being cancelled, otherwise the drag completed with a drop on that target.
+     * Ends a drag; if the specified target is {@code null}, the drag is being
+     * cancelled, otherwise the drag completed with a drop on that target.
      *
      * @param target the drop target, or {@code null}
      */

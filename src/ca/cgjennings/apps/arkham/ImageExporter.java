@@ -69,6 +69,7 @@ public class ImageExporter {
      * readme file.
      */
     private static final class ItemData {
+
         public String name;
         public String link;
         public PrintDimensions dimensions;

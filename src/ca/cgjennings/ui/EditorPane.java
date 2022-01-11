@@ -44,8 +44,7 @@ public class EditorPane extends JEditorPane {
      * Creates an {@code EditorPane} based on a specified URL for input.
      *
      * @param initialPage the URL
-     * @exception IOException if the URL is {@code null} or cannot be
-     * accessed
+     * @exception IOException if the URL is {@code null} or cannot be accessed
      */
     public EditorPane(URL initialPage) throws IOException {
         super(initialPage);
@@ -57,8 +56,7 @@ public class EditorPane extends JEditorPane {
      * specification.
      *
      * @param url the URL
-     * @exception IOException if the URL is {@code null} or cannot be
-     * accessed
+     * @exception IOException if the URL is {@code null} or cannot be accessed
      */
     public EditorPane(String url) throws IOException {
         super(url);
@@ -66,9 +64,8 @@ public class EditorPane extends JEditorPane {
     }
 
     /**
-     * Creates an {@code EditorPane} that has been initialized to the given
-     * text by calling the {@code setContentType} and {@code setText}
-     * methods.
+     * Creates an {@code EditorPane} that has been initialized to the given text
+     * by calling the {@code setContentType} and {@code setText} methods.
      *
      * @param type mime type of the given text
      * @param text the text to initialize with; may be {@code null}

@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class UndecoratedCardBack extends Sheet<GameComponent> {
+
     private final double bleedMargin;
 
     public UndecoratedCardBack(GameComponent component, String templateKey) {

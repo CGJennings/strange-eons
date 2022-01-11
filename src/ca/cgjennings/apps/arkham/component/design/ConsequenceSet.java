@@ -26,9 +26,9 @@ import java.util.LinkedHashSet;
  *
  * <p>
  * Consequences may be divided into categories, with a separate formatter for
- * each category. Because all formatting is written to a
- * {@code StringBuilder} provided by the caller, the results from each
- * category can easily be collected into a single formatted document.
+ * each category. Because all formatting is written to a {@code StringBuilder}
+ * provided by the caller, the results from each category can easily be
+ * collected into a single formatted document.
  *
  * <p>
  * If for some reason you cannot process each possible consequence in the same
@@ -171,11 +171,11 @@ public class ConsequenceSet implements Iterable<String> {
 
     /**
      * Sets the markup to write before and after the text of a deleted entry.
-     * Typically this will include a {@code &lt;li&gt;} tag pair and some
-     * style instructions.
+     * Typically this will include a {@code &lt;li&gt;} tag pair and some style
+     * instructions.
      *
-     * @param prologue the markup to write before the entry, or
-     * {@code null} to suppress the entry
+     * @param prologue the markup to write before the entry, or {@code null} to
+     * suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setDeletedEntryMarkup(String prologue, String epilogue) {
@@ -186,11 +186,10 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Sets the markup to write before and after the text of an entry that does
      * not change from the previous consequence set to this one. Typically this
-     * will include a {@code &lt;li&gt;} tag pair and some style
-     * instructions.
+     * will include a {@code &lt;li&gt;} tag pair and some style instructions.
      *
-     * @param prologue the markup to write before the entry, or
-     * {@code null} to suppress the entry
+     * @param prologue the markup to write before the entry, or {@code null} to
+     * suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setKeptEntryMarkup(String prologue, String epilogue) {
@@ -203,8 +202,8 @@ public class ConsequenceSet implements Iterable<String> {
      * was not present in the previous consequence set. Typically this will
      * include a {@code &lt;li&gt;} tag pair and some style instructions.
      *
-     * @param prologue the markup to write before the entry, or
-     * {@code null} to suppress the entry
+     * @param prologue the markup to write before the entry, or {@code null} to
+     * suppress the entry
      * @param epilogue the markup to write after the entry
      */
     public void setNewEntryMarkup(String prologue, String epilogue) {
@@ -352,8 +351,8 @@ public class ConsequenceSet implements Iterable<String> {
     /**
      * Writes a decorated consequence list entry into the string builder. The
      * base class will use the currently set markup for the entry type to
-     * compose the entry, replacing the text {@code @n;} with the undeleted
-     * item number.
+     * compose the entry, replacing the text {@code @n;} with the undeleted item
+     * number.
      *
      * @param b the destination for the markup text
      * @param entry the string that describes the consequence

@@ -795,16 +795,16 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets the size of the bleed margin for this component, in points.
-     * This can be set if the component's template images include
-     * a bleed margin as part of their design so that Strange Eons will take
-     * this into account when rendering sheets with bleed margins enabled.
-     * This will affect all of the component's faces (sheets).
-     * (The default is 0, meaning there is no bleed margin included in the design.)
-     * 
+     * Sets the size of the bleed margin for this component, in points. This can
+     * be set if the component's template images include a bleed margin as part
+     * of their design so that Strange Eons will take this into account when
+     * rendering sheets with bleed margins enabled. This will affect all of the
+     * component's faces (sheets). (The default is 0, meaning there is no bleed
+     * margin included in the design.)
+     *
      * <p>
-     * If no bleed margin is set using this method, each sheet will use
-     * a bleed margin set by the setting key
+     * If no bleed margin is set using this method, each sheet will use a bleed
+     * margin set by the setting key
      * <i>templateKey</i>{@code -bleed-margin}, or 0 if the key is not set.
      *
      * <p>
@@ -835,13 +835,14 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     /**
      * Sets the radius for rounding the corners of this component, in points.
-     * This will affect all of the component's faces (sheets).
-     * (The default is 0, leaving the corners sharp.)
+     * This will affect all of the component's faces (sheets). (The default is
+     * 0, leaving the corners sharp.)
      *
-     * <p>If no corner radius is set using this method, each sheet will use
-     * a separate radius set by the setting key
+     * <p>
+     * If no corner radius is set using this method, each sheet will use a
+     * separate radius set by the setting key
      * <i>templateKey</i>{@code -corner-radius}, or 0 if the key is not set.
-     * 
+     *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *

@@ -21,8 +21,8 @@ import javax.swing.text.Segment;
 //
 /**
  * An adapter for the document in the {@code JTextComponent} of a
- * {@code JComboBox} that extends the {@code JComboBox} to
- * automatically complete the field text using entries from the combo box list.
+ * {@code JComboBox} that extends the {@code JComboBox} to automatically
+ * complete the field text using entries from the combo box list.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -40,9 +40,9 @@ public class AutocompletionDocument implements NestingDocument {
     private boolean ignorecase;
 
     /**
-     * Create a new {@code AutocompletionDocument} that is wrapped around
-     * the existing document within a combo box. The combo box's editor must be
-     * a subclass of {@code JTextComponent}.
+     * Create a new {@code AutocompletionDocument} that is wrapped around the
+     * existing document within a combo box. The combo box's editor must be a
+     * subclass of {@code JTextComponent}.
      * <p>
      * The new document is not installed in the combo box, so autocompletion is
      * not started automatically. To easily create and install an adapter when
@@ -102,8 +102,8 @@ public class AutocompletionDocument implements NestingDocument {
      *
      * @param comboBox the {@code JComboBox} to modify
      * @return the newly installed document if installation was successful,
-     * otherwise {@code null} if it failed because the
-     * {@code JComboBox} is not using a {@code JTextComponent}
+     * otherwise {@code null} if it failed because the {@code JComboBox} is not
+     * using a {@code JTextComponent}
      */
     public static AutocompletionDocument install(JComboBox comboBox) {
         boolean wasEditable = comboBox.isEditable();
@@ -132,8 +132,8 @@ public class AutocompletionDocument implements NestingDocument {
      * @param casesensitive whether autocompletion matching should be case
      * sensitive
      * @return the newly installed document if installation was successful,
-     * otherwise {@code null} if it failed because the
-     * {@code JComboBox} is not using a {@code JTextComponent}
+     * otherwise {@code null} if it failed because the {@code JComboBox} is not
+     * using a {@code JTextComponent}
      */
     public static AutocompletionDocument install(JComboBox comboBox, boolean casesensitive) {
         AutocompletionDocument document = install(comboBox);
@@ -236,8 +236,7 @@ public class AutocompletionDocument implements NestingDocument {
     private Collator collator;
 
     /**
-     * Return the list order {@code Collator}, or {@code null} if none
-     * is set.
+     * Return the list order {@code Collator}, or {@code null} if none is set.
      *
      * @return the {@code Collator} by which elements are ordered
      */
@@ -246,9 +245,9 @@ public class AutocompletionDocument implements NestingDocument {
     }
 
     /**
-     * If set to a non-{@code null} object, it is assumed that list
-     * elements are sorted according to {@code collator}. A faster search
-     * algorithm can be employed when looking for an autocomplete match.
+     * If set to a non-{@code null} object, it is assumed that list elements are
+     * sorted according to {@code collator}. A faster search algorithm can be
+     * employed when looking for an autocomplete match.
      *
      * @param collator the {@code Collator} by which elements are ordered
      */

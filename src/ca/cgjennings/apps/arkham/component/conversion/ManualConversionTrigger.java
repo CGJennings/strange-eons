@@ -47,7 +47,9 @@ public class ManualConversionTrigger extends AbstractConversionTrigger {
     @Override
     public String toString() {
         String s = super.toString();
-        if (group != null) s += ", group $" + group;
+        if (group != null) {
+            s += ", group $" + group;
+        }
         return s;
     }
 }

@@ -255,7 +255,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
             }
             readWriteLocalizedProperties(true, selectedLocale);
             fillingInView = false;
-            
+
             Color fieldBG = selectedLocale == null ? defaultFieldBG : nondefaultBG;
             Color sourceBG = selectedLocale == null ? sourceFieldBG : nondefaultBG;
             catNameField.setBackground(fieldBG);

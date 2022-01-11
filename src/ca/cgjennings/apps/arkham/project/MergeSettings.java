@@ -10,8 +10,8 @@ import resources.Settings;
 
 /**
  * A task action that loads settings from a settings file into the shared
- * settings or a game's settings. Useful when developing plug-ins that require certain
- * settings to be available, such as DIY component scripts.
+ * settings or a game's settings. Useful when developing plug-ins that require
+ * certain settings to be available, such as DIY component scripts.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

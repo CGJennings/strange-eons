@@ -137,7 +137,7 @@ public class BundleInstaller {
         if (bundles == null) {
             throw new NullPointerException();
         }
-        for(File bundle : bundles) {
+        for (File bundle : bundles) {
             if (!bundle.exists() || bundle.isDirectory()) {
                 throw new IllegalArgumentException(bundle.toString());
             }
@@ -146,8 +146,8 @@ public class BundleInstaller {
     }
 
     /**
-     * Returns a new array containing all of the registered test bundles,
-     * or an empty array if there are no test bundles.
+     * Returns a new array containing all of the registered test bundles, or an
+     * empty array if there are no test bundles.
      *
      * @return files containing bundles to test
      */
@@ -299,9 +299,9 @@ public class BundleInstaller {
     }
 
     /**
-     * Searches for plug-in bundles ({@code .seplugin} files) in the
-     * plug-in folders. Newly discovered plug-ins are linked to the application
-     * and added to a
+     * Searches for plug-in bundles ({@code .seplugin} files) in the plug-in
+     * folders. Newly discovered plug-ins are linked to the application and
+     * added to a
      * {@linkplain #getInstalledPlugins() list of installed plug-ins}, but they
      * are not started immediately. This is because regular plug-ins can be
      * reloaded while the application is running, a process which is
@@ -352,11 +352,10 @@ public class BundleInstaller {
     }
 
     /**
-     * Searches for library bundles ({@code .selibrary} files) in the
-     * plug-in folders, and attempts to link the application to any libraries
-     * that it finds. This method is not normally called by user code. To
-     * install a library bundle, call
-     * {@link #installPluginBundle(java.io.File)}.
+     * Searches for library bundles ({@code .selibrary} files) in the plug-in
+     * folders, and attempts to link the application to any libraries that it
+     * finds. This method is not normally called by user code. To install a
+     * library bundle, call {@link #installPluginBundle(java.io.File)}.
      *
      * @see #getInstalledLibraries()
      */
@@ -442,8 +441,7 @@ public class BundleInstaller {
      * className, or {@code null} if no such theme is available.
      *
      * @param className the class name of the theme to search for
-     * @return the {@link InstalledTheme} with the class name, or
-     * {@code null}
+     * @return the {@link InstalledTheme} with the class name, or {@code null}
      */
     public synchronized static InstalledTheme getInstalledThemeForClassName(String className) {
         if (className == null) {
@@ -469,8 +467,8 @@ public class BundleInstaller {
      * called during application startup. It should never be called by user
      * code.
      *
-     * @param pl if non-{@code null}, this listener will be called
-     * periodically with updates on installation progress
+     * @param pl if non-{@code null}, this listener will be called periodically
+     * with updates on installation progress
      * @see #unloadExtensions()
      * @see #getInstalledExtensions()
      */
@@ -657,9 +655,9 @@ public class BundleInstaller {
     /**
      * Search the plug-in folders for files with names that end in
      * {@code extension}. For each such file, any plug-ins it contains are
-     * enumerated and added to {@code pluginSet}. If it contains at least
-     * one plug-in, or if {@code pluginSet} is {@code null}, then the
-     * file is added to the class path.
+     * enumerated and added to {@code pluginSet}. If it contains at least one
+     * plug-in, or if {@code pluginSet} is {@code null}, then the file is added
+     * to the class path.
      *
      * @param pluginSet a set that discovered plug-ins will be added to (may be
      * {@code null} for libraries)
@@ -668,7 +666,7 @@ public class BundleInstaller {
      */
     private static void scanForPlugins(Set<? extends InstalledBundleObject> pluginSet, int pluginType) {
         // try adding the test plug-in bundle, if it exists
-        for(File tb : testBundles) {
+        for (File tb : testBundles) {
             scanBundle(pluginSet, tb, pluginType);
         }
 
@@ -703,8 +701,8 @@ public class BundleInstaller {
     private static boolean disablePluginLoading = false;
 
     /**
-     * Calling this method will prevent plug-ins bundles from being loaded, except for
-     * any test bundles specified on the command line.
+     * Calling this method will prevent plug-ins bundles from being loaded,
+     * except for any test bundles specified on the command line.
      */
     public static void disablePluginLoading() {
         disablePluginLoading = true;
@@ -720,8 +718,8 @@ public class BundleInstaller {
      * <li>Its root file will be parsed, and if a bundle with its UUID is not
      * already installed then:
      * <li>{@link InstalledPlugin}s will be created for each plug-in listed in
-     * the bundle, and added to pluginSet if it is not {@code null}. (No
-     * actual plug-ins are instantiated, however.)
+     * the bundle, and added to pluginSet if it is not {@code null}. (No actual
+     * plug-ins are instantiated, however.)
      * <li>The bundle will be linked to the application (added to the class
      * path).
      * </ol>
@@ -817,11 +815,11 @@ public class BundleInstaller {
                 StrangeEons.log.warning("bundle has no catalog ID: " + bundleFile.getName());
             } else {
                 // check if clashes with existing UUID and if so skip
-                if(catalogIDMap.containsKey(id.getUUID()) && !bundleFile.equals(uuidToFileMap.get(id.getUUID())) ) {
+                if (catalogIDMap.containsKey(id.getUUID()) && !bundleFile.equals(uuidToFileMap.get(id.getUUID()))) {
                     File alreadyLoaded = uuidToFileMap.get(id.getUUID());
                     StrangeEons.log.log(Level.WARNING,
                             "ignoring {0} because a bundle with the same UUID was already loaded: {1}",
-                            new Object[] {bundleFile.getName(), alreadyLoaded.getAbsolutePath()}
+                            new Object[]{bundleFile.getName(), alreadyLoaded.getAbsolutePath()}
                     );
                     return;
                 }
@@ -964,9 +962,9 @@ public class BundleInstaller {
             JarLoader.addToClassPath(bundleFile);
             discoveredBundles.put(bundleFile, pluginBundle);
             StrangeEons.log.log(Level.FINE, "dynamically linked to plug-in bundle {0}", bundleFile);
-        } catch(IOException ioe) {
+        } catch (IOException ioe) {
             throw new PluginException("failed to load bundle", ioe);
-        } catch(Throwable t) {
+        } catch (Throwable t) {
             throw new PluginException("bundle link error", t);
         }
     }
@@ -1147,8 +1145,8 @@ public class BundleInstaller {
      * Find the addURL method of a class loader, walking the inheritance tree as
      * needed.
      *
-     * @return the {@code addURL( URL url )} method, or {@code null}
-     * if there is no such method in the class or its superclasses
+     * @return the {@code addURL( URL url )} method, or {@code null} if there is
+     * no such method in the class or its superclasses
      */
     @SuppressWarnings("unchecked")
     private static Method searchForMethod(Class c) {
@@ -1163,7 +1161,7 @@ public class BundleInstaller {
     }
 
     private static void init() {
-        if(!JarLoader.isSupported()) {
+        if (!JarLoader.isSupported()) {
             throw new AssertionError(
                     "unable to load plugins, try adding -javaagent:<path to strange-eons.jar> to the command line"
             );
@@ -1568,9 +1566,9 @@ public class BundleInstaller {
     }
 
     /**
-     * Returns {@code true} if the JavaFX runtime is available. This method
-     * will attempt to locate, dynamically load, and start the runtime
-     * before returning {@code false}.
+     * Returns {@code true} if the JavaFX runtime is available. This method will
+     * attempt to locate, dynamically load, and start the runtime before
+     * returning {@code false}.
      *
      * @return {@code true} if the JavaFX runtime is available
      * @deprecated This method returns {@code false}.

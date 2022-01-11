@@ -61,9 +61,9 @@ import java.io.OutputStream;
  * <p>
  * Note that there is typically only one instance of a given export container
  * that is shared by all users. It is therefore vital that users of a contain
- * surround its use with appropriate {@code try} ... {@code catch}
- * blocks. Otherwise, an error may leave the container instance in an invalid
- * state and it will not be usable again until the application is restarted.
+ * surround its use with appropriate {@code try} ... {@code catch} blocks.
+ * Otherwise, an error may leave the container instance in an invalid state and
+ * it will not be usable again until the application is restarted.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -93,15 +93,15 @@ public interface ExportContainer {
      * container. The dialog is not necessarily a file dialog; for example, it
      * might prompt the user to enter account credentials for an online service
      * or enter the address of an FTP server. It is not required to show any
-     * dialog at all, and may simply return {@code true} if there is
-     * nothing for the user to decide.
+     * dialog at all, and may simply return {@code true} if there is nothing for
+     * the user to decide.
      *
      * @param baseName a suggested base name that can be used to compose a file
      * or folder name for the container
      * @param locationHint an optional component that may be used as a hint to
      * locate any dialogs that must be created
-     * @return {@code true} if the export should proceed, or
-     * {@code false} if the user cancels the operation
+     * @return {@code true} if the export should proceed, or {@code false} if
+     * the user cancels the operation
      */
     boolean selectLocation(String baseName, Component locationHint);
 
@@ -140,8 +140,8 @@ public interface ExportContainer {
     /**
      * Close the current container, allowing a new container to be created.
      *
-     * @param display if {@code true}, the user has requested that the
-     * container be "displayed"
+     * @param display if {@code true}, the user has requested that the container
+     * be "displayed"
      * @throws IOException if an I/O exception occurs
      */
     void closeContainer(boolean display) throws IOException;
@@ -170,9 +170,9 @@ public interface ExportContainer {
 
     /**
      * Returns a hint as to whether a file format is supported. This method
-     * returns {@code true} if the file type is definitely supported. It
-     * returns {@code false} if the file type is not supported, or if the
-     * container cannot determine whether the file type is supported.
+     * returns {@code true} if the file type is definitely supported. It returns
+     * {@code false} if the file type is not supported, or if the container
+     * cannot determine whether the file type is supported.
      *
      * <p>
      * A common use of this method is to determine whether a container is

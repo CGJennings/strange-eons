@@ -15,8 +15,8 @@ package ca.cgjennings.apps.arkham;
 public interface NamedObjectDatabase {
 
     /**
-     * Returns the object associated with the requested name, or
-     * {@code null} if there is no object associated with the name.
+     * Returns the object associated with the requested name, or {@code null} if
+     * there is no object associated with the name.
      *
      * @param name the object name to return
      * @return the value of the object in the database, or {@code null}

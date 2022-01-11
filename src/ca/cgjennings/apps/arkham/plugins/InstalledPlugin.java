@@ -6,9 +6,9 @@ import javax.swing.KeyStroke;
 import resources.Settings;
 
 /**
- * An {@code InstalledPlugin} bridges the gap between a plug-in bundle and
- * the plug-ins that it contains. It is not the plug-in itself, but it creates
- * and manages instances of the plug-in on demand. When a plug-in bundle is
+ * An {@code InstalledPlugin} bridges the gap between a plug-in bundle and the
+ * plug-ins that it contains. It is not the plug-in itself, but it creates and
+ * manages instances of the plug-in on demand. When a plug-in bundle is
  * installed, an instance is created for each plug-in listed in the bundle's
  * root file.
  *
@@ -30,11 +30,10 @@ public class InstalledPlugin extends AbstractInstalledPlugin {
     }
 
     /**
-     * Returns {@code true} if this plug-in is disabled. This state is
-     * tracked in user {@link Settings}.
+     * Returns {@code true} if this plug-in is disabled. This state is tracked
+     * in user {@link Settings}.
      *
-     * @return {@code true} if the plug-in is enabled (which it is by
-     * default)
+     * @return {@code true} if the plug-in is enabled (which it is by default)
      */
     public boolean isEnabled() {
         return !Settings.getUser().getYesNo(settingKey("disable"));

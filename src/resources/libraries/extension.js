@@ -1,7 +1,7 @@
 /*
-  extension.js - version 8
-  Convert a normal plug-in script into an extension plug-in.
-*/
+ extension.js - version 8
+ Convert a normal plug-in script into an extension plug-in.
+ */
 
 const Game = gamedata.Game;
 const Expansion = gamedata.Expansion;

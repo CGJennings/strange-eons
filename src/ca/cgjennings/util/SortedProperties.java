@@ -8,8 +8,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * A subclass of {@code java.util.Properties} that stores its entries in
- * sorted order.
+ * A subclass of {@code java.util.Properties} that stores its entries in sorted
+ * order.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 1.5
@@ -49,9 +49,8 @@ public class SortedProperties extends Properties {
     }
 
     /**
-     * Return a comparator that will be used to sort the keys. If
-     * {@code null} is returned, keys will be sorted according to their
-     * natural order.
+     * Return a comparator that will be used to sort the keys. If {@code null}
+     * is returned, keys will be sorted according to their natural order.
      *
      * @return the comparator implementing the sort order, or {@code null}
      */
@@ -60,8 +59,8 @@ public class SortedProperties extends Properties {
     }
 
     /**
-     * Set the comparator that will be used to sort the keys. If
-     * {@code null}, keys will be sorted according to their natural order.
+     * Set the comparator that will be used to sort the keys. If {@code null},
+     * keys will be sorted according to their natural order.
      *
      * @param comparator the comparator implementing the sort order, or
      * {@code null}

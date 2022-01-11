@@ -6,10 +6,10 @@ import java.util.LinkedList;
 /**
  * An abstract {@link TaskAction} for actions that contain one or more child
  * actions. The action is applicable if any of the children are applicable. A
- * {@code TaskActionTree} is never performed, but it's children can be.
- * Adding a {@code null} value as a child indicates logical separation
- * between two groups of children. This may be manifested, for example, as a
- * separator in a command menu.
+ * {@code TaskActionTree} is never performed, but it's children can be. Adding a
+ * {@code null} value as a child indicates logical separation between two groups
+ * of children. This may be manifested, for example, as a separator in a command
+ * menu.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -64,14 +64,14 @@ public abstract class TaskActionTree extends TaskAction implements Iterable<Task
      * Returns the index at which to
      * {@link #add(int, ca.cgjennings.apps.arkham.project.TaskAction)} an action
      * in order to place it at the start or end of the numbered section. A new
-     * section begins whenever a {@code null} action (separator) appears in
-     * the list of actions; the first section (before any separator) is numbered
-     * 0. If the specified section number is higher than the actual number of
+     * section begins whenever a {@code null} action (separator) appears in the
+     * list of actions; the first section (before any separator) is numbered 0.
+     * If the specified section number is higher than the actual number of
      * sections, the returned index will append actions to the end of the list.
      *
      * @param section the section number
-     * @param placeAtEndOfSection if {@code true}, the index will locate
-     * the action at the end of the section rather than the start
+     * @param placeAtEndOfSection if {@code true}, the index will locate the
+     * action at the end of the section rather than the start
      * @return the index at which to add an action to place it at the specified
      * position in the specified section
      * @throws IllegalArgumentException if the section number is negative
@@ -161,8 +161,7 @@ public abstract class TaskActionTree extends TaskAction implements Iterable<Task
      * <p>
      * The base class returns {@code false}.
      *
-     * @return {@code true} if all children apply to exactly same set of
-     * members
+     * @return {@code true} if all children apply to exactly same set of members
      */
     protected boolean isAppliesToShortCircuited() {
         return false;

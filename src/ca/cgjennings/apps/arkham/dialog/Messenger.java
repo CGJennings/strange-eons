@@ -17,11 +17,11 @@ import javax.swing.UIManager;
 import resources.ResourceKit;
 
 /**
- * The {@code Messenger} manages the display of information and error
- * messages for top-level windows. A queue of messages is maintained for each
- * window. If a message is already displayed and a new message is posted, it
- * will be added to a queue and shown after the current message and all queued
- * messages have been displayed.
+ * The {@code Messenger} manages the display of information and error messages
+ * for top-level windows. A queue of messages is maintained for each window. If
+ * a message is already displayed and a new message is posted, it will be added
+ * to a queue and shown after the current message and all queued messages have
+ * been displayed.
  *
  * <p>
  * Messages that do not explicitly return a result will return immediately,
@@ -235,8 +235,8 @@ public class Messenger {
      * When queue processing is reenabled, the display of messages in the queue
      * will resume.
      *
-     * @param enable whether queued messages should be displayed
-     * ({@code true}) or held for future display ({@code false})
+     * @param enable whether queued messages should be displayed ({@code true})
+     * or held for future display ({@code false})
      * @see #isQueueProcessingEnabled()
      */
     public static void setQueueProcessingEnabled(boolean enable) {
@@ -259,8 +259,8 @@ public class Messenger {
     }
 
     /**
-     * Returns {@code true} if the messages in message queues are actively
-     * being displayed.
+     * Returns {@code true} if the messages in message queues are actively being
+     * displayed.
      *
      * @return {@code true} if queue processing is enabled
      */

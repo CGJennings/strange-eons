@@ -79,16 +79,16 @@ public class RegionPicker extends javax.swing.JDialog {
                 return;
             }
             ignoreRegionChange = true;
-            
+
             x.setValue(region.x);
             y.setValue(region.y);
             w.setValue(region.width);
             h.setValue(region.height);
-            
+
             if (autocopyCheck.isSelected()) {
                 updateRegionInEditor(region);
             }
-            
+
             ignoreRegionChange = false;
         });
         editor.addMouseWheelListener((MouseWheelEvent e) -> {

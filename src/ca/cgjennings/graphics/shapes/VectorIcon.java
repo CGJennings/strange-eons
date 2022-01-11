@@ -130,8 +130,8 @@ public class VectorIcon implements Icon {
     }
 
     /**
-     * Returns {@code true} if the image's aspect ratio will be maintained
-     * by fitting it within the icon width and height.
+     * Returns {@code true} if the image's aspect ratio will be maintained by
+     * fitting it within the icon width and height.
      *
      * @return {@code true} if the painted area will pad one dimension, if
      * necessary, to maintain the original image's aspect ratio

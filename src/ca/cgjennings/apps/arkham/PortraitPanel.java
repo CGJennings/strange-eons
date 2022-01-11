@@ -156,8 +156,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     }
 
     /**
-     * Returns {@code true} if the invoking an editor application is
-     * supported.
+     * Returns {@code true} if the invoking an editor application is supported.
      *
      * @return {@code true} if editing is supported
      */
@@ -287,9 +286,8 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     private Portrait portrait;
 
     /**
-     * Link this panel to another panel. The image to use will be
-     * determined by the linked parent panel, so image selection
-     * is disabled.
+     * Link this panel to another panel. The image to use will be determined by
+     * the linked parent panel, so image selection is disabled.
      *
      * @param parent the panel to link to
      */

@@ -91,11 +91,10 @@ public class CommandFormatter {
     /**
      * Defines a variable that will replaced when formatting a command. When a
      * percent sign (%) occurs in a command template and is followed by this
-     * variable name, it will be replaced by calling
-     * {@code value.toString()}. Setting a variable name to
-     * {@code null} will remove the variable, if it has been defined. The
-     * variable % is reserved so that the sequence "%%" always produces "%" in
-     * the formatted command.
+     * variable name, it will be replaced by calling {@code value.toString()}.
+     * Setting a variable name to {@code null} will remove the variable, if it
+     * has been defined. The variable % is reserved so that the sequence "%%"
+     * always produces "%" in the formatted command.
      *
      * @param name the variable name
      * @param value the value for the variable
@@ -114,8 +113,8 @@ public class CommandFormatter {
     }
 
     /**
-     * Returns the value of a variable, or {@code null} if the variable is
-     * not defined.
+     * Returns the value of a variable, or {@code null} if the variable is not
+     * defined.
      *
      * @param name the variable name
      * @return the object assigned to the variable

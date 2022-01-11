@@ -88,7 +88,7 @@ public class Base64 {
     /**
      * Translates a Base64 value to either its 6-bit reconstruction value or a
      * negative number indicating some other meaning.
-	 *
+     *
      */
     private final static byte[] _STANDARD_DECODABET = {
         -9, -9, -9, -9, -9, -9, -9, -9, -9, // Decimal  0 -  8
@@ -305,10 +305,10 @@ public class Base64 {
     }   // end encode3to4
 
     /**
-     * Performs Base64 encoding on the {@code raw} ByteBuffer, writing it
-     * to the {@code encoded} ByteBuffer. This is an experimental feature.
-     * Currently it does not pass along any options (such as
-     * {@link #DO_BREAK_LINES} or {@link #GZIP}.
+     * Performs Base64 encoding on the {@code raw} ByteBuffer, writing it to the
+     * {@code encoded} ByteBuffer. This is an experimental feature. Currently it
+     * does not pass along any options (such as {@link #DO_BREAK_LINES} or
+     * {@link #GZIP}.
      *
      * @param raw input buffer
      * @param encoded output buffer
@@ -327,10 +327,10 @@ public class Base64 {
     }
 
     /**
-     * Performs Base64 encoding on the {@code raw} ByteBuffer, writing it
-     * to the {@code encoded} CharBuffer. This is an experimental feature.
-     * Currently it does not pass along any options (such as
-     * {@link #DO_BREAK_LINES} or {@link #GZIP}.
+     * Performs Base64 encoding on the {@code raw} ByteBuffer, writing it to the
+     * {@code encoded} CharBuffer. This is an experimental feature. Currently it
+     * does not pass along any options (such as {@link #DO_BREAK_LINES} or
+     * {@link #GZIP}.
      *
      * @param raw input buffer
      * @param encoded output buffer
@@ -1106,10 +1106,9 @@ public class Base64 {
         } // end try
         catch (java.io.IOException | java.lang.ClassNotFoundException e) {
             throw e;    // Catch and throw in order to execute finally{}
-        }
-        // Catch and throw in order to execute finally{}
+        } // Catch and throw in order to execute finally{}
         // end catch
-         // end catch
+        // end catch
         finally {
             try {
                 bais.close();
@@ -1413,8 +1412,7 @@ public class Base64 {
          *     (only meaningful when encoding)
          * </pre>
          * <p>
-         * Example:
-         * {@code new Base64.Base64InputStream( in, Base64.DECODE )}
+         * Example: {@code new Base64.Base64InputStream( in, Base64.DECODE )}
          *
          *
          * @param in the <tt>java.io.Base64InputStream</tt> from which to read
@@ -1615,8 +1613,7 @@ public class Base64 {
          *     (only meaningful when encoding)
          * </pre>
          * <p>
-         * Example:
-         * {@code new Base64.Base64OutputStream( out, Base64.ENCODE )}
+         * Example: {@code new Base64.Base64OutputStream( out, Base64.ENCODE )}
          *
          * @param out the <tt>java.io.Base64OutputStream</tt> to which data will
          * be written.

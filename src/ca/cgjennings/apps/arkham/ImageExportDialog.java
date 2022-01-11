@@ -30,6 +30,7 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
+
     private WritableImageFormat[] wifs;
     private String[] formats;
     private SimpleImageWriter[] writers;
@@ -583,7 +584,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     boolean isFaceSuppressionEnabled() {
         return suppressBackBtn.isSelected();
     }
-    
+
     double getUserBleedMargin() {
         FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
         double ubm = fs.getSuggestedBleedMargin();
@@ -776,7 +777,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             configDestinationBtn.setVisible(hasOptions);
             updateFormatWarning();
 	}//GEN-LAST:event_destinationComboActionPerformed
-        
+
     private void suppressBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppressBackBtnActionPerformed
         if (suppressBackBtn.isSelected()) {
             joinImagesBox.setSelected(false);
@@ -881,13 +882,13 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         ExportContainer ec = getExportContainer();
         FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
         boolean fmtHasAlpha = getImageWriter().isTransparencySupported();
-        
+
         if (!ec.isFileFormatSupported(fmt.toLowerCase(Locale.ROOT))) {
             warning = string("exf-warn-format");
         } else if (fs == FinishStyle.ROUND && !fmtHasAlpha) {
             warning = string("exf-warn-transparency");
         }
-        
+
         if (warning != null) {
             formatWarning.setText(warning);
         }

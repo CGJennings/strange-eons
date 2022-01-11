@@ -52,8 +52,8 @@ public class WideItemComboBox<T> extends JComboBox<T> {
     }
 
     /**
-     * Returns {@code true} if the popup menu is allowed to be wider than
-     * the combo box when displaying wide items.
+     * Returns {@code true} if the popup menu is allowed to be wider than the
+     * combo box when displaying wide items.
      *
      * @return {@code true} if the popup width expands for large items
      */
@@ -65,8 +65,8 @@ public class WideItemComboBox<T> extends JComboBox<T> {
      * Sets whether the popup menu is allowed to be wider than the combo box
      * when displaying wide items.
      *
-     * @param widePopupEnabled if {@code true} the popup width expands for
-     * large items
+     * @param widePopupEnabled if {@code true} the popup width expands for large
+     * items
      */
     public void setWidePopupEnabled(boolean widePopupEnabled) {
         this.widePopupEnabled = widePopupEnabled;

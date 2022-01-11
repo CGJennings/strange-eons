@@ -11,9 +11,9 @@ import javax.swing.UIManager;
 import static resources.Language.string;
 
 /**
- * This task action applies to {@code .properties} files that are not in
- * the default language (that is, they have at least one underscore
- * {@code _} in the file name, e.g., {@code X_en.properties}).
+ * This task action applies to {@code .properties} files that are not in the
+ * default language (that is, they have at least one underscore {@code _} in the
+ * file name, e.g., {@code X_en.properties}).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

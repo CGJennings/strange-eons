@@ -112,8 +112,8 @@ public enum Command {
      * The first argument is an index indicating the stack frame (0 is the top).
      * The second argument identifies the object to list the properties of; it
      * is a chain of null-character separated symbols, starting with either
-     * {@code &lt;scope&gt;} or {@code &lt;this&gt;} to begin from the
-     * local scope or the current {@code this} object (respectively).
+     * {@code &lt;scope&gt;} or {@code &lt;this&gt;} to begin from the local
+     * scope or the current {@code this} object (respectively).
      *
      */
     SCOPE(2),
@@ -165,8 +165,8 @@ public enum Command {
      * Escapes raw text that will be displayed within HTML content.
      *
      * @param s the string to escape
-     * @return the content of {@code s}, with the characters &lt;, &gt;,
-     * and &amp; converted to the appropriate HTML entity values
+     * @return the content of {@code s}, with the characters &lt;, &gt;, and
+     * &amp; converted to the appropriate HTML entity values
      */
     public static String escapeHTML(String s) {
         int col = 0;

@@ -58,22 +58,22 @@ class ResourceReferenceTask extends NewTaskType {
                 if (!appFile.isDirectory() && appFile.exists()) {
                     unpack(task, appFile);
                 }
-                
+
                 for (final CoreComponents cc : CoreComponents.values()) {
                     if (cc.getInstallationState() == VersioningState.NOT_INSTALLED) {
                         continue;
                     }
-                    
+
                     CatalogID id = cc.getCatalogID();
                     if (id == null) {
                         continue;
                     }
-                    
+
                     File coreFile = BundleInstaller.getBundleFileForUUID(id.getUUID());
                     if (coreFile == null) {
                         continue;
                     }
-                    
+
                     unpack(task, coreFile);
                 }
             } catch (IOException e) {

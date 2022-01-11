@@ -102,11 +102,12 @@ public class JHelpButton extends JLabel {
     }
 
     @Deprecated
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public void setWikiPage(String pageTitle) {
-          setHelpPage(pageTitle);
+        setHelpPage(pageTitle);
     }
-
 
     /**
      * Open the help page that has been set for this component. Subclasses may

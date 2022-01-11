@@ -208,8 +208,8 @@ public class Tile extends AbstractRenderedItem {
     private transient BufferedImage cachedTileImage;
 
     /**
-     * Returns {@code true} if the tile can be painted as a simple outline
-     * when drawing a low quality preview.
+     * Returns {@code true} if the tile can be painted as a simple outline when
+     * drawing a low quality preview.
      *
      * @return {@code true} if the tile can be draw as an outline
      */
@@ -222,8 +222,7 @@ public class Tile extends AbstractRenderedItem {
      * low quality. Typically, only items in the TILE tile class will set this
      * to {@code true}.
      *
-     * @param allowsOutlineDrawing {@code true} to allow drawing as an
-     * outline
+     * @param allowsOutlineDrawing {@code true} to allow drawing as an outline
      */
     public void setFastOutlineAllowed(boolean allowsOutlineDrawing) {
         this.allowsOutlineDrawing = allowsOutlineDrawing;

@@ -10,6 +10,7 @@ import gamedata.ResourceParser;
  * @since 3.3
  */
 public class ResourceFileTokenizer extends PropertyTokenizer {
+
     public ResourceFileTokenizer() {
         super(true);
     }

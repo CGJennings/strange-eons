@@ -91,8 +91,8 @@ public class ChannelSwapFilter extends AbstractPixelwiseFilter {
     private static final int MAX_VALUE = 265;
 
     /**
-     * Creates a {@code ChannelSwapFilter} that copies each channel from
-     * the the same channel in the source image, reproducing the original image.
+     * Creates a {@code ChannelSwapFilter} that copies each channel from the the
+     * same channel in the source image, reproducing the original image.
      */
     public ChannelSwapFilter() {
     }
@@ -223,8 +223,8 @@ public class ChannelSwapFilter extends AbstractPixelwiseFilter {
 
     /**
      * Checks a source channel value to make sure it is valid. If not, an
-     * {@code IllegalArgumentException} is thrown. Otherwise, the channel
-     * value is returned.
+     * {@code IllegalArgumentException} is thrown. Otherwise, the channel value
+     * is returned.
      *
      * @param ch the channel value to check
      * @return {@code ch}

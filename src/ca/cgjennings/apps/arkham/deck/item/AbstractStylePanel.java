@@ -63,10 +63,10 @@ public abstract class AbstractStylePanel<S extends Style> extends JPanel impleme
      * This implementation assumes that the panel implements the {@link Style}
      * subclass that it edits. (So, if this extends
      * {@code AbstractStylePanel&lt;MyStyle&gt;} then it also implements
-     * {@code MyStyle}.) It populates the specified capture by simply
-     * capturing this panel instance (so the panel's getter methods for the
-     * style will be called to obtain the panel state). If this panel does not
-     * implement the style interface, an exception will be thrown at runtime.
+     * {@code MyStyle}.) It populates the specified capture by simply capturing
+     * this panel instance (so the panel's getter methods for the style will be
+     * called to obtain the panel state). If this panel does not implement the
+     * style interface, an exception will be thrown at runtime.
      *
      * @param capture the capture to fill in with the panel state
      */
@@ -82,10 +82,10 @@ public abstract class AbstractStylePanel<S extends Style> extends JPanel impleme
      * This implementation assumes that the panel implements the {@link Style}
      * subclass that it edits. (So, if this extends
      * {@code AbstractStylePanel<MyStyle>} then it also implements
-     * {@code MyStyle}.) It populates the panel by simply applying the
-     * capture to the panel (so the panel's setter methods for the style will be
-     * invoked accordingly). If this panel does not implement the style
-     * interface, an exception will be thrown at runtime.
+     * {@code MyStyle}.) It populates the panel by simply applying the capture
+     * to the panel (so the panel's setter methods for the style will be invoked
+     * accordingly). If this panel does not implement the style interface, an
+     * exception will be thrown at runtime.
      *
      * @param capture the capture to load this panel's state from
      */

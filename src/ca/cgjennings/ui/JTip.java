@@ -26,11 +26,11 @@ import resources.ResourceKit;
  * is set via {@link #setTipText}.
  *
  * <p>
- * <b>Note:</b> This class uses a {@code JLabel} to display the pop-up tip
- * text. Subclasses may substitute a different component by overriding
+ * <b>Note:</b> This class uses a {@code JLabel} to display the pop-up tip text.
+ * Subclasses may substitute a different component by overriding
  * {@link #getTipComponent()}. If the returned component is not an instance of
- * {@code JLabel}, then the methods for getting and setting the tip
- * properties must also be overridden.
+ * {@code JLabel}, then the methods for getting and setting the tip properties
+ * must also be overridden.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

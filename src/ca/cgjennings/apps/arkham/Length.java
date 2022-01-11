@@ -32,8 +32,8 @@ public class Length implements Comparable<Length> {
     }
 
     /**
-     * Sets this length to the distance specified by the
-     * {@code measurement} and {@code unit}.
+     * Sets this length to the distance specified by the {@code measurement} and
+     * {@code unit}.
      *
      * @param measurement the magnitude of the distance
      * @param unit the unit in which the measurement is expressed
@@ -45,8 +45,8 @@ public class Length implements Comparable<Length> {
     /**
      * Returns the value of this length measurement in the requested unit.
      *
-     * @param unit the desired unit, such as {@code CM}, {@code IN},
-     * or {@code PT}
+     * @param unit the desired unit, such as {@code CM}, {@code IN}, or
+     * {@code PT}
      * @return this object's length measurement expressed in the specified unit
      */
     public double get(int unit) {
@@ -101,12 +101,12 @@ public class Length implements Comparable<Length> {
     }
 
     /**
-     * Returns {@code true} if and only if the compared object is a length
-     * of equal size.
+     * Returns {@code true} if and only if the compared object is a length of
+     * equal size.
      *
      * @param obj the object to compare this to
-     * @return {@code true} if {@code obj} is a {@code Length}
-     * that represents the same distance
+     * @return {@code true} if {@code obj} is a {@code Length} that represents
+     * the same distance
      */
     @Override
     public boolean equals(Object obj) {

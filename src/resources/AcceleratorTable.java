@@ -53,7 +53,8 @@ public final class AcceleratorTable {
      * Creates a new accelerator table that reads its content from the specified
      * resource file. The table will also check for a file with the same name in
      * the {@code keys} subfolder of the user storage folder, and load any
-     * definitions found there. Tables created using this constructor can null     {@linkplain #set(java.lang.String, javax.swing.KeyStroke) modify the
+     * definitions found there. Tables created using this constructor can null
+     * null null null     {@linkplain #set(java.lang.String, javax.swing.KeyStroke) modify the
 	 * key mappings} and {@linkplain #update save changes back again}.
      *
      * @param baseFile the base file name of the table to load
@@ -186,14 +187,14 @@ public final class AcceleratorTable {
      * Converts a string to a single key stroke. The string may use one of two
      * formats: the verbose format use by the {@link KeyStroke} class, or a
      * compact format that requires less typing. The compact format uses the
-     * form {@code [modifiers*+]key}. Here,{@code modifiers}
-     * represents a sequence of one or more modifier keys. Each modifier is
-     * represented by a single letter:
+     * form {@code [modifiers*+]key}. Here,{@code modifiers} represents a
+     * sequence of one or more modifier keys. Each modifier is represented by a
+     * single letter:
      *
      * <table border=0>
      * <caption>Modifier letter codes</caption>
-     * <tr valign=top><th>{@code P} <td>Platform-specific menu accelerator
-     * key (Control on most platforms; Command on OS X)
+     * <tr valign=top><th>{@code P} <td>Platform-specific menu accelerator key
+     * (Control on most platforms; Command on OS X)
      * <tr valign=top><th>{@code M} <td>Meta (Command)
      * <tr valign=top><th>{@code C} <td>Control
      * <tr valign=top><th>{@code A} <td>Alt
@@ -203,18 +204,13 @@ public final class AcceleratorTable {
      * </table>
      *
      * <p>
-     * <b>Examples:</b><br>
-     * {@code HOME}<br>
-     * {@code ctrl X}<br>
-     * {@code ctrl alt DELETE}<br>
-     * {@code C+X}<br>
-     * {@code CA+DELETE}<br>
+     * <b>Examples:</b><br> {@code HOME}<br> {@code ctrl X}<br>
+     * {@code ctrl alt DELETE}<br> {@code C+X}<br> {@code CA+DELETE}<br>
      * {@code C + A + Delete}
      *
-     * @param description the string description of the key stroke, in one of the
-     * two supported formats
-     * @return a {@code KeyStroke} for the string description, or
-     * {@code null}
+     * @param description the string description of the key stroke, in one of
+     * the two supported formats
+     * @return a {@code KeyStroke} for the string description, or {@code null}
      */
     public static KeyStroke acceleratorFromString(String description) {
         if (description == null || description.isEmpty()) {

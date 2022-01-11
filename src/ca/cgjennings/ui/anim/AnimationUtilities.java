@@ -150,8 +150,8 @@ public class AnimationUtilities {
      * window's current alpha is used
      * @param endAlpha the alpha value for the window at the end of animation
      * @param seconds the duration of the animation
-     * @param disposeOnFinish if {@code true}, the window's
-     * {@code dispose} method is called when the animation completes
+     * @param disposeOnFinish if {@code true}, the window's {@code dispose}
+     * method is called when the animation completes
      * @throws NullPointerException if the window {@code w} is null
      * @throws IllegalArgumentException if the alpha values are outside of the 0
      * to 1 range (except that {@code startAlpha} may be -1) or if

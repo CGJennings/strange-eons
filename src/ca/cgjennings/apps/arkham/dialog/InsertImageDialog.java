@@ -90,7 +90,7 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
             units = Length.PT;
             uWidth = InsertImageDialog.this.tile.getWidth();
             uHeight = InsertImageDialog.this.tile.getHeight();
-            
+
             convertUnits(unitCombo.getSelectedIndex());
             updateFieldsFromDimensions();
         });
@@ -495,8 +495,8 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     * Returns the markup that will insert the selected image, or
-     * {@code null} if the operation was cancelled.
+     * Returns the markup that will insert the selected image, or {@code null}
+     * if the operation was cancelled.
      *
      * @return markup for the selected image, or {@code null}
      */

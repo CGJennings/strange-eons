@@ -4,8 +4,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * A {@code KeyListener} that, when added to a component, filters out
- * certain keys to prevent them from being processed by that component.
+ * A {@code KeyListener} that, when added to a component, filters out certain
+ * keys to prevent them from being processed by that component.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -23,8 +23,7 @@ public class KeyFilter implements KeyListener {
 
     /**
      * Create a filter that filters out key codes from an array. Key codes are
-     * supplied as {@code VK_} constants (see
-     * {@code java.awt.event.KeyEvent}).
+     * supplied as {@code VK_} constants (see {@code java.awt.event.KeyEvent}).
      *
      * @param keyCodes
      */
@@ -39,9 +38,8 @@ public class KeyFilter implements KeyListener {
     }
 
     /**
-     * Returns {@code true} if {@code keyCode} is filtered out by this
-     * filter. Subclasses may override this to implement custom filtering
-     * mechanisms.
+     * Returns {@code true} if {@code keyCode} is filtered out by this filter.
+     * Subclasses may override this to implement custom filtering mechanisms.
      *
      * @param keyCode the code to check
      * @return {@code true} if the key code should be filtered out

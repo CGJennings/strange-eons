@@ -111,13 +111,13 @@ public class LineSorter {
             comparator = (Object o1, Object o2) -> {
                 final LinkedList<Object> t1 = ((SemanticLine) o1).tokens;
                 final LinkedList<Object> t2 = ((SemanticLine) o2).tokens;
-                
+
                 int maxToken = Math.min(t1.size(), t2.size());
                 int i = 0;
                 for (; i < maxToken; ++i) {
                     final Object k1 = t1.get(i);
                     final Object k2 = t2.get(i);
-                    
+
                     int tcmp;
                     if (k1 instanceof String || k2 instanceof String) {
                         tcmp = stringComparator.compare(k1.toString(), k2.toString());

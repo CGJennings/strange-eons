@@ -1,9 +1,9 @@
 /*
-
-  tints.js - version 5
-  Support for card tinting in custom components.
-
-*/
+ 
+ tints.js - version 5
+ Support for card tinting in custom components.
+ 
+ */
 
 const TintingFilter = ca.cgjennings.graphics.filters.TintingFilter;
 const TintFilter = ca.cgjennings.graphics.filters.TintFilter;

@@ -46,17 +46,17 @@ public final class ConsoleErrorLocation {
      * {@code script(Quickscript:2)}
      * <li> A Java script trace element, which consists of class and method
      * descriptor, and the Java file and line number in parentheses E.g.:
-     * {@code java.awt.Component.processEvent(Component.java:6270)} The
-     * file and line number information may instead read "Unknown Source" if the
-     * class was compiled without debugging information, or "Native Method" if
+     * {@code java.awt.Component.processEvent(Component.java:6270)} The file and
+     * line number information may instead read "Unknown Source" if the class
+     * was compiled without debugging information, or "Native Method" if
      * executing native (non-Java) code.
      * </ol>
      *
      * <p>
      * <b>Note:</b> If the specified stack trace text does not match one of the
-     * above patterns, then the identifier will be {@code null}. In this
-     * case the {@code ConsoleErrorLocation} is not valid and should not be
-     * used further.
+     * above patterns, then the identifier will be {@code null}. In this case
+     * the {@code ConsoleErrorLocation} is not valid and should not be used
+     * further.
      *
      * @param stackTraceLine a stack trace line, without the "at" prefix (see
      * description)
@@ -245,10 +245,10 @@ public final class ConsoleErrorLocation {
     /**
      * Returns the line number (starting from 1) of the error, within an
      * evaluated string or 0 if the line number is unknown or was not within an
-     * {@code eval} function. When an error occurs during the evaluation of
-     * a string, this returns the line number within that string while
-     * {@link #getLineNumber()} returns the line number of the
-     * {@code eval()} call.
+     * {@code eval} function. When an error occurs during the evaluation of a
+     * string, this returns the line number within that string while
+     * {@link #getLineNumber()} returns the line number of the {@code eval()}
+     * call.
      *
      * @return the line number of the error within the evaluated code
      *

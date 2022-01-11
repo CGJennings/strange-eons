@@ -103,8 +103,8 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
      * {@link #getGameComponent()})
      * @param b a string builder that must be used to build the verbal design
      * report
-     * @return {@code true} if the design is considered valid,
-     * {@code false} otherwise
+     * @return {@code true} if the design is considered valid, {@code false}
+     * otherwise
      */
     protected abstract boolean analyze(G gc, StringBuilder b);
 
@@ -149,7 +149,7 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
             super("text/html", "<html><body></body></html>");
             setForeground(Color.BLACK);
             setBackground(new Color(250, 255, 196));
-            setBorder(BorderFactory.createEmptyBorder(3,3,3,3));
+            setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
             setEditable(false);
             setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
         }

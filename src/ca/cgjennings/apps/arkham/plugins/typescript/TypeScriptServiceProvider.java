@@ -20,6 +20,7 @@ import javax.swing.SwingUtilities;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class TypeScriptServiceProvider {
+
     private SEScriptEngine engine;
     private TypeScriptServices services;
     private Object ts;
@@ -49,19 +50,21 @@ public class TypeScriptServiceProvider {
             load("javaBridge.js");
             final Object bridgeImpl = engine.get("bridge");
             services = engine.getInterface(bridgeImpl, TypeScriptServices.class);
-        } catch(ScriptException ex) {
+        } catch (ScriptException ex) {
             throw new AssertionError("failed to parse library", ex);
         } finally {
-            if (cx != null) Context.exit();
+            if (cx != null) {
+                Context.exit();
+            }
         }
-        StrangeEons.log.log(Level.INFO, "TS service provider started in {0} ms", System.currentTimeMillis() - startTime );
+        StrangeEons.log.log(Level.INFO, "TS service provider started in {0} ms", System.currentTimeMillis() - startTime);
     }
 
     /**
      * Returns an object that provides direct, synchronous access to the
      * available services. The {@link TypeScript} class provides the same
      * services asynchronously.
-     * 
+     *
      * @return a non-null concrete implementation of the service interface
      */
     public TypeScriptServices getServices() {
@@ -69,8 +72,8 @@ public class TypeScriptServiceProvider {
     }
 
     /**
-     * Returns the TypeScript compiler API script object. This can be used
-     * to access the API directly from script code.
+     * Returns the TypeScript compiler API script object. This can be used to
+     * access the API directly from script code.
      *
      * @return the compiler API
      */
@@ -80,21 +83,23 @@ public class TypeScriptServiceProvider {
 
     /**
      * Evaluate part of the JS implementation in the underlying script engine.
+     *
      * @param resourceFile the file to evaluate, relative to this class
      */
     private void load(String resourceFile) throws ScriptException {
-        try(Reader r = new InputStreamReader(
-                    TypeScriptServiceProvider.class.getResourceAsStream(resourceFile),
-                    TextEncoding.SOURCE_CODE
-            )) {
+        try (Reader r = new InputStreamReader(
+                TypeScriptServiceProvider.class.getResourceAsStream(resourceFile),
+                TextEncoding.SOURCE_CODE
+        )) {
             engine.eval(r);
             r.close();
-        } catch(IOException ex) {
+        } catch (IOException ex) {
             throw new AssertionError("unable to load " + resourceFile, ex);
         }
     }
 
     private static class TSEngineErrorReporter implements ErrorReporter {
+
         private ErrorReporter parent;
 
         TSEngineErrorReporter(ErrorReporter parent) {

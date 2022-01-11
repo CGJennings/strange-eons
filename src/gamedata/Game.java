@@ -128,13 +128,13 @@ public final class Game implements Comparable<Game>, IconProvider {
     }
 
     /**
-     * Returns the settings instance for this game. Each registered game
-     * has exactly one such instance. This is the preferred place to
-     * store the default values for all of the settings used by a particular
-     * game. The settings instance for a game should in turn be the
-     * parent of all of the private settings instances for individual components
-     * that belong to that game. (The game's settings will in turn have the
-     * shared settings as its parent.)
+     * Returns the settings instance for this game. Each registered game has
+     * exactly one such instance. This is the preferred place to store the
+     * default values for all of the settings used by a particular game. The
+     * settings instance for a game should in turn be the parent of all of the
+     * private settings instances for individual components that belong to that
+     * game. (The game's settings will in turn have the shared settings as its
+     * parent.)
      *
      * @return the settings instance for this game
      */
@@ -146,8 +146,9 @@ public final class Game implements Comparable<Game>, IconProvider {
     }
     private Settings settings;
 
-    
-    /** @deprecated Replaced by {@link #getSettings()}. */
+    /**
+     * @deprecated Replaced by {@link #getSettings()}.
+     */
     @Deprecated
     public final Settings getMasterSettings() {
         return getSettings();
@@ -247,8 +248,8 @@ public final class Game implements Comparable<Game>, IconProvider {
     }
 
     /**
-     * Returns the game that was registered using the code, or {@code null}
-     * if no game has been registered with the code.
+     * Returns the game that was registered using the code, or {@code null} if
+     * no game has been registered with the code.
      *
      * @param code the unique code that identifies the game
      * @return the game for the requested code, or {@code null}
@@ -260,8 +261,8 @@ public final class Game implements Comparable<Game>, IconProvider {
 
     /**
      * Returns an array of all of the registered games. If includeAllGame is
-     * {@code true}, then the special all games instance will be included
-     * at index 0 in the array.
+     * {@code true}, then the special all games instance will be included at
+     * index 0 in the array.
      *
      * @param includeAllGame whether to include the special All Games instance
      * @return a sorted array of games
@@ -317,14 +318,13 @@ public final class Game implements Comparable<Game>, IconProvider {
     /**
      * Register a new game with an associated icon. This method looks up the
      * names for the game using a string key and {@link Language}. (The
-     * interface name is determined using {@code Language.string( code )}
-     * and the game name is determined using
-     * {@code Language.gstring( code )}.)
+     * interface name is determined using {@code Language.string( code )} and
+     * the game name is determined using {@code Language.gstring( code )}.)
      *
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param key the string table key to use when looking up the game name(s)
-     * @param iconImage an image to use to represent the game; if
-     * {@code null} a default image is used (see
+     * @param iconImage an image to use to represent the game; if {@code null} a
+     * default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @return the registered game
      * @throws IllegalArgumentException if a game with this code is already
@@ -355,12 +355,12 @@ public final class Game implements Comparable<Game>, IconProvider {
      * game Arkham Horror is registered as <tt>AH</tt>.
      *
      * <p>
-     * When a component is created, a setting named {@code game} will be
-     * added to it, set to the game code indicated by the class map file. The
-     * parent settings for that component will then be the settings
-     * instance for the associated game. Components not associated with a
-     * specific game in their class map will be associated with the special "all
-     * games" game. (Generic components like {@link Marker}s use this game.)
+     * When a component is created, a setting named {@code game} will be added
+     * to it, set to the game code indicated by the class map file. The parent
+     * settings for that component will then be the settings instance for the
+     * associated game. Components not associated with a specific game in their
+     * class map will be associated with the special "all games" game. (Generic
+     * components like {@link Marker}s use this game.)
      *
      * <p>
      * Expansions are also associated with particular games, so that only the
@@ -375,8 +375,8 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param uiName the name of the game, in the user interface locale
      * @param gameName the name of the game, in the game locale
-     * @param iconImage an image to use to represent the game; if
-     * {@code null} a default image is used (see
+     * @param iconImage an image to use to represent the game; if {@code null} a
+     * default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @param template an expansion symbol template that describes the expansion
      * symbols for this game, or {@code null} to use a default template
@@ -384,8 +384,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @throws IllegalArgumentException if a game with this code is already
      * registered, or if the code contains characters that are not legal for
      * file names
-     * @throws NullPointerException if the code or either name is
-     * {@code null}
+     * @throws NullPointerException if the code or either name is {@code null}
      * @see #getSettings()
      * @see #getAllGamesInstance()
      * @see ClassMap
@@ -438,8 +437,7 @@ public final class Game implements Comparable<Game>, IconProvider {
     private static ExpansionSymbolTemplate DEFAULT_TEMPLATE = new DefaultExpansionSymbolTemplate();
 
     /**
-     * The class of all settings instances returned from
-     * {@link #getSettings()}.
+     * The class of all settings instances returned from {@link #getSettings()}.
      */
     private static final class GameSettings extends Settings {
 
@@ -453,8 +451,8 @@ public final class Game implements Comparable<Game>, IconProvider {
          * {@inheritDoc}
          *
          * <p>
-         * The settings instance for a game will not allow you to change
-         * the value of the key with the name {@link #GAME_SETTING_KEY}.
+         * The settings instance for a game will not allow you to change the
+         * value of the key with the name {@link #GAME_SETTING_KEY}.
          *
          * @throws IllegalArgumentException if the key is the
          * {@link #GAME_SETTING_KEY} and the value is not equal to the code for

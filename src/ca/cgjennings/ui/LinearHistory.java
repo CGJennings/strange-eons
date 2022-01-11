@@ -4,9 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A {@code LinearHistory} captures a sequence of user actions and allows
- * them to be replayed, as with the forward/back operations in a browsing
- * interface.
+ * A {@code LinearHistory} captures a sequence of user actions and allows them
+ * to be replayed, as with the forward/back operations in a browsing interface.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -35,8 +34,7 @@ public class LinearHistory<P> {
     /**
      * Go directly to a new position (without using forward or back) and display
      * the position. Any positions after the current position in the history are
-     * deleted, and the new {@code position} becomes the end of the
-     * history.
+     * deleted, and the new {@code position} becomes the end of the history.
      *
      * @param position
      */

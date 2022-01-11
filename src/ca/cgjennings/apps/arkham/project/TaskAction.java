@@ -38,8 +38,8 @@ public abstract class TaskAction implements IconProvider {
     private String cachedName;
 
     /**
-     * Returns an icon for this action, or {@code null} if the action
-     * should not be associated with an icon.
+     * Returns an icon for this action, or {@code null} if the action should not
+     * be associated with an icon.
      *
      * @return an icon that represents the action
      */
@@ -65,13 +65,12 @@ public abstract class TaskAction implements IconProvider {
 
     /**
      * Perform this action on a member of a project, a project or a task. If the
-     * project itself is the target, {@code task} and {@code member}
-     * will be {@code null}. If a task is the target, then
-     * {@code member} will be null. If an error occurs while executing the
-     * task, then it is the action's responsibility to inform the user. This
-     * method can return {@code false} to indicate that if the action is
-     * being applied to multiple members, it should stop immediately rather than
-     * continue to the next member.
+     * project itself is the target, {@code task} and {@code member} will be
+     * {@code null}. If a task is the target, then {@code member} will be null.
+     * If an error occurs while executing the task, then it is the action's
+     * responsibility to inform the user. This method can return {@code false}
+     * to indicate that if the action is being applied to multiple members, it
+     * should stop immediately rather than continue to the next member.
      *
      * @param project the project that is being acted upon
      * @param task the task within the project that is being acted upon;
@@ -82,15 +81,14 @@ public abstract class TaskAction implements IconProvider {
     public abstract boolean perform(Project project, Task task, Member member);
 
     /**
-     * Returns {@code true} if this action can be performed on the
-     * specified member of a project, project or a task. If the project itself
-     * is the target, {@code task} and {@code member} will be
-     * {@code null}. If a task is the target, then {@code member} will
-     * be null. If an error occurs while executing the task, then it is the
-     * action's responsibility to inform the user. This method can return
-     * {@code false} to indicate that if the action is being applied to
-     * multiple members, it should stop immediately rather than continue to the
-     * next member.
+     * Returns {@code true} if this action can be performed on the specified
+     * member of a project, project or a task. If the project itself is the
+     * target, {@code task} and {@code member} will be {@code null}. If a task
+     * is the target, then {@code member} will be null. If an error occurs while
+     * executing the task, then it is the action's responsibility to inform the
+     * user. This method can return {@code false} to indicate that if the action
+     * is being applied to multiple members, it should stop immediately rather
+     * than continue to the next member.
      *
      * @param project the project that is being acted upon
      * @param task the task within the project that is being acted upon;
@@ -104,8 +102,8 @@ public abstract class TaskAction implements IconProvider {
      * Returns the member being targeted by action regardless of whether it is a
      * project, task, or task member. If your action can be applied to any type
      * of member, you can call this to simplify your handling code. It returns
-     * the first of {@code member}, {@code task}, or
-     * {@code project} that is non-{@code null}.
+     * the first of {@code member}, {@code task}, or {@code project} that is
+     * non-{@code null}.
      *
      * @param project the project passed in to the action
      * @param task the task passed in to the action
@@ -127,17 +125,15 @@ public abstract class TaskAction implements IconProvider {
     }
 
     /**
-     * Returns {@code true} if this action is applicable to any of the
-     * specified {@link Member}s. By overriding this, you can modify whether an
-     * action is listed depending on which other members are selected. For
-     * example, you could create a command that can only be applied to a
-     * singleton selection by checking the length of {@code members} and
-     * returning {@code false} if it is not 1, and otherwise calling the
-     * super implementation.
+     * Returns {@code true} if this action is applicable to any of the specified
+     * {@link Member}s. By overriding this, you can modify whether an action is
+     * listed depending on which other members are selected. For example, you
+     * could create a command that can only be applied to a singleton selection
+     * by checking the length of {@code members} and returning {@code false} if
+     * it is not 1, and otherwise calling the super implementation.
      *
      * @param members a list of zero or more members
-     * @return {@code true} is the action can be applied to at least one
-     * member
+     * @return {@code true} is the action can be applied to at least one member
      */
     public boolean appliesToSelection(Member[] members) {
         for (Member m : members) {
@@ -173,8 +169,8 @@ public abstract class TaskAction implements IconProvider {
      * and call the super implementation only if the user verifies the action.
      *
      * @param members
-     * @return {@code true} if and only if the action is successfully
-     * applied to all of the members
+     * @return {@code true} if and only if the action is successfully applied to
+     * all of the members
      */
     public boolean performOnSelection(Member[] members) {
         boolean success = true;

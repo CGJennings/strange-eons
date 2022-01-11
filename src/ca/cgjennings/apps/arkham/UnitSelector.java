@@ -38,9 +38,8 @@ public class UnitSelector extends JComboBox<String> {
     }
 
     /**
-     * Sets the currently selected unit. The value of {@code unit} must be
-     * one of {@code Length.CM}, {@code Length.IN}, or
-     * {@code Length.PT}.
+     * Sets the currently selected unit. The value of {@code unit} must be one
+     * of {@code Length.CM}, {@code Length.IN}, or {@code Length.PT}.
      *
      * @param unit the unit to select
      */
