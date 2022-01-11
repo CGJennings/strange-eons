@@ -21,8 +21,8 @@ public class PlatformFileSystem {
      *
      * @param file the file to modify
      * @param hidden whether the hidden bit should be set or unset
-     * @return {@code true} if no change was needed or the required change
-     * was successful
+     * @return {@code true} if no change was needed or the required change was
+     * successful
      * @throws NullPointerException if the file is {@code null}
      */
     public static boolean setHidden(File file, boolean hidden) {

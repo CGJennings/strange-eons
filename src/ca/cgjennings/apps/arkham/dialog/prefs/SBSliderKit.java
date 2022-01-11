@@ -22,8 +22,8 @@ public class SBSliderKit extends javax.swing.JPanel implements SettingBackedCont
      * @param minorStepSize the minor tick spacing
      * @param leftSideText the label for the left end, or {@code null}
      * @param rightSideText the label for the right end, or {@code null}
-     * @param showSliderValue if {@code true}, a label beneath the slider
-     * will be updated as the slider value changes
+     * @param showSliderValue if {@code true}, a label beneath the slider will
+     * be updated as the slider value changes
      */
     public SBSliderKit(int min, int max, int stepSize, int minorStepSize, String leftSideText, String rightSideText, boolean showSliderValue) {
         initComponents();

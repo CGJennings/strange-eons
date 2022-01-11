@@ -20,8 +20,8 @@ import resources.Language;
 import static resources.Language.string;
 
 /**
- * {@code PaperProperties} are immutable objects that describe the
- * properties of the paper used in a deck.
+ * {@code PaperProperties} are immutable objects that describe the properties of
+ * the paper used in a deck.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -131,11 +131,11 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * @param orientation one of {@link #LANDSCAPE} or {@link #PORTRAIT}
      * @param margin the size of the print edge margin, in points
      * @param gridSeparation the size of the snapping grid, in points
-     * @param isPhysical {@code true} if this paper represents physical
-     * media, or {@code false} if it represents a virtual paper size such
-     * as the size of an expansion board
-     * @param game the game that this paper applies to, or {@code null} for
-     * all games
+     * @param isPhysical {@code true} if this paper represents physical media,
+     * or {@code false} if it represents a virtual paper size such as the size
+     * of an expansion board
+     * @param game the game that this paper applies to, or {@code null} for all
+     * games
      */
     public PaperProperties(String name, double width, double height, boolean orientation, double margin, double gridSeparation, boolean isPhysical, Game game) {
         this(name, width, height, orientation, margin, gridSeparation);
@@ -285,9 +285,9 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
     }
 
     /**
-     * Returns {@code true} if this describes a physical paper type; that
-     * is, if it matches real-world paper sizes that might fit in a particular
-     * printer model.
+     * Returns {@code true} if this describes a physical paper type; that is, if
+     * it matches real-world paper sizes that might fit in a particular printer
+     * model.
      *
      * @return {@code true} if this is a physical paper type
      */
@@ -300,16 +300,16 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * associated with. If the paper type is not associated with a game, this
      * will be {@link Game#ALL_GAMES_CODE}.
      *
-     * @return the non-{@code null} game code for the game this paper type
-     * is associated with
+     * @return the non-{@code null} game code for the game this paper type is
+     * associated with
      */
     public String getGameCode() {
         return gameCode == null ? Game.ALL_GAMES_CODE : gameCode;
     }
 
     /**
-     * Returns a {@code PaperProperties} with the same dimensions as this
-     * paper but with the requested orientation. If the orientation matches this
+     * Returns a {@code PaperProperties} with the same dimensions as this paper
+     * but with the requested orientation. If the orientation matches this
      * paper's orientation, this instance is returned. Otherwise, a new instance
      * is returned with the requested orientation.
      *
@@ -333,12 +333,12 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      * Create a {@code PageFormat} object that is compatible with this
      * {@code PaperProperties}. {@code PageFormat}s are used by the printing
      * system to describe physical pages. If {@code applyMargins} is
-     * {@code true}, then the imageable area of the resulting
-     * {@code PageFormat} will be reduced to account for the margin. Otherwise,
-     * the imageable area will be set to the entire page.
+     * {@code true}, then the imageable area of the resulting {@code PageFormat}
+     * will be reduced to account for the margin. Otherwise, the imageable area
+     * will be set to the entire page.
      *
-     * @param applyMargins if {@code true}, use the margin to set the
-     * imageable area
+     * @param applyMargins if {@code true}, use the margin to set the imageable
+     * area
      * @return a page format that represents the same physical paper size and
      * orientation as this instance
      */
@@ -366,8 +366,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
      *
      * @param ppi the resolution of resulting image, in pixels per inch
      * @return an image the same size as this paper size at the given resolution
-     * @throws IllegalArgumentException if {@code ppi} is not a positive
-     * number
+     * @throws IllegalArgumentException if {@code ppi} is not a positive number
      */
     public BufferedImage createCompatibleImage(double ppi) {
         if (ppi <= 0d) {

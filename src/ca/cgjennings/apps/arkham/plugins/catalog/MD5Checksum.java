@@ -15,10 +15,9 @@ import java.util.logging.Level;
  * from the crypto API. In the the event that the algorithm is unavailable or
  * throws an exception while computing the checksum, the caller will be shielded
  * from this failure while the checksum would normally be computed. However,
- * when the checksum is requested after such an algorithm failure,
- * {@code null} will be returned, and if a failed checksum is compared to a
- * known checksum using {@link #matches}, it will always return
- * {@code true}.
+ * when the checksum is requested after such an algorithm failure, {@code null}
+ * will be returned, and if a failed checksum is compared to a known checksum
+ * using {@link #matches}, it will always return {@code true}.
  *
  * <p>
  * <b>Security Warning:</b> Note that this class is only intended to be used to
@@ -170,16 +169,16 @@ public final class MD5Checksum {
     };
 
     /**
-     * Completes the checksum and returns {@code true} if this checksum
-     * matches a previously produced checksum string. If there has been any
-     * internal failure of the checksum algorithm, or if the comparison string
-     * is {@code null}, this method will return {@code true}.
+     * Completes the checksum and returns {@code true} if this checksum matches
+     * a previously produced checksum string. If there has been any internal
+     * failure of the checksum algorithm, or if the comparison string is
+     * {@code null}, this method will return {@code true}.
      *
      * @param checksumString the checksum string to compare to
      * @return {@code false} if and only if the comparison string is not
-     * {@code null}, this check has non-{@code null} checksum bytes,
-     * and this checksum's checksum string is equal to the comparison string
-     * except for differences in letter case
+     * {@code null}, this check has non-{@code null} checksum bytes, and this
+     * checksum's checksum string is equal to the comparison string except for
+     * differences in letter case
      */
     public boolean matches(String checksumString) {
         // must be called first to meet the "completes the checksum" part of the contract

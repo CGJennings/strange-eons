@@ -681,7 +681,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
             set.remove("");
             set.remove(null);
             if (set.size() > 0) {
-                excludePatterns = set.toArray(new String[set.size()]);
+                excludePatterns = set.toArray(new String[0]);
                 excludePatternsRegex = new Pattern[excludePatterns.length];
                 for (int i = 0; i < excludePatterns.length; ++i) {
                     if (excludePatterns[i].indexOf('*') < 0 && excludePatterns[i].indexOf('.') < 0) {
@@ -857,8 +857,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
                 }
                 m = t;
             } catch (IOException e) {
-                System.err.println("Failed to create Task when synchronizing folder:");
-                e.printStackTrace();
+                StrangeEons.log.log(Level.SEVERE, "failed to create Task while synchronizing folder", e);
             }
         }
         if (m == null) {

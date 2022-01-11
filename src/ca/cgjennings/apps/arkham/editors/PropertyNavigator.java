@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
  * @since 3.0
  */
 public class PropertyNavigator implements Navigator {
+
     private final boolean ignoreColon;
 
     public PropertyNavigator() {

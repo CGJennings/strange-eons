@@ -44,10 +44,10 @@ import resources.Settings;
  * <p>
  * <b>Protocol Summary:</b> Each command is sent as a sequence of UTF-8 text
  * lines. The first line must be the magic value <tt>SEDP3</tt>. The next line
- * is the command name, as given by {@code Command.name()}. This is
- * followed by zero or more lines, where each line represents one argument. The
- * server will reply with either <tt>SEDP3 OK</tt> and the reply to the command
- * (if any), or else <tt>SEDP3 ERR</tt> and an error message.
+ * is the command name, as given by {@code Command.name()}. This is followed by
+ * zero or more lines, where each line represents one argument. The server will
+ * reply with either <tt>SEDP3 OK</tt> and the reply to the command (if any), or
+ * else <tt>SEDP3 ERR</tt> and an error message.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -146,7 +146,9 @@ public final class DefaultScriptDebugger {
         }
     }
 
-    /** Return the shared instance, or null. */
+    /**
+     * Return the shared instance, or null.
+     */
     static DefaultScriptDebugger getInstance() {
         synchronized (DefaultScriptDebugger.class) {
             return theDebugger;
@@ -154,11 +156,11 @@ public final class DefaultScriptDebugger {
     }
 
     /**
-     * Returns {@code true} if a client is connected to the debugger. Since
-     * the client does not maintain a continuous connection, this method cannot
-     * be guaranteed to be accurate. It works by tracking the last time that a
-     * client connected to the server, and returning {@code true} if the
-     * last connection was in the near past.
+     * Returns {@code true} if a client is connected to the debugger. Since the
+     * client does not maintain a continuous connection, this method cannot be
+     * guaranteed to be accurate. It works by tracking the last time that a
+     * client connected to the server, and returning {@code true} if the last
+     * connection was in the near past.
      *
      * @return {@code true} if a client application is probably available
      */
@@ -278,8 +280,8 @@ public final class DefaultScriptDebugger {
 
     /**
      * Create a server socket for the requested port (0 for any available port).
-     * If user setting {@code enable-remote-debugging} is
-     * {@code false}, the server socket will use the loopback address.
+     * If user setting {@code enable-remote-debugging} is {@code false}, the
+     * server socket will use the loopback address.
      *
      * @param port port to listen on, or 0 for any available
      * @return a server socket for the requested port, either on loopback or the
@@ -423,7 +425,7 @@ public final class DefaultScriptDebugger {
             while (results.size() < command.getArgCount() && (line = r.readLine()) != null) {
                 results.add(line);
             }
-            String[] args = results.toArray(new String[results.size()]);
+            String[] args = results.toArray(new String[0]);
 
             if (args.length != command.getArgCount()) {
                 errorReply(w, "wrong number of arguments to " + command + ": " + args.length);
@@ -457,14 +459,14 @@ public final class DefaultScriptDebugger {
     /**
      * Execute the client command, appending the result to {@code apply}.
      *
-     * @param isIsolated {@code true} if this method is being called from
-     * an isolated thread
+     * @param isIsolated {@code true} if this method is being called from an
+     * isolated thread
      * @param command the command to execute
      * @param args the arguments for the command
-     * @param errorWriter the writer needed to pass to {@code errorReply}
-     * if an error occurs
-     * @return the string to reply with (without header), or {@code null}
-     * if an error occurred and was handled
+     * @param errorWriter the writer needed to pass to {@code errorReply} if an
+     * error occurs
+     * @return the string to reply with (without header), or {@code null} if an
+     * error occurred and was handled
      */
     private String serviceImpl(Command command, String[] args, PrintWriter errorWriter) throws Throwable {
         StringBuilder reply;
@@ -476,12 +478,11 @@ public final class DefaultScriptDebugger {
 
             case SERVERINFO: {
                 String testBundles = StrangeEons.getApplication().getCommandLineArguments().plugintest;
-                return guessProcessId() + '\n' +
-                        Integer.toHexString(StrangeEons.getApplication().hashCode()) + '\n' +
-                        StrangeEons.getBuildNumber() + '\n' +
-                        StrangeEons.getVersionString() + '\n' +
-                        (testBundles == null ? "" : testBundles) + '\n'
-                ;
+                return guessProcessId() + '\n'
+                        + Integer.toHexString(StrangeEons.getApplication().hashCode()) + '\n'
+                        + StrangeEons.getBuildNumber() + '\n'
+                        + StrangeEons.getVersionString() + '\n'
+                        + (testBundles == null ? "" : testBundles) + '\n';
             }
 
             case INTERRUPTED:

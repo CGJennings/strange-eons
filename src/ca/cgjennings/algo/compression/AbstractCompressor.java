@@ -129,8 +129,7 @@ public abstract class AbstractCompressor implements Compressor {
      *
      * @param in the source
      * @param out the sink
-     * @param allowNIO if {@code true}, use NIO to accelerate stream
-     * copying
+     * @param allowNIO if {@code true}, use NIO to accelerate stream copying
      * @throws IOException if an I/O exception occurs during copying
      */
     protected void pumpStream(InputStream in, OutputStream out, boolean allowNIO) throws IOException {

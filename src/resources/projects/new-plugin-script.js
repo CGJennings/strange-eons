@@ -12,7 +12,7 @@
  * Optional function.
  */
 function getName() {
-	return 'Plug-in Script';
+    return 'Plug-in Script';
 }
 
 
@@ -24,7 +24,7 @@ function getName() {
  * Optional function.
  */
 function getDescription() {
-	return 'A template for writing plug-in scripts.';
+    return 'A template for writing plug-in scripts.';
 }
 
 
@@ -34,7 +34,7 @@ function getDescription() {
  * Optional function.
  */
 function getVersion() {
-	return 1.0;
+    return 1.0;
 }
 
 
@@ -59,7 +59,7 @@ function getVersion() {
  * Optional function unless the plug-in type is INJECTED (see details above).
  */
 function getPluginType() {
-	return arkham.plugins.Plugin.ACTIVATED;
+    return arkham.plugins.Plugin.ACTIVATED;
 }
 
 
@@ -116,7 +116,7 @@ function unload() {
  * it is optional.
  */
 function run() {
-	println( 'Plug-in ' + getName() + ' activated' );
+    println('Plug-in ' + getName() + ' activated');
 }
 
 
@@ -148,7 +148,7 @@ function hide() {
  * Optional function. Advanced feature.
  */
 function isShowing() {
-	return false;
+    return false;
 }
 
 /**
@@ -164,5 +164,5 @@ function isShowing() {
  * Optional function. Advanced feature.
  */
 function isUsable() {
-	return true;
+    return true;
 }

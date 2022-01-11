@@ -30,8 +30,8 @@ public final class ViewOptions {
     }
 
     /**
-     * Returns {@code true} if the handles for grabbing and manipulating
-     * aspects of page items (such as size, rotation, etc.) are painted.
+     * Returns {@code true} if the handles for grabbing and manipulating aspects
+     * of page items (such as size, rotation, etc.) are painted.
      *
      * @return {@code true} if the handles should be painted
      */

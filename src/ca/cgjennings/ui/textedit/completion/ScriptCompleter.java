@@ -6,9 +6,11 @@ import java.util.Set;
 
 /**
  * Completion for script code.
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class ScriptCompleter implements CodeCompleter {
+
     public ScriptCompleter() {
         // Note: previous implementation was removed;
         // this is now a skeletong that always returns no results
@@ -32,6 +34,6 @@ public class ScriptCompleter implements CodeCompleter {
         } finally {
             StrangeEons.getWindow().setDefaultCursor();
         }
-        */
+         */
     }
 }

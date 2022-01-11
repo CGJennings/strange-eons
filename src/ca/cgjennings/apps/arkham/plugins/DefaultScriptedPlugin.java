@@ -35,8 +35,8 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
 
     /**
      * Creates a new scripted plug-in for the script identified by
-     * {@code scriptId}, which is a script identifier in the format
-     * specified for plug-in root files, namely a resource path for script file,
+     * {@code scriptId}, which is a script identifier in the format specified
+     * for plug-in root files, namely a resource path for script file,
      * optionally starting with the prefix <tt>script:</tt>. (The script file
      * name presented to the script monkey and script debugger will never have
      * this prefix.)
@@ -86,9 +86,9 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
      * <b>Scripted Plug-in Notes:</b> The script will be evaluated (so any code
      * with global scope will be run). Then, if the script defines an
      * {@code initialize()} function, it will be called, and if it returns
-     * {@code false}, then this method will return {@code false}.
-     * Otherwise, the plug-in's name, description, type, and version will be
-     * obtained and cached by calling the functions {@code getName()},
+     * {@code false}, then this method will return {@code false}. Otherwise, the
+     * plug-in's name, description, type, and version will be obtained and
+     * cached by calling the functions {@code getName()},
      * {@code getDescription()}, {@code getPluginType()}, and
      * {@code getVersion()}, respectively.
      * <p>
@@ -202,10 +202,10 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     }
 
     /**
-     * <b>Scripted Plug-in Notes:</b> If called with {@code show == true},
-     * calls the script's {@code run()} function, if any. If called with
-     * {@code show == false}, calls the script's {@code hide()}
-     * function, if any.
+     * <b>Scripted Plug-in Notes:</b> If called with {@code show == true}, calls
+     * the script's {@code run()} function, if any. If called with
+     * {@code show == false}, calls the script's {@code hide()} function, if
+     * any.
      * <p>
      * {@inheritDoc}
      */
@@ -223,8 +223,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
 
     /**
      * <b>Scripted Plug-in Notes:</b> Returns the value of calling the script's
-     * {@code isShowing()} function, if any. Otherwise, returns
-     * {@code false}.
+     * {@code isShowing()} function, if any. Otherwise, returns {@code false}.
      * <p>
      * {@inheritDoc}
      */
@@ -291,8 +290,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
      * an image file with the same name (and in the same folder) as the plug-in
      * script, but with a <tt>.png</tt> or <tt>.jp2</tt> extension instead of a
      * <tt>.js</tt> extension. If no image file is found with one of these
-     * names, or if the image file cannot be read, {@code null} is
-     * returned.
+     * names, or if the image file cannot be read, {@code null} is returned.
      * <p>
      * {@inheritDoc}
      */
@@ -345,8 +343,8 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     /**
      * <p>
      * <b>Scripted Plug-in Notes:</b> The default implementation returns the
-     * result of calling the script's {@code isUsable()} function, if any,
-     * and otherwise returns {@code true}.
+     * result of calling the script's {@code isUsable()} function, if any, and
+     * otherwise returns {@code true}.
      * <p>
      * {@inheritDoc}
      */

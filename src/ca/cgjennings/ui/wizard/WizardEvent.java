@@ -52,8 +52,8 @@ public class WizardEvent {
     }
 
     /**
-     * Returns the page component referred to by the event, or {@code null}
-     * if no page is relevant.
+     * Returns the page component referred to by the event, or {@code null} if
+     * no page is relevant.
      *
      * @return the page involved in the event, or {@code null}
      */

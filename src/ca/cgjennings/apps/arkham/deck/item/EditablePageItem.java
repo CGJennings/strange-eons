@@ -2,8 +2,8 @@ package ca.cgjennings.apps.arkham.deck.item;
 
 /**
  * Implemented by cards that can be edited. If the card needs to take control of
- * the page's interface during editing, it must call {@code setEditingCard}
- * to set the edited card to this when it begins editing, and call it again with
+ * the page's interface during editing, it must call {@code setEditingCard} to
+ * set the edited card to this when it begins editing, and call it again with
  * {@code null} when it is finished.
  * <p>
  * Typically, a page will call an editable item's {@link #beginEditing} method

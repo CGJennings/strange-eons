@@ -20,7 +20,6 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
@@ -514,14 +513,11 @@ public final class PortraitControl extends JComponent {
 
     private Point2D rotationHandleUnderCursor;
 
-    private MouseWheelListener wheelListener = new MouseWheelListener() {
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            if (p == null) {
-                return;
-            }
-            applyScaleOrRotationDelta(e.getWheelRotation(), !(e.isAltDown() || e.isControlDown()));
+    private MouseWheelListener wheelListener = (e) -> {
+        if (p == null) {
+            return;
         }
+        applyScaleOrRotationDelta(e.getWheelRotation(), !(e.isAltDown() || e.isControlDown()));
     };
 
     private void applyScaleOrRotationDelta(int deltaSteps, boolean scaleOp) {

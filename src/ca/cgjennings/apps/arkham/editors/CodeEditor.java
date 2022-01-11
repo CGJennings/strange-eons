@@ -105,8 +105,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Creates a code editor with no file, encoding, or file type attached. Note
      * that code editors are designed to edit files within a project, and
-     * therefore expect {@link #getFile()} to return a non-{@code null}
-     * value.
+     * therefore expect {@link #getFile()} to return a non-{@code null} value.
      */
     private CodeEditor() {
         initComponents();
@@ -307,12 +306,11 @@ public class CodeEditor extends AbstractSupportEditor {
 
     /**
      * Detects a UTF-8/UTF-16/UTF-32 BOM sequence at the start of a text file.
-     * If one exists, returns the {@code Charset} indicated by the
-     * sequence. Otherwise, returns {@code null}.
+     * If one exists, returns the {@code Charset} indicated by the sequence.
+     * Otherwise, returns {@code null}.
      *
      * @param f the file to check
-     * @return the encoding represented by the byte order mark, or
-     * {@code null}
+     * @return the encoding represented by the byte order mark, or {@code null}
      */
     public static Charset checkFileForBOM(File f) throws IOException {
         try (FileInputStream in = new FileInputStream(f)) {
@@ -321,11 +319,13 @@ public class CodeEditor extends AbstractSupportEditor {
                 case 0xEE:
                     if (in.read() == 0xBB && in.read() == 0xBF) {
                         return StandardCharsets.UTF_8;
-                    }   break;
+                    }
+                    break;
                 case 0xFE:
                     if (in.read() == 0xFF) {
                         return StandardCharsets.UTF_16BE;
-                    }   break;
+                    }
+                    break;
                 case 0xFF:
                     if (in.read() == 0xFE) {
                         if (in.read() == 0x00) {
@@ -335,11 +335,13 @@ public class CodeEditor extends AbstractSupportEditor {
                         } else {
                             return StandardCharsets.UTF_16LE;
                         }
-                    }   break;
+                    }
+                    break;
                 case 0x00:
                     if (in.read() == 0x00 && in.read() == 0xFE && in.read() == 0xFF) {
                         return Charset.forName("UTF-32BE");
-                    }   break;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -404,8 +406,7 @@ public class CodeEditor extends AbstractSupportEditor {
         HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML),
         CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET),
         PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT),
-        ;
+        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT),;
 
         private final String enc;
         private final Class<? extends Tokenizer> tokenizer;
@@ -422,7 +423,8 @@ public class CodeEditor extends AbstractSupportEditor {
          * @param descKey string key for localized string that describes format
          * @param defaultEncoding default text encoding, null for UTF-8
          * @param tokenizer tokenizer to syntax highlight code, null for none
-         * @param navigator navigator implementation to list important document nodes, null for none
+         * @param navigator navigator implementation to list important document
+         * nodes, null for none
          * @param icon icon that represents the file type
          */
         private CodeType(
@@ -447,11 +449,15 @@ public class CodeEditor extends AbstractSupportEditor {
 
         private static final CodeType[] readOnlyValues = values();
 
-        /** Return the type of this file, based on its extension, or null. */
+        /**
+         * Return the type of this file, based on its extension, or null.
+         */
         public static CodeType forFile(File f) {
-            if (f == null) return null;
+            if (f == null) {
+                return null;
+            }
             String ext = ProjectUtilities.getFileExtension(f);
-            for (int i=0; i<readOnlyValues.length; ++i) {
+            for (int i = 0; i < readOnlyValues.length; ++i) {
                 if (readOnlyValues[i].getExtension().equals(ext)) {
                     return readOnlyValues[i];
                 }
@@ -508,11 +514,13 @@ public class CodeEditor extends AbstractSupportEditor {
         }
 
         /**
-         * If this file type should be processed automatically after writing
-         * it, perform that processing.
+         * If this file type should be processed automatically after writing it,
+         * perform that processing.
          */
         void processAfterWrite(CodeEditor host, File source, String text) {
-            if (source == null) return;
+            if (source == null) {
+                return;
+            }
 
             if (this == TYPESCRIPT) {
                 host.startedCodeGeneration();
@@ -521,7 +529,7 @@ public class CodeEditor extends AbstractSupportEditor {
                     try {
                         ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
                         StrangeEons.log.fine("wrote transpiled code");
-                    } catch(IOException ex) {
+                    } catch (IOException ex) {
                         StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
                     }
                     host.refreshDependentFiles(this, js);
@@ -538,27 +546,33 @@ public class CodeEditor extends AbstractSupportEditor {
          * {@code source.ts} this might return {@code source.js}.
          *
          * @param source the file containing source code of this type
-         * @return the file that compiled code should be written to, or null
-         * if this file type does not generate code
+         * @return the file that compiled code should be written to, or null if
+         * this file type does not generate code
          */
         public File getDependentFile(File source) {
-            if (source == null || this != TYPESCRIPT) return null;
+            if (source == null || this != TYPESCRIPT) {
+                return null;
+            }
             return ProjectUtilities.changeExtension(source, "js");
         }
 
         /**
-         * Given a file of this type, if that file's contents are controlled
-         * by another file that currently exists, returns that file.  For example, for
-         * {@code source.js} this might return {@code source.ts}.
+         * Given a file of this type, if that file's contents are controlled by
+         * another file that currently exists, returns that file. For example,
+         * for {@code source.js} this might return {@code source.ts}.
          *
          * @param source the file that might be controlled by another file
          * @return the file that controls the content of this file, or null
          */
         public File getDeterminativeFile(File source) {
-            if (source == null || this != JAVASCRIPT) return null;
+            if (source == null || this != JAVASCRIPT) {
+                return null;
+            }
 
             File tsFile = ProjectUtilities.changeExtension(source, "ts");
-            if (tsFile.exists()) return tsFile;
+            if (tsFile.exists()) {
+                return tsFile;
+            }
             return null;
         }
 
@@ -666,7 +680,7 @@ public class CodeEditor extends AbstractSupportEditor {
         sideBarPanel = new javax.swing.JPanel();
         navPanel = new javax.swing.JPanel();
         navScroll = new javax.swing.JScrollPane();
-        navList = new javax.swing.JList();
+        navList = new javax.swing.JList<>();
         navTitle = new javax.swing.JPanel();
         javax.swing.JLabel navLabel = new javax.swing.JLabel();
         ca.cgjennings.apps.arkham.ToolCloseButton sourceNavCloseButton = new ca.cgjennings.apps.arkham.ToolCloseButton();
@@ -1056,9 +1070,9 @@ public class CodeEditor extends AbstractSupportEditor {
     public void find() {
         String sel = getEditor().getSelectedText();
         if (sel.isEmpty()) {
-           if (findField.getText().isEmpty()) {
-               findField.setText(Settings.getUser().get(KEY_LAST_FIND));
-           }
+            if (findField.getText().isEmpty()) {
+                findField.setText(Settings.getUser().get(KEY_LAST_FIND));
+            }
         } else {
             findField.setText(sel);
         }
@@ -1483,7 +1497,7 @@ public class CodeEditor extends AbstractSupportEditor {
                     }
                     errorHighlight = findField.getHighlighter().addHighlight(pos, pos + 1, ORANGE_SQUIGGLE);
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "unexpected BLE formatting error", ble);
                 }
             }
             findField.requestFocusInWindow();
@@ -1507,7 +1521,7 @@ public class CodeEditor extends AbstractSupportEditor {
     private javax.swing.JLabel icon;
     private javax.swing.JCheckBox incrementalCheck;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList navList;
+    private javax.swing.JList<NavigationPoint> navList;
     private javax.swing.JPanel navPanel;
     private javax.swing.JScrollPane navScroll;
     private javax.swing.JPanel navTitle;
@@ -1540,9 +1554,9 @@ public class CodeEditor extends AbstractSupportEditor {
 
     /**
      * Call to reload files that depend on this file and were changed when it
-     * was saved. This is called immediately if {@link CodeType#processAfterWrite}
-     * returns true. Otherwise it can be called manually if processing completes
-     * in another thread.
+     * was saved. This is called immediately if
+     * {@link CodeType#processAfterWrite} returns true. Otherwise it can be
+     * called manually if processing completes in another thread.
      *
      * @param f the file for which editors should be reloaded
      */
@@ -1554,7 +1568,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 if (ed instanceof CodeEditor) {
                     try {
                         ((CodeEditor) ed).refresh();
-                    } catch(IOException ioe) {
+                    } catch (IOException ioe) {
                         StrangeEons.log.log(Level.SEVERE, "failed to reload", ioe);
                     }
                 }
@@ -1642,8 +1656,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Called before each line is written to a file to allow the editor to
      * convert the text content. The default implementation checks if
-     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if
-     * so, {@linkplain EscapedTextCodec#escapeUnicode(java.lang.CharSequence)
+     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if so, {@linkplain EscapedTextCodec#escapeUnicode(java.lang.CharSequence)
      * it applies Unicode escapes to the line}.
      *
      * @param line the line to process
@@ -1659,8 +1672,7 @@ public class CodeEditor extends AbstractSupportEditor {
     /**
      * Called as each line is read to allow the editor to convert the text
      * content. The default implementation checks if
-     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if
-     * so, {@linkplain EscapedTextCodec#unescapeUnicode
+     * {@link #isCharacterEscapingEnabled()} returns {@code true}, and if so, {@linkplain EscapedTextCodec#unescapeUnicode
      * it removes Unicode escapes from the line}.
      *
      * @param line the line to process
@@ -1674,12 +1686,11 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * Returns {@code true} if character escaping is enabled on read and
-     * write of the document. When enabled, the default behaviour of
-     * {@link #escape} and
-     * {@link #unescape} is to automatically convert
-     * Java-style Unicode escapeUnicode sequences in the file into their
-     * character equivalents when displayed in the editor.
+     * Returns {@code true} if character escaping is enabled on read and write
+     * of the document. When enabled, the default behaviour of {@link #escape}
+     * and {@link #unescape} is to automatically convert Java-style Unicode
+     * escapeUnicode sequences in the file into their character equivalents when
+     * displayed in the editor.
      *
      * @return {@code true} if automatic character escaping is enabled
      * @see EscapedTextCodec
@@ -1693,8 +1704,8 @@ public class CodeEditor extends AbstractSupportEditor {
      * Sets whether character escaping is enabled on read and write of the
      * document.
      *
-     * @param characterEscaping if {@code true}, automatic character
-     * escaping is enabled
+     * @param characterEscaping if {@code true}, automatic character escaping is
+     * enabled
      * @see #isCharacterEscapingEnabled()
      * @see #escape
      * @see #unescape
@@ -1781,7 +1792,7 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
-        if(isCommandApplicable(Commands.FORMAT_CODE)) {
+        if (isCommandApplicable(Commands.FORMAT_CODE)) {
             menu.add(Commands.FORMAT_CODE);
             menu.addSeparator();
         }
@@ -1828,7 +1839,7 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public void format() {
         CodeFormatterFactory.Formatter f = CodeFormatterFactory.getFormatter(type);
-        if(f != null) {
+        if (f != null) {
             int line = editor.getCaretLine();
             String formatted = f.format(editor.getText());
             editor.setText(formatted);
@@ -1884,8 +1895,8 @@ public class CodeEditor extends AbstractSupportEditor {
     private static final int NAV_DIV_SIZE = 8;
 
     /**
-     * Returns the current navigator for this editor, or {@code null} if
-     * none is set.
+     * Returns the current navigator for this editor, or {@code null} if none is
+     * set.
      *
      * @return the current navigator
      */
@@ -1972,8 +1983,8 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * Returns {@code true} if code editors will display a source navigator
-     * when one has been set. This setting applies to all code editors.
+     * Returns {@code true} if code editors will display a source navigator when
+     * one has been set. This setting applies to all code editors.
      *
      * @return {@code true} if navigators are visible
      */
@@ -2075,9 +2086,9 @@ public class CodeEditor extends AbstractSupportEditor {
     private static final int POST_GEN_DEBUG = 2;
 
     /**
-     * Called after a save when code generation starts. Allows generated code
-     * to be acted on once generation finishes, even if in another thread.
-     * Must be called on EDT.
+     * Called after a save when code generation starts. Allows generated code to
+     * be acted on once generation finishes, even if in another thread. Must be
+     * called on EDT.
      */
     private void startedCodeGeneration() {
         if (!EventQueue.isDispatchThread()) {
@@ -2087,9 +2098,9 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     /**
-     * Called after a save when code generation ends. Allows generated code
-     * to be acted on once generation finishes, even if in another thread.
-     * Must be called on EDT.
+     * Called after a save when code generation ends. Allows generated code to
+     * be acted on once generation finishes, even if in another thread. Must be
+     * called on EDT.
      */
     private void finishedCodeGeneration() {
         if (!EventQueue.isDispatchThread()) {

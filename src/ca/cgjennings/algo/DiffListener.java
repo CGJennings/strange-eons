@@ -4,8 +4,8 @@ package ca.cgjennings.algo;
  * A listener that receives results from the {@link Diff} algorithm.
  *
  * @param <E> the type of the elements that may be inserted, deleted, or
- * changed; for example, in a text file each element might be a
- * {@code String} representing a single line
+ * changed; for example, in a text file each element might be a {@code String}
+ * representing a single line
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1
  */

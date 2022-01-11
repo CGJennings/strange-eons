@@ -89,8 +89,8 @@ public class MnemonicInstaller {
     }
 
     /**
-     * Returns {@code true} if mnemonic letters will not be marked within
-     * the UI.
+     * Returns {@code true} if mnemonic letters will not be marked within the
+     * UI.
      *
      * @return {@code true} if mnemonics are hidden
      * @see #setMnemonicHidden
@@ -143,7 +143,7 @@ public class MnemonicInstaller {
                         createMnemonic((AbstractButton) comp);
                     }
                 }
-                
+
                 // fixes for Nimbus L&F
                 if (isNimbus()) {
                     // Hack to fix Aqua system menus for popup menus
@@ -151,7 +151,7 @@ public class MnemonicInstaller {
                     if (USE_POPUP_BORDER_HACK && comp instanceof JPopupMenu) {
                         ((JPopupMenu) comp).setBorder(getHackPopupBorder());
                     }
-                    
+
                     if (comp instanceof JComboBox) {
                         JComboBox cb = (JComboBox) comp;
 //							if( cb.isEditable() ) {
@@ -164,12 +164,12 @@ public class MnemonicInstaller {
 //									}
 //								}
 //							}
-if (cb.getMaximumRowCount() < 12) {
-    cb.setMaximumRowCount(12);
-}
+                        if (cb.getMaximumRowCount() < 12) {
+                            cb.setMaximumRowCount(12);
+                        }
                     }
                 }
-                
+
                 // fixes for text components to enable drag & drop
                 if (comp instanceof JTextComponent) {
                     JTextComponent tc = (JTextComponent) comp;

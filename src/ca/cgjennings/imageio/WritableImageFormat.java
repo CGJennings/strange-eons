@@ -22,8 +22,7 @@ public interface WritableImageFormat {
     String getFullName();
 
     /**
-     * A description of the trade-offs of using the format. May be
-     * {@code null}.
+     * A description of the trade-offs of using the format. May be {@code null}.
      *
      * @return the description of the format
      */

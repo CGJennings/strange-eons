@@ -188,7 +188,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
         jWarningLabel1 = new ca.cgjennings.ui.JWarningLabel();
         freqPanel = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        statList = new javax.swing.JList();
+        statList = new javax.swing.JList<>();
         processStatsBtn = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         addStatFile = new javax.swing.JButton();
@@ -201,7 +201,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
         corpusFormatCombo = new javax.swing.JComboBox();
         indexPanel = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        indexList = new javax.swing.JList();
+        indexList = new javax.swing.JList<>();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -613,7 +613,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
         if (f == null) {
             throw new NullPointerException("file");
         }
-        DefaultListModel m = (DefaultListModel) statList.getModel();
+        DefaultListModel<File> m = (DefaultListModel<File>) statList.getModel();
         m.addElement(f);
         processStatsBtn.setEnabled(true);
         remStatFiles.setEnabled(true);
@@ -705,6 +705,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
 
         Thread t = new Thread() {
             @Override
+            @SuppressWarnings("unchecked")
             public void run() {
                 try {
                     postMessage(string("dicted-op-size", wl.getWordCount()));
@@ -772,9 +773,9 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
                 if (indexList.getModel() == emptyModel) {
                     beginOperation();
                     List<String> wordList = wl.getWords();
-                    String[] words = wordList.toArray(new String[wordList.size()]);
+                    String[] words = wordList.toArray(new String[0]);
                     Arrays.sort(words);
-                    DefaultListModel index = new DefaultListModel();
+                    DefaultListModel<String> index = new DefaultListModel<>();
 
                     if (wl.hasFrequencyRanks()) {
                         for (String w : words) {
@@ -847,7 +848,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
         }
     }//GEN-LAST:event_policyChainComboActionPerformed
 
-    private final DefaultListModel emptyModel = new DefaultListModel();
+    private final DefaultListModel<String> emptyModel = new DefaultListModel<>();
 
     private void postMessage(String message) {
         postMessage(message, false);
@@ -861,14 +862,14 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
                 getGlassPane().setVisible(false);
                 getGlassPane().setCursor(Cursor.getDefaultCursor());
             }
-            
+
             Document doc = progressField.getDocument();
             try {
                 doc.insertString(doc.getLength(), message + "\n", null);
             } catch (BadLocationException ex) {
                 throw new AssertionError();
             }
-            
+
             progressField.select(doc.getLength(), doc.getLength());
         });
     }
@@ -881,7 +882,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
     private ca.cgjennings.ui.JFileField equivField;
     private javax.swing.JPanel freqPanel;
     private ca.cgjennings.ui.JHelpButton helpBtn;
-    private javax.swing.JList indexList;
+    private javax.swing.JList<String> indexList;
     private javax.swing.JPanel indexPanel;
     private javax.swing.JButton intersectBtn;
     private javax.swing.JLabel jLabel1;
@@ -909,7 +910,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
     private javax.swing.JButton processStatsBtn;
     private javax.swing.JTextArea progressField;
     private javax.swing.JButton remStatFiles;
-    private javax.swing.JList statList;
+    private javax.swing.JList<File> statList;
     private javax.swing.JButton subtractBtn;
     private javax.swing.JTabbedPane tabs;
     private javax.swing.JTextArea testOutputField;

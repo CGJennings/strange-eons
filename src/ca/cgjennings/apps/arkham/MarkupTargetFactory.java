@@ -24,14 +24,13 @@ public class MarkupTargetFactory {
     }
 
     /**
-     * Returns {@code true} if a markup target can be created for an
-     * object. To be valid, the potential target must be non-{@code null},
-     * and must be a supported type of interface component. If
-     * {@code strict} is {@code true}, then the potential target must
-     * also be showing, enabled, and editable. Currently supported component
-     * types include text fields (any subclass of {@code JTextComponent})
-     * and code editor controls. Other types might be supported in future
-     * versions.
+     * Returns {@code true} if a markup target can be created for an object. To
+     * be valid, the potential target must be non-{@code null}, and must be a
+     * supported type of interface component. If {@code strict} is {@code true},
+     * then the potential target must also be showing, enabled, and editable.
+     * Currently supported component types include text fields (any subclass of
+     * {@code JTextComponent}) and code editor controls. Other types might be
+     * supported in future versions.
      *
      * <p>
      * Text fields are normally only accepted as valid targets when they are
@@ -40,14 +39,13 @@ public class MarkupTargetFactory {
      * decision as to whether a component is accepted can be overridden by
      * setting the client property
      * {@code MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY} to either
-     * {@code Boolean.TRUE} (accept if possible) or
-     * {@code Boolean.FALSE} (always reject). To be accepted, the component
-     * must still be of a supported type and (if {@code strict}) be
-     * showing, enabled, and editable.
+     * {@code Boolean.TRUE} (accept if possible) or {@code Boolean.FALSE}
+     * (always reject). To be accepted, the component must still be of a
+     * supported type and (if {@code strict}) be showing, enabled, and editable.
      *
      * @param potentialTarget the potential markup target to check
-     * @param strict if {@code true}, the target must be showing, enabled,
-     * and editable
+     * @param strict if {@code true}, the target must be showing, enabled, and
+     * editable
      * @return {@code true} if the component can be a markup target
      */
     public static boolean isValidTarget(final Object potentialTarget, final boolean strict) {
@@ -121,8 +119,8 @@ public class MarkupTargetFactory {
      * otherwise, returns {@code null}.
      *
      * @param potentialTarget the potential target to create a markup target for
-     * @param strict if {@code true}, the component must be showing,
-     * enabled, and editable
+     * @param strict if {@code true}, the component must be showing, enabled,
+     * and editable
      * @return a markup target compatible with the provided object, or
      * {@code null}
      */

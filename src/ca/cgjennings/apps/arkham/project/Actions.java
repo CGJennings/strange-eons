@@ -110,8 +110,8 @@ public final class Actions {
      * @param action the action to be registered
      * @param priority the priority at which to register the action
      * @throws NullPointerException if {@code action} is {@code null}
-     * @throws IllegalArgumentException if {@code priority} is not in the
-     * range {@code PRIORITY_MIN &lt;= priority &lt;= PRIORITY_MAX}
+     * @throws IllegalArgumentException if {@code priority} is not in the range
+     * {@code PRIORITY_MIN &lt;= priority &lt;= PRIORITY_MAX}
      * @throws IllegalArgumentException if an action with this action's name is
      * already registered (other than this action)
      */
@@ -165,8 +165,8 @@ public final class Actions {
     }
 
     /**
-     * Returns the registered action with the given name, or {@code null}
-     * if no action has this name. Each action must have a unique name, which is
+     * Returns the registered action with the given name, or {@code null} if no
+     * action has this name. Each action must have a unique name, which is
      * returned by {@link TaskAction#getActionName()}.
      *
      * @param name the action name to search for
@@ -189,9 +189,9 @@ public final class Actions {
 
     /**
      * Returns the original, unspecialized instance of an action. If no action
-     * with the given name is registered, returns {@code null}. This is
-     * useful if you need to call a method on a task action by casting it to its
-     * actual type. For example:
+     * with the given name is registered, returns {@code null}. This is useful
+     * if you need to call a method on a task action by casting it to its actual
+     * type. For example:
      * <pre>
      * ((Open) Actions.getUnspecializedAction( "open" )).registerOpener( myOpener );
      * </pre>
@@ -213,8 +213,7 @@ public final class Actions {
      *
      * @param ta the action to look up the priority of
      * @return the priority at which {@code ta} was registered
-     * @throws IllegalArgumentException if {@code ta} is not a registered
-     * action
+     * @throws IllegalArgumentException if {@code ta} is not a registered action
      */
     public static int getPriorityForAction(TaskAction ta) {
         Integer p = priorityMap.get(ta);
@@ -289,7 +288,7 @@ public final class Actions {
     static List<TaskAction> getActionsForPriority(int priority) {
         checkPriority(priority);
         List<TaskAction> plist = actionMap.get(priority);
-        return plist == null ? Collections.EMPTY_LIST : Collections.unmodifiableList(plist);
+        return plist == null ? Collections.emptyList() : Collections.unmodifiableList(plist);
     }
 
     /**
@@ -303,7 +302,7 @@ public final class Actions {
         for (int p = PRIORITY_MAX; p >= PRIORITY_MIN; --p) {
             list.addAll(getActionsForPriority(p));
         }
-        return list.toArray(new TaskAction[list.size()]);
+        return list.toArray(new TaskAction[0]);
     }
 
     /**
@@ -536,8 +535,6 @@ public final class Actions {
         register(new ConvertSpellingDictionary(), PRIORITY_IMPORT_EXPORT);
         register(new PublishBundle(), PRIORITY_IMPORT_EXPORT);
 
-// TODO: fix or remove
-//		register( new SetExpansionSymbol(), PRIORITY_STANDARD_LAST );
         register(new PluginImportAction(), PRIORITY_STANDARD_LAST);
         register(new ChangeIcon(), PRIORITY_STANDARD_LAST);
         register(new Export(), PRIORITY_STANDARD_LAST);

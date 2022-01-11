@@ -8,9 +8,9 @@ import static java.lang.Math.*;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class Combinatorics {
+
     /**
-     * The largest {@code n} such that {@code n}! &lt;=
-     * {@code Long.MAX_VALUE}.
+     * The largest {@code n} such that {@code n}! &lt;= {@code Long.MAX_VALUE}.
      */
     private static final int MAXIMUM_LONG_FACTORIAL = 20;
 
@@ -21,8 +21,8 @@ public class Combinatorics {
      *
      * @param n the value to compute the factorial of
      * @return the factorial of {@code n}, that is, {@code n}!
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0 or
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0 or {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL
      */
     public static final long factorial(int n) {
         return factorialTable[n];
@@ -43,13 +43,13 @@ public class Combinatorics {
     }
 
     /**
-     * Return P(<i>n</i>, <i>r</i>), the number of lists of size {@code r}
-     * that can be created from a set of {@code n} objects. Since this
-     * method counts the number of unique <i>lists</i>, the order in which the
-     * elements are selected is important. For example, the selection (1,2,3)
-     * and the selection (3,1,2) are both counted by this method. In order to
-     * fit within a {@code long}, the value of {@code n} must not be
-     * greater than {@code MAXIMUM_LONG_FACTORIAL}.
+     * Return P(<i>n</i>, <i>r</i>), the number of lists of size {@code r} that
+     * can be created from a set of {@code n} objects. Since this method counts
+     * the number of unique <i>lists</i>, the order in which the elements are
+     * selected is important. For example, the selection (1,2,3) and the
+     * selection (3,1,2) are both counted by this method. In order to fit within
+     * a {@code long}, the value of {@code n} must not be greater than
+     * {@code MAXIMUM_LONG_FACTORIAL}.
      * <p>
      * <b>Example:</b> The set {1,2,3} contains 3 elements. If we construct
      * every possible list of length 2 that is composed of elements from that
@@ -62,9 +62,9 @@ public class Combinatorics {
      * taken
      * @param r the size of the lists to created
      * @return the number of unique lists that can be created
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0,
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or
-     * {@code r} &gt; {@code n}
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0, {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or {@code r} &gt;
+     * {@code n}
      */
     public static final long permutations(int n, int r) {
         // no cleverness required; since the factorials are all in
@@ -73,14 +73,13 @@ public class Combinatorics {
     }
 
     /**
-     * Return C(<i>n</i>, <i>r</i>), the number of sets of size {@code r}
-     * that can be created from a set of {@code n} objects. Since this
-     * method counts the number of unique <i>sets</i>, the order in which the
-     * elements are selected is not important. For example, the selection
-     * (1,2,3) and the selection (3,1,2) would only be counted once by this
-     * method. In order to fit within a {@code long}, the value of
-     * {@code n} must not be greater than
-     * {@code MAXIMUM_LONG_FACTORIAL}.
+     * Return C(<i>n</i>, <i>r</i>), the number of sets of size {@code r} that
+     * can be created from a set of {@code n} objects. Since this method counts
+     * the number of unique <i>sets</i>, the order in which the elements are
+     * selected is not important. For example, the selection (1,2,3) and the
+     * selection (3,1,2) would only be counted once by this method. In order to
+     * fit within a {@code long}, the value of {@code n} must not be greater
+     * than {@code MAXIMUM_LONG_FACTORIAL}.
      * <p>
      * <b>Example:</b> The set {1,2,3} contains 3 elements. If we construct
      * every possible set of length 2 that is composed of elements from that
@@ -93,32 +92,31 @@ public class Combinatorics {
      * taken
      * @param r the size of the lists to created
      * @return the number of unique lists that can be created
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0,
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or
-     * {@code r} &gt; {@code n}
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0, {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or {@code r} &gt;
+     * {@code n}
      */
     public static final long combinations(int n, int r) {
         return permutations(n, r) / factorialTable[r];
     }
 
     /**
-     * Returns the probability that out of {@code trials} attempts, a test
-     * that has a {@code pSuccess} probability of succeeding on each
-     * attempt will succeed <i>exactly</i> {@code successes} times. For
-     * example, the probability of rolling 10 dice and having exactly 2 of those
-     * dice land on 6 is {@code probabilityMass( 2, 10, 1/6d )} (about
-     * 0.29).
+     * Returns the probability that out of {@code trials} attempts, a test that
+     * has a {@code pSuccess} probability of succeeding on each attempt will
+     * succeed <i>exactly</i> {@code successes} times. For example, the
+     * probability of rolling 10 dice and having exactly 2 of those dice land on
+     * 6 is {@code probabilityMass( 2, 10, 1/6d )} (about 0.29).
      *
      * @param successes the exact number of successes required
      * @param trials the number of trials to attempt
      * @param pSuccess the probability that a given trial will succeed
      * @return the probability that exactly {@code successes} trials will
      * succeed
-     * @throws IllegalArgumentException if {@code pSuccess} is not in the
-     * range (0,1)
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0,
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or
-     * {@code r} &gt; {@code n}
+     * @throws IllegalArgumentException if {@code pSuccess} is not in the range
+     * (0,1)
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0, {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or {@code r} &gt;
+     * {@code n}
      */
     public static final double probabilityMass(int successes, int trials, double pSuccess) {
         if (pSuccess < 0d || pSuccess > 1d) {
@@ -132,23 +130,22 @@ public class Combinatorics {
     }
 
     /**
-     * Returns the probability that out of {@code trials} attempts, a test
-     * that has a {@code pSuccess} probability of succeeding on each
-     * attempt will succeed <i>at most</i> {@code successes} times. For
-     * example, the probability of rolling 10 dice and having at most 2 of those
-     * dice land on 6 is {@code cumulativeDistribution( 2, 10, 1/6d )}
-     * (about 0.78).
+     * Returns the probability that out of {@code trials} attempts, a test that
+     * has a {@code pSuccess} probability of succeeding on each attempt will
+     * succeed <i>at most</i> {@code successes} times. For example, the
+     * probability of rolling 10 dice and having at most 2 of those dice land on
+     * 6 is {@code cumulativeDistribution( 2, 10, 1/6d )} (about 0.78).
      *
      * @param successes the maximum number of successes allowed
      * @param trials the number of trials to attempt
      * @param pSuccess the probability that a given trial will succeed
      * @return the probability that at most {@code successes} trials will
      * succeed
-     * @throws IllegalArgumentException if {@code pSuccess} is not in the
-     * range (0,1)
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0,
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or
-     * {@code r} &gt; {@code n}
+     * @throws IllegalArgumentException if {@code pSuccess} is not in the range
+     * (0,1)
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0, {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or {@code r} &gt;
+     * {@code n}
      */
     public static final double cumulativeDistribution(int successes, int trials, double pSuccess) {
         double sum = 0d;
@@ -159,12 +156,11 @@ public class Combinatorics {
     }
 
     /**
-     * Returns the probability that out of {@code trials} attempts, a test
-     * that has a {@code pSuccess} probability of succeeding on each
-     * attempt will succeed <i>at least</i> {@code successes} times. For
-     * example, the probability of rolling 10 dice and having at least 2 of
-     * those dice land on 6 is
-     * {@code upperCumulativeDistribution( 2, 10, 1/6d )} (about 0.52).
+     * Returns the probability that out of {@code trials} attempts, a test that
+     * has a {@code pSuccess} probability of succeeding on each attempt will
+     * succeed <i>at least</i> {@code successes} times. For example, the
+     * probability of rolling 10 dice and having at least 2 of those dice land
+     * on 6 is {@code upperCumulativeDistribution( 2, 10, 1/6d )} (about 0.52).
      * <p>
      * Mathematically, this value can be computed as:<br>
      * {@code upperCumulativeDistribution(s,t,p) = probabilityMass(s,t,p) + 1-cumulativeDistribution(s,t,p)}
@@ -177,11 +173,11 @@ public class Combinatorics {
      * @param pSuccess the probability that a given trial will succeed
      * @return the probability that at least {@code successes} trials will
      * succeed
-     * @throws IllegalArgumentException if {@code pSuccess} is not in the
-     * range (0,1)
-     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0,
-     * {@code n} &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or
-     * {@code r} &gt; {@code n}
+     * @throws IllegalArgumentException if {@code pSuccess} is not in the range
+     * (0,1)
+     * @throws ArrayIndexOutOfBoundsException if {@code n} &lt; 0, {@code n}
+     * &gt; MAXIMUM_LONG_FACTORIAL, {@code r} &lt; 0, or {@code r} &gt;
+     * {@code n}
      */
     public static final double upperCumulativeDistribution(int successes, int trials, double pSuccess) {
         double sum = 0d;

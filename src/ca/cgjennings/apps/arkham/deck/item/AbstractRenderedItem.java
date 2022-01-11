@@ -242,9 +242,8 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     /**
      * Clear any cached image data held by this object. The base class clears
      * any cached oriented results and the MIP map cache (if enabled).
-     * Subclasses should override this (calling
-     * {@code super.clearCachedImages}) if the {@link #renderImage}
-     * implementation caches results.
+     * Subclasses should override this (calling {@code super.clearCachedImages})
+     * if the {@link #renderImage} implementation caches results.
      */
     public void clearCachedImages() {
         cachedOrientation = -1;
@@ -470,11 +469,10 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
      * rendered item will transparently create and use MIP mapped versions of
      * the bitmap to improve painting speed and target. Subclasses may call this
      * method to disable the MIP map mechanism. To do so, you must call
-     * {@code setMipMapCacheEnabled( false )} in <b>both</b> the
-     * constructor and {@link #readImpl}.
+     * {@code setMipMapCacheEnabled( false )} in <b>both</b> the constructor and
+     * {@link #readImpl}.
      *
-     * @param enable if {@code true}, the MIP map painting mechanism is
-     * enabled
+     * @param enable if {@code true}, the MIP map painting mechanism is enabled
      * @see #isMipMapCacheEnabled()
      * @since 3.0
      */
@@ -489,8 +487,8 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     }
 
     /**
-     * Returns {@code true} if the MIP map mechanism is currently enabled
-     * on this item.
+     * Returns {@code true} if the MIP map mechanism is currently enabled on
+     * this item.
      *
      * @return {@code true} if MIP mapping is enabled
      * @see #setMipMapCacheEnabled(boolean)
@@ -501,24 +499,24 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     }
 
     /**
-     * Returns {@code true} if the MIP map cache should be enabled by
-     * default for this item type. Subclasses can override this to disable this
+     * Returns {@code true} if the MIP map cache should be enabled by default
+     * for this item type. Subclasses can override this to disable this
      * mechanism. (The base class returns {@code true}.)
      *
-     * @return {@code true} if the MIP map cache should automatically be
-     * enabled during construction or deserialization
+     * @return {@code true} if the MIP map cache should automatically be enabled
+     * during construction or deserialization
      */
     protected boolean isMipMapCacheEnabledByDefault() {
         return true;
     }
 
     /**
-     * Returns {@code true} if the highest resolution MIP map image should
-     * be scaled up at high zoom levels. This method is called when the MIP map
+     * Returns {@code true} if the highest resolution MIP map image should be
+     * scaled up at high zoom levels. This method is called when the MIP map
      * cache is enabled but the current zoom level of the view requires an image
      * with higher resolution than the maximum resolution used by the MIP map
-     * cache. If it returns {@code true}, then the highest resolution MIP
-     * map image will be scaled up to the requested resolution. If it returns
+     * cache. If it returns {@code true}, then the highest resolution MIP map
+     * image will be scaled up to the requested resolution. If it returns
      * {@code false}, then a new rendering will be requested at the exact
      * resolution needed, just as if the MIP map cache was disabled.
      *

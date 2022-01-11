@@ -44,6 +44,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -267,7 +268,6 @@ public class Commands {
     ///////////////////
     // VIEW COMMANDS //////////////////////////////////////////////////////////
     ///////////////////
-
     /**
      * Enables and disables Ink Saver mode.
      */
@@ -275,23 +275,23 @@ public class Commands {
         {
             setSelected(Settings.getShared().getYesNo("render-as-prototype"));
         }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             final boolean enable = isSelected();
             StrangeEonsEditor[] ed = StrangeEons.getWindow().getEditors();
-            for(int i=0; i<ed.length; ++i) {
-                if(ed[i].isCommandApplicable(this)) {
+            for (int i = 0; i < ed.length; ++i) {
+                if (ed[i].isCommandApplicable(this)) {
                     try {
                         ed[i].performCommand(this);
-                    } catch(Throwable t) {
-                        t.printStackTrace();
+                    } catch (Throwable t) {
+                        StrangeEons.log.log(Level.WARNING, "uncaught", t);
                     }
                 }
             }
             Settings.getUser().set("render-as-prototype", enable ? "yes" : "no");
         }
     };
-
 
     /**
      * Toggles visibility of the context bar.
@@ -334,8 +334,8 @@ public class Commands {
         }
     };
     /**
-     * Toggles visibility of region boxes on game component previews, which helps
-     * when debugging component layouts.
+     * Toggles visibility of region boxes on game component previews, which
+     * helps when debugging component layouts.
      */
     public static final AbstractToggleCommand VIEW_REGION_BOXES = new AbstractToggleCommand("app-show-regions", "ui/view/region-boxes.png") {
         {
@@ -353,10 +353,10 @@ public class Commands {
         }
         private static final String KEY_SHOW_DEBUG_BOXES = "show-debug-boxes";
     };
-    
+
     /**
-     * Toggles visibility of region boxes on game component previews, which helps
-     * when debugging component layouts.
+     * Toggles visibility of region boxes on game component previews, which
+     * helps when debugging component layouts.
      */
     public static final AbstractToggleCommand VIEW_PORTRAIT_BOXES = new AbstractToggleCommand("app-show-portrait-boxes", "ui/view/portrait-boxes.png") {
         {
@@ -374,10 +374,10 @@ public class Commands {
         }
         private static final String KEY_SHOW_PORTRAIT_BOXES = "show-portrait-debug-boxes";
     };
-    
+
     /**
-     * Toggles visibility of bleed margin box on game component previews, which helps
-     * when debugging component layouts.
+     * Toggles visibility of bleed margin box on game component previews, which
+     * helps when debugging component layouts.
      */
     public static final AbstractToggleCommand VIEW_UNSAFE_BOXES = new AbstractToggleCommand("app-show-margin-boxes", "ui/view/margin-boxes.png") {
         {
@@ -395,10 +395,10 @@ public class Commands {
         }
         private static final String KEY_SHOW_MARGIN_DEBUG_BOXES = "show-margin-debug-boxes";
     };
-    
+
     /**
-     * Toggles visibility of card outline on game component previews, which helps
-     * when debugging component layouts.
+     * Toggles visibility of card outline on game component previews, which
+     * helps when debugging component layouts.
      */
     public static final AbstractToggleCommand VIEW_EDGE_BOXES = new AbstractToggleCommand("app-show-edge-boxes", "ui/view/edge-boxes.png") {
         {
@@ -415,7 +415,7 @@ public class Commands {
             StrangeEons.getWindow().redrawPreviews();
         }
         private static final String KEY_SHOW_EDGE_DEBUG_BOXES = "show-edge-debug-boxes";
-    };     
+    };
 
     /**
      * Creates a new expansion symbol.
@@ -1263,7 +1263,8 @@ public class Commands {
     }.key("complete-code");
 
     /**
-     * Formats (pretty prints) the current editor content, if a suitable formatter is available.
+     * Formats (pretty prints) the current editor content, if a suitable
+     * formatter is available.
      */
     public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null, "format-code");
 
@@ -1329,9 +1330,9 @@ public class Commands {
 
     /**
      * A client property that names a Web page that shows help for that part of
-     * the interface. The property value should be a {@code String}. The
-     * value can either be the name of a page in the Wiki or else the URL of a
-     * Web page.
+     * the interface. The property value should be a {@code String}. The value
+     * can either be the name of a page in the Wiki or else the URL of a Web
+     * page.
      *
      * @see #HELP
      */
@@ -1394,8 +1395,8 @@ public class Commands {
      * <li> the main application window will be consulted last
      * </ul>
      * The first consulted command handler for which the command is currently
-     * applicable will be returned, or if no handler is found, {@code null}
-     * is returned instead.
+     * applicable will be returned, or if no handler is found, {@code null} is
+     * returned instead.
      *
      * <p>
      * Note that if you wish to create a command that is delegated to a
@@ -1529,8 +1530,8 @@ public class Commands {
      * Returns the item in a menu bar that will execute the specified command,
      * or {@code null} if the menu does not contain such an item.
      *
-     * @param menu the menu bar whose menus should be searched, or
-     * {@code null} to use the main application window
+     * @param menu the menu bar whose menus should be searched, or {@code null}
+     * to use the main application window
      * @param command the command to search for
      * @return the item within the menu tree that contains the command
      */

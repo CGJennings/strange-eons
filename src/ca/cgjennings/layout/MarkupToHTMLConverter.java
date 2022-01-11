@@ -10,13 +10,13 @@ import java.text.AttributedCharacterIterator;
 import resources.StrangeImage;
 
 /**
- * Converts markup written for a {@code MarkupRenderer} into simple HTML.
- * It works by taking advantage of the customizability of
- * {@code MarkupRenderer}'s tag handling to insert "invisible" tags back
- * into the markup. The tags are made invisible by surrounding them with
- * special, non-printing characters instead of angle brackets. After the markup
- * is processed, the styled text is converted back into plain text and the
- * invisible tags are converted back into regular tags.
+ * Converts markup written for a {@code MarkupRenderer} into simple HTML. It
+ * works by taking advantage of the customizability of {@code MarkupRenderer}'s
+ * tag handling to insert "invisible" tags back into the markup. The tags are
+ * made invisible by surrounding them with special, non-printing characters
+ * instead of angle brackets. After the markup is processed, the styled text is
+ * converted back into plain text and the invisible tags are converted back into
+ * regular tags.
  * <p>
  * This approach allow us to ensure that the markup is processed in exactly the
  * same way as standard markup before being handed to the HTML converter.
@@ -26,7 +26,8 @@ import resources.StrangeImage;
 public class MarkupToHTMLConverter extends MarkupRenderer {
 
     /**
-     *     */
+     *
+     */
     public MarkupToHTMLConverter() {
         setHeadlineAlignment(LAYOUT_LEFT);
     }
@@ -155,16 +156,17 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
         // Image tags
         //if( tagnameLowercase.length() >= 6 && tagnameLowercase.startsWith( "image" ) && Character.isWhitespace( tagnameLowercase.charAt(5) ) ) {
         switch (tagName) {
-        // fammily tag for typeface
+            // fammily tag for typeface
             case "image":
                 if (params.length == 0) {
                     return null;
-                }   String url;
+                }
+                String url;
                 try {
                     if (params[0] != null && getBaseFile() != null && params[0].indexOf(':') < 0) {
                         params[0] = GraphicStyleFactory.translateRelativePath(params[0], getBaseFile());
                     }
-                    
+
                     URL imURL = StrangeImage.identifierToURL(params[0]);
                     if (imURL == null) {
                         url = params[0];
@@ -173,14 +175,15 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                     }
                 } catch (URISyntaxException e) {
                     url = params[0];
-                }   StringBuilder b = new StringBuilder();
+                }
+                StringBuilder b = new StringBuilder();
                 b.append("<img src=\"").append(url).append("\"");
                 if (params.length >= 2) {
                     double length = parseMeasurement(params[1]);
                     if (length == length && length > 0) {
                         b.append(" width=\"").append((int) ((length * dpiForInlineImages) + 0.5d)).append("\"");
                     }
-                    
+
                     if (params.length >= 3) {
                         length = parseMeasurement(params[2]);
                     } else {
@@ -196,15 +199,17 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                     if (length > 0) {
                         b.append(" height=\"").append((int) ((length * dpiForInlineImages) + 0.5d)).append("\"");
                     }
-                }   tag = encodeHTML(b.append('>').toString());
+                }
+                tag = encodeHTML(b.append('>').toString());
                 break;
-        // colour / bgcolour text colour tags
+            // colour / bgcolour text colour tags
             case "family":
                 if (params.length == 0) {
                     return null;
-                }   tag = "<span style='font-family: " + params[0] + "'>";
+                }
+                tag = "<span style='font-family: " + params[0] + "'>";
                 break;
-        // closing tag for all of the above
+            // closing tag for all of the above
             case "colour":
             case "color":
             case "bgcolour":
@@ -213,7 +218,8 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                 Color c = ForegroundColorStyleFactory.parseColor(params);
                 if (c == null) {
                     return null;
-                }   int rgb = c.getRGB() & 0x00ff_ffff;
+                }
+                int rgb = c.getRGB() & 0x00ff_ffff;
                 tag = String.format("<span style='%scolor: #%06x'>", bg, rgb);
                 break;
             case "/family":

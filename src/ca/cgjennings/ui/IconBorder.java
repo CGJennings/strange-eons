@@ -76,8 +76,8 @@ public class IconBorder extends AbstractBorder {
 
     /**
      * Assuming that a component has this border installed on it, returns
-     * {@code true} if a point in the component's coordinate space would be
-     * over the icon.
+     * {@code true} if a point in the component's coordinate space would be over
+     * the icon.
      *
      * @param c the component to test
      * @param x the x-coordinate of the point

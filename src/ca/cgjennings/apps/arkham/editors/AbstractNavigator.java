@@ -1,5 +1,7 @@
 package ca.cgjennings.apps.arkham.editors;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 
 /**
@@ -35,7 +37,7 @@ public abstract class AbstractNavigator implements Navigator {
      * @param m the matcher that threw {@code t}
      */
     public static void dumpRegExpThrowable(Throwable t, String text, Matcher m) {
-        System.err.println("Navigation regexp exception:");
+        StrangeEons.log.log(Level.SEVERE, "navigation regexp exception", t);
         System.err.println("--------");
         if (m != null) {
             int pos = 0;
@@ -48,6 +50,5 @@ public abstract class AbstractNavigator implements Navigator {
             System.err.println(text.substring(pos));
         }
         System.err.println("--------");
-        t.printStackTrace();
     }
 }

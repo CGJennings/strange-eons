@@ -31,6 +31,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -155,8 +156,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     }
 
     /**
-     * Returns {@code true} if the invoking an editor application is
-     * supported.
+     * Returns {@code true} if the invoking an editor application is supported.
      *
      * @return {@code true} if editing is supported
      */
@@ -286,9 +286,8 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     private Portrait portrait;
 
     /**
-     * Link this panel to another panel. The image to use will be
-     * determined by the linked parent panel, so image selection
-     * is disabled.
+     * Link this panel to another panel. The image to use will be determined by
+     * the linked parent panel, so image selection is disabled.
      *
      * @param parent the panel to link to
      */
@@ -1231,7 +1230,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                 // clipboard unavailable
             } catch (IOException e) {
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                e.printStackTrace();
+                StrangeEons.log.log(Level.WARNING, "unable to read portrait file", e);
             }
 
             // found no other datatype: fallback on regular text paste

@@ -31,8 +31,8 @@ public class NewerVersionException extends IOException {
     }
 
     /**
-     * Throws a newer version exception if {@code currentVersion} is less
-     * than {@code formatVersion}.
+     * Throws a newer version exception if {@code currentVersion} is less than
+     * {@code formatVersion}.
      *
      * @param currentVersion the format version that the caller knows how to
      * read

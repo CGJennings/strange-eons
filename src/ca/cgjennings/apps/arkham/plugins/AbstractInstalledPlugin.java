@@ -16,10 +16,10 @@ import resources.Settings;
  * plug-ins that it contains. It is not the plug-in itself, but it creates and
  * manages instances of the plug-in on demand. This is an abstract base class
  * for the two basic types of plug-in in Strange Eons: extensions and "regular"
- * plug-ins (which encompasses both the {@code INJECTED} and
- * {@code ACTIVATED} plug-in types). These two types are similar except
- * that extensions can only be started once (during startup), while regular
- * plug-ins are stopped and started on demand.
+ * plug-ins (which encompasses both the {@code INJECTED} and {@code ACTIVATED}
+ * plug-in types). These two types are similar except that extensions can only
+ * be started once (during startup), while regular plug-ins are stopped and
+ * started on demand.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -98,8 +98,8 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
 
     /**
      * Returns the plug-in instance managed by this InstalledPlugin, or
-     * {@code null} if no instance currently exists. To create an instance,
-     * call {@link #startPlugin()}.
+     * {@code null} if no instance currently exists. To create an instance, call
+     * {@link #startPlugin()}.
      *
      * @return the current plug-in instance, or {@code null}
      */
@@ -328,8 +328,8 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      * installed plug-ins are equal if they have the same class identifier.
      *
      * @param obj object to compare with
-     * @return true if {@code obj} is an installed plug-in with the same
-     * plug-in class
+     * @return true if {@code obj} is an installed plug-in with the same plug-in
+     * class
      */
     @Override
     public boolean equals(Object obj) {
@@ -354,12 +354,12 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     /**
-     * Returns {@code true} if this plug-in is a reloadable type, or false
-     * if it is only run once (and thus should be run at the same time as the
-     * plug-in info is collected).
+     * Returns {@code true} if this plug-in is a reloadable type, or false if it
+     * is only run once (and thus should be run at the same time as the plug-in
+     * info is collected).
      *
-     * @return {@code false} if the plug-in is an extension,
-     * {@code true} otherwise
+     * @return {@code false} if the plug-in is an extension, {@code true}
+     * otherwise
      */
     protected boolean isReloadable() {
         return true;

@@ -163,8 +163,8 @@ public final class SymbolVariantUtilities {
      *
      * <p>
      * This method will produce a square image that is {@code size} by
-     * {@code size} pixels. The largest dimension will be scaled up or down
-     * as needed, and the opposite dimension will be padded with completely
+     * {@code size} pixels. The largest dimension will be scaled up or down as
+     * needed, and the opposite dimension will be padded with completely
      * transparent pixels, if necessary, to fill it out.
      *
      * <p>
@@ -201,8 +201,8 @@ public final class SymbolVariantUtilities {
 
     /**
      * Adds transparent padding to each edge of the image equal to
-     * {@code paddingSize}. This is useful when you are about to apply an
-     * effect that grows from the edge of the original image.
+     * {@code paddingSize}. This is useful when you are about to apply an effect
+     * that grows from the edge of the original image.
      *
      * @param source the original image
      * @param paddingSize the number of rows or columns to add to each side of
@@ -376,10 +376,10 @@ public final class SymbolVariantUtilities {
     }
 
     /**
-     * Returns {@code true} if and only if every pixel in the source image
-     * has the same RGB value (the alpha channel may vary). This can determine,
-     * for example, if {@link #extractSymbol} has converted the image to pure
-     * black or greyscale.
+     * Returns {@code true} if and only if every pixel in the source image has
+     * the same RGB value (the alpha channel may vary). This can determine, for
+     * example, if {@link #extractSymbol} has converted the image to pure black
+     * or greyscale.
      *
      * @param source the image to check
      * @return {@code true} if every pixel in the source is the same colour
@@ -396,8 +396,8 @@ public final class SymbolVariantUtilities {
     }
 
     /**
-     * Returns {@code true} if and only if, for every pixel in the source
-     * image, that pixel has identical red, green and blue levels.
+     * Returns {@code true} if and only if, for every pixel in the source image,
+     * that pixel has identical red, green and blue levels.
      *
      * @param source the image to check
      * @return {@code true} if every pixel in the source is grey
@@ -418,11 +418,11 @@ public final class SymbolVariantUtilities {
 
     /**
      * Recolours an image. The source image is assumed to be greyscale. The
-     * darkest pixels will be coloured with {@code color1}, the lightest
-     * pixels will be coloured with {@code color2}, and pixels whose
-     * brightness is in between will be interpolate between the two extremes.
-     * The interpolation is non-linear, leaving a margin around the brightest
-     * and darkest pixel values to allow for some noise in the image.
+     * darkest pixels will be coloured with {@code color1}, the lightest pixels
+     * will be coloured with {@code color2}, and pixels whose brightness is in
+     * between will be interpolate between the two extremes. The interpolation
+     * is non-linear, leaving a margin around the brightest and darkest pixel
+     * values to allow for some noise in the image.
      *
      * <p>
      * <b>Note:</b> This effect is applied in-place; the returned image is the

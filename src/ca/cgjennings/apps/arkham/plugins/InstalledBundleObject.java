@@ -45,8 +45,8 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns the bundle that this was loaded from, or {@code null} if
-     * this represents a built-in plug-in.
+     * Returns the bundle that this was loaded from, or {@code null} if this
+     * represents a built-in plug-in.
      *
      * @return the source bundle, or {@code null}
      */
@@ -55,8 +55,8 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns the bundle's root file, or {@code null} if it does not have
-     * a root file.
+     * Returns the bundle's root file, or {@code null} if it does not have a
+     * root file.
      *
      * @return the root file of the source bundle, or {@code null}
      */
@@ -65,8 +65,8 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns the {@link CatalogID} for the source bundle, or {@code null}
-     * if the bundle's root file does not specify an id (or there is no bundle).
+     * Returns the {@link CatalogID} for the source bundle, or {@code null} if
+     * the bundle's root file does not specify an id (or there is no bundle).
      *
      * @return the bundle's ID, or {@code null}
      */
@@ -128,8 +128,8 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     public abstract BufferedImage getRepresentativeImage();
 
     /**
-     * Returns {@code true} if there is an update pending for this plug-in.
-     * A pending update is an updated version of the plug-in that will be
+     * Returns {@code true} if there is an update pending for this plug-in. A
+     * pending update is an updated version of the plug-in that will be
      * installed automatically the next time the application starts.
      *
      * @return {@code true} if an update is pending
@@ -158,11 +158,11 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
     }
 
     /**
-     * Returns {@code true} is the bundle has been loaded. When a bundle
-     * has been loaded, you can call {@link #getName}, {@link #getIcon}, and
+     * Returns {@code true} is the bundle has been loaded. When a bundle has
+     * been loaded, you can call {@link #getName}, {@link #getIcon}, and
      * {@link #getDescription} without triggering plug-in instantiation. When
-     * sorting bundles, if this returns {@code false}, then only the bundle
-     * type and priority will be used to determine bundle order.
+     * sorting bundles, if this returns {@code false}, then only the bundle type
+     * and priority will be used to determine bundle order.
      *
      * @return {@code true} is plug-in information has been loaded
      */

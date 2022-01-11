@@ -13,6 +13,7 @@ import javax.swing.UIManager;
  * @since 3.2
  */
 public class UltharTheme extends Theme {
+
     public UltharTheme() {
     }
 
@@ -26,16 +27,16 @@ public class UltharTheme extends Theme {
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
         final boolean dark = isDark();
-        UIManager.put( "Button.arc", 999 );
-        UIManager.put( "ScrollBar.width", 12 );
-        UIManager.put( "ScrollBar.thumbArc", 999 );
-        UIManager.put( "ScrollBar.thumbInsets", new Insets( 2, 2, 2, 2 ) );
-        UIManager.put( "TabbedPane.showTabSeparators", true );
-        UIManager.put( "TabbedPane.tabSeparatorsFullHeight", true );
+        UIManager.put("Button.arc", 999);
+        UIManager.put("ScrollBar.width", 12);
+        UIManager.put("ScrollBar.thumbArc", 999);
+        UIManager.put("ScrollBar.thumbInsets", new Insets(2, 2, 2, 2));
+        UIManager.put("TabbedPane.showTabSeparators", true);
+        UIManager.put("TabbedPane.tabSeparatorsFullHeight", true);
         UIManager.put(ALTERNATE_DOCUMENT_TAB_ORIENTATION, true);
         UIManager.put(NOTES_BACKGROUND, null);
         UIManager.put(EDITOR_TAB_BACKGROUND, null);
-        if(dark) {
+        if (dark) {
             final Color DEEPER_GREY = new Color(0x27292a);
             final Color BRIGHT_GREY = new Color(0xa0aba6);
             UIManager.put(PROJECT_HEADER_BACKGROUND, DEEPER_GREY);

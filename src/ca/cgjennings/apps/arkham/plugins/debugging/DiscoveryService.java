@@ -26,8 +26,12 @@ import java.util.function.Consumer;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class DiscoveryService {
-    /** Provides information about discovered debug servers. */
+
+    /**
+     * Provides information about discovered debug servers.
+     */
     public static final class ServerInfo {
+
         private ServerInfo(InetAddress address, int port, String pid, String hash, String buildNumber, String version, String testBundle) {
             this.address = address;
             this.port = port;
@@ -38,39 +42,43 @@ public final class DiscoveryService {
             this.testBundle = testBundle;
         }
 
-        /** Address needed to connect to the server. */
+        /**
+         * Address needed to connect to the server.
+         */
         public final InetAddress address;
-        /** Port needed to connect to the server. */
+        /**
+         * Port needed to connect to the server.
+         */
         public final int port;
         /**
-         * Process ID of the app instance debugged by the server,
-         * if available.
+         * Process ID of the app instance debugged by the server, if available.
          */
         public final String pid;
         /**
-         * Hash of the app instance address debugged by the server;
-         * the hash and/or process id can uniquely identify an app instance.
+         * Hash of the app instance address debugged by the server; the hash
+         * and/or process id can uniquely identify an app instance.
          */
         public final String hash;
-        /** Build number for the app instance debugged by the server. */
+        /**
+         * Build number for the app instance debugged by the server.
+         */
         public final String buildNumber;
-        /** Version string for the app instance debugged by the server. */
+        /**
+         * Version string for the app instance debugged by the server.
+         */
         public final String version;
         /**
-         * If the app instance debugged by the server is running in plug-in
-         * test mode, this is the bundle or bundle list passed on the
-         * command line.
+         * If the app instance debugged by the server is running in plug-in test
+         * mode, this is the bundle or bundle list passed on the command line.
          */
         public final String testBundle;
 
         @Override
         public String toString() {
-            return "" + pid + ':' + hash + " build " + buildNumber + " (" + version + ')' +
-                    (testBundle == null || testBundle.isEmpty() ? "" : " testing " + testBundle)
-            ;
+            return "" + pid + ':' + hash + " build " + buildNumber + " (" + version + ')'
+                    + (testBundle == null || testBundle.isEmpty() ? "" : " testing " + testBundle);
         }
     };
-
 
     /**
      * Create a new instance that will scan for servers running on the local
@@ -81,9 +89,9 @@ public final class DiscoveryService {
     }
 
     /**
-     * Create a new instance that will scan for servers on the specified
-     * hosts. Note that testing remote hosts is typically much slower
-     * than testing local hosts.
+     * Create a new instance that will scan for servers on the specified hosts.
+     * Note that testing remote hosts is typically much slower than testing
+     * local hosts.
      *
      * @param hosts Non-null array of hosts to test.
      */
@@ -123,13 +131,13 @@ public final class DiscoveryService {
      * @return non-null array of hosts, possibly empty
      */
     public InetAddress[] getHosts() {
-        return hostsToTest.toArray(new InetAddress[hostsToTest.size()]);
+        return hostsToTest.toArray(new InetAddress[0]);
     }
 
     /**
      * Sets an optional consumer that will be called for each discovered server
-     * Note that the callback may be called from any thread.
-     * The callback set at the start of any search will be used for the entire search.
+     * Note that the callback may be called from any thread. The callback set at
+     * the start of any search will be used for the entire search.
      *
      * @param consumer a server information consumer, or null for none
      */
@@ -138,8 +146,8 @@ public final class DiscoveryService {
     }
 
     /**
-     * Returns the current consumer that will be called for each discovered server
-     * as it is found.
+     * Returns the current consumer that will be called for each discovered
+     * server as it is found.
      *
      * @return the current consumer, or null if none
      */
@@ -156,8 +164,8 @@ public final class DiscoveryService {
      * Lists local network addresses, including the loopback address.
      *
      * @param allAdapterAddresses If true, all addresses associated with each
-     *  network interface are included (for example, an adapter may have both
-     *  an IPv4 and IPv6 address; this would include both).
+     * network interface are included (for example, an adapter may have both an
+     * IPv4 and IPv6 address; this would include both).
      * @return a set of local host addresses
      */
     private static Set<InetAddress> getLocalHostAddresses(boolean allAdapterAddresses) {
@@ -182,13 +190,14 @@ public final class DiscoveryService {
     }
 
     /**
-     * If possible, quickly rule out the port as a possible debug server.
-     * If the host address is local, and the socket is available, it can't
-     * have a debug server on it.
+     * If possible, quickly rule out the port as a possible debug server. If the
+     * host address is local, and the socket is available, it can't have a debug
+     * server on it.
      *
      * @param host the host to check
      * @param port the port to check
-     * @return true if the port can be ruled out, false if it needs further probing
+     * @return true if the port can be ruled out, false if it needs further
+     * probing
      */
     private boolean canRuleOutQuickly(InetAddress host, int port) {
         // if host is local...
@@ -206,8 +215,8 @@ public final class DiscoveryService {
     }
 
     /**
-     * Searches hosts for debug servers, returning information about each
-     * one found.
+     * Searches hosts for debug servers, returning information about each one
+     * found.
      *
      * @return non-null list of objects that describe discovered servers
      */
@@ -238,7 +247,7 @@ public final class DiscoveryService {
                         }
                     }
                     jobsComplete += 1;
-                    progress.progressUpdate(this, (float) jobsComplete/(float) numJobs);
+                    progress.progressUpdate(this, (float) jobsComplete / (float) numJobs);
                 };
             }
         }
@@ -272,7 +281,9 @@ public final class DiscoveryService {
         }
     }
 
-    /** Sends a SERVERINFO command to the potential server. */
+    /**
+     * Sends a SERVERINFO command to the potential server.
+     */
     private static void sendProbe(Socket s) throws IOException {
         OutputStream out = s.getOutputStream();
         out.write(PROBE_BYTES);
@@ -281,8 +292,9 @@ public final class DiscoveryService {
 
     /**
      * Reads any reply from a potential server.
-     * @return returns null if the server does not reply or does not send
-     *   a proper debug server reply, or the server information if one is detected
+     *
+     * @return returns null if the server does not reply or does not send a
+     * proper debug server reply, or the server information if one is detected
      */
     private static ServerInfo readProbeReply(Socket s) throws IOException {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream(), TextEncoding.DEBUGGER_CS))) {

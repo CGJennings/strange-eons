@@ -102,11 +102,11 @@ abstract class LZEncoder {
      * @param extraSizeAfter number of bytes that must be available after
      * current position + matchLenMax
      *
-     * @param niceLen if a match of at least {@code niceLen} bytes is
-     * found, be happy with it and don't stop looking for longer matches
+     * @param niceLen if a match of at least {@code niceLen} bytes is found, be
+     * happy with it and don't stop looking for longer matches
      *
-     * @param matchLenMax don't test for matches longer than
-     * {@code matchLenMax} bytes
+     * @param matchLenMax don't test for matches longer than {@code matchLenMax}
+     * bytes
      *
      * @param mf match finder ID
      *
@@ -278,9 +278,8 @@ abstract class LZEncoder {
     /**
      * Get the number of bytes available, including the current byte.
      * <p>
-     * Note that the result is undefined if {@code getMatches} or
-     * {@code skip} hasn't been called yet and no preset dictionary is
-     * being used.
+     * Note that the result is undefined if {@code getMatches} or {@code skip}
+     * hasn't been called yet and no preset dictionary is being used.
      */
     public int getAvail() {
         assert isStarted();
@@ -298,8 +297,8 @@ abstract class LZEncoder {
     /**
      * Gets the byte from the given backward offset.
      * <p>
-     * The current byte is at {@code 0}, the previous byte at
-     * {@code 1} etc. To get a byte at zero-based distance, use {@code getByte(dist + 1){@code .
+     * The current byte is at {@code 0}, the previous byte at {@code 1} etc. To
+     * get a byte at zero-based distance, use {@code getByte(dist + 1){@code .
      * <p>
      * This function is equivalent to {@code getByte(0, backward)}.
      */

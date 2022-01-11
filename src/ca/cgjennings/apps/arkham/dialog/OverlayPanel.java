@@ -22,9 +22,9 @@ public class OverlayPanel extends JPanel {
 
     private Color getParentBackground() {
         Component c = getParent();
-        if(c != null) {
+        if (c != null) {
             Color b = c.getBackground();
-            if(b != null) {
+            if (b != null) {
                 return b;
             }
         }
@@ -32,7 +32,7 @@ public class OverlayPanel extends JPanel {
     }
 
     protected Color deriveBackground(Color parentBackground) {
-        if(parentBackground == null) {
+        if (parentBackground == null) {
             return Color.GRAY;
         }
         return new Color(
@@ -48,7 +48,7 @@ public class OverlayPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         Color bg = getParentBackground();
-        if(!bg.equals(lastParentBackground)) {
+        if (!bg.equals(lastParentBackground)) {
             lastParentBackground = bg;
             super.setBackground(deriveBackground(bg));
         }

@@ -18,13 +18,13 @@ import resources.ResourceKit;
  * The abstract base class for main application commands in Strange Eons.
  *
  * <p>
- * Because this class is descended from Swing {@code Action}s, it includes
- * a property map that can be used to set its name, icon, and so forth. However,
+ * Because this class is descended from Swing {@code Action}s, it includes a
+ * property map that can be used to set its name, icon, and so forth. However,
  * this class also defines several convenience methods for setting these
- * properties (all of which are {@code final}). Some of these perform
- * additional processing on the input before setting it as the value for the
- * relevant property (see, for example, {@link #setName(java.lang.String)}. In
- * these cases you can bypass the additional processing by setting the relevant
+ * properties (all of which are {@code final}). Some of these perform additional
+ * processing on the input before setting it as the value for the relevant
+ * property (see, for example, {@link #setName(java.lang.String)}. In these
+ * cases you can bypass the additional processing by setting the relevant
  * property value directly.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -261,9 +261,9 @@ public abstract class AbstractCommand extends AbstractAction {
 
     /**
      * The key used for storing the ID string to use for this command when it is
-     * added to a context bar using {@code ContextBar.CommandButton}. If
-     * this is {@code null}, then a non-{@code null} ID must be
-     * provided when creating the button.
+     * added to a context bar using {@code ContextBar.CommandButton}. If this is
+     * {@code null}, then a non-{@code null} ID must be provided when creating
+     * the button.
      */
     public static final String BUTTON_ID_KEY = "se#buttonID";
 
@@ -283,9 +283,9 @@ public abstract class AbstractCommand extends AbstractAction {
      * string. Otherwise, returns {@code null}.
      *
      * @param e the action event that fired the command
-     * @return {@code null} if the event's action command is
-     * {@code null}, empty, or the default value for this command;
-     * otherwise, the value of the action command
+     * @return {@code null} if the event's action command is {@code null},
+     * empty, or the default value for this command; otherwise, the value of the
+     * action command
      */
     protected String getCommandString(ActionEvent e) {
         String command = e == null ? null : e.getActionCommand();

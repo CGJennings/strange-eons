@@ -73,8 +73,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      *
      * @param gc the game component that the portrait is used with
      * @param key the key used to determine the basic properties of the portrait
-     * @param allowRotation if {@code true}, rotating the portrait is
-     * allowed
+     * @param allowRotation if {@code true}, rotating the portrait is allowed
      */
     public DefaultPortrait(GameComponent gc, String key, boolean allowRotation) {
         this.gc = gc;
@@ -172,8 +171,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     }
 
     /**
-     * Returns the portrait that this portrait is linked to, or
-     * {@code null}.
+     * Returns the portrait that this portrait is linked to, or {@code null}.
      *
      * @return the parent portrait, or {@code null} if this portrait is not
      * linked to another portrait
@@ -264,8 +262,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * @param faces an array, each element of which is the index of a face that
      * shows this portrait
      * @throws NullPointerException if {@code faces} is {@code null}
-     * @throws IllegalArgumentException if any value in the {@code faces}
-     * array is outside the supported range of 32 faces
+     * @throws IllegalArgumentException if any value in the {@code faces} array
+     * is outside the supported range of 32 faces
      */
     public final void setFacesToUpdate(int[] faces) {
         if (faces == null) {
@@ -330,19 +328,18 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Installs the default portrait, if it is not already set. The default
      * portrait is determined by looking up the base key with the suffix
-     * {@code -portrait-template} appended. The value of this key must be a
-     * path relative to the resources folder that identifies an image file. If
-     * the key is not defined, then the value
-     * {@code portraits/misc-portrait.jp2} will be used, but this should
-     * only be used as a placeholder during development. By default, the pan
-     * position will be set to (0,0) and the scale and rotation will be set as
-     * if for any other portrait installed by calling {@link #setSource}. The
-     * default panning and scale values (for the default image only) can be
-     * overridden by keys with the suffix {@code -portrait-panx},
-     * {@code -portrait-pany}, and {@code -portrait-scale}. The
-     * default rotation (if enabled, and for both the default image and images
-     * set by {@link #setSource}), can be set via the key suffix
-     * {@code -portrait-rotation}. (See
+     * {@code -portrait-template} appended. The value of this key must be a path
+     * relative to the resources folder that identifies an image file. If the
+     * key is not defined, then the value {@code portraits/misc-portrait.jp2}
+     * will be used, but this should only be used as a placeholder during
+     * development. By default, the pan position will be set to (0,0) and the
+     * scale and rotation will be set as if for any other portrait installed by
+     * calling {@link #setSource}. The default panning and scale values (for the
+     * default image only) can be overridden by keys with the suffix
+     * {@code -portrait-panx}, {@code -portrait-pany}, and
+     * {@code -portrait-scale}. The default rotation (if enabled, and for both
+     * the default image and images set by {@link #setSource}), can be set via
+     * the key suffix {@code -portrait-rotation}. (See
      * {@link #computeDefaultImageRotation}.)
      */
     @Override
@@ -435,32 +432,35 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Sets the synthetic edge limit ratio for the portrait. When set to a
      * non-zero value, the portrait image will be extended in every direction
-     * using mirrored copies of the original image. The amount that each edge
-     * is extended depends on the limit ratio. A value of 1 extends the image
-     * by one full image copy on each side, while values between 0 and 1 extend
-     * the image proportionally. For example, a value of 0.1 would extend the
-     * image by one tenth of an image on each side. The default edge limit is 0,
+     * using mirrored copies of the original image. The amount that each edge is
+     * extended depends on the limit ratio. A value of 1 extends the image by
+     * one full image copy on each side, while values between 0 and 1 extend the
+     * image proportionally. For example, a value of 0.1 would extend the image
+     * by one tenth of an image on each side. The default edge limit is 0,
      * meaning that no edges will be synthesized.
      *
-     * <p>The effect of a non-zero limit is similar to creating a
+     * <p>
+     * The effect of a non-zero limit is similar to creating a
      * {@link Sheet#synthesizeBleedMargin synthetic bleed margin} on a sheet.
      *
-     * <p>This feature may be particularly useful for designs that:
+     * <p>
+     * This feature may be particularly useful for designs that:
      * <ol>
-     *   <li> include a designed (not synthetic) bleed margin;
-     *   <li> have a portrait area that overlaps this bleed margin; and
-     *   <li> want to provide a way for users to easily extend a portrait
-     *        into the bleed margin without sacrificing composition.
+     * <li> include a designed (not synthetic) bleed margin;
+     * <li> have a portrait area that overlaps this bleed margin; and
+     * <li> want to provide a way for users to easily extend a portrait into the
+     * bleed margin without sacrificing composition.
      * </ol>
      *
      * @param limitRatio the new limit ratio to set
-     * @throws IllegalArgumentException if the limit is not between 0 and 1 inclusive
+     * @throws IllegalArgumentException if the limit is not between 0 and 1
+     * inclusive
      */
     public void setSyntheticEdgeLimit(double limitRatio) {
-        if(limitRatio < 0d || limitRatio > 1d) {
+        if (limitRatio < 0d || limitRatio > 1d) {
             throw new IllegalArgumentException("limit must be between 0 and 1 inclusive");
         }
-        if(limitRatio != syntheticEdgeLimit) {
+        if (limitRatio != syntheticEdgeLimit) {
             syntheticEdgeLimit = limitRatio;
             syntheticImageCached = null;
             syntheticImageSource = null;
@@ -481,24 +481,25 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * Returns an image that can be used to paint the portrait with any
      * synthetic edges applied.
      *
-     * @return an image, with edges extended according to the synthetic edge limit, or null
+     * @return an image, with edges extended according to the synthetic edge
+     * limit, or null
      */
     protected BufferedImage getSyntheticEdgeImage() {
         final BufferedImage bi = getImage();
-        if(syntheticEdgeLimit == 0d || bi == null) {
+        if (syntheticEdgeLimit == 0d || bi == null) {
             return bi;
         }
-        if(bi == syntheticImageSource) {
+        if (bi == syntheticImageSource) {
             return syntheticImageCached;
         }
 
         syntheticImageSource = bi;
         final int w = bi.getWidth();
         final int h = bi.getHeight();
-        final int wm = Math.min(w, (int)(w * syntheticEdgeLimit));
-        final int hm = Math.min(h, (int)(h * syntheticEdgeLimit));
+        final int wm = Math.min(w, (int) (w * syntheticEdgeLimit));
+        final int hm = Math.min(h, (int) (h * syntheticEdgeLimit));
 
-        syntheticImageCached = ImageUtilities.createCompatibleIntRGBFormat(bi, w + wm*2, h + hm*2);
+        syntheticImageCached = ImageUtilities.createCompatibleIntRGBFormat(bi, w + wm * 2, h + hm * 2);
         Graphics2D g = syntheticImageCached.createGraphics();
         try {
             g.drawImage(bi, wm - w, hm - h, wm, hm, w, h, 0, 0, null);
@@ -521,7 +522,6 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     private transient BufferedImage syntheticImageSource;
     private transient BufferedImage syntheticImageCached;
-
 
     @Override
     public final Point2D getPan(Point2D dest) {
@@ -596,11 +596,11 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Sets whether this portrait should use the minimum fit scale when
-     * computing a default scale value for an image. When {@code false},
-     * the default scale value is selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
+     * computing a default scale value for an image. When {@code false}, the
+     * default scale value is selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
      * entire portrait clip region is covered}, even if that means part of the
-     * portrait won't be visible. When {@code true}, the default scale
-     * value is selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
+     * portrait won't be visible. When {@code true}, the default scale value is
+     * selected so that the {@linkplain ImageUtilities#idealCoveringScaleForImage
      * entire image just fits within the clip region}, even if that means that
      * part of the clip region will not be covered by the portrait. The default
      * setting is {@code false} (cover the entire clip region).
@@ -630,15 +630,15 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
     /**
      * Sets whether the portrait is clipped to the clip region. The default is
-     * {@code true}. When {@code false} the clip region is only used
-     * to determine a portrait image's default size.
+     * {@code true}. When {@code false} the clip region is only used to
+     * determine a portrait image's default size.
      *
      * <p>
      * <b>Note:</b> This is normally called at most once, just after the
      * portrait is first created.
      *
-     * @param clipping if {@code true}, clip the portrait to the clip
-     * region when it is drawn with {@link #paint}.
+     * @param clipping if {@code true}, clip the portrait to the clip region
+     * when it is drawn with {@link #paint}.
      */
     public final void setClipping(boolean clipping) {
         if (noClip == clipping) {
@@ -648,8 +648,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     }
 
     /**
-     * Returns {@code true} if the portrait will be clipped to the clip
-     * region. See {@link #setClipping} for details.
+     * Returns {@code true} if the portrait will be clipped to the clip region.
+     * See {@link #setClipping} for details.
      *
      * @return {@code true} if clipping is enabled.
      */
@@ -660,9 +660,9 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     /**
      * Returns the size of the bounding rectangle of the area that the portrait
      * is drawn in on the component sheet, in the coordinate system of the
-     * sheet's template. This may return {@code null} if this value is
-     * unknown or inapplicable, in which case some features of the portrait
-     * panel will not be available.
+     * sheet's template. This may return {@code null} if this value is unknown
+     * or inapplicable, in which case some features of the portrait panel will
+     * not be available.
      *
      * @return the dimensions of the portrait's clipping rectangle
      */
@@ -777,8 +777,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * <b>Note:</b> This is normally called at most once, just after the
      * portrait is first created.
      *
-     * @param fill if {@code true}, the portrait background will be filled
-     * in when it is drawn with {@link #paint}.
+     * @param fill if {@code true}, the portrait background will be filled in
+     * when it is drawn with {@link #paint}.
      */
     public final void setBackgroundFilled(boolean fill) {
         if (noFill == fill) {
@@ -788,12 +788,12 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     }
 
     /**
-     * Returns {@code true} if portrait areas will be filled with solid
-     * white before painting the portrait. See {@link #setBackgroundFilled(boolean)
+     * Returns {@code true} if portrait areas will be filled with solid white
+     * before painting the portrait. See {@link #setBackgroundFilled(boolean)
      * } for details.
      *
-     * @return {@code true} if the portrait clip region is filled before
-     * drawing the portrait
+     * @return {@code true} if the portrait clip region is filled before drawing
+     * the portrait
      */
     public final boolean isBackgroundFilled() {
         return !noFill;
@@ -831,7 +831,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
             g.setPaint(p);
         }
 
-        if(syntheticEdgeLimit > 0d) {
+        if (syntheticEdgeLimit > 0d) {
             // could check to see where portrait corners will end up and
             // only use extended image if the entire portrait region will not
             // be covered
@@ -866,11 +866,13 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         if (obeyClip) {
             g.setClip(oldClip);
         }
-        
+
         Sheet.drawPortraitBox(g, r, this);
     }
 
-    /** Converts angle measures and direction to match the portrait panel specs. */
+    /**
+     * Converts angle measures and direction to match the portrait panel specs.
+     */
     private static final double DEGREES_TO_RADIANS = -0.0174532925d;
 
     /**
@@ -960,9 +962,9 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * The base class implementation uses the following procedure: If the
      * portrait does not include the rotation feature, 0 is always returned.
      * Otherwise, if a key equal to the base key with the suffix
-     * {@code -default-rotation} is defined and can be parsed as a double
-     * value, then that value is returned. If the key does not exist or cannot
-     * be parsed, 0 is returned.
+     * {@code -default-rotation} is defined and can be parsed as a double value,
+     * then that value is returned. If the key does not exist or cannot be
+     * parsed, 0 is returned.
      *
      * @param image the image to determine the default rotation for
      * @return the default rotation value for {@code image}
@@ -1021,7 +1023,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         y = in.readDouble();
         scale = in.readDouble();
         angle = in.readDouble();
-        if(version >= 3) {
+        if (version >= 3) {
             syntheticEdgeLimit = in.readDouble();
         } else {
             syntheticEdgeLimit = 0d;

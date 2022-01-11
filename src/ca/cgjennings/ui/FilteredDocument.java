@@ -7,11 +7,11 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 /**
- * An extension of {@code PlainDocument} that transparently filters out
- * certain characters. A set of characters is provided as a string, and the
- * filter operates as either a white list (allowing only characters in the
- * filter string) or a black list (allowing all characters except those in the
- * filter string).
+ * An extension of {@code PlainDocument} that transparently filters out certain
+ * characters. A set of characters is provided as a string, and the filter
+ * operates as either a white list (allowing only characters in the filter
+ * string) or a black list (allowing all characters except those in the filter
+ * string).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -34,8 +34,7 @@ public class FilteredDocument extends PlainDocument {
      * list.
      *
      * @param blackList the characters to exclude
-     * @throws NullPointerException if {@code filterList} is
-     * {@code null}
+     * @throws NullPointerException if {@code filterList} is {@code null}
      */
     public FilteredDocument(String blackList) {
         this(blackList, false);
@@ -48,8 +47,7 @@ public class FilteredDocument extends PlainDocument {
      * @param filterList the characters to include/exclude
      * @param isWhiteList whether the filter includes or excludes the filter
      * list
-     * @throws NullPointerException if {@code filterList} is
-     * {@code null}
+     * @throws NullPointerException if {@code filterList} is {@code null}
      */
     public FilteredDocument(String filterList, boolean isWhiteList) {
         super();
@@ -58,8 +56,8 @@ public class FilteredDocument extends PlainDocument {
     }
 
     /**
-     * Sets whether the list is treated as a white list ({@code true}) or
-     * black list ({@code false}).
+     * Sets whether the list is treated as a white list ({@code true}) or black
+     * list ({@code false}).
      *
      * @param isWhiteList {@code true} if the filter characters are
      * <i>allowed</i>
@@ -70,9 +68,9 @@ public class FilteredDocument extends PlainDocument {
     }
 
     /**
-     * Returns {@code true} if the filter characters form a white list
-     * (list of the allowed characters), or {@code false} if they form a
-     * black list (list of excluded characters).
+     * Returns {@code true} if the filter characters form a white list (list of
+     * the allowed characters), or {@code false} if they form a black list (list
+     * of excluded characters).
      *
      * @return {@code true} if the list is a white list
      */
@@ -85,8 +83,7 @@ public class FilteredDocument extends PlainDocument {
      *
      * @param filterList each character in this string will be excluded or
      * included (depending on whether the set is a whitelist)
-     * @throws NullPointerException if {@code filterList} is
-     * {@code null}
+     * @throws NullPointerException if {@code filterList} is {@code null}
      */
     public void setFilteredCharacters(String filterList) {
         if (filterList == null) {

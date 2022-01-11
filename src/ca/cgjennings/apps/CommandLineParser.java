@@ -20,29 +20,29 @@ import resources.Language;
  *
  * <p>
  * Depending on the type of the field, an option takes either 0 or 1 parameters.
- * If the type of the field is {@code boolean} or {@link Boolean}, it will
- * take no parameter. The value of the field will set to {@code true} if
- * the option is found, and otherwise it will not be changed. For other types,
- * the argument immediately following the option is taken to be its parameter.
- * The following field types can all be filled in automatically from this
- * argument: {@link String}, {@link File}, int, {@link Integer}, double, {@link Double},
+ * If the type of the field is {@code boolean} or {@link Boolean}, it will take
+ * no parameter. The value of the field will set to {@code true} if the option
+ * is found, and otherwise it will not be changed. For other types, the argument
+ * immediately following the option is taken to be its parameter. The following
+ * field types can all be filled in automatically from this argument:
+ * {@link String}, {@link File}, int, {@link Integer}, double, {@link Double},
  * {@link Class}, {@link Locale}, and {@link Enum}. Strings are copied as-is.
- * Files are filled in as if by {@code new File( argument )}; classes as if
- * by {@code Class.forName( argument )}. Numeric types are filled in as if
- * by the appropriate {@code valueOf} or {@code parseInt} method. If a
- * class is not found or there is a syntax error in the format of a numeric
- * parameter, a suitable error message is printed. {@code Locales} are
- * interpreted using the same mechanism as that used for resource bundles, e.g.,
- * en_CA would refer to Canadian English. {@code Enum} types will be
- * assigned a value by converting the parameter to upper case and invoking the
- * enum's {@code valueOf} method on the result.
+ * Files are filled in as if by {@code new File( argument )}; classes as if by
+ * {@code Class.forName( argument )}. Numeric types are filled in as if by the
+ * appropriate {@code valueOf} or {@code parseInt} method. If a class is not
+ * found or there is a syntax error in the format of a numeric parameter, a
+ * suitable error message is printed. {@code Locales} are interpreted using the
+ * same mechanism as that used for resource bundles, e.g., en_CA would refer to
+ * Canadian English. {@code Enum} types will be assigned a value by converting
+ * the parameter to upper case and invoking the enum's {@code valueOf} method on
+ * the result.
  *
  * <p>
  * If the type of a field is not one of the predefined types above, then the
- * type will be checked for a constructor that takes a single
- * {@code String} argument. If one exists, then it will be used to create
- * the value to be filled in the field by calling the constructor with the
- * parameter string. Otherwise, an {@code AssertionError} will be thrown.
+ * type will be checked for a constructor that takes a single {@code String}
+ * argument. If one exists, then it will be used to create the value to be
+ * filled in the field by calling the constructor with the parameter string.
+ * Otherwise, an {@code AssertionError} will be thrown.
  *
  * <p>
  * Any arguments that are neither an option nor a parameter for an option will
@@ -109,11 +109,10 @@ public class CommandLineParser {
 
     /**
      * Returns a copy of all of the arguments that were not used as options or
-     * the value of an option as {@code File} objects. For a typical
-     * command line utility, this would be the list of files on which the
-     * command is to operate. If the parser has not parsed a command line, or if
-     * an error occurred during the last parse, this will return
-     * {@code null}.
+     * the value of an option as {@code File} objects. For a typical command
+     * line utility, this would be the list of files on which the command is to
+     * operate. If the parser has not parsed a command line, or if an error
+     * occurred during the last parse, this will return {@code null}.
      *
      * @return the unused command line arguments, or {@code null}
      * @see	#getPlainArguments()
@@ -133,14 +132,14 @@ public class CommandLineParser {
     /**
      * Returns the name of an option in a command line argument, stripped of its
      * prefix; if the argument does not represent an option, returns
-     * {@code null}. The base class checks for a prefix of either "--" or
-     * "-". If present, it returns the remainder of the argument. Otherwise, it
+     * {@code null}. The base class checks for a prefix of either "--" or "-".
+     * If present, it returns the remainder of the argument. Otherwise, it
      * returns {@code null}. Subclasses may override this to enforce other
      * conventions.
      *
      * @param argument the argument which might represent an option name
-     * @return the option name represented, or {@code null} if the argument
-     * is not an option
+     * @return the option name represented, or {@code null} if the argument is
+     * not an option
      */
     protected String getOptionName(String argument) {
         String option = null;
@@ -157,8 +156,8 @@ public class CommandLineParser {
     }
 
     /**
-     * If this returns {@code true}, then the matching of option names to
-     * fields will be case sensitive. The base class returns {@code false}.
+     * If this returns {@code true}, then the matching of option names to fields
+     * will be case sensitive. The base class returns {@code false}.
      *
      * @return {@code true} to make option names case sensitive
      */
@@ -168,8 +167,8 @@ public class CommandLineParser {
 
     /**
      * Returns {@code true} if and only if the supplied argument should be
-     * interpreted as a request for help. The base class returns
-     * {@code true} for any of: "--help", "--h", "-?", or "/?".
+     * interpreted as a request for help. The base class returns {@code true}
+     * for any of: "--help", "--h", "-?", or "/?".
      *
      * @param argument the argument to test
      * @return {@code true} if help should be displayed
@@ -184,8 +183,8 @@ public class CommandLineParser {
     /**
      * Called to display usage information when help is requested. The base
      * class prints a message to the output stream and exits. If a
-     * non-{@code null} usage text has been set with {@link #setUsageText},
-     * then this will be used as the text to display. If no other usage text is
+     * non-{@code null} usage text has been set with {@link #setUsageText}, then
+     * this will be used as the text to display. If no other usage text is
      * defined, the base class will display a default message that is generated
      * from the fields in the target.
      *
@@ -223,12 +222,12 @@ public class CommandLineParser {
     /**
      * Called when there is an error with the command line syntax. The base
      * class prints the supplied message, then prints a line inviting the user
-     * to use the {@code --help} option for more information, and then
-     * exits the application with a return code of 20 (indicating an abnormal
+     * to use the {@code --help} option for more information, and then exits the
+     * application with a return code of 20 (indicating an abnormal
      * termination).
      *
-     * @param message the message to display, or {@code null} for the
-     * default message "The command line arguments are incorrect"
+     * @param message the message to display, or {@code null} for the default
+     * message "The command line arguments are incorrect"
      */
     protected void handleParsingError(String message) {
         if (message == null) {
@@ -243,8 +242,8 @@ public class CommandLineParser {
      * Parses an application's command line arguments, filling in the matching
      * public fields of {@code target} as appropriate.
      *
-     * @param target the object whose fields will be filled in, or
-     * {@code null} to use this object
+     * @param target the object whose fields will be filled in, or {@code null}
+     * to use this object
      * @param args the command line arguments to parse
      */
     public void parse(Object target, String... args) {
@@ -310,7 +309,7 @@ public class CommandLineParser {
         if (lastOption != null) {
             handleParsingError("Missing value for option " + lastOption.getName());
         }
-        leftOvers = files.toArray(new String[files.size()]);
+        leftOvers = files.toArray(new String[0]);
     }
 
     /**
@@ -325,7 +324,7 @@ public class CommandLineParser {
      */
     protected void setOption(Object target, String name, Field field, String value) {
         Object v; // the object to write into the field
-        Class type = field.getType();
+        Class<?> type = field.getType();
 
         if (type == boolean.class || type == Boolean.class) {
             v = true;
@@ -377,7 +376,7 @@ public class CommandLineParser {
         } else if (type == Level.class) {
             try {
                 v = Level.parse(value.toUpperCase(Locale.CANADA));
-            } catch (Exception e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 handleParsingError("Not a valid log level parameter for option " + name);
                 return;
             }
@@ -395,7 +394,7 @@ public class CommandLineParser {
                 if (v == null) {
                     throw new IllegalArgumentException();
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 handleParsingError("Not a valid parameter for option " + name);
                 return;
             }
@@ -405,10 +404,11 @@ public class CommandLineParser {
                 try {
                     v = c.newInstance(value);
                 } catch (InvocationTargetException ite) {
-                    handleParsingError("Exception \"" + ite.getCause() + "\" while parsing option " + name);
+                    final Throwable trueEx = ite.getCause();
+                    handleParsingError("Exception \"" + trueEx + "\" while parsing option " + name);
                     return;
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException | ReflectiveOperationException e) {
                 throw new AssertionError("unsupprted option field class: " + type);
             }
         }

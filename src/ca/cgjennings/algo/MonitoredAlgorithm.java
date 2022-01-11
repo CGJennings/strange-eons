@@ -1,10 +1,10 @@
 package ca.cgjennings.algo;
 
 /**
- * A {@code MonitoredAlgorithm} is an algorithm that can report on its
- * progress as it completes. It supports a single listener (although that
- * listener can chain to other listeners if needed) that will be notified as the
- * algorithm progresses.
+ * A {@code MonitoredAlgorithm} is an algorithm that can report on its progress
+ * as it completes. It supports a single listener (although that listener can
+ * chain to other listeners if needed) that will be notified as the algorithm
+ * progresses.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

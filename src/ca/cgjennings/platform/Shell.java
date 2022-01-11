@@ -120,7 +120,7 @@ public class Shell {
      * @return the last executed command
      */
     public synchronized String[] lastCommand() {
-        return command.toArray(new String[command.size()]);
+        return command.toArray(new String[0]);
     }
 
     /**
@@ -161,7 +161,7 @@ public class Shell {
         if (commandTokens == null) {
             throw new NullPointerException("commandTokens");
         }
-        return exec(commandTokens.toArray(new String[commandTokens.size()]), stdin);
+        return exec(commandTokens.toArray(new String[0]), stdin);
     }
 
     /**
@@ -177,7 +177,7 @@ public class Shell {
         if (commandTokens == null) {
             throw new NullPointerException("commandTokens");
         }
-        return exec(commandTokens.toArray(new String[commandTokens.size()]), null);
+        return exec(commandTokens.toArray(new String[0]), null);
     }
 
     /**
@@ -227,7 +227,7 @@ public class Shell {
             throw new NullPointerException("commandTokens");
         }
 
-        return sudo(commandTokens.toArray(new String[commandTokens.size()]), stdin, password);
+        return sudo(commandTokens.toArray(new String[0]), stdin, password);
     }
 
     /**
@@ -441,7 +441,7 @@ public class Shell {
                 StringWriter sw = new StringWriter(256);
                 StreamPump.copy(new InputStreamReader(proc.getInputStream()), sw);
                 sw.flush();
-                return new Result(command.toArray(new String[command.size()]), exitCode, sw.toString());
+                return new Result(command.toArray(new String[0]), exitCode, sw.toString());
             } catch (InterruptedException e) {
                 proc.destroy();
                 return null;

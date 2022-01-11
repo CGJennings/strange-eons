@@ -20,14 +20,14 @@ import java.util.regex.Pattern;
  * the variable is undefined.
  * <p>
  * <b>{?<i>condition</i>} ... {/?<i>condition</i>}</b><br>
- * If the condition is set to {@code true}, then the text between the start
- * and end symbols will be included in the document. Otherwise, it will be left
- * out. Throws an exception if the condition has not been set.
+ * If the condition is set to {@code true}, then the text between the start and
+ * end symbols will be included in the document. Otherwise, it will be left out.
+ * Throws an exception if the condition has not been set.
  * <p>
  * <b>{!<i>condition</i>} ... {/!<i>condition</i>}</b><br>
- * If the condition is set to {@code false}, then the text between the
- * start and end symbols will be included in the document. Otherwise, it will be
- * left out. Throws an exception if the condition has not been set.
+ * If the condition is set to {@code false}, then the text between the start and
+ * end symbols will be included in the document. Otherwise, it will be left out.
+ * Throws an exception if the condition has not been set.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -315,8 +315,7 @@ public class TemplateProcessor {
      * is used to provide context about the error.
      *
      * @param message the error message to provide
-     * @param remainder the remaining unprocessed text (may be
-     * {@code null})
+     * @param remainder the remaining unprocessed text (may be {@code null})
      * @throws IllegalArgumentException
      */
     protected void error(String message, String remainder) throws IllegalArgumentException {

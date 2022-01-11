@@ -59,8 +59,8 @@ public class JIconSelector<S> extends JComponent {
     /**
      * Adds an item to the list, obtaining an icon and tool tip text from the
      * item itself. The specified item must implement the {@link IconProvider}
-     * interface, or a {@code ClassCastException} will be thrown. The tool
-     * tip text will be set to the item's {@code toString()} value.
+     * interface, or a {@code ClassCastException} will be thrown. The tool tip
+     * text will be set to the item's {@code toString()} value.
      *
      * @param item the item to add
      */
@@ -135,8 +135,8 @@ public class JIconSelector<S> extends JComponent {
     }
 
     /**
-     * Returns the selected item in the list, or {@code null} if there is
-     * no selection.
+     * Returns the selected item in the list, or {@code null} if there is no
+     * selection.
      *
      * @return the selected item
      */

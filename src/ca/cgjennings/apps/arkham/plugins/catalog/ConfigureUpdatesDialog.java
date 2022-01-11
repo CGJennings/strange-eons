@@ -58,11 +58,11 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
         cancelBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        frequencyCombo = new javax.swing.JComboBox();
+        frequencyCombo = new javax.swing.JComboBox<>();
         newPluginsCheck = new javax.swing.JCheckBox();
         actionLabel = new javax.swing.JLabel();
         appUpdateCheck = new javax.swing.JCheckBox();
-        actionCombo = new javax.swing.JComboBox();
+        actionCombo = new javax.swing.JComboBox<>();
         checkNowBtn = new javax.swing.JButton();
         helpBtn = new ca.cgjennings.ui.JHelpButton();
         updateStatusLabel = new javax.swing.JLabel();
@@ -94,7 +94,7 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
 
         jLabel2.setText(string( "core-l-freq" )); // NOI18N
 
-        frequencyCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "core-autoupdate-never", "core-autoupdate-monthly", "core-autoupdate-weekly", "core-autoupdate-daily" }));
+        frequencyCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "core-autoupdate-never", "core-autoupdate-monthly", "core-autoupdate-weekly", "core-autoupdate-daily" }));
         frequencyCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frequencyComboActionPerformed(evt);
@@ -117,7 +117,7 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
             }
         });
 
-        actionCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "core-autoupdate-no-action", "core-autoupdate-install" }));
+        actionCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "core-autoupdate-no-action", "core-autoupdate-install" }));
         actionCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 actionComboActionPerformed(evt);
@@ -287,13 +287,13 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
 	}//GEN-LAST:event_cancelBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox actionCombo;
+    private javax.swing.JComboBox<String> actionCombo;
     private javax.swing.JLabel actionLabel;
     private javax.swing.JCheckBox appUpdateCheck;
     private javax.swing.JLabel banner;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton checkNowBtn;
-    private javax.swing.JComboBox frequencyCombo;
+    private javax.swing.JComboBox<String> frequencyCombo;
     private ca.cgjennings.ui.JHelpButton helpBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

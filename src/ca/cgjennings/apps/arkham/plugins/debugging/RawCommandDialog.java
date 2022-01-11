@@ -21,7 +21,7 @@ public class RawCommandDialog extends javax.swing.JDialog {
         super(parent, true);
         JUtilities.makeUtilityWindow(this);
         initComponents();
-        DefaultComboBoxModel m = new DefaultComboBoxModel(Command.values());
+        DefaultComboBoxModel<Object> m = new DefaultComboBoxModel<>(Command.values());
         m.addElement("ADJ");
         command.setModel(m);
         setLocationRelativeTo(parent);
@@ -36,7 +36,7 @@ public class RawCommandDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        command = new javax.swing.JComboBox();
+        command = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         args = new javax.swing.JTextArea();
         sendBtn = new javax.swing.JButton();
@@ -153,7 +153,7 @@ public class RawCommandDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel argLabel;
     private javax.swing.JTextArea args;
-    private javax.swing.JComboBox command;
+    private javax.swing.JComboBox<Object> command;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea reply;

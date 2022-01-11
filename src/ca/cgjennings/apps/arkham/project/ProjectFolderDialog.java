@@ -453,7 +453,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
             if (kids.size() == source.length) {
                 return source;
             }
-            return kids.toArray(new File[kids.size()]);
+            return kids.toArray(new File[0]);
         }
 
         @Override
@@ -469,8 +469,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
                         children[i].hasChildren = false;
                     }
                 } catch (IOException e) {
-                    System.err.println("Exception while checking if folder is a project:");
-                    e.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "exception while checking if folder is a project", e);
                 }
                 children[i].userObject = uo;
             }

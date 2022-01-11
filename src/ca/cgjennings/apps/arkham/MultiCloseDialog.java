@@ -23,10 +23,10 @@ import resources.Settings;
  *
  * <p>
  * This is a single use object: create it, then call {@link #showDialog()}. If
- * it returns {@code false}, the exit was cancelled. Otherwise, the user
- * wishes to proceed with the exit. If the exit is cancelled, a new dialog must
- * be created on the next exit attempt. Note that it is always safe to create
- * this dialog; if there are no unsaved files, {@link #showDialog()} will return
+ * it returns {@code false}, the exit was cancelled. Otherwise, the user wishes
+ * to proceed with the exit. If the exit is cancelled, a new dialog must be
+ * created on the next exit attempt. Note that it is always safe to create this
+ * dialog; if there are no unsaved files, {@link #showDialog()} will return
  * {@code true} without displaying anything.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -364,7 +364,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton discardAllBtn;
     private javax.swing.JButton discardSelBtn;
-    private javax.swing.JList fileList;
+    private javax.swing.JList<TabInfo> fileList;
     private javax.swing.JScrollPane fileScroll;
     private javax.swing.JPanel headBannerPanel;
     private javax.swing.JLabel jLabel1;

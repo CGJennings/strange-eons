@@ -180,7 +180,6 @@ public final class ConsoleInput extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_inputFieldActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField inputField;
     private javax.swing.JLabel prompt;

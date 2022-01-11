@@ -25,15 +25,15 @@ import java.awt.image.Kernel;
  *
  * <p>
  * {@link #isAlphaPremultiplied()} determines whether the alpha channel is
- * premultiplied. The default is {@code true}. Subclasses may choose to
- * override this if they are calling the
+ * premultiplied. The default is {@code true}. Subclasses may choose to override
+ * this if they are calling the
  * {@linkplain #filter(int[], int[], int, int) integer array} filtering method
  * with pixel data that is already premultiplied.
  *
  * <p>
  * {@link #isAlphaFiltered()} determines whether the alpha channel is retained
- * after filtering. The default is {@code true}. If {@code false}, the
- * alpha channel will be completely opaque after filtering.
+ * after filtering. The default is {@code true}. If {@code false}, the alpha
+ * channel will be completely opaque after filtering.
  *
  * <p>
  * <b>In-place filtering:</b> Unless otherwise noted, filters based on this
@@ -58,9 +58,9 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
     }
 
     /**
-     * Returns {@code true} if images with an alpha channel will
-     * automatically be converted to a premultiplied format during the
-     * convolution, and converted back afterward.
+     * Returns {@code true} if images with an alpha channel will automatically
+     * be converted to a premultiplied format during the convolution, and
+     * converted back afterward.
      *
      * @return {@code true} if images are premultiplied automatically
      */
@@ -69,9 +69,9 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
     }
 
     /**
-     * Returns {@code true} if the alpha channel is filtered. If this
-     * returns {@code false}, the alpha channel is set to 255. For more
-     * complex channel value manipulation, see {@link ChannelSwapFilter}.
+     * Returns {@code true} if the alpha channel is filtered. If this returns
+     * {@code false}, the alpha channel is set to 255. For more complex channel
+     * value manipulation, see {@link ChannelSwapFilter}.
      *
      * @return {@code true} if the alpha channel is processed by the filter
      */

@@ -62,7 +62,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     public VirtualDeckDialog(java.awt.Frame parent, List<Member> cards, CopiesList copies) {
         super(parent, false);
         for (int i = 0; i < playStacks.length; ++i) {
-            playStacks[i] = new DefaultListModel();
+            playStacks[i] = new DefaultListModel<Card>();
         }
         play = playStacks[0];
 
@@ -114,24 +114,21 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private final VirtualDeckOwnerSelector ownerPicker;
     private Icon backIcon;
 
-    private DefaultListModel deck = new DefaultListModel();
-    private DefaultListModel play;
-    private DefaultListModel discard = new DefaultListModel();
+    private DefaultListModel<Card> deck = new DefaultListModel<>();
+    private DefaultListModel<Card> play;
+    private DefaultListModel<Card> discard = new DefaultListModel<>();
 
     private JToggleButton[] hands;
-    private DefaultListModel playStacks[] = new DefaultListModel[PLAYERS];
+    @SuppressWarnings("unchecked")
+    private DefaultListModel<Card> playStacks[] = new DefaultListModel[PLAYERS];
     private int playSelections[][] = new int[PLAYERS][];
     private int playScrollPos[] = new int[PLAYERS];
 
-    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, Card card) {
-        moveCards(from, to, pos, Collections.singletonList(card));
-    }
-
-    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, Card[] cards) {
+    private void moveCards(DefaultListModel<Card> from, DefaultListModel<Card> to, int pos, Card[] cards) {
         moveCards(from, to, pos, Arrays.asList(cards));
     }
 
-    private void moveCards(DefaultListModel from, DefaultListModel to, int pos, List<Card> cards) {
+    private void moveCards(DefaultListModel<Card> from, DefaultListModel<Card> to, int pos, List<Card> cards) {
         if (from == to) {
             throw new IllegalArgumentException("from deck cannot be to deck");
         }
@@ -178,7 +175,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         discardLabel.setText(string("vdeck-l-discard", discard.size()));
     }
 
-    private JList modelToList(DefaultListModel m) {
+    private JList<Card> modelToList(DefaultListModel<Card> m) {
         if (m == deck) {
             return deckList;
         }
@@ -191,7 +188,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         throw new AssertionError("unknown model " + m);
     }
 
-    private DefaultListModel listToModel(JList li) {
+    private DefaultListModel<Card> listToModel(JList li) {
         if (li == deckList) {
             return deck;
         }
@@ -1056,8 +1053,8 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             deckList.clearSelection();
             for (int i = 0; i < deck.getSize(); ++i) {
                 final int j = rng.nextInt(deck.getSize());
-                final Object a = deck.get(i);
-                final Object b = deck.get(j);
+                final Card a = deck.get(i);
+                final Card b = deck.get(j);
                 deck.set(i, b);
                 deck.set(j, a);
             }
@@ -1169,7 +1166,9 @@ class VirtualDeckDialog extends javax.swing.JDialog {
             if (evt == null) {
                 throw new AssertionError("needs true event");
             }
-            JList sourceList = (JList) evt.getSource();
+
+            @SuppressWarnings("unchecked")
+            JList<Card> sourceList = (JList<Card>) evt.getSource();
 
             if (evt.getButton() == MouseEvent.BUTTON3) {
                 // if nothing selected, select under cursor
@@ -1189,7 +1188,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 r.y += sp.y + r.getHeight() / 2;
 
                 List<Card> cardList = sourceList.getSelectedValuesList();
-                Card[] cards = cardList.toArray(new Card[cardList.size()]);
+                Card[] cards = cardList.toArray(new Card[0]);
                 if (ownerPicker.setOwner(cards, r.x, r.y)) {
                     int newOwner = cards[0].owner;
                     // "Other" uses same list as "Nobody"
@@ -1457,7 +1456,8 @@ class VirtualDeckDialog extends javax.swing.JDialog {
 
         @Override
         protected Transferable createTransferable(JComponent c) {
-            JList li = (JList) c;
+            @SuppressWarnings("unchecked")
+            JList<Card> li = (JList<Card>) c;
             return new CardTransferable(listToModel(li), li.getSelectedValuesList());
         }
 
@@ -1477,9 +1477,10 @@ class VirtualDeckDialog extends javax.swing.JDialog {
 
         @Override
         public boolean importData(TransferSupport support) {
-            JList target = (JList) support.getComponent();
+            @SuppressWarnings("unchecked")
+            JList<Card> target = (JList<Card>) support.getComponent();
             CardTransferData t = getData(support);
-            DefaultListModel dest = listToModel(target);
+            DefaultListModel<Card> dest = listToModel(target);
             int index = ((JList.DropLocation) support.getDropLocation()).getIndex();
             if (index < 0) {
                 index = dest.getSize();
@@ -1500,9 +1501,10 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     };
 
     private class CardTransferable implements Transferable {
+
         private final CardTransferData data;
 
-        public CardTransferable(DefaultListModel source, List<Card> cards) {
+        public CardTransferable(DefaultListModel<Card> source, List<Card> cards) {
             data = new CardTransferData(VirtualDeckDialog.this, source, cards);
         }
 
@@ -1528,13 +1530,13 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     private static class CardTransferData {
 
         VirtualDeckDialog instance;
-        DefaultListModel source;
+        DefaultListModel<Card> source;
         Card[] cards;
 
-        public CardTransferData(VirtualDeckDialog instance, DefaultListModel source, List<Card> cards) {
+        public CardTransferData(VirtualDeckDialog instance, DefaultListModel<Card> source, List<Card> cards) {
             this.instance = instance;
             this.source = source;
-            this.cards = cards.toArray(new Card[cards.size()]);
+            this.cards = cards.toArray(new Card[0]);
         }
     };
 

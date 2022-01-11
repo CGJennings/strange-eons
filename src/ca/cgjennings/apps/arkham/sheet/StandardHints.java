@@ -12,6 +12,7 @@ import java.util.logging.Level;
  * @since 3.2
  */
 public final class StandardHints {
+
     private StandardHints() {
     }
 
@@ -28,7 +29,10 @@ public final class StandardHints {
         reset();
     }
 
-    /** For testing and experimentation. Resets all hints to their default values. */
+    /**
+     * For testing and experimentation. Resets all hints to their default
+     * values.
+     */
     public static void reset() {
         PRINT.clear();
         PRINT.put(KEY_ALPHA_INTERPOLATION, VALUE_ALPHA_INTERPOLATION_QUALITY);
@@ -63,11 +67,13 @@ public final class StandardHints {
     }
 
     /**
-     * For testing and experimentation.
-     * Changes a hint for all render targets or the specified target.
+     * For testing and experimentation. Changes a hint for all render targets or
+     * the specified target.
+     *
      * @param key the {@link RenderingHint} key
      * @param value the {@link RenderingHint} key's desired value
-     * @param renderTarget the render target value to affect, or null to change all targets
+     * @param renderTarget the render target value to affect, or null to change
+     * all targets
      */
     public static void set(Object key, Object value, RenderTarget renderTarget) {
         if (renderTarget == null || renderTarget == RenderTarget.PRINT) {
@@ -85,12 +91,12 @@ public final class StandardHints {
     }
 
     /**
-     * For testing and experimentation.
-     * Changes a hint for all render targets or the specified target.
-     * Uses reflection to specify keys and values from strings, which do not have to
-     * include the KEY_ or VALUE_ prefix.
+     * For testing and experimentation. Changes a hint for all render targets or
+     * the specified target. Uses reflection to specify keys and values from
+     * strings, which do not have to include the KEY_ or VALUE_ prefix.
      *
-     * <p>Example script use:
+     * <p>
+     * Example script use:
      *
      * <pre>
      * arkham.sheet.StandardHints.reset();
@@ -104,8 +110,10 @@ public final class StandardHints {
      * timer.start();
      * </pre>
      *
-     * @param key a string name matching a rendering hint key, {@code KEY_} prefix optional
-     * @param value a string name matching a rendering hint key, {@code VALUE_} prefix optional
+     * @param key a string name matching a rendering hint key, {@code KEY_}
+     * prefix optional
+     * @param value a string name matching a rendering hint key, {@code VALUE_}
+     * prefix optional
      */
     public static void set(String key, String value) {
         try {

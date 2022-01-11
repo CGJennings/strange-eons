@@ -198,7 +198,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
 
     /**
      * @deprecated Use {@link StrangeImage#exists}.
-     * 
+     *
      * @param identifier the portrait identifier to test
      * @return true if the image exists
      */
@@ -217,16 +217,16 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
     }
 
     /**
-     * Returns {@code true} if the image identifier appears to refer to a
-     * URL rather than a local file.
+     * Returns {@code true} if the image identifier appears to refer to a URL
+     * rather than a local file.
      *
      * @param identifier the identifier to check
-     * @return {@code true} if the identifier does not refer to a file on
-     * the local file system
+     * @return {@code true} if the identifier does not refer to a file on the
+     * local file system
      *
      * @deprecated Use {@link StrangeImage} to load user images and
-     * {@code !StrangeImage.isFileIdentifier( identifier )} as a
-     * replacement for this call.
+     * {@code !StrangeImage.isFileIdentifier( identifier )} as a replacement for
+     * this call.
      */
     public static boolean isURLString(String identifier) {
         return !StrangeImage.isFileIdentifier(identifier);

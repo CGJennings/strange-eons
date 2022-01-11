@@ -39,8 +39,8 @@ public abstract class TreeBuilder<C, L> {
      * Adds a new node to the tree as a child of the specified parent container.
      *
      * @param parent the container to place the node in
-     * @param leaf the leaf to add; if {@code null} ensures that a node for
-     * the parent exists
+     * @param leaf the leaf to add; if {@code null} ensures that a node for the
+     * parent exists
      */
     public void add(C parent, L leaf) {
         Container<C> node = getContainerNode(parent);
@@ -86,10 +86,9 @@ public abstract class TreeBuilder<C, L> {
      * <b>Note:</b> To function correctly, the implementation must ensure that
      * for any valid input container, recursively calling this method will
      * eventually return the root container. For example, if the container type
-     * is {@link File} and this method returns
-     * {@code container.getParent()}, then any directory added to the tree
-     * would have to be a direct or indirect child of the file used to create
-     * the root.
+     * is {@link File} and this method returns {@code container.getParent()},
+     * then any directory added to the tree would have to be a direct or
+     * indirect child of the file used to create the root.
      *
      * @param container the container to determine a parent for
      * @return the container that represents the parent of the specified
@@ -110,8 +109,8 @@ public abstract class TreeBuilder<C, L> {
         /**
          * Sorts the children of this container.
          *
-         * @param allDescendants if {@code true}, the child containers are
-         * also sorted, recursively
+         * @param allDescendants if {@code true}, the child containers are also
+         * sorted, recursively
          */
         @SuppressWarnings("unchecked")
         public void sort(boolean allDescendants) {

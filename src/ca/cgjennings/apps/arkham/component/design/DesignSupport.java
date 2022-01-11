@@ -74,8 +74,8 @@ public interface DesignSupport<G extends GameComponent> {
      * type in such a way that the resulting component may be unfair. Strange
      * Eons does not use this value itself, but there are preference settings
      * that allow users to request that their components should be marked if
-     * this returns {@code false}. (It is up to the plug-in author to
-     * implement this in the component's {@link Sheet}s.
+     * this returns {@code false}. (It is up to the plug-in author to implement
+     * this in the component's {@link Sheet}s.
      *
      * @return {@code true} if the design is valid
      */

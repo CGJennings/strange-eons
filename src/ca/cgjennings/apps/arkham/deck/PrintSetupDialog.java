@@ -92,7 +92,7 @@ final class PrintSetupDialog extends javax.swing.JDialog implements ActionListen
 
         splitPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        paperCombo = new javax.swing.JComboBox();
+        paperCombo = new javax.swing.JComboBox<>();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         borderSize = new javax.swing.JTextField();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
@@ -267,7 +267,7 @@ private void splitPageCheckActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JButton cancelBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton okBtn;
-    private javax.swing.JComboBox paperCombo;
+    private javax.swing.JComboBox<PaperProperties> paperCombo;
     private javax.swing.JButton pdfBtn;
     private javax.swing.JCheckBox splitPageCheck;
     private javax.swing.JPanel splitPanel;

@@ -525,17 +525,12 @@ public abstract class Sheet<G extends GameComponent> {
                 }
 
                 if (DEBUG_BLEED_MARGIN) {
+                    final float fWidth = (float) upsampleFactor;
+                    final float[] fDash = new float[]{fWidth * 8f};
+                    g.setStroke(debugStroke(fWidth, fDash, false));
                     g.setColor(Color.YELLOW);
                     g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
-                    final float fWidth = (float) upsampleFactor;
-                    g.setStroke(new BasicStroke(
-                            fWidth,
-                            BasicStroke.CAP_BUTT,
-                            BasicStroke.JOIN_ROUND,
-                            0f,
-                            new float[] { fWidth * 8f },
-                            0f
-                    ));
+                    g.setStroke(debugStroke(fWidth, fDash, true));
                     g.setColor(BROWN);
                     g.drawRoundRect(x, y, w, h, radiusPx, radiusPx);
                 }
@@ -546,6 +541,11 @@ public abstract class Sheet<G extends GameComponent> {
 
         return sheetImage;
     }
+
+    private static Stroke debugStroke(float width, float[] dash, boolean offset) {
+        return new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND, 0f, dash, offset ? dash[0] : 0f);
+    }
+
     private static final Color BROWN = new Color(0xe65100);
 
     /**
@@ -689,7 +689,7 @@ public abstract class Sheet<G extends GameComponent> {
             setUserBleedMargin(oldUserBleed);
         }
     }
-    
+
     /**
      * Paints standard sheet overlays: on paint code and expansion symbols.
      */

@@ -74,7 +74,7 @@ class GameObjectImpl implements GameObject {
             }
         }
         Set<String> names = constantMap.keySet();
-        constantNames = names.toArray(new String[names.size()]);
+        constantNames = names.toArray(new String[0]);
         Arrays.sort(constantNames);
     }
 
@@ -133,7 +133,7 @@ class GameObjectImpl implements GameObject {
         }
 
         Set<String> keys = methodMap.keySet();
-        methodNames = keys.toArray(new String[keys.size()]);
+        methodNames = keys.toArray(new String[0]);
         Arrays.sort(methodNames);
     }
     /**
@@ -190,8 +190,7 @@ class GameObjectImpl implements GameObject {
                         throw (IllegalArgumentException) exception;
                     }
 
-                    exception.printStackTrace();
-                    throw new AssertionError("unexpection exception: " + exception);
+                    throw new AssertionError("unexpection exception", exception);
                 }
 
                 if (retval != null && isWrappedType(retval.getClass())) {
@@ -199,8 +198,7 @@ class GameObjectImpl implements GameObject {
                 }
                 return retval;
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                throw new AssertionError("unexpected security restriction: " + e);
+                throw new AssertionError("unexpected security restriction", e);
             }
         }
         throw new IllegalArgumentException("method not available: " + methodName);

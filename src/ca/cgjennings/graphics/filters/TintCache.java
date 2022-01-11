@@ -74,9 +74,9 @@ public class TintCache {
     }
 
     /**
-     * Update the source image to use for tinting. If {@code im} is
-     * different from the current image, it replaces the current image and
-     * invalidates the cache.
+     * Update the source image to use for tinting. If {@code im} is different
+     * from the current image, it replaces the current image and invalidates the
+     * cache.
      *
      * @param im the new source image
      */
@@ -88,10 +88,10 @@ public class TintCache {
     }
 
     /**
-     * Indirectly set the adjustment factors of the filter.
-     * This is a convenience. It does not matter if you set the
-     * factors directly on the filter or through this method.
-     * 
+     * Indirectly set the adjustment factors of the filter. This is a
+     * convenience. It does not matter if you set the factors directly on the
+     * filter or through this method.
+     *
      * @param h the hue adjustment
      * @param s the saturation adjustment
      * @param b the brightness adjustment

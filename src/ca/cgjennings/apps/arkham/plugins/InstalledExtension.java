@@ -3,11 +3,11 @@ package ca.cgjennings.apps.arkham.plugins;
 import java.io.IOException;
 
 /**
- * An {@code InstalledExtension} bridges the gap between an extension
- * plug-in bundle and the plug-ins that it contains. It is not the plug-in
- * itself, but it creates and manages instances of the plug-in on demand. When a
- * plug-in bundle is installed, an instance is created for each plug-in listed
- * in the bundle's root file.
+ * An {@code InstalledExtension} bridges the gap between an extension plug-in
+ * bundle and the plug-ins that it contains. It is not the plug-in itself, but
+ * it creates and manages instances of the plug-in on demand. When a plug-in
+ * bundle is installed, an instance is created for each plug-in listed in the
+ * bundle's root file.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

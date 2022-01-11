@@ -81,8 +81,8 @@ public abstract class AbstractItem implements PageItem {
      * {@inheritDoc}
      * <p>
      * Concrete subclasses should create an array of handles on demand and cache
-     * them in the {@code dragHandles} field in order to ensure that
-     * handles are not shared between copies of the item. Example:
+     * them in the {@code dragHandles} field in order to ensure that handles are
+     * not shared between copies of the item. Example:
      * <pre>
      * public DragHandle[] getDragHandles() {
      *     if( dragHandles == null ) {
@@ -358,7 +358,9 @@ public abstract class AbstractItem implements PageItem {
         setLocation(in.readDouble(), in.readDouble());
         setSnapClass((SnapClass) in.readObject());
         setSnapTarget((SnapTarget) in.readObject());
-        setClassesSnappedTo((EnumSet<PageItem.SnapClass>) in.readObject());
+        @SuppressWarnings("unchecked")
+        final EnumSet<PageItem.SnapClass> snapTo = (EnumSet<PageItem.SnapClass>) in.readObject();
+        setClassesSnappedTo(snapTo);
         setSelectionLocked(in.readBoolean());
 
         if (version >= 2) {
@@ -368,7 +370,9 @@ public abstract class AbstractItem implements PageItem {
         }
 
         if (version >= 3) {
-            clientProperties = (HashMap<String, String>) in.readObject();
+            @SuppressWarnings("unchecked")
+            final HashMap<String, String> props = (HashMap<String, String>) in.readObject();
+            clientProperties = props;
         } else {
             clientProperties = null;
         }

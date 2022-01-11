@@ -15,10 +15,10 @@ import resources.Settings;
  * window the script will be provided with a <i>dummy context instance</i>. A
  * dummy context is mostly compatible with a true context, but its
  * {@link #getPlugin} and {@link #getInstalledPlugin} methods will both return
- * {@code null}. Also, all dummy contexts share a single setting namespace,
- * so any plug-in settings that you create may vary depending on whether the
- * script is running from an installed plug-in or is being tested by running it
- * from a script editor.
+ * {@code null}. Also, all dummy contexts share a single setting namespace, so
+ * any plug-in settings that you create may vary depending on whether the script
+ * is running from an installed plug-in or is being tested by running it from a
+ * script editor.
  *
  * <p>
  * <b>Note:</b> The scope and purpose of the plug-in context has changed
@@ -65,8 +65,7 @@ public interface PluginContext {
      * only perform enough initialization to provide these services. This
      * instance of the plug-in will never be shown.
      *
-     * @return {@code true} if the plug-in will only be queried for
-     * information
+     * @return {@code true} if the plug-in will only be queried for information
      */
     boolean isInformationProbe();
 
@@ -79,23 +78,23 @@ public interface PluginContext {
      * clash with the main application settings or the settings of other
      * plug-ins.
      *
-     * @return a {@code Settings} instance that uses this plug-in's
-     * namespace
+     * @return a {@code Settings} instance that uses this plug-in's namespace
      */
     public Settings getSettings();
 
     /**
      * Returns a bit mask representing the modifier keys that were held down
      * when the plug-in was activated. This method is only useful for
-     * {@code ACTIVATED} plug-ins, and only for the context passed in when
-     * the plug-in's
+     * {@code ACTIVATED} plug-ins, and only for the context passed in when the
+     * plug-in's
      * {@link Plugin#showPlugin(ca.cgjennings.apps.arkham.plugins.PluginContext, boolean)}
      * method is called. In all other cases, it will return 0.
      *
      * <p>
      * To use the result of this method, combine the modifiers that you wish to
      * test for using binary or (|) to create a mask value. Then check that the
-     * bitwise and (&amp;) of the return value and your mask are equal to your mask:
+     * bitwise and (&amp;) of the return value and your mask are equal to your
+     * mask:
      * <pre>
      * // check if both Shift and Ctrl and held down
      * mask = PluginContext.SHIFT | PluginContext.CONTROL;
@@ -146,9 +145,7 @@ public interface PluginContext {
      */
     public static final int MENU = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
 
-
     // Backwards compatibility
-
     @Deprecated
     default Locale getUILocale() {
         return Language.getInterfaceLocale();

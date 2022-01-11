@@ -77,8 +77,8 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
     /**
      * {@inheritDoc}
      * <p>
-     * This abstract base class always returns {@code null}, yielding a
-     * default backdrop paint.
+     * This abstract base class always returns {@code null}, yielding a default
+     * backdrop paint.
      */
     @Override
     public Paint getDesignBackdropForVariant(int variant) {
@@ -101,15 +101,14 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
      * Given an example image, generates a symbol variant automatically.
      *
      * <p>
-     * If {@link #canGenerateVariantsAutomatically()} returns
-     * {@code false}, then this method throws an
-     * {@code UnsupportedOperationException}. Otherwise, the abstract base
-     * class provides a default variant-generating algorithm based on the icons
-     * for Arkham Horror. This can be used as-is when appropriate, or if useful
-     * it can be used as a starting point for generating an appropriate image
-     * for the game in question. (For example, you could request variant 0 to
-     * get an image that is known to be black-and-white and have an alpha
-     * channel as described below.)
+     * If {@link #canGenerateVariantsAutomatically()} returns {@code false},
+     * then this method throws an {@code UnsupportedOperationException}.
+     * Otherwise, the abstract base class provides a default variant-generating
+     * algorithm based on the icons for Arkham Horror. This can be used as-is
+     * when appropriate, or if useful it can be used as a starting point for
+     * generating an appropriate image for the game in question. (For example,
+     * you could request variant 0 to get an image that is known to be
+     * black-and-white and have an alpha channel as described below.)
      *
      * <p>
      * <b>Details of the default implementation:</b>

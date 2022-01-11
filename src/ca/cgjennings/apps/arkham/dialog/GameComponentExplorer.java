@@ -361,8 +361,8 @@ public class GameComponentExplorer extends javax.swing.JDialog {
 
         /**
          * Returns the actual type of the value of the constant called
-         * {@code name}. If the value of the constant is {@code null},
-         * this method returns {@code void.class}.
+         * {@code name}. If the value of the constant is {@code null}, this
+         * method returns {@code void.class}.
          *
          * @param name the name of the constant to determine the type of
          * @return the actual type of the constant, or {@code void.class}
@@ -434,8 +434,7 @@ public class GameComponentExplorer extends javax.swing.JDialog {
 
         /**
          * Returns the actual return type of the method, even if it would be
-         * wrapped as a {@code GameObject} if called through this
-         * interface.
+         * wrapped as a {@code GameObject} if called through this interface.
          *
          * @param methodName the method to fetch a return type for
          * @return the class of the return type of the method
@@ -453,12 +452,12 @@ public class GameComponentExplorer extends javax.swing.JDialog {
          *
          * @param methodName the name of the method to call
          * @param arguments the arguments to the method
-         * @return the value returned by the method, or {@code null} if it
-         * has {@code void} return type
+         * @return the value returned by the method, or {@code null} if it has
+         * {@code void} return type
          * @throws java.lang.reflect.InvocationTargetException if the underlying
          * method throws an exception during the method call
-         * @throws IllegalArgumentException if {@code methodName} is not a
-         * valid method or if the arguments are not appropriate for the method
+         * @throws IllegalArgumentException if {@code methodName} is not a valid
+         * method or if the arguments are not appropriate for the method
          */
         public abstract Object call(String methodName, Object... arguments) throws InvocationTargetException;
 

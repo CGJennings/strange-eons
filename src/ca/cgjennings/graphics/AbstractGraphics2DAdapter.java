@@ -26,24 +26,25 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A base class for graphics contexts that wrap an existing context to selectively
- * modify their behaviour. Subclasses must override any methods they wish to
- * manipulate, as well as implement the {@link #createImpl} method.
+ * A base class for graphics contexts that wrap an existing context to
+ * selectively modify their behaviour. Subclasses must override any methods they
+ * wish to manipulate, as well as implement the {@link #createImpl} method.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.3
  */
 public abstract class AbstractGraphics2DAdapter extends Graphics2D {
+
     protected Graphics2D g;
-    
+
     public AbstractGraphics2DAdapter(Graphics2D g) {
         this.g = Objects.requireNonNull(g, "g");
     }
-    
+
     /**
      * Creates and returns a new instance of this adapter with the same
      * behaviour, but for the specified graphics context.
-     * 
+     *
      * @param newG the new graphics context to target
      * @return an adapter that wraps the new context
      */

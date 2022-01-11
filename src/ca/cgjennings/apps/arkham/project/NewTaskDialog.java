@@ -48,7 +48,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         name.requestFocusInWindow();
 
         typeList.setCellRenderer(new Renderer());
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<NewTaskType> model = new DefaultListModel<>();
         NewTaskType[] types = NewTaskType.getNewTaskTypes();
         for (NewTaskType ntt : types) {
             model.addElement(ntt);
@@ -97,7 +97,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         startLabel1 = new javax.swing.JLabel();
         startLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        typeList = new javax.swing.JList();
+        typeList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         descPane = new EditorPane();
         errorLabel = new javax.swing.JLabel();
@@ -294,7 +294,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JButton okBtn;
     private javax.swing.JLabel startLabel;
     private javax.swing.JLabel startLabel1;
-    private javax.swing.JList typeList;
+    private javax.swing.JList<NewTaskType> typeList;
     // End of variables declaration//GEN-END:variables
 
     private static class Renderer extends DefaultListCellRenderer {

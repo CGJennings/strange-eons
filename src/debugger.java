@@ -8,7 +8,6 @@
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-
 public final class debugger {
 
     private debugger() {

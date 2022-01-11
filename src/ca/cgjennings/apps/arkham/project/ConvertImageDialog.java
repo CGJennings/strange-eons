@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.project;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.imageio.IIOWritePanel;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
@@ -13,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
@@ -210,7 +212,7 @@ class ConvertImageDialog extends javax.swing.JDialog implements AgnosticDialog {
             try {
                 previewer.setPreviewImage(ImageIO.read(source));
             } catch (Exception e) {
-                e.printStackTrace();
+                StrangeEons.log.log(Level.WARNING, "failed to read " + source, e);
             }
         }
     }
@@ -266,7 +268,7 @@ class ConvertImageDialog extends javax.swing.JDialog implements AgnosticDialog {
                     outsizeLabel.setText("<html><font color=red>" + string("pa-ci-err-bitrate"));
                 });
             } catch (Exception e) {
-                e.printStackTrace();
+                StrangeEons.log.log(Level.WARNING, "cannot create preview", e);
             }
             return null;
         }

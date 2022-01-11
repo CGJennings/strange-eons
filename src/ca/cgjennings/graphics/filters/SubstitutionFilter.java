@@ -109,8 +109,8 @@ public class SubstitutionFilter extends AbstractPixelwiseFilter {
      * original colour according to the distance from the target colour. This
      * has no effect if the error tolerance is 0.
      *
-     * @return {@code true} if the substitute colour is blended with the
-     * target colour in proportion to the target's error
+     * @return {@code true} if the substitute colour is blended with the target
+     * colour in proportion to the target's error
      */
     public boolean isBlendedWithOriginal() {
         return blend;

@@ -15,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RadialGradientPaint;
 import java.awt.image.BufferedImage;
+import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.Painter;
 import javax.swing.UIDefaults;
@@ -61,11 +62,11 @@ public class DagonTheme extends Theme {
         defaults.put(CONSOLE_ERROR, CON_ERROR_TEXT);
         defaults.put(CONSOLE_SELECTION_BACKGROUND, CON_SELECTION);
         defaults.put(CONSOLE_SELECTION_FOREGROUND, CON_SELECTION_TEXT);
-        defaults.put(CONSOLE_BACKGROUND_PAINTER, new CachingPainter(new BackdropPainter()));
-        defaults.put("DesktopPane[Enabled].backgroundPainter", new CachingPainter(new BackdropPainter()));
+        defaults.put(CONSOLE_BACKGROUND_PAINTER, new CachingPainter<>(new BackdropPainter()));
+        defaults.put("DesktopPane[Enabled].backgroundPainter", new CachingPainter<>(new BackdropPainter()));
     }
 
-    private static class BackdropPainter implements Painter {
+    private static class BackdropPainter implements Painter<JComponent> {
 
         final Color CON_BACKGROUND = new Color(0x3d_4b28);
         final Color CON_BACKGROUND_OUTER = CON_BACKGROUND.darker();
@@ -74,7 +75,7 @@ public class DagonTheme extends Theme {
         BufferedImage stencil;
 
         @Override
-        public void paint(Graphics2D g, Object o, int w, int h) {
+        public void paint(Graphics2D g, JComponent o, int w, int h) {
             if (stencil == null) {
                 stencil = ResourceKit.getImage("icons/octopus.png");
                 if (o instanceof JDesktopPane) {

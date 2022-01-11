@@ -40,7 +40,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
         super(parent, true);
         initComponents();
         preferHingeCut = box.hasHingeCut();
-        boxTypeCombo.setModel(new DefaultComboBoxModel(TuckBox.BoxType.values()));
+        boxTypeCombo.setModel(new DefaultComboBoxModel<>(TuckBox.BoxType.values()));
         sleeveCombo.setRenderer(new RightAlignedListRenderer() {
             @Override
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -56,7 +56,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
         formatter = NumberFormat.getNumberInstance();
 
         sizers = TuckBox.getBoxSizers();
-        cardTypeCombo.setModel(new DefaultComboBoxModel(sizers));
+        cardTypeCombo.setModel(new DefaultComboBoxModel<>(sizers));
 
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
@@ -209,11 +209,11 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
         jLabel11 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel7 = new javax.swing.JLabel();
-        cardTypeCombo = new javax.swing.JComboBox();
+        cardTypeCombo = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
         cardCount = new javax.swing.JSpinner();
         sleeveLabel = new javax.swing.JLabel();
-        sleeveCombo = new javax.swing.JComboBox();
+        sleeveCombo = new javax.swing.JComboBox<>();
         previewPanel = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         thumbNotchCheck = new javax.swing.JCheckBox();
@@ -225,7 +225,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
         thicknessSpinner = new javax.swing.JSpinner();
         javax.swing.JLabel jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        boxTypeCombo = new javax.swing.JComboBox();
+        boxTypeCombo = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string("style-t-box-style")); // NOI18N
@@ -440,7 +440,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
 
         sleeveCombo.setFont(sleeveCombo.getFont().deriveFont(sleeveCombo.getFont().getSize()-1f));
         sleeveCombo.setMaximumRowCount(16);
-        sleeveCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "style-cb-box-sleeves0", "25 µm", "30 µm", "40 µm", "50 µm", "62.5  µm", "90 µm", "100  µm", "120  µm", "125  µm" }));
+        sleeveCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "style-cb-box-sleeves0", "25 µm", "30 µm", "40 µm", "50 µm", "62.5  µm", "90 µm", "100  µm", "120  µm", "125  µm" }));
         sleeveCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sleeveComboActionPerformed(evt);
@@ -530,7 +530,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(sleeveLabel)
                     .addComponent(sleeveCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         previewPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string("style-t-preview"))); // NOI18N
@@ -844,10 +844,10 @@ private void sleeveComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private int oldUnit = Length.CM;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox boxTypeCombo;
+    private javax.swing.JComboBox<BoxType> boxTypeCombo;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JSpinner cardCount;
-    private javax.swing.JComboBox cardTypeCombo;
+    private javax.swing.JComboBox<BoxSizer> cardTypeCombo;
     private javax.swing.JTextField depthField;
     private javax.swing.JButton extColourButton;
     private javax.swing.JButton extColourLabel;
@@ -881,7 +881,7 @@ private void sleeveComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     private javax.swing.JButton okBtn;
     private javax.swing.JPanel previewPanel;
     private javax.swing.JCheckBox roundedSideFlapsCheck;
-    private javax.swing.JComboBox sleeveCombo;
+    private javax.swing.JComboBox<String> sleeveCombo;
     private javax.swing.JLabel sleeveLabel;
     private javax.swing.JLabel spacer;
     private javax.swing.JSpinner thicknessSpinner;

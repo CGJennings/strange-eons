@@ -72,7 +72,7 @@ class PreviewBackgroundMenu extends JMenu {
         if (i == getMenuComponentCount()) {
             throw new AssertionError("did not find selected item in menu");
         }
-        
+
         Settings user = Settings.getUser();
         int old = user.getInt("preview-backdrop", 0);
         if (old != i) {

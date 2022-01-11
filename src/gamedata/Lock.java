@@ -6,8 +6,8 @@ import java.util.logging.Level;
 
 /**
  * Maintains a lock on the game data. When game data is locked, trying to add or
- * modify game data will fail by throwing an {@code IllegalStateException}.
- * Game data is normally locked after extensions are loaded to ensure that the
+ * modify game data will fail by throwing an {@code IllegalStateException}. Game
+ * data is normally locked after extensions are loaded to ensure that the
  * application remains in a consistent state. Developers may find it useful to
  * unlock the game data while debugging so that fewer application restarts are
  * required.
@@ -40,8 +40,7 @@ public class Lock {
     /**
      * Locks or unlocks the game data.
      *
-     * @param lock if {@code true}, lock game data so that future tests
-     * fail
+     * @param lock if {@code true}, lock game data so that future tests fail
      */
     public static synchronized void setLocked(boolean lock) {
         // instead of only doing the lock tasks  if the DB was never locked,
@@ -63,8 +62,8 @@ public class Lock {
     }
 
     /**
-     * Returns {@code true} if the game data has ever been locked during
-     * this run of the application.
+     * Returns {@code true} if the game data has ever been locked during this
+     * run of the application.
      *
      * @return {@code true} if {@link #isLocked()} has ever been true
      */

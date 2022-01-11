@@ -5,10 +5,10 @@ import java.awt.event.ActionEvent;
 /**
  * An abstract base class for commands that toggle a state when selected. Note
  * that whether a toggle command is selected or not is determined by the value
- * of the action's {@code SELECTED_KEY} key. It is up to the subclass to
- * set this key to an appropriate initial value. (The {@link #isSelected()}
- * method is simply a convenience that reads the value of this key and casts the
- * result to a boolean value.)
+ * of the action's {@code SELECTED_KEY} key. It is up to the subclass to set
+ * this key to an appropriate initial value. (The {@link #isSelected()} method
+ * is simply a convenience that reads the value of this key and casts the result
+ * to a boolean value.)
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -46,8 +46,8 @@ public abstract class AbstractToggleCommand extends AbstractCommand {
     }
 
     /**
-     * Returns {@code true} if the command is selected, that is, if the
-     * toggle state is currently enabled.
+     * Returns {@code true} if the command is selected, that is, if the toggle
+     * state is currently enabled.
      *
      * @return {@code true} if the command is selected
      */

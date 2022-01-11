@@ -171,7 +171,7 @@ public class ClassMap implements Iterable<Entry> {
      * maps
      */
     public static String[] getClassMapFiles() {
-        return classMapFiles.toArray(new String[classMapFiles.size()]);
+        return classMapFiles.toArray(new String[0]);
     }
 
     private static final LinkedHashSet<String> classMapFiles = new LinkedHashSet<>();
@@ -259,8 +259,7 @@ public class ClassMap implements Iterable<Entry> {
         }
 
         /**
-         * Returns this entry's icon. This method never returns
-         * {@code null}.
+         * Returns this entry's icon. This method never returns {@code null}.
          *
          * @return the icon for the entry
          */
@@ -366,8 +365,8 @@ public class ClassMap implements Iterable<Entry> {
         }
 
         /**
-         * Returns {@code true} if the specified object is an entry with
-         * the same mapping.
+         * Returns {@code true} if the specified object is an entry with the
+         * same mapping.
          *
          * @param rhs the object to compare this with
          * @return {@code true} if the target object has the same class map
@@ -482,8 +481,8 @@ public class ClassMap implements Iterable<Entry> {
          * enabled, or if the component is created from compiled code rather
          * than a script.
          *
-         * @param debug if {@code true}, component types that use scripts
-         * will be created in debug mode
+         * @param debug if {@code true}, component types that use scripts will
+         * be created in debug mode
          * @return the new editor, or {@code null} if creation failed
          * @throws UnsupportedOperationException if called on a category entry
          */
@@ -614,8 +613,8 @@ public class ClassMap implements Iterable<Entry> {
         }
 
         /**
-         * Returns the next entry in the class map, or {@code null} if the
-         * last entry has been reached.
+         * Returns the next entry in the class map, or {@code null} if the last
+         * entry has been reached.
          *
          * @return the next class map entry, or {@code null}
          */

@@ -60,7 +60,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
         deckField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        paperSizeCombo = new javax.swing.JComboBox();
+        paperSizeCombo = new javax.swing.JComboBox<>();
         doubleSideCheck = new javax.swing.JCheckBox();
         groupsCheck = new javax.swing.JCheckBox();
         customPaperBtn = new javax.swing.JButton();
@@ -184,7 +184,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
                                 .addComponent(paperSizeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(customPaperBtn)))))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -270,7 +270,7 @@ class MakeDeckDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JButton okBtn;
-    private javax.swing.JComboBox paperSizeCombo;
+    private javax.swing.JComboBox<PaperProperties> paperSizeCombo;
     private javax.swing.JSlider qualitySlider;
     // End of variables declaration//GEN-END:variables
 

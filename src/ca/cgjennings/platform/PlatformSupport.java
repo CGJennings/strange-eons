@@ -33,8 +33,8 @@ public class PlatformSupport {
 
     /**
      * A convenience method for {@code makeAgnosticDialog( dialog, true,
-     * designedOK, designedCancel )}, which assumes that the dialog
-     * buttons are in "Windows order" (OK on the left, Cancel on the right).
+     * designedOK, designedCancel )}, which assumes that the dialog buttons are
+     * in "Windows order" (OK on the left, Cancel on the right).
      *
      * @param dialog the dialog or other control to be reordered
      * @param designedOK the button used as the OK button in the design
@@ -64,8 +64,8 @@ public class PlatformSupport {
      * <b>Notes:</b>
      * <ol>
      * <li>You must ensure that this method is only called once for a given
-     * {@code AgnosticDialog} during its lifetime, or the button order will
-     * be inconsistent and the action events will be called multiple times.
+     * {@code AgnosticDialog} during its lifetime, or the button order will be
+     * inconsistent and the action events will be called multiple times.
      * <li>Although referred to in the general sense as the "OK" button, the
      * text of this button should name the specific action it will perform.
      * </ol>
@@ -78,8 +78,8 @@ public class PlatformSupport {
      * @param designedCancel the button that was designed to be the "Cancel"
      * button
      * @return the button that will be used as the OK button
-     * @throws IllegalArgumentException if either button is {@code null} or
-     * if they refer to the same object
+     * @throws IllegalArgumentException if either button is {@code null} or if
+     * they refer to the same object
      */
     public static JButton makeAgnosticDialog(final AgnosticDialog dialog, boolean isInOKCancelOrder, JButton designedOK, JButton designedCancel) {
         if (designedOK == null) {
@@ -206,8 +206,8 @@ public class PlatformSupport {
      * Returns {@code true} if the OK button should be left (ahead) of the
      * Cancel button on this platform.
      *
-     * @return {@code true} if OK comes before Cancel; {@code false}
-     * if it comes after
+     * @return {@code true} if OK comes before Cancel; {@code false} if it comes
+     * after
      */
     public static boolean isAgnosticOKInFirstPosition() {
         return !PLATFORM_IS_MAC;
@@ -259,12 +259,11 @@ public class PlatformSupport {
      * menu accelerator key for the native platform. For example, "menu X" will
      * be treated as "ctrl X" on the Windows platform, but as "meta X" (which is
      * Command key + X) on Max OS X platform. Note that there is no way to
-     * determine from the returned {@code KeyStroke} instance whether the
-     * "menu" modifier was used or not.
+     * determine from the returned {@code KeyStroke} instance whether the "menu"
+     * modifier was used or not.
      *
      * @param stroke a string formatted as above
-     * @return a {@code KeyStroke} object representing the specified key
-     * event
+     * @return a {@code KeyStroke} object representing the specified key event
      */
     @SuppressWarnings("deprecation")
     public static KeyStroke getKeyStroke(String stroke) {
@@ -307,15 +306,21 @@ public class PlatformSupport {
         return actualKey;
     }
 
-    /** True if the JVM is running on an Apple macOS operating system. */
+    /**
+     * True if the JVM is running on an Apple macOS operating system.
+     */
     public static final boolean PLATFORM_IS_MAC;
-    /** @deprecated Alias for {@link #PLATFORM_IS_MAC}. */
+    /**
+     * @deprecated Alias for {@link #PLATFORM_IS_MAC}.
+     */
     public static final boolean PLATFORM_IS_OSX;
-    /** True if the JVM is running on a Windows operating system. */
+    /**
+     * True if the JVM is running on a Windows operating system.
+     */
     public static final boolean PLATFORM_IS_WINDOWS;
     /**
-     * True if running on a non-Windows, non-maxOS operating system.
-     * Typically this means a Unix-like operating system such as Linux.
+     * True if running on a non-Windows, non-maxOS operating system. Typically
+     * this means a Unix-like operating system such as Linux.
      */
     public static final boolean PLATFORM_IS_OTHER;
 

@@ -19,8 +19,8 @@ import resources.Settings;
 /**
  * Task action that creates a plug-in bundle from the contents of a plug-in task
  * folder. The bundle is written to the project folder using the name stored in
- * the task's {@link #KEY_BUNDLE_FILE} ({@code bundle-file}). If this key
- * is not defined, then <tt>bundle.seplugin</tt> is used as a base.
+ * the task's {@link #KEY_BUNDLE_FILE} ({@code bundle-file}). If this key is not
+ * defined, then <tt>bundle.seplugin</tt> is used as a base.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1
@@ -38,21 +38,21 @@ public class MakeBundle extends TaskAction {
                 if (!ProjectUtilities.matchExtension(oldFile, EXTENSIONS)) {
                     return;
                 }
-                
+
                 // is a move/delete, not a simple rename
                 if (newMember == null) {
                     return;
                 }
-                
+
                 String name = oldFile.getName();
-                
+
                 // find tasks that share this file's parent, and check
                 // their bundle extension key to update the old bundle name
                 Member parent = newMember.getParent();
                 if (parent == null) {
                     return;
                 }
-                
+
                 for (int i = 0; i < parent.getChildCount(); ++i) {
                     Member child = parent.getChildAt(i);
                     if (!(child instanceof Task)) {

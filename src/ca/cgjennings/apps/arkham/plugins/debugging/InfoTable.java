@@ -151,8 +151,8 @@ public class InfoTable {
     }
 
     /**
-     * Install this table's data in a {@code JTable}, replacing the
-     * existing table model.
+     * Install this table's data in a {@code JTable}, replacing the existing
+     * table model.
      *
      * @param t the table component to use to display the data
      */

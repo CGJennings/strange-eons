@@ -162,11 +162,11 @@ public class StyleUtilities {
      * @see #setOpacityChangeEnabled(boolean)
      */
     public static void setWindowOpacity(Window window, float alpha) {
-        if(alpha < 1f) {
-            if(!enableOpacity) {
+        if (alpha < 1f) {
+            if (!enableOpacity) {
                 return;
             }
-            if(!window.getGraphicsConfiguration().getDevice().isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {
+            if (!window.getGraphicsConfiguration().getDevice().isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT)) {
                 return;
             }
             if (window instanceof Frame && !((Frame) window).isUndecorated()) {
@@ -175,7 +175,7 @@ public class StyleUtilities {
             if (window instanceof Dialog && !((Dialog) window).isUndecorated()) {
                 return;
             }
-            if( window == window.getGraphicsConfiguration().getDevice().getFullScreenWindow()) {
+            if (window == window.getGraphicsConfiguration().getDevice().getFullScreenWindow()) {
                 return;
             }
         }

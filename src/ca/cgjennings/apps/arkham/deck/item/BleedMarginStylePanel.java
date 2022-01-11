@@ -7,7 +7,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JSpinner;
 import javax.swing.text.DefaultFormatter;
 import static resources.Language.string;
-        
+
 /**
  * The style panel for face edge finishing options.
  *
@@ -15,6 +15,7 @@ import static resources.Language.string;
  * @since 3.3
  */
 public class BleedMarginStylePanel extends AbstractStylePanel<BleedMarginStyle> implements BleedMarginStyle {
+
     /**
      * Creates new form BleedMarginStylePanel
      */
@@ -22,12 +23,10 @@ public class BleedMarginStylePanel extends AbstractStylePanel<BleedMarginStyle> 
         initComponents();
         {
             // update bleed margin immediately on click
-            JFormattedTextField field = ((JSpinner.DefaultEditor)bleedSpinner.getEditor()).getTextField();
+            JFormattedTextField field = ((JSpinner.DefaultEditor) bleedSpinner.getEditor()).getTextField();
             ((DefaultFormatter) field.getFormatter()).setCommitsOnValidEdit(true);
-        }        
+        }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -121,7 +120,6 @@ public class BleedMarginStylePanel extends AbstractStylePanel<BleedMarginStyle> 
         bleedSpinner.setValue(widthInPoints);
         styleChanged();
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bleedLabel;

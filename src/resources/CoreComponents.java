@@ -126,9 +126,9 @@ public enum CoreComponents {
 
     /**
      * Check for the presence of core or other required plug-ins, and install
-     * them if required. If {@code descriptor} is a
-     * {@code CoreComponents} identifier, that component is checked for.
-     * Otherwise the value is converted to a string and parsed as follows:
+     * them if required. If {@code descriptor} is a {@code CoreComponents}
+     * identifier, that component is checked for. Otherwise the value is
+     * converted to a string and parsed as follows:
      * <ol>
      * <li> The string is split into tokens by breaking at newlines; each token
      * represents one required plug-in bundle.
@@ -140,10 +140,9 @@ public enum CoreComponents {
      * <tt>http://somewhere.tld/CATALOGUEID{...}</tt>.
      * </ol>
      *
-     * @param descriptor a {@code CoreComponent} or an object describing
-     * the component to install (see above)
-     * @throws NullPointerException if {@code descriptor} is
-     * {@code null}
+     * @param descriptor a {@code CoreComponent} or an object describing the
+     * component to install (see above)
+     * @throws NullPointerException if {@code descriptor} is {@code null}
      * @throws MissingCoreComponentException if any component is missing or out
      * of date and the user refuses to install it, or if installation fails
      */
@@ -171,7 +170,7 @@ public enum CoreComponents {
                 }
                 String current = "";
                 try {
-                    for (String url : set.catalogs.toArray(new String[set.catalogs.size()])) {
+                    for (String url : set.catalogs.toArray(new String[0])) {
                         current = url;
                         Catalog c = new Catalog(new URL(url));
                         for (CatalogID id1 : set.idToCatUrlMap.keySet()) {
@@ -193,31 +192,26 @@ public enum CoreComponents {
                         throw new MissingCoreComponentException(string("core-restart-required"));
                     }
                     BundleInstaller.loadLibraryBundles();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     ErrorDialog.displayError(string("cat-err-dl", current), e);
                 }
             };
-            if (EventQueue.isDispatchThread()) {
-                try {
+
+            try {
+                if (EventQueue.isDispatchThread()) {
                     r.run();
-                } catch (Throwable t) {
-                    if (t instanceof MissingCoreComponentException) {
-                        throw (MissingCoreComponentException) t;
-                    }
-                    t.printStackTrace();
-                }
-            } else {
-                try {
+                } else {
                     EventQueue.invokeAndWait(r);
-                } catch (Throwable t) {
-                    if (t instanceof InvocationTargetException) {
-                        t = t.getCause();
-                    }
+                }
+            } catch (Throwable t) {
+                Throwable ex = t;
+                do {
                     if (t instanceof MissingCoreComponentException) {
                         throw (MissingCoreComponentException) t;
                     }
-                    t.printStackTrace();
-                }
+                    t = t.getCause();
+                } while (t != null);
+                StrangeEons.log.log(Level.SEVERE, "unexpected exception", ex);
             }
         }
     }
@@ -234,7 +228,7 @@ public enum CoreComponents {
             } else {
                 url = tokens[i].substring(0, slash + 1);
             }
-            if(id == null) {
+            if (id == null) {
                 StrangeEons.log.warning("unexpeced null UUID: " + desc);
                 continue;
             }

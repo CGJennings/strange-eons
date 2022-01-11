@@ -108,9 +108,9 @@ public class AnimatedIcon implements Icon {
                     animationFinished = true;
                 }
             }
-            
+
             setCurrentFrame(frame);
-            
+
             if (animationFinished) {
                 timer.stop();
             }

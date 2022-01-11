@@ -36,9 +36,9 @@ import javax.imageio.ImageIO;
  * {@linkplain #paint(java.awt.Graphics2D, int, int, int, int, boolean) painted directly}.
  *
  * <p>
- * A {@code StrangeImage} must have a positive width and height. Breaking
- * this condition will lead to bugs that may be hard to detect. If you must
- * return a representation of an image with a zero width or height, return an
+ * A {@code StrangeImage} must have a positive width and height. Breaking this
+ * condition will lead to bugs that may be hard to detect. If you must return a
+ * representation of an image with a zero width or height, return an
  * {@linkplain #getInvisibleImage() invisible image} instead.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
@@ -64,8 +64,8 @@ public abstract class StrangeImage {
      * @param y the y-coordinate of the upper-left corner of the image
      * @param width the width of the image
      * @param height the height of the image
-     * @param fitToSize if {@code true}, the image's original aspect ratio
-     * will be maintained
+     * @param fitToSize if {@code true}, the image's original aspect ratio will
+     * be maintained
      */
     public abstract void paint(Graphics2D g, int x, int y, int width, int height, boolean fitToSize);
 
@@ -80,8 +80,8 @@ public abstract class StrangeImage {
      * @param y the y-coordinate of the upper-left corner of the image
      * @param width the width of the image
      * @param height the height of the image
-     * @param fitToSize if {@code true}, the image's original aspect ratio
-     * will be maintained
+     * @param fitToSize if {@code true}, the image's original aspect ratio will
+     * be maintained
      */
     public void paint(Graphics2D g, double x, double y, double width, double height, boolean fitToSize) {
         paint(g, (int) (x + 0.5d), (int) (y + 0.5d), (int) (width + 0.5d), (int) (height + 0.5d), fitToSize);
@@ -94,8 +94,8 @@ public abstract class StrangeImage {
      * @param g the graphics context
      * @param rect the rectangle defining the upper-left corner and dimensions
      * of the image
-     * @param fitToSize if {@code true}, the image's original aspect ratio
-     * will be maintained
+     * @param fitToSize if {@code true}, the image's original aspect ratio will
+     * be maintained
      */
     public final void paint(Graphics2D g, Rectangle2D rect, boolean fitToSize) {
         if (rect == null) {
@@ -129,9 +129,9 @@ public abstract class StrangeImage {
     /**
      * Returns a new buffered image representing the image content. The image
      * will be resized, if necessary, to the specified size. If
-     * {@code fitToSize} is {@code true}, then the original aspect
-     * ratio of the image will be maintained. The returned image is guaranteed
-     * to use an RGB or ARGB pixel format.
+     * {@code fitToSize} is {@code true}, then the original aspect ratio of the
+     * image will be maintained. The returned image is guaranteed to use an RGB
+     * or ARGB pixel format.
      *
      * @param width the image width
      * @param height the image height
@@ -209,13 +209,13 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns {@code true} if some parts of the image may not be opaque.
-     * If this returns {@code false}, then it is guaranteed that the image
+     * Returns {@code true} if some parts of the image may not be opaque. If
+     * this returns {@code false}, then it is guaranteed that the image
      * completely covers a rectangular area described by the specified width and
      * height when
      * {@linkplain #paint(java.awt.Graphics2D, int, int, int, int, boolean) painted}.
-     * If this method returns {@code true}, then some parts of the painted
-     * area <i>may</i> not be completely covered.
+     * If this method returns {@code true}, then some parts of the painted area
+     * <i>may</i> not be completely covered.
      *
      * @return {@code true} if the image may have transparent areas;
      * {@code false} if the image is known with certainly to be completely
@@ -226,9 +226,9 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns {@code true} if the underlying image is a vector image. If
-     * you wish to work with the original image in its underlying form, you can
-     * use code like the following:
+     * Returns {@code true} if the underlying image is a vector image. If you
+     * wish to work with the original image in its underlying form, you can use
+     * code like the following:
      * <pre>
      * if( si.isVectorFormat() ) {
      *     VectorImage vi = si.asVectorImage();
@@ -412,8 +412,7 @@ public abstract class StrangeImage {
      * source.
      *
      * @param source the source image
-     * @return a view of the source image as a {@code StrangeImage}
-     * instance
+     * @return a view of the source image as a {@code StrangeImage} instance
      */
     public static StrangeImage create(Image source) {
         if (source == null) {
@@ -428,8 +427,7 @@ public abstract class StrangeImage {
      * source.
      *
      * @param source the source image
-     * @return a view of the source image as a {@code StrangeImage}
-     * instance
+     * @return a view of the source image as a {@code StrangeImage} instance
      */
     public static StrangeImage create(VectorImage source) {
         if (source == null) {
@@ -443,12 +441,11 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns a {@code StrangeImage} for the given identifier. The
-     * identifier can be a local file path or a {@code file:},
-     * {@code http:}, {@code res:}, or {@code project:} URL. Any
-     * string that is valid in a portrait panel will produce the same image
-     * here, except for the empty string that produce's the component-specific
-     * default portrait.
+     * Returns a {@code StrangeImage} for the given identifier. The identifier
+     * can be a local file path or a {@code file:},
+     * {@code http:}, {@code res:}, or {@code project:} URL. Any string that is
+     * valid in a portrait panel will produce the same image here, except for
+     * the empty string that produce's the component-specific default portrait.
      *
      * @param identifier the identifier to use to locate the file
      * @return the identified image, or a "missing image" stand-in
@@ -469,7 +466,7 @@ public abstract class StrangeImage {
                             si = create(new SVGVectorImage(url));
                         } catch (CoreComponents.MissingCoreComponentException mcc) {
                             // core not installed; will get missing image
-                        } catch( FileNotFoundException fnf ) {
+                        } catch (FileNotFoundException fnf) {
                             si = getMissingImage();
                         } catch (IOException e) {
                             StrangeEons.log.log(Level.WARNING, "failed to load SVG: " + identifier, e);
@@ -488,7 +485,7 @@ public abstract class StrangeImage {
                             bi = ResourceKit.prepareNewImage(bi);
                             si = create(bi);
                         }
-                    } catch ( FileNotFoundException fnf) {
+                    } catch (FileNotFoundException fnf) {
                         si = getMissingImage();
                     } catch (IOException e) {
                         StrangeEons.log.log(Level.WARNING, "failed to load bitmap: " + identifier, e);
@@ -536,19 +533,18 @@ public abstract class StrangeImage {
         }
     }
 
-
     /**
-     * Returns a {@code BufferedImage} for the given identifier. The
-     * identifier can be a local file path or a {@code file:},
-     * {@code http:}, {@code res:}, or {@code project:} URL. Any
-     * string that is valid in a portrait panel will produce the same image
-     * here, except for the empty string that produce's the component-specific
-     * default portrait.
+     * Returns a {@code BufferedImage} for the given identifier. The identifier
+     * can be a local file path or a {@code file:},
+     * {@code http:}, {@code res:}, or {@code project:} URL. Any string that is
+     * valid in a portrait panel will produce the same image here, except for
+     * the empty string that produce's the component-specific default portrait.
      *
-     * <p>This method is similar to {@link #get}, but ensures that the returned
+     * <p>
+     * This method is similar to {@link #get}, but ensures that the returned
      * image is a {@code BufferedImage} bitmap. Vector images will be converted
-     * to bitmaps automatically. Where possible, prefer code that works
-     * with both bitmaps and vectors transparently by using {@link #get} instead.
+     * to bitmaps automatically. Where possible, prefer code that works with
+     * both bitmaps and vectors transparently by using {@link #get} instead.
      *
      * @param identifier the identifier to use to locate the file
      * @return the identified image, or a "missing image" stand-in
@@ -566,10 +562,10 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns whether or not an identifier refers to a valid image.
-     * For example, passing a file identifier for a file that does not exist
-     * would return false. Note that this will load (and cache) the image
-     * if it is not already loaded.
+     * Returns whether or not an identifier refers to a valid image. For
+     * example, passing a file identifier for a file that does not exist would
+     * return false. Note that this will load (and cache) the image if it is not
+     * already loaded.
      *
      * @param identifier the identifier to use to locate the file
      * @return true if the identifier points to a valid image, false otherwise
@@ -581,9 +577,9 @@ public abstract class StrangeImage {
 
     /**
      * Returns a URL for a user image identifier, or {@code null}. If the
-     * identifier is {@code null} or empty, then {@code null} is
-     * returned. (An empty string is typically used to indicate that a default
-     * image should be used.)
+     * identifier is {@code null} or empty, then {@code null} is returned. (An
+     * empty string is typically used to indicate that a default image should be
+     * used.)
      *
      * @param identifier an identifier string containing a local file path or
      * URL
@@ -627,9 +623,9 @@ public abstract class StrangeImage {
     }
 
     /**
-     * Returns a {@code StrangeImage} that is completely invisible. This
-     * can be used as a stand-in image for an image with a zero width or height,
-     * since {@code StrangeImage}s must have a non-zero area.
+     * Returns a {@code StrangeImage} that is completely invisible. This can be
+     * used as a stand-in image for an image with a zero width or height, since
+     * {@code StrangeImage}s must have a non-zero area.
      *
      * @return a completely transparent image
      */

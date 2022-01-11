@@ -6,6 +6,7 @@ import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 
 /**
@@ -23,6 +24,7 @@ import javax.swing.SwingUtilities;
  * @since 3.2
  */
 final class ScriptRunnerModeHelper implements ScriptRunnerState {
+
     private static final int STATE_NOT_STARTED = -1;
     private static final int STATE_STARTED = 0;
     private static final int STATE_FINISHED = 1;
@@ -33,8 +35,9 @@ final class ScriptRunnerModeHelper implements ScriptRunnerState {
 
     /**
      * Creates a helper for the specified script file.
+     *
      * @param scriptFile the script file to run; typically that passed as the
-     *    script runner argument
+     * script runner argument
      */
     ScriptRunnerModeHelper(File scriptFile) {
         this.script = Objects.requireNonNull(scriptFile);
@@ -73,8 +76,7 @@ final class ScriptRunnerModeHelper implements ScriptRunnerState {
                 // uncaught exceptions will be printed to the console
                 // for debugging purposes, then the app will exit
                 keepAlive = false;
-                System.err.println("Uncaught exception thrown by script \"" + script + '\"');
-                t.printStackTrace();
+                StrangeEons.log.log(Level.SEVERE, "uncaught exception thrown by \"" + script + '\"', t);
             } finally {
                 runState = STATE_FINISHED;
             }

@@ -93,8 +93,8 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
     /**
      * Returns the currently selected category in this preferences dialog.
      *
-     * @return the selected preference category, or {@code null} if no
-     * category is selected
+     * @return the selected preference category, or {@code null} if no category
+     * is selected
      */
     public PreferenceCategory getSelectedCategory() {
         return (PreferenceCategory) catList.getSelectedValue();
@@ -103,13 +103,13 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
     /**
      * Scroll the currently displayed category to display a particular section.
      * The desired section is identified by specifying the label text of labels
-     * at its top and bottom. If the top label is {@code null}, then the
-     * top of the category is used. If the bottom label is {@code null},
-     * then the bottom of the category is used. If either label cannot be found
-     * in the category, it is treated as {@code null} (although a warning
-     * will be logged to the console). If the section is too long to fit within
-     * the category view without scrolling, the dialog will scroll to the top of
-     * the top section.
+     * at its top and bottom. If the top label is {@code null}, then the top of
+     * the category is used. If the bottom label is {@code null}, then the
+     * bottom of the category is used. If either label cannot be found in the
+     * category, it is treated as {@code null} (although a warning will be
+     * logged to the console). If the section is too long to fit within the
+     * category view without scrolling, the dialog will scroll to the top of the
+     * top section.
      *
      * @param sectionTop label text identifying the top of the section, or
      * {@code null}
@@ -188,7 +188,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
 
         prefCards.removeAll();
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PreferenceCategory> m = new DefaultListModel<>();
         LinkedList<PreferenceCategory> list = main;
         int count = 0;
         for (int type = 0; type < 2; ++type) {
@@ -222,7 +222,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         catScroll = new javax.swing.JScrollPane();
-        catList = new javax.swing.JList();
+        catList = new javax.swing.JList<>();
         cardScroll = new javax.swing.JScrollPane();
         prefCards = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
@@ -324,7 +324,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
     private javax.swing.JScrollPane cardScroll;
-    private javax.swing.JList catList;
+    private javax.swing.JList<PreferenceCategory> catList;
     private javax.swing.JScrollPane catScroll;
     private ca.cgjennings.ui.JHelpButton helpBtn;
     private javax.swing.JButton okBtn;

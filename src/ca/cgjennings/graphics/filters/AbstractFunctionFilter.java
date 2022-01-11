@@ -10,16 +10,15 @@ import ca.cgjennings.math.Fn;
  * <p>
  * Subclasses must implement {@link #f} to compute the specific function to be
  * applied to the channels, and must call {@link #functionChanged()} whenever
- * the filter settings change in a way that affects the output of
- * {@code f}.
+ * the filter settings change in a way that affects the output of {@code f}.
  *
  * <p>
- * The transfer function {@code f} is passed values between 0 and 1
- * inclusive, representing the brightness of the red, green, or blue channels
- * for a given sample (pixel). The transfer function then returns new values
- * representing how the input value should change as a result of applying the
- * filter. As a simple example, the following transfer function would brighten
- * images by 10 percent:
+ * The transfer function {@code f} is passed values between 0 and 1 inclusive,
+ * representing the brightness of the red, green, or blue channels for a given
+ * sample (pixel). The transfer function then returns new values representing
+ * how the input value should change as a result of applying the filter. As a
+ * simple example, the following transfer function would brighten images by 10
+ * percent:
  * <pre>
  * public float f( float x ) {
  *     return x * 1.10f;

@@ -41,8 +41,8 @@ public class CancelledOperationException extends RuntimeException {
     }
 
     /**
-     * Constructs a new exception with a {@code null} message and the
-     * specified cause.
+     * Constructs a new exception with a {@code null} message and the specified
+     * cause.
      *
      * @param cause an exception that caused this exception
      */

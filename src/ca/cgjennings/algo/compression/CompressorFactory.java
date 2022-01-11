@@ -26,11 +26,11 @@ public enum CompressorFactory {
      */
     LZMA(LZMACompressor.class, "lz2"),;
 
-    private CompressorFactory(Class className, String... extensions) {
+    private CompressorFactory(Class<? extends Compressor> className, String... extensions) {
         this.className = className;
         this.extensions = extensions;
     }
-    private final Class className;
+    private final Class<? extends Compressor> className;
     private final String[] extensions;
 
     /**
@@ -41,7 +41,7 @@ public enum CompressorFactory {
     public Compressor getCompressor() {
         try {
             return (Compressor) className.getConstructor().newInstance();
-        } catch (Exception e) {
+        } catch (RuntimeException | ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
     }
@@ -65,14 +65,14 @@ public enum CompressorFactory {
     }
 
     /**
-     * Returns {@code true} if one of this algorithm's extensions matches
-     * the given name. If name contains a dot, then only the text after the
-     * final dot is considered when matching extensions.
+     * Returns {@code true} if one of this algorithm's extensions matches the
+     * given name. If name contains a dot, then only the text after the final
+     * dot is considered when matching extensions.
      *
      * @param name a name with an extension to match against this algorithm's
      * extensions
-     * @return {@code true} if the name's extension is a known extension
-     * for this algorithm
+     * @return {@code true} if the name's extension is a known extension for
+     * this algorithm
      * @throws NullPointerException if the name is {@code null}
      */
     public boolean matchesExtension(String name) {
@@ -93,8 +93,8 @@ public enum CompressorFactory {
      * to specify which performance aspects of the resulting compressor are most
      * important you, and returns a factory to suit your that satisfies
      *
-     * @param small if {@code true}, small compressed output (high
-     * compression ratios) is important
+     * @param small if {@code true}, small compressed output (high compression
+     * ratios) is important
      * @param fast if {@code true}, fast decompression is important
      * @param standard if {@code true}, being able to decompress data with
      * common command line tools is important

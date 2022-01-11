@@ -9,10 +9,10 @@ package ca.cgjennings.apps.arkham.deck.item;
 public interface OpacityStyle extends Style {
 
     /**
-     * Sets the opacity for the item to the specified value, which must
-     * be between 0 (completely transparent) and 1 (completely opaque). This
-     * affects the opacity of the item: if the item contains parts with
-     * an opacity other than 1, then their effective opacity will be adjusted
+     * Sets the opacity for the item to the specified value, which must be
+     * between 0 (completely transparent) and 1 (completely opaque). This
+     * affects the opacity of the item: if the item contains parts with an
+     * opacity other than 1, then their effective opacity will be adjusted
      * proportionally.
      *
      * @param opacity the opacity value for the item

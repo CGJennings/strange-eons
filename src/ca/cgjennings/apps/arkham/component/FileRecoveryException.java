@@ -24,8 +24,8 @@ public class FileRecoveryException extends IOException {
      *
      * @param tempFileForRecovery the file to attempt recovery from
      * @param recoveryTitle the title of a message that may be displayed to the
-     * user after recovery; if this is {@code null}, a default title will
-     * be used
+     * user after recovery; if this is {@code null}, a default title will be
+     * used
      * @param successMessage the body of a message that may be displayed to the
      * user after recovery; if this is {@code null}, no message will be
      * displayed

@@ -9,8 +9,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 /**
- * Dialog that scans for local debug servers, allowing one to be selected
- * for connection.
+ * Dialog that scans for local debug servers, allowing one to be selected for
+ * connection.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.2
@@ -59,7 +59,7 @@ public final class DiscoveryDialog extends javax.swing.JDialog {
         searcher.setDaemon(true);
         searcher.start();
     }
-    
+
     private void startNextResult() {
         if (resultPanel.getComponentCount() > 0) {
             resultPanel.add(new JLabel(" "));
@@ -68,18 +68,18 @@ public final class DiscoveryDialog extends javax.swing.JDialog {
         head.setFont(head.getFont().deriveFont(Font.BOLD));
         resultPanel.add(head);
     }
-    
+
     private void append(String result) {
         JLabel line = new JLabel(result);
         resultPanel.add(line);
     }
-    
+
     private void endResult(DiscoveryService.ServerInfo info) {
         JButton connect = new JButton(string("connect-btn"));
-        connect.setFont(connect.getFont().deriveFont(connect.getFont().getSize2D()-2f));
+        connect.setFont(connect.getFont().deriveFont(connect.getFont().getSize2D() - 2f));
         connect.addActionListener(li -> {
-           selectedServer = info;
-           DiscoveryDialog.this.dispose();
+            selectedServer = info;
+            DiscoveryDialog.this.dispose();
         });
         resultPanel.add(connect);
         resultPanel.validate();
@@ -155,7 +155,7 @@ public final class DiscoveryDialog extends javax.swing.JDialog {
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
         dispose();
     }//GEN-LAST:event_closeBtnActionPerformed
-    
+
     private static String string(String key) {
         try {
             return ResourceBundle.getBundle("resources/text/interface/debugger").getString(key);

@@ -18,6 +18,7 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class Task extends Member {
+
     private boolean settingsAreDirty = false;
 
     /**
@@ -110,7 +111,7 @@ public class Task extends Member {
     }
 
     private static void writeTaskSettings(File f, Settings s) throws IOException {
-        try (EscapedLineWriter lineWriter = new EscapedLineWriter(new File(f, TASK_SETTINGS)) ) {
+        try (EscapedLineWriter lineWriter = new EscapedLineWriter(new File(f, TASK_SETTINGS))) {
             lineWriter.writeComment("WARNING: If this file is deleted, Strange Eons will no longer\nsee this as a project/task folder!");
             for (String key : s) {
                 lineWriter.writeProperty(key, s.get(key));
@@ -173,7 +174,7 @@ public class Task extends Member {
      * @return an array of registered custom icon resource paths
      */
     public static String[] getCustomIcons() {
-        return customIcons.toArray(new String[customIcons.size()]);
+        return customIcons.toArray(new String[0]);
     }
 
     private static final LinkedHashSet<String> customIcons = new LinkedHashSet<>();

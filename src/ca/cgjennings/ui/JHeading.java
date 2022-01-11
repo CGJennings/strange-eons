@@ -54,8 +54,8 @@ public class JHeading extends JLabel {
     }
 
     /**
-     * Sets whether this heading is a main heading ({@code false}, the
-     * default) or a subheading ({@code true}).
+     * Sets whether this heading is a main heading ({@code false}, the default)
+     * or a subheading ({@code true}).
      *
      * @param isSubhead {@code true} to make this a subheading
      */

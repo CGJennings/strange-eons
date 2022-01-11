@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
  */
 @SuppressWarnings("serial")
 final class HDocPageCommand extends AbstractCommand {
+
     private final String page;
 
     public HDocPageCommand(final String nameKey, final String pageName) {

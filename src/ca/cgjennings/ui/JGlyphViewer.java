@@ -66,7 +66,7 @@ public class JGlyphViewer extends JLabel {
         double sch = (double) h * 1 / scale;
         g.translate(-bounds.getX() + (scw - bounds.getWidth()) / 2, -bounds.getY() + (sch - bounds.getHeight()) / 2);
 
-        g.setStroke(new BasicStroke(2f/(float)scale));
+        g.setStroke(new BasicStroke(2f / (float) scale));
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.draw(outline);
 

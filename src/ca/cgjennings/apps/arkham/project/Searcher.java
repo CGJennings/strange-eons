@@ -203,8 +203,8 @@ public class Searcher {
      * @param member the member being searched
      * @param reader a reader than can be used to read text content to be
      * searched
-     * @param isBinaryType {@code true} if the file is binary rather than a
-     * text file
+     * @param isBinaryType {@code true} if the file is binary rather than a text
+     * file
      * @throws IOException if an I/O error occurs while reading the file
      */
     protected void scanReader(Member member, BufferedReader reader, boolean isBinaryType) throws IOException {
@@ -238,8 +238,8 @@ public class Searcher {
 
     /**
      * Returns {@code true} if the given member should be skipped by the
-     * searcher. (The base class returns {@code false}, meaning that all
-     * files are searched.)
+     * searcher. (The base class returns {@code false}, meaning that all files
+     * are searched.)
      *
      * @param member the file to test
      * @return {@code true} if the file should be excluded
@@ -256,8 +256,7 @@ public class Searcher {
      * returns {@code null} to indicate that the file cannot be scanned.
      *
      * @param member the member to determine an encoding for
-     * @return an encoding to use for scanning, or {@code null} if none
-     * applies
+     * @return an encoding to use for scanning, or {@code null} if none applies
      * @see MetadataSource#getDefaultCharset
      */
     protected Charset getEncodingFor(Member member) {

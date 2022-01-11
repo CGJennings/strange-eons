@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import gamedata.Expansion;
 import gamedata.Game;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
@@ -171,41 +170,38 @@ final class ExpansionSymbolMenu extends JMenu {
         }
     };
 
-    private final ActionListener expansionSelected = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            final boolean multiSelect = (modifiers & (InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0;
+    private final ActionListener expansionSelected = (e) -> {
+        final boolean multiSelect = (modifiers & (InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK | InputEvent.META_DOWN_MASK)) != 0;
 
-            StrangeEonsEditor ed = StrangeEons.getWindow().getActiveEditor();
-            if (ed == null) {
-                return;
-            }
-            GameComponent gc = ed.getGameComponent();
-            String proposed = ((JCheckBoxMenuItem) e.getSource()).getClientProperty("SE Expansion").toString();
-            if (proposed.equals("NX")) {
-                gc.getSettings().reset(Expansion.EXPANSION_SETTING_KEY);
-                // NX always resets the list; adding it to a list makes no sense
-            } else {
-                if (multiSelect) {
-                    Expansion exp = Expansion.get(proposed);
-                    Set<Expansion> currentList = Expansion.getComponentExpansionSymbols(gc);
-                    if (currentList.contains(exp)) {
-                        currentList.remove(exp);
-                    } else {
-                        currentList.add(exp);
-                    }
-                    currentList.remove(Expansion.getBaseGameExpansion());
-                    Expansion.setComponentExpansionSymbols(gc, currentList);
-                } else {
-                    gc.getSettings().set(Expansion.EXPANSION_SETTING_KEY, proposed);
-                }
-            }
-            gc.markUnsavedChanges();
-            ((AbstractGameComponentEditor) ed).redrawPreview();
-
+        StrangeEonsEditor ed = StrangeEons.getWindow().getActiveEditor();
+        if (ed == null) {
+            return;
+        }
+        GameComponent gc = ed.getGameComponent();
+        String proposed = ((JCheckBoxMenuItem) e.getSource()).getClientProperty("SE Expansion").toString();
+        if (proposed.equals("NX")) {
+            gc.getSettings().reset(Expansion.EXPANSION_SETTING_KEY);
+            // NX always resets the list; adding it to a list makes no sense
+        } else {
             if (multiSelect) {
-                doClick(0);
+                Expansion exp = Expansion.get(proposed);
+                Set<Expansion> currentList = Expansion.getComponentExpansionSymbols(gc);
+                if (currentList.contains(exp)) {
+                    currentList.remove(exp);
+                } else {
+                    currentList.add(exp);
+                }
+                currentList.remove(Expansion.getBaseGameExpansion());
+                Expansion.setComponentExpansionSymbols(gc, currentList);
+            } else {
+                gc.getSettings().set(Expansion.EXPANSION_SETTING_KEY, proposed);
             }
+        }
+        gc.markUnsavedChanges();
+        ((AbstractGameComponentEditor) ed).redrawPreview();
+
+        if (multiSelect) {
+            doClick(0);
         }
     };
 }

@@ -106,8 +106,8 @@ public abstract class ResourceParser<R> implements Closeable {
     }
 
     /**
-     * Returns the next resource listed in the file, or {@code null} if
-     * there are no more resources available.
+     * Returns the next resource listed in the file, or {@code null} if there
+     * are no more resources available.
      *
      * @return the next resource
      * @throws IOException if an I/O error occurs
@@ -154,8 +154,8 @@ public abstract class ResourceParser<R> implements Closeable {
      * Returns an identifier that can be used in error messages. If the parser
      * was created with the resource-based constructor, this will default to the
      * resource name. Otherwise it will default to {@code null}, but can be
-     * changed with {@link #setIdentifier}. If the identifier is
-     * {@code null}, then this will return {@code &lt;???&gt;}.
+     * changed with {@link #setIdentifier}. If the identifier is {@code null},
+     * then this will return {@code &lt;???&gt;}.
      *
      * @return the identifier, or the "unknown identifier" if the identifier is
      * {@code null}
@@ -165,9 +165,8 @@ public abstract class ResourceParser<R> implements Closeable {
     }
 
     /**
-     * Returns the identifier. If {@code null}, then {@code null} is
-     * returned. Otherwise, this is exactly the same as
-     * {@link #getIdentifierString()}.
+     * Returns the identifier. If {@code null}, then {@code null} is returned.
+     * Otherwise, this is exactly the same as {@link #getIdentifierString()}.
      *
      * @return the identifier, or {@code null}
      */
@@ -231,8 +230,8 @@ public abstract class ResourceParser<R> implements Closeable {
      * Returns the next non-comment line. This is called by subclasses to
      * implement parsing.
      *
-     * @return the next non-comment line, or {@code null} if the end of
-     * file was reached
+     * @return the next non-comment line, or {@code null} if the end of file was
+     * reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
     protected final String readLine() throws IOException {
@@ -247,8 +246,8 @@ public abstract class ResourceParser<R> implements Closeable {
      * is a line that contains only whitespace. This is called by subclasses to
      * implement parsing.
      *
-     * @return the next non-empty line, or {@code null} if the end of file
-     * was reached
+     * @return the next non-empty line, or {@code null} if the end of file was
+     * reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
     protected final String readNonemptyLine() throws IOException {
@@ -278,10 +277,10 @@ public abstract class ResourceParser<R> implements Closeable {
      * value, it will be an empty string. If empty lines are not skipped, and an
      * empty line is read, then both the key and value will be empty strings.
      *
-     * @param skipEmptyLines if {@code true}, empty lines are skipped and
-     * the next non-empty line is parsed
-     * @return the next line split into a [key, value] pair, or
-     * {@code null} if the end of file was reached
+     * @param skipEmptyLines if {@code true}, empty lines are skipped and the
+     * next non-empty line is parsed
+     * @return the next line split into a [key, value] pair, or {@code null} if
+     * the end of file was reached
      * @throws IOException if an I/O error occurs while reading from the source
      */
     protected final String[] readProperty(boolean skipEmptyLines) throws IOException {

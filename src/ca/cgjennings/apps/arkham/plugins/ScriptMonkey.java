@@ -441,7 +441,7 @@ public final class ScriptMonkey {
             }
 
             // dump the full trace to stderr
-            rex.printStackTrace();
+            rex.printStackTrace(System.err);
             if (fullStackTrace) {
                 rex.printStackTrace(console.getErrorWriter());
             }
@@ -671,7 +671,6 @@ public final class ScriptMonkey {
 //        } else if (!(parentBindings instanceof SettingBindings)) {
 //            engine.setBindings(new SettingBindings(parentBindings), ScriptContext.ENGINE_SCOPE);
 //        }
-
         // EVALUATE THE BOOTSTRAP LIBRARY (WHICH DEFINES useLibrary AND IMPORTS common.js)
         if (BOOTSTRAP_LIBRARY == null) {
             final String libLocation = "/resources/libraries/bootstrap";

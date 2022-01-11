@@ -21,14 +21,15 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public interface GameComponent extends Serializable, Cloneable {
+
     /**
-     * Returns the standard class map name that describes this component.
-     * For a compiled component this is the fully qualified name of the class.
-     * For a standard DIY component, it is {@code diy:} followed by the resource
-     * path of the script file.
-     * If the component was created from a {@code script:} class map entry,
-     * that will not be returned. The name of the true underlying type that was
-     * ultimately created by the script is returned instead.
+     * Returns the standard class map name that describes this component. For a
+     * compiled component this is the fully qualified name of the class. For a
+     * standard DIY component, it is {@code diy:} followed by the resource path
+     * of the script file. If the component was created from a {@code script:}
+     * class map entry, that will not be returned. The name of the true
+     * underlying type that was ultimately created by the script is returned
+     * instead.
      *
      * @return the class map type of this instance
      */
@@ -72,18 +73,18 @@ public interface GameComponent extends Serializable, Cloneable {
      * private settings. A component's private settings are saved along with the
      * component when it is written to a file. This can be used to override the
      * default settings for component (which are determined by the the shared
-     * game settings for the game associated with the component)
-     * as a way to "hack" existing component designs. It can also be used
-     * by the component itself to store arbitrary information.
-     * {@link DIY DIY components} generally use the component's private settings
-     * to store the current user-configurable state of the component.
+     * game settings for the game associated with the component) as a way to
+     * "hack" existing component designs. It can also be used by the component
+     * itself to store arbitrary information. {@link DIY DIY components}
+     * generally use the component's private settings to store the current
+     * user-configurable state of the component.
      *
      * <p>
      * Note that setting the key with the name {@link Game#GAME_SETTING_KEY}
      * ("game") will change the parent scope of the private settings to the
-     * {@link Game#getSettings() relevant game's settings} for that game
-     * whose code matches the new value. (The initial value of this key is
-     * normally set on the component's half using the game code specified in the
+     * {@link Game#getSettings() relevant game's settings} for that game whose
+     * code matches the new value. (The initial value of this key is normally
+     * set on the component's half using the game code specified in the
      * component's class map entry.)
      *
      * @return the private settings that can be used to override settings for
@@ -100,8 +101,8 @@ public interface GameComponent extends Serializable, Cloneable {
 
     /**
      * Returns the sheets attached to this component to draw its faces, or
-     * {@code null} if no sheets are attached. The returned array is owned
-     * by the game component and must not be modified.
+     * {@code null} if no sheets are attached. The returned array is owned by
+     * the game component and must not be modified.
      *
      * @return the sheets that will be updated by calls to
      * {@link #markChanged(int)}.
@@ -113,8 +114,8 @@ public interface GameComponent extends Serializable, Cloneable {
      * Sets the sheets that are attached to this component to draw its faces.
      * Once set, the array is owned by the component and must not be modified.
      *
-     * @param sheets the sheets to associate with the component, or
-     * {@code null} to clear the associated sheets
+     * @param sheets the sheets to associate with the component, or {@code null}
+     * to clear the associated sheets
      * @see #getSheets
      * @see #createDefaultSheets
      */
@@ -133,8 +134,8 @@ public interface GameComponent extends Serializable, Cloneable {
     /**
      * Returns human-readable names for the sheets used by this component. A
      * typical result would be something like
-     * {@code ["Front Face", "Back Face"]}, localized for the user
-     * interface language.
+     * {@code ["Front Face", "Back Face"]}, localized for the user interface
+     * language.
      *
      * <p>
      * Implementations should assume that the titles are for the same kinds and
@@ -165,29 +166,29 @@ public interface GameComponent extends Serializable, Cloneable {
 
     /**
      * Called to signal that changes have been made that require the
-     * {@code i}the sheet to be redrawn. This is typically not called
-     * directly. Instead, calling a method like "{@code setName}" should
-     * check if the name being set is actually different, and if so then call
-     * this method for each sheet that may have changed as a result. Plug-ins
-     * that customize an existing component may also call this method as needed
-     * to reflect new features that they have added.
+     * {@code i}the sheet to be redrawn. This is typically not called directly.
+     * Instead, calling a method like "{@code setName}" should check if the name
+     * being set is actually different, and if so then call this method for each
+     * sheet that may have changed as a result. Plug-ins that customize an
+     * existing component may also call this method as needed to reflect new
+     * features that they have added.
      *
      * <p>
      * Implementations of this method will typically call the
      * {@link Sheet#markChanged()} method of the relevant sheet (unless the
-     * sheet set is {@code null}), set a flag for use by
-     * {@link #hasChanged()}, and then call {@link #markUnsavedChanges()}.
+     * sheet set is {@code null}), set a flag for use by {@link #hasChanged()},
+     * and then call {@link #markUnsavedChanges()}.
      *
      * @param i the index of the sheet that needs to be redrawn
      */
     public void markChanged(int i);
 
     /**
-     * Returns {@code true} if this component has been modified since the
-     * last call to {@code hasChanged()}.
+     * Returns {@code true} if this component has been modified since the last
+     * call to {@code hasChanged()}.
      *
-     * @return {@code true} if the component has changed since this was
-     * last called
+     * @return {@code true} if the component has changed since this was last
+     * called
      */
     public boolean hasChanged();
 
@@ -211,13 +212,11 @@ public interface GameComponent extends Serializable, Cloneable {
     public void markSaved();
 
     /**
-     * Returns {@code true} if components of this type can be placed in a
-     * deck. Typically, only components that don't have faces return
-     * {@code false}. (Decks themselves, for example, cannot be placed
-     * inside other decks.)
+     * Returns {@code true} if components of this type can be placed in a deck.
+     * Typically, only components that don't have faces return {@code false}.
+     * (Decks themselves, for example, cannot be placed inside other decks.)
      *
-     * @return {@code true} if and only if this component can be added to a
-     * deck
+     * @return {@code true} if and only if this component can be added to a deck
      * @see #createDefaultSheets()
      * @see Deck#isDeckLayoutSupported(java.io.File)
      */
@@ -234,13 +233,13 @@ public interface GameComponent extends Serializable, Cloneable {
      * convention, you can save memory by sharing the shallow copy of the image.
      *
      * <p>
-     * <b>Debugging tip:</b> One operation that makes use of the
-     * {@code clone()} method is the <b>Spin Off</b> command. If you apply
-     * this command, make changes to the copied component, redraw the original
-     * component, and notice that changes in the copy have carried over to the
-     * original, then you are using a shallow copy rather than a deep copy.
-     * (That is, you are sharing a reference to the same mutable object rather
-     * than making a copy of the mutable object during the cloning.)
+     * <b>Debugging tip:</b> One operation that makes use of the {@code clone()}
+     * method is the <b>Spin Off</b> command. If you apply this command, make
+     * changes to the copied component, redraw the original component, and
+     * notice that changes in the copy have carried over to the original, then
+     * you are using a shallow copy rather than a deep copy. (That is, you are
+     * sharing a reference to the same mutable object rather than making a copy
+     * of the mutable object during the cloning.)
      *
      * @return a deep copy of this component
      */

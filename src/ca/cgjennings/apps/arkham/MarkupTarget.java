@@ -19,11 +19,11 @@ public interface MarkupTarget {
 
     /**
      * If set in a component's client properties, forces whether a component is
-     * or is not considered to be a markup target. Set to
-     * {@code Boolean.TRUE} or {@code Boolean.FALSE}. Otherwise,
-     * markup target candidates are evaluated using heuristics. To be valid, the
-     * component must still be an acceptable type of control, and (in strict
-     * validation mode) showing, enabled, and editable.
+     * or is not considered to be a markup target. Set to {@code Boolean.TRUE}
+     * or {@code Boolean.FALSE}. Otherwise, markup target candidates are
+     * evaluated using heuristics. To be valid, the component must still be an
+     * acceptable type of control, and (in strict validation mode) showing,
+     * enabled, and editable.
      *
      * @see MarkupTargetFactory#isValidTarget(java.lang.Object, boolean)
      */
@@ -76,9 +76,9 @@ public interface MarkupTarget {
 
     /**
      * Changes the selection in the markup target. Invalid selections will be
-     * clamped to the valid range of the document. Note that {@code start}
-     * does not need to be less than {@code end}; the cursor will be
-     * located at the {@code end} offset.
+     * clamped to the valid range of the document. Note that {@code start} does
+     * not need to be less than {@code end}; the cursor will be located at the
+     * {@code end} offset.
      *
      * @param start the start offset of the new selection
      * @param end the end offset of the new selection
@@ -186,5 +186,5 @@ public interface MarkupTarget {
     /**
      * If the target is a component, then it will request input focus.
      */
-    void requestFocus();	
+    void requestFocus();
 }

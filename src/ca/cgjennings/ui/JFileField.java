@@ -33,7 +33,7 @@ public class JFileField extends JTextField {
                         setText(sel);
                         fireActionPerformed();
                     }
-        }, null);
+                }, null);
 
         new FileDrop(this, (File[] files) -> {
             if (files.length > 0 && files[0] != null) {
@@ -53,7 +53,7 @@ public class JFileField extends JTextField {
                 if (path == null) {
                     path = files[0].getAbsolutePath();
                 }
-                
+
                 setText(path);
                 fireActionPerformed();
             }
@@ -145,11 +145,10 @@ public class JFileField extends JTextField {
 
     /**
      * Standard Strange Eons file types that this file field can be set to
-     * accept. If the type is set to {@code GENERIC} or
-     * {@code GENERIC_SAVE}, the accepted file extensions and description
-     * can be set via {@link #setGenericFileTypeExtensions(java.lang.String[])}
-     * and {@link #setGenericFileTypeDescription(java.lang.String)},
-     * respectively.
+     * accept. If the type is set to {@code GENERIC} or {@code GENERIC_SAVE},
+     * the accepted file extensions and description can be set via
+     * {@link #setGenericFileTypeExtensions(java.lang.String[])} and
+     * {@link #setGenericFileTypeDescription(java.lang.String)}, respectively.
      */
     public enum FileType {
         /**
@@ -199,8 +198,8 @@ public class JFileField extends JTextField {
     }
 
     /**
-     * If the field contains a non-empty string, returns a {@code File}
-     * from the field content. Otherwise, returns {@code null}.
+     * If the field contains a non-empty string, returns a {@code File} from the
+     * field content. Otherwise, returns {@code null}.
      *
      * @return the field text as a file, if it contains characters other than
      * whitespace

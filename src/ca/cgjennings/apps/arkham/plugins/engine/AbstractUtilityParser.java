@@ -12,7 +12,7 @@ import java.util.logging.Level;
 
 /**
  * This abstract base class is used to build tools that aid script code
- * developers. It parses script files into an abstract syntax tree and then  {@linkplain #processTree(org.mozilla.javascript.ast.AstRoot)
+ * developers. It parses script files into an abstract syntax tree and then null {@linkplain #processTree(org.mozilla.javascript.ast.AstRoot)
  * provides the tree root} to the concrete subclass.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>

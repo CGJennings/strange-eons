@@ -34,14 +34,14 @@ import resources.Language;
  * Throws an exception if the variable is undefined.
  * <p>
  * <b>{?<i>condition</i>} ... {/?<i>condition</i>}</b><br>
- * If the condition is set to {@code true}, then the text between the start
- * and end symbols will be included in the document. Otherwise, it will be left
- * out. Throws an exception if the condition has not been set.
+ * If the condition is set to {@code true}, then the text between the start and
+ * end symbols will be included in the document. Otherwise, it will be left out.
+ * Throws an exception if the condition has not been set.
  * <p>
  * <b>{!<i>condition</i>} ... {/!<i>condition</i>}</b><br>
- * If the condition is set to {@code false}, then the text between the
- * start and end symbols will be included in the document. Otherwise, it will be
- * left out. Throws an exception if the condition has not been set.
+ * If the condition is set to {@code false}, then the text between the start and
+ * end symbols will be included in the document. Otherwise, it will be left out.
+ * Throws an exception if the condition has not been set.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

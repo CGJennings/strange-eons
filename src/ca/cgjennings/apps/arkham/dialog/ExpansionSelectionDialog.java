@@ -176,7 +176,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
     }
 
     private void initVariantModel() {
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        DefaultComboBoxModel<JIconList.IconItem> m = new DefaultComboBoxModel<>();
         ExpansionSymbolTemplate est = game.getSymbolTemplate();
         for (int i = 0; i < est.getLogicalVariantCount(); ++i) {
             m.addElement(new JIconList.IconItem(est.getLogicalVariantName(i), est.getLogicalVariantIcon(i)));
@@ -229,7 +229,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
     private void initComponents() {
 
         okBtn = new javax.swing.JButton();
-        variantCombo = new ca.cgjennings.ui.JIconComboBox();
+        variantCombo = new ca.cgjennings.ui.JIconComboBox<>();
         expScroll = new javax.swing.JScrollPane();
         expSelectionList =  new JExpansionList() ;
         jLabel1 = new javax.swing.JLabel();
@@ -380,6 +380,6 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton okBtn;
-    private ca.cgjennings.ui.JIconComboBox variantCombo;
+    private ca.cgjennings.ui.JIconComboBox<JIconList.IconItem> variantCombo;
     // End of variables declaration//GEN-END:variables
 }

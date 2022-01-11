@@ -231,7 +231,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        typeCombo = new javax.swing.JComboBox();
+        typeCombo = new javax.swing.JComboBox<>();
         qualityLabel = new javax.swing.JLabel();
         qualitySlider = new javax.swing.JSlider();
         qualityDesc = new javax.swing.JLabel();
@@ -363,25 +363,16 @@ public class IIOWritePanel extends javax.swing.JPanel {
     private javax.swing.JLabel qualityDesc;
     private javax.swing.JLabel qualityLabel;
     private javax.swing.JSlider qualitySlider;
-    private javax.swing.JComboBox typeCombo;
+    private javax.swing.JComboBox<String> typeCombo;
     // End of variables declaration//GEN-END:variables
 
-//	private int typeToIndex() {
-//		if( p.compressionTypes == null ) throw new AssertionError();
-//		for( int i=0; i<p.compressionTypes.length; ++i ) {
-//			if( p.compressionTypes[i].equals( p.compressionType ) ) {
-//				return i;
-//			}
-//		}
-//		throw new AssertionError();
-//	}
     private void initAllControls() {
         if (p.canCompress && p.compressed && p.compressionTypes != null && p.compressionTypes.length > 0) {
-            typeCombo.setModel(new DefaultComboBoxModel(p.compressionTypes));
+            typeCombo.setModel(new DefaultComboBoxModel<>(p.compressionTypes));
             typeCombo.setSelectedItem(p.compressionType);
             typeCombo.setEnabled(true);
         } else {
-            typeCombo.setModel(new DefaultComboBoxModel());
+            typeCombo.setModel(new DefaultComboBoxModel<>());
             typeCombo.setEnabled(false);
         }
 

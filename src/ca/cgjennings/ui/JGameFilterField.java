@@ -1,10 +1,12 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import gamedata.Game;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.util.logging.Level;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
@@ -26,7 +28,7 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public class JGameFilterField extends JComboBox {
+public class JGameFilterField extends JComboBox<Object> {
 
     public JGameFilterField() {
         init();
@@ -37,7 +39,7 @@ public class JGameFilterField extends JComboBox {
         init();
     }
 
-    public JGameFilterField(ComboBoxModel aModel) {
+    public JGameFilterField(ComboBoxModel<Object> aModel) {
         super(aModel);
         init();
     }
@@ -87,7 +89,7 @@ public class JGameFilterField extends JComboBox {
                     return this;
                 }
             });
-            setModel(new DefaultComboBoxModel(Game.getGames(false)));
+            setModel(new DefaultComboBoxModel<>(Game.getGames(false)));
             setSelectedItem(Settings.getUser().get(KEY, ""));
 
             // add listeners after default value set so that events are not fired during init
@@ -106,8 +108,8 @@ public class JGameFilterField extends JComboBox {
                 fireFilterChangedEvent();
             });
         } catch (Exception e) {
-            e.printStackTrace();
-            setModel(new DefaultComboBoxModel());
+            StrangeEons.log.log(Level.WARNING, "failed to populate filter", e);
+            setModel(new DefaultComboBoxModel<>());
         }
     }
     private Icon icon;
@@ -148,8 +150,7 @@ public class JGameFilterField extends JComboBox {
 //	}
     /**
      * Returns the current filter value. This is either a {@link Game}, or a
-     * filtering {@code String}, or {@code null} if the filter value
-     * is empty.
+     * filtering {@code String}, or {@code null} if the filter value is empty.
      *
      * @return a filter value based on the current selection
      */

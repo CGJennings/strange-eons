@@ -232,9 +232,9 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
         javax.swing.JLabel barSect = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         srcScroll = new javax.swing.JScrollPane();
-        srcList = new javax.swing.JList();
+        srcList = new javax.swing.JList<>();
         dstScroll = new javax.swing.JScrollPane();
-        dstList = new JList() {
+        dstList = new JList<Button>() {
             @Override
             public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -352,7 +352,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
      * @param b
      */
     private void deleteButton(Button b) {
-        DefaultListModel m = (DefaultListModel) srcList.getModel();
+        DefaultListModel<Button> m = (DefaultListModel<Button>) srcList.getModel();
         int i;
         for (i = 0; i < m.getSize(); ++i) {
             if (m.get(i) == b) {
@@ -366,12 +366,12 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bin;
-    private javax.swing.JList dstList;
+    private javax.swing.JList<Button> dstList;
     private javax.swing.JScrollPane dstScroll;
     private javax.swing.JLabel fauxCollapseBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton removeAllBtn;
-    private javax.swing.JList srcList;
+    private javax.swing.JList<Button> srcList;
     private javax.swing.JScrollPane srcScroll;
     // End of variables declaration//GEN-END:variables
 
@@ -398,8 +398,8 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     public void loadSettings() {
         // reset the models and reload buttons from current config
 
-        DefaultListModel srcModel = new DefaultListModel();
-        DefaultListModel dstModel = new DefaultListModel();
+        DefaultListModel<Button> srcModel = new DefaultListModel<>();
+        DefaultListModel<Button> dstModel = new DefaultListModel<>();
 
         // always present
         srcModel.addElement(fakeSeparatorButton);

@@ -32,7 +32,7 @@ class ChangeIconDialog extends javax.swing.JDialog implements AgnosticDialog {
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<String> model = new DefaultListModel<>();
         for (String i : Task.getCustomIcons()) {
             model.addElement(i);
         }
@@ -49,7 +49,7 @@ class ChangeIconDialog extends javax.swing.JDialog implements AgnosticDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        iconList = new javax.swing.JList();
+        iconList = new javax.swing.JList<>();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
@@ -143,7 +143,7 @@ class ChangeIconDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JList iconList;
+    private javax.swing.JList<String> iconList;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton okBtn;
     private javax.swing.JButton resetBtn;

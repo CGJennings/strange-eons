@@ -37,8 +37,8 @@ public class Silhouette implements IconProvider {
     private static final int ICON_SIZE = 18;
 
     /**
-     * Creates a new silhouette with unique key {@code key}, that will
-     * obtain a stencil image from {@code stencilResource} and use
+     * Creates a new silhouette with unique key {@code key}, that will obtain a
+     * stencil image from {@code stencilResource} and use
      * {@code portraitResource} as its default portrait.
      *
      * @param key the unique key
@@ -207,12 +207,11 @@ public class Silhouette implements IconProvider {
     };
 
     /**
-     * Returns {@code true} if this silhouette and {@code obj} have
-     * the same key.
+     * Returns {@code true} if this silhouette and {@code obj} have the same
+     * key.
      *
      * @param obj the object to test
-     * @return {@code true} if {@code obj} is a silhouette with the
-     * same key
+     * @return {@code true} if {@code obj} is a silhouette with the same key
      */
     @Override
     public boolean equals(Object obj) {
@@ -225,8 +224,8 @@ public class Silhouette implements IconProvider {
     }
 
     /**
-     * Returns the Silhouette with the specified key, or {@code null} if
-     * there is none.
+     * Returns the Silhouette with the specified key, or {@code null} if there
+     * is none.
      *
      * @param key the key to search for
      * @return the silhouette with the given key, or {@code null}
@@ -244,7 +243,7 @@ public class Silhouette implements IconProvider {
         Silhouette[] registered;
         synchronized (sils) {
             Collection<Silhouette> s = sils.values();
-            registered = s.toArray(new Silhouette[s.size()]);
+            registered = s.toArray(new Silhouette[0]);
             if (sorter == null) {
                 sorter = (Silhouette lhs, Silhouette rhs) -> Language.getInterface().getCollator().compare(lhs.getLabel(), rhs.getLabel());
             }

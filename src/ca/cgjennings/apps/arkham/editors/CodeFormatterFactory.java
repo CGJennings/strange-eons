@@ -123,18 +123,21 @@ public final class CodeFormatterFactory {
     }
 
     private static class JSFormatter extends ScriptedFormatter {
+
         JSFormatter() {
             super("beautify-js.min.js", "js_beautify");
         }
     }
 
     private static class CSSFormatter extends ScriptedFormatter {
+
         CSSFormatter() {
             super("beautify-css.min.js", "css_beautify");
         }
     }
 
     private static class HTMLFormatter extends ScriptedFormatter {
+
         HTMLFormatter() {
             super("beautify-html.min.js", "html_beautify");
         }

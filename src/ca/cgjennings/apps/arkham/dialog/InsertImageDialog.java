@@ -90,7 +90,7 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
             units = Length.PT;
             uWidth = InsertImageDialog.this.tile.getWidth();
             uHeight = InsertImageDialog.this.tile.getHeight();
-            
+
             convertUnits(unitCombo.getSelectedIndex());
             updateFieldsFromDimensions();
         });
@@ -105,7 +105,6 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        fileURLGroup = new javax.swing.ButtonGroup();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
@@ -114,14 +113,14 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
         paramPanel = new javax.swing.JPanel();
         javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
         widthField = new javax.swing.JTextField();
-        unitCombo = new javax.swing.JComboBox();
+        unitCombo = new javax.swing.JComboBox<>();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
         lockAspect = new javax.swing.JCheckBox();
         heightField = new javax.swing.JTextField();
         snapClassLabel = new javax.swing.JLabel();
-        snapClassCombo = new javax.swing.JComboBox();
+        snapClassCombo = new javax.swing.JComboBox<>();
         alignmentLabel = new javax.swing.JLabel();
-        alignCombo = new javax.swing.JComboBox();
+        alignCombo = new javax.swing.JComboBox<>();
         fileField = new ca.cgjennings.ui.JFileField();
         imagePanel = new javax.swing.JPanel();
         imageViewer = new ca.cgjennings.apps.arkham.ImageViewer();
@@ -147,7 +146,7 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
         widthField.setEnabled(false);
         widthField.addFocusListener(this);
 
-        unitCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
+        unitCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
         unitCombo.addActionListener(this);
 
         jLabel3.setText("Image Dimensions");
@@ -162,12 +161,12 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
 
         snapClassLabel.setText(string("iid-l-snap-class")); // NOI18N
 
-        snapClassCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-cb-snap-nc", "iid-cb-snap0", "iid-cb-snap1", "iid-cb-snap2" }));
+        snapClassCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-cb-snap-nc", "iid-cb-snap0", "iid-cb-snap1", "iid-cb-snap2" }));
         snapClassCombo.addActionListener(this);
 
         alignmentLabel.setText(string( "iid-alignment" )); // NOI18N
 
-        alignCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-align0", "iid-align1", "iid-align2", "iid-align3", "iid-align4" }));
+        alignCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-align0", "iid-align1", "iid-align2", "iid-align3", "iid-align4" }));
         alignCombo.setSelectedIndex(2);
 
         javax.swing.GroupLayout paramPanelLayout = new javax.swing.GroupLayout(paramPanel);
@@ -496,8 +495,8 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     /**
-     * Returns the markup that will insert the selected image, or
-     * {@code null} if the operation was cancelled.
+     * Returns the markup that will insert the selected image, or {@code null}
+     * if the operation was cancelled.
      *
      * @return markup for the selected image, or {@code null}
      */
@@ -506,11 +505,10 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox alignCombo;
+    private javax.swing.JComboBox<String> alignCombo;
     private javax.swing.JLabel alignmentLabel;
     private javax.swing.JButton cancelBtn;
     private ca.cgjennings.ui.JFileField fileField;
-    private javax.swing.ButtonGroup fileURLGroup;
     private javax.swing.JTextField heightField;
     private javax.swing.JPanel imagePanel;
     private ca.cgjennings.apps.arkham.ImageViewer imageViewer;
@@ -519,9 +517,9 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private javax.swing.JButton okBtn;
     private javax.swing.JPanel paramPanel;
     private javax.swing.JPanel previewPanel;
-    private javax.swing.JComboBox snapClassCombo;
+    private javax.swing.JComboBox<String> snapClassCombo;
     private javax.swing.JLabel snapClassLabel;
-    private javax.swing.JComboBox unitCombo;
+    private javax.swing.JComboBox<String> unitCombo;
     private javax.swing.JTextField widthField;
     // End of variables declaration//GEN-END:variables
     private boolean okPressed;
@@ -554,7 +552,6 @@ private void fileFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
             double dpi = im.getWidth() / uWidth;
             tile.setResolution(dpi);
 
-            SnapClass current = tile.getSnapClass();
             switch (snapClassCombo.getSelectedIndex()) {
                 case 0: // do not change
                     break;

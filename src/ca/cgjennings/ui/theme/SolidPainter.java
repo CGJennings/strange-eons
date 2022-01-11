@@ -5,8 +5,8 @@ import java.awt.Paint;
 import javax.swing.Painter;
 
 /**
- * A painter that simply paints the entire surface with a {@code Color} or
- * other {@code Paint}.
+ * A painter that simply paints the entire surface with a {@code Color} or other
+ * {@code Paint}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

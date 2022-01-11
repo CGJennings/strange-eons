@@ -213,7 +213,7 @@ public class TextIndexer implements MonitoredAlgorithm {
         }
 
         // create a sorted array of the stop words
-        String[] stopWords = stops.toArray(new String[stops.size()]);
+        String[] stopWords = stops.toArray(new String[0]);
         Arrays.sort(stopWords);
 //		TextIndex ti = new TextIndex( stopWords, words, ids, maps );
 
@@ -252,7 +252,7 @@ public class TextIndexer implements MonitoredAlgorithm {
         for (String stop : stopList) {
             words.remove(stop);
         }
-        String[] list = words.toArray(new String[words.size()]);
+        String[] list = words.toArray(new String[0]);
         Arrays.sort(list);
         return list;
     }
@@ -358,8 +358,8 @@ public class TextIndexer implements MonitoredAlgorithm {
          *
          * @param sourceID the identifier of the document
          * @param url the URL to read the document from
-         * @param encodingHint the name of an encoding, or {@code null} to
-         * use a default encoding
+         * @param encodingHint the name of an encoding, or {@code null} to use a
+         * default encoding
          * @return the document text
          * @throws IOException if an error occurs while reading the document
          */
@@ -607,7 +607,6 @@ public class TextIndexer implements MonitoredAlgorithm {
             try {
                 ti.write(indexFile, Arrays.asList(sourceURLs));
             } catch (Throwable e) {
-                e.printStackTrace();
                 ErrorDialog.displayError(e.getClass().getSimpleName(), e);
             }
         });

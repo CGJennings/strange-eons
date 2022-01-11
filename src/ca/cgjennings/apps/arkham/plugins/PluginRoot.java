@@ -36,8 +36,8 @@ import resources.Settings;
  * Represents the information stored in a plug-in bundle's root file. This
  * includes the bundle's {@link CatalogID}, the plug-in objects contained in the
  * bundle, the bundle's startup priority, and other properties. If the bundle is
- * not stored in a plain format, creating a {@code PluginRoot} for the
- * bundle will convert it in place.
+ * not stored in a plain format, creating a {@code PluginRoot} for the bundle
+ * will convert it in place.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 2.1
@@ -198,7 +198,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
                     id = CatalogID.extractCatalogID(value);
                     if (id == null) {
                         return "invalid id: " + value;
-                    }   break;
+                    }
+                    break;
                 case KEY_PRIORITY:
                     if (!value.isEmpty()) {
                         if (Character.isJavaIdentifierStart(value.charAt(0))) {
@@ -216,7 +217,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
                                 return "invalid priority: " + value;
                             }
                         }
-                    }   break;
+                    }
+                    break;
                 case KEY_INSTALL_SCRIPT:
                     install = normalizePluginIdentifier(value);
                     break;
@@ -355,8 +357,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the plug-in bundle that this root belongs to, or
-     * {@code null} if this root object was not created from a bundle.
+     * Returns the plug-in bundle that this root belongs to, or {@code null} if
+     * this root object was not created from a bundle.
      *
      * @return the bundle associated with this root
      */
@@ -384,8 +386,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * already start with a comment marker ('#' or '!') will cause an
      * {@code IllegalArgumentException} to be thrown.
      *
-     * @param comments the comment text to set, or {@code null} to clear
-     * the comment block
+     * @param comments the comment text to set, or {@code null} to clear the
+     * comment block
      * @see #getComments()
      */
     public void setComments(String comments) {
@@ -445,8 +447,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the catalog ID for this root file, or {@code null} if none
-     * is defined.
+     * Returns the catalog ID for this root file, or {@code null} if none is
+     * defined.
      *
      * @return the ID for the bundle that this root file is (or will be) for
      */
@@ -481,8 +483,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
     /**
      * Sets the identifier of the {@linkplain InstallationActions installer
      * class or script} to run during installation or uninstallation of the
-     * associated plug-in bundle. Setting this to {@code null} will clear
-     * the current installer, if any.
+     * associated plug-in bundle. Setting this to {@code null} will clear the
+     * current installer, if any.
      *
      * @param install the installation script identifier
      * @see #getInstallerIdentifier()
@@ -509,7 +511,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return an array of the stored plug-in identifiers
      */
     public String[] getPluginIdentifiers() {
-        return pluginIDs.toArray(new String[pluginIDs.size()]);
+        return pluginIDs.toArray(new String[0]);
     }
 
     /**
@@ -609,8 +611,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the value of a client property, or {@code null} if the
-     * property is not defined.
+     * Returns the value of a client property, or {@code null} if the property
+     * is not defined.
      *
      * @param key the name of the client property
      * @return the value of the named property, or {@code null}
@@ -628,8 +630,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns the value of a client property, or {@code null} if the
-     * property is not defined. The property will be localized for the
+     * Returns the value of a client property, or {@code null} if the property
+     * is not defined. The property will be localized for the
      * {@linkplain Language#getInterface() user interface language}, if
      * possible.
      *
@@ -656,20 +658,19 @@ public class PluginRoot implements Comparable<PluginRoot> {
      */
     public Set<String> getClientPropertyKeys() {
         if (client == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         return Collections.unmodifiableSet(client.getKeySet());
     }
 
     /**
      * If this root file contains any special property defining keys, returns a
-     * set of these keys, otherwise returns {@code null}. In most cases,
-     * this avoids having to create a copy of the client keys for the
+     * set of these keys, otherwise returns {@code null}. In most cases, this
+     * avoids having to create a copy of the client keys for the
      * {@code BundleInstaller}. Special definition keys start with a hyphen
      * followed by a capital letter. They are used like -D arguments on the
-     * {@code java} command line. Keys that start with -D will define
-     * system properties. Keys that start with -S will define temporary
-     * settings.
+     * {@code java} command line. Keys that start with -D will define system
+     * properties. Keys that start with -S will define temporary settings.
      *
      * @return a set of keys matching the above description
      */
@@ -700,7 +701,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return a (possibly empty) array of error messages
      */
     public String[] getErrors() {
-        return errors.toArray(new String[errors.size()]);
+        return errors.toArray(new String[0]);
     }
 
     /**
@@ -1008,12 +1009,12 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     /**
-     * Returns {@code true} if and only if the specified object is a root
-     * file with the same {@linkplain #toString() string representation}.
+     * Returns {@code true} if and only if the specified object is a root file
+     * with the same {@linkplain #toString() string representation}.
      *
      * @param obj the object to compare this object to
-     * @return {@code true} if the object represents a root file with the
-     * same properties
+     * @return {@code true} if the object represents a root file with the same
+     * properties
      */
     @Override
     public boolean equals(Object obj) {
@@ -1146,8 +1147,8 @@ public class PluginRoot implements Comparable<PluginRoot> {
      */
     public static final String CLIENT_KEY_GAME_LANGUAGES = "game-languages";
     /**
-     * The plug-in name that will be shown in the catalogue if a
-     * catalogue listing is extracted from this root file.
+     * The plug-in name that will be shown in the catalogue if a catalogue
+     * listing is extracted from this root file.
      */
     public static final String CLIENT_KEY_CATALOG_NAME = "catalog-name";
     /**

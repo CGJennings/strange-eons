@@ -53,10 +53,9 @@ class UpdateMessage {
      *
      * @param applicationUpdate if {@code true}, creates a link for an
      * application update
-     * @param pluginUpdate if {@code true} creates a link for plug-in
-     * updates
-     * @param newPlugins if {@code true}, creates a link for newly
-     * available plug-ins
+     * @param pluginUpdate if {@code true} creates a link for plug-in updates
+     * @param newPlugins if {@code true}, creates a link for newly available
+     * plug-ins
      */
     public UpdateMessage(boolean applicationUpdate, boolean pluginUpdate, boolean newPlugins) {
         JLinkLabel appLink = createUpdateLink(
@@ -116,8 +115,8 @@ class UpdateMessage {
      * @param iconResource an icon resource for the control
      * @param enableText the link text to display when enabled
      * @param disableText the link text to display when disabled
-     * @param updatePage the URI to display when clicked; if {@code null},
-     * opens the plug-in catalog
+     * @param updatePage the URI to display when clicked; if {@code null}, opens
+     * the plug-in catalog
      * @param enable whether the control should be enabled
      * @return a new link control with the specified properties
      */

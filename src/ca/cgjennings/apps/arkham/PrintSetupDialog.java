@@ -23,8 +23,8 @@ import resources.ResourceKit;
  * (but not decks or case books). This dialog is used by the base printing
  * implementation in {@link AbstractGameComponentEditor}. A number of
  * package-visible members allow fetching the requested settings; after the
- * modal dialog returns, the value of {@code ok} is {@code true} if
- * the user wants to proceed with printing.
+ * modal dialog returns, the value of {@code ok} is {@code true} if the user
+ * wants to proceed with printing.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 0.90
@@ -184,7 +184,7 @@ class PrintSetupDialog extends javax.swing.JDialog implements AgnosticDialog {
         btnGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         doubleSidedCheck = new javax.swing.JCheckBox();
-        paperSizeCombo = new javax.swing.JComboBox();
+        paperSizeCombo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         customPaperBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
@@ -243,10 +243,9 @@ class PrintSetupDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(customPaperBtn)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(paperSizeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(paperSizeCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -429,7 +428,7 @@ class PrintSetupDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField listField;
-    private javax.swing.JComboBox paperSizeCombo;
+    private javax.swing.JComboBox<PaperProperties> paperSizeCombo;
     private javax.swing.JButton pdfBtn;
     private javax.swing.JButton printBtn;
     private javax.swing.JRadioButton printListedBtn;

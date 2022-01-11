@@ -130,6 +130,7 @@ public enum DashPattern {
      *
      * @return the modified combo box
      */
+    @SuppressWarnings("unchecked")
     public static JComboBox<DashPattern> createSelector(JComboBox box) {
         DefaultComboBoxModel<DashPattern> model = new DefaultComboBoxModel<>(DashPattern.values());
         box.setModel(model);

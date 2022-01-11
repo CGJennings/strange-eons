@@ -8,7 +8,6 @@ import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.deck.item.AbstractRenderedItem;
-import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.CustomTile;
 import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
 import ca.cgjennings.apps.arkham.deck.item.DragHandle;
@@ -55,7 +54,6 @@ import java.awt.geom.Area;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.LinkedHashSet;
 import javax.swing.AbstractAction;
@@ -80,10 +78,9 @@ import resources.Settings;
 public final class PageView extends JComponent {
 
     /**
-     * If {@code true}, feedback about view performance will be printed at
-     * the top of the view. This is initially {@code true} only if the
-     * release type is {@code DEVELOPMENT}, but it can be changed at any
-     * time.
+     * If {@code true}, feedback about view performance will be printed at the
+     * top of the view. This is initially {@code true} only if the release type
+     * is {@code DEVELOPMENT}, but it can be changed at any time.
      *
      * @see StrangeEons#getReleaseType()
      */
@@ -105,7 +102,8 @@ public final class PageView extends JComponent {
     private static final String[] DROPPABLE_IMAGE_TYPES = new String[]{"jpg", "jpeg", "png", "jp2"};
 
     /**
-     *     */
+     *
+     */
     public PageView() {
         setAutoscrolls(true);
         setBackground(BORDER);
@@ -236,8 +234,7 @@ public final class PageView extends JComponent {
 
     /**
      * If the card the pointer is over has drag handles, and the pointer is over
-     * one of the handles, return the handle. Otherwise, return
-     * {@code null}.
+     * one of the handles, return the handle. Otherwise, return {@code null}.
      */
     private DragHandle getDragHandleUnderPosition(Point pos) {
         if (pos == null) {
@@ -1338,8 +1335,7 @@ public final class PageView extends JComponent {
      *
      * @param x the x-offset from the left edge of the component
      * @param y the y-offset from the top of the component
-     * @return the location of the point {@code (x,y)} in the document
-     * space
+     * @return the location of the point {@code (x,y)} in the document space
      */
     public Point2D.Double viewToDocument(int x, int y) {
         Point2D.Double dst = new Point2D.Double();
@@ -1847,38 +1843,39 @@ public final class PageView extends JComponent {
         if (!(target instanceof PageView)) {
             return null;
         }
-        
+
         PageView pv = (PageView) target;
         Deck d = pv.getPage().getDeck();
-        
+
         if (!d.getSettings().getYesNo("show-context-bar-over-deck-selection")) {
             return null;
         }
-        
+
         Rectangle selRect = null;
         // if there is a selection, float the bar around the selection
         if (d.getSelectionSize() > 0) {
 //				selRect = pv.documentToView( d.getSelection()[ d.getSelectionSize()-1 ].getRectangle() );
-selRect = pv.documentToView(d.getSelectionRectangle());
+            selRect = pv.documentToView(d.getSelectionRectangle());
 
 // clip the selection rectangle to the visible part of the page
-if (selRect.x + barWidth > pv.getWidth()) {
-    selRect.x = pv.getWidth() - barWidth;
-}
-if (selRect.y + barHeight > pv.getHeight()) {
-    selRect.y = pv.getHeight(); /* - barHeight; */ // done when moving window "above" the rectangle
-}
-if (selRect.x < 0) {
-    selRect.x = 0;
-}
-if (selRect.y < 0) {
-    selRect.y = 0;
-}
+            if (selRect.x + barWidth > pv.getWidth()) {
+                selRect.x = pv.getWidth() - barWidth;
+            }
+            if (selRect.y + barHeight > pv.getHeight()) {
+                selRect.y = pv.getHeight();
+                /* - barHeight; */ // done when moving window "above" the rectangle
+            }
+            if (selRect.x < 0) {
+                selRect.x = 0;
+            }
+            if (selRect.y < 0) {
+                selRect.y = 0;
+            }
 
 // convert to screen coordinates
-Point sp = target.getLocationOnScreen();
-selRect.x += sp.x;
-selRect.y += sp.y;
+            Point sp = target.getLocationOnScreen();
+            selRect.x += sp.x;
+            selRect.y += sp.y;
         }
         return selRect;
     };

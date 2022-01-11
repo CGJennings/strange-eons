@@ -3,8 +3,6 @@ package ca.cgjennings.apps.arkham.commands;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import javax.swing.FocusManager;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -75,18 +73,15 @@ class HClipboardCommand extends DelegatedCommand {
     private static JComponent currentClippableComponent;
 
     static {
-        FocusManager.getCurrentManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                Object newObj = evt.getNewValue();
-                // menu items don't affect focus so that user can open menu
-                // with pointer without disabling the clipboard items
-                if (newObj != null && !(newObj instanceof JMenuItem) && !(newObj instanceof JRootPane)) {
-                    if (newObj instanceof JComponent) {
-                        currentClippableComponent = (JComponent) newObj;
-                    } else {
-                        currentClippableComponent = null;
-                    }
+        FocusManager.getCurrentManager().addPropertyChangeListener("focusOwner", (evt) -> {
+            Object newObj = evt.getNewValue();
+            // menu items don't affect focus so that user can open menu
+            // with pointer without disabling the clipboard items
+            if (newObj != null && !(newObj instanceof JMenuItem) && !(newObj instanceof JRootPane)) {
+                if (newObj instanceof JComponent) {
+                    currentClippableComponent = (JComponent) newObj;
+                } else {
+                    currentClippableComponent = null;
                 }
             }
         });

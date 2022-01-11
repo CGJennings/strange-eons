@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import static resources.Language.string;
@@ -113,7 +114,7 @@ public class PluginImportTask extends NewTaskType {
                     try {
                         zip.close();
                     } catch (IOException ie) {
-                        ie.printStackTrace();
+                        StrangeEons.log.log(Level.WARNING, "unexpected", ie);
                     }
                 }
             }

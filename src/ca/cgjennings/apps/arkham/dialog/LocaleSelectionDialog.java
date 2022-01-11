@@ -50,12 +50,12 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
             }
         }
 
-        DefaultComboBoxModel lmodel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Locale> lmodel = new DefaultComboBoxModel<>();
         for (String lang : langs) {
             lmodel.addElement(new Locale(lang));
         }
 
-        DefaultComboBoxModel cmodel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Object> cmodel = new DefaultComboBoxModel<>();
         cmodel.addElement(" ");
         for (String count : countries) {
             cmodel.addElement(new Locale("", count));
@@ -79,7 +79,7 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
                 }
             }
         }
-        DefaultComboBoxModel countModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Object> countModel = new DefaultComboBoxModel<>();
         countModel.addElement(" ");
         for (String c : countries) {
             countModel.addElement(new Locale("", c));
@@ -110,8 +110,8 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        langCombo = new javax.swing.JComboBox();
-        countryCombo = new javax.swing.JComboBox();
+        langCombo = new javax.swing.JComboBox<>();
+        countryCombo = new javax.swing.JComboBox<>();
         locField = new javax.swing.JTextField();
         closeBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
@@ -220,10 +220,10 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
-    private javax.swing.JComboBox countryCombo;
+    private javax.swing.JComboBox<Object> countryCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JComboBox langCombo;
+    private javax.swing.JComboBox<Locale> langCombo;
     private javax.swing.JTextField locField;
     private javax.swing.JButton okBtn;
     // End of variables declaration//GEN-END:variables

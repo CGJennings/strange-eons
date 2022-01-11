@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JComponent;
@@ -78,16 +79,16 @@ public class RegionPicker extends javax.swing.JDialog {
                 return;
             }
             ignoreRegionChange = true;
-            
+
             x.setValue(region.x);
             y.setValue(region.y);
             w.setValue(region.width);
             h.setValue(region.height);
-            
+
             if (autocopyCheck.isSelected()) {
                 updateRegionInEditor(region);
             }
-            
+
             ignoreRegionChange = false;
         });
         editor.addMouseWheelListener((MouseWheelEvent e) -> {
@@ -183,7 +184,7 @@ public class RegionPicker extends javax.swing.JDialog {
         addHighlightsFromPattern(set, PAT_SETTING.matcher(text));
 
         if (set.size() > 0) {
-            editor.setHighlightRegions(set.toArray(new Rectangle[set.size()]));
+            editor.setHighlightRegions(set.toArray(new Rectangle[0]));
         } else {
             editor.setHighlightRegions(null);
         }
@@ -1271,7 +1272,7 @@ public class RegionPicker extends javax.swing.JDialog {
                     scrollRectToVisible(getRegion());
                 } catch (UnsupportedFlavorException e) {
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "unable to read from clipbpard", e);
                     getToolkit().beep();
                 }
             }

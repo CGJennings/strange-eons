@@ -199,8 +199,8 @@ public final class GlowFilter extends AbstractImageFilter {
      * Returns {@code true} if the filter will produce an outer glow, or
      * {@code false} if the filter will produce an inner glow.
      *
-     * @return  {@code true} for an outer glow type; {@code false} for
-     * an inner glow type
+     * @return {@code true} for an outer glow type; {@code false} for an inner
+     * glow type
      */
     public boolean isOuterGlow() {
         return outer;
@@ -210,8 +210,8 @@ public final class GlowFilter extends AbstractImageFilter {
      * Sets the type of glow effect to grow inward from the edge, outward from
      * the edge, or both.
      *
-     * @param outerGlow {@code true} for an outer glow type;
-     * {@code false} for an inner glow type
+     * @param outerGlow {@code true} for an outer glow type; {@code false} for
+     * an inner glow type
      */
     public void setOuterGlow(boolean outerGlow) {
         outer = outerGlow;
@@ -275,11 +275,10 @@ public final class GlowFilter extends AbstractImageFilter {
 
     /**
      * Sets whether the original image will be included in the output. If
-     * {@code true}, the glow effect will be combined with the original
-     * image.
+     * {@code true}, the glow effect will be combined with the original image.
      *
-     * @param paintSource {@code true} to include the image the effect
-     * applies to, {@code false} to produce the glow effect only
+     * @param paintSource {@code true} to include the image the effect applies
+     * to, {@code false} to produce the glow effect only
      */
     public void setSourceImagePainted(boolean paintSource) {
         paintSourceImage = paintSource;

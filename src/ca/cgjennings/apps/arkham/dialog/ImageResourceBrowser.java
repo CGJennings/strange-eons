@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import javax.swing.JButton;
@@ -173,33 +174,29 @@ public class ImageResourceBrowser extends javax.swing.JDialog implements Agnosti
 
     private void addImagesFromBundles(final List<File> jars, final Set<String> resources) {
         new BusyDialog(StrangeEons.getWindow(), string("rbd-scan"), () -> {
-            try {
-                for (File f : jars) {
-                    BusyDialog.getCurrentDialog().setStatusText(f.getName());
-                    ZipFile zip = null;
-                    try {
-                        zip = new ZipFile(f);
-                        Enumeration<? extends ZipEntry> entries = zip.entries();
-                        while (entries.hasMoreElements()) {
-                            ZipEntry e = entries.nextElement();
-                            String name1 = e.getName();
-                            if (name1.startsWith("resources/") && matchFile(name1)) {
-                                resources.add(e.getName().substring("resources/".length()));
-                            }
+            for (File f : jars) {
+                BusyDialog.getCurrentDialog().setStatusText(f.getName());
+                ZipFile zip = null;
+                try {
+                    zip = new ZipFile(f);
+                    Enumeration<? extends ZipEntry> entries = zip.entries();
+                    while (entries.hasMoreElements()) {
+                        ZipEntry e = entries.nextElement();
+                        String name1 = e.getName();
+                        if (name1.startsWith("resources/") && matchFile(name1)) {
+                            resources.add(e.getName().substring("resources/".length()));
                         }
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (zip != null) {
-                            try {
-                                zip.close();
-                            } catch (IOException e) {
-                            }
+                    }
+                } catch (IOException e) {
+                    StrangeEons.log.log(Level.WARNING, "uncaught reading from bundle \"" + f + '"', e);
+                } finally {
+                    if (zip != null) {
+                        try {
+                            zip.close();
+                        } catch (IOException e) {
                         }
                     }
                 }
-            }catch (Exception e) {
-                e.printStackTrace();
             }
         });
     }
@@ -219,7 +216,7 @@ public class ImageResourceBrowser extends javax.swing.JDialog implements Agnosti
                 jars.addAll(Arrays.asList(BundleInstaller.getDiscoveredBundleFiles()));
                 addImagesFromBundles(jars, resourceList);
 
-                String[] resources = resourceList.toArray(new String[resourceList.size()]);
+                String[] resources = resourceList.toArray(new String[0]);
                 Arrays.sort(resources, Language.getInterface().getCollator());
                 HashMap<String, DefaultMutableTreeNode> folders = new HashMap<>();
 

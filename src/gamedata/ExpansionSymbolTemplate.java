@@ -120,15 +120,14 @@ public interface ExpansionSymbolTemplate {
      * Returns {@code true} if the components for this game will draw the
      * expansion symbols themselves instead of relying on the default mechanism.
      *
-     * @return {@code true} if expansion symbols are drawn by the
-     * component; {@code false} if expansion symbols are drawn by Strange
-     * Eons
+     * @return {@code true} if expansion symbols are drawn by the component;
+     * {@code false} if expansion symbols are drawn by Strange Eons
      */
     boolean isCustomDrawn();
 
     /**
-     * Returns {@code true} if this template can automatically generate a
-     * family of variants given an example image.
+     * Returns {@code true} if this template can automatically generate a family
+     * of variants given an example image.
      *
      * @return {@code true} if
      * {@link #generateVariant(java.awt.image.BufferedImage, int)} is supported

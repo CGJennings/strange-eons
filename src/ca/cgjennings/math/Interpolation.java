@@ -64,8 +64,7 @@ public final class Interpolation {
      * the same as using {@link #lerp} to interpolate between low2 and high2,
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
-     * and high1, this is the same as calling
-     * {@code lerp( 0.5, low2, high2 )}.
+     * and high1, this is the same as calling {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -110,8 +109,7 @@ public final class Interpolation {
      * the same as using {@link #lerp} to interpolate between low2 and high2,
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
-     * and high1, this is the same as calling
-     * {@code lerp( 0.5, low2, high2 )}.
+     * and high1, this is the same as calling {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -136,8 +134,7 @@ public final class Interpolation {
      * the same as using {@link #lerp} to interpolate between low2 and high2,
      * except that the ratio between the two is determined from the ratio of
      * position between low1 and high1. (So if position is half way between low1
-     * and high1, this is the same as calling
-     * {@code lerp( 0.5, low2, high2 )}.
+     * and high1, this is the same as calling {@code lerp( 0.5, low2, high2 )}.
      *
      * @param position the position in (low1, high1) to map to (low2, high2)
      * @param low1 the low end of the original range
@@ -450,10 +447,10 @@ public final class Interpolation {
          *
          * @param x an array of x-values for the points
          * @param y an array of y-values for the points
-         * @param yp0 derivative at the lower boundary, or
-         * {@code Double.NaN} to let the interpolator choose
-         * @param ypN derivative at the upper boundary, or
-         * {@code Double.NaN} to let the interpolator choose
+         * @param yp0 derivative at the lower boundary, or {@code Double.NaN} to
+         * let the interpolator choose
+         * @param ypN derivative at the upper boundary, or {@code Double.NaN} to
+         * let the interpolator choose
          * @throws NullPointerException if either array is {@code null}
          * @throws IllegalArgumentException if the data point criteria are not
          * met

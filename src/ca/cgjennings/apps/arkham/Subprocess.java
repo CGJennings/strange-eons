@@ -33,7 +33,8 @@ import resources.Settings;
  * the application. The output and error streams of the subprocess are connected
  * to the script console.
  *
- * <p>While {@code Subprocess} can be used to run any shell command, it has
+ * <p>
+ * While {@code Subprocess} can be used to run any shell command, it has
  * {@linkplain #launch special support} for starting Java apps, and in
  * particular for starting Java apps included with this app, such as the script
  * debugger client.
@@ -44,8 +45,7 @@ import resources.Settings;
 public final class Subprocess {
 
     /**
-     * Creates a new Subprocess that will execute the
-     * specified command.
+     * Creates a new Subprocess that will execute the specified command.
      *
      * @param command an array of command tokens to execute
      * @throws NullPointerException if {@code command} is {@code null}
@@ -64,14 +64,13 @@ public final class Subprocess {
 
         pb = new ProcessBuilder(command.clone());
 
-        if(StrangeEons.log.isLoggable(Level.INFO)) {
+        if (StrangeEons.log.isLoggable(Level.INFO)) {
             StrangeEons.log.info("created subprocess " + String.join(" ", command));
         }
     }
 
     /**
-     * Creates a new Subprocess that will execute the
-     * specified command.
+     * Creates a new Subprocess that will execute the specified command.
      *
      * @param command an list of command tokens to execute
      * @throws NullPointerException if {@code command} is {@code null}
@@ -86,23 +85,23 @@ public final class Subprocess {
     /**
      * Returns a new Subprocess that will launch an app that is part of this
      * app's main library or JAR file. For example, {@code launch("debugger")}
-     * would launch the debugger client by starting a new runtime with the
-     * same classpath as this app and passing it the {@link debugger} class.
+     * would launch the debugger client by starting a new runtime with the same
+     * classpath as this app and passing it the {@link debugger} class.
      *
-     * <p>If necessary, additional or replacement JVM arguments may be
-     * specified <em>before</em> the class name (which is otherwise the
-     * first argument).
+     * <p>
+     * If necessary, additional or replacement JVM arguments may be specified
+     * <em>before</em> the class name (which is otherwise the first argument).
      *
      * @param appClassNameAndArguments the name of the app, followed by any
-     *   additional command line arguments to pass to the app
+     * additional command line arguments to pass to the app
      * @return the new Subprocess controlling the launched app
      * @throws IllegalArgumentException if argument list is null or empty
      * @throws IllegalStateException if the application window has not been
-     *   created yet
+     * created yet
      * @since 3.2
      */
     public static Subprocess launch(String... appClassNameAndArguments) {
-        if(appClassNameAndArguments == null || appClassNameAndArguments.length == 0) {
+        if (appClassNameAndArguments == null || appClassNameAndArguments.length == 0) {
             throw new IllegalArgumentException("no app class specified");
         }
         return launch(Arrays.asList(appClassNameAndArguments));
@@ -111,23 +110,23 @@ public final class Subprocess {
     /**
      * Returns a new Subprocess that will launch an app that is part of this
      * app's main library or JAR file. For example, {@code launch("debugger")}
-     * would launch the debugger client by starting a new runtime with the
-     * same classpath as this app and passing it the {@link debugger} class.
+     * would launch the debugger client by starting a new runtime with the same
+     * classpath as this app and passing it the {@link debugger} class.
      *
-     * <p>If necessary, additional or replacement JVM arguments may be
-     * specified <em>before</em> the class name (which is otherwise the
-     * first argument).
+     * <p>
+     * If necessary, additional or replacement JVM arguments may be specified
+     * <em>before</em> the class name (which is otherwise the first argument).
      *
      * @param appClassNameAndArguments the name of the app, followed by any
-     *   additional command line arguments to pass to the app
+     * additional command line arguments to pass to the app
      * @return the new Subprocess controlling the launched app
      * @throws IllegalArgumentException if argument list is null or empty
      * @throws IllegalStateException if the application window has not been
-     *   created yet
+     * created yet
      * @since 3.2
      */
     public static Subprocess launch(List<String> appClassNameAndArguments) {
-        if(appClassNameAndArguments == null || appClassNameAndArguments.isEmpty()) {
+        if (appClassNameAndArguments == null || appClassNameAndArguments.isEmpty()) {
             throw new IllegalArgumentException("no app class specified");
         }
         LinkedList<String> tokens = new LinkedList<>();
@@ -153,8 +152,8 @@ public final class Subprocess {
     /**
      * Returns {@code true} if this subprocess has been started. Once a
      * subprocess has started, its configuration cannot be modified. Once the
-     * subprocess starts, this method will always return {@code true} even
-     * after the subprocess ends.
+     * subprocess starts, this method will always return {@code true} even after
+     * the subprocess ends.
      *
      * @return {@code true} if the process has started
      * @see #isRunning()
@@ -164,8 +163,8 @@ public final class Subprocess {
     }
 
     /**
-     * Returns {@code true} if this subprocess has been started and it is
-     * still running.
+     * Returns {@code true} if this subprocess has been started and it is still
+     * running.
      *
      * @return {@code true} if the process has started but not finished
      * @see #isStarted()
@@ -175,8 +174,8 @@ public final class Subprocess {
     }
 
     /**
-     * Sets whether the subprocess will be a survivor. If {@code true},
-     * then the process will not be destroyed when the application terminates.
+     * Sets whether the subprocess will be a survivor. If {@code true}, then the
+     * process will not be destroyed when the application terminates.
      *
      * @param survivor {@code true} if the subprocess will survive the
      * application
@@ -200,8 +199,8 @@ public final class Subprocess {
     }
 
     /**
-     * Sets whether the subprocess will redirect the standard
-     * I/O streams to the script console. The default is to redirect streams.
+     * Sets whether the subprocess will redirect the standard I/O streams to the
+     * script console. The default is to redirect streams.
      *
      * @param redirect {@code true} if the streams will be redirected
      * @throws IllegalStateException if the subprocess has already been started
@@ -215,8 +214,8 @@ public final class Subprocess {
     }
 
     /**
-     * Returns {@code true} if this subprocess will redirect the standard
-     * I/O streams to the script console.
+     * Returns {@code true} if this subprocess will redirect the standard I/O
+     * streams to the script console.
      *
      * @return {@code true} if the streams will be redirected
      * @since 3.2
@@ -236,8 +235,8 @@ public final class Subprocess {
     }
 
     /**
-     * Returns {@code true} if the exit code will be written to the console
-     * when the process ends.
+     * Returns {@code true} if the exit code will be written to the console when
+     * the process ends.
      *
      * @return {@code true} if the exit code is printed
      */
@@ -250,8 +249,8 @@ public final class Subprocess {
      * terminate the subprocess. The control will remove itself automatically
      * when the subprocess terminates.
      *
-     * @param label label text to include on the button; if {@code null}
-     * the command name will be used
+     * @param label label text to include on the button; if {@code null} the
+     * command name will be used
      * @return a control that can be used to stop the subprocess
      * @throws IllegalStateException if the subprocess has already been started
      */
@@ -371,7 +370,9 @@ public final class Subprocess {
                 }
                 Process proc = pb.start();
                 Thread io = redirectStreams ? new IOStreamManager(proc) : null;
-                if (io != null) io.start();
+                if (io != null) {
+                    io.start();
+                }
                 if (killBtn != null) {
                     EventQueue.invokeLater(() -> {
                         StrangeEons.getWindow().addCustomComponent(killBtn);
@@ -389,7 +390,9 @@ public final class Subprocess {
                         sc.getErrorWriter().println(string("killps"));
                     }
                 }
-                if (io != null) io.interrupt();
+                if (io != null) {
+                    io.interrupt();
+                }
             } catch (IOException e) {
                 e.printStackTrace(sc.getErrorWriter());
             } finally {
@@ -531,11 +534,12 @@ public final class Subprocess {
     /**
      * Returns the application's class path.
      *
-     * @return a list of one or more paths separated by the platform path separator
+     * @return a list of one or more paths separated by the platform path
+     * separator
      */
     public static String getClasspath() {
         String cp = System.getProperty("java.class.path");
-        if(cp == null) {
+        if (cp == null) {
             StrangeEons.log.warning("no classpath property, using fallback");
             cp = BundleInstaller.getApplicationLibrary().getAbsolutePath();
         }
@@ -543,18 +547,20 @@ public final class Subprocess {
     }
 
     /**
-     * Returns a command that can be used to launch a Java runtime.
-     * Where possible, this will be the full path to the specific Java runtime
-     * used to start this app. The path is normally detected correctly
-     * automatically, but if for some reason detection fails, the user setting
+     * Returns a command that can be used to launch a Java runtime. Where
+     * possible, this will be the full path to the specific Java runtime used to
+     * start this app. The path is normally detected correctly automatically,
+     * but if for some reason detection fails, the user setting
      * {@code invoke-java-cmd} can be set to a suitable path.
      *
-     * <p>For example, on a Windows device on which the app itself was launched
+     * <p>
+     * For example, on a Windows device on which the app itself was launched
      * with a version of AdoptOpenJDK 8, this might return:
      *
      * <pre>C:\Program Files\AdoptOpenJDK\jdk-8.0.292.10-openj9\jre\bin\java.exe</pre>
      *
-     * @return path to an executable that is expected to launch a separate JVM process
+     * @return path to an executable that is expected to launch a separate JVM
+     * process
      */
     public static String getJavaRuntimeExecutable() {
         String command = Settings.getUser().get("invoke-java-cmd");

@@ -105,14 +105,14 @@ final class EdgeFinishing {
     /**
      * Tile the image over the margins, using mirror images to ensure that edges
      * that are touching will match up.
-     * 
+     *
      * @param g the graphics context to paint into
      * @param image the image to tile
      * @param w the width of the rendered face (without margins)
      * @param h the height of the rendered face (without margins)
      * @param m the margin width (in pixels)
-     * @param blitCenter if false, the image will not be painted over the
-     * centre (where the non-synthesized part will be drawn)
+     * @param blitCenter if false, the image will not be painted over the centre
+     * (where the non-synthesized part will be drawn)
      */
     private static void blitMirrors(final Graphics2D g, final BufferedImage image, final int w, final int h, final int m, boolean blitCenter) {
         if (m > w || m > h) {
@@ -140,8 +140,8 @@ final class EdgeFinishing {
     }
 
     /**
-     * Handles the rare case that the image must be tiled multiple times
-     * per margin.
+     * Handles the rare case that the image must be tiled multiple times per
+     * margin.
      */
     private static void tileMirrors(final Graphics2D g, final BufferedImage image, final int w, final int h, final int m, boolean blitCenter) {
         final int sw = image.getWidth();

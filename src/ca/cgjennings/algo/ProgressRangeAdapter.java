@@ -13,8 +13,8 @@ public class ProgressRangeAdapter implements ProgressListener {
 
     /**
      * Creates a new range adapter. The input progress range of 0..1 will be
-     * mapped to the range {@code rangeLow}..{@code rangeHigh} before
-     * passing the progress message on to the adaptee.
+     * mapped to the range {@code rangeLow}..{@code rangeHigh} before passing
+     * the progress message on to the adaptee.
      *
      * @param rangeLow the progress value to report when the input progress is 0
      * @param rangeHigh the progress value to report when the input progress is

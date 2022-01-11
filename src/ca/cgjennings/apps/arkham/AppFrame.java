@@ -69,7 +69,6 @@ final class AppFrame extends StrangeEonsAppWindow {
         initComponents();
         localizeTitle();
 
-
         if (PlatformSupport.PLATFORM_IS_MAC) {
             installMacOsDesktopHandlers();
         }
@@ -651,8 +650,8 @@ final class AppFrame extends StrangeEonsAppWindow {
      *
      * @param comp the component to remove
      * @throws NullPointerException if {@code comp} is {@code null}
-     * @throws IllegalArgumentException if {@code comp} has not been added
-     * as a custom component
+     * @throws IllegalArgumentException if {@code comp} has not been added as a
+     * custom component
      * @since 2.00a13
      */
     @Override
@@ -1683,7 +1682,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         return false;
     }
 
-    /** Tracks whether the window has ever been visible, which cancels any non-interactive mode. */
+    /**
+     * Tracks whether the window has ever been visible, which cancels any
+     * non-interactive mode.
+     */
     boolean hasEverBeenMadeVisible = false;
 
     @Override
@@ -1829,7 +1831,6 @@ final class AppFrame extends StrangeEonsAppWindow {
     public void setDefaultCursor() {
         JUtilities.hideWaitCursor(this);
     }
-
 
     /**
      * Adds a new listener for changes to the current project.
@@ -2079,7 +2080,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         });
     }
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings({"deprecation", "unchecked"})
     private AbstractGameComponentEditor<? extends GameComponent> openGameComponentImpl(File f) {
         GameComponent gameComponent = ResourceKit.getGameComponentFromFile(f);
         if (gameComponent == null) {
@@ -2511,8 +2512,8 @@ final class AppFrame extends StrangeEonsAppWindow {
 
     /**
      * Removes a menu item previously added with {@link #addMenuItem}. If you
-     * have added an item to a menu with {@code addMenuItem}, you must use
-     * this method to remove that item before changing the item's parent or the
+     * have added an item to a menu with {@code addMenuItem}, you must use this
+     * method to remove that item before changing the item's parent or the
      * application menus may be corrupted.
      *
      * @param parent an identifier for the menu you inserted this menu item into
@@ -2576,8 +2577,8 @@ final class AppFrame extends StrangeEonsAppWindow {
     private Object[][] appMenuGrid;
 
     /**
-     * Initializes {@code appMenuGrid} with an array that determines where
-     * new menu items will be added by {@link #addMenuItem}.
+     * Initializes {@code appMenuGrid} with an array that determines where new
+     * menu items will be added by {@link #addMenuItem}.
      */
     private void initMenuGrid() {
         if (appMenuGrid != null) {

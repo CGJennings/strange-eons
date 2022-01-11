@@ -10,13 +10,13 @@ import java.lang.reflect.Modifier;
 import java.util.Properties;
 
 /**
- * The {@code Tuning} class contains tuning hints that help the image
- * processing system decide between multiple algorithms when performing certain
- * operations. A default tuning profile is built in, but more accurate tuning
- * values can be determined for a particular platform by calling
- * {@link #update}. This should only be done when no image processing is
- * currently taking place. Tuning profiles can be read to and from a file to
- * avoid having to call {@code update} for each application run.
+ * The {@code Tuning} class contains tuning hints that help the image processing
+ * system decide between multiple algorithms when performing certain operations.
+ * A default tuning profile is built in, but more accurate tuning values can be
+ * determined for a particular platform by calling {@link #update}. This should
+ * only be done when no image processing is currently taking place. Tuning
+ * profiles can be read to and from a file to avoid having to call
+ * {@code update} for each application run.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -156,9 +156,7 @@ public final class Tuning {
                     System.err.printf("%s = %,d\n", f.getName(), v);
                 }
             } catch (Throwable t) {
-                if (printResults) {
-                    t.printStackTrace();
-                }
+                t.printStackTrace(System.err);
             }
         }
     }

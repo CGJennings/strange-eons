@@ -42,8 +42,25 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
     /**
      * Creates a new custom paper dialog.
      */
+    @SuppressWarnings("unchecked")
     public CustomPaperDialog(Component parent, PaperProperties defaultPaper, boolean physicalPapersOnly) {
         super(parent == null ? StrangeEons.getWindow() : SwingUtilities.getWindowAncestor(parent), ModalityType.APPLICATION_MODAL);
+
+        ListCellRenderer<?> r = new JIconList.IconRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                boolean enable = true;
+                if (physicalOnly) {
+                    PaperProperties pp = ((PaperWrapper) value).paper;
+                    enable = pp.isPhysical();
+                }
+                setEnabled(enable);
+                return this;
+            }
+        };
+        this.wrapperRenderer = (ListCellRenderer<PaperWrapper>) r;
+
         physicalOnly = physicalPapersOnly;
 
         initComponents();
@@ -80,7 +97,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
 
         int selectIndex = -1;
         int i = 0;
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PaperWrapper> m = new DefaultListModel<>();
         for (PaperProperties pp : set) {
             if (!pp.isPortraitOrientation()) {
                 continue;
@@ -163,7 +180,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
     private void initComponents() {
 
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        paperList = new javax.swing.JList();
+        paperList = new javax.swing.JList<>();
         addBtn = new javax.swing.JButton();
         remBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
@@ -175,7 +192,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
         widthField = new javax.swing.JTextField();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
         heightField = new javax.swing.JTextField();
-        unitCombo = new javax.swing.JComboBox();
+        unitCombo = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         marginField = new javax.swing.JTextField();
@@ -262,7 +279,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
             }
         });
 
-        unitCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
+        unitCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
         unitCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unitComboActionPerformed(evt);
@@ -434,7 +451,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
                     defaultSource.getMargin(),
                     defaultSource.getGridSeparation());
             PaperWrapper wrapper = new PaperWrapper(p);
-            ((DefaultListModel) paperList.getModel()).addElement(wrapper);
+            ((DefaultListModel<PaperWrapper>) paperList.getModel()).addElement(wrapper);
             paperList.setSelectedValue(wrapper, true);
             nameField.selectAll();
             nameField.requestFocusInWindow();
@@ -500,13 +517,13 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
         }
 
         if (isEditingIndex >= 0) {
-            DefaultListModel model = (DefaultListModel) paperList.getModel();
+            DefaultListModel<PaperWrapper> model = (DefaultListModel<PaperWrapper>) paperList.getModel();
             PaperProperties paper = new PaperProperties(
                     nameField.getText(), width, height, PaperProperties.PORTRAIT, margin, grid
             );
             model.set(isEditingIndex, new PaperWrapper(paper));
         }
-        // } else { last paper was deleted }
+        // else last paper was deleted
     }
 
 	private void measureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_measureActionPerformed
@@ -552,10 +569,10 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
     private javax.swing.JTextField marginField;
     private javax.swing.JTextField nameField;
     private javax.swing.JButton okBtn;
-    private javax.swing.JList paperList;
+    private javax.swing.JList<PaperWrapper> paperList;
     private javax.swing.JPanel paperPanel;
     private javax.swing.JButton remBtn;
-    private javax.swing.JComboBox unitCombo;
+    private javax.swing.JComboBox<String> unitCombo;
     private javax.swing.JTextField widthField;
     // End of variables declaration//GEN-END:variables
 
@@ -586,19 +603,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
         }
     }
 
-    private final ListCellRenderer wrapperRenderer = new JIconList.IconRenderer() {
-        @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            boolean enable = true;
-            if (physicalOnly) {
-                PaperProperties pp = ((PaperWrapper) value).paper;
-                enable = pp.isPhysical();
-            }
-            setEnabled(enable);
-            return this;
-        }
-    };
+    private final ListCellRenderer<PaperWrapper> wrapperRenderer;
 
     @Override
     public void handleOKAction(ActionEvent e) {

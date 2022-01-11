@@ -106,16 +106,16 @@ public final class PaperSets {
     public static final Object KEY_GAME = 10;
 
     /**
-     * Add this key with a value of type {@code Number} to specify a
-     * maximum size (in points). All matching papers will have both a width and
-     * a height that is less than or equal to this value.
+     * Add this key with a value of type {@code Number} to specify a maximum
+     * size (in points). All matching papers will have both a width and a height
+     * that is less than or equal to this value.
      */
     public static final Object KEY_MAXIMUM_SIZE = 11;
 
     /**
-     * Add this key with a value of type {@code Number} to specify a
-     * minimum size (in points). All matching papers will have both a width and
-     * a height that is greater than or equal to this value.
+     * Add this key with a value of type {@code Number} to specify a minimum
+     * size (in points). All matching papers will have both a width and a height
+     * that is greater than or equal to this value.
      */
     public static final Object KEY_MINIMUM_SIZE = 12;
 
@@ -133,8 +133,8 @@ public final class PaperSets {
 
     /**
      * Returns the paper type in the specified set that most closely matches the
-     * platform-dependant default paper size. If the set is {@code null},
-     * the set of built-in, physical papers will be used.
+     * platform-dependant default paper size. If the set is {@code null}, the
+     * set of built-in, physical papers will be used.
      *
      * @return of the candidates, the type that most closely matches the default
      * paper size
@@ -154,8 +154,8 @@ public final class PaperSets {
 
     /**
      * Returns the paper type most similar to the specified target of those
-     * candidates in the provided set. This method will only return
-     * {@code null} if the set of candidates is empty.
+     * candidates in the provided set. This method will only return {@code null}
+     * if the set of candidates is empty.
      *
      * @return of the candidates, the type that most closely matches the default
      * paper size
@@ -259,8 +259,8 @@ public final class PaperSets {
      * @param candidates the set of papers to match against
      * @return the closest size match with the correct orientation, or
      * {@code null}
-     * @throws NullPointerException if the candidate set is {@code null} or
-     * if the candidate set contains {@code null}
+     * @throws NullPointerException if the candidate set is {@code null} or if
+     * the candidate set contains {@code null}
      */
     public static PaperProperties findBestPaper(double targetWidth, double targetHeight, Set<PaperProperties> candidates) {
         if (candidates == null) {
@@ -292,8 +292,7 @@ public final class PaperSets {
      *
      * @param lhs a paper to compare
      * @param rhs the paper to compare with
-     * @return the square of the size difference of	{@code lhs} and
-     * {@code rhs}
+     * @return the square of the size difference of	{@code lhs} and {@code rhs}
      */
     private static double errorSq(PaperProperties lhs, PaperProperties rhs) {
         double dx = lhs.getPageWidth() - rhs.getPageWidth();
@@ -351,20 +350,20 @@ public final class PaperSets {
      * configuration or a landscape configuration.
      *
      * <p>
-     * The value of {@code marginInPoints} determines the size of the
-     * margin, which is used as a visual cue for the designer (it does not
-     * prevent the placement of objects, although most printers cannot print all
-     * the way to their edges). The value of {@code marginInPoints} may be
-     * 0 to indicate no margin.
+     * The value of {@code marginInPoints} determines the size of the margin,
+     * which is used as a visual cue for the designer (it does not prevent the
+     * placement of objects, although most printers cannot print all the way to
+     * their edges). The value of {@code marginInPoints} may be 0 to indicate no
+     * margin.
      *
      * <p>
      * The value of {@code gridInPoints} determines the spacing of a set of
      * equidistant grid lines. Components that are not snapped to other
      * components will normally snap to the nearest half-grid line. Either or
      * both of these values may be less than 0, in which case default values
-     * will be used. If {@code name} starts with an at sign (@), then the
-     * rest of the string is used as an interface language key to look up a
-     * localized name.
+     * will be used. If {@code name} starts with an at sign (@), then the rest
+     * of the string is used as an interface language key to look up a localized
+     * name.
      *
      * @param name the name to use for this paper type, localized if possible
      * @param widthInPoints the width of the paper, in points (1/72 inch)
@@ -376,8 +375,8 @@ public final class PaperSets {
      * actual paper size; otherwise, it represents a size that is convenient to
      * design for, like an expansion board
      * @throws NullPointerException if {@code name} is {@code null}
-     * @throws IllegalArgumentException if {@code name} is empty or
-     * contains only whitespace, if either dimension is not in the range 0 &lt;
+     * @throws IllegalArgumentException if {@code name} is empty or contains
+     * only whitespace, if either dimension is not in the range 0 &lt;
      * <i>d</i> <u>&lt;</u> {@link PaperProperties#MAX_PAPER_SIZE}, or if
      * {@code gridInPoints} is 0
      */
@@ -427,9 +426,9 @@ public final class PaperSets {
     /**
      * Replaces the current set of user-defined paper types with the specified
      * set. It is strongly recommended that the specified set be of a type that
-     * uses an ordered iterator, such as {@code LinkedHashSet}, as this
-     * will determine the order that the paper types will be written in.
-     * (Ordered sets are always returned by the methods in this class.)
+     * uses an ordered iterator, such as {@code LinkedHashSet}, as this will
+     * determine the order that the paper types will be written in. (Ordered
+     * sets are always returned by the methods in this class.)
      *
      * <p>
      * <b>Important:</b> This set should include only the portrait <b>or</b>
@@ -439,8 +438,8 @@ public final class PaperSets {
      *
      * @param papers the set of paper properties that will replace the current
      * user-defined paper set
-     * @throws NullPointerException if the set is {@code null} or if it
-     * contains {@code null}
+     * @throws NullPointerException if the set is {@code null} or if it contains
+     * {@code null}
      */
     public static void setUserDefinedPapers(Set<PaperProperties> papers) {
         if (papers == null) {
@@ -655,8 +654,8 @@ public final class PaperSets {
      * Writes paper properties at the specified index.
      *
      * @param i the index, from one up
-     * @param pp the paper type to write; if {@code null}, deletes the type
-     * at the index
+     * @param pp the paper type to write; if {@code null}, deletes the type at
+     * the index
      */
     private static void writeCustomPaperToIndex(int i, PaperProperties pp) {
         if (pp == null) {
@@ -693,11 +692,11 @@ public final class PaperSets {
      * @return a combo box model of the requested papers
      * @throws NullPointerException if the paper set is {@code null}
      */
-    public static DefaultComboBoxModel setToComboBoxModel(Set<PaperProperties> papers) {
+    public static DefaultComboBoxModel<PaperProperties> setToComboBoxModel(Set<PaperProperties> papers) {
         if (papers == null) {
             throw new NullPointerException("papers");
         }
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        DefaultComboBoxModel<PaperProperties> m = new DefaultComboBoxModel<>();
         for (PaperProperties pp : papers) {
             m.addElement(pp);
         }
@@ -705,19 +704,19 @@ public final class PaperSets {
     }
 
     /**
-     * Returns a model suitable for use in {@code JList}s that allows
-     * selection from the specified set of paper types.
+     * Returns a model suitable for use in {@code JList}s that allows selection
+     * from the specified set of paper types.
      *
      * @param papers the set to create a model for
      * @return a list model of the requested papers
      * @throws NullPointerException if the paper set is {@code null}
      */
-    public static DefaultListModel setToListModel(Set<PaperProperties> papers) {
+    public static DefaultListModel<PaperProperties> setToListModel(Set<PaperProperties> papers) {
         if (papers == null) {
             throw new NullPointerException("papers");
         }
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PaperProperties> m = new DefaultListModel<>();
         for (PaperProperties pp : papers) {
             m.addElement(pp);
         }
@@ -752,7 +751,7 @@ public final class PaperSets {
      *
      * @return a list cell renderer for sets of paper properties instances
      */
-    public static ListCellRenderer createListCellRenderer() {
-        return new JIconList.IconRenderer();
+    public static ListCellRenderer<PaperProperties> createListCellRenderer() {
+        return JIconList.createRenderer();
     }
 }

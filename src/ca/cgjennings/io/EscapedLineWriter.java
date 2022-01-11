@@ -30,7 +30,7 @@ public class EscapedLineWriter extends BufferedWriter {
         }
         return EscapedTextCodec.WHITESPACE | EscapedTextCodec.BACKSLASH;
     }
-    
+
     public EscapedLineWriter(File f) throws IOException {
         this(new FileOutputStream(f));
     }
@@ -67,9 +67,9 @@ public class EscapedLineWriter extends BufferedWriter {
 
     /**
      * Sets whether uxxxx escapes should be used when writing characters outside
-     * of the ISO-8859 encoding range. Default is {@code true}; can be set
-     * to {@code false} if the output file can represent all unicode
-     * characters directly (e.g., UTF-8).
+     * of the ISO-8859 encoding range. Default is {@code true}; can be set to
+     * {@code false} if the output file can represent all unicode characters
+     * directly (e.g., UTF-8).
      *
      * @param escape if {@code true}, Unicode escapes will be used
      * @see #isUnicodeEscaped()
@@ -124,14 +124,14 @@ public class EscapedLineWriter extends BufferedWriter {
     }
 
     /**
-     * Writes a collection of properties as key, value pairs with escaping
-     * and line breaking.
+     * Writes a collection of properties as key, value pairs with escaping and
+     * line breaking.
      *
      * @param props the map of properties to write
      * @throws IOException if an I/O error occurs
      */
-    public void writeProperties(Map<String,String> props) throws IOException {
-        for (Map.Entry<String,String> kv : props.entrySet()) {
+    public void writeProperties(Map<String, String> props) throws IOException {
+        for (Map.Entry<String, String> kv : props.entrySet()) {
             writeProperty(kv.getKey(), kv.getValue());
         }
     }

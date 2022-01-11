@@ -128,8 +128,8 @@ public class FolderTree extends JTree {
     }
 
     /**
-     * Sets the currently selected folder. If the parameter is
-     * {@code null}, a default folder is used.
+     * Sets the currently selected folder. If the parameter is {@code null}, a
+     * default folder is used.
      *
      * @param f a file representing the folder to select
      * @see #getSelectedFolder()
@@ -151,9 +151,9 @@ public class FolderTree extends JTree {
     }
 
     /**
-     * Returns a tree path for the specified file, or {@code null}. If
-     * there are multiple tree paths that are equivalent to the specified file,
-     * there is no guarantee as to which is selected.
+     * Returns a tree path for the specified file, or {@code null}. If there are
+     * multiple tree paths that are equivalent to the specified file, there is
+     * no guarantee as to which is selected.
      *
      * @param f the file to locate in the tree
      * @return the path to the file, or {@code null}
@@ -386,7 +386,7 @@ public class FolderTree extends JTree {
         if (kids.size() == source.length) {
             return source;
         }
-        return kids.toArray(new File[kids.size()]);
+        return kids.toArray(new File[0]);
     }
 
     /**

@@ -51,8 +51,7 @@ import resources.Settings;
  * uninstalling bundles, enabling or disabling individual plug-ins.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0 (replaces
- * {@code ca.cgjennings.apps.arkham.plugins.impl.Manager)}
+ * @since 3.0 (replaces {@code ca.cgjennings.apps.arkham.plugins.impl.Manager)}
  */
 @SuppressWarnings("serial")
 public class PluginManager extends javax.swing.JDialog {
@@ -84,7 +83,7 @@ public class PluginManager extends javax.swing.JDialog {
     }
 
     private void populateList() {
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<Entry> m = new DefaultListModel<>();
 
         // Plug-ins
         InstalledPlugin[] plugins = BundleInstaller.getInstalledPlugins();
@@ -114,7 +113,6 @@ public class PluginManager extends javax.swing.JDialog {
         }
 
         // Libraries
-        boolean addedTitle = false;
         InstalledLibrary[] libs = BundleInstaller.getInstalledLibraries();
         if (libs.length > 0) {
             m.addElement(new Entry(string("plug-div-lib"), string("plug-lib-desc"), BundleInstaller.LIBRARY_FILE_EXT));
@@ -142,7 +140,7 @@ public class PluginManager extends javax.swing.JDialog {
         showAdvCheck = new javax.swing.JCheckBoxMenuItem();
         top = new javax.swing.JPanel();
         listScroll = new javax.swing.JScrollPane();
-        pluginList = new javax.swing.JList();
+        pluginList = new javax.swing.JList<>();
         javax.swing.JPanel compoundPluginPanel = new javax.swing.JPanel();
         pluginScroll = new javax.swing.JScrollPane();
         descPane = new EditorPane();
@@ -538,8 +536,8 @@ public class PluginManager extends javax.swing.JDialog {
 
     private void fillInBox(StringBuilder b, String text, boolean warn) {
         b.append("<p align='center' style='padding: 4px; border: 2px #")
-            .append(warn ? "ffa000" : "1565c0").append(" solid'>")
-            .append(text).append("</p>");
+                .append(warn ? "ffa000" : "1565c0").append(" solid'>")
+                .append(text).append("</p>");
     }
 
 	private void openPluginFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openPluginFolderBtnActionPerformed
@@ -757,7 +755,7 @@ public class PluginManager extends javax.swing.JDialog {
     private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private javax.swing.JLabel pluginDesc;
     private javax.swing.JLabel pluginIcon;
-    private javax.swing.JList pluginList;
+    private javax.swing.JList<Entry> pluginList;
     private javax.swing.JLabel pluginName;
     private javax.swing.JScrollPane pluginScroll;
     private javax.swing.JPanel pluginTitle;

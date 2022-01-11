@@ -82,8 +82,8 @@ public class VerbalDesignSupportAdapter extends AbstractVerbalDesignSupport<Game
          *
          * @param gc the component to analyze
          * @param b a buffer to use to build up the description
-         * @return {@code true} if the design is considered valid,
-         * {@code false} otherwise
+         * @return {@code true} if the design is considered valid, {@code false}
+         * otherwise
          */
         public boolean analyze(GameComponent gc, StringBuilder b);
     }

@@ -67,9 +67,9 @@ public class DesktopIntegration {
 
     /**
      * Opens the default mail application to send an email based on the
-     * specified {@code mailto} URI. If the URI is {@code null}, opens
-     * the mail application to compose an email, but does not specify any
-     * details of the email.
+     * specified {@code mailto} URI. If the URI is {@code null}, opens the mail
+     * application to compose an email, but does not specify any details of the
+     * email.
      *
      * @param uri the {@code mailto} URI for the message
      * @throws IOException if an I/O error occurs while starting the application
@@ -80,9 +80,9 @@ public class DesktopIntegration {
 
     /**
      * Opens the default mail application to send an email based on the
-     * specified {@code mailto} URI. If the URI is {@code null}, opens
-     * the mail application to compose an email, but does not specify any
-     * details of the email.
+     * specified {@code mailto} URI. If the URI is {@code null}, opens the mail
+     * application to compose an email, but does not specify any details of the
+     * email.
      *
      * @param uri
      * @param feedbackComponent an optional component used to display feedback
@@ -304,8 +304,7 @@ public class DesktopIntegration {
     }
 
     /**
-     * This is {@code true} if the {@link #showInShell} method is
-     * supported.
+     * This is {@code true} if the {@link #showInShell} method is supported.
      */
     public static final boolean SHOW_IN_SHELL_SUPPORTED = OPEN_SUPPORTED;
 

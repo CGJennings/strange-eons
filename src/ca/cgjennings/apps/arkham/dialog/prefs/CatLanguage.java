@@ -7,6 +7,7 @@ import ca.cgjennings.spelling.ui.LookupServiceProvider;
 import ca.cgjennings.spelling.ui.LookupServices;
 import ca.cgjennings.spelling.ui.UserDictionaryDialog;
 import ca.cgjennings.ui.JIconComboBox;
+import ca.cgjennings.ui.text.WordTokenizer;
 import ca.cgjennings.ui.textedit.SpellingHighlighter;
 import java.awt.Component;
 import java.util.Locale;
@@ -14,6 +15,7 @@ import java.util.logging.Level;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import resources.Language;
@@ -56,7 +58,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
         thesLabel2 = new javax.swing.JLabel();
         thesListLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        serviceList = new javax.swing.JList();
+        serviceList = new javax.swing.JList<>();
         servicePrefsBtn = new javax.swing.JButton();
         enableSpellingCheck = new javax.swing.JCheckBox();
         javax.swing.JLabel spellingSect = new javax.swing.JLabel();
@@ -240,14 +242,14 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox enableCodeSpellingCheck;
     private javax.swing.JCheckBox enableSpellingCheck;
-    private javax.swing.JComboBox gameLangCombo;
+    private javax.swing.JComboBox<Object> gameLangCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JList serviceList;
+    private javax.swing.JList<LookupServiceProvider> serviceList;
     private javax.swing.JButton servicePrefsBtn;
     private javax.swing.JLabel thesLabel2;
     private javax.swing.JLabel thesListLabel;
-    private javax.swing.JComboBox uiLangCombo;
+    private javax.swing.JComboBox<Object> uiLangCombo;
     private javax.swing.JButton userDictBtn;
     // End of variables declaration//GEN-END:variables
 
@@ -337,7 +339,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
     }
 
     private void updateServiceList() {
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<LookupServiceProvider> m = new DefaultListModel<>();
         for (LookupServiceProvider lsp : LookupServices.getLookupServices()) {
             m.addElement(lsp);
         }
@@ -347,7 +349,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
             serviceList.setSelectedIndex(0);
             serviceListValueChanged(null);
         } else {
-            m.addElement(string("sd-l-no-services"));
+            m.addElement(noOpLsp());
             serviceList.setEnabled(false);
             servicePrefsBtn.setEnabled(false);
         }
@@ -398,5 +400,42 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
     @Override
     public boolean isRestartRequired() {
         return restart;
+    }
+
+    private static LookupServiceProvider noOpLsp() {
+        return new LookupServiceProvider() {
+            @Override
+            public String toString() {
+                return string("sd-l-no-services");
+            }
+
+            @Override
+            public Locale[] getSupportedLocales() {
+                return null;
+            }
+
+            @Override
+            public boolean isLocaleSupported(Locale locale) {
+                return false;
+            }
+
+            @Override
+            public boolean isWordKnown(WordTokenizer.WordResult wr) {
+                return false;
+            }
+
+            @Override
+            public void lookup(WordTokenizer.WordResult wr, JComponent jc) {
+            }
+
+            @Override
+            public boolean isConfigurable() {
+                return false;
+            }
+
+            @Override
+            public void showConfigurationWindow(JWindow jw, JComponent jc) {
+            }
+        };
     }
 }

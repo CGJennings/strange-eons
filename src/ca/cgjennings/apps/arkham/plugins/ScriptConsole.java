@@ -43,6 +43,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.Level;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -91,7 +92,7 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     private ConsoleWriter outcon, errcon;
     private OutputStream outstream, errstream;
     private Color outColor, errorColor, backgroundColor;
-    private Painter bgpainter;
+    private Painter<JComponent> bgpainter;
 
     private static Color color(String key, Color def) {
         Color c = UIManager.getDefaults().getColor(key);
@@ -104,13 +105,14 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         return c;
     }
 
+    @SuppressWarnings("unchecked")
     private void initStyles() {
         backgroundColor = color(Theme.CONSOLE_BACKROUND, Color.WHITE);
         outColor = color(Theme.CONSOLE_OUTPUT, Color.BLACK);
         errorColor = color(Theme.CONSOLE_ERROR, Color.RED);
         console.setSelectionColor(color(Theme.CONSOLE_SELECTION_BACKGROUND, Color.YELLOW));
         console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND, Color.BLACK));
-        bgpainter = (Painter) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
+        bgpainter = (Painter<JComponent>) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
         console.setFont(UIManager.getDefaults().getFont(Theme.CONSOLE_FONT));
         outcon.createStyles();
         errcon.createStyles();

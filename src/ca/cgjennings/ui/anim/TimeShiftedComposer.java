@@ -103,9 +103,8 @@ public class TimeShiftedComposer extends AbstractFilteredComposer {
      * Creates a time shift function that uses cubic spline interpolation to
      * create an interpolator that maps the unshifted times in
      * {@code inputTimes} to the elements with the same index in
-     * {@code outputTimes}. The elements of {@code inputTimes} must be
-     * monotone increasing values (sorted into increasing order and with no
-     * repeats).
+     * {@code outputTimes}. The elements of {@code inputTimes} must be monotone
+     * increasing values (sorted into increasing order and with no repeats).
      *
      * @param inputTimes positions of key frames in unshifted time
      * @param outputTimes the positions to map those key frames to

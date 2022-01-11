@@ -12,8 +12,7 @@ import resources.ResourceKit;
  *
  * <p>
  * URLs consist of these segments (where [...] indicates an optional
- * segment):<br>
- * {@code res: [//] [/] [path/]* file}<br>
+ * segment):<br> {@code res: [//] [/] [path/]* file}<br>
  * Where:<br>
  * <dl>
  * <dt>[//]<dd> is optional, but makes it easier to distinguish URLs from files

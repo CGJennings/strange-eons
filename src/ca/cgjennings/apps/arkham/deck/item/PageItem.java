@@ -153,8 +153,7 @@ public interface PageItem extends Cloneable, Serializable {
      * y2) and that {@code Math.sqrt( x2*x2 + y2*y2 ) = 1}.
      *
      * <p>
-     * Returns {@code null} if there are no extra fold marks for this
-     * sheet.
+     * Returns {@code null} if there are no extra fold marks for this sheet.
      *
      * @return an array of fold mark data in the format described above, or
      * {@code null} if there are no extra fold marks
@@ -206,8 +205,8 @@ public interface PageItem extends Cloneable, Serializable {
     public Rectangle2D.Double getRectangle();
 
     /**
-     * Return a {@code Shape} that corresponds to the outline of this item.
-     * In the simplest case, this can return the same result as
+     * Return a {@code Shape} that corresponds to the outline of this item. In
+     * the simplest case, this can return the same result as
      * {@link #getRectangle()}. If precise geometry is available for the item,
      * then this should return a more accurate bounding shape.
      *
@@ -287,9 +286,9 @@ public interface PageItem extends Cloneable, Serializable {
     public double getY();
 
     /**
-     * Returns {@code true} if this item should have crop marks added to
-     * it. The crop marks will be placed {@link #getBleedMargin()} points from
-     * the ends of each edge.
+     * Returns {@code true} if this item should have crop marks added to it. The
+     * crop marks will be placed {@link #getBleedMargin()} points from the ends
+     * of each edge.
      */
     public boolean isBleedMarginMarked();
 
@@ -301,26 +300,25 @@ public interface PageItem extends Cloneable, Serializable {
     public double getBleedMargin();
 
     /**
-     * Returns {@code true} if {@code point} is inside the visible
-     * bounds of this object.
+     * Returns {@code true} if {@code point} is inside the visible bounds of
+     * this object.
      *
      * @param point a point in document coordinates (points from the upper-left
      * corner of the page)
-     * @return {@code true} if the point lies inside the bounds of the
-     * object
+     * @return {@code true} if the point lies inside the bounds of the object
      */
     public boolean hitTest(Point2D point);
 
     /**
-     * Returns {@code true} if this is in a horizontal orientation (turned
-     * 90 degrees from normal). If this is not a {@link FlippablePageItem}, it
-     * must return {@code false}.
+     * Returns {@code true} if this is in a horizontal orientation (turned 90
+     * degrees from normal). If this is not a {@link FlippablePageItem}, it must
+     * return {@code false}.
      */
     public boolean isHorizontal();
 
     /**
-     * Returns {@code true} if card is in a vertical orientation. If this
-     * is not a {@link FlippablePageItem}, it must return {@code true}.
+     * Returns {@code true} if card is in a vertical orientation. If this is not
+     * a {@link FlippablePageItem}, it must return {@code true}.
      */
     public boolean isVertical();
 
@@ -331,8 +329,8 @@ public interface PageItem extends Cloneable, Serializable {
     public boolean isMirrored();
 
     /**
-     * Returns {@code true} if this item has the same orientation rotation
-     * as another item.
+     * Returns {@code true} if this item has the same orientation rotation as
+     * another item.
      */
     public boolean isTurned0DegreesFrom(PageItem rhs);
 
@@ -365,16 +363,16 @@ public interface PageItem extends Cloneable, Serializable {
      * Update any cached representations needed to paint this item at the
      * specified settings. It is not required that this be called prior to
      * calling {@link #paint}. Rather, the intent is that if this method returns
-     * without throwing any exceptions (such as {@code OutOfMemoryError}),
-     * then a call to {@link #paint} with the same settings is also
+     * without throwing any exceptions (such as {@code OutOfMemoryError}), then
+     * a call to {@link #paint} with the same settings is also
      * <i>expected</i> to succeed. Thus, this method may be called prior to
      * rendering at high resolution and if it throws an
      * {@code OutOfMemoryError}, the application can attempt to recover by
      * freeing up resources before trying to paint again.
      *
      * <p>
-     * If this {@code PageItem} does not require rendering to a buffer,
-     * then this method may do nothing.
+     * If this {@code PageItem} does not require rendering to a buffer, then
+     * this method may do nothing.
      *
      * @param target the rendering target
      * @param renderResolutionHint a hint regarding output resolution
@@ -448,14 +446,13 @@ public interface PageItem extends Cloneable, Serializable {
      *
      * @param menu the menu that will be displayed
      * @param selection the selected items; this should be considered read-only
-     * @param isSelectionFocus if {@code true}, this is the last item in
-     * the selection
+     * @param isSelectionFocus if {@code true}, this is the last item in the
+     * selection
      */
     public void customizePopupMenu(JPopupMenu menu, PageItem[] selection, boolean isSelectionFocus);
 
     /**
-     * Returns the {@link Group} that this item belongs to, or
-     * {@code null}.
+     * Returns the {@link Group} that this item belongs to, or {@code null}.
      *
      * @return the group the object is in, or {@code null} if it isn't in a
      * group
@@ -472,11 +469,11 @@ public interface PageItem extends Cloneable, Serializable {
     void setGroup(Group g);
 
     /**
-     * Returns {@code true} if this item has one or more drag handles that
-     * may lie outside of the item's bounding box. The editor normally only
-     * tests handles that lie within the bounding box to see if the user has
-     * pointed at them; if this method returns {@code true} then the item's
-     * handles are always tested.
+     * Returns {@code true} if this item has one or more drag handles that may
+     * lie outside of the item's bounding box. The editor normally only tests
+     * handles that lie within the bounding box to see if the user has pointed
+     * at them; if this method returns {@code true} then the item's handles are
+     * always tested.
      *
      * @return {@code true} if some handles may be outside the bounding box
      */
@@ -495,8 +492,8 @@ public interface PageItem extends Cloneable, Serializable {
     public void putClientProperty(String propertyName, String value);
 
     /**
-     * Returns the value of a client property of this page item, or
-     * {@code null} if the property is not defined.
+     * Returns the value of a client property of this page item, or {@code null}
+     * if the property is not defined.
      *
      * @param propertyName the property name
      * @return the value associated with the property, or {@code null}

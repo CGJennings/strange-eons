@@ -41,12 +41,12 @@ public class MetadataCache<T> {
 
     /**
      * Returns the cached object for the member, if available and still valid.
-     * Otherwise, returns {@code null}, in which case the cache object
-     * should be regenerated and added with {@link #put}.
+     * Otherwise, returns {@code null}, in which case the cache object should be
+     * regenerated and added with {@link #put}.
      *
      * @param member the member to get a cached object for
-     * @return the cached object, or {@code null} if the cached object is
-     * out of date or not in the cache
+     * @return the cached object, or {@code null} if the cached object is out of
+     * date or not in the cache
      */
     public synchronized T get(Member member) {
         final SoftReference<Entry<T>> ref = cache.get(member);

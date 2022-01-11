@@ -1,7 +1,6 @@
 package ca.cgjennings.ui;
 
 import java.awt.Dimension;
-import java.util.Vector;
 import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 
@@ -13,21 +12,17 @@ import javax.swing.JComboBox;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class WideItemComboBox extends JComboBox {
+public class WideItemComboBox<T> extends JComboBox<T> {
 
     private boolean widePopupEnabled = true;
     private int maxPopupWidth = getToolkit().getScreenSize().width;
     private boolean isLayingOutComboBox = false;
 
-    public WideItemComboBox(ComboBoxModel aModel) {
+    public WideItemComboBox(ComboBoxModel<T> aModel) {
         super(aModel);
     }
 
-    public WideItemComboBox(Object[] items) {
-        super(items);
-    }
-
-    public WideItemComboBox(Vector items) {
+    public WideItemComboBox(T[] items) {
         super(items);
     }
 
@@ -57,8 +52,8 @@ public class WideItemComboBox extends JComboBox {
     }
 
     /**
-     * Returns {@code true} if the popup menu is allowed to be wider than
-     * the combo box when displaying wide items.
+     * Returns {@code true} if the popup menu is allowed to be wider than the
+     * combo box when displaying wide items.
      *
      * @return {@code true} if the popup width expands for large items
      */
@@ -70,8 +65,8 @@ public class WideItemComboBox extends JComboBox {
      * Sets whether the popup menu is allowed to be wider than the combo box
      * when displaying wide items.
      *
-     * @param widePopupEnabled if {@code true} the popup width expands for
-     * large items
+     * @param widePopupEnabled if {@code true} the popup width expands for large
+     * items
      */
     public void setWidePopupEnabled(boolean widePopupEnabled) {
         this.widePopupEnabled = widePopupEnabled;

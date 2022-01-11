@@ -95,9 +95,9 @@ public class Catalog {
     private int hiddenListings = 0;
 
     /**
-     * Creates a new, empty catalog with a {@code null} base URL. This can
-     * be useful as a temporary placeholder in a UI while downloading a catalog,
-     * or it can be used by subclasses.
+     * Creates a new, empty catalog with a {@code null} base URL. This can be
+     * useful as a temporary placeholder in a UI while downloading a catalog, or
+     * it can be used by subclasses.
      */
     public Catalog() {
     }
@@ -129,12 +129,12 @@ public class Catalog {
 
     /**
      * Loads a catalog from a base URL. The URL of the catalog will be the base
-     * URL with "catalog.txt" appended. If {@code feedback} if
-     * non-{@code null}, then it will be updated with progress information.
+     * URL with "catalog.txt" appended. If {@code feedback} if non-{@code null},
+     * then it will be updated with progress information.
      *
      * @param base the URL to load the catalog from
-     * @param allowCache if {@code true}, and if the URL identifies the
-     * default catalog URL, then a cached version of the catalog may be returned
+     * @param allowCache if {@code true}, and if the URL identifies the default
+     * catalog URL, then a cached version of the catalog may be returned
      * @param feedback an optional progress bar to send feedback to while
      * reading
      * @throws IOException if an error occurs while reading the catalog
@@ -221,8 +221,7 @@ public class Catalog {
      * Returns the locally cached catalog, if any. If there is no locally cached
      * catalog, returns {@code null}.
      *
-     * @return the locally cached copy of the primary catalog, or
-     * {@code null}
+     * @return the locally cached copy of the primary catalog, or {@code null}
      */
     public static Catalog getLocalCopy() {
         synchronized (CACHE_FILE) {
@@ -411,8 +410,8 @@ public class Catalog {
     }
 
     /**
-     * Returns {@code true} if the listing at the indicated index is
-     * flagged for installation.
+     * Returns {@code true} if the listing at the indicated index is flagged for
+     * installation.
      *
      * @param n the index of the listing to test
      * @return {@code true} if the listing is marked for installation
@@ -503,8 +502,8 @@ public class Catalog {
      * required plugins, they are also added (and so on). When this method
      * returns, all installation flags in this catalog will be cleared.
      *
-     * @return {@code true} if a restart (of the application) is required
-     * to complete installation
+     * @return {@code true} if a restart (of the application) is required to
+     * complete installation
      */
     public boolean installFlaggedPlugins() {
         synchronized (Catalog.class) {
@@ -543,14 +542,14 @@ public class Catalog {
     }
 
     /**
-     * Returns {@code true} if a restart (of the application) would be
-     * required after the currently selected plug-ins are installed. The answer
-     * is based on the types of plug-ins flagged for installation, and the types
-     * of any plug-ins they require.
+     * Returns {@code true} if a restart (of the application) would be required
+     * after the currently selected plug-ins are installed. The answer is based
+     * on the types of plug-ins flagged for installation, and the types of any
+     * plug-ins they require.
      * <p>
-     * If this method returns {@code false}, a restart may still be
-     * required if one of the plug-in bundles could not be written and an
-     * autoupdate file was generated.
+     * If this method returns {@code false}, a restart may still be required if
+     * one of the plug-in bundles could not be written and an autoupdate file
+     * was generated.
      *
      * @return {@code true} if a restart should not be required
      */
@@ -824,7 +823,7 @@ public class Catalog {
             }
             allOK = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            StrangeEons.log.log(Level.WARNING, "cannot download catalog", e);
             throw e;
         } finally {
             if (in != null) {
@@ -1039,8 +1038,8 @@ public class Catalog {
      * Removes the listing whose catalog ID matches the provided UUID.
      *
      * @param uuid the UUID of the listing to remove
-     * @return {@code true} if an entry was removed, {@code false} if
-     * no entry matches the UUID
+     * @return {@code true} if an entry was removed, {@code false} if no entry
+     * matches the UUID
      */
     public boolean remove(UUID uuid) {
         int index = findListingByUUID(uuid);
@@ -1059,6 +1058,7 @@ public class Catalog {
 
     @SuppressWarnings("serial")
     private static class Cancelled extends RuntimeException {
+
         public Cancelled() {
         }
     }

@@ -68,8 +68,7 @@ public class DeckPacker {
      * layout. This is a convenience for {@code add( gcFile, 1 )}.
      *
      * @param gcFile the file containing the game component
-     * @throws NullPointerException if the game component file is
-     * {@code null}
+     * @throws NullPointerException if the game component file is {@code null}
      * @see #add(java.io.File, int)
      */
     public boolean add(File gcFile) {
@@ -89,8 +88,7 @@ public class DeckPacker {
      * @param copies the number of copies of the game component to include
      * @return {@code true} if the file has been successfully added and the
      * layout will change as a result
-     * @throws NullPointerException if the game component file is
-     * {@code null}
+     * @throws NullPointerException if the game component file is {@code null}
      * @throws IllegalArgumentException if the number of copies is negative
      */
     public boolean add(File gcFile, int copies) {
@@ -140,7 +138,7 @@ public class DeckPacker {
         if (gc.getClass() == DIY.class) {
             klass += ':' + ((DIY) gc).getHandlerScript();
         }
-        
+
         for (int i = 0; i < sheets.length; ++i) {
             int index = i;
             CardFace front, back = null;
@@ -307,8 +305,8 @@ public class DeckPacker {
     /**
      * Lays out a prepared deck and set of cards. Subclasses may override this
      * to use a different bin packing algorithm. The passed-in deck is the
-     * destination for the layout, and cannot be {@code null}. The paper
-     * size for the layout can be obtained by calling
+     * destination for the layout, and cannot be {@code null}. The paper size
+     * for the layout can be obtained by calling
      * {@code deck.getPaperProperties()}.
      *
      * @param deck the deck that should contain the details of the layout
@@ -636,9 +634,9 @@ public class DeckPacker {
     private ArrayList<Area> areas;
 
     /**
-     * Subclasses may set this to {@code true} during testing. If the
-     * subclass uses {@link #place} to add cards, then a sequence of images will
-     * be displayed showing how each card is placed.
+     * Subclasses may set this to {@code true} during testing. If the subclass
+     * uses {@link #place} to add cards, then a sequence of images will be
+     * displayed showing how each card is placed.
      */
     protected boolean layoutDebug = false;
 
@@ -663,12 +661,11 @@ public class DeckPacker {
 
     /**
      * Returns an array of the cards that have been added for layout. If the
-     * comparator {@code comp} is non-{@code null} then it will be
-     * used to determine the sort order. Otherwise, a default sort order is used
-     * based on {@code Card}'s {@code Comparable} implementation. The
-     * default order is suited to the base implementation's bin packing
-     * algorithm. Subclasses may substitute a different comparison function
-     * suited for other algorithms.
+     * comparator {@code comp} is non-{@code null} then it will be used to
+     * determine the sort order. Otherwise, a default sort order is used based
+     * on {@code Card}'s {@code Comparable} implementation. The default order is
+     * suited to the base implementation's bin packing algorithm. Subclasses may
+     * substitute a different comparison function suited for other algorithms.
      */
     protected Card[] getSortedCards(Comparator<Card> comp) {
         // make sure sizes are up to date before starting
@@ -708,8 +705,8 @@ public class DeckPacker {
     }
 
     /**
-     * Returns {@code true} if front and back faces should be grouped
-     * together. This has no effect if double-sided layout is enabled.
+     * Returns {@code true} if front and back faces should be grouped together.
+     * This has no effect if double-sided layout is enabled.
      *
      * @return {@code true} if grouping is enabled
      */
@@ -727,20 +724,20 @@ public class DeckPacker {
     public void setGroupingEnabled(boolean groupCardPairs) {
         this.groupCardPairs = groupCardPairs;
     }
-    
+
     /**
      * Returns {@code true} if bleed margins should be added to faces.
-     * 
+     *
      * @return {@code true} if bleed margins are enabled
      */
     public boolean isBleedMarginEnabled() {
         return addBleedMargin;
     }
-    
+
     /**
      * Sets whether bleed margins should be added to card faces.
-     * 
-     * @param bleedMargin 
+     *
+     * @param bleedMargin
      */
     public void setBleedMarginEnabled(boolean bleedMargin) {
         this.addBleedMargin = bleedMargin;
@@ -769,8 +766,8 @@ public class DeckPacker {
          */
         PageItem front;
         /**
-         * The back face of the card; may be {@code null}. If present, must
-         * be same size as {@code front}.
+         * The back face of the card; may be {@code null}. If present, must be
+         * same size as {@code front}.
          */
         PageItem back;
         /**

@@ -5,7 +5,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
 import javax.swing.JCheckBox;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -20,15 +19,10 @@ import javax.swing.border.EmptyBorder;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public class JCheckList extends JList {
+public class JCheckList extends JList<Object> {
 
     public JCheckList() {
         super();
-        init();
-    }
-
-    public JCheckList(Vector<?> listData) {
-        super(listData);
         init();
     }
 
@@ -37,7 +31,7 @@ public class JCheckList extends JList {
         init();
     }
 
-    public JCheckList(ListModel dataModel) {
+    public JCheckList(ListModel<Object> dataModel) {
         super(dataModel);
         init();
     }
@@ -93,7 +87,7 @@ public class JCheckList extends JList {
         return ((JCheckBox) getModel().getElementAt(index)).isSelected();
     }
 
-    protected static class Renderer implements ListCellRenderer {
+    protected static class Renderer implements ListCellRenderer<Object> {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

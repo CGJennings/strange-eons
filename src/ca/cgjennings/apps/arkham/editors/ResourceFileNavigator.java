@@ -8,6 +8,7 @@ package ca.cgjennings.apps.arkham.editors;
  * @since 3.3
  */
 public class ResourceFileNavigator extends PropertyNavigator {
+
     public ResourceFileNavigator() {
         super(true);
     }

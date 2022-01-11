@@ -12,10 +12,10 @@ import javax.swing.DefaultComboBoxModel;
  * @since 3.00
  */
 @SuppressWarnings("serial")
-public class JGameCombo extends JIconComboBox {
+public final class JGameCombo extends JIconComboBox<Game> {
 
     private boolean includeAllGame;
-    private boolean doneInit;
+    private final boolean doneInit;
 
     public JGameCombo() {
         super();
@@ -34,10 +34,9 @@ public class JGameCombo extends JIconComboBox {
         if (this.includeAllGame != includeAllGame) {
             try {
                 this.includeAllGame = includeAllGame;
-                super.setModel(new DefaultComboBoxModel(Game.getGames(includeAllGame)));
+                super.setModel(new DefaultComboBoxModel<>(Game.getGames(includeAllGame)));
             } catch (Exception e) {
-                // this allows instantiation for inclusion in the palette
-                e.printStackTrace();
+                // allow instantiation for inclusion in the IDE palette
             }
         }
     }
@@ -61,7 +60,7 @@ public class JGameCombo extends JIconComboBox {
     }
 
     @Override
-    public void setModel(ComboBoxModel aModel) {
+    public void setModel(ComboBoxModel<Game> aModel) {
         if (doneInit) {
             throw new UnsupportedOperationException();
         } else {

@@ -10,8 +10,8 @@ import java.util.concurrent.CancellationException;
 
 /**
  * An input stream that can be monitored using a {@link ProgressListener}. This
- * is similar to a {@code ProgressMonitorInputStream}, except that it is
- * more flexible in how the progress updates are used.
+ * is similar to a {@code ProgressMonitorInputStream}, except that it is more
+ * flexible in how the progress updates are used.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -65,8 +65,9 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides {@code FilterInputStream.read} to update progress after
-     * the read.
+     * Overrides {@code FilterInputStream.read} to update progress after the
+     * read.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -80,8 +81,9 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides {@code FilterInputStream.read} to update progress after
-     * the read.
+     * Overrides {@code FilterInputStream.read} to update progress after the
+     * read.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -95,8 +97,9 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides {@code FilterInputStream.read} to update progress after
-     * the read.
+     * Overrides {@code FilterInputStream.read} to update progress after the
+     * read.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -112,8 +115,9 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides {@code FilterInputStream.skip} to update progress after
-     * the skip.
+     * Overrides {@code FilterInputStream.skip} to update progress after the
+     * skip.
+     *
      * @throws java.io.IOException
      */
     @Override
@@ -127,8 +131,9 @@ public class MonitoredInputStream extends FilterInputStream {
     }
 
     /**
-     * Overrides {@code FilterInputStream.reset} to reset progress listener
-     * as well as the stream.
+     * Overrides {@code FilterInputStream.reset} to reset progress listener as
+     * well as the stream.
+     *
      * @throws java.io.IOException
      */
     @Override

@@ -54,11 +54,10 @@ public interface StrangeEonsEditor extends Commandable {
 
     /**
      * Returns the title used to describe this editor. The returned value is
-     * never {@code null}; if a {@code null} title is set with
-     * {@link #setTitle} then this method returns an empty string.
+     * never {@code null}; if a {@code null} title is set with {@link #setTitle}
+     * then this method returns an empty string.
      *
-     * @return the current title, which is guaranteed not to be
-     * {@code null}
+     * @return the current title, which is guaranteed not to be {@code null}
      */
     public String getTitle();
 
@@ -85,18 +84,18 @@ public interface StrangeEonsEditor extends Commandable {
     /**
      * Sets the tool tip text to display for the editor's tab.
      *
-     * @param toolTipText the text to display, or {@code null} to clear the
-     * tool tip
+     * @param toolTipText the text to display, or {@code null} to clear the tool
+     * tip
      */
     public void setToolTipText(String toolTipText);
 
     /**
      * Returns the tool tip text displayed for the editor's tab. If no tool tip
-     * has been explicitly set and {@link #getFile()} returns a
-     * non-{@code null} value, then a default tool tip will be returned.
+     * has been explicitly set and {@link #getFile()} returns a non-{@code null}
+     * value, then a default tool tip will be returned.
      *
-     * @return the tool tip text to display, or {@code null} to clear the
-     * tool tip
+     * @return the tool tip text to display, or {@code null} to clear the tool
+     * tip
      */
     public String getToolTipText();
 
@@ -112,8 +111,8 @@ public interface StrangeEonsEditor extends Commandable {
      * prompted first and may cancel the close attempt.
      *
      * @return returns {@code true} if the editor was actually closed, or
-     * {@code false} if the user cancelled the attempt or closing was
-     * otherwise prevented
+     * {@code false} if the user cancelled the attempt or closing was otherwise
+     * prevented
      */
     public boolean close();
 
@@ -121,16 +120,16 @@ public interface StrangeEonsEditor extends Commandable {
      * Attaches or detaches an editor from the tab strip. A detached editor is
      * shown in its own window, independent of the main application window.
      *
-     * @param attach if {@code true}, attach a detached editor; otherwise
-     * detach the editor from the tab strip
+     * @param attach if {@code true}, attach a detached editor; otherwise detach
+     * the editor from the tab strip
      */
     public void setAttached(boolean attach);
 
     /**
      * Returns {@code true} if the editor is attached to the tab strip.
      *
-     * @return {@code true} if the editor is attached to the main
-     * application window
+     * @return {@code true} if the editor is attached to the main application
+     * window
      */
     public boolean isAttached();
 
@@ -149,8 +148,8 @@ public interface StrangeEonsEditor extends Commandable {
     // EDITING FRAMEWORK //////////////////////////////////////////////////
     ///////////////////////
     /**
-     * Returns the edited game component, or {@code null} if this editor is
-     * not editing a game component.
+     * Returns the edited game component, or {@code null} if this editor is not
+     * editing a game component.
      *
      * @return the game component currently being edited by this editor, or
      * {@code null}
@@ -186,9 +185,9 @@ public interface StrangeEonsEditor extends Commandable {
     public void setFile(File newFile);
 
     /**
-     * Returns the file used to save this component, or {@code null} if it
-     * is a new, unsaved file or the editor is not associated with any
-     * particular file.
+     * Returns the file used to save this component, or {@code null} if it is a
+     * new, unsaved file or the editor is not associated with any particular
+     * file.
      *
      * @return the save file
      * @since 2.1a5
@@ -197,12 +196,12 @@ public interface StrangeEonsEditor extends Commandable {
     public File getFile();
 
     /**
-     * Returns {@code true} if this editor is editing a file that has
-     * unsaved changes. If the content cannot be saved or does not use files,
-     * then this method should return {@code false}.
+     * Returns {@code true} if this editor is editing a file that has unsaved
+     * changes. If the content cannot be saved or does not use files, then this
+     * method should return {@code false}.
      *
-     * @return {@code true} if the editor's content may be different from
-     * the saved version
+     * @return {@code true} if the editor's content may be different from the
+     * saved version
      */
     public boolean hasUnsavedChanges();
 
@@ -370,10 +369,10 @@ public interface StrangeEonsEditor extends Commandable {
      * <p>
      * Editors that use the heartbeat to synchronize preview updates will
      * respond to a boolean value returned by the listener. If this method
-     * returns {@code true}, it is assumed that the listener has made
-     * changes to the edited content. These changes may or may not be detectable
-     * by the editor; the editor should thus redraw the preview from scratch at
-     * the next opportunity.
+     * returns {@code true}, it is assumed that the listener has made changes to
+     * the edited content. These changes may or may not be detectable by the
+     * editor; the editor should thus redraw the preview from scratch at the
+     * next opportunity.
      *
      * @see AbstractStrangeEonsEditor#addHeartbeatListener
      * @see AbstractStrangeEonsEditor#createTimer
@@ -383,9 +382,9 @@ public interface StrangeEonsEditor extends Commandable {
         /**
          * Called to indicate that a heartbeat is taking place in the indicated
          * editor. If a listener has attached to an editor for the purpose of
-         * modifying the edited content, it should return {@code true} on
-         * those heartbeats where a genuine modification takes place. In any
-         * other case, the listener should return {@code false}.
+         * modifying the edited content, it should return {@code true} on those
+         * heartbeats where a genuine modification takes place. In any other
+         * case, the listener should return {@code false}.
          *
          * <p>
          * <b>Important:</b> Editors that synchronize redrawing using the

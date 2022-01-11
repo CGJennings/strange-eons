@@ -9,8 +9,8 @@ import java.awt.image.Kernel;
  * <ol>
  * <li> This class offers more complex options for handling image edges.
  * <li> This class makes use of the acceleration framework provided by the
- * {@link AbstractImageFilter} framework. Note that {@code ConvolveOp} may
- * also provide acceleration; typically this is GPU-based acceleration for small
+ * {@link AbstractImageFilter} framework. Note that {@code ConvolveOp} may also
+ * provide acceleration; typically this is GPU-based acceleration for small
  * kernel sizes. (Which implementation is faster will depend on a number of
  * platform-specific factors.)
  * </ol>
@@ -96,9 +96,9 @@ public class ConvolveFilter extends AbstractConvolver {
      * Sets the convolution kernel. This is a convenience that creates a new
      * {@link Kernel} with the specified width, height, and matrix values.
      *
-     * @param normalize if {@code true}, the matrix will be normalized so
-     * that its elements sum to 1; this prevents the overall image brightness
-     * from changing
+     * @param normalize if {@code true}, the matrix will be normalized so that
+     * its elements sum to 1; this prevents the overall image brightness from
+     * changing
      * @param width the width of the kernel
      * @param height the height of the kernel
      * @param kernelData an array of kernel values, in
@@ -138,8 +138,7 @@ public class ConvolveFilter extends AbstractConvolver {
      * part of the kernel would lie outside of the source image.
      *
      * @param edgeHandling the edge handling mode
-     * @throws NullPointerException if the edge handling mode is
-     * {@code null}
+     * @throws NullPointerException if the edge handling mode is {@code null}
      */
     public void setEdgeHandling(EdgeHandling edgeHandling) {
         if (edgeHandling == null) {

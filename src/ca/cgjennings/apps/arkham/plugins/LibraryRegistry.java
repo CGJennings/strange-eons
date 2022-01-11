@@ -26,8 +26,7 @@ public class LibraryRegistry {
     /**
      * Registers a script library for use by plug-ins.
      *
-     * @param libraryName the library name (as passed to
-     * {@code useLibrary})
+     * @param libraryName the library name (as passed to {@code useLibrary})
      * @throws IOException if an I/O occurs while reading the library
      */
     public static void register(String libraryName) throws IOException {
@@ -62,10 +61,10 @@ public class LibraryRegistry {
     }
 
     /**
-     * Returns {@code true} if the specified library has been registered,
-     * If the library has not been registered, but it can be loaded
-     * successfully, then it will be registered immediately, returning
-     * {@code true}. Otherwise, returns {@code false}.
+     * Returns {@code true} if the specified library has been registered, If the
+     * library has not been registered, but it can be loaded successfully, then
+     * it will be registered immediately, returning {@code true}. Otherwise,
+     * returns {@code false}.
      *
      * @param libraryName the name of the library to check
      * @return {@code true} if the library is registered
@@ -93,7 +92,7 @@ public class LibraryRegistry {
      */
     public static String[] getLibraries() {
         init();
-        return libs.toArray(new String[libs.size()]);
+        return libs.toArray(new String[0]);
     }
 
     /**

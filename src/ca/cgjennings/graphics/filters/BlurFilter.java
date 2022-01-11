@@ -52,8 +52,8 @@ public class BlurFilter extends AbstractImageFilter {
      * @param radius the radius of the blur
      * @param iterations the number of times to repeat the blur
      *
-     * @throws IllegalArgumentException if {@code radius}or
-     * {@code iterations} is negative
+     * @throws IllegalArgumentException if {@code radius}or {@code iterations}
+     * is negative
      */
     public BlurFilter(int radius, int iterations) {
         setHorizontalRadius(radius);
@@ -68,8 +68,8 @@ public class BlurFilter extends AbstractImageFilter {
      * @param vertRadius the radius of the blur
      * @param iterations the number of times to repeat the blur
      *
-     * @throws IllegalArgumentException if either radius or
-     * {@code iterations} is negative
+     * @throws IllegalArgumentException if either radius or {@code iterations}
+     * is negative
      */
     public BlurFilter(int horzRadius, int vertRadius, int iterations) {
         setHorizontalRadius(horzRadius);
@@ -170,11 +170,11 @@ public class BlurFilter extends AbstractImageFilter {
 
     /**
      * Sets whether pixel data will be processed with a premultiplied alpha
-     * channel. Setting this to {@code true} (the default) can avoid a
-     * common artifact that appears when transparent pixels are a very different
-     * colour than surrounding translucent or opaque pixels. The artifact
-     * manifests as a fringe of the non-matching colour(s) around the edges of
-     * the non-transparent parts of the image. Although premultiplication avoids
+     * channel. Setting this to {@code true} (the default) can avoid a common
+     * artifact that appears when transparent pixels are a very different colour
+     * than surrounding translucent or opaque pixels. The artifact manifests as
+     * a fringe of the non-matching colour(s) around the edges of the
+     * non-transparent parts of the image. Although premultiplication avoids
      * this artifact, it also increases processing time and decreases colour
      * accuracy.
      *
@@ -189,8 +189,8 @@ public class BlurFilter extends AbstractImageFilter {
      * Returns {@code true} if automatic premultiplication is enabled (the
      * default).
      *
-     * @return {@code true} if pixel values will be premultiplied by their
-     * alpha value before processing, and unpremultiplied afterward
+     * @return {@code true} if pixel values will be premultiplied by their alpha
+     * value before processing, and unpremultiplied afterward
      * @see #setPremultiplied
      */
     public final boolean isPremultiplied() {
@@ -199,13 +199,12 @@ public class BlurFilter extends AbstractImageFilter {
 
     /**
      * Blurs the source image and places the result in a destination image. The
-     * destination image may be {@code null}, in which case a compatible
-     * image is created automatically. It may also be the source image, in which
-     * case the original image data is replaced by the result.
+     * destination image may be {@code null}, in which case a compatible image
+     * is created automatically. It may also be the source image, in which case
+     * the original image data is replaced by the result.
      *
      * @param src the source image to blur
-     * @param dst the destination image to copy the result to, or
-     * {@code null}
+     * @param dst the destination image to copy the result to, or {@code null}
      * @return the destination image
      */
     @Override
@@ -279,10 +278,9 @@ public class BlurFilter extends AbstractImageFilter {
      * @param horzRadius the horizontal blur radius
      * @param vertRadius the vertical blur radius
      * @param iterations the number of blur iterations
-     * @param alphaOnly if {@code true}, the blur only affects the alpha
-     * channel
-     * @param alphaOnlyRGB if <tt>alphaOnly</tt> is {@code true}, this is
-     * the RGB value to fill into the other channels
+     * @param alphaOnly if {@code true}, the blur only affects the alpha channel
+     * @param alphaOnlyRGB if <tt>alphaOnly</tt> is {@code true}, this is the
+     * RGB value to fill into the other channels
      */
     static void blur(int[] in, int[] temp, int width, int height, int horzRadius, int vertRadius, int iterations, boolean alphaOnly, int alphaOnlyRGB) {
         if (temp == null) {

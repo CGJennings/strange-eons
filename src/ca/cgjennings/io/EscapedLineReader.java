@@ -19,8 +19,8 @@ import java.util.Objects;
  * those used in {@code .properties} files. All escape sequences begin with a
  * backslash ({@code \}). This can be followed by {@code r} (carriage return),
  * {@code n} (newline), {@code s} (space), {@code \} (a backslash), {@code #}
- * (hash), {@code !} (bang), or {@code uxxxx} (to encode any Unicode
- * character; {@code xxxx} are the 4 hex digits of a UTF-16 character).
+ * (hash), {@code !} (bang), or {@code uxxxx} (to encode any Unicode character;
+ * {@code xxxx} are the 4 hex digits of a UTF-16 character).
  *
  * <p>
  * Lines are trimmed of leading and trailing whitespace before being returned.
@@ -233,15 +233,15 @@ public class EscapedLineReader extends LineNumberReader {
      * the line does not have an unescaped equals sign, then the entire line is
      * treated as the key and the value will be an empty string.
      *
-     * @param skipEmptyLines if {@code true}, any empty lines will be
-     * silently skipped
+     * @param skipEmptyLines if {@code true}, any empty lines will be silently
+     * skipped
      * @return a key, value pair or {@code null}
      * @throws IOException
      */
     public String[] readProperty(boolean skipEmptyLines) throws IOException {
         return readProperty(skipEmptyLines, null);
     }
-    
+
     private String[] readProperty(boolean skipEmptyLines, String[] entry) throws IOException {
         String line = skipEmptyLines ? readNonemptyLineUnescaped() : readLineUnescaped();
         if (line == null) {
@@ -265,12 +265,12 @@ public class EscapedLineReader extends LineNumberReader {
         final String value = unescapeLine(line.substring(div + 1)).trim();
 
         if (entry == null) {
-            entry = new String[]{key, value}; 
+            entry = new String[]{key, value};
         } else {
             entry[0] = key;
             entry[1] = value;
         }
-        
+
         return entry;
     }
 
@@ -282,7 +282,7 @@ public class EscapedLineReader extends LineNumberReader {
      * @returns the map that was passed in
      * @throws IOException if an I/O error occurs
      */
-    public Map<String,String> readProperties(Map<String,String> props) throws IOException {
+    public Map<String, String> readProperties(Map<String, String> props) throws IOException {
         Objects.requireNonNull(props, "props");
         String[] kv = readProperty(true, null);
         while (kv != null) {
@@ -294,8 +294,8 @@ public class EscapedLineReader extends LineNumberReader {
 
     /**
      * Return the next line which is not a comment and which contains
-     * non-whitespace characters, or {@code null} if the end of the stream
-     * is reached.
+     * non-whitespace characters, or {@code null} if the end of the stream is
+     * reached.
      *
      * @return the next non-comment, non-empty line, or null
      * @throws java.io.IOException

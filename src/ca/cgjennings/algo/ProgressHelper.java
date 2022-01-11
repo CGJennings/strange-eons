@@ -67,8 +67,8 @@ public class ProgressHelper implements MonitoredAlgorithm {
 
     /**
      * Sets the object that will be reported as the source of listener events.
-     * The default source is {@code this}, which is suitable if the
-     * algorithm subclasses this class.
+     * The default source is {@code this}, which is suitable if the algorithm
+     * subclasses this class.
      *
      * @param source the apparent source of events
      */

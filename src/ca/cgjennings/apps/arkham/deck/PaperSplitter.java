@@ -182,8 +182,8 @@ public final class PaperSplitter {
     /**
      * Returns the total number of physical pages needed to print a document.
      *
-     * @return the number of pages required to print
-     * {@code virtualPageCount} virtual pages
+     * @return the number of pages required to print {@code virtualPageCount}
+     * virtual pages
      */
     public int getTotalPhysicalPagesRequired(int virtualPageCount) {
         if (virtualPageCount < 0) {
@@ -204,15 +204,15 @@ public final class PaperSplitter {
             lastPhysicalPage = pageIndex;
             int virtualIndex = getVirtualPageForPage(pageIndex);
             Point2D delta = getPrintOffsetForPage(pageIndex);
-            
+
             StrangeEons.log.log(Level.INFO, "printing virtual page {0} on physical page {1}", new Object[]{virtualIndex, pageIndex});
-            
+
             Graphics2D g = (Graphics2D) graphics;
-            
+
             double physW = physical.getPageWidth();
             double physH = physical.getPageHeight();
             double m = physical.getMargin();
-            
+
             // draw framing lines
             Stroke oldStroke = g.getStroke();
             Paint oldPaint = g.getPaint();
@@ -229,26 +229,26 @@ public final class PaperSplitter {
                 line.setLine(x2, 0, x2, physH);
                 g.draw(line);
             }
-            
+
             Shape oldClip = g.getClip();
             AffineTransform oldAT = g.getTransform();
-            
+
             g.clip(new Rectangle2D.Double(m / 2d, m / 2d, physical.getPageWidth() - m, physical.getPageHeight() - m));
             g.translate(delta.getX(), delta.getY());
-            
+
             if (printableFrameWidth > 0f) {
                 float penW = printableFrameWidth;
                 g.setPaint(printableFrameColor);
                 g.setStroke(new BasicStroke(penW, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
                 g.draw(new Rectangle2D.Double(-penW / 2d, -penW / 2d, virtual.getPageWidth() + penW, virtual.getPageHeight() + penW));
             }
-            
+
             g.setPaint(oldPaint);
             g.setStroke(oldStroke);
             g.clip(new Rectangle2D.Double(0d, 0d, virtual.getPageWidth(), virtual.getPageHeight()));
-            
+
             int pageExists = virtualPrintable.print(graphics, virtual.createCompatiblePageFormat(false), virtualIndex);
-            
+
             if (printableNumbered) {
                 g.setTransform(oldAT);
                 g.setClip(oldClip);
@@ -265,7 +265,7 @@ public final class PaperSplitter {
                 Rectangle2D bounds = fm.getStringBounds(pageNum, g);
                 GlyphVector gv = pageNumFont.createGlyphVector(g.getFontRenderContext(), pageNum);
                 Shape outline = gv.getOutline((float) (physW - m - bounds.getWidth()), (float) (m - fm.getDescent() - 2));
-                
+
                 g.setStroke(new BasicStroke(1f));
                 g.setPaint(Color.WHITE);
                 g.draw(outline);
@@ -273,7 +273,7 @@ public final class PaperSplitter {
                 g.fill(outline);
                 g.setFont(f);
             }
-            
+
             return pageExists;
         };
         return p;
@@ -283,8 +283,8 @@ public final class PaperSplitter {
      * Returns the index of the last physical page that was printed using a
      * Printable instance created with
      * {@link #createPrintable(java.awt.print.Printable)}. This is provided
-     * mainly for debugging from within the virtual printable's
-     * {@code print} method.
+     * mainly for debugging from within the virtual printable's {@code print}
+     * method.
      *
      * @return the physical page last printed by a printable created from this
      * splitter

@@ -155,28 +155,29 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             return;
         }
         c.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
-        if(c instanceof JLabel) {
+        if (c instanceof JLabel) {
             JLabel label = (JLabel) c;
-            if(label.getFont() != null && label.getFont().getSize2D() > defaultLabelFontSize) {
+            if (label.getFont() != null && label.getFont().getSize2D() > defaultLabelFontSize) {
                 label.setForeground(UIManager.getColor(Theme.PREFS_HEADING));
             }
-        } else if(c instanceof JTable) {
+        } else if (c instanceof JTable) {
             JTable table = (JTable) c;
-        } else if(c instanceof JScrollPane) {
+        } else if (c instanceof JScrollPane) {
             c.setOpaque(true);
         }
 
-        for(int i=0; i<c.getComponentCount(); ++i) {
+        for (int i = 0; i < c.getComponentCount(); ++i) {
             Component kid = c.getComponent(i);
-            if(kid instanceof JPanel || kid instanceof JLabel || kid instanceof JCheckBox || kid instanceof JRadioButton || kid instanceof JScrollPane) {
+            if (kid instanceof JPanel || kid instanceof JLabel || kid instanceof JCheckBox || kid instanceof JRadioButton || kid instanceof JScrollPane) {
                 style((JComponent) kid);
             }
         }
     }
     private static final float defaultLabelFontSize;
+
     static {
         Font f = new JLabel().getFont();
-        if(f == null) {
+        if (f == null) {
             defaultLabelFontSize = 12f;
         } else {
             defaultLabelFontSize = f.getSize2D();
@@ -228,11 +229,11 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * If the user applies the settings changes, this will be called after the
      * settings are updated to check if a restart is required. The base
      * implementation checks to see if any of the keys registered with
-     * {@link #addResetKey} have changed value, and returns {@code true} if
-     * they have.
+     * {@link #addResetKey} have changed value, and returns {@code true} if they
+     * have.
      *
-     * @return {@code true} if the application must be restarted for
-     * changes to take effect
+     * @return {@code true} if the application must be restarted for changes to
+     * take effect
      */
     @Override
     public boolean isRestartRequired() {
@@ -269,10 +270,10 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * This method is called when the preferences dialog is about to be
      * displayed in order to initialize the controls with the current settings.
      * The base class will initialize any of the standard controls that have
-     * been added with a non-{@code null} key. It also records the initial
-     * value of any reset keys that have been added so that they can be compared
-     * to their new value later on to determine if a reset is required.
-     * Subclasses may override this to handle loading of custom controls.
+     * been added with a non-{@code null} key. It also records the initial value
+     * of any reset keys that have been added so that they can be compared to
+     * their new value later on to determine if a reset is required. Subclasses
+     * may override this to handle loading of custom controls.
      */
     @Override
     public void loadSettings() {
@@ -381,8 +382,8 @@ public class FillInPreferenceCategory implements PreferenceCategory {
 
     /**
      * Adds a checkbox at the current indent level that is mapped to key. If
-     * invert is {@code true}, then the box will be checked when the
-     * setting is false instead of true.
+     * invert is {@code true}, then the box will be checked when the setting is
+     * false instead of true.
      *
      * @param key the setting key name
      * @param text the text for the checkbox
@@ -406,8 +407,9 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @param values the values to assign to the key for each label
      * @return the dropdown menu that was added
      */
-    public SBDropDown addDropDown(String key, String[] labels, String[] values) {
-        SBDropDown b = new SBDropDown(labels, values);
+    public SBDropDown<String> addDropDown(String key, String[] labels, String[] values) {
+        @SuppressWarnings("unchecked")
+        SBDropDown<String> b = new SBDropDown(labels, values);
         addAuto(key, b);
         addIndent(indent);
         panel.add(b, "");
@@ -544,9 +546,9 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     }
 
     /**
-     * Adds a help icon that links to a help page. If the help page looks like
-     * a {@code http[s]} URL, the button will link to that page. Otherwise
-     * it is assumed to the base name of documentation page.
+     * Adds a help icon that links to a help page. If the help page looks like a
+     * {@code http[s]} URL, the button will link to that page. Otherwise it is
+     * assumed to the base name of documentation page.
      *
      * @param helpPage the page to open when the icon is clicked
      * @param label an optional label for the help button
@@ -565,10 +567,12 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     }
 
     @Deprecated
-    /** @deprecated */
+    /**
+     * @deprecated
+     */
     public void addHelp(String helpPage, String label, boolean isDocPage) {
         addHelp(helpPage, label);
-    }    
+    }
 
     /**
      * Adds an icon that displays pop-up help text when hovered over.

@@ -174,7 +174,7 @@ public class ImageViewer extends javax.swing.JDialog {
         imageViewer = new ca.cgjennings.apps.arkham.ImageViewer();
         editBtn = new javax.swing.JButton();
         physDimensionLabel = new javax.swing.JLabel();
-        unitCombo = new javax.swing.JComboBox();
+        unitCombo = new javax.swing.JComboBox<>();
         atLabel = new javax.swing.JLabel();
         dpiField = new javax.swing.JTextField();
         dpiLabel = new javax.swing.JLabel();
@@ -227,7 +227,7 @@ public class ImageViewer extends javax.swing.JDialog {
         physDimensionLabel.setText("          ");
 
         unitCombo.setFont(unitCombo.getFont().deriveFont(unitCombo.getFont().getSize()-2f));
-        unitCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
+        unitCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
         unitCombo.setBorder(null);
         unitCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -417,6 +417,6 @@ private void unitComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     private ca.cgjennings.apps.arkham.ImageViewer imageViewer;
     private javax.swing.JLabel physDimensionLabel;
     private javax.swing.JButton saveBtn;
-    private javax.swing.JComboBox unitCombo;
+    private javax.swing.JComboBox<String> unitCombo;
     // End of variables declaration//GEN-END:variables
 }

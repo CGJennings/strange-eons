@@ -30,6 +30,7 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
+
     private WritableImageFormat[] wifs;
     private String[] formats;
     private SimpleImageWriter[] writers;
@@ -63,19 +64,19 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         // init selectable, extendable image formats
         wifs = SimpleImageWriter.getImageFormats();
         formats = new String[wifs.length];
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> fm = new DefaultComboBoxModel<>();
         for (int i = 0; i < wifs.length; ++i) {
             formats[i] = wifs[i].getExtension();
-            m.addElement(wifs[i].getName());
+            fm.addElement(wifs[i].getName());
         }
         // matching writers for each format, created by writer(i) on demand
         writers = new SimpleImageWriter[formats.length];
-        formatCombo.setModel(m);
+        formatCombo.setModel(fm);
 
         // init container list
-        m = new DefaultComboBoxModel(StrangeEons.getRegisteredExportContainers());
-        destinationCombo.setModel(m);
-        if (m.getSize() < 2) {
+        DefaultComboBoxModel<ExportContainer> ecm = new DefaultComboBoxModel<ExportContainer>(StrangeEons.getRegisteredExportContainers());
+        destinationCombo.setModel(ecm);
+        if (ecm.getSize() < 2) {
             destinationLabel.setEnabled(false);
             destinationCombo.setEnabled(false);
         }
@@ -210,9 +211,9 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             dpiEd.setColumns( 4 );
         }
         joinImagesBox = new javax.swing.JCheckBox();
-        formatCombo = new javax.swing.JComboBox();
+        formatCombo = new javax.swing.JComboBox<>();
         ca.cgjennings.ui.JHelpButton resolutionHelp = new ca.cgjennings.ui.JHelpButton();
-        unitCombo = new javax.swing.JComboBox();
+        unitCombo = new javax.swing.JComboBox<>();
         suppressBackBtn = new javax.swing.JCheckBox();
         formatWarning = new ca.cgjennings.ui.JWarningLabel();
         javax.swing.JLabel finishLabel = new javax.swing.JLabel();
@@ -227,7 +228,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         compatibleBtn = new javax.swing.JRadioButton();
         javax.swing.JLabel purposeLabel = new javax.swing.JLabel();
         destinationLabel = new javax.swing.JLabel();
-        destinationCombo = new javax.swing.JComboBox();
+        destinationCombo = new javax.swing.JComboBox<>();
         configDestinationBtn = new javax.swing.JButton();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
@@ -269,7 +270,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         resolutionHelp.setHelpPage("gc-export#resolution");
 
-        unitCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "dpi", "dpcm" }));
+        unitCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "dpi", "dpcm" }));
         unitCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unitComboActionPerformed(evt);
@@ -583,7 +584,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     boolean isFaceSuppressionEnabled() {
         return suppressBackBtn.isSelected();
     }
-    
+
     double getUserBleedMargin() {
         FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
         double ubm = fs.getSuggestedBleedMargin();
@@ -724,7 +725,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             v = clampResolution(v, unit);
 
             // install the default model values
-            DefaultComboBoxModel m = (DefaultComboBoxModel) dpiCombo.getModel();
+            @SuppressWarnings("unchecked")
+            DefaultComboBoxModel<String> m = (DefaultComboBoxModel<String>) dpiCombo.getModel();
             m.removeAllElements();
             for (int i = 0; i < ppiOptions.length; ++i) {
                 int o = ppiOptions[i];
@@ -775,7 +777,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
             configDestinationBtn.setVisible(hasOptions);
             updateFormatWarning();
 	}//GEN-LAST:event_destinationComboActionPerformed
-        
+
     private void suppressBackBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suppressBackBtnActionPerformed
         if (suppressBackBtn.isSelected()) {
             joinImagesBox.setSelected(false);
@@ -880,13 +882,13 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         ExportContainer ec = getExportContainer();
         FinishStyle fs = (FinishStyle) edgeFinishCombo.getSelectedItem();
         boolean fmtHasAlpha = getImageWriter().isTransparencySupported();
-        
+
         if (!ec.isFileFormatSupported(fmt.toLowerCase(Locale.ROOT))) {
             warning = string("exf-warn-format");
         } else if (fs == FinishStyle.ROUND && !fmtHasAlpha) {
             warning = string("exf-warn-transparency");
         }
-        
+
         if (warning != null) {
             formatWarning.setText(warning);
         }
@@ -903,11 +905,11 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JButton configDestinationBtn;
     private javax.swing.JRadioButton customBtn;
     private javax.swing.JPanel customPanel;
-    private javax.swing.JComboBox destinationCombo;
+    private javax.swing.JComboBox<ExportContainer> destinationCombo;
     private javax.swing.JLabel destinationLabel;
     private javax.swing.JComboBox dpiCombo;
     private javax.swing.JComboBox<FinishStyle> edgeFinishCombo;
-    private javax.swing.JComboBox formatCombo;
+    private javax.swing.JComboBox<String> formatCombo;
     private ca.cgjennings.ui.JTip formatTip;
     private ca.cgjennings.ui.JWarningLabel formatWarning;
     private ca.cgjennings.imageio.IIOWritePanel iowpPanel;
@@ -917,7 +919,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JRadioButton postOnlineBtn;
     private javax.swing.JRadioButton printBtn;
     private javax.swing.JCheckBox suppressBackBtn;
-    private javax.swing.JComboBox unitCombo;
+    private javax.swing.JComboBox<String> unitCombo;
     // End of variables declaration//GEN-END:variables
 
     @Override

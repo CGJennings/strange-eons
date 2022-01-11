@@ -30,514 +30,556 @@ import resources.ResourceKit;
  */
 @SuppressWarnings("serial")
 public final class NamePage extends javax.swing.JPanel {
-	private Task task;
-	private boolean compiled;
-	private WizardModel model;
 
-	/**
-	 * Creates new wizard dialog page for gathering basic information about
-	 * a plug-in.
-	 *
-	 * @param task the task that was passed to the {@link WizardKit}, or {@code null}
-	 * @param model the model that the page will be used in
-	 */
-	public NamePage( Task task, WizardModel model ) {
-		initComponents();
-		setPluginType( ContentType.ACTIVATED  );
+    private Task task;
+    private boolean compiled;
+    private WizardModel model;
 
-		pluginNameField.getDocument().addDocumentListener( new DocumentEventAdapter() {
-			@Override
-			public void changedUpdate( DocumentEvent e ) {
-				pluginNameChanged();
-			}
-		});
+    /**
+     * Creates new wizard dialog page for gathering basic information about a
+     * plug-in.
+     *
+     * @param task the task that was passed to the {@link WizardKit}, or
+     * {@code null}
+     * @param model the model that the page will be used in
+     */
+    public NamePage(Task task, WizardModel model) {
+        initComponents();
+        setPluginType(ContentType.ACTIVATED);
 
-		DocumentEventAdapter blockStateUpdater = new DocumentEventAdapter() {
-			@Override
-			public void changedUpdate( DocumentEvent e ) {
-				updateBlockState();
-			}
-		};
-		bundleNameField.getDocument().addDocumentListener( blockStateUpdater );
-		scriptNameField.getDocument().addDocumentListener( blockStateUpdater );
+        pluginNameField.getDocument().addDocumentListener(new DocumentEventAdapter() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                pluginNameChanged();
+            }
+        });
 
-		String loc = null ;
-		if( task != null ) {
-			loc = task.getProject().getSettings().get( Project.KEY_RESOURCE_ID );
-		}
-		if( loc == null ) {
-			loc = NewProjectDialog.getDefaultResourceID();
-		}
-		locationField.setText( "resources/" + loc );
+        DocumentEventAdapter blockStateUpdater = new DocumentEventAdapter() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateBlockState();
+            }
+        };
+        bundleNameField.getDocument().addDocumentListener(blockStateUpdater);
+        scriptNameField.getDocument().addDocumentListener(blockStateUpdater);
 
-		if( model != null ) {
-			model.addWizardListener( new WizardAdapter() {
-				@Override
-				public void wizardShowingPage( WizardEvent e ) {
-					if( e.getPage() == NamePage.this ) {
-						updateBlockState();
-					}
-				}
-			});
-		}
+        String loc = null;
+        if (task != null) {
+            loc = task.getProject().getSettings().get(Project.KEY_RESOURCE_ID);
+        }
+        if (loc == null) {
+            loc = NewProjectDialog.getDefaultResourceID();
+        }
+        locationField.setText("resources/" + loc);
 
-	}
+        if (model != null) {
+            model.addWizardListener(new WizardAdapter() {
+                @Override
+                public void wizardShowingPage(WizardEvent e) {
+                    if (e.getPage() == NamePage.this) {
+                        updateBlockState();
+                    }
+                }
+            });
+        }
 
-	private void pluginNameChanged() {
-		String compactName = pluginNameField.getText().replaceAll( "\\s+", "" );
-		bundleNameField.setText( compactName );
-		if( type == ContentType.THEME && !compactName.endsWith("Theme") ) {
-			scriptNameField.setText( compactName + "Theme" );
-		} else {
-			scriptNameField.setText( compactName );
-		}
-		updateBlockState();
-	}
+    }
 
-	private void updateBlockState() {
-		if( model == null ) return;
-		boolean block = false;
+    private void pluginNameChanged() {
+        String compactName = pluginNameField.getText().replaceAll("\\s+", "");
+        bundleNameField.setText(compactName);
+        if (type == ContentType.THEME && !compactName.endsWith("Theme")) {
+            scriptNameField.setText(compactName + "Theme");
+        } else {
+            scriptNameField.setText(compactName);
+        }
+        updateBlockState();
+    }
 
-		if( pluginNameField.getText().isEmpty() ) {
-			block = true;
-		}
+    private void updateBlockState() {
+        if (model == null) {
+            return;
+        }
+        boolean block = false;
 
-		if( bundleNameField.getText().isEmpty() ) {
-			block = true;
-		}
+        if (pluginNameField.getText().isEmpty()) {
+            block = true;
+        }
 
-		if( scriptNameField.getText().isEmpty() && type != ContentType.LIBRARY ) {
-			block = true;
-		}
+        if (bundleNameField.getText().isEmpty()) {
+            block = true;
+        }
 
-		model.setProgressBlocked( block );
-	}
+        if (scriptNameField.getText().isEmpty() && type != ContentType.LIBRARY) {
+            block = true;
+        }
 
-	private void setHiddenLibraryFields( boolean library ) {
-		library = !library;
-		scriptNameLabel.setVisible( library );
-		scriptNameField.setVisible( library );
-		scriptExt.setVisible( library );
+        model.setProgressBlocked(block);
+    }
+
+    private void setHiddenLibraryFields(boolean library) {
+        library = !library;
+        scriptNameLabel.setVisible(library);
+        scriptNameField.setVisible(library);
+        scriptExt.setVisible(library);
 //		locationLabel.setVisible( library );
 //		locationField.setVisible( library );
 //		locationTip.setVisible( library );
-	}
+    }
 
-	/**
-	 * Sets whether the plug-in described by the page will be compiled instead
-	 * of script-based.
-	 *
-	 * @param compiledCodeMode if {@code true}, the dialog will be set up
-	 *     to support compiled code
-	 */
-	public void setCompiledClassMode( boolean compiledCodeMode ) {
-		if( compiledCodeMode != compiled ) {
-			compiled = compiledCodeMode;
-			if( compiled ) {
-				scriptExt.setText( ".java" );
-				scriptNameLabel.setText( string("prj-l-plugin-wiz-plug-class") );
+    /**
+     * Sets whether the plug-in described by the page will be compiled instead
+     * of script-based.
+     *
+     * @param compiledCodeMode if {@code true}, the dialog will be set up to
+     * support compiled code
+     */
+    public void setCompiledClassMode(boolean compiledCodeMode) {
+        if (compiledCodeMode != compiled) {
+            compiled = compiledCodeMode;
+            if (compiled) {
+                scriptExt.setText(".java");
+                scriptNameLabel.setText(string("prj-l-plugin-wiz-plug-class"));
 
-			} else {
-				scriptExt.setText( ".js" );
-				scriptNameLabel.setText( string("prj-l-plugin-wiz-plug-script") );
-			}
-		}
-	}
+            } else {
+                scriptExt.setText(".js");
+                scriptNameLabel.setText(string("prj-l-plugin-wiz-plug-script"));
+            }
+        }
+    }
 
-	/**
-	 * Returns {@code true} if the dialog is set up to create a compiled
-	 * class plug-in instead of a script-based plug-in.
-	 *
-	 * @return {@code true} if the plug-in is based on compiled Java code
-	 */
-	public boolean isCompiledClassMode() {
-		return compiled;
-	}
+    /**
+     * Returns {@code true} if the dialog is set up to create a compiled class
+     * plug-in instead of a script-based plug-in.
+     *
+     * @return {@code true} if the plug-in is based on compiled Java code
+     */
+    public boolean isCompiledClassMode() {
+        return compiled;
+    }
 
-	/**
-	 * Updates the controls to represent a particular type of plug-in.
-	 *
-	 * <p>Setting the type to  {@code LIBRARY} will hide the
-	 * script/class name and location fields since libraries do not include
-	 * plug-in code. You can still query the dialog for these values,
-	 * but they will be useless.
-	 *
-	 * @param type the type of plug-in to format the dialog for
-	 * @throws NullPointerException if the type is {@code null}
-	 * @throws IllegalStateException if the type is {@code THEME} and
-	 *     compiled class mode is not set
-	 */
-	public void setPluginType( ContentType type ) {
-		if( type == null ) throw new NullPointerException( "type" );
+    /**
+     * Updates the controls to represent a particular type of plug-in.
+     *
+     * <p>
+     * Setting the type to {@code LIBRARY} will hide the script/class name and
+     * location fields since libraries do not include plug-in code. You can
+     * still query the dialog for these values, but they will be useless.
+     *
+     * @param type the type of plug-in to format the dialog for
+     * @throws NullPointerException if the type is {@code null}
+     * @throws IllegalStateException if the type is {@code THEME} and compiled
+     * class mode is not set
+     */
+    public void setPluginType(ContentType type) {
+        if (type == null) {
+            throw new NullPointerException("type");
+        }
 
-		if( this.type == type ) return;
-		this.type = type;
+        if (this.type == type) {
+            return;
+        }
+        this.type = type;
 
-		switch( type ) {
-			case ACTIVATED:
-				setBundleFileNameExtension( BundleInstaller.PLUGIN_FILE_EXT );
-				setHiddenLibraryFields( false );
-				pluginNameLabel.setText( string("prj-l-plugin-wiz-plug-name") );
-				iconTip.setTipText( string("prj-l-plugin-wiz-plug-icon-tip") );
-				break;
-			case INJECTED:
-				setBundleFileNameExtension( BundleInstaller.PLUGIN_FILE_EXT );
-				setHiddenLibraryFields( false );
-				pluginNameLabel.setText( string("prj-l-plugin-wiz-plug-name") );
-				iconTip.setTipText( string("prj-l-plugin-wiz-plug-icon-tip") );
-				break;
-			case EXTENSION:
-				setBundleFileNameExtension( BundleInstaller.EXTENSION_FILE_EXT );
-				setHiddenLibraryFields( false );
-				pluginNameLabel.setText( string("prj-l-plugin-wiz-plug-name") );
-				iconTip.setTipText( string("prj-l-plugin-wiz-plug-icon-tip") );
-				break;
-			case LIBRARY:
-				setBundleFileNameExtension( BundleInstaller.LIBRARY_FILE_EXT );
-				setHiddenLibraryFields( true );
-				pluginNameLabel.setText( string("prj-l-plugin-wiz-lib-name") );
-				iconTip.setTipText( string("prj-l-plugin-wiz-plug-icon-tip") );
-				break;
-			case THEME:
-				if( !compiled ) {
-					setCompiledClassMode( true );
-				}
-				setBundleFileNameExtension( BundleInstaller.THEME_FILE_EXT );
-				setHiddenLibraryFields( false );
-				pluginNameLabel.setText( string("prj-l-plugin-wiz-theme-name") );
-				iconTip.setTipText( string("prj-l-plugin-wiz-theme-icon-tip") );
-				break;
-			default:
-				throw new AssertionError( "unknown type" );
-		}
-	}
+        switch (type) {
+            case ACTIVATED:
+                setBundleFileNameExtension(BundleInstaller.PLUGIN_FILE_EXT);
+                setHiddenLibraryFields(false);
+                pluginNameLabel.setText(string("prj-l-plugin-wiz-plug-name"));
+                iconTip.setTipText(string("prj-l-plugin-wiz-plug-icon-tip"));
+                break;
+            case INJECTED:
+                setBundleFileNameExtension(BundleInstaller.PLUGIN_FILE_EXT);
+                setHiddenLibraryFields(false);
+                pluginNameLabel.setText(string("prj-l-plugin-wiz-plug-name"));
+                iconTip.setTipText(string("prj-l-plugin-wiz-plug-icon-tip"));
+                break;
+            case EXTENSION:
+                setBundleFileNameExtension(BundleInstaller.EXTENSION_FILE_EXT);
+                setHiddenLibraryFields(false);
+                pluginNameLabel.setText(string("prj-l-plugin-wiz-plug-name"));
+                iconTip.setTipText(string("prj-l-plugin-wiz-plug-icon-tip"));
+                break;
+            case LIBRARY:
+                setBundleFileNameExtension(BundleInstaller.LIBRARY_FILE_EXT);
+                setHiddenLibraryFields(true);
+                pluginNameLabel.setText(string("prj-l-plugin-wiz-lib-name"));
+                iconTip.setTipText(string("prj-l-plugin-wiz-plug-icon-tip"));
+                break;
+            case THEME:
+                if (!compiled) {
+                    setCompiledClassMode(true);
+                }
+                setBundleFileNameExtension(BundleInstaller.THEME_FILE_EXT);
+                setHiddenLibraryFields(false);
+                pluginNameLabel.setText(string("prj-l-plugin-wiz-theme-name"));
+                iconTip.setTipText(string("prj-l-plugin-wiz-theme-icon-tip"));
+                break;
+            default:
+                throw new AssertionError("unknown type");
+        }
+    }
 
-	/**
-	 * Returns the type of plug-in that the dialog is formatted for.
-	 * @return the type of plug-in being created
-	 */
-	public ContentType getPluginType() {
-		return type;
-	}
+    /**
+     * Returns the type of plug-in that the dialog is formatted for.
+     *
+     * @return the type of plug-in being created
+     */
+    public ContentType getPluginType() {
+        return type;
+    }
 
-	private ContentType type;
+    private ContentType type;
 
-	/**
-	 * Sets the name of the plug-in, theme, or library. Changing the
-	 * plug-in name will set default values for the script/class name and
-	 * bundle file name, so if you wish to set these also you should do so
-	 * after setting name.
-	 *
-	 * @param name the value to set in the name field
-	 */
-	public void setPluginName( String name ) {
-		pluginNameField.setText( name );
-	}
+    /**
+     * Sets the name of the plug-in, theme, or library. Changing the plug-in
+     * name will set default values for the script/class name and bundle file
+     * name, so if you wish to set these also you should do so after setting
+     * name.
+     *
+     * @param name the value to set in the name field
+     */
+    public void setPluginName(String name) {
+        pluginNameField.setText(name);
+    }
 
-	/**
-	 * Returns the name of the plug-in, theme, or library.
-	 * @return the value of the name field
-	 */
-	public String getPluginName() {
-		return pluginNameField.getText();
-	}
+    /**
+     * Returns the name of the plug-in, theme, or library.
+     *
+     * @return the value of the name field
+     */
+    public String getPluginName() {
+        return pluginNameField.getText();
+    }
 
-	/**
-	 * Sets the description of the plug-in, theme, or library.
-	 * @param description the value to set in the description field
-	 */
-	public void setPluginDescription( String description ) {
-		descField.setText( description );
-	}
+    /**
+     * Sets the description of the plug-in, theme, or library.
+     *
+     * @param description the value to set in the description field
+     */
+    public void setPluginDescription(String description) {
+        descField.setText(description);
+    }
 
-	/**
-	 * Returns the description of the plug-in, theme, or library.
-	 * @return the value of the description field
-	 */
-	public String getPluginDescription() {
-		return descField.getText();
-	}
+    /**
+     * Returns the description of the plug-in, theme, or library.
+     *
+     * @return the value of the description field
+     */
+    public String getPluginDescription() {
+        return descField.getText();
+    }
 
-	/**
-	 * Sets the image to use as the representative image for the plug-in,
-	 * theme, or library.
-	 *
-	 * @param image an image to use, or {@code null}
-	 */
-	public void setPluginIconImage( BufferedImage image ) {
-		pluginIconDrop.setImage( image );
-	}
+    /**
+     * Sets the image to use as the representative image for the plug-in, theme,
+     * or library.
+     *
+     * @param image an image to use, or {@code null}
+     */
+    public void setPluginIconImage(BufferedImage image) {
+        pluginIconDrop.setImage(image);
+    }
 
-	/**
-	 * Returns the selected representative image, or
-	 * {@code null} if no image is set.
-	 *
-	 * @return the selected representative image
-	 */
-	public BufferedImage getPluginIconImage() {
-		BufferedImage icon;
-		if( type == ContentType.THEME ) {
-			icon = pluginIconDrop.getImageAtSize( 48 );
-			if( icon != null ) {
-				icon = ImageUtilities.center( icon, 48, 48 );
-				icon = ImageUtilities.copy( icon );
-				Graphics2D g = icon.createGraphics();
-				try {
-					g.drawImage( ResourceKit.getImageQuietly( "projects/theme-frame.png" ), 0, 0, null );
-				} finally {
-					g.dispose();
-				}
-			}
-		} else {
-			icon = pluginIconDrop.getImageAtSize( 24 );
-		}
-		if( icon != null ) {
-			icon = ImageUtilities.trim( icon );
-		}
-		return icon;
-	}
+    /**
+     * Returns the selected representative image, or {@code null} if no image is
+     * set.
+     *
+     * @return the selected representative image
+     */
+    public BufferedImage getPluginIconImage() {
+        BufferedImage icon;
+        if (type == ContentType.THEME) {
+            icon = pluginIconDrop.getImageAtSize(48);
+            if (icon != null) {
+                icon = ImageUtilities.center(icon, 48, 48);
+                icon = ImageUtilities.copy(icon);
+                Graphics2D g = icon.createGraphics();
+                try {
+                    g.drawImage(ResourceKit.getImageQuietly("projects/theme-frame.png"), 0, 0, null);
+                } finally {
+                    g.dispose();
+                }
+            }
+        } else {
+            icon = pluginIconDrop.getImageAtSize(24);
+        }
+        if (icon != null) {
+            icon = ImageUtilities.trim(icon);
+        }
+        return icon;
+    }
 
-	/**
-	 * Writes the selected representative image as a PNG image
-	 * file to the specified destination. If no image is selected,
-	 * the method has no effect.
-	 *
-	 * @param dest the location where the image should be written
-	 * @throws IOException if an error occurs while writing
-	 */
-	public void writePluginIcon( File dest ) throws IOException {
-		BufferedImage icon = getPluginIconImage();
-		if( icon != null ) {
-			ImageIO.write( icon, "png", dest );
-		}
-	}
+    /**
+     * Writes the selected representative image as a PNG image file to the
+     * specified destination. If no image is selected, the method has no effect.
+     *
+     * @param dest the location where the image should be written
+     * @throws IOException if an error occurs while writing
+     */
+    public void writePluginIcon(File dest) throws IOException {
+        BufferedImage icon = getPluginIconImage();
+        if (icon != null) {
+            ImageIO.write(icon, "png", dest);
+        }
+    }
 
-	/**
-	 * Sets the name of the plug-in bundle file. The file name should not
-	 * include an extension.
-	 *
-	 * @param bundle the name of the bundle file
-	 */
-	public void setBundleFileName( String bundle ) {
-		bundleNameField.setText( bundle );
-		bundleNameFieldFocusLost( null );
-	}
+    /**
+     * Sets the name of the plug-in bundle file. The file name should not
+     * include an extension.
+     *
+     * @param bundle the name of the bundle file
+     */
+    public void setBundleFileName(String bundle) {
+        bundleNameField.setText(bundle);
+        bundleNameFieldFocusLost(null);
+    }
 
-	/**
-	 * Returns the file name for the plug-in bundle, without an extension.
-	 * @return the bundle file name
-	 * @see #getBundleFileNameExtension()
-	 */
-	public String getBundleFileName() {
-		return bundleNameField.getText();
-	}
+    /**
+     * Returns the file name for the plug-in bundle, without an extension.
+     *
+     * @return the bundle file name
+     * @see #getBundleFileNameExtension()
+     */
+    public String getBundleFileName() {
+        return bundleNameField.getText();
+    }
 
-	private void setBundleFileNameExtension( String extension ) {
-		if( extension == null ) extension = BundleInstaller.PLUGIN_FILE_EXT;
-		if( !extension.isEmpty() && extension.charAt(0) != '.' ) {
-			extension = '.' + extension;
-		}
-		bundleExtLabel.setText( extension );
-	}
+    private void setBundleFileNameExtension(String extension) {
+        if (extension == null) {
+            extension = BundleInstaller.PLUGIN_FILE_EXT;
+        }
+        if (!extension.isEmpty() && extension.charAt(0) != '.') {
+            extension = '.' + extension;
+        }
+        bundleExtLabel.setText(extension);
+    }
 
-	/**
-	 * Returns the file name extension for the plug-in bundle, including the
-	 * leading dot. The extension returned is the appropriate extension
-	 * for the current plug-in type.
-	 *
-	 * @return the bundle file name extension
-	 * @see #getBundleFileName
-	 * @see #setPluginType
-	 */
-	public String getBundleFileNameExtension() {
-		return bundleExtLabel.getText();
-	}
+    /**
+     * Returns the file name extension for the plug-in bundle, including the
+     * leading dot. The extension returned is the appropriate extension for the
+     * current plug-in type.
+     *
+     * @return the bundle file name extension
+     * @see #getBundleFileName
+     * @see #setPluginType
+     */
+    public String getBundleFileNameExtension() {
+        return bundleExtLabel.getText();
+    }
 
-	/**
-	 * Sets the script file name for a script-based plug-in. If the name
-	 * includes the .js extension, this is removed before copying the name
-	 * into the script name field.
-	 *
-	 * @param name the script file name, without extension
-	 * @throws IllegalStateException if the dialog is set to compiled code mode
-	 */
-	public void setScriptFileName( String name ) {
-		if( compiled ) {
-			throw new IllegalStateException( "compiledClassMode=true" );
-		}
-		if( name == null ) name = "";
-		if( name.endsWith( ".js" ) ) name = name.substring( 0, name.length() - ".js".length() );
-		scriptNameField.setText( name );
-	}
+    /**
+     * Sets the script file name for a script-based plug-in. If the name
+     * includes the .js extension, this is removed before copying the name into
+     * the script name field.
+     *
+     * @param name the script file name, without extension
+     * @throws IllegalStateException if the dialog is set to compiled code mode
+     */
+    public void setScriptFileName(String name) {
+        if (compiled) {
+            throw new IllegalStateException("compiledClassMode=true");
+        }
+        if (name == null) {
+            name = "";
+        }
+        if (name.endsWith(".js")) {
+            name = name.substring(0, name.length() - ".js".length());
+        }
+        scriptNameField.setText(name);
+    }
 
-	/**
-	 * Returns the script file name, including the .js extension.
-	 *
-	 * @return the script file name
-	 * @throws IllegalStateException if the dialog is set to compiled code mode
-	 */
-	public String getScriptFileName() {
-		if( compiled ) {
-			throw new IllegalStateException( "compiledClassMode=true" );
-		}
-		String name = scriptNameField.getText();
-		if( !name.endsWith( ".js" ) ) name += ".js";
-		return name;
-	}
+    /**
+     * Returns the script file name, including the .js extension.
+     *
+     * @return the script file name
+     * @throws IllegalStateException if the dialog is set to compiled code mode
+     */
+    public String getScriptFileName() {
+        if (compiled) {
+            throw new IllegalStateException("compiledClassMode=true");
+        }
+        String name = scriptNameField.getText();
+        if (!name.endsWith(".js")) {
+            name += ".js";
+        }
+        return name;
+    }
 
-	/**
-	 * Sets the class name for a compiled plug-in. If the name
-	 * includes the .java or .class extension, this is removed before copying the name
-	 * into the class name field.
-	 *
-	 * @param name the class file name, without extension
-	 * @throws IllegalStateException if the dialog is not set to compiled code mode
-	 */
-	public void setClassName( String name ) {
-		if( !compiled ) {
-			throw new IllegalStateException( "compiledClassMode=false" );
-		}
-		if( name == null ) name = "";
-		if( name.endsWith( ".java" ) ) name = name.substring( 0, name.length() - ".java".length() );
-		else if( name.endsWith( ".class" ) ) name = name.substring( 0, name.length() - ".class".length() );
-		scriptNameField.setText( name );
-	}
+    /**
+     * Sets the class name for a compiled plug-in. If the name includes the
+     * .java or .class extension, this is removed before copying the name into
+     * the class name field.
+     *
+     * @param name the class file name, without extension
+     * @throws IllegalStateException if the dialog is not set to compiled code
+     * mode
+     */
+    public void setClassName(String name) {
+        if (!compiled) {
+            throw new IllegalStateException("compiledClassMode=false");
+        }
+        if (name == null) {
+            name = "";
+        }
+        if (name.endsWith(".java")) {
+            name = name.substring(0, name.length() - ".java".length());
+        } else if (name.endsWith(".class")) {
+            name = name.substring(0, name.length() - ".class".length());
+        }
+        scriptNameField.setText(name);
+    }
 
-	/**
-	 * Returns the compiled class name, without any .java or .class extension.
-	 *
-	 * @return the class file name
-	 * @throws IllegalStateException if the dialog is not set to compiled code mode
-	 */
-	public String getClassName() {
-		if( !compiled ) {
-			throw new IllegalStateException( "compiledClassMode=false" );
-		}
-		String name = scriptNameField.getText();
-		if( name.endsWith( ".java" ) ) name = name.substring( 0, name.length() - ".java".length() );
-		if( name.endsWith( ".class" ) ) name = name.substring( 0, name.length() - ".class".length() );
-		return name;
-	}
+    /**
+     * Returns the compiled class name, without any .java or .class extension.
+     *
+     * @return the class file name
+     * @throws IllegalStateException if the dialog is not set to compiled code
+     * mode
+     */
+    public String getClassName() {
+        if (!compiled) {
+            throw new IllegalStateException("compiledClassMode=false");
+        }
+        String name = scriptNameField.getText();
+        if (name.endsWith(".java")) {
+            name = name.substring(0, name.length() - ".java".length());
+        }
+        if (name.endsWith(".class")) {
+            name = name.substring(0, name.length() - ".class".length());
+        }
+        return name;
+    }
 
-	/**
-	 * Returns the compiled class name, with the .java.
-	 *
-	 * @return the class file name
-	 * @throws IllegalStateException if the dialog is not set to compiled code mode
-	 */
-	public String getClassFileName() {
-		if( !compiled ) {
-			throw new IllegalStateException( "compiledClassMode=false" );
-		}
-		String name = scriptNameField.getText();
-		if( !name.endsWith( ".java" ) ) name += ".java";
-		return name;
-	}
+    /**
+     * Returns the compiled class name, with the .java.
+     *
+     * @return the class file name
+     * @throws IllegalStateException if the dialog is not set to compiled code
+     * mode
+     */
+    public String getClassFileName() {
+        if (!compiled) {
+            throw new IllegalStateException("compiledClassMode=false");
+        }
+        String name = scriptNameField.getText();
+        if (!name.endsWith(".java")) {
+            name += ".java";
+        }
+        return name;
+    }
 
-	/**
-	 * Returns a default path to use as the plug-in location.
-	 * The path will use the value of the project's
-	 * {@code Project.KEY_RESOURCE_ID} settings, if available,
-	 * to create the name of a default resources subfolder.
-	 * (If this setting is undefined, a default value is used that
-	 * may be platform and/or user specific.)
-	 *
-	 * @return a default location
-	 */
-	public String getDefaultPath() {
-		String folder = null;
-		if( task != null ) {
-			Project p = task.getProject();
-			if( p != null ) {
-				folder = p.getSettings().get( Project.KEY_RESOURCE_ID );
-			}
-		}
-		if( folder == null ) {
-			folder = NewProjectDialog.getDefaultResourceID();
-		}
-		return "resources/" + folder;
-	}
+    /**
+     * Returns a default path to use as the plug-in location. The path will use
+     * the value of the project's {@code Project.KEY_RESOURCE_ID} settings, if
+     * available, to create the name of a default resources subfolder. (If this
+     * setting is undefined, a default value is used that may be platform and/or
+     * user specific.)
+     *
+     * @return a default location
+     */
+    public String getDefaultPath() {
+        String folder = null;
+        if (task != null) {
+            Project p = task.getProject();
+            if (p != null) {
+                folder = p.getSettings().get(Project.KEY_RESOURCE_ID);
+            }
+        }
+        if (folder == null) {
+            folder = NewProjectDialog.getDefaultResourceID();
+        }
+        return "resources/" + folder;
+    }
 
-	/**
-	 * Sets the path or package name in the bundle where the plug-in files
-	 * will be stored. The path may be slash-separated or dot-separated;
-	 * it will be converted to slash-separated.
-	 *
-	 * @param location a package name or bundle file path
-	 */
-	public void setPath( String location ) {
-		if( location == null ) location = "";
-		if( compiled ) {
-			location = location.replace( '/', '.' );
-		} else {
-			location = location.replace( '.', '/' );
-		}
-		location = location.replace( '\\', '/' );
-		locationField.setText( location );
-	}
+    /**
+     * Sets the path or package name in the bundle where the plug-in files will
+     * be stored. The path may be slash-separated or dot-separated; it will be
+     * converted to slash-separated.
+     *
+     * @param location a package name or bundle file path
+     */
+    public void setPath(String location) {
+        if (location == null) {
+            location = "";
+        }
+        if (compiled) {
+            location = location.replace('/', '.');
+        } else {
+            location = location.replace('.', '/');
+        }
+        location = location.replace('\\', '/');
+        locationField.setText(location);
+    }
 
-	/**
-	 * Returns the path where plug-in files should be stored.
-	 * If you require a Java package name, replace slashes in the returned
-	 * path with dots.
-	 *
-	 * @return the location for plug-in files
-	 */
-	public String getPath() {
-		String location = locationField.getText();
-		location = location.replace( '.', '/' );
-		location = location.replace( '\\', '/' );
-		while( location.startsWith( "/" ) ) location = location.substring(1);
-		while( location.endsWith( "/" ) ) location = location.substring(0, location.length()-1);
-		return location;
-	}
+    /**
+     * Returns the path where plug-in files should be stored. If you require a
+     * Java package name, replace slashes in the returned path with dots.
+     *
+     * @return the location for plug-in files
+     */
+    public String getPath() {
+        String location = locationField.getText();
+        location = location.replace('.', '/');
+        location = location.replace('\\', '/');
+        while (location.startsWith("/")) {
+            location = location.substring(1);
+        }
+        while (location.endsWith("/")) {
+            location = location.substring(0, location.length() - 1);
+        }
+        return location;
+    }
 
-	/**
-	 * Returns the location where plug-in files should be stored as a file.
-	 * The returned file will represent the current plug-in path relative to
-	 * the specified parent file. If the parent file is
-	 * {@code null}, then the task folder will be used if a non-
-	 * {@code null} {@link Task} was provided to the constructor.
-	 *
-	 * @param parent the parent file that the path is relative to, or {@code null}
-	 *     to use the task folder
-	 * @return the path as a child of the parent file
-	 * @throws IllegalStateException if the parent is {@code null} and
-	 *   a {@code null} task was set when the page was constructed
-	 */
-	public File getPathAsFile( File parent ) {
-		if( parent == null ) {
-			if( task == null ) throw new IllegalStateException( "cannot use parent==null if null task set in constructor" );
-			parent = task.getFile();
-		}
-		String folder = getPath().replace( '/', File.separatorChar );
-		return new File( parent, folder );
-	}
+    /**
+     * Returns the location where plug-in files should be stored as a file. The
+     * returned file will represent the current plug-in path relative to the
+     * specified parent file. If the parent file is {@code null}, then the task
+     * folder will be used if a non- {@code null} {@link Task} was provided to
+     * the constructor.
+     *
+     * @param parent the parent file that the path is relative to, or
+     * {@code null} to use the task folder
+     * @return the path as a child of the parent file
+     * @throws IllegalStateException if the parent is {@code null} and a
+     * {@code null} task was set when the page was constructed
+     */
+    public File getPathAsFile(File parent) {
+        if (parent == null) {
+            if (task == null) {
+                throw new IllegalStateException("cannot use parent==null if null task set in constructor");
+            }
+            parent = task.getFile();
+        }
+        String folder = getPath().replace('/', File.separatorChar);
+        return new File(parent, folder);
+    }
 
-	/**
-	 * Returns the path value as a resource identifier. (If you need this value
-	 * as a URL, prepend res:// to the start of the returned string.)
-	 * <p>Example:<br>
-	 * {@code String imgCode = "ResourceKit.getImage( \"" + page.getPathAsResource() + "/myimage.png\" );"}
-	 *
-	 * @return the base resource name for resources stored in the plug-in's location
-	 */
-	public String getPathAsResource() {
-		String folder = getPath();
-		if( folder.startsWith( "resources/" ) ) {
-			folder = folder.substring( "resources/".length() );
-		} else {
-			folder = '/' + folder;
-		}
-		return folder;
-	}
+    /**
+     * Returns the path value as a resource identifier. (If you need this value
+     * as a URL, prepend res:// to the start of the returned string.)
+     * <p>
+     * Example:<br>
+     * {@code String imgCode = "ResourceKit.getImage( \"" + page.getPathAsResource() + "/myimage.png\" );"}
+     *
+     * @return the base resource name for resources stored in the plug-in's
+     * location
+     */
+    public String getPathAsResource() {
+        String folder = getPath();
+        if (folder.startsWith("resources/")) {
+            folder = folder.substring("resources/".length());
+        } else {
+            folder = '/' + folder;
+        }
+        return folder;
+    }
 
-	/**
-	 * This method is called from within the constructor to initialize the form.
-	 * WARNING: Do NOT modify this code. The content of this method is always
-	 * regenerated by the Form Editor.
-	 */
-	@SuppressWarnings( "unchecked" )
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -684,28 +726,26 @@ public final class NamePage extends javax.swing.JPanel {
 
     private void bundleNameFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_bundleNameFieldFocusLost
         // check if the user accidentally eneterd an extension, and if
-		// so remove it
-		String name = bundleNameField.getText();
-		int dot = name.lastIndexOf( '.' );
-		if( dot >= 0 ) {
-			String ext = name.substring( dot );
-			name = name.substring( 0, dot );
-			if(
-					ext.equals( BundleInstaller.PLUGIN_FILE_EXT )
-				|| ext.equals( BundleInstaller.EXTENSION_FILE_EXT )
-				|| ext.equals( BundleInstaller.THEME_FILE_EXT )
-				|| ext.equals( BundleInstaller.LIBRARY_FILE_EXT )
-			) {
-				bundleNameField.setText( name );
-			}
-		}
+        // so remove it
+        String name = bundleNameField.getText();
+        int dot = name.lastIndexOf('.');
+        if (dot >= 0) {
+            String ext = name.substring(dot);
+            name = name.substring(0, dot);
+            if (ext.equals(BundleInstaller.PLUGIN_FILE_EXT)
+                    || ext.equals(BundleInstaller.EXTENSION_FILE_EXT)
+                    || ext.equals(BundleInstaller.THEME_FILE_EXT)
+                    || ext.equals(BundleInstaller.LIBRARY_FILE_EXT)) {
+                bundleNameField.setText(name);
+            }
+        }
     }//GEN-LAST:event_bundleNameFieldFocusLost
 
     private void descFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_descFieldFocusLost
         String text = descField.getText();
-		if( !text.isEmpty() && text.charAt( text.length()-1 ) == '.' ) {
-			descField.setText( text.substring( 0, text.length()-1 ) );
-		}
+        if (!text.isEmpty() && text.charAt(text.length() - 1) == '.') {
+            descField.setText(text.substring(0, text.length() - 1));
+        }
     }//GEN-LAST:event_descFieldFocusLost
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

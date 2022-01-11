@@ -795,16 +795,16 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     /**
-     * Sets the size of the bleed margin for this component, in points.
-     * This can be set if the component's template images include
-     * a bleed margin as part of their design so that Strange Eons will take
-     * this into account when rendering sheets with bleed margins enabled.
-     * This will affect all of the component's faces (sheets).
-     * (The default is 0, meaning there is no bleed margin included in the design.)
-     * 
+     * Sets the size of the bleed margin for this component, in points. This can
+     * be set if the component's template images include a bleed margin as part
+     * of their design so that Strange Eons will take this into account when
+     * rendering sheets with bleed margins enabled. This will affect all of the
+     * component's faces (sheets). (The default is 0, meaning there is no bleed
+     * margin included in the design.)
+     *
      * <p>
-     * If no bleed margin is set using this method, each sheet will use
-     * a bleed margin set by the setting key
+     * If no bleed margin is set using this method, each sheet will use a bleed
+     * margin set by the setting key
      * <i>templateKey</i>{@code -bleed-margin}, or 0 if the key is not set.
      *
      * <p>
@@ -835,13 +835,14 @@ public class DIY extends AbstractGameComponent implements Handler {
 
     /**
      * Sets the radius for rounding the corners of this component, in points.
-     * This will affect all of the component's faces (sheets).
-     * (The default is 0, leaving the corners sharp.)
+     * This will affect all of the component's faces (sheets). (The default is
+     * 0, leaving the corners sharp.)
      *
-     * <p>If no corner radius is set using this method, each sheet will use
-     * a separate radius set by the setting key
+     * <p>
+     * If no corner radius is set using this method, each sheet will use a
+     * separate radius set by the setting key
      * <i>templateKey</i>{@code -corner-radius}, or 0 if the key is not set.
-     * 
+     *
      * <p>
      * <b>This is a <a href='#locked'>restricted property</a>.</b>
      *
@@ -1135,17 +1136,17 @@ public class DIY extends AbstractGameComponent implements Handler {
      * non-{@code null}, then the following keys will be referred to when
      * setting up the portrait system:
      * <dl>
-     * <dt><i>xxx</i>-portrait-template
+     * <dt><i>x</i>-portrait-template
      * <dd>the resource file that contains the default portrait image
-     * <dt><i>xxx</i>-portrait-clip-region
+     * <dt><i>x</i>-portrait-clip-region
      * <dd>this is the region where the portrait will be drawn on the card
-     * <dt><i>xxx</i>-portrait-scale
+     * <dt><i>x</i>-portrait-scale
      * <dd>if defined, sets the scale for the default portrait; otherwise the
      * scale is determined automatically to fit the portrait in the clip region
      * (a scale of 1 = 100%)
-     * <dt><i>xxx</i>-portrait-panx
+     * <dt><i>x</i>-portrait-panx
      * <dd>if defined, the horizontal pan of the default portrait (default is 0)
-     * <dt><i>xxx</i>-portrait-pany
+     * <dt><i>x</i>-portrait-pany
      * <dd>if defined, the vertical pan of the default portrait (default is 0)
      * </dl>
      *

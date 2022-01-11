@@ -38,7 +38,6 @@ import java.util.logging.Logger;
 // Write a test harness for this thing so it can be tinkered with and
 // ultimately replaced without breaking compatibility.
 //
-
 /**
  * This class lays out paragraphs that use a specialized HTML-like markup
  * language. The markup does not require any special introductory tags, such as
@@ -63,25 +62,24 @@ import java.util.logging.Logger;
  * <p>
  * Non-parametric style tags are tags that do not take parameters and apply a
  * {@link TextStyle} to the text they enclose. Examples include the &lt;b&gt;
- * (bold) and &lt;i&gt; (italic) tags. {@code TextStyle}s consist of one or
- * more {@code TextAttribute}s and their values; a single non-parametric
- * tag can therefore have multiple effects.
+ * (bold) and &lt;i&gt; (italic) tags. {@code TextStyle}s consist of one or more
+ * {@code TextAttribute}s and their values; a single non-parametric tag can
+ * therefore have multiple effects.
  * <p>
  * Parametric style tags are tags that can include parameters which are parsed
  * by a {@link ParametricStyleFactory}. The factory will return a
- * {@code TextStyle} based on the tag's parameters, which is then applied
- * to the block it encloses. Examples include the &lt;color&gt;/&lt;colour&gt;
- * and &lt;image&gt; tags.
+ * {@code TextStyle} based on the tag's parameters, which is then applied to the
+ * block it encloses. Examples include the &lt;color&gt;/&lt;colour&gt; and
+ * &lt;image&gt; tags.
  * <p>
  * Interpreted tags include all tags not recognized as any of the other types.
  * These tags are passed to {@link #handleUnknownTag}, which is given the
  * opportunity to do something with it. Generally, if it wishes to handle the
  * tag it will return a replacement string. The {@code MarkupRenderer} base
  * class uses this to replace Unicode character tags with their equivalent
- * Unicode characters. The {@code GenderAwareMarkupRenderer} subclass uses
- * this to parse tags that include masculine and feminine variants that are
- * selected based upon a gender supplied to the renderer (as in
- * &lt;his/her&gt;).
+ * Unicode characters. The {@code GenderAwareMarkupRenderer} subclass uses this
+ * to parse tags that include masculine and feminine variants that are selected
+ * based upon a gender supplied to the renderer (as in &lt;his/her&gt;).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -1031,9 +1029,9 @@ public class MarkupRenderer {
     /**
      * Render the markup on a graphics context within a specified region. A
      * y-coordinate indicating where a subsequent line would begin is returned.
-     * If {@code measureOnly} is set to true, a draw is computed but no
-     * actual rendering performed. In this case, the return value is the height
-     * of the region needed to render the text.
+     * If {@code measureOnly} is set to true, a draw is computed but no actual
+     * rendering performed. In this case, the return value is the height of the
+     * region needed to render the text.
      */
     @SuppressWarnings("empty-statement")
     protected double renderText(Graphics2D g, Rectangle2D r, double yAlignmentOffset, FontRenderContext frc, boolean measureOnly, boolean restrictToSingleLine) {
@@ -1562,20 +1560,20 @@ public class MarkupRenderer {
                         currentPositionInUntaggedText = text.length();
                         state = TEXT;
 
-                // we need to special case <lt>, <gt> because we want the symbol put
-                // directly into the untagged text buffer; if we use replaceTagWith,
-                // the resulting "<" or ">" will be re-parsed
-                switch (currentTagNoCase) {
-                    case "lt":
-                        text.append("<");
-                        break;
-                    case "gt":
-                        text.append(">");
-                        break;
-                    default:
-                        handleTag();
-                        break;
-                }
+                        // we need to special case <lt>, <gt> because we want the symbol put
+                        // directly into the untagged text buffer; if we use replaceTagWith,
+                        // the resulting "<" or ">" will be re-parsed
+                        switch (currentTagNoCase) {
+                            case "lt":
+                                text.append("<");
+                                break;
+                            case "gt":
+                                text.append(">");
+                                break;
+                            default:
+                                handleTag();
+                                break;
+                        }
                     } else {
                         tag.append(c);
                         if (c == '"') {
@@ -2069,7 +2067,7 @@ public class MarkupRenderer {
             params.add(token.toString());
         }
 
-        return params.toArray(new String[params.size()]);
+        return params.toArray(new String[0]);
     }
 
     /**
@@ -2250,14 +2248,14 @@ public class MarkupRenderer {
         if (line.length() > 0) {
             paras.add(line.toString());
         }
-        return paras.toArray(new String[paras.size()]);
+        return paras.toArray(new String[0]);
     }
 
     /**
-     * Converts a {@code Strings} containing &lt;br&gt; tags into one that
-     * uses newlines instead. This is not required before sending markup to the
-     * draw system. Rather, this is intended for use when deserializing markup
-     * that has had newlines converted into &lt;br&gt; tags for convenience of
+     * Converts a {@code Strings} containing &lt;br&gt; tags into one that uses
+     * newlines instead. This is not required before sending markup to the draw
+     * system. Rather, this is intended for use when deserializing markup that
+     * has had newlines converted into &lt;br&gt; tags for convenience of
      * encoding.
      * <p>
      * By design, this method recognizes only the exact sequence &lt;, b, r,
@@ -2316,6 +2314,7 @@ public class MarkupRenderer {
         public TabManager() {
         }
 
+        @SuppressWarnings("unchecked")
         public void beginRecording(int lineCount) {
             line = 0;
             tabLists = new ArrayList[lineCount];
@@ -2352,14 +2351,15 @@ public class MarkupRenderer {
         public int[] getTabList(int line) {
             return rawLists[line];
         }
+
         private ArrayList<Integer>[] tabLists;
         private int line;
         private int[][] rawLists;
     }
 
     /**
-     * This class provides an {@code AttributedString} with extended
-     * information on how the string should be drawn.
+     * This class provides an {@code AttributedString} with extended information
+     * on how the string should be drawn.
      */
     protected class StyledParagraph extends AttributedString {
 

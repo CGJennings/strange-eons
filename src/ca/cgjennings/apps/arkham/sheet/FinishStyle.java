@@ -34,7 +34,7 @@ public enum FinishStyle implements IconProvider {
     MARGIN(9d);
 
     private FinishStyle(double baseUserBleedValue) {
-        bleedBase = baseUserBleedValue;    
+        bleedBase = baseUserBleedValue;
     }
 
     private double bleedBase;
@@ -72,9 +72,10 @@ public enum FinishStyle implements IconProvider {
         }
         target.setUserBleedMargin(ubm);
     }
-    
+
     /**
      * Returns the suggested user bleed margin for this setting.
+     *
      * @return the user bleed margin to use for this option, or a suggested
      * margin for type {@link #MARGIN}.
      */
@@ -131,9 +132,10 @@ public enum FinishStyle implements IconProvider {
         }
         return MARGIN;
     }
-    
+
     /**
      * Returns an icon representing this style.
+     *
      * @return a UI icon for the style
      */
     public Icon getIcon() {

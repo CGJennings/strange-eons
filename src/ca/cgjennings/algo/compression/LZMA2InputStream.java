@@ -112,8 +112,8 @@ class LZMA2InputStream extends InputStream {
     /**
      * Creates a new LZMA2 decompressor using a preset dictionary.
      * <p>
-     * This is like {@code LZMAInputStream(InputStream, int)} except that
-     * the dictionary may be initialized using a preset dictionary. If a preset
+     * This is like {@code LZMAInputStream(InputStream, int)} except that the
+     * dictionary may be initialized using a preset dictionary. If a preset
      * dictionary was used when compressing the data, the same preset dictionary
      * must be provided when decompressing.
      *
@@ -143,12 +143,12 @@ class LZMA2InputStream extends InputStream {
     /**
      * Decompresses the next byte from this input stream.
      * <p>
-     * Reading lots of data with {@code read()} from this input stream may
-     * be inefficient. Wrap it in {@code java.io.BufferedInputStream} if
-     * you need to read lots of data one byte at a time.
+     * Reading lots of data with {@code read()} from this input stream may be
+     * inefficient. Wrap it in {@code java.io.BufferedInputStream} if you need
+     * to read lots of data one byte at a time.
      *
-     * @return the next decompressed byte, or {@code -1} to indicate the
-     * end of the compressed stream
+     * @return the next decompressed byte, or {@code -1} to indicate the end of
+     * the compressed stream
      *
      * @throws CorruptedInputException
      *
@@ -167,17 +167,16 @@ class LZMA2InputStream extends InputStream {
     /**
      * Decompresses into an array of bytes.
      * <p>
-     * If {@code len} is zero, no bytes are read and {@code 0} is
-     * returned. Otherwise this will block until {@code len} bytes have
-     * been decompressed, the end of LZMA2 stream is reached, or an exception is
-     * thrown.
+     * If {@code len} is zero, no bytes are read and {@code 0} is returned.
+     * Otherwise this will block until {@code len} bytes have been decompressed,
+     * the end of LZMA2 stream is reached, or an exception is thrown.
      *
      * @param buf target buffer for uncompressed data
      * @param off start offset in {@code buf}
      * @param len maximum number of uncompressed bytes to read
      *
-     * @return number of bytes read, or {@code -1} to indicate the end of
-     * the compressed stream
+     * @return number of bytes read, or {@code -1} to indicate the end of the
+     * compressed stream
      *
      * @throws CorruptedInputException
      *
@@ -319,8 +318,8 @@ class LZMA2InputStream extends InputStream {
      * Returns the number of uncompressed bytes that can be read without
      * blocking. The value is returned with an assumption that the compressed
      * input data will be valid. If the compressed data is corrupt,
-     * {@code CorruptedInputException} may get thrown before the number of
-     * bytes claimed to be available have been read from this input stream.
+     * {@code CorruptedInputException} may get thrown before the number of bytes
+     * claimed to be available have been read from this input stream.
      * <p>
      * In LZMAInputStream, the return value will be non-zero when the
      * decompressor is in the middle of an LZMA2 chunk. The return value will
@@ -343,8 +342,8 @@ class LZMA2InputStream extends InputStream {
     }
 
     /**
-     * Closes the stream and calls {@code in.close()}. If the stream was
-     * already closed, this does nothing.
+     * Closes the stream and calls {@code in.close()}. If the stream was already
+     * closed, this does nothing.
      *
      * @throws IOException if thrown by {@code in.close()}
      */

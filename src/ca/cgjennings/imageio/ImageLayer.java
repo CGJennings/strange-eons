@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
  * A layer in a multilayer image.
  */
 public final class ImageLayer {
+
     private int x;
     private int y;
     private BufferedImage image;

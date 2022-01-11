@@ -33,9 +33,8 @@ public abstract class DragHandle {
     public abstract void paintDragState(Graphics2D g);
 
     /**
-     * Returns {@code true} if a point is over this handle. When this
-     * method returns {@code true}, dragging the mouse would begin a drag
-     * operation.
+     * Returns {@code true} if a point is over this handle. When this method
+     * returns {@code true}, dragging the mouse would begin a drag operation.
      *
      * @param p the point to test
      * @return {@code true} if the point falls within the handle

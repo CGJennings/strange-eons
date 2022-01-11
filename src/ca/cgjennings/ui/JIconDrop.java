@@ -125,8 +125,7 @@ public class JIconDrop extends JLabel {
 
     /**
      * Returns the file that was the source of the current image, or
-     * {@code null} if no image is set or if the image did not come from a
-     * file.
+     * {@code null} if no image is set or if the image did not come from a file.
      *
      * @return the file that the current image came from, or {@code null}
      */
@@ -162,10 +161,10 @@ public class JIconDrop extends JLabel {
 
     /**
      * Sets the selected image, or clears the selection if the image is
-     * {@code null}. Setting the image directly will also set the current
-     * file to {@code null}. If {@code image} is not in an integer RGB
-     * format, the component will create a copy of the image in such a format,
-     * using the converted image in place of the original.
+     * {@code null}. Setting the image directly will also set the current file
+     * to {@code null}. If {@code image} is not in an integer RGB format, the
+     * component will create a copy of the image in such a format, using the
+     * converted image in place of the original.
      *
      * @param image the image to select
      */

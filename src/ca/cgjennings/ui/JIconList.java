@@ -4,6 +4,7 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 
 /**
@@ -43,8 +44,8 @@ public class JIconList<T> extends JList<T> {
 
     /**
      * Change the default icon to use for items that do not provide their own.
-     * The initial value is {@code null}, meaning that these items will not
-     * show an icon.
+     * The initial value is {@code null}, meaning that these items will not show
+     * an icon.
      *
      * @param defaultIcon the default icon to set
      */
@@ -53,6 +54,22 @@ public class JIconList<T> extends JList<T> {
     }
 
     private Icon defaultIcon;
+
+    /**
+     * Creates an {@link IconRenderer} cast to a renderer for the specified
+     * type. The type may or may not be an {@link IconProvider}; if the actual
+     * values seen by the renderer are icon providers, their icons are used as
+     * icons for the list items.
+     *
+     * @param <E> the desired item type
+     * @return a list cell renderer for the specified type that renders icons
+     * for icon provider items
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> ListCellRenderer<E> createRenderer() {
+        ListCellRenderer<?> r = new IconRenderer();
+        return (ListCellRenderer<E>) r;
+    }
 
     public static class IconRenderer extends DefaultListCellRenderer {
 
@@ -84,8 +101,8 @@ public class JIconList<T> extends JList<T> {
 
         /**
          * Creates a new item that will display the specified label and icon
-         * when included in a {@link JIconList}. A {@code null} label will
-         * be treated as an empty string.
+         * when included in a {@link JIconList}. A {@code null} label will be
+         * treated as an empty string.
          *
          * @param label the item's label
          * @param icon the item's icon

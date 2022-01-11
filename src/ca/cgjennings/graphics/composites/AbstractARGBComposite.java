@@ -51,12 +51,12 @@ public abstract class AbstractARGBComposite implements Composite {
 
     /**
      * Blends one image directly into another using this composite. If
-     * {@code destination} is {@code null}, a new compatible image
-     * will be created. If the source image is not in a format supported format,
-     * a copy of the image, suitably converted, will be used. This will also be
-     * done for a non-{@code null} destination in an unsupported format; in
-     * this case the converted destination is returned rather than the one
-     * passed to the method.
+     * {@code destination} is {@code null}, a new compatible image will be
+     * created. If the source image is not in a format supported format, a copy
+     * of the image, suitably converted, will be used. This will also be done
+     * for a non-{@code null} destination in an unsupported format; in this case
+     * the converted destination is returned rather than the one passed to the
+     * method.
      *
      * @param source the source image
      * @param x the x-offset into the destination at which to draw the source

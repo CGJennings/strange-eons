@@ -8,6 +8,7 @@ import java.util.Collection;
  */
 @SuppressWarnings("serial")
 public class GraphCycleException extends IllegalArgumentException {
+
     private final Collection<?> culprits;
 
     /**

@@ -19,10 +19,10 @@ import resources.Language;
 
 /**
  * Creates simple PDF documents. PDF support is not built in; to use this class
- * the {@code core-PDFOutput.selibrary} library must be installed. (That
- * library provides a concrete implementation of the {@link PDFWriter} interface
- * defined in this class.) You can test whether PDF support is available by
- * calling {@link #isAvailable()}.
+ * the {@code core-PDFOutput.selibrary} library must be installed. (That library
+ * provides a concrete implementation of the {@link PDFWriter} interface defined
+ * in this class.) You can test whether PDF support is available by calling
+ * {@link #isAvailable()}.
  *
  * <p>
  * For easy PDF creation, use one of the static {@link #printToPDF printToPDF}
@@ -127,7 +127,7 @@ public final class PDFPrintSupport {
                             }
                         }
                     } while (page == null);
-                    
+
                     for (int pageIndex = 0;; ++pageIndex) {
                         Graphics2D g = page.createGraphics();
                         try {
@@ -136,7 +136,7 @@ public final class PDFPrintSupport {
                             g.fillRect(0, 0, page.getWidth(), page.getHeight());
                             g.setColor(Color.BLACK);
                             g.scale(ppi / 72d, ppi / 72d);
-                            
+
                             int result = printable.print(g, pageFormat, pageIndex);
                             if (result == Printable.NO_SUCH_PAGE) {
                                 break;
@@ -144,7 +144,7 @@ public final class PDFPrintSupport {
                         } finally {
                             g.dispose();
                         }
-                        
+
                         w.addPage(page, 0d, 0d, c.getPageWidth(), c.getPageHeight());
                     }
                 } catch (IOException e) {
@@ -584,8 +584,8 @@ public final class PDFPrintSupport {
      * Sets the name of the concrete {@link PDFWriter} class to use.
      *
      * @param className the fully qualified name of a class with a no-arg
-     * constructor that implements {@link PDFWriter}, or {@code null} to
-     * use the default class
+     * constructor that implements {@link PDFWriter}, or {@code null} to use the
+     * default class
      */
     public static synchronized void setImplementationClassName(String className) {
         if (className == null) {

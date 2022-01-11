@@ -9,7 +9,6 @@ import ca.cgjennings.graphics.filters.TrimFilter;
 import ca.cgjennings.graphics.filters.TurnAndFlipFilter;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;

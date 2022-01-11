@@ -24,8 +24,8 @@ import javax.imageio.ImageIO;
  * standards.
  *
  * <p>
- * This tool requires that {@code xdg-utils} be installed on the target
- * system. Most modern distros will already have this installed.
+ * This tool requires that {@code xdg-utils} be installed on the target system.
+ * Most modern distros will already have this installed.
  *
  * <p>
  * To use this from a command line, use a command like the following:<br>
@@ -215,8 +215,7 @@ public final class register extends CommandLineParser {
      * Returns a file with the given name in the desktop output directory.
      *
      * @param destName the file name
-     * @return a file with the given name in
-     * {@code ~/.StrangeEons3/desktop}
+     * @return a file with the given name in {@code ~/.StrangeEons3/desktop}
      */
     private File file(String destName) {
         return new File(sh.directory(), destName);
@@ -599,7 +598,7 @@ public final class register extends CommandLineParser {
      * xdg path, if any.
      */
     private int xdg(List<String> tokens) throws IOException {
-        return xdg(tokens.toArray(new String[tokens.size()]));
+        return xdg(tokens.toArray(new String[0]));
     }
 
     /**
@@ -698,15 +697,14 @@ public final class register extends CommandLineParser {
             System.err.println(message);
         }
         if (t != null) {
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
         System.err.flush();
     }
 
     /**
      * Prints an error message, and then quits unless running in debug mode.
-     * Either the message or the throwable may be {@code null}, but not
-     * both.
+     * Either the message or the throwable may be {@code null}, but not both.
      *
      * @param message the message to print
      * @param t an exception to describe
@@ -724,7 +722,7 @@ public final class register extends CommandLineParser {
             code = 2;
         } else {
             System.err.println("Error: an unexpected error prevented registration");
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
 
         System.err.flush();
@@ -804,8 +802,8 @@ public final class register extends CommandLineParser {
      * installation has a subdirectory "bin" containing the "java" executable.
      *
      * @param loc the candidate location
-     * @return {@code true} if the directory is a Java installation
-     * directory for the minimum required version
+     * @return {@code true} if the directory is a Java installation directory
+     * for the minimum required version
      * @see #MIN_JAVA_VERSION
      */
     private boolean checkJavaImpl(String loc) {

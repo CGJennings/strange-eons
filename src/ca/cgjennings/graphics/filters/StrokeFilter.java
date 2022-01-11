@@ -68,8 +68,7 @@ public final class StrokeFilter extends AbstractImageFilter {
      * @param color the pen colour, as a {@code Color} object
      * @param width the pen width, in pixels
      * @param position the side of the edge to stroke
-     * @throws NullPointerException if the colour or position is
-     * {@code null}
+     * @throws NullPointerException if the colour or position is {@code null}
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(Color color, int width, Position position) {
@@ -85,8 +84,7 @@ public final class StrokeFilter extends AbstractImageFilter {
      * @param color the pen colour, as a 32-bit ARGB integer
      * @param width the pen width, in pixels
      * @param position the side of the edge to stroke
-     * @throws NullPointerException if the colour or position is
-     * {@code null}
+     * @throws NullPointerException if the colour or position is {@code null}
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(int color, int width, Position position) {
@@ -201,8 +199,8 @@ public final class StrokeFilter extends AbstractImageFilter {
     /**
      * Sets whether the pen shape is rounded.
      *
-     * @param roundedPen {@code true} if the pen is rounded;
-     * {@code false} if the pen is squared
+     * @param roundedPen {@code true} if the pen is rounded; {@code false} if
+     * the pen is squared
      */
     public void setRoundedPen(boolean roundedPen) {
         round = roundedPen;
@@ -211,8 +209,8 @@ public final class StrokeFilter extends AbstractImageFilter {
     /**
      * Returns whether the pen shape is rounded.
      *
-     * @return {@code true} if the pen is rounded; {@code false} if
-     * the pen is squared
+     * @return {@code true} if the pen is rounded; {@code false} if the pen is
+     * squared
      */
     public boolean isRoundedPen() {
         return round;

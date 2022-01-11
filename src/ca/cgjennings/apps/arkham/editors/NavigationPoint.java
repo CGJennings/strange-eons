@@ -63,8 +63,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * offset from the start of the file
      * @param scope a value that indicates a nesting depth relative to other
      * navigation points in a collection of navigation points; default is 0
-     * @param icon an icon for the navigation point type (may be
-     * {@code null})
+     * @param icon an icon for the navigation point type (may be {@code null})
      */
     public NavigationPoint(String description, String longDescription, int offset, int scope, Icon icon) {
         if (offset < 0) {
@@ -156,9 +155,9 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
     }
 
     /**
-     * Returns {@code true} if two navigation points are considered equal,
-     * based on their string description. Line numbers are NOT be considered
-     * when determining equality. This is intentional.
+     * Returns {@code true} if two navigation points are considered equal, based
+     * on their string description. Line numbers are NOT be considered when
+     * determining equality. This is intentional.
      *
      * @param rhs the object to compare to
      * @return true if the specified object is a navigation point with the same

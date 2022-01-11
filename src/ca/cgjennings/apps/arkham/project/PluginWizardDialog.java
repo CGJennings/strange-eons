@@ -45,8 +45,8 @@ public class PluginWizardDialog extends javax.swing.JDialog {
 
     /**
      * Creates a new wizard dialog that will fill in the provided new, empty
-     * task. The task may be {@code null} to assist in testing of new
-     * wizard kits.
+     * task. The task may be {@code null} to assist in testing of new wizard
+     * kits.
      *
      * @param owner
      * @param task
@@ -98,7 +98,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
 
         kitSelectPanel = new javax.swing.JPanel();
         javax.swing.JScrollPane kitListScroll = new javax.swing.JScrollPane();
-        kitList = new javax.swing.JList();
+        kitList = new javax.swing.JList<>();
         javax.swing.JScrollPane kitDescScroll = new javax.swing.JScrollPane();
         kitDesc = new EditorPane();
         javax.swing.JLabel typeLabel = new javax.swing.JLabel();
@@ -320,7 +320,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton cancelBtn2;
     private javax.swing.JEditorPane kitDesc;
-    private javax.swing.JList kitList;
+    private javax.swing.JList<KitListItem> kitList;
     private javax.swing.JPanel kitSelectPanel;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton okBtn;
@@ -366,10 +366,10 @@ public class PluginWizardDialog extends javax.swing.JDialog {
      * Fills in the list of plug-in types using the registered kits.
      */
     private void populateKitList() {
-        WizardKit[] sorted = kits.toArray(new WizardKit[kits.size()]);
+        WizardKit[] sorted = kits.toArray(new WizardKit[0]);
         Arrays.sort(sorted, sorter);
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<KitListItem> m = new DefaultListModel<>();
         for (WizardKit k : sorted) {
             m.addElement(new KitListItem(k));
         }
@@ -507,8 +507,8 @@ public class PluginWizardDialog extends javax.swing.JDialog {
      * All registered projects will be listed on the first page of the dialog,
      * and when the user selects a project the matching kit will be used to
      * provide the following pages. If the user finishes the wizard, the
-     * matching kit's {@code createTask} method will be called to fill in
-     * the task folder.
+     * matching kit's {@code createTask} method will be called to fill in the
+     * task folder.
      */
     public static interface WizardKit {
 

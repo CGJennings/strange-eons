@@ -270,7 +270,6 @@ public class TypeScriptTokenizer extends Tokenizer {
                     backslash = false;
                     break;
 
-
                 case INVALID:
                     // When a token is marked invalid within this loop it is
                     // due to a bad variable name; keep going until we get to

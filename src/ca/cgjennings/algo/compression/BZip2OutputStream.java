@@ -131,10 +131,6 @@ import java.io.OutputStream;
  * Instances of this class are not threadsafe.
  * </p>
  *
- * <p>
- * TODO: Update to BZip2 1.0.1
- * </p>
- *
  */
 class BZip2OutputStream extends OutputStream
         implements BZip2Constants {

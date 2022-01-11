@@ -17,7 +17,6 @@ import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.io.FileChangeListener;
 import ca.cgjennings.io.FileChangeMonitor;
 import ca.cgjennings.io.FileChangeMonitor.ChangeType;
-import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
 import ca.cgjennings.spelling.ui.JSpellingTextField;
 import ca.cgjennings.ui.JCloseableTabbedPane;
@@ -73,15 +72,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.print.PrintException;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JList;
@@ -97,9 +92,6 @@ import javax.swing.JWindow;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.TransferHandler;
-import static javax.swing.TransferHandler.COPY;
-import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.border.Border;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
@@ -117,7 +109,7 @@ import resources.Settings;
  * @since 1.62
  */
 @SuppressWarnings("serial")
-public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Printable, TabbedPaneReorderListener, FileChangeListener {
+public final class DeckEditor extends AbstractGameComponentEditor<Deck> implements Printable, TabbedPaneReorderListener, FileChangeListener {
 
     private void tc() {
         if (!EventQueue.isDispatchThread()) {
@@ -130,8 +122,8 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     private Deck deck;
 
     /**
-     * Number of special item tabs not used to display tiles,
-     * i.e., tools and faces at positions 0 and 1.
+     * Number of special item tabs not used to display tiles, i.e., tools and
+     * faces at positions 0 and 1.
      */
     private static final int RESERVED_TABS = 2;
 
@@ -159,7 +151,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         localizeForPlatform();
         {
             // update bleed margin immediately on click
-            JFormattedTextField field = ((JSpinner.DefaultEditor)bleedMarginSpinner.getEditor()).getTextField();
+            JFormattedTextField field = ((JSpinner.DefaultEditor) bleedMarginSpinner.getEditor()).getTextField();
             ((DefaultFormatter) field.getFormatter()).setCommitsOnValidEdit(true);
         }
 
@@ -182,10 +174,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             removeCurrentPage();
         });
 
-        DefaultComboBoxModel paperList = new DefaultComboBoxModel();
-        paperSizeCombo.setModel(paperList);
-
-        tileSetLists = new PageItemList[] {
+        tileSetLists = new PageItemList[]{
             (PageItemList) toolsList, (PageItemList) facesList,
             (PageItemList) tilesList, (PageItemList) boardBitsList,
             (PageItemList) decorationsList, (PageItemList) otherList
@@ -243,7 +232,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     /**
      * Return the deck instance the editor controls for non-interactive editing.
-     * 
+     *
      * @return the edited deck
      */
     public Deck getDeck() {
@@ -302,7 +291,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     private void reloadToolsList() {
         tc();
         Object sel = toolsList.getSelectedValue();
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PageItem> m = new DefaultListModel<>();
         for (PageItem proto : Tools.getRegisteredTools()) {
             m.addElement(proto);
         }
@@ -326,7 +315,8 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             try {
                 StrangeEons.log.log(Level.INFO, "Interrupting loader thread {0}", running);
                 running.join(500);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
             EventQueue.invokeLater(this::reloadTileSets);
             return;
         }
@@ -342,15 +332,18 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         final JScrollPane[] scrolls = new JScrollPane[]{
             tilesScroll, decorationsScroll, boardBitsScroll, otherScroll
         };
-        final JList[] lists = new JList[]{
+        @SuppressWarnings("unchecked")
+        final JList<PageItem>[] lists = new JList[]{
             tilesList, decorationsList, boardBitsList, otherList
         };
-        final DefaultListModel[] models = new DefaultListModel[lists.length];
+        @SuppressWarnings("unchecked")
+        final DefaultListModel<PageItem>[] models = new DefaultListModel[lists.length];
         final Object[] selections = new Object[lists.length];
-        final LinkedList[] toLoad = new LinkedList[lists.length];
+        @SuppressWarnings("unchecked")
+        final LinkedList<Entry>[] toLoad = new LinkedList[lists.length];
         for (int i = 0; i < selections.length; ++i) {
             selections[i] = lists[i].getSelectedValue();
-            models[i] = new DefaultListModel();
+            models[i] = new DefaultListModel<>();
             lists[i].setModel(models[i]);
             toLoad[i] = new LinkedList<>();
         }
@@ -368,7 +361,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             cardTileTab.remove(RESERVED_TABS);
         }
         for (int i = 0; i < scrolls.length; ++i) {
-            if (toLoad[i].size() > 0) {
+            if (!toLoad[i].isEmpty()) {
                 cardTileTab.addTab(string(tabNames[i]), scrolls[i]);
             }
         }
@@ -379,11 +372,11 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             public void run() {
                 try {
                     for (int i = 0; i < scrolls.length; ++i) {
-                        while (toLoad[i].size() > 0) {
+                        while (!toLoad[i].isEmpty()) {
                             Entry en = (Entry) toLoad[i].removeFirst();
                             final int set = i;
                             final PageItem pi = en.getPrototypeItem();
-                            StrangeEons.log.fine("Loading tile " + pi.getName());
+                            StrangeEons.log.log(Level.FINE, "Loading tile {0}", pi.getName());
                             try {
                                 pi.getThumbnailIcon();
                                 EventQueue.invokeLater(() -> {
@@ -392,7 +385,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                                         lists[set].setSelectedValue(pi, true);
                                     }
                                 });
-                            } catch(Throwable t) {
+                            } catch (Throwable t) {
                                 StrangeEons.log.log(Level.SEVERE, "Exception while loading " + pi.getName(), t);
                                 return;
                             }
@@ -447,81 +440,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         throw new IllegalArgumentException("invalid tile name: " + name);
     }
 
-    private void initAccelerators() {
-        InputMap imap = getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        ActionMap amap = getRootPane().getActionMap();
-
-        registerKeyboardAction((ActionEvent e) -> {
-            addPage();
-        }, "", PlatformSupport.getKeyStroke("menu T"), WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-
-//		addAccelerator( imap, amap, PlatformSupport.getKeyStroke( "menu T" ), "NEW TAB", new AbstractAction() {
-//			@Override
-//            public void actionPerformed( ActionEvent e ) {
-//
-//            }
-//        } );
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu X"), "CUT", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deck.cut();
-            }
-        });
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu C"), "COPY", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deck.copy();
-            }
-        });
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu V"), "PASTE", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deck.paste();
-            }
-        });
-        AbstractAction zoomOut = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deck.getActivePage().getView().adjustZoomBySteps(-1);
-            }
-        };
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu -"), "ZOOMOUT", zoomOut);
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu shift -"), "ZOOMOUT", zoomOut);
-
-        AbstractAction zoomIn = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                deck.getActivePage().getView().adjustZoomBySteps(+1);
-            }
-        };
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu +"), "ZOOMIN", zoomIn);
-        addAccelerator(imap, amap, PlatformSupport.getKeyStroke("menu shift +"), "ZOOMIN", zoomIn);
-    }
-
-    private void addAccelerator(InputMap imap, ActionMap amap, KeyStroke key, String command, Action a) {
-        imap.put(key, command);
-        amap.put(command, a);
-    }
-
-//    private void installStandardTools() {
-//        TextBox card = new TextBox();
-//        card.setSize( 144d, 72d );
-//        card.setText( string( "de-text-box-content" ) );
-//        Line line = new Line();
-//		Curve curve = new Curve();
-//        CustomTile tile = new CustomTile( "", 75d );
-//		TuckBox box = new TuckBox();
-//
-//        //for( int i = 0; i < tileSetLists.length; ++i ) {
-//            DefaultListModel model = (DefaultListModel) tileSetLists[ SET_TOOLS ].getModel();
-//            model.addElement( card );
-//            model.addElement( tile );
-//            model.addElement( line );
-//			model.addElement( curve );
-//			model.addElement( box );
-//          //  ((PageItemRenderer) tileSetLists[i].getCellRenderer()).setReservedEntries( model.getSize() );
-//        //}
-//    }
     @Override
     public void tabbedPanesReordered(JReorderableTabbedPane source, int oldindex, int newindex) {
         deck.reorderPage(oldindex, newindex);
@@ -594,7 +512,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         tc();
         final PageView v = (PageView) pageTab.getSelectedComponent();
         final Page p = v.getPage();
-        for(PageItem pi : cards) {
+        for (PageItem pi : cards) {
             p.addCardFromTemplate(pi);
         }
     }
@@ -652,7 +570,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             }
         }
         final int nFaces = facesList.getModel().getSize();
-        for (int i=0; i<nFaces; ++i) {
+        for (int i = 0; i < nFaces; ++i) {
             PageItem pi = facesList.getModel().getElementAt(i);
             if (pi instanceof CardFace) {
                 CardFace face = (CardFace) pi;
@@ -693,18 +611,17 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     /**
      * Creates an image containing the content of the specified deck page as if
      * it was printed at the specified resolution. The {@code pageBuffer}
-     * parameter can be {@code null}, in which case a suitable image will
-     * be created and returned. If you are creating images of multiple pages,
-     * you can pass {@code null} for the first call and then re-use the
-     * returned image for subsequent calls.
+     * parameter can be {@code null}, in which case a suitable image will be
+     * created and returned. If you are creating images of multiple pages, you
+     * can pass {@code null} for the first call and then re-use the returned
+     * image for subsequent calls.
      *
      * @param pageBuffer an image to draw the page content on; may be
      * {@code null}
      * @param pageIndex the page to draw
      * @param ppi the resolution to draw the page at
-     * @return the image that was drawn; the same value as
-     * {@code pageBuffer} if that parameter was non-{@code null},
-     * otherwise a new, suitable image
+     * @return the image that was drawn; the same value as {@code pageBuffer} if
+     * that parameter was non-{@code null}, otherwise a new, suitable image
      * @throws IllegalArgumentException if the page index is invalid or the
      * resolution is not positive
      * @throws OutOfMemoryError if there is insufficient memory to allocate the
@@ -768,16 +685,16 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
                         page = createPageImage(page, i, dpi);
                         export1.exportImage(String.valueOf(i + 1), page);
                     }
-                }catch (OutOfMemoryError oom) {
+                } catch (OutOfMemoryError oom) {
                     ErrorDialog.outOfMemory();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     ErrorDialog.displayError(string("rk-err-export"), e);
-                }catch (Exception e) {
+                } catch (Exception e) {
                     StrangeEons.log.log(Level.SEVERE, null, e);
                 } finally {
                     try {
                         export1.endExport();
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         ErrorDialog.displayError(string("rk-err-export"), e);
                     }
                 }
@@ -820,7 +737,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             }
             return ok;
         }
-        if(command == Commands.VIEW_INK_SAVER) {
+        if (command == Commands.VIEW_INK_SAVER) {
             return true;
         }
         return canPerformCommand(command);
@@ -842,21 +759,21 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             getDeck().copy();
         } else if (command == Commands.PASTE) {
             getDeck().paste();
-        } else if(command == Commands.VIEW_INK_SAVER) {
+        } else if (command == Commands.VIEW_INK_SAVER) {
             boolean enable = Commands.VIEW_INK_SAVER.isSelected();
-            for(int p=0, len=deck.getPageCount(); p<len; ++p) {
+            for (int p = 0, len = deck.getPageCount(); p < len; ++p) {
                 Page page = deck.getPage(p);
                 boolean needsRepaint = false;
-                for(int i=0, ilen=page.getCardCount(); i<ilen; ++i) {
+                for (int i = 0, ilen = page.getCardCount(); i < ilen; ++i) {
                     PageItem pi = page.getCard(i);
-                    if(pi instanceof CardFace) {
+                    if (pi instanceof CardFace) {
                         CardFace card = (CardFace) pi;
                         card.getSheet().setPrototypeRenderingModeEnabled(enable);
                         card.refresh();
                         needsRepaint = true;
                     }
                 }
-                if(needsRepaint) {
+                if (needsRepaint) {
                     getActivePageView().repaint();
                 }
             }
@@ -896,18 +813,8 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         pageTab.setSelectedIndex(0);
         updatePageTitles(0);
 
-        final File[] thumbCards = fileList.toArray(new File[fileList.size()]);
-//        if( thumbCards.length < 0 ) {
-//            // there are multiple cards; tell the user this may take a while
-//            new BusyDialog( StrangeEons.getWindow(), string( "busy-thumbnails" ), new Runnable() {
-//				@Override
-//                public void run() {
-//                    addFilesToCardList( thumbCards );
-//                }
-//            } );
-//        } else {
+        final File[] thumbCards = fileList.toArray(new File[0]);
         addFilesToCardList(thumbCards);
-//        }
 
         requestFocusInView(deck.getActivePage().getView());
         populateFieldsFromComponent();
@@ -969,8 +876,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
      * platform-specific print dialog, if any, is displayed before printing
      * begins.
      *
-     * @param direct if {@code true}, no deck-specific print options are
-     * shown
+     * @param direct if {@code true}, no deck-specific print options are shown
      */
     public void print(boolean direct) {
         if (!isCommandApplicable(Commands.PRINT)) {
@@ -1062,10 +968,10 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     }
 
     /**
-     * The implementation of print(). If {@code printResolution} is set to
-     * a positive value, cards are prepared at that resolution. (This is set to
-     * an explicit value when exporting.) Otherwise, if it is less than 0, the
-     * card resolution is inferred from printer job settings.
+     * The implementation of print(). If {@code printResolution} is set to a
+     * positive value, cards are prepared at that resolution. (This is set to an
+     * explicit value when exporting.) Otherwise, if it is less than 0, the card
+     * resolution is inferred from printer job settings.
      *
      * @param g1 graphics instance for printing
      * @param pf page format to conform to
@@ -1105,9 +1011,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
             StrangeEons.log.log(Level.INFO, "selected print resolution of {0} dpi", (int) (dpi + 0.5d));
         }
 
-//		if( s.getYesNo( "print-scaling-enabled" ) ) {
-//			g.scale( s.getDouble( "print-x-scale" ), s.getDouble( "print-y-scale" ) );
-//		}
         // get the graphics clipping rectangle; we'll use this to determine if
         // we should clip a page item
         Rectangle2D clipRect = new Rectangle2D.Double(0, 0, pf.getWidth(), pf.getHeight());
@@ -1187,24 +1090,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         }
     }
 
-    private TransferHandler listTransferHandler = new TransferHandler() {
-        @Override
-        public boolean importData(TransferSupport support) {
-            return false;
-        }
-
-        @Override
-        public boolean canImport(TransferSupport support) {
-            return false;
-        }
-
-        @Override
-        public int getSourceActions(JComponent c) {
-            return COPY;
-        }
-
-    };
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1231,7 +1116,7 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         gameCombo = new ca.cgjennings.ui.JGameCombo();
         ca.cgjennings.ui.JTip gameTip = new ca.cgjennings.ui.JTip();
         javax.swing.JLabel paperSizeLabel = new javax.swing.JLabel();
-        paperSizeCombo = new javax.swing.JComboBox();
+        paperSizeCombo = new javax.swing.JComboBox<>();
         customPaperBtn = new javax.swing.JButton();
         StyleUtilities.small(customPaperBtn);
         cropPanel = new javax.swing.JPanel();
@@ -1931,10 +1816,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
         remCardsBtn.setEnabled(facesList.getSelectedIndices().length > 0);
     }//GEN-LAST:event_facesListValueChanged
 
-    private void refocusOnPage() {
-        pageTab.getSelectedComponent().requestFocusInWindow();
-    }
-
     private void paperSizeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paperSizeComboActionPerformed
         if (paperSizeCombo.getSelectedIndex() >= 0) {
             deck.setPaperProperties((PaperProperties) paperSizeCombo.getSelectedItem());
@@ -1979,11 +1860,11 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
 
     private void updatePageTitles(int startIndex) {
         for (int i = startIndex; i < pageTab.getTabCount() - 1; ++i) {
-            String title = deck.getPage(i).getTitle();
-            if (title == null) {
-                title = String.format(string("de-l-tab-label"), i + 1);
+            String pageTitle = deck.getPage(i).getTitle();
+            if (pageTitle == null) {
+                pageTitle = String.format(string("de-l-tab-label"), i + 1);
             }
-            pageTab.setTitleAt(i, title);
+            pageTab.setTitleAt(i, pageTitle);
         }
     }
 
@@ -1999,7 +1880,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     }//GEN-LAST:event_remCardsBtnActionPerformed
 
     private void addCardsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addCardsBtnActionPerformed
-//        cardTileTab.setSelectedIndex( 0 );
         addFilesToCardList(ResourceKit.showMultiOpenDialog(this));
     }//GEN-LAST:event_addCardsBtnActionPerformed
 
@@ -2073,7 +1953,6 @@ public class DeckEditor extends AbstractGameComponentEditor<Deck> implements Pri
     };
 
 	private void customPaperBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customPaperBtnActionPerformed
-            DefaultComboBoxModel model = (DefaultComboBoxModel) paperSizeCombo.getModel();
             PaperProperties pp = (PaperProperties) paperSizeCombo.getSelectedItem();
             CustomPaperDialog cpd = new CustomPaperDialog(customPaperBtn, pp, false);
 
@@ -2257,7 +2136,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
             busy.setProgressMaximum(files.length);
         }
 
-        DefaultListModel model = (DefaultListModel) facesList.getModel();
+        DefaultListModel<PageItem> model = (DefaultListModel<PageItem>) facesList.getModel();
 
         int monitorPeriod = 0;
         Settings rk = Settings.getShared();
@@ -2280,16 +2159,15 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
             GameComponent g = ResourceKit.getGameComponentFromFile(f);
 
             if (g != null) {
-                String name = g.getFullName();
-                Sheet[] sheets = g.createDefaultSheets();
+                Sheet[] gcSheets = g.createDefaultSheets();
 
-                if (sheets == null) {
+                if (gcSheets == null) {
                     ErrorDialog.displayError(string("de-err-add-nonsheet"), null);
                     continue;
                 }
 
                 String path = f.getAbsolutePath();
-                for (int j = 0; j < sheets.length; ++j) {
+                for (int j = 0; j < gcSheets.length; ++j) {
                     if (!isSheetInList(model, path, j)) {
                         PageItem card = new CardFace(g, path, j);
                         model.addElement(card);
@@ -2305,7 +2183,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         }
     }
 
-    private boolean isSheetInList(DefaultListModel model, String path, int index) {
+    private boolean isSheetInList(DefaultListModel<PageItem> model, String path, int index) {
         for (int i = 0; i < model.getSize(); ++i) {
             PageItem c = (PageItem) model.getElementAt(i);
             if (c instanceof DependentPageItem) {
@@ -2369,8 +2247,8 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     }
 
     /**
-     * Update a changed card if it matches the path of {@code f}. Helper
-     * method for {@link #fileChanged}.
+     * Update a changed card if it matches the path of {@code f}. Helper method
+     * for {@link #fileChanged}.
      */
     private int possiblyRefreshCard(File f, PageItem c, GameComponent component) {
         tc();
@@ -2454,7 +2332,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private javax.swing.JList<PageItem> otherList;
     private javax.swing.JScrollPane otherScroll;
     private ca.cgjennings.ui.JReorderableTabbedPane pageTab;
-    private javax.swing.JComboBox paperSizeCombo;
+    private javax.swing.JComboBox<PaperProperties> paperSizeCombo;
     private javax.swing.JButton remCardsBtn;
     private javax.swing.JMenuItem removeFacesItem;
     private javax.swing.JPanel rhsPanel;
@@ -2569,12 +2447,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
                 return;
             }
 
-            EventQueue.invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new InlinePageNameEditor(getTitleAt(i), i);
-                }
-            });
+            EventQueue.invokeLater(() -> new InlinePageNameEditor(getTitleAt(i), i));
         }
     }
 
@@ -2712,25 +2585,21 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         public DragToken<PageItem> createDragToken(DragManager<PageItem> manager, JComponent dragSource, Point dragPoint) {
             JList list = (JList) dragSource;
             PageItem sel = (PageItem) list.getSelectedValue();
-            DragToken<PageItem> token = null;
+            DragToken<PageItem> dragToken = null;
             if (sel != null) {
                 ListSelectionModel lsm = list.getSelectionModel();
                 if (lsm.getMinSelectionIndex() == lsm.getMaxSelectionIndex()) {
                     list.setEnabled(false);
                     sel = sel.clone();
-                    if (sel instanceof CardFace) {
-//TODO  finish                      
-//                        ((CardFace) sel).setAutoBleedMarginEnabled(deck.isAutoBleedMarginEnabled());
-                    }
-                    token = new DragToken<>(sel, ImageUtilities.iconToImage(sel.getThumbnailIcon()), 0, 0);
+                    dragToken = new DragToken<>(sel, ImageUtilities.iconToImage(sel.getThumbnailIcon()), 0, 0);
                 }
             }
-            if (token != null) {
+            if (dragToken != null) {
                 this.manager = manager;
-                this.token = token;
+                this.token = dragToken;
                 KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(ked);
             }
-            return token;
+            return dragToken;
         }
 
         @Override
@@ -2777,6 +2646,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
     private DragManager<PageItem> dragManager = new DragManager<>(dragAndDropHandler);
 
     private class PageItemList extends JList<PageItem> {
+
         public PageItemList() {
             super(new DefaultListModel<>());
             setCellRenderer(new PageItemRenderer());
@@ -2794,12 +2664,13 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         }
 
         @Override
-        public String getToolTipText( MouseEvent event ) {
-            int i = locationToIndex( event.getPoint() );
-            if( i >= 0 ) {
+        public String getToolTipText(MouseEvent event) {
+            int i = locationToIndex(event.getPoint());
+            if (i >= 0) {
                 PageItem c = getModel().getElementAt(i);
-                if( c instanceof DependentPageItem )
-                return ((DependentPageItem) c).getPath();
+                if (c instanceof DependentPageItem) {
+                    return ((DependentPageItem) c).getPath();
+                }
             }
             return super.getToolTipText(event);
         }

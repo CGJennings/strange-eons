@@ -11,11 +11,11 @@ import javax.swing.JButton;
  * appropriate controls to have wizard-like functionality.
  *
  * <p>
- * The controller links a group of {@code JButton}s, a {@link WizardPanel},
- * and a {@link WizardModel}. The buttons are used to control the page turning
- * and finish actions of the panel. The controller will attach appropriate
- * listeners to the buttons and use these to modify the current page in the
- * model or finish the wizard.
+ * The controller links a group of {@code JButton}s, a {@link WizardPanel}, and
+ * a {@link WizardModel}. The buttons are used to control the page turning and
+ * finish actions of the panel. The controller will attach appropriate listeners
+ * to the buttons and use these to modify the current page in the model or
+ * finish the wizard.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0

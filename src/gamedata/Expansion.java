@@ -113,10 +113,9 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * @deprecated This method is provided to ease migration from SE 2.x. It is
      * equivalent to calling {@code getSymbol( inverse ? 1 : 0 )}.
      *
-     * @param inverse if {@code true}, return the symbol for dark
-     * backgrounds
-     * @return the 0th (if {@code false}) or 1st (if {@code true})
-     * symbol for the expansion
+     * @param inverse if {@code true}, return the symbol for dark backgrounds
+     * @return the 0th (if {@code false}) or 1st (if {@code true}) symbol for
+     * the expansion
      * @see #getSymbol(int)
      */
     public BufferedImage getSymbol(boolean inverse) {
@@ -140,10 +139,10 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      *
      * @param customSymbolIndex the index into the passed in array of custom
      * symbols
-     * @return the requested symbol, or {@code null} if there is no symbol
-     * at that index
-     * @throws IllegalArgumentException if {@code customSymbolIndex} is
-     * less than 0
+     * @return the requested symbol, or {@code null} if there is no symbol at
+     * that index
+     * @throws IllegalArgumentException if {@code customSymbolIndex} is less
+     * than 0
      */
     public BufferedImage getSymbol(int customSymbolIndex) {
         if (customSymbolIndex < 0) {
@@ -216,7 +215,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
                 matches.add(allExps[i]);
             }
         }
-        Expansion[] e = matches.toArray(new Expansion[matches.size()]);
+        Expansion[] e = matches.toArray(new Expansion[0]);
         return e;
     }
 
@@ -295,12 +294,11 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
     }
 
     /**
-     * Return the expansion with the requested identifier, or {@code null}
-     * if there is no such expansion.
+     * Return the expansion with the requested identifier, or {@code null} if
+     * there is no such expansion.
      *
      * @param id the identifier to look up
-     * @return the expansion registered with that identifier, or
-     * {@code null}
+     * @return the expansion registered with that identifier, or {@code null}
      */
     public static synchronized Expansion get(String id) {
         if (id == null) {
@@ -321,8 +319,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * @deprecated This method is provided to ease migration from SE 2.x. It
      * should not be called by plug-in authors.
      *
-     * @param forGame the game to register for, or {@code null} for all
-     * games
+     * @param forGame the game to register for, or {@code null} for all games
      * @param code the expansion code
      * @param nameKey the string table key to use for the name
      * @param iconResource the location of the icon image to use
@@ -555,8 +552,8 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
     /**
      * Sets the expansion symbols associated with a game component by modifying
      * the component's {@link #EXPANSION_SETTING_KEY} private setting. If the
-     * expansion set is {@code null} or empty, then the base game expansion
-     * will be used.
+     * expansion set is {@code null} or empty, then the base game expansion will
+     * be used.
      *
      * @param gc the game component to modify
      * @param exps a set of the expansions to associate with the component

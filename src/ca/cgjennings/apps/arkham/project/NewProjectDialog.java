@@ -28,6 +28,7 @@ import resources.ResourceKit;
  */
 @SuppressWarnings("serial")
 public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDialog {
+
     private static final String PROJ_FOLDER_KEY = "default-project-folder";
 
     /**
@@ -93,7 +94,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         projLocationField = new javax.swing.JTextField();
         helpBtn = new ca.cgjennings.ui.JHelpButton();
         jLabel6 = new javax.swing.JLabel();
-        formatCombo = new javax.swing.JComboBox();
+        formatCombo = new javax.swing.JComboBox<>();
         jTip2 = new ca.cgjennings.ui.JTip();
         folderField = new ca.cgjennings.ui.JFileField();
         folderField.setFileType( FileType.PROJECT_CONTAINER );
@@ -145,7 +146,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
 
         jLabel6.setText(string( "prj-l-new-proj-pkg" )); // NOI18N
 
-        formatCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "prj-cb-new-pkg-0", "prj-cb-new-pkg-1" }));
+        formatCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "prj-cb-new-pkg-0", "prj-cb-new-pkg-1" }));
         formatCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 formatComboActionPerformed(evt);
@@ -357,7 +358,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
     private javax.swing.JLabel errorLabel;
     private ca.cgjennings.ui.JFileField folderField;
     private javax.swing.JLabel folderLabel;
-    private javax.swing.JComboBox formatCombo;
+    private javax.swing.JComboBox<String> formatCombo;
     private ca.cgjennings.ui.JHelpButton helpBtn;
     private ca.cgjennings.ui.JHeading jHeading1;
     private javax.swing.JLabel jLabel1;

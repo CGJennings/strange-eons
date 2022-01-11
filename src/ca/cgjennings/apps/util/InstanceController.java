@@ -51,7 +51,8 @@ public class InstanceController implements Runnable {
                         out.writeInt(args.length);
                         for (String arg : args) {
                             out.writeUTF(arg);
-                        }   response = in.readUTF();
+                        }
+                        response = in.readUTF();
                     }
                 }
 
@@ -88,7 +89,7 @@ public class InstanceController implements Runnable {
             l.parseInstanceArguments(initial, args);
         } catch (Throwable t) {
             System.err.println("InstanceControllerListener: exception while parsing arguments");
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
     }
 

@@ -48,6 +48,7 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 final class QuickscriptDialog extends javax.swing.JDialog {
+
     /**
      * Creates a new Quickscript dialog
      */

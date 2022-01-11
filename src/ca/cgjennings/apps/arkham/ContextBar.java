@@ -203,8 +203,8 @@ public final class ContextBar {
     /**
      * Sets the buttons included on the context bar.
      *
-     * @param buttons an array of Button objects; use {@code null} to
-     * insert a separator
+     * @param buttons an array of Button objects; use {@code null} to insert a
+     * separator
      */
     public void setButtons(Button... buttons) {
         this.buttons = buttons.clone();
@@ -236,8 +236,7 @@ public final class ContextBar {
      * instead of an ID to insert a separator.
      *
      * @param buttonDesc a string in the format described above
-     * @param skipInvalidButtons if {@code true}, invalid IDs will be
-     * skipped
+     * @param skipInvalidButtons if {@code true}, invalid IDs will be skipped
      * @return an array of buttons; {@code null} will be used to indicate
      * separators
      * @throws IllegalArgumentException if the format was invalid and
@@ -263,7 +262,7 @@ public final class ContextBar {
                 }
             }
         }
-        return parsed.toArray(new Button[parsed.size()]);
+        return parsed.toArray(new Button[0]);
     }
 
     /**
@@ -447,8 +446,8 @@ public final class ContextBar {
     /**
      * Enables or disabled the tool bar.
      *
-     * @param enable if {@code true} the tool bar will be created and
-     * shown; otherwise it will be hidden and associated resources will be freed
+     * @param enable if {@code true} the tool bar will be created and shown;
+     * otherwise it will be hidden and associated resources will be freed
      */
     public void setEnabled(boolean enable) {
         if (enable) {
@@ -463,8 +462,8 @@ public final class ContextBar {
     }
 
     /**
-     * Returns {@code true} if the tool bar is currently enabled. When the
-     * tool bar is enabled, it will automatically pop up over the current markup
+     * Returns {@code true} if the tool bar is currently enabled. When the tool
+     * bar is enabled, it will automatically pop up over the current markup
      * target.
      *
      * @return {@code true} if the tool bar is enabled
@@ -486,8 +485,8 @@ public final class ContextBar {
     }
 
     /**
-     * Returns {@code true} if the tool bar is currently collapsed (only
-     * the button that expands the tool bar is visible).
+     * Returns {@code true} if the tool bar is currently collapsed (only the
+     * button that expands the tool bar is visible).
      *
      * @return {@code true} if the tool bar is collapsed
      */
@@ -916,23 +915,19 @@ public final class ContextBar {
     private boolean isLowTransparency;
 
     /**
-     * Returns {@code true} if the pointer is currently over the context
-     * bar.
+     * Returns {@code true} if the pointer is currently over the context bar.
      *
-     * @return {@code true} if there is a pointer on this platform and it
-     * is over the context bar
+     * @return {@code true} if there is a pointer on this platform and it is
+     * over the context bar
      */
     public boolean isPointerOverBar() {
         return pointerIsOverBar;
     }
     private boolean pointerIsOverBar;
 
-    private Timer autoexpandTimer = new Timer(750, new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (window != null && isCollapsed()) {
-                setCollapsed(false);
-            }
+    private Timer autoexpandTimer = new Timer(750, (evt) -> {
+        if (window != null && isCollapsed()) {
+            setCollapsed(false);
         }
     });
 
@@ -1063,14 +1058,16 @@ public final class ContextBar {
     }
 
     /**
-     * Removes a previously registered button by its ID.
-     * Has no effect if no such button is registered.
+     * Removes a previously registered button by its ID. Has no effect if no
+     * such button is registered.
      *
      * @param id the ID of the button to remove
      */
     public static void unregisterButton(final String id) {
-       final Button b = templates.get(id) ;
-       if (b != null) unregisterButton(b);
+        final Button b = templates.get(id);
+        if (b != null) {
+            unregisterButton(b);
+        }
     }
 
     /**
@@ -1101,8 +1098,8 @@ public final class ContextBar {
     }
 
     /**
-     * Returns the registered button with the given ID, or {@code null} if
-     * there is no such button.
+     * Returns the registered button with the given ID, or {@code null} if there
+     * is no such button.
      *
      * @param id the button ID to match
      * @return the button with the requested ID, if registered
@@ -1194,24 +1191,24 @@ public final class ContextBar {
         void onDetach(Context context);
 
         /**
-         * Returns {@code true} if the button should be enabled in the
-         * current context.
+         * Returns {@code true} if the button should be enabled in the current
+         * context.
          *
          * @param context information about the current context
-         * @return {@code true} if the button should be enabled (ignored if
-         * not visible)
+         * @return {@code true} if the button should be enabled (ignored if not
+         * visible)
          */
         boolean isEnabledInCurrentContext(Context context);
 
         /**
-         * Returns {@code true} if the button should be visible in the
-         * current context. A button should be invisible if it can never be
-         * enabled in the current context, and disabled if it is not currently
-         * usable due to a temporary restriction. For example, any text field
-         * can be copied from if there is an active selection, so a copy button
-         * should always be visible but should be enabled only if there is a
-         * selection. On the other hand, a command that only works for script
-         * code should be visible only when editing a script.
+         * Returns {@code true} if the button should be visible in the current
+         * context. A button should be invisible if it can never be enabled in
+         * the current context, and disabled if it is not currently usable due
+         * to a temporary restriction. For example, any text field can be copied
+         * from if there is an active selection, so a copy button should always
+         * be visible but should be enabled only if there is a selection. On the
+         * other hand, a command that only works for script code should be
+         * visible only when editing a script.
          *
          * @param context information about the current context
          * @return {@code true} if the button should be visible
@@ -1336,21 +1333,21 @@ public final class ContextBar {
         private boolean autohide;
 
         /**
-         * Creates a new {@code CommandButton} for the specified command.
-         * The button's unique ID will be determined by reading the command's
+         * Creates a new {@code CommandButton} for the specified command. The
+         * button's unique ID will be determined by reading the command's
          * {@link AbstractCommand#BUTTON_ID_KEY} key.
          *
          * @param command the command to generate a button for
-         * @throws NullPointerException if the command is {@code null} or
-         * the command does not define a button ID value
+         * @throws NullPointerException if the command is {@code null} or the
+         * command does not define a button ID value
          */
         public CommandButton(AbstractCommand command) {
             this(null, command);
         }
 
         /**
-         * Creates a new {@code CommandButton} for the specified command.
-         * The command will use the specified ID.
+         * Creates a new {@code CommandButton} for the specified command. The
+         * command will use the specified ID.
          *
          * @param command the command to generate a button for
          * @param id the unique ID to use for the button
@@ -1595,15 +1592,14 @@ public final class ContextBar {
         }
 
         /**
-         * Returns {@code true} if the context bar is attached to some kind
-         * of text editor, and that editor supports more than a single line of
-         * text. For example, a context bar attached to a
-         * {@code JTextField} would return {@code false}, while a
-         * context bar attached to a {@code JTextArea} would return
-         * {@code true}.
+         * Returns {@code true} if the context bar is attached to some kind of
+         * text editor, and that editor supports more than a single line of
+         * text. For example, a context bar attached to a {@code JTextField}
+         * would return {@code false}, while a context bar attached to a
+         * {@code JTextArea} would return {@code true}.
          *
-         * @return {@code true} if the context bar is attached to a
-         * multi-line text editor
+         * @return {@code true} if the context bar is attached to a multi-line
+         * text editor
          */
         public boolean isMultipleLineTextEditor() {
             return isMultiline;
@@ -1621,8 +1617,8 @@ public final class ContextBar {
          * }
          * </pre>
          *
-         * @return the type of code being edited, or {@code null}; if code
-         * is being edited but the type is indeterminate, script code
+         * @return the type of code being edited, or {@code null}; if code is
+         * being edited but the type is indeterminate, script code
          * ({@code CodeType.JAVASCRIPT}) is assumed
          */
         public CodeType getCodeType() {
@@ -1859,24 +1855,24 @@ public final class ContextBar {
     /**
      * By default, the context bar appears above the control that it currently
      * affects. Setting a client property with this name to
-     * {@code java.lang.Boolean.TRUE} will cause the bar to appear below
-     * the control instead.
+     * {@code java.lang.Boolean.TRUE} will cause the bar to appear below the
+     * control instead.
      */
     public static final String BAR_BELOW_PROPERTY = "contextbar-below";
 
     /**
      * By default, the context bar appears outside of the control that it
      * currently affects. Setting a client property with this name to
-     * {@code java.lang.Boolean.TRUE} will cause the bar to appear inside
-     * the control instead.
+     * {@code java.lang.Boolean.TRUE} will cause the bar to appear inside the
+     * control instead.
      */
     public static final String BAR_INSIDE_PROPERTY = "contextbar-inside";
 
     /**
      * By default, the context bar appears on the trailing edge of the the
      * control that it currently affects. Setting a client property with this
-     * name to {@code java.lang.Boolean.TRUE} will cause the bar to appear
-     * on the leading side instead.
+     * name to {@code java.lang.Boolean.TRUE} will cause the bar to appear on
+     * the leading side instead.
      */
     public static final String BAR_LEADING_SIDE_PROPERTY = "contextbar-leading";
 
@@ -1909,18 +1905,18 @@ public final class ContextBar {
          * must be in screen coordinates. The context bar will be located
          * relative to the returned rectangle as if that rectangle were the
          * bounding rectangle of the target component. For example, if the
-         * {@link #BAR_BELOW_PROPERTY} is set to {@code true}, then the bar
-         * will be placed below the bottom of the returned rectangle. If this
-         * method returns {@code null}, then the context bar will be shown
-         * at its normal location.
+         * {@link #BAR_BELOW_PROPERTY} is set to {@code true}, then the bar will
+         * be placed below the bottom of the returned rectangle. If this method
+         * returns {@code null}, then the context bar will be shown at its
+         * normal location.
          *
          * @param bar the context bar that is being positioned
          * @param barWidth the width of the context bar window, in pixels
          * @param barHeight the height of the context bar window, in pixels
          * @param target the component that the context bar is attached to
          * @return the rectangle, in screen coordinates, that the bar will be
-         * positioned relative to, or {@code null} to use the target
-         * component's bounding rectangle
+         * positioned relative to, or {@code null} to use the target component's
+         * bounding rectangle
          * @see #BAR_CUSTOM_LOCATION_PROPERTY
          */
         Rectangle getContextBarRectangle(ContextBar bar, int barWidth, int barHeight, JComponent target);

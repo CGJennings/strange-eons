@@ -72,7 +72,7 @@ public class TileSet {
      * @return all added tile set resources
      */
     public static String[] getTileSets() {
-        return sets.toArray(new String[sets.size()]);
+        return sets.toArray(new String[0]);
     }
 
     /**
@@ -200,9 +200,9 @@ public class TileSet {
         }
 
         /**
-         * Returns the name of the tile. If the tile name starts with
-         * {@code @} in the tile set file, this name will already be
-         * converted into its localized form.
+         * Returns the name of the tile. If the tile name starts with {@code @}
+         * in the tile set file, this name will already be converted into its
+         * localized form.
          *
          * @return the (possibly localized) name of the tile
          */
@@ -267,8 +267,8 @@ public class TileSet {
         }
 
         /**
-         * Returns the credits for the tile, or {@code null} if the tile
-         * doesn't specify any credits.
+         * Returns the credits for the tile, or {@code null} if the tile doesn't
+         * specify any credits.
          *
          * @return the credits for the tile design
          */
@@ -290,8 +290,8 @@ public class TileSet {
          * Returns the tile class of the tile. This determines the tile's
          * default snap class, along with other properties.
          *
-         * @return the tile class, as determined by the entry's
-         * {@code class} key
+         * @return the tile class, as determined by the entry's {@code class}
+         * key
          */
         public TileClass getTileClass() {
             return tileClass;
@@ -468,18 +468,18 @@ public class TileSet {
                     case "ppi":
                     case "dpi":
                         try {
-                            en.resolution = Double.valueOf(prop[1]);
-                        } catch (NumberFormatException e) {
-                            error("invalid resolution: " + prop[1]);
-                        }
-                        break;
+                        en.resolution = Double.valueOf(prop[1]);
+                    } catch (NumberFormatException e) {
+                        error("invalid resolution: " + prop[1]);
+                    }
+                    break;
                     case "class":
                         try {
-                            en.tileClass = TileClass.valueOf(prop[1].toUpperCase(Locale.CANADA));
-                        } catch (IllegalArgumentException e) {
-                            error("invalid class: " + prop[1]);
-                        }
-                        break;
+                        en.tileClass = TileClass.valueOf(prop[1].toUpperCase(Locale.CANADA));
+                    } catch (IllegalArgumentException e) {
+                        error("invalid class: " + prop[1]);
+                    }
+                    break;
                     case "credit":
                         en.credit = prop[1];
                         if (en.credit.isEmpty()) {
@@ -503,24 +503,24 @@ public class TileSet {
                         break;
                     case "outline":
                         try {
-                            String[] outline = prop[1].trim().split("\\s*;\\s*");
-                            en.outlineWidth = Float.valueOf(outline[0]);
-                            if (outline.length > 1) {
-                                en.outlineColor = Settings.colour(outline[1]);
-                            }
-                            if (outline.length > 2) {
-                                en.outlineCap = LineCap.valueOf(outline[2].toUpperCase(Locale.CANADA));
-                            }
-                            if (outline.length > 3) {
-                                en.outlineJoin = LineJoin.valueOf(outline[3].toUpperCase(Locale.CANADA));
-                            }
-                            if (outline.length > 4) {
-                                en.outlineDash = DashPattern.valueOf(outline[4].toUpperCase(Locale.CANADA));
-                            }
-                        } catch (Exception e) {
-                            error("invalid outline: " + prop[1]);
+                        String[] outline = prop[1].trim().split("\\s*;\\s*");
+                        en.outlineWidth = Float.valueOf(outline[0]);
+                        if (outline.length > 1) {
+                            en.outlineColor = Settings.colour(outline[1]);
                         }
-                        break;
+                        if (outline.length > 2) {
+                            en.outlineCap = LineCap.valueOf(outline[2].toUpperCase(Locale.CANADA));
+                        }
+                        if (outline.length > 3) {
+                            en.outlineJoin = LineJoin.valueOf(outline[3].toUpperCase(Locale.CANADA));
+                        }
+                        if (outline.length > 4) {
+                            en.outlineDash = DashPattern.valueOf(outline[4].toUpperCase(Locale.CANADA));
+                        }
+                    } catch (Exception e) {
+                        error("invalid outline: " + prop[1]);
+                    }
+                    break;
                     case "game":
                         Game g = Game.get(prop[1]);
                         if (g == null) {
