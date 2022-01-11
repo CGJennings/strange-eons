@@ -98,7 +98,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
 
         kitSelectPanel = new javax.swing.JPanel();
         javax.swing.JScrollPane kitListScroll = new javax.swing.JScrollPane();
-        kitList = new javax.swing.JList();
+        kitList = new javax.swing.JList<>();
         javax.swing.JScrollPane kitDescScroll = new javax.swing.JScrollPane();
         kitDesc = new EditorPane();
         javax.swing.JLabel typeLabel = new javax.swing.JLabel();
@@ -320,7 +320,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton cancelBtn2;
     private javax.swing.JEditorPane kitDesc;
-    private javax.swing.JList kitList;
+    private javax.swing.JList<KitListItem> kitList;
     private javax.swing.JPanel kitSelectPanel;
     private javax.swing.JButton nextBtn;
     private javax.swing.JButton okBtn;
@@ -369,7 +369,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
         WizardKit[] sorted = kits.toArray(new WizardKit[0]);
         Arrays.sort(sorted, sorter);
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<KitListItem> m = new DefaultListModel<>();
         for (WizardKit k : sorted) {
             m.addElement(new KitListItem(k));
         }

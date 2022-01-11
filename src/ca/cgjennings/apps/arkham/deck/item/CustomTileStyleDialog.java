@@ -122,7 +122,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        endcapCombo = new javax.swing.JComboBox();
+        endcapCombo = new javax.swing.JComboBox<>();
         dashCombo = new javax.swing.JComboBox();
         jLabel6 = new javax.swing.JLabel();
         thicknessField = new javax.swing.JSpinner();
@@ -145,7 +145,6 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
 
         opacitySlider.setMajorTickSpacing(500);
         opacitySlider.setMaximum(1000);
-        opacitySlider.setOpaque(false);
         opacitySlider.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 opacitySliderStateChanged(evt);
@@ -185,8 +184,8 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(opacityPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(opacityLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
-                    .addComponent(opacitySlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE))
+                    .addComponent(opacityLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
+                    .addComponent(opacitySlider, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -239,7 +238,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pointsLabel))
                     .addComponent(cropMarkBox))
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -264,7 +263,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
 
         jLabel5.setText(string("style-li-corners")); // NOI18N
 
-        endcapCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "style-li-round", "style-li-square", "style-li-bevel" }));
+        endcapCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "style-li-round", "style-li-square", "style-li-bevel" }));
 
         dashCombo.setMaximumRowCount(12);
 
@@ -307,7 +306,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dashCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(string("style-li-appearance"))); // NOI18N
@@ -345,7 +344,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(colourLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(colourButton))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getSize()-2f));
@@ -490,7 +489,7 @@ private void colourLabelcolourButtonActionPerformed(java.awt.event.ActionEvent e
     private javax.swing.JButton colourLabel;
     private javax.swing.JCheckBox cropMarkBox;
     private javax.swing.JComboBox dashCombo;
-    private javax.swing.JComboBox endcapCombo;
+    private javax.swing.JComboBox<String> endcapCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

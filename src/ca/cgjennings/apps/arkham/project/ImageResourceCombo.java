@@ -25,7 +25,7 @@ import resources.ResourceKit;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class ImageResourceCombo extends JIconComboBox {
+public class ImageResourceCombo extends JIconComboBox<Object> {
 
     private File base;
 
@@ -55,7 +55,7 @@ public class ImageResourceCombo extends JIconComboBox {
     }
 
     public void setResourceBase(File taskFolder) {
-        DefaultComboBoxModel m = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Object> m = new DefaultComboBoxModel<>();
         m.addElement(new Resource(null, ""));
 
         if (taskFolder == null) {
@@ -152,7 +152,7 @@ public class ImageResourceCombo extends JIconComboBox {
         }
     }
 
-    private void scanFolder(File parent, DefaultComboBoxModel m, boolean recurse, boolean rootMode, String path) {
+    private void scanFolder(File parent, DefaultComboBoxModel<Object> m, boolean recurse, boolean rootMode, String path) {
         for (File kid : parent.listFiles()) {
             if (kid.isDirectory()) {
                 if (!recurse) {

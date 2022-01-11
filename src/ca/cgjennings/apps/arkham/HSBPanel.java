@@ -139,7 +139,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
      * @throws Settings.ParseError if a tint string value cannot be parsed
      */
     public void setPresets(Object... presets) {
-        presetModel = new DefaultComboBoxModel();
+        presetModel = new DefaultComboBoxModel<>();
         if (presets == null || presets.length == 0) {
             presetList = null;
             presetNames = null;
@@ -190,13 +190,6 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         presetCombo.setModel(presetModel);
     }
 
-    /*
-			for( int i = 0; i < tints.size(); ++i ) {
-			if( Arrays.equals( tint, tints.get( i ) ) ) {
-				HSBPanel.presetCombo.setSelectedIndex( i );
-			}
-		}
-     */
     /**
      * Returns the number of presets, or 0 if none are set.
      *
@@ -256,7 +249,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     private Object[] presetList;
     private String[] presetNames;
     private float[][] presetValues;
-    private DefaultComboBoxModel presetModel;
+    private DefaultComboBoxModel<String> presetModel;
 
     /**
      * Sets the selected HSB value to match the specified color.
@@ -314,7 +307,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         SSlider = new javax.swing.JSlider();
         BField = new javax.swing.JTextField();
         HField = new javax.swing.JTextField();
-        presetCombo = new javax.swing.JComboBox();
+        presetCombo = new javax.swing.JComboBox<>();
         hueLabel = new ca.cgjennings.ui.HueLabel();
         jLabel5 = new javax.swing.JLabel();
         SField = new javax.swing.JTextField();
@@ -522,7 +515,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
             .addGroup(swatchPanelLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addGroup(swatchPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(swatch, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                    .addComponent(swatch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, swatchPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(1, 1, 1)
@@ -576,6 +569,9 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         else if (evt.getSource() == HField) {
             HSBPanel.this.HSBFieldsActionPerformed(evt);
         }
+        else if (evt.getSource() == presetCombo) {
+            HSBPanel.this.presetComboActionPerformed(evt);
+        }
         else if (evt.getSource() == SField) {
             HSBPanel.this.HSBFieldsActionPerformed(evt);
         }
@@ -587,9 +583,6 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         }
         else if (evt.getSource() == pasteTintItem) {
             HSBPanel.this.pasteTintItemActionPerformed(evt);
-        }
-        else if (evt.getSource() == presetCombo) {
-            HSBPanel.this.presetComboActionPerformed(evt);
         }
     }
 
@@ -984,7 +977,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenuItem pasteTintItem;
-    javax.swing.JComboBox presetCombo;
+    javax.swing.JComboBox<String> presetCombo;
     private javax.swing.JLabel presetLabel;
     private ca.cgjennings.ui.SaturationLabel saturationLabel;
     private javax.swing.JLabel swatch;

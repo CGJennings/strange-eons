@@ -37,8 +37,8 @@ class CLEImageChooser extends javax.swing.JDialog implements AgnosticDialog {
             portraitInfoLabel.setVisible(false);
         }
 
-        existingCombo.setModel(new DefaultComboBoxModel(images));
-        destCombo.setModel(new DefaultComboBoxModel(folders));
+        existingCombo.setModel(new DefaultComboBoxModel<>(images));
+        destCombo.setModel(new DefaultComboBoxModel<>(folders));
 
         if (images.length > 0) {
             existingCombo.setSelectedIndex(0);
@@ -76,11 +76,11 @@ class CLEImageChooser extends javax.swing.JDialog implements AgnosticDialog {
         importBtn = new javax.swing.JRadioButton();
         fileLabel = new javax.swing.JLabel();
         useExistingBtn = new javax.swing.JRadioButton();
-        existingCombo = new javax.swing.JComboBox();
+        existingCombo = new javax.swing.JComboBox<>();
         emptyBtn = new javax.swing.JRadioButton();
         portraitInfoLabel = new javax.swing.JLabel();
         destLabel = new javax.swing.JLabel();
-        destCombo = new javax.swing.JComboBox();
+        destCombo = new javax.swing.JComboBox<>();
         fileField = new ca.cgjennings.ui.JFileField();
         optionsPanel = new javax.swing.JPanel();
         templateCheck = new javax.swing.JCheckBox();
@@ -256,7 +256,7 @@ class CLEImageChooser extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(optionsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
                     .addComponent(okBtn))
@@ -319,10 +319,10 @@ class CLEImageChooser extends javax.swing.JDialog implements AgnosticDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JComboBox destCombo;
+    private javax.swing.JComboBox<CardLayoutEditor.InternalImage> destCombo;
     private javax.swing.JLabel destLabel;
     private javax.swing.JRadioButton emptyBtn;
-    private javax.swing.JComboBox existingCombo;
+    private javax.swing.JComboBox<CardLayoutEditor.InternalImage> existingCombo;
     private ca.cgjennings.ui.JFileField fileField;
     private javax.swing.JLabel fileLabel;
     private javax.swing.JRadioButton importBtn;

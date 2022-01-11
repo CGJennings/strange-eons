@@ -13,6 +13,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -180,6 +181,9 @@
             <Property name="editable" type="boolean" value="true"/>
             <Property name="maximumRowCount" type="int" value="12"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;CardLayoutEditor.InternalImage&gt;"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.JRadioButton" name="emptyBtn">
           <Properties>
@@ -215,6 +219,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="destCombo">
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;CardLayoutEditor.InternalImage&gt;"/>
+          </AuxValues>
         </Component>
         <Component class="ca.cgjennings.ui.JFileField" name="fileField">
           <Properties>

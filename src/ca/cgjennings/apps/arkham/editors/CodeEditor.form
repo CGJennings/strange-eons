@@ -453,6 +453,9 @@
                         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="navListMousePressed"/>
                         <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="navListValueChanged"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;NavigationPoint&gt;"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>

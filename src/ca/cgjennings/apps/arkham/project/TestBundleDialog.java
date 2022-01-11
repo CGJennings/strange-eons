@@ -311,7 +311,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JTextField argsField;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JCheckBox doNotLoadPluginsCheck;
-    private javax.swing.JComboBox gameCombo;
+    private javax.swing.JComboBox<LanguageCodeDescriptor> gameCombo;
     private javax.swing.JTextField gameLocField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -324,7 +324,7 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JTextField jvmField;
     private javax.swing.JComboBox logLevelCombo;
     private javax.swing.JButton okBtn;
-    private javax.swing.JComboBox uiCombo;
+    private javax.swing.JComboBox<LanguageCodeDescriptor> uiCombo;
     private javax.swing.JTextField uiLocField;
     // End of variables declaration//GEN-END:variables
     

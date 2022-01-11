@@ -535,8 +535,6 @@ public final class Actions {
         register(new ConvertSpellingDictionary(), PRIORITY_IMPORT_EXPORT);
         register(new PublishBundle(), PRIORITY_IMPORT_EXPORT);
 
-// TODO: fix or remove
-//		register( new SetExpansionSymbol(), PRIORITY_STANDARD_LAST );
         register(new PluginImportAction(), PRIORITY_STANDARD_LAST);
         register(new ChangeIcon(), PRIORITY_STANDARD_LAST);
         register(new Export(), PRIORITY_STANDARD_LAST);

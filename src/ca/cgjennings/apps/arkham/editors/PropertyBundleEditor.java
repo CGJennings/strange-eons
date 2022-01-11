@@ -63,7 +63,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private Key curKey;
     private boolean changingKeys;
 
-    private DefaultListModel keyModel = new DefaultListModel();
+    private DefaultListModel<Key> keyModel = new DefaultListModel<>();
     private HashMap<String, Key> keyMap = new HashMap<>();
 
     public synchronized static SpellingChecker loadDictionaryWithFeedback(Locale loc) {
@@ -428,7 +428,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         jPanel1 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        keyList = new javax.swing.JList();
+        keyList = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
         addKeyBtn = new javax.swing.JButton();
         deleteKeyBtn = new javax.swing.JButton();
@@ -460,8 +460,6 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         northPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.darkGray));
 
         ca.cgjennings.ui.ArcBorder arcBorder1 = new ca.cgjennings.ui.ArcBorder();
-        arcBorder1.setArcEdges(2);
-        arcBorder1.setThickness(1);
         overlayPanel.setBorder(arcBorder1);
         overlayPanel.setLayout(new java.awt.GridBagLayout());
 
@@ -1125,7 +1123,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSplitPane jSplitPane1;
-    private javax.swing.JList keyList;
+    private javax.swing.JList<Key> keyList;
     private javax.swing.JLabel langLabel;
     private javax.swing.JTextArea languageField;
     private javax.swing.JButton nextKeyBtn;

@@ -917,6 +917,9 @@
                               <Events>
                                 <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="scriptListValueChanged"/>
                               </Events>
+                              <AuxValues>
+                                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                              </AuxValues>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -1191,6 +1194,9 @@
                                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="stackListMouseClicked"/>
                                     <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="stackValueChanged"/>
                                   </Events>
+                                  <AuxValues>
+                                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;StackFrame&gt;"/>
+                                  </AuxValues>
                                 </Component>
                               </SubComponents>
                             </Container>
@@ -1749,6 +1755,9 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="infoSelectComboActionPerformed"/>
                       </Events>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                      </AuxValues>
                     </Component>
                     <Component class="javax.swing.JButton" name="refreshBtn">
                       <Properties>

@@ -35,7 +35,9 @@ class CLEImportLayersDialog extends javax.swing.JDialog implements AgnosticDialo
         };
         fileField.getDocument().addDocumentListener(li);
 
-        destCombo.setModel(new DefaultComboBoxModel(folders));
+        @SuppressWarnings("unchecked")
+        final DefaultComboBoxModel<CardLayoutEditor.InternalImage> folderModel = new DefaultComboBoxModel<>(folders);
+        destCombo.setModel(folderModel);
     }
 
     private void updateOKBtn() {
@@ -59,7 +61,7 @@ class CLEImportLayersDialog extends javax.swing.JDialog implements AgnosticDialo
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        destCombo = new javax.swing.JComboBox();
+        destCombo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -157,7 +159,7 @@ class CLEImportLayersDialog extends javax.swing.JDialog implements AgnosticDialo
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
     private javax.swing.JCheckBox deleteExistingCheck;
-    private javax.swing.JComboBox destCombo;
+    private javax.swing.JComboBox<CardLayoutEditor.InternalImage> destCombo;
     private ca.cgjennings.ui.JFileField fileField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

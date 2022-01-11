@@ -266,13 +266,13 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
         javax.swing.JLabel prefixLabel = new javax.swing.JLabel();
         layerDynPropPanel = new javax.swing.JPanel();
         imagePanel = new javax.swing.JPanel();
-        imageResCombo = new javax.swing.JComboBox();
+        imageResCombo = new javax.swing.JComboBox<>();
         resLabel = new javax.swing.JLabel();
         textPropPanel = new javax.swing.JPanel();
         cupX1Field = new javax.swing.JSpinner();
         dx1Label = new javax.swing.JLabel();
         cupYField = new javax.swing.JSpinner();
-        shapeCombo = new javax.swing.JComboBox();
+        shapeCombo = new javax.swing.JComboBox<>();
         shapeLabel = new javax.swing.JLabel();
         dx2Label = new javax.swing.JLabel();
         ySplitLabel = new javax.swing.JLabel();
@@ -289,7 +289,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
         upBtn = new javax.swing.JButton();
         deleteBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        layerList = new javax.swing.JList();
+        layerList = new javax.swing.JList<>();
         javax.swing.JLabel layerListTitle = new javax.swing.JLabel();
         cardPropPanel = new javax.swing.JPanel();
         javax.swing.JLabel cardPropTitle = new javax.swing.JLabel();
@@ -543,7 +543,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
             }
         });
 
-        shapeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "cle-shape0", "cle-shape1", "cle-shape2" }));
+        shapeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "cle-shape0", "cle-shape1", "cle-shape2" }));
         shapeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 shapeComboActionPerformed(evt);
@@ -961,7 +961,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
         ArrayList<InternalImage> images = new ArrayList<>();
         createImageListImpl(images, resourceFolder, "", foldersOnly);
 
-        InternalImage[] list = images.toArray(new InternalImage[images.size()]);
+        InternalImage[] list = images.toArray(new InternalImage[0]);
         java.util.Arrays.sort(list);
         return list;
     }
@@ -1020,7 +1020,8 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
             internalImages = images;
 
             Object sel = imageResCombo.getSelectedItem();
-            imageResCombo.setModel(new DefaultComboBoxModel(images));
+            final DefaultComboBoxModel<InternalImage> m = new DefaultComboBoxModel<>(images);
+            imageResCombo.setModel(m);
             imageResCombo.setSelectedItem(sel);
         }
     }
@@ -1674,7 +1675,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
 
     @Override
     protected void clearImpl() {
-        layers = new DefaultListModel();
+        layers = new DefaultListModel<Layer>();
         Layer layer = new Layer();
         layers.addElement(layer);
         layerList.setModel(layers);
@@ -1701,13 +1702,13 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
     private javax.swing.JSpinner hField;
     private javax.swing.JLabel heightLabel;
     private javax.swing.JPanel imagePanel;
-    private javax.swing.JComboBox imageResCombo;
+    private javax.swing.JComboBox<InternalImage> imageResCombo;
     private javax.swing.JButton importPSDBtn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField keyField;
     private javax.swing.JLabel keyLabel;
     private javax.swing.JPanel layerDynPropPanel;
-    private javax.swing.JList layerList;
+    private javax.swing.JList<Layer> layerList;
     private javax.swing.JPanel layerListPanel;
     private javax.swing.JPanel layerStaticPropPanel;
     private javax.swing.JSplitPane listSplitter;
@@ -1716,7 +1717,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
     private javax.swing.JLabel regionLabel;
     private javax.swing.JLabel resLabel;
     private javax.swing.JCheckBox resizeCheck;
-    private javax.swing.JComboBox shapeCombo;
+    private javax.swing.JComboBox<String> shapeCombo;
     private javax.swing.JLabel shapeLabel;
     private javax.swing.JCheckBox showLayerCheck;
     private javax.swing.JPanel textPropPanel;
@@ -2216,7 +2217,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
         }
     }
 
-    private DefaultListModel layers = new DefaultListModel();
+    private DefaultListModel<Layer> layers = new DefaultListModel<>();
 
     /**
      * Returns the index of the layer that will represent the card template.

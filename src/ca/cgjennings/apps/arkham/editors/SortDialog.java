@@ -31,7 +31,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
         AbstractGameComponentEditor.localizeComboBoxLabels(orderBox, null);
         orderBox.setSelectedIndex(5);
 
-        DefaultComboBoxModel lazyPlaceholder = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Object> lazyPlaceholder = new DefaultComboBoxModel<>();
         lazyPlaceholder.addElement(string("ced-sort-b-use-other-locale"));
         customLocaleCombo.setModel(lazyPlaceholder);
 
@@ -46,7 +46,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         JUtilities.showWaitCursor(this);
         try {
-            DefaultComboBoxModel m = new DefaultComboBoxModel();
+            DefaultComboBoxModel<Object> m = new DefaultComboBoxModel<>();
             for (Locale loc : Language.getLocales()) {
                 m.addElement(new LanguageCodeDescriptor(loc, false, true));
             }
@@ -75,12 +75,12 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        orderBox = new javax.swing.JComboBox();
+        orderBox = new javax.swing.JComboBox<>();
         langLabel = new javax.swing.JLabel();
         useUIBtn = new javax.swing.JRadioButton();
         useGameBtn = new javax.swing.JRadioButton();
         useCustomBtn = new javax.swing.JRadioButton();
-        customLocaleCombo = new javax.swing.JComboBox();
+        customLocaleCombo = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         delDuplicatesCheck = new javax.swing.JCheckBox();
 
@@ -124,7 +124,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ced-sort-l-ordering" ))); // NOI18N
 
         orderBox.setMaximumRowCount(9);
-        orderBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ced-sort-0", "ced-sort-1", "ced-sort-2", "ced-sort-3", "ced-sort-4", "ced-sort-5", "ced-sort-6", "ced-sort-7", "ced-sort-8" }));
+        orderBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ced-sort-0", "ced-sort-1", "ced-sort-2", "ced-sort-3", "ced-sort-4", "ced-sort-5", "ced-sort-6", "ced-sort-7", "ced-sort-8" }));
         orderBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 orderBoxActionPerformed(evt);
@@ -192,7 +192,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(useCustomBtn)
                     .addComponent(customLocaleCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ced-sort-l-options" ))); // NOI18N
@@ -331,7 +331,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton ascOrderBtn;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JComboBox customLocaleCombo;
+    private javax.swing.JComboBox<Object> customLocaleCombo;
     private javax.swing.JCheckBox delDuplicatesCheck;
     private javax.swing.JRadioButton descOrderBtn;
     private javax.swing.JPanel jPanel1;
@@ -340,7 +340,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JLabel langLabel;
     private javax.swing.ButtonGroup localeGroup;
     private javax.swing.JButton okBtn;
-    private javax.swing.JComboBox orderBox;
+    private javax.swing.JComboBox<String> orderBox;
     private javax.swing.ButtonGroup orderGroup;
     private javax.swing.JRadioButton useCustomBtn;
     private javax.swing.JRadioButton useGameBtn;

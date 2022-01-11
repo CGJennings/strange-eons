@@ -45,23 +45,16 @@ public final class DragManager<T> {
     private DropHandler<T> dropHandler;
 
     // the sets of components managed by this instance that can be dragged from or to
-    private HashSet<JComponent> sources = new HashSet<>(4);
-    private HashSet<JComponent> targets = new HashSet<>(4);
+    private final HashSet<JComponent> sources = new HashSet<>(4);
+    private final HashSet<JComponent> targets = new HashSet<>(4);
 
     // shared listener used to handle drags on all source components
-    private GestureHandler gestureHandler = new GestureHandler();
+    private final GestureHandler gestureHandler = new GestureHandler();
 
     // user configurable properties
-    private Cursor dropCursor = DragSource.DefaultMoveDrop;
-    private Cursor noDropCursor = Cursor.getDefaultCursor();
-    private boolean tokenVisible = !PlatformSupport.PLATFORM_IS_MAC;
-
-    {
-        if (PlatformSupport.PLATFORM_IS_MAC) {
-            dropCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
-            noDropCursor = dropCursor;
-        }
-    }
+    private Cursor dropCursor;
+    private Cursor noDropCursor;
+    private boolean tokenVisible;
 
     // info about the current ("active") drag
     private JComponent aSource; // active drag source
@@ -69,7 +62,7 @@ public final class DragManager<T> {
     private boolean aWasAutoscrolls; // tracks whether source was autoscrolling
     private Cursor aWasCursor; // original cursor at drag start
     private JComponent aTarget; // active drop target, when drag is over one
-    private DragToken aToken; // token being dragged
+    private DragToken<T> aToken; // token being dragged
     private DragWindow aWindow; // window displaying the token
 
     public DragManager(AbstractDragAndDropHandler<T> handler) {
@@ -83,6 +76,15 @@ public final class DragManager<T> {
         if (dropHandler == null) {
             throw new NullPointerException("dropHandler");
         }
+        if (PlatformSupport.PLATFORM_IS_MAC) {
+            dropCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+            noDropCursor = dropCursor;
+            tokenVisible = false;
+        } else {
+            dropCursor = DragSource.DefaultMoveDrop;
+            noDropCursor = Cursor.getDefaultCursor();
+            tokenVisible = true;
+        }        
         this.dragHandler = dragHandler;
         this.dropHandler = dropHandler;
     }
@@ -242,7 +244,7 @@ public final class DragManager<T> {
      * @param target the drop target, or {@code null}
      */
     private void endDrag(JComponent target) {
-        DragToken oToken = aToken;
+        DragToken<T> oToken = aToken;
         JComponent oSource = aSource;
 
         if (aWindow != null) {

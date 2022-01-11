@@ -29,7 +29,7 @@ public class LineSorter {
      * Subclasses can set this to modify the sort order or to apply special
      * sorting based on line tagging.
      */
-    protected Comparator comparator = null;
+    protected Comparator<Object> comparator = null;
 
     /**
      * Sorts an array of strings. Depending on the details of the algorithm, the
@@ -86,14 +86,14 @@ public class LineSorter {
             coll.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
             comparator = coll;
             if (descending) {
-                comparator = new ReverseComparator(comparator);
+                comparator = new ReverseComparator<>(comparator);
             }
         }
     }
 
     public static class SemanticSorter extends LocalizedSorter {
 
-        private Comparator stringComparator;
+        private Comparator<Object> stringComparator;
         private NumberFormat format;
 
         public SemanticSorter() {
@@ -118,7 +118,7 @@ public class LineSorter {
                     final Object k1 = t1.get(i);
                     final Object k2 = t2.get(i);
                     
-                    int tcmp = 0;
+                    int tcmp;
                     if (k1 instanceof String || k2 instanceof String) {
                         tcmp = stringComparator.compare(k1.toString(), k2.toString());
                     } else {
@@ -194,16 +194,16 @@ public class LineSorter {
         }
     }
 
-    private static class ReverseComparator implements Comparator {
+    private static class ReverseComparator<T> implements Comparator<T> {
 
-        private final Comparator cmp;
+        private final Comparator<T> cmp;
 
-        public ReverseComparator(Comparator c) {
+        public ReverseComparator(Comparator<T> c) {
             cmp = c;
         }
 
         @Override
-        public int compare(Object o1, Object o2) {
+        public int compare(T o1, T o2) {
             return -cmp.compare(o1, o2);
         }
     }

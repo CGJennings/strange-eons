@@ -188,7 +188,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
 
         prefCards.removeAll();
 
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<PreferenceCategory> m = new DefaultListModel<>();
         LinkedList<PreferenceCategory> list = main;
         int count = 0;
         for (int type = 0; type < 2; ++type) {
@@ -222,7 +222,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         java.awt.GridBagConstraints gridBagConstraints;
 
         catScroll = new javax.swing.JScrollPane();
-        catList = new javax.swing.JList();
+        catList = new javax.swing.JList<>();
         cardScroll = new javax.swing.JScrollPane();
         prefCards = new javax.swing.JPanel();
         okBtn = new javax.swing.JButton();
@@ -324,7 +324,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
     private javax.swing.JScrollPane cardScroll;
-    private javax.swing.JList catList;
+    private javax.swing.JList<PreferenceCategory> catList;
     private javax.swing.JScrollPane catScroll;
     private ca.cgjennings.ui.JHelpButton helpBtn;
     private javax.swing.JButton okBtn;
