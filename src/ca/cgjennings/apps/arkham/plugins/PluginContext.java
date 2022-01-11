@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.util.Locale;
 import resources.Language;

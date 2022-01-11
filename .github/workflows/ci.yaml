@@ -14,10 +14,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 8
+      - name: Set up JDK
         uses: actions/setup-java@v2
         with:
-          java-version: '8'
+          java-version: '11'
           distribution: 'adopt'
       - name: Compile project
-        run: ant -Dplatforms.JDK_1.8.home=$JDK_HOME compile -noinput -buildfile build.xml
+        run: ant -Dplatforms.JDK_11.home=$JDK_HOME compile -noinput -buildfile build.xml
