@@ -54,7 +54,7 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
             }
         }
 
-        kits = ok.toArray(new PanelKit[ok.size()]);
+        kits = ok.toArray(new PanelKit[0]);
         Arrays.sort(kits);
 
         boolean noConflicts = true;

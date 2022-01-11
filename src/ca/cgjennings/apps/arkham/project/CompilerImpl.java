@@ -53,7 +53,7 @@ class CompilerImpl implements Compile.Compiler {
         SP_INDEX = temp.size();
         temp.add("");
 
-        argBase = temp.toArray(new String[temp.size()]);
+        argBase = temp.toArray(new String[0]);
     }
 
     private int CP_INDEX;

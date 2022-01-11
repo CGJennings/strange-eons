@@ -310,7 +310,7 @@ public class CommandLineParser {
         if (lastOption != null) {
             handleParsingError("Missing value for option " + lastOption.getName());
         }
-        leftOvers = files.toArray(new String[files.size()]);
+        leftOvers = files.toArray(new String[0]);
     }
 
     /**

@@ -74,7 +74,7 @@ class GameObjectImpl implements GameObject {
             }
         }
         Set<String> names = constantMap.keySet();
-        constantNames = names.toArray(new String[names.size()]);
+        constantNames = names.toArray(new String[0]);
         Arrays.sort(constantNames);
     }
 
@@ -133,7 +133,7 @@ class GameObjectImpl implements GameObject {
         }
 
         Set<String> keys = methodMap.keySet();
-        methodNames = keys.toArray(new String[keys.size()]);
+        methodNames = keys.toArray(new String[0]);
         Arrays.sort(methodNames);
     }
     /**

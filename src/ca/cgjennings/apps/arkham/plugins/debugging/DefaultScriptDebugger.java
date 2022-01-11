@@ -423,7 +423,7 @@ public final class DefaultScriptDebugger {
             while (results.size() < command.getArgCount() && (line = r.readLine()) != null) {
                 results.add(line);
             }
-            String[] args = results.toArray(new String[results.size()]);
+            String[] args = results.toArray(new String[0]);
 
             if (args.length != command.getArgCount()) {
                 errorReply(w, "wrong number of arguments to " + command + ": " + args.length);

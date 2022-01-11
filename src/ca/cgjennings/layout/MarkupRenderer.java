@@ -2069,7 +2069,7 @@ public class MarkupRenderer {
             params.add(token.toString());
         }
 
-        return params.toArray(new String[params.size()]);
+        return params.toArray(new String[0]);
     }
 
     /**
@@ -2250,7 +2250,7 @@ public class MarkupRenderer {
         if (line.length() > 0) {
             paras.add(line.toString());
         }
-        return paras.toArray(new String[paras.size()]);
+        return paras.toArray(new String[0]);
     }
 
     /**

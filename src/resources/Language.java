@@ -956,7 +956,7 @@ public class Language implements Iterable<String> {
             add(prefer, getGameLocales());
         }
 
-        Locale[] sorted = prefer.toArray(new Locale[prefer.size()]);
+        Locale[] sorted = prefer.toArray(new Locale[0]);
 
         final Collator col = Language.getInterface().getCollator();
         Arrays.sort(sorted, (Locale o1, Locale o2) -> {

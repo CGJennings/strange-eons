@@ -368,7 +368,7 @@ public class JUtilities {
 
         // :: Make "super listener", "implementing" all the Listener interfaces
         Object superListener = Proxy.newProxyInstance(JUtilities.class.getClassLoader(),
-                listenerInterfaces.toArray(new Class<?>[listenerInterfaces.size()]), handler);
+                listenerInterfaces.toArray(new Class<?>[0]), handler);
 
         // :: Attach "super listener" using all add*Listener methods on supplied component
         for (Method method : addListenerMethods) {

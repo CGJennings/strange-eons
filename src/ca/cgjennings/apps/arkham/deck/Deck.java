@@ -512,7 +512,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * @return the selected items
      */
     public PageItem[] getSelection() {
-        return selection.toArray(new PageItem[selection.size()]);
+        return selection.toArray(new PageItem[0]);
     }
 
     /**

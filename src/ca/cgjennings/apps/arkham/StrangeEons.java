@@ -1004,7 +1004,7 @@ public final class StrangeEons {
                 set.add(ip.getPlugin());
             }
         }
-        return set.toArray(new Plugin[set.size()]);
+        return set.toArray(new Plugin[0]);
     }
 
     /**
@@ -1778,7 +1778,7 @@ public final class StrangeEons {
             if (!allAccepted) {
                 System.exit(10);
             }
-            BundleInstaller.setTestBundles(bundles.toArray(new File[bundles.size()]));
+            BundleInstaller.setTestBundles(bundles.toArray(new File[0]));
         }
 
         if (commandLineArguments.xDisableFilterThreads) {
@@ -2617,7 +2617,7 @@ public final class StrangeEons {
      * currently registered
      */
     public static synchronized ExportContainer[] getRegisteredExportContainers() {
-        return exportContainers.toArray(new ExportContainer[exportContainers.size()]);
+        return exportContainers.toArray(new ExportContainer[0]);
     }
 
     private static final LinkedHashSet<ExportContainer> exportContainers;

@@ -277,7 +277,7 @@ public class Open extends TaskAction {
         if (token.length() > 0) {
             tokens.add(token.toString());
         }
-        return tokens.toArray(new String[tokens.size()]);
+        return tokens.toArray(new String[0]);
     }
 
     @Override
@@ -305,7 +305,7 @@ public class Open extends TaskAction {
                 extensions.add(key.substring("open-rule-".length()));
             }
         }
-        String[] exts = extensions.toArray(new String[extensions.size()]);
+        String[] exts = extensions.toArray(new String[0]);
         java.util.Arrays.sort(exts);
         return exts;
     }

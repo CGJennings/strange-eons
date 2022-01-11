@@ -818,7 +818,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
         pageTab.setSelectedIndex(0);
         updatePageTitles(0);
 
-        final File[] thumbCards = fileList.toArray(new File[fileList.size()]);
+        final File[] thumbCards = fileList.toArray(new File[0]);
         addFilesToCardList(thumbCards);
 
         requestFocusInView(deck.getActivePage().getView());

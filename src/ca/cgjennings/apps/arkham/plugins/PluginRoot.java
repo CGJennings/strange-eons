@@ -509,7 +509,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return an array of the stored plug-in identifiers
      */
     public String[] getPluginIdentifiers() {
-        return pluginIDs.toArray(new String[pluginIDs.size()]);
+        return pluginIDs.toArray(new String[0]);
     }
 
     /**
@@ -656,7 +656,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      */
     public Set<String> getClientPropertyKeys() {
         if (client == null) {
-            return Collections.EMPTY_SET;
+            return Collections.emptySet();
         }
         return Collections.unmodifiableSet(client.getKeySet());
     }
@@ -700,7 +700,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return a (possibly empty) array of error messages
      */
     public String[] getErrors() {
-        return errors.toArray(new String[errors.size()]);
+        return errors.toArray(new String[0]);
     }
 
     /**

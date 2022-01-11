@@ -386,7 +386,7 @@ public class FolderTree extends JTree {
         if (kids.size() == source.length) {
             return source;
         }
-        return kids.toArray(new File[kids.size()]);
+        return kids.toArray(new File[0]);
     }
 
     /**

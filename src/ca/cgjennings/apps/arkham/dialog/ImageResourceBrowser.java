@@ -219,7 +219,7 @@ public class ImageResourceBrowser extends javax.swing.JDialog implements Agnosti
                 jars.addAll(Arrays.asList(BundleInstaller.getDiscoveredBundleFiles()));
                 addImagesFromBundles(jars, resourceList);
 
-                String[] resources = resourceList.toArray(new String[resourceList.size()]);
+                String[] resources = resourceList.toArray(new String[0]);
                 Arrays.sort(resources, Language.getInterface().getCollator());
                 HashMap<String, DefaultMutableTreeNode> folders = new HashMap<>();
 

@@ -216,7 +216,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
                 matches.add(allExps[i]);
             }
         }
-        Expansion[] e = matches.toArray(new Expansion[matches.size()]);
+        Expansion[] e = matches.toArray(new Expansion[0]);
         return e;
     }
 

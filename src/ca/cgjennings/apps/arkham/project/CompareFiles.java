@@ -167,6 +167,6 @@ public class CompareFiles extends TaskAction {
                 }
             }
         }
-        return lines.toArray(new String[lines.size()]);
+        return lines.toArray(new String[0]);
     }
 }

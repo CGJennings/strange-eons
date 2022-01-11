@@ -237,7 +237,7 @@ public abstract class NewTaskType {
      * @return an array of the registered new task types
      */
     public static NewTaskType[] getNewTaskTypes() {
-        NewTaskType[] ntts = types.toArray(new NewTaskType[types.size()]);
+        NewTaskType[] ntts = types.toArray(new NewTaskType[0]);
         Arrays.sort(ntts, TYPE_ORDER);
         return ntts;
     }

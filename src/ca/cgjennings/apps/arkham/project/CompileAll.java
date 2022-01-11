@@ -52,7 +52,7 @@ public class CompileAll extends TaskAction {
             Compile.showNoJDKMessage();
             return false;
         }
-        return jc.compile(task.getFile(), sources.toArray(new File[sources.size()]));
+        return jc.compile(task.getFile(), sources.toArray(new File[0]));
     }
 
     private void addSources(List<File> sources, File parent) {

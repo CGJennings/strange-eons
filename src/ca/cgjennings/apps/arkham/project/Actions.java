@@ -289,7 +289,7 @@ public final class Actions {
     static List<TaskAction> getActionsForPriority(int priority) {
         checkPriority(priority);
         List<TaskAction> plist = actionMap.get(priority);
-        return plist == null ? Collections.EMPTY_LIST : Collections.unmodifiableList(plist);
+        return plist == null ? Collections.emptyList() : Collections.unmodifiableList(plist);
     }
 
     /**
@@ -303,7 +303,7 @@ public final class Actions {
         for (int p = PRIORITY_MAX; p >= PRIORITY_MIN; --p) {
             list.addAll(getActionsForPriority(p));
         }
-        return list.toArray(new TaskAction[list.size()]);
+        return list.toArray(new TaskAction[0]);
     }
 
     /**

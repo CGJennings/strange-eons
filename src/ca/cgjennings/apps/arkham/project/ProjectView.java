@@ -1218,7 +1218,7 @@ public final class ProjectView extends javax.swing.JPanel {
                         filtered.add(members[i]);
                     }
                 }
-                members = filtered.toArray(new Member[filtered.size()]);
+                members = filtered.toArray(new Member[0]);
             }
 
             if (ta.appliesToSelection(members)) {
@@ -1469,7 +1469,7 @@ public final class ProjectView extends javax.swing.JPanel {
                     }
                 }
             }
-            tp = list.toArray(new TreePath[list.size()]);
+            tp = list.toArray(new TreePath[0]);
         }
         if (tp == null) {
             tp = new TreePath[0];
@@ -1492,7 +1492,7 @@ public final class ProjectView extends javax.swing.JPanel {
                 op.add(projTree.getPathForRow(r));
             }
         }
-        project.getSettings().set(PROJECT_OPEN_FOLDER_LIST, treePathsToPropertyValue(op.toArray(new TreePath[op.size()])));
+        project.getSettings().set(PROJECT_OPEN_FOLDER_LIST, treePathsToPropertyValue(op.toArray(new TreePath[0])));
 
         Point topmostPoint = ((JViewport) projTree.getParent()).getViewPosition();
         int row = projTree.getClosestRowForLocation(0, topmostPoint.y);
@@ -1774,8 +1774,9 @@ public final class ProjectView extends javax.swing.JPanel {
                 return null;
             }
             try {
+                @SuppressWarnings("unchecked")
                 List<File> list = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                return list.toArray(new File[list.size()]);
+                return list.toArray(new File[0]);
             } catch (InvalidDnDOperationException e) {
                 // Can't get transfer data during a drag from
                 // Windows into the app---see "Workaround", above.

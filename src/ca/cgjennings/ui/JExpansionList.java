@@ -80,7 +80,7 @@ public class JExpansionList extends JIconList<Expansion> {
 
     public Expansion[] getSelectedExpansions() {
         List<Expansion> sel = getSelectedValuesList();
-        return sel.toArray(new Expansion[sel.size()]);
+        return sel.toArray(new Expansion[0]);
     }
 
     public void setSelectedExpansionCodes(String[] selection) {

@@ -1978,7 +1978,7 @@ public final class Client extends javax.swing.JFrame {
             wrapped.add(li);
         }
 
-        return wrapped.toArray(new String[wrapped.size()]);
+        return wrapped.toArray(new String[0]);
     }
 
     private static final int MAX_POPUP_EXPRESSION_LINES = 20;
@@ -2099,6 +2099,7 @@ public final class Client extends javax.swing.JFrame {
             }
 	}//GEN-LAST:event_infoSelectComboActionPerformed
 
+    @SuppressWarnings("unchecked")
     private void applyInfoTableFilter() {
         RowFilter f = null;
         String criteria = filterField.getText().trim();
@@ -2455,7 +2456,7 @@ public final class Client extends javax.swing.JFrame {
 
             // if raw mode return immediately with the unprocessed results
             if (raw) {
-                return results.toArray(new String[results.size()]);
+                return results.toArray(new String[0]);
             }
 
             if (results.isEmpty() || !results.get(0).equals("SEDP3 OK")) {
@@ -2466,7 +2467,7 @@ public final class Client extends javax.swing.JFrame {
                 return null;
             }
             results.remove(0);
-            String[] lines = results.toArray(new String[results.size()]);
+            String[] lines = results.toArray(new String[0]);
 
             // if we got results from a PROBE command, check the cookie
             if (lines.length == 1 && name.equals(Command.PROBE.name())) {
