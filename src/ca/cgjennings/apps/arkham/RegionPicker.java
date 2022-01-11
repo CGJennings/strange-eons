@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JComponent;
@@ -1271,7 +1272,7 @@ public class RegionPicker extends javax.swing.JDialog {
                     scrollRectToVisible(getRegion());
                 } catch (UnsupportedFlavorException e) {
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "unable to read from clipbpard", e);
                     getToolkit().beep();
                 }
             }

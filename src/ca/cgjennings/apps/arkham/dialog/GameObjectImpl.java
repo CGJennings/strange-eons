@@ -190,8 +190,7 @@ class GameObjectImpl implements GameObject {
                         throw (IllegalArgumentException) exception;
                     }
 
-                    exception.printStackTrace();
-                    throw new AssertionError("unexpection exception: " + exception);
+                    throw new AssertionError("unexpection exception", exception);
                 }
 
                 if (retval != null && isWrappedType(retval.getClass())) {
@@ -199,8 +198,7 @@ class GameObjectImpl implements GameObject {
                 }
                 return retval;
             } catch (IllegalAccessException e) {
-                e.printStackTrace();
-                throw new AssertionError("unexpected security restriction: " + e);
+                throw new AssertionError("unexpected security restriction", e);
             }
         }
         throw new IllegalArgumentException("method not available: " + methodName);

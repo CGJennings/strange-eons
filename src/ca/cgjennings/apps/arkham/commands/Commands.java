@@ -44,6 +44,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -284,7 +285,7 @@ public class Commands {
                     try {
                         ed[i].performCommand(this);
                     } catch(Throwable t) {
-                        t.printStackTrace();
+                        StrangeEons.log.log(Level.WARNING, "uncaught", t);
                     }
                 }
             }

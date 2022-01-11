@@ -62,7 +62,7 @@ public class ClipPlayer {
         try {
             init(AudioSystem.getAudioInputStream(audioClip), looped);
         } catch (Throwable t) {
-            t.printStackTrace();
+            t.printStackTrace(System.err);
             clip = null;
         }
     }
@@ -76,7 +76,7 @@ public class ClipPlayer {
                 clip.setLoopPoints(0, -1);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             clip = null;
         }
         this.looped = looped;

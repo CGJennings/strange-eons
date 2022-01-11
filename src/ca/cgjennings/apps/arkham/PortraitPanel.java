@@ -31,6 +31,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -1230,7 +1231,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                 // clipboard unavailable
             } catch (IOException e) {
                 UIManager.getLookAndFeel().provideErrorFeedback(this);
-                e.printStackTrace();
+                StrangeEons.log.log(Level.WARNING, "unable to read portrait file", e);
             }
 
             // found no other datatype: fallback on regular text paste

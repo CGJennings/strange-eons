@@ -469,8 +469,7 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
                         children[i].hasChildren = false;
                     }
                 } catch (IOException e) {
-                    System.err.println("Exception while checking if folder is a project:");
-                    e.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "exception while checking if folder is a project", e);
                 }
                 children[i].userObject = uo;
             }

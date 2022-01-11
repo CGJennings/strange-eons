@@ -57,7 +57,7 @@ public final class strangeeons {
                 tool.getMethod("main", String[].class).invoke(null, (Object) args);
             } catch (Throwable t) {
                 System.err.println("Uncaught exception from tool.main:");
-                t.printStackTrace();
+                t.printStackTrace(System.err);
                 System.exit(20);
             }
         } else {

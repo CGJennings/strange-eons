@@ -6,6 +6,7 @@ import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.logging.Level;
 import javax.swing.SwingUtilities;
 
 /**
@@ -73,8 +74,7 @@ final class ScriptRunnerModeHelper implements ScriptRunnerState {
                 // uncaught exceptions will be printed to the console
                 // for debugging purposes, then the app will exit
                 keepAlive = false;
-                System.err.println("Uncaught exception thrown by script \"" + script + '\"');
-                t.printStackTrace();
+                StrangeEons.log.log(Level.SEVERE, "uncaught exception thrown by \"" + script + '\"', t);
             } finally {
                 runState = STATE_FINISHED;
             }

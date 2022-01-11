@@ -366,7 +366,7 @@ public final class CatalogID {
             System.err.println("Required argument missing; use --h for help");
         } catch (IOException e) {
             System.err.println("Error while manipulating ID in file");
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
     }
 }

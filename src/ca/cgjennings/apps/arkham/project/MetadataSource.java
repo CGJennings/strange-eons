@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.Icon;
@@ -1030,7 +1031,7 @@ public class MetadataSource {
                 }
             } catch (IOException e) {
                 // will end up returning default encoding
-                e.printStackTrace();
+                StrangeEons.log.log(Level.WARNING, "unexpected", e);
             } finally {
                 if (r != null) {
                     try {

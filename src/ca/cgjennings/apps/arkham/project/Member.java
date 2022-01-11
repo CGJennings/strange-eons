@@ -857,8 +857,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
                 }
                 m = t;
             } catch (IOException e) {
-                System.err.println("Failed to create Task when synchronizing folder:");
-                e.printStackTrace();
+                StrangeEons.log.log(Level.SEVERE, "failed to create Task while synchronizing folder", e);
             }
         }
         if (m == null) {

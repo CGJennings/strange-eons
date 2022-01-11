@@ -811,7 +811,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             System.err.println(out);
             return out;
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.err);
             throw new Error("failed to dump test image", e);
         }
     }

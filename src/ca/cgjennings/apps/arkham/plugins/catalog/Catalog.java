@@ -824,7 +824,7 @@ public class Catalog {
             }
             allOK = true;
         } catch (IOException e) {
-            e.printStackTrace();
+            StrangeEons.log.log(Level.WARNING, "cannot download catalog", e);
             throw e;
         } finally {
             if (in != null) {

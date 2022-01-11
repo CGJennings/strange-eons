@@ -441,7 +441,7 @@ public final class ScriptMonkey {
             }
 
             // dump the full trace to stderr
-            rex.printStackTrace();
+            rex.printStackTrace(System.err);
             if (fullStackTrace) {
                 rex.printStackTrace(console.getErrorWriter());
             }

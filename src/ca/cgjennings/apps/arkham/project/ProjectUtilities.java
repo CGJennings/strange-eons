@@ -35,6 +35,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.jar.JarOutputStream;
+import java.util.logging.Level;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -844,7 +845,7 @@ public class ProjectUtilities {
         try {
             return getResourceText("projects/" + resource, ENC_SETTINGS);
         } catch (IOException e) {
-            e.printStackTrace();
+            StrangeEons.log.log(Level.WARNING, "failed to read fragment " + resource, e);
             return null;
         }
     }

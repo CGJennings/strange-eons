@@ -596,7 +596,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         try {
             ((HTMLDocument) descPane.getDocument()).setBase(new URL(targetURL + "catalog.txt"));
         } catch (MalformedURLException mue) {
-            mue.printStackTrace();
+            StrangeEons.log.log(Level.SEVERE, "unexpected", mue);
         }
         showListing(sel);
 
@@ -844,7 +844,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                 try {
                     li.write(listingText);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    // intentionally blank
                 }
                 listingText.flush();
                 descText += "<p style='font-family: Consolas, Andale Mono, Monospaced'>"

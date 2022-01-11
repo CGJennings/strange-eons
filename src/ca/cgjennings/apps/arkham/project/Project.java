@@ -411,7 +411,7 @@ public class Project extends TaskGroup {
                         try {
                             jar.close();
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            StrangeEons.log.log(Level.WARNING, "unexpected", e);
                         }
                     }
                 }

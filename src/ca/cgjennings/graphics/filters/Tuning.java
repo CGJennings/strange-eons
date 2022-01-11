@@ -156,9 +156,7 @@ public final class Tuning {
                     System.err.printf("%s = %,d\n", f.getName(), v);
                 }
             } catch (Throwable t) {
-                if (printResults) {
-                    t.printStackTrace();
-                }
+                t.printStackTrace(System.err);
             }
         }
     }

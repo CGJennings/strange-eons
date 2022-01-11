@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.deck.Deck;
+import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -53,9 +54,7 @@ public class MakeDeck extends TaskAction {
                 List<Member> list = ProjectUtilities.listMatchingMembers(task, true, "eon");
                 for (Member m : list) {
                     if (m == null) {
-                        NullPointerException npe = new NullPointerException("Warning: null member");
-                        npe.fillInStackTrace();
-                        npe.printStackTrace();
+                        StrangeEons.log.log(Level.WARNING, "ignoring null member");
                         continue;
                     }
                     if (deckFile.equals(m.getFile())) {
@@ -72,7 +71,7 @@ public class MakeDeck extends TaskAction {
                         ResourceKit.writeGameComponentToFile(deckFile, deck);
                     }
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    ErrorDialog.displayError(string("prj-err-write", deckFile), ex);
                 }
             } catch (CancellationException cancel) {
                 // user cancelled the operation

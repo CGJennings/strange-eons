@@ -88,7 +88,7 @@ public class InstanceController implements Runnable {
             l.parseInstanceArguments(initial, args);
         } catch (Throwable t) {
             System.err.println("InstanceControllerListener: exception while parsing arguments");
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
     }
 

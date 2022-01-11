@@ -607,7 +607,6 @@ public class TextIndexer implements MonitoredAlgorithm {
             try {
                 ti.write(indexFile, Arrays.asList(sourceURLs));
             } catch (Throwable e) {
-                e.printStackTrace();
                 ErrorDialog.displayError(e.getClass().getSimpleName(), e);
             }
         });

@@ -1483,7 +1483,7 @@ public class CodeEditor extends AbstractSupportEditor {
                     }
                     errorHighlight = findField.getHighlighter().addHighlight(pos, pos + 1, ORANGE_SQUIGGLE);
                 } catch (BadLocationException ble) {
-                    ble.printStackTrace();
+                    StrangeEons.log.log(Level.WARNING, "unexpected BLE formatting error", ble);
                 }
             }
             findField.requestFocusInWindow();

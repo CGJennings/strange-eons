@@ -401,23 +401,9 @@ public class JKeyStrokeField extends JTextField {
                     keyNameMap.put(name, f.getName().substring(3));
                     keyCodeMap.put(code, name);
                 } catch (IllegalAccessException ex) {
-                    ex.printStackTrace();
+                    // if this happens we have larger issues
                 }
             }
         }
     }
-
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame( "Yo" );
-//				f.add( new JKeyStrokeField( true ) );
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }

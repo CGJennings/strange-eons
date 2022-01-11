@@ -37,7 +37,6 @@ public final class JGameCombo extends JIconComboBox<Game> {
                 super.setModel(new DefaultComboBoxModel<>(Game.getGames(includeAllGame)));
             } catch (Exception e) {
                 // allow instantiation for inclusion in the IDE palette
-                e.printStackTrace();
             }
         }
     }

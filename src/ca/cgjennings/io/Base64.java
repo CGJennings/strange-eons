@@ -1010,8 +1010,8 @@ public class Base64 {
 
                 } // end try
                 catch (java.io.IOException e) {
-                    e.printStackTrace();
-                    // Just return originally-decoded bytes
+                    e.printStackTrace(System.err);
+                    // return originally-decoded bytes
                 } // end catch
                 finally {
                     try {

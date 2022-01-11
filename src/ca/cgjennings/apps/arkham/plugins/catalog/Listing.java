@@ -483,8 +483,7 @@ public final class Listing implements Comparable<Listing> {
         try {
             return new URL(t);
         } catch (MalformedURLException e) {
-            System.err.println("Bad home page format: " + t);
-            e.printStackTrace();
+            StrangeEons.log.log(Level.WARNING, "Bad home page format: \"" + t + '"', e);
             return null;
         }
     }

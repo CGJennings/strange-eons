@@ -197,27 +197,22 @@ public enum CoreComponents {
                     ErrorDialog.displayError(string("cat-err-dl", current), e);
                 }
             };
-            if (EventQueue.isDispatchThread()) {
-                try {
+            
+            try {
+                if (EventQueue.isDispatchThread()) {
                     r.run();
-                } catch (Throwable t) {
-                    if (t instanceof MissingCoreComponentException) {
-                        throw (MissingCoreComponentException) t;
-                    }
-                    t.printStackTrace();
-                }
-            } else {
-                try {
+                } else {
                     EventQueue.invokeAndWait(r);
-                } catch (Throwable t) {
-                    if (t instanceof InvocationTargetException) {
-                        t = t.getCause();
-                    }
+                }
+            } catch (Throwable t) {
+                Throwable ex = t;
+                do {
                     if (t instanceof MissingCoreComponentException) {
                         throw (MissingCoreComponentException) t;
                     }
-                    t.printStackTrace();
-                }
+                    t = t.getCause();
+                } while (t != null);
+                StrangeEons.log.log(Level.SEVERE, "unexpected exception", ex);
             }
         }
     }

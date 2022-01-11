@@ -138,7 +138,7 @@ public final class Client extends javax.swing.JFrame {
             readSettings();
         } catch (IOException e) {
             System.err.println("Warning: failed to read debugger client settings");
-            e.printStackTrace();
+            e.printStackTrace(System.err);
         }
 
         debugIcon = new ImageIcon(image("icons/application/db64.png"));
@@ -2515,7 +2515,7 @@ public final class Client extends javax.swing.JFrame {
 
     private void fail(IOException e) {
         System.err.println("DEBUG CLIENT: Connect exception");
-        e.printStackTrace();
+        e.printStackTrace(System.err);
     }
 
     /**
@@ -2890,7 +2890,7 @@ public final class Client extends javax.swing.JFrame {
             if (expression != null) {
                 if (row >= tokenizer.getLineCount()) {
                     AssertionError e = new AssertionError("invalid state: tokenizer does not represent displayed document");
-                    e.printStackTrace();
+                    e.printStackTrace(System.err);
                     return null;
                 }
                 Token prevToken = null;

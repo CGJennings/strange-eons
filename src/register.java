@@ -698,7 +698,7 @@ public final class register extends CommandLineParser {
             System.err.println(message);
         }
         if (t != null) {
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
         System.err.flush();
     }
@@ -724,7 +724,7 @@ public final class register extends CommandLineParser {
             code = 2;
         } else {
             System.err.println("Error: an unexpected error prevented registration");
-            t.printStackTrace();
+            t.printStackTrace(System.err);
         }
 
         System.err.flush();
