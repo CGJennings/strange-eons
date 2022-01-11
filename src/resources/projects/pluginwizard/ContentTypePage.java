@@ -30,7 +30,7 @@ public final class ContentTypePage extends javax.swing.JPanel {
 	public ContentTypePage( EnumSet<ContentType> allowedTypes, WizardModel model ) {
 		if( allowedTypes.isEmpty() ) throw new IllegalArgumentException("allowedTypes is empty");
 		initComponents();
-		DefaultListModel m = new DefaultListModel();
+		DefaultListModel<ContentType> m = new DefaultListModel<>();
 		for( ContentType t : allowedTypes ) {
 			m.addElement( t );
 		}
@@ -99,7 +99,7 @@ public final class ContentTypePage extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         descField = new EditorPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        typeList =  new JIconList() ;
+        typeList =  new JIconList<ContentType>() ;
 
         jLabel1.setText(string("prj-l-plugin-wiz-choose-type")); // NOI18N
 
@@ -159,6 +159,6 @@ public final class ContentTypePage extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JList typeList;
+    private javax.swing.JList<ContentType> typeList;
     // End of variables declaration//GEN-END:variables
 }

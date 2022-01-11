@@ -13,21 +13,17 @@ import javax.swing.JComboBox;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class WideItemComboBox extends JComboBox {
+public class WideItemComboBox<T> extends JComboBox<T> {
 
     private boolean widePopupEnabled = true;
     private int maxPopupWidth = getToolkit().getScreenSize().width;
     private boolean isLayingOutComboBox = false;
 
-    public WideItemComboBox(ComboBoxModel aModel) {
+    public WideItemComboBox(ComboBoxModel<T> aModel) {
         super(aModel);
     }
 
-    public WideItemComboBox(Object[] items) {
-        super(items);
-    }
-
-    public WideItemComboBox(Vector items) {
+    public WideItemComboBox(T[] items) {
         super(items);
     }
 

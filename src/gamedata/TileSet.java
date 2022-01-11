@@ -72,7 +72,7 @@ public class TileSet {
      * @return all added tile set resources
      */
     public static String[] getTileSets() {
-        return sets.toArray(new String[sets.size()]);
+        return sets.toArray(new String[0]);
     }
 
     /**

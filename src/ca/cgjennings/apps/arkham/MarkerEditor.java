@@ -71,7 +71,8 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
     }
 
     private FilteredListModel updateListModel(Silhouette[] silhouettes) {
-        FilteredListModel m = new FilteredListModel(silhouettes);
+        @SuppressWarnings("unchecked")
+        FilteredListModel<Silhouette> m = new FilteredListModel(silhouettes);
         silList.setModel(m);
         m.linkTo(filterField, silList, true);
         return m;
@@ -91,7 +92,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
         Marker item = getGameComponent();
 
         String key = item.getStencilKey();
-        FilteredListModel model = (FilteredListModel) silList.getModel();
+        FilteredListModel<Silhouette> model = (FilteredListModel<Silhouette>) silList.getModel();
         model.setFilter(FilteredListModel.ACCEPT_ALL_FILTER);
 
         int i = 0;
@@ -146,7 +147,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
         javax.swing.JLabel silLabel = new javax.swing.JLabel();
         nameField = new JSpellingTextField();
         javax.swing.JScrollPane silListScroll = new javax.swing.JScrollPane();
-        silList = new ca.cgjennings.ui.JIconList();
+        silList = new ca.cgjennings.ui.JIconList<>();
         jTip1 = new ca.cgjennings.ui.JTip();
         frontTab = new javax.swing.JPanel();
         portraitAdjPanel = new ca.cgjennings.apps.arkham.PortraitPanel();
@@ -167,7 +168,6 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
 
         filterField.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray), javax.swing.BorderFactory.createEmptyBorder(2, 4, 2, 4)));
         filterField.setName("filterField"); // NOI18N
-        filterField.setOpaque(true);
 
         setClosable(true);
         setIconifiable(true);
@@ -242,7 +242,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
                     .addComponent(silLabel)
                     .addComponent(jTip1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(silListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)
+                .addComponent(silListScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -316,7 +316,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(portraitAdjPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         editTabs.addTab(string("front"), frontTab); // NOI18N
@@ -369,7 +369,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(backPortraitAdjPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         editTabs.addTab(string("back"), backTab); // NOI18N
@@ -411,7 +411,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
             .addGroup(rationalePanelLayout.createSequentialGroup()
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 417, Short.MAX_VALUE)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -454,8 +454,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(frontBackPane, gridBagConstraints);
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-822)/2, (screenSize.height-564)/2, 822, 564);
+        setBounds(0, 0, 822, 564);
     }// </editor-fold>//GEN-END:initComponents
 
 private void silListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_silListValueChanged
@@ -503,7 +502,7 @@ private void silListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GE
     private javax.swing.JTextField nameField;
     private ca.cgjennings.apps.arkham.PortraitPanel portraitAdjPanel;
     private javax.swing.JPanel rationalePanel;
-    private ca.cgjennings.ui.JIconList silList;
+    private ca.cgjennings.ui.JIconList<Silhouette> silList;
     private javax.swing.JPanel silPanel;
     // End of variables declaration//GEN-END:variables
 

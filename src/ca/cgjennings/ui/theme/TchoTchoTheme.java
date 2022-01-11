@@ -2,6 +2,7 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.platform.PlatformSupport;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.InvocationTargetException;
 import javax.imageio.ImageIO;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -59,15 +60,6 @@ public class TchoTchoTheme extends Theme {
      * system look and feel.
      */
     protected void patchOSX() {
-        try {
-            replacementClass = "ch.randelshofer.quaqua.QuaquaManager";
-            Class quaqua = Class.forName(replacementClass);
-            java.util.Set excluded = java.util.Collections.singleton("TextField");
-            java.lang.reflect.Method sEUIs = quaqua.getMethod("setExcludeUIs", java.util.Set.class);
-            sEUIs.invoke(null, excluded);
-        } catch (Exception e) {
-            replacementClass = null;
-        }
         UIManager.put("ComboBox.harmonizePreferredHeight", Boolean.TRUE);
     }
 

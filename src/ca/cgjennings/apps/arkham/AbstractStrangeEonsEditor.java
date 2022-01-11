@@ -797,18 +797,15 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
         }
 
         destroyTimer();
-        Timer timer = new Timer(updatePeriod, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    onHeartbeat();
-                } catch (Exception e) {
-                    StrangeEons.log.log(Level.SEVERE, "uncaught exception during heartbeat of " + this, e);
-                }
+        Timer t = new Timer(updatePeriod, (evt) -> {
+            try {
+                onHeartbeat();
+            } catch (Exception e) {
+                StrangeEons.log.log(Level.SEVERE, "uncaught exception during heartbeat of " + this, e);
             }
         });
-        this.timer = timer;
-        timer.start();
+        this.timer = t;
+        t.start();
     }
 
     /**

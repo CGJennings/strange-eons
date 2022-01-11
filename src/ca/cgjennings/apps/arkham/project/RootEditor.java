@@ -70,7 +70,7 @@ import resources.Settings;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
+public final class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
 
     private File file;
     private boolean simpleView = true;
@@ -143,8 +143,8 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
 
         setLocationRelativeTo(root.getProject().getView());
 
-        DefaultListModel pluginModel = new DefaultListModel();
-        DefaultComboBoxModel installModel = new DefaultComboBoxModel();
+        DefaultListModel<Entry> pluginModel = new DefaultListModel<>();
+        DefaultComboBoxModel<Entry> installModel = new DefaultComboBoxModel<>();
         installModel.addElement(new Entry());
 
         buildList("", file.getParentFile(), pluginModel, installModel);
@@ -155,7 +155,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         }
 
         scriptList.setModel(pluginModel);
-        Renderer renderer = new Renderer();
+        ScriptEntryRenderer renderer = new ScriptEntryRenderer();
         scriptList.setCellRenderer(renderer);
         installScript.setModel(installModel);
         installScript.setRenderer(renderer);
@@ -221,12 +221,6 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
             genIDBtnActionPerformed(null);
         }
 
-        // show code editor if there are no scripts to pick:
-        // presumably the user is working in a new plug-in and
-        // wants to specify a plug-in file that doesn't exist yet
-//		if( !scriptList.isEnabled() ) {
-//			switchViews( true );
-//		}
         languageCombo.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -300,7 +294,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     private Color defaultFieldBG, sourceFieldBG, nondefaultBG = new Color(0xffefc3);
 
     private void loadLanguageCombo() {
-        DefaultComboBoxModel languageModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<Object> languageModel = new DefaultComboBoxModel<>();
         languageModel.addElement(string("dt-l-text-default"));
         Set<String> locales = fieldListToSet(uiLangField);
         boolean wasFillingInView = fillingInView;
@@ -350,7 +344,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         }
     }
 
-    private void buildList(String base, File parent, DefaultListModel pluginModel, DefaultComboBoxModel installModel) {
+    private void buildList(String base, File parent, DefaultListModel<Entry> pluginModel, DefaultComboBoxModel<Entry> installModel) {
         File[] files = parent.listFiles();
         Arrays.sort(files);
         for (int i = 0; i < files.length; ++i) {
@@ -621,7 +615,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         jLabel6 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         priorityCombo = new javax.swing.JComboBox();
-        installScript = new javax.swing.JComboBox();
+        installScript = new javax.swing.JComboBox<>();
         jTip1 = new ca.cgjennings.ui.JTip();
         javax.swing.JPanel advancedFeaturePanel = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
@@ -630,7 +624,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         gameField = new javax.swing.JTextField();
         gameCombo = new ca.cgjennings.ui.JGameCombo();
         javax.swing.JLabel jLabel10 = new javax.swing.JLabel();
-        catHiddenCombo = new javax.swing.JComboBox();
+        catHiddenCombo = new javax.swing.JComboBox<>();
         jTip2 = new ca.cgjennings.ui.JTip();
         jLabel19 = new javax.swing.JLabel();
         coreField = new javax.swing.JTextField();
@@ -643,7 +637,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         switchBtn = new javax.swing.JButton();
         ca.cgjennings.ui.JHelpButton rootEdHelp = new ca.cgjennings.ui.JHelpButton();
         languageLabel = new javax.swing.JLabel();
-        languageCombo = new javax.swing.JComboBox();
+        languageCombo = new javax.swing.JComboBox<>();
         jTip5 = new ca.cgjennings.ui.JTip();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -1175,7 +1169,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         jLabel10.setLabelFor(catHiddenCombo);
         jLabel10.setText(string("prj-re-cat-hidden")); // NOI18N
 
-        catHiddenCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "prj-re-cat-hidden-0", "prj-re-cat-hidden-1", "prj-re-cat-hidden-2" }));
+        catHiddenCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "prj-re-cat-hidden-0", "prj-re-cat-hidden-1", "prj-re-cat-hidden-2" }));
 
         jTip2.setTipText(string("prj-re-cat-hidden-tip")); // NOI18N
 
@@ -1575,7 +1569,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JPanel cardPanel;
     private javax.swing.JTextField catCreditsField;
     private ca.cgjennings.ui.textedit.JSourceCodeEditor catDescField;
-    private javax.swing.JComboBox catHiddenCombo;
+    private javax.swing.JComboBox<String> catHiddenCombo;
     private javax.swing.JTextField catHomeField;
     private ca.cgjennings.ui.JHelpButton catIDhelp;
     private ca.cgjennings.ui.textedit.JSourceCodeEditor catLibDescField;
@@ -1593,7 +1587,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JButton genIDBtn;
     private javax.swing.JTextField idVersionField;
     private javax.swing.JLabel idVersionLabel;
-    private javax.swing.JComboBox installScript;
+    private javax.swing.JComboBox<Entry> installScript;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1613,7 +1607,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
     private ca.cgjennings.ui.JTip jTip3;
     private ca.cgjennings.ui.JTip jTip4;
     private ca.cgjennings.ui.JTip jTip5;
-    private javax.swing.JComboBox languageCombo;
+    private javax.swing.JComboBox<Object> languageCombo;
     private javax.swing.JLabel languageLabel;
     private ca.cgjennings.apps.arkham.project.ImageResourceCombo libIconCombo;
     private javax.swing.JPanel libraryDescPanel;
@@ -1768,7 +1762,7 @@ public class RootEditor extends javax.swing.JDialog implements AgnosticDialog {
         field.select(0, 0);
     }
 
-    private class Renderer extends DefaultListCellRenderer {
+    private class ScriptEntryRenderer extends DefaultListCellRenderer {
 
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

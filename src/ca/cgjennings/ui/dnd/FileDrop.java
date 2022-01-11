@@ -148,7 +148,7 @@ public class FileDrop {
                         }
                         if (fileList.size() > 0) {
                             if (listener != null) {
-                                listener.filesDropped(fileList.toArray(new File[fileList.size()]));
+                                listener.filesDropped(fileList.toArray(new File[0]));
                             }
                             if (listeners != null) {
                                 DropEvent event = new DropEvent(fileList, component, evt.getLocation());
@@ -232,7 +232,7 @@ public class FileDrop {
                 log.log(Level.WARNING, "exception converting local URI to file", ex);
             }
         }
-        return list.toArray(new File[list.size()]);
+        return list.toArray(new File[0]);
     }
     private static String NULL_CHAR_STRING = "\0";
 

@@ -183,7 +183,7 @@ public class RegionPicker extends javax.swing.JDialog {
         addHighlightsFromPattern(set, PAT_SETTING.matcher(text));
 
         if (set.size() > 0) {
-            editor.setHighlightRegions(set.toArray(new Rectangle[set.size()]));
+            editor.setHighlightRegions(set.toArray(new Rectangle[0]));
         } else {
             editor.setHighlightRegions(null);
         }

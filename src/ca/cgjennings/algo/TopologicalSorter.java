@@ -168,7 +168,8 @@ public class TopologicalSorter<T extends DependencyRelation> {
             boolean hasCycle = true;
             for (int i = 0; i < unsorted.size(); ++i) { // doesn't use iterator because the list might grow
                 T el = unsorted.get(i);
-                boolean satisfied = false;
+                boolean satisfied;
+                @SuppressWarnings("unchecked")
                 Set<T> prereqs = el.getDependants();
 
                 if (prereqs == null || prereqs.isEmpty()) {
@@ -203,7 +204,6 @@ public class TopologicalSorter<T extends DependencyRelation> {
                                 hasCycle = false;
                             }
                         }
-
                     }
                 }
 

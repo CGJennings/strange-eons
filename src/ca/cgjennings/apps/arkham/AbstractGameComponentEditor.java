@@ -974,7 +974,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param prefix a prefix string that will identify labels that are string
      *     table keys
      */
-    public static void localizeComboBoxLabels(JComboBox box, String prefix) {
+    public static void localizeComboBoxLabels(JComboBox<String> box, String prefix) {
         localizeComboBoxLabels(null, box, prefix);
     }
 
@@ -990,18 +990,20 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param prefix a prefix string that will identify labels that are string
      *     table keys
      */
-    public static void localizeComboBoxLabels(Language lang, JComboBox box, String prefix) {
+    @SuppressWarnings("unchecked")
+    public static void localizeComboBoxLabels(Language lang, JComboBox<String> box, String prefix) {
         if (lang == null) {
             lang = Language.getInterface();
         }
         int sel = box.getSelectedIndex();
         int len = box.getItemCount();
         for (int i = 0; i < len; ++i) {
-            Object item = box.getItemAt(0);
-            String itemString = item.toString();
-            if (prefix == null || itemString.startsWith(prefix)) {
-                item = lang.get(itemString);
+            String item = box.getItemAt(0);
+            if (prefix == null || item.startsWith(prefix)) {
+                item = lang.get(item);
             }
+            // since the combo box was passed to this method, we assume the
+            // box's renderer knows how to handle strings!
             box.addItem(item);
             box.removeItemAt(0);
         }
@@ -1194,13 +1196,14 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected StrangeEonsEditor spinOffImpl() {
-        GameComponent c = getGameComponent().clone();
-        AbstractGameComponentEditor editor = c.createDefaultEditor();
+        G c = (G) getGameComponent().clone();
+        AbstractGameComponentEditor<G> editor = (AbstractGameComponentEditor<G>) c.createDefaultEditor();
         editor.setFrameIcon(getFrameIcon());
         // for backwards compatibility in case this wasn't done in createDefaultEditor
         if (editor.getGameComponent() != c) {
-            StrangeEons.log.warning("createDefaultEditor did not set component: " + c.getClass());
+            StrangeEons.log.log(Level.WARNING, "createDefaultEditor did not set component: {0}", c.getClass());
             editor.replaceEditedComponent(c);
         }
         editor.componentNameAtLastSave = null;

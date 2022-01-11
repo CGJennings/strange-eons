@@ -158,8 +158,9 @@ public class SimpleGroup implements Group {
         out.writeObject(members);
     }
 
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        int version = in.readInt();
+        final int version = in.readInt();
         members = (LinkedHashSet<PageItem>) in.readObject();
     }
 }

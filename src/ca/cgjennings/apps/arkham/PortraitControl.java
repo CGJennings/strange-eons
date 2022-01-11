@@ -514,14 +514,11 @@ public final class PortraitControl extends JComponent {
 
     private Point2D rotationHandleUnderCursor;
 
-    private MouseWheelListener wheelListener = new MouseWheelListener() {
-        @Override
-        public void mouseWheelMoved(MouseWheelEvent e) {
-            if (p == null) {
-                return;
-            }
-            applyScaleOrRotationDelta(e.getWheelRotation(), !(e.isAltDown() || e.isControlDown()));
+    private MouseWheelListener wheelListener = (e) -> {
+        if (p == null) {
+            return;
         }
+        applyScaleOrRotationDelta(e.getWheelRotation(), !(e.isAltDown() || e.isControlDown()));
     };
 
     private void applyScaleOrRotationDelta(int deltaSteps, boolean scaleOp) {

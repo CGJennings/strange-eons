@@ -75,9 +75,7 @@ class HClipboardCommand extends DelegatedCommand {
     private static JComponent currentClippableComponent;
 
     static {
-        FocusManager.getCurrentManager().addPropertyChangeListener("focusOwner", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
+        FocusManager.getCurrentManager().addPropertyChangeListener("focusOwner", (evt) -> {
                 Object newObj = evt.getNewValue();
                 // menu items don't affect focus so that user can open menu
                 // with pointer without disabling the clipboard items
@@ -88,7 +86,6 @@ class HClipboardCommand extends DelegatedCommand {
                         currentClippableComponent = null;
                     }
                 }
-            }
         });
     }
 }

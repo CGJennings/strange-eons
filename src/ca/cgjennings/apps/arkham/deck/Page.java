@@ -351,7 +351,7 @@ public final class Page implements Serializable, Cloneable {
     }
 
     public PageItem[] getCards() {
-        return cards.toArray(new PageItem[cards.size()]);
+        return cards.toArray(new PageItem[0]);
     }
 
     public int getCardCount() {
@@ -380,7 +380,7 @@ public final class Page implements Serializable, Cloneable {
                 list.add(cards.get(i));
             }
         }
-        return list.toArray(new PageItem[list.size()]);
+        return list.toArray(new PageItem[0]);
     }
 
     /**

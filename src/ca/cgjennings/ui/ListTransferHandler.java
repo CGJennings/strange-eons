@@ -1,11 +1,13 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -95,7 +97,7 @@ public class ListTransferHandler extends TransferHandler {
     }
 
     protected ArrayList<?> getTransferData(Transferable t) {
-        ArrayList<?> alist = null;
+        ArrayList<?> alist;
         try {
             if (hasLocalArrayListFlavor(t.getTransferDataFlavors())) {
                 alist = (ArrayList<?>) t.getTransferData(localArrayListFlavor);
@@ -105,13 +107,14 @@ public class ListTransferHandler extends TransferHandler {
                 return null;
             }
         } catch (UnsupportedFlavorException | IOException ufe) {
-            ufe.printStackTrace();
+            StrangeEons.log.log(Level.WARNING, "unexpected exception getting transfer data", ufe);
             return null;
         }
         return alist;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean importData(TransferSupport transfer) {
         JList target = (JList) transfer.getComponent();
 
@@ -228,7 +231,8 @@ public class ListTransferHandler extends TransferHandler {
             if (values.isEmpty()) {
                 return null;
             }
-            ArrayList alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList(values);
+            @SuppressWarnings("unchecked")
+            ArrayList<?> alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList<>(values);
             return new ListTransferable(alist);
         }
         return null;

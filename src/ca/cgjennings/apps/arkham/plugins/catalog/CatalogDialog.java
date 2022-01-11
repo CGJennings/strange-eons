@@ -192,7 +192,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         table.setDefaultRenderer(Icon.class, new IconRenderer());
         table.setDefaultRenderer(Boolean.class, new BooleanRenderer(true));
 
-        rowSorter = new TableRowSorter(table.getModel());
+        rowSorter = new TableRowSorter<>((Model) table.getModel());
         rowSorter.setComparator(COL_ICON, new Comparator<Icon>() {
             public int iconToInteger(Icon i) {
                 int v = -1;
@@ -297,7 +297,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         // load catalog URLs from user settings
         AutocompletionDocument.install(urlCombo, false);
-        DefaultComboBoxModel urlModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel<String> urlModel = new DefaultComboBoxModel<>();
         Settings s = Settings.getUser();
         for (int i = 1; s.get("catalog-url-" + i) != null; ++i) {
             urlModel.addElement(s.get("catalog-url-" + i));
@@ -468,7 +468,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     }
 
     private boolean allowCacheHint;
-    private TableRowSorter rowSorter;
+    private TableRowSorter<Model> rowSorter;
 
     private synchronized void downloadCatalog(final URL location, final boolean allowCache) {
         final Catalog oldCatalog = catalog == placeholderCatalog ? null : catalog;
@@ -619,12 +619,9 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
                 }
             }
             if (!found) {
-                DefaultComboBoxModel urlModel = (DefaultComboBoxModel) urlCombo.getModel();
-                // prevent reloading catalog by selecting object
-                //doneInit = false;
-                s.set("catalog-url-" + settingIndex, targetURL);
+                DefaultComboBoxModel<String> urlModel = (DefaultComboBoxModel<String>) urlCombo.getModel();
                 urlModel.addElement(targetURL);
-                //doneInit = true;
+                s.set("catalog-url-" + settingIndex, targetURL);
             }
         }
     }
@@ -931,7 +928,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         helpBtn = new ca.cgjennings.ui.JHelpButton();
-        urlCombo = new javax.swing.JComboBox();
+        urlCombo = new javax.swing.JComboBox<>();
         restartWarnLabel = new ca.cgjennings.ui.JWarningLabel();
 
         clearItem.setText(string( "cat-clear" )); // NOI18N
@@ -1589,7 +1586,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private javax.swing.JPanel tableEncloser;
     private javax.swing.JPopupMenu tablePopup;
     private javax.swing.JScrollPane tableScroll;
-    private javax.swing.JComboBox urlCombo;
+    private javax.swing.JComboBox<String> urlCombo;
     private javax.swing.JLabel verLabel;
     // End of variables declaration//GEN-END:variables
 

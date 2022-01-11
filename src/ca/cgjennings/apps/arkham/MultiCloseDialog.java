@@ -364,7 +364,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton discardAllBtn;
     private javax.swing.JButton discardSelBtn;
-    private javax.swing.JList fileList;
+    private javax.swing.JList<TabInfo> fileList;
     private javax.swing.JScrollPane fileScroll;
     private javax.swing.JPanel headBannerPanel;
     private javax.swing.JLabel jLabel1;

@@ -177,7 +177,7 @@ public class ConversionSession {
         automaticCopyExpansionsEnabled = false;
         Settings s = source.getSettings();
         Settings t = target.getSettings();
-        Set<String> keys = new HashSet(s.getKeySet());
+        Set<String> keys = new HashSet<>(s.getKeySet());
         for (String key : excludedKeys) {
             keys.remove(key);
         }

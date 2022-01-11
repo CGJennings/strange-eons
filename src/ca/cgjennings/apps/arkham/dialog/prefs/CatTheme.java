@@ -27,7 +27,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         initComponents();
         FillInPreferenceCategory.style(this);
 
-        DefaultComboBoxModel model = new DefaultComboBoxModel(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames());
         markupFamily.setModel(model);
         markupSize.getEditor().setOpaque(false);
         recentFileField.getEditor().setOpaque(false);
@@ -44,7 +44,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         javax.swing.JLabel themeSect = new javax.swing.JLabel();
         lightThemeBox = new javax.swing.JLabel();
         javax.swing.JLabel validationRulesSect = new javax.swing.JLabel();
-        markupFamily = new javax.swing.JComboBox();
+        markupFamily = new javax.swing.JComboBox<>();
         markupBold = new javax.swing.JCheckBox();
         markupItalic = new javax.swing.JCheckBox();
         jLabel1 = new javax.swing.JLabel();
@@ -297,7 +297,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     private javax.swing.JLabel lightThemeBox;
     private javax.swing.JComboBox<InstalledTheme> lightThemeCombo;
     private javax.swing.JCheckBox markupBold;
-    private javax.swing.JComboBox markupFamily;
+    private javax.swing.JComboBox<String> markupFamily;
     private javax.swing.JCheckBox markupItalic;
     private javax.swing.JSpinner markupSize;
     private javax.swing.JCheckBox openZipCheck;

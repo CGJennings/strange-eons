@@ -106,14 +106,15 @@ public class IntegerPluralizer {
 
         // nope: try to instantiate IntegerPluralizer_xx
         try {
-            Class klass = Class.forName("ca.cgjennings.i18n.IntegerPluralizer_" + language);
+            @SuppressWarnings("unchecked")
+            Class<? extends IntegerPluralizer> klass = (Class<? extends IntegerPluralizer>) Class.forName("ca.cgjennings.i18n.IntegerPluralizer_" + language);
             IntegerPluralizer p = (IntegerPluralizer) klass.getConstructor().newInstance();
             // check that the programmer overrode all the methods that they need to
             p.getPluralForm(0);
             p.getPluralFormCount();
             p.getPluralFormDescription();
         } catch (ClassNotFoundException e) {
-        } catch (Exception e) {
+        } catch (ReflectiveOperationException | RuntimeException e) {
             StrangeEons.log.log(Level.SEVERE, "failed to instantiate for locale: " + language, e);
         }
 

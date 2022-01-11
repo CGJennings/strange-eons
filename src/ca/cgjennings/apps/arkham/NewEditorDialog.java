@@ -101,7 +101,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
             okBtn.setVisible(false);
         }
 
-        categoryModel = new FilteredListModel(categories);
+        categoryModel = new FilteredListModel<>(categories);
         categoryList.setModel(categoryModel);
         updateComponentList();
 
@@ -168,8 +168,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
     private Set<ComponentListItem> hiddenCategories = new HashSet<>();
     private List<ComponentListItem> categories;
-    private FilteredListModel categoryModel;
-    private List<FilteredListModel> componentLists;
+    private FilteredListModel<ComponentListItem> categoryModel;
+    private List<FilteredListModel<ComponentListItem>> componentLists;
     private Map<String, ComponentListItem> classMap;
     private Icon defaultBanner;
 
@@ -315,7 +315,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         // build the "Everything" category and simultaneously log all entries
         StrangeEons.log.info("parsed all class map entries");
         categories.add(new ComponentListItem(ClassMap.ENTRY_EVERYTHING_CATEGORY));
-        FilteredListModel model = new FilteredListModel();
+        FilteredListModel<ComponentListItem> model = new FilteredListModel<>();
         for (ComponentListItem entry : types) {
             model.add(entry);
             StrangeEons.log.log(Level.FINE, "    {0}", entry.entry);
@@ -341,7 +341,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
                     if (category < 0) {
                         category = categories.size();
                         categories.add(new ComponentListItem(entry));
-                        componentLists.add(new FilteredListModel());
+                        componentLists.add(new FilteredListModel<>());
                     }
                 } else {
                     ComponentListItem item = new ComponentListItem(entry);

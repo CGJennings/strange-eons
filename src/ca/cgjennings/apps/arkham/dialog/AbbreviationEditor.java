@@ -129,7 +129,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
     private void initComponents() {
 
         codeTypeLabel = new javax.swing.JLabel();
-        codeTypeCombo = new javax.swing.JComboBox();
+        codeTypeCombo = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         abrvTable = new javax.swing.JTable();
         addBtn = new javax.swing.JButton();
@@ -370,7 +370,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
     private javax.swing.JTable abrvTable;
     private javax.swing.JButton addBtn;
     private javax.swing.JButton cancelBtn;
-    private javax.swing.JComboBox codeTypeCombo;
+    private javax.swing.JComboBox<CodeType> codeTypeCombo;
     private javax.swing.JLabel codeTypeLabel;
     private javax.swing.JButton delBtn;
     private javax.swing.JTextArea expField;
@@ -565,7 +565,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
             }
         }
 
-        DefaultComboBoxModel model = new DefaultComboBoxModel();
+        DefaultComboBoxModel<CodeType> model = new DefaultComboBoxModel<>();
         for (CodeType t : CodeType.values()) {
             if (AbbreviationTableManager.isCodeTypeMapped(t)) {
                 continue;

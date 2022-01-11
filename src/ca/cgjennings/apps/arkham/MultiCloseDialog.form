@@ -108,6 +108,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconList()"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;TabInfo&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>

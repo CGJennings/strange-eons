@@ -66,7 +66,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
         parent = anyPropertyFile.getParentFile();
         baseName = name;
 
-        FilteredListModel model = new FilteredListModel();
+        FilteredListModel<LanguageCodeDescriptor> model = new FilteredListModel<>();
         for (Locale lang : Language.getLocales()) {
             boolean disable = getFileName(lang).exists();
             model.add(new LanguageCodeDescriptor(lang, disable));
@@ -174,9 +174,9 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
         customPanel = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        langCombo = new javax.swing.JComboBox();
+        langCombo = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        countryCombo = new javax.swing.JComboBox();
+        countryCombo = new javax.swing.JComboBox<>();
         localeField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -457,7 +457,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         Locale loc2 = new Locale(o2);
                         return cmp.compare(loc1.getDisplayLanguage(), loc2.getDisplayLanguage());
                     });
-                    DefaultComboBoxModel langModel = new DefaultComboBoxModel(labels);
+                    DefaultComboBoxModel<String> langModel = new DefaultComboBoxModel<>(labels);
 
                     labels = Locale.getISOCountries();
                     Arrays.sort(labels, (String o1, String o2) -> {
@@ -465,7 +465,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         Locale loc2 = new Locale("", o2);
                         return cmp.compare(loc1.getDisplayCountry(), loc2.getDisplayCountry());
                     });
-                    DefaultComboBoxModel countryModel = new DefaultComboBoxModel();
+                    DefaultComboBoxModel<String> countryModel = new DefaultComboBoxModel<>();
                     countryModel.addElement("");
                     for (String country : labels) {
                         countryModel.addElement(country);
@@ -575,7 +575,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JLabel baseFileField;
     private javax.swing.JButton cancelBtn;
     private javax.swing.JRadioButton copyBtn;
-    private javax.swing.JComboBox countryCombo;
+    private javax.swing.JComboBox<String> countryCombo;
     private javax.swing.JPanel customPanel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -585,7 +585,7 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JComboBox langCombo;
+    private javax.swing.JComboBox<String> langCombo;
     private javax.swing.JList<LanguageCodeDescriptor> locList;
     private javax.swing.JScrollPane locScroll;
     private javax.swing.JTextField localeField;

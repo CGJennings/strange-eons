@@ -20,7 +20,7 @@ import resources.ResourceKit;
 public class TextIndexViewer extends javax.swing.JDialog {
 
     private final TextIndex ti;
-    private final DefaultListModel docModel = new DefaultListModel();
+    private final DefaultListModel<String> docModel = new DefaultListModel<>();
 
     /**
      * Creates new form TextIndexViewer
@@ -30,7 +30,7 @@ public class TextIndexViewer extends javax.swing.JDialog {
         initComponents();
         setTitle(index.getName());
         ti = TextIndex.read(index);
-        DefaultListModel m = new DefaultListModel();
+        DefaultListModel<String> m = new DefaultListModel<>();
         for (String s : ti) {
             m.addElement(s);
         }
@@ -49,9 +49,9 @@ public class TextIndexViewer extends javax.swing.JDialog {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        wordList = new javax.swing.JList();
+        wordList = new javax.swing.JList<>();
         jScrollPane2 = new javax.swing.JScrollPane();
-        docList = new javax.swing.JList();
+        docList = new javax.swing.JList<>();
         closeBtn = new javax.swing.JButton();
         queryField = new javax.swing.JTextField();
 
@@ -154,11 +154,11 @@ public class TextIndexViewer extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
-    private javax.swing.JList docList;
+    private javax.swing.JList<String> docList;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField queryField;
-    private javax.swing.JList wordList;
+    private javax.swing.JList<String> wordList;
     // End of variables declaration//GEN-END:variables
 
     private String string(String key) {

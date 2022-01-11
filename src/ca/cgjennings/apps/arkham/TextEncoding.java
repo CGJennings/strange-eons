@@ -39,7 +39,7 @@ public final class TextEncoding {
     public static final Charset UTF8_CS = StandardCharsets.UTF_8;
 
     /** Name of the encoding used for card layout files ({@code .cardlayout)}. */
-    public static final String CARD_LAYOUT = ISO_8859_1; // todo
+    public static final String CARD_LAYOUT = ISO_8859_1;
     /** *  {@link Charset} for {@link #CARD_LAYOUT}. */
     public static final Charset CARD_LAYOUT_CS = ISO_8859_1_CS;
 

@@ -666,7 +666,7 @@ public class CodeEditor extends AbstractSupportEditor {
         sideBarPanel = new javax.swing.JPanel();
         navPanel = new javax.swing.JPanel();
         navScroll = new javax.swing.JScrollPane();
-        navList = new javax.swing.JList();
+        navList = new javax.swing.JList<>();
         navTitle = new javax.swing.JPanel();
         javax.swing.JLabel navLabel = new javax.swing.JLabel();
         ca.cgjennings.apps.arkham.ToolCloseButton sourceNavCloseButton = new ca.cgjennings.apps.arkham.ToolCloseButton();
@@ -1507,7 +1507,7 @@ public class CodeEditor extends AbstractSupportEditor {
     private javax.swing.JLabel icon;
     private javax.swing.JCheckBox incrementalCheck;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JList navList;
+    private javax.swing.JList<NavigationPoint> navList;
     private javax.swing.JPanel navPanel;
     private javax.swing.JScrollPane navScroll;
     private javax.swing.JPanel navTitle;

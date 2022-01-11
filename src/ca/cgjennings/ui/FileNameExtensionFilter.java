@@ -100,7 +100,7 @@ public final class FileNameExtensionFilter extends FileFilter {
         if (reducedExtensionSet.size() == exts.length) {
             return exts;
         }
-        return reducedExtensionSet.toArray(new String[reducedExtensionSet.size()]);
+        return reducedExtensionSet.toArray(new String[0]);
     }
 
     /**

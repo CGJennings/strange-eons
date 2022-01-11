@@ -15,13 +15,13 @@ import static resources.Language.string;
  * @see Length
  */
 @SuppressWarnings("serial")
-public class UnitSelector extends JComboBox {
+public class UnitSelector extends JComboBox<String> {
 
     public UnitSelector() {
         super();
         String[] units;
         units = new String[]{string("iid-cb-unit0"), string("iid-cb-unit1"), string("iid-cb-unit2")};
-        setModel(new DefaultComboBoxModel(units));
+        setModel(new DefaultComboBoxModel<>(units));
         setEditable(false);
         int i = Length.getDefaultUnit();
         setSelectedIndex(i);

@@ -640,7 +640,7 @@ public final class Client extends javax.swing.JFrame {
         scriptSplit =  new ThinSplitPane() ;
         javax.swing.JPanel scriptPanel = new javax.swing.JPanel();
         javax.swing.JScrollPane scriptScroll = new javax.swing.JScrollPane();
-        scriptList = new javax.swing.JList();
+        scriptList = new javax.swing.JList<>();
         scriptTitle = new javax.swing.JLabel();
         javax.swing.JPanel sourcePanel = new javax.swing.JPanel();
         sourceScroll = new javax.swing.JScrollPane();
@@ -652,7 +652,7 @@ public final class Client extends javax.swing.JFrame {
         stackSplit =  new ThinSplitPane() ;
         javax.swing.JPanel stackPanel = new javax.swing.JPanel();
         javax.swing.JScrollPane stackScroll = new javax.swing.JScrollPane();
-        stackList = new javax.swing.JList();
+        stackList = new javax.swing.JList<>();
         stackTitle = new javax.swing.JLabel();
         javax.swing.JPanel watchPanel = new javax.swing.JPanel();
         watchTitle = new javax.swing.JLabel();
@@ -676,7 +676,7 @@ public final class Client extends javax.swing.JFrame {
         infoTablePanel = new javax.swing.JPanel();
         infoControlPanel = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        infoSelectCombo = new javax.swing.JComboBox();
+        infoSelectCombo = new javax.swing.JComboBox<>();
         refreshBtn = new javax.swing.JButton();
         filterField = new ca.cgjennings.ui.JLabelledField();
         clearCaches = new javax.swing.JButton();
@@ -1571,7 +1571,7 @@ public final class Client extends javax.swing.JFrame {
      * @param model a model to synchronize with the list
      * @return {@code true} if the model was updated
      */
-    private boolean updateModel(Object[] values, JList list, DefaultListModel model) {
+    private <T> boolean updateModel(T[] values, JList<T> list, DefaultListModel<T> model) {
         boolean update = false;
         if (model.size() != values.length) {
             update = true;
@@ -1631,7 +1631,7 @@ public final class Client extends javax.swing.JFrame {
         Arrays.sort(files);
         updateModel(files, scriptList, fileModel);
     }
-    private DefaultListModel fileModel = new DefaultListModel();
+    private DefaultListModel<String> fileModel = new DefaultListModel<>();
 
     private void synchSource() {
         source.synch();
@@ -1650,7 +1650,7 @@ public final class Client extends javax.swing.JFrame {
 
         updateModel(frames, stackList, stackModel);
     }
-    private DefaultListModel stackModel = new DefaultListModel();
+    private DefaultListModel<StackFrame> stackModel = new DefaultListModel<>();
 
     private void synchWatches() {
         watchModel.updateValues(-1);
@@ -1978,7 +1978,7 @@ public final class Client extends javax.swing.JFrame {
             wrapped.add(li);
         }
 
-        return wrapped.toArray(new String[wrapped.size()]);
+        return wrapped.toArray(new String[0]);
     }
 
     private static final int MAX_POPUP_EXPRESSION_LINES = 20;
@@ -2099,6 +2099,7 @@ public final class Client extends javax.swing.JFrame {
             }
 	}//GEN-LAST:event_infoSelectComboActionPerformed
 
+    @SuppressWarnings("unchecked")
     private void applyInfoTableFilter() {
         RowFilter f = null;
         String criteria = filterField.getText().trim();
@@ -2455,7 +2456,7 @@ public final class Client extends javax.swing.JFrame {
 
             // if raw mode return immediately with the unprocessed results
             if (raw) {
-                return results.toArray(new String[results.size()]);
+                return results.toArray(new String[0]);
             }
 
             if (results.isEmpty() || !results.get(0).equals("SEDP3 OK")) {
@@ -2466,7 +2467,7 @@ public final class Client extends javax.swing.JFrame {
                 return null;
             }
             results.remove(0);
-            String[] lines = results.toArray(new String[results.size()]);
+            String[] lines = results.toArray(new String[0]);
 
             // if we got results from a PROBE command, check the cookie
             if (lines.length == 1 && name.equals(Command.PROBE.name())) {
@@ -2617,7 +2618,7 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JPanel infoControlPanel;
     private javax.swing.JPanel infoPanel;
     private javax.swing.JScrollPane infoScroll;
-    private javax.swing.JComboBox infoSelectCombo;
+    private javax.swing.JComboBox<String> infoSelectCombo;
     private javax.swing.JTable infoTable;
     private javax.swing.JPanel infoTablePanel;
     private javax.swing.JLabel infoTitle;
@@ -2640,7 +2641,7 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JTree scopeTree;
     private javax.swing.JScrollPane scopeTreeScroll;
     private javax.swing.JSplitPane scopeTreeSplit;
-    private javax.swing.JList scriptList;
+    private javax.swing.JList<String> scriptList;
     private javax.swing.JSplitPane scriptSplit;
     private javax.swing.JLabel scriptTitle;
     private javax.swing.JLabel sourcePopup;
@@ -2649,7 +2650,7 @@ public final class Client extends javax.swing.JFrame {
     private javax.swing.JTable sourceTable;
     private javax.swing.JLabel sourceTitle;
     private javax.swing.JPanel sourceTitlePanel;
-    private javax.swing.JList stackList;
+    private javax.swing.JList<StackFrame> stackList;
     private javax.swing.JSplitPane stackSplit;
     private javax.swing.JLabel stackTitle;
     private javax.swing.JPanel statusPanel;
@@ -3613,7 +3614,7 @@ public final class Client extends javax.swing.JFrame {
             return;
         }
         String sel = (String) infoSelectCombo.getSelectedItem();
-        infoSelectCombo.setModel(new DefaultComboBoxModel(names));
+        infoSelectCombo.setModel(new DefaultComboBoxModel<>(names));
         // restore old selection
         if (sel != null) {
             for (int i = 0; i < names.length; ++i) {

@@ -100,7 +100,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        endcapCombo = new javax.swing.JComboBox();
+        endcapCombo = new javax.swing.JComboBox<>();
         dashCombo = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         thicknessField = new javax.swing.JSpinner();
@@ -131,7 +131,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         jLabel3.setText(string("style-li-corners")); // NOI18N
 
-        endcapCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "style-li-round", "style-li-square", "style-li-bevel" }));
+        endcapCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "style-li-round", "style-li-square", "style-li-bevel" }));
 
         dashCombo.setMaximumRowCount(12);
 
@@ -212,7 +212,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(colourLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(colourButton))
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
 
         jLabel4.setFont(jLabel4.getFont().deriveFont(jLabel4.getFont().getSize()-2f));
@@ -239,7 +239,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addContainerGap())
         );
@@ -281,7 +281,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
                         .addComponent(bgColourLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(bgColourButton)))
-                .addContainerGap(103, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -320,7 +320,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addContainerGap()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
@@ -356,7 +356,7 @@ private void bgColourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JButton colourButton;
     private javax.swing.JButton colourLabel;
     private javax.swing.JComboBox dashCombo;
-    private javax.swing.JComboBox endcapCombo;
+    private javax.swing.JComboBox<String> endcapCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -310,7 +310,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
             }
         };
         jLabel1 = new javax.swing.JLabel();
-        showUnicodeCombo = new javax.swing.JComboBox();
+        showUnicodeCombo = new javax.swing.JComboBox<>();
         insertSizeField = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -372,7 +372,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
 
         jLabel1.setText(string( "icd-l-show" )); // NOI18N
 
-        showUnicodeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "icd-cb-show0", "icd-cb-show1" }));
+        showUnicodeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "icd-cb-show0", "icd-cb-show1" }));
         showUnicodeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showUnicodeComboActionPerformed(evt);
@@ -684,7 +684,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton okBtn;
-    private javax.swing.JComboBox showUnicodeCombo;
+    private javax.swing.JComboBox<String> showUnicodeCombo;
     private javax.swing.JLabel unicodeNameLabel;
     // End of variables declaration//GEN-END:variables
 

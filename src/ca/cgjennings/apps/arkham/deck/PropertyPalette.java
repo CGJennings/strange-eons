@@ -201,7 +201,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
         heightLabel = new javax.swing.JLabel();
         widthField = new javax.swing.JTextField();
         heightField = new javax.swing.JTextField();
-        unitCombo = new javax.swing.JComboBox();
+        unitCombo = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
@@ -280,7 +280,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
             }
         });
 
-        unitCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
+        unitCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "iid-cb-unit0", "iid-cb-unit1", "iid-cb-unit2" }));
         unitCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unitComboActionPerformed(evt);
@@ -410,7 +410,7 @@ public final class PropertyPalette extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPanel propertyPanel;
-    private javax.swing.JComboBox unitCombo;
+    private javax.swing.JComboBox<String> unitCombo;
     private javax.swing.JTextField widthField;
     private javax.swing.JLabel widthLabel;
     private javax.swing.JTextField xField;

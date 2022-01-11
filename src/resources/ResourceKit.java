@@ -1401,7 +1401,7 @@ public class ResourceKit {
     public static CacheMetrics[] getRegisteredCacheMetrics() {
         CacheMetrics[] cm;
         synchronized (metricRegistry) {
-            cm = metricRegistry.toArray(new CacheMetrics[metricRegistry.size()]);
+            cm = metricRegistry.toArray(new CacheMetrics[0]);
         }
         final Collator coll = Language.getInterface().getCollator();
         Arrays.sort(cm, (CacheMetrics o1, CacheMetrics o2) -> coll.compare(o1.toString(), o2.toString()));

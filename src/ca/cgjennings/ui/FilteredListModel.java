@@ -21,29 +21,29 @@ import javax.swing.event.DocumentEvent;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public class FilteredListModel extends AbstractListModel {
+public class FilteredListModel<E> extends AbstractListModel<E> {
 
-    private List<Object> filtered = new ArrayList<>();
-    private List<Object> list = new ArrayList<>();
+    private final List<E> filtered = new ArrayList<>();
+    private final List<E> list = new ArrayList<>();
 
     public FilteredListModel() {
     }
 
-    public FilteredListModel(Object[] items) {
+    public FilteredListModel(E[] items) {
         this();
         for (int i = 0; i < items.length; ++i) {
             add(items[i]);
         }
     }
 
-    public FilteredListModel(Collection<? extends Object> items) {
+    public FilteredListModel(Collection<? extends E> items) {
         this();
-        for (Object it : items) {
+        for (E it : items) {
             add(it);
         }
     }
 
-    public void add(Object item) {
+    public void add(E item) {
         list.add(item);
         if (test(item)) {
             int index = filtered.size();
@@ -52,7 +52,7 @@ public class FilteredListModel extends AbstractListModel {
         }
     }
 
-    public void add(int index, Object item) {
+    public void add(int index, E item) {
         list.add(index, item);
         if (test(item)) {
             index = getFilteredIndex(index);
@@ -129,7 +129,7 @@ public class FilteredListModel extends AbstractListModel {
         filtered.clear();
         int size = list.size();
         for (int i = 0; i < size; ++i) {
-            Object item = list.get(i);
+            E item = list.get(i);
             if (test(item)) {
                 filtered.add(item);
             }
@@ -230,7 +230,7 @@ public class FilteredListModel extends AbstractListModel {
     }
 
     @Override
-    public Object getElementAt(int index) {
+    public E getElementAt(int index) {
         return filtered.get(index);
     }
 

@@ -6,6 +6,7 @@ import java.awt.LinearGradientPaint;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.geom.Path2D;
+import javax.swing.JComponent;
 import javax.swing.Painter;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
@@ -17,16 +18,16 @@ import javax.swing.UIManager;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-class DefaultConsolePainter extends CachingPainter {
+class DefaultConsolePainter extends CachingPainter<JComponent> {
 
     public DefaultConsolePainter() {
-        super((Painter) (Graphics2D g, Object o, int w, int h) -> {
+        super((Painter<JComponent>) (Graphics2D g, JComponent o, int w, int h) -> {
             UIDefaults uid = UIManager.getDefaults();
             Color background = uid.getColor(Theme.CONSOLE_BACKROUND);
             if (background == null) {
                 background = uid.getColor("nimbusBase");
                 if (background == null) {
-                    background = new Color(0x34_536b);
+                    background = new Color(0x34536b);
                 }
             }
             Color wave = background.brighter();

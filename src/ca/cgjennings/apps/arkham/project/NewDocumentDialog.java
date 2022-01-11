@@ -34,13 +34,12 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
         folder = parent;
 
         Member[] singletonMembers = new Member[]{parent};
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel<TaskAction> model = new DefaultListModel<>();
         for (TaskAction dta : docTypes) {
             if (dta.appliesToSelection(singletonMembers)) {
                 model.addElement(dta);
             }
         }
-
         typeList.setModel(model);
 
         Settings s = Settings.getShared();
@@ -199,7 +198,7 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameField;
     private javax.swing.JButton okBtn;
-    private javax.swing.JList typeList;
+    private javax.swing.JList<TaskAction> typeList;
     // End of variables declaration//GEN-END:variables
 
     @Override

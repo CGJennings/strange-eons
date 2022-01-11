@@ -289,7 +289,7 @@ public final class Actions {
     static List<TaskAction> getActionsForPriority(int priority) {
         checkPriority(priority);
         List<TaskAction> plist = actionMap.get(priority);
-        return plist == null ? Collections.EMPTY_LIST : Collections.unmodifiableList(plist);
+        return plist == null ? Collections.emptyList() : Collections.unmodifiableList(plist);
     }
 
     /**
@@ -303,7 +303,7 @@ public final class Actions {
         for (int p = PRIORITY_MAX; p >= PRIORITY_MIN; --p) {
             list.addAll(getActionsForPriority(p));
         }
-        return list.toArray(new TaskAction[list.size()]);
+        return list.toArray(new TaskAction[0]);
     }
 
     /**
@@ -535,8 +535,6 @@ public final class Actions {
         register(new ConvertSpellingDictionary(), PRIORITY_IMPORT_EXPORT);
         register(new PublishBundle(), PRIORITY_IMPORT_EXPORT);
 
-// TODO: fix or remove
-//		register( new SetExpansionSymbol(), PRIORITY_STANDARD_LAST );
         register(new PluginImportAction(), PRIORITY_STANDARD_LAST);
         register(new ChangeIcon(), PRIORITY_STANDARD_LAST);
         register(new Export(), PRIORITY_STANDARD_LAST);

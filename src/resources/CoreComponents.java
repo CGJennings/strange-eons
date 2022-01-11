@@ -171,7 +171,7 @@ public enum CoreComponents {
                 }
                 String current = "";
                 try {
-                    for (String url : set.catalogs.toArray(new String[set.catalogs.size()])) {
+                    for (String url : set.catalogs.toArray(new String[0])) {
                         current = url;
                         Catalog c = new Catalog(new URL(url));
                         for (CatalogID id1 : set.idToCatUrlMap.keySet()) {

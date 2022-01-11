@@ -170,11 +170,13 @@ final class ProjectWatcher {
 
                 // handle all queued events in turn
                 for (WatchEvent<?> event : key.pollEvents()) {
-                    Kind kind = event.kind();
-                    if (kind == OVERFLOW) {
+                    final Kind<?> anyKind = event.kind();
+                    if (anyKind == OVERFLOW) {
                         StrangeEons.log.info("queue overflowed: project may be out of synch");
                         continue;
                     }
+                    @SuppressWarnings("unchecked")
+                    final Kind<Path> kind = (Kind<Path>) anyKind;
                     if (kind == ENTRY_CREATE || kind == ENTRY_DELETE) {
                         Member m = keyMap.get(key);
                         enqueue(kind, m);

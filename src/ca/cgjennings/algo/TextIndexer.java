@@ -213,7 +213,7 @@ public class TextIndexer implements MonitoredAlgorithm {
         }
 
         // create a sorted array of the stop words
-        String[] stopWords = stops.toArray(new String[stops.size()]);
+        String[] stopWords = stops.toArray(new String[0]);
         Arrays.sort(stopWords);
 //		TextIndex ti = new TextIndex( stopWords, words, ids, maps );
 
@@ -252,7 +252,7 @@ public class TextIndexer implements MonitoredAlgorithm {
         for (String stop : stopList) {
             words.remove(stop);
         }
-        String[] list = words.toArray(new String[words.size()]);
+        String[] list = words.toArray(new String[0]);
         Arrays.sort(list);
         return list;
     }

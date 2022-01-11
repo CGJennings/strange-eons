@@ -31,6 +31,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 import javax.swing.SpinnerNumberModel;
 import resources.Language;
 import static resources.Language.string;
@@ -43,6 +44,64 @@ import resources.ResourceKit;
  */
 @SuppressWarnings("serial")
 class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
+    private class FontTokenRenderer extends DefaultListCellRenderer {
+        private Font listFont, regListFont;
+
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            Font f = ((FontToken) value).getFont();
+            String name = f.getFamily(Locale.getDefault());
+
+            super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
+
+            if (listFont == null) {
+                listFont = list.getFont();
+                regListFont = listFont.deriveFont(Font.BOLD);
+            }
+
+            Font itemFont;
+            if (ResourceKit.isFamilyRegistered(f.getFamily())) {
+                itemFont = regListFont;
+            } else {
+                itemFont = listFont;
+            }
+
+            setFont(itemFont);
+
+            setToolTipText(name);
+
+            // if we can print the family name with the font and the resulting
+            // string doesn't render crazy huge (this was an issue), do so,
+            // otherwise use a standard UI font
+            boolean canDisplay = f.canDisplayUpTo(name) == -1;
+            if (canDisplay) {
+                setFont(f);
+            } else {
+                setFont(familyList.getFont());
+            }
+
+            dividerFlag = index == registeredFontCount;
+
+            return this;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g1) {
+            super.paintComponent(g1);
+            if (dividerFlag) {
+                Graphics2D g = (Graphics2D) g1;
+                Stroke old = g.getStroke();
+                g.setStroke(dividerStroke);
+                g.setPaint(dividerColor);
+                g.drawLine(0, 0, getWidth(), 0);
+                g.setStroke(old);
+            }
+        }
+
+        private final BasicStroke dividerStroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10f, new float[]{6f, 6f}, 0f);
+        private final Color dividerColor = Color.GRAY;
+        private boolean dividerFlag;
+    };
 
     /**
      * Creates new form FontFormatDialog
@@ -55,65 +114,8 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         AbstractGameComponentEditor.localizeComboBoxLabels(widthCombo, null);
         AbstractGameComponentEditor.localizeComboBoxLabels(sizeTypeCombo, null);
-
-        familyList.setCellRenderer(new DefaultListCellRenderer() {
-            private Font listFont, regListFont;
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Font f = ((FontToken) value).getFont();
-                String name = f.getFamily(Locale.getDefault());
-
-                super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
-
-                if (listFont == null) {
-                    listFont = list.getFont();
-                    regListFont = listFont.deriveFont(Font.BOLD);
-                }
-
-                Font itemFont;
-                if (ResourceKit.isFamilyRegistered(f.getFamily())) {
-                    itemFont = regListFont;
-                } else {
-                    itemFont = listFont;
-                }
-
-                setFont(itemFont);
-
-                setToolTipText(name);
-
-                // if we can print the family name with the font and the resulting
-                // string doesn't render crazy huge (this was an issue), do so,
-                // otherwise use a standard UI font
-                boolean canDisplay = f.canDisplayUpTo(name) == -1;
-                if (canDisplay) {
-                    setFont(f);
-                } else {
-                    setFont(familyList.getFont());
-                }
-
-                dividerFlag = index == registeredFontCount;
-
-                return this;
-            }
-
-            @Override
-            protected void paintComponent(Graphics g1) {
-                super.paintComponent(g1);
-                if (dividerFlag) {
-                    Graphics2D g = (Graphics2D) g1;
-                    Stroke old = g.getStroke();
-                    g.setStroke(dividerStroke);
-                    g.setPaint(dividerColor);
-                    g.drawLine(0, 0, getWidth(), 0);
-                    g.setStroke(old);
-                }
-            }
-
-            private final BasicStroke dividerStroke = new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 10f, new float[]{6f, 6f}, 0f);
-            private final Color dividerColor = Color.GRAY;
-            private boolean dividerFlag;
-        });
+        
+        familyList.setCellRenderer(new FontTokenRenderer());
 
         doneInit = true;
         pack();
@@ -129,7 +131,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
                 String[] names = ge.getAvailableFontFamilyNames();
                 Arrays.sort(names, fontSorter);
-                final DefaultListModel model = new DefaultListModel();
+                final DefaultListModel<FontToken> model = new DefaultListModel<>();
                 for (int i = 0; i < names.length; ++i) {
                     model.addElement(new FontToken(names[i]));
                     if (registeredFontCount == -1 && !ResourceKit.isFamilyRegistered(names[i])) {
@@ -157,7 +159,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
                 }
                 Collator collator = Language.getInterface().getCollator();
             };
-
         };
         familyLoader.setPriority(Thread.MIN_PRIORITY);
         familyLoader.start();
@@ -199,11 +200,11 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         loadingPanel = new javax.swing.JPanel();
         loadingLabel = new javax.swing.JLabel();
         familyScroll = new javax.swing.JScrollPane();
-        familyList = new javax.swing.JList();
+        familyList = new javax.swing.JList<>();
         sizePanel = new javax.swing.JPanel();
         dncSize = new javax.swing.JCheckBox();
         sizeField = new javax.swing.JSpinner();
-        sizeTypeCombo = new javax.swing.JComboBox();
+        sizeTypeCombo = new javax.swing.JComboBox<>();
         stylePanel = new javax.swing.JPanel();
         bCheck = new javax.swing.JCheckBox();
         iCheck = new javax.swing.JCheckBox();
@@ -212,7 +213,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         supCheck = new javax.swing.JCheckBox();
         subCheck = new javax.swing.JCheckBox();
         widthPanel = new javax.swing.JPanel();
-        widthCombo = new javax.swing.JComboBox();
+        widthCombo = new javax.swing.JComboBox<>();
         dncWidth = new javax.swing.JCheckBox();
         trackingPanel = new javax.swing.JPanel();
         dncTracking = new javax.swing.JCheckBox();
@@ -317,7 +318,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
             }
         });
 
-        sizeTypeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ffd-cb-size-0", "ffd-cb-size-1" }));
+        sizeTypeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ffd-cb-size-0", "ffd-cb-size-1" }));
         sizeTypeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sizeTypeComboActionPerformed(evt);
@@ -434,7 +435,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         widthPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string( "ffd-l-width" ))); // NOI18N
 
-        widthCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ffd-cb-width-0", "ffd-cb-width-1", "ffd-cb-width-2", "ffd-cb-width-3", "ffd-cb-width-4" }));
+        widthCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ffd-cb-width-0", "ffd-cb-width-1", "ffd-cb-width-2", "ffd-cb-width-3", "ffd-cb-width-4" }));
         widthCombo.setSelectedIndex(2);
         widthCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -718,7 +719,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         sampleLabel.setFont(f.deriveFont(attr));
     }
 
-    private void add(HashMap map, JCheckBox box, Object key, Object value) {
+    private void add(HashMap<TextAttribute, Object> map, JCheckBox box, TextAttribute key, Object value) {
         if (box.isSelected()) {
             map.put(key, value);
         }
@@ -835,7 +836,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JCheckBox dncSize;
     private javax.swing.JCheckBox dncTracking;
     private javax.swing.JCheckBox dncWidth;
-    private javax.swing.JList familyList;
+    private javax.swing.JList<FontToken> familyList;
     private javax.swing.JPanel familyPanel;
     private javax.swing.JScrollPane familyScroll;
     private javax.swing.JButton glyphsBtn;
@@ -849,14 +850,14 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
     private javax.swing.JLabel sampleLabel;
     private javax.swing.JSpinner sizeField;
     private javax.swing.JPanel sizePanel;
-    private javax.swing.JComboBox sizeTypeCombo;
+    private javax.swing.JComboBox<String> sizeTypeCombo;
     private javax.swing.JPanel stylePanel;
     private javax.swing.JCheckBox subCheck;
     private javax.swing.JCheckBox supCheck;
     private javax.swing.JSpinner trackingField;
     private javax.swing.JPanel trackingPanel;
     private javax.swing.JCheckBox uCheck;
-    private javax.swing.JComboBox widthCombo;
+    private javax.swing.JComboBox<String> widthCombo;
     private javax.swing.JPanel widthPanel;
     // End of variables declaration//GEN-END:variables
 

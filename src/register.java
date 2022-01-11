@@ -599,7 +599,7 @@ public final class register extends CommandLineParser {
      * xdg path, if any.
      */
     private int xdg(List<String> tokens) throws IOException {
-        return xdg(tokens.toArray(new String[tokens.size()]));
+        return xdg(tokens.toArray(new String[0]));
     }
 
     /**

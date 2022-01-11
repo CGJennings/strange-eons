@@ -11,9 +11,9 @@ import javax.swing.Painter;
  * computationally expensive. To use this class, simply pass the painter that
  * you wish to wrap to the constructor.
  */
-public class CachingPainter implements Painter {
+public class CachingPainter<T> implements Painter<T> {
 
-    private Painter painter;
+    private Painter<T> painter;
     private BufferedImage image;
     private int lastWidth;
     private int lastHeight;
@@ -25,7 +25,7 @@ public class CachingPainter implements Painter {
      *
      * @param painter the painter to wrap
      */
-    public CachingPainter(Painter painter) {
+    public CachingPainter(Painter<T> painter) {
         this.painter = painter;
     }
 
@@ -38,7 +38,7 @@ public class CachingPainter implements Painter {
      * @param standardWidth the width of the fixed image to create
      * @param standardHeight the height of the fixed image to create
      */
-    public CachingPainter(Painter painter, int standardWidth, int standardHeight) {
+    public CachingPainter(Painter<T> painter, int standardWidth, int standardHeight) {
         this(painter);
         paintOnce = true;
         createBuffer(null, standardWidth, standardHeight);
@@ -52,7 +52,7 @@ public class CachingPainter implements Painter {
      * @param height the height of the visible console area
      */
     @Override
-    public void paint(Graphics2D g, Object c, int width, int height) {
+    public void paint(Graphics2D g, T c, int width, int height) {
         if (paintOnce) {
             g.drawImage(image, 0, 0, width, height, null);
         } else {
@@ -65,7 +65,7 @@ public class CachingPainter implements Painter {
         }
     }
 
-    private void createBuffer(Object c, int width, int height) {
+    private void createBuffer(T c, int width, int height) {
         image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D ig = image.createGraphics();
         try {

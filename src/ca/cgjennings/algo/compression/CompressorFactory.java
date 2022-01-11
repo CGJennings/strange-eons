@@ -1,5 +1,7 @@
 package ca.cgjennings.algo.compression;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * Compressor factory supports programmatic selection and creation of
  * {@link Compressor} instances. For example, it can return a compressor that is
@@ -26,11 +28,11 @@ public enum CompressorFactory {
      */
     LZMA(LZMACompressor.class, "lz2"),;
 
-    private CompressorFactory(Class className, String... extensions) {
+    private CompressorFactory(Class<? extends Compressor> className, String... extensions) {
         this.className = className;
         this.extensions = extensions;
     }
-    private final Class className;
+    private final Class<? extends Compressor> className;
     private final String[] extensions;
 
     /**
@@ -41,7 +43,7 @@ public enum CompressorFactory {
     public Compressor getCompressor() {
         try {
             return (Compressor) className.getConstructor().newInstance();
-        } catch (Exception e) {
+        } catch (RuntimeException | ReflectiveOperationException e) {
             throw new AssertionError(e);
         }
     }

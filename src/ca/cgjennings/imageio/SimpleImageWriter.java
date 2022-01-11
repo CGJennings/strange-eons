@@ -852,7 +852,7 @@ public class SimpleImageWriter {
      * @return a new array of the supported image formats
      */
     public static WritableImageFormat[] getImageFormats() {
-        return formats.toArray(new WritableImageFormat[formats.size()]);
+        return formats.toArray(new WritableImageFormat[0]);
     }
 
     private static Set<WritableImageFormat> formats = Collections.synchronizedSet(new LinkedHashSet<WritableImageFormat>());

@@ -123,7 +123,7 @@ public final class DiscoveryService {
      * @return non-null array of hosts, possibly empty
      */
     public InetAddress[] getHosts() {
-        return hostsToTest.toArray(new InetAddress[hostsToTest.size()]);
+        return hostsToTest.toArray(new InetAddress[0]);
     }
 
     /**

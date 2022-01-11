@@ -373,12 +373,14 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void undoImpl() {
             selectionGroupPage[g] = oPage;
             selectionGroup[g] = oSel;
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         protected void redoImpl() {
             selectionGroupPage[g] = nPage;
             selectionGroup[g] = nSel;
@@ -510,7 +512,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * @return the selected items
      */
     public PageItem[] getSelection() {
-        return selection.toArray(new PageItem[selection.size()]);
+        return selection.toArray(new PageItem[0]);
     }
 
     /**
@@ -872,8 +874,10 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      */
     public static final int NUM_SELECTION_GROUPS = 11;
 
-    private LinkedHashSet[] selectionGroup = new LinkedHashSet[NUM_SELECTION_GROUPS];
+    @SuppressWarnings("unchecked")
+    private LinkedHashSet<PageItem>[] selectionGroup = new LinkedHashSet[NUM_SELECTION_GROUPS];
     private Page[] selectionGroupPage = new Page[NUM_SELECTION_GROUPS];
+    private LinkedHashSet<PageItem> selection;
 
     private String comment;
     private PaperProperties paper;
@@ -882,7 +886,6 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
     private float splitBorder;
     private Color splitBorderColour;
     private ArrayList<Page> pages;
-    private LinkedHashSet<PageItem> selection;
     private Page selectionPage;
     private boolean cropMarksEnabled = true;
     private float cropMarkWidth = 2f;

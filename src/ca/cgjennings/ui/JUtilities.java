@@ -368,7 +368,7 @@ public class JUtilities {
 
         // :: Make "super listener", "implementing" all the Listener interfaces
         Object superListener = Proxy.newProxyInstance(JUtilities.class.getClassLoader(),
-                listenerInterfaces.toArray(new Class<?>[listenerInterfaces.size()]), handler);
+                listenerInterfaces.toArray(new Class<?>[0]), handler);
 
         // :: Attach "super listener" using all add*Listener methods on supplied component
         for (Method method : addListenerMethods) {
@@ -657,37 +657,34 @@ public class JUtilities {
         c.removePropertyChangeListener(disabledHTMLFix);
     }
 
-    private static final PropertyChangeListener disabledHTMLFix = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            if (ENABLED_PROPERTY.equals(evt.getPropertyName())) {
-                Object src = evt.getSource();
-                if (!(src instanceof JComponent)) {
-                    return;
-                }
-                JComponent c = (JComponent) src;
-                Color fg;
-                if (c.isEnabled()) {
-                    fg = (Color) c.getClientProperty(FIX_PROPERTY);
-                    if (fg == null) {
-                        fg = UIManager.getDefaults().getColor("Label.foreground");
-                    }
-                } else {
-                    fg = (Color) c.getClientProperty(FIX_PROPERTY);
-                    if (fg == null) {
-                        c.putClientProperty(FIX_PROPERTY, c.getForeground());
-                    }
-                    fg = UIManager.getDefaults().getColor("Label.disabledText");
-                    if (fg == null) {
-                        fg = Color.GRAY;
-                    }
-                }
-                c.setForeground(fg);
-            }
-        }
-    };
     private static String ENABLED_PROPERTY = "enabled";
     private static String FIX_PROPERTY = "html-fix-color";
+    private static final PropertyChangeListener disabledHTMLFix = (evt) -> {
+        if (ENABLED_PROPERTY.equals(evt.getPropertyName())) {
+            Object src = evt.getSource();
+            if (!(src instanceof JComponent)) {
+                return;
+            }
+            JComponent c = (JComponent) src;
+            Color fg;
+            if (c.isEnabled()) {
+                fg = (Color) c.getClientProperty(FIX_PROPERTY);
+                if (fg == null) {
+                    fg = UIManager.getDefaults().getColor("Label.foreground");
+                }
+            } else {
+                fg = (Color) c.getClientProperty(FIX_PROPERTY);
+                if (fg == null) {
+                    c.putClientProperty(FIX_PROPERTY, c.getForeground());
+                }
+                fg = UIManager.getDefaults().getColor("Label.disabledText");
+                if (fg == null) {
+                    fg = Color.GRAY;
+                }
+            }
+            c.setForeground(fg);
+        }
+    };
 
     /**
      * Determines the height (width) needed to display an HTML label with a

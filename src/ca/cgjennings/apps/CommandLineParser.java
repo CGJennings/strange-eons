@@ -310,7 +310,7 @@ public class CommandLineParser {
         if (lastOption != null) {
             handleParsingError("Missing value for option " + lastOption.getName());
         }
-        leftOvers = files.toArray(new String[files.size()]);
+        leftOvers = files.toArray(new String[0]);
     }
 
     /**
@@ -325,7 +325,7 @@ public class CommandLineParser {
      */
     protected void setOption(Object target, String name, Field field, String value) {
         Object v; // the object to write into the field
-        Class type = field.getType();
+        Class<?> type = field.getType();
 
         if (type == boolean.class || type == Boolean.class) {
             v = true;
@@ -377,7 +377,7 @@ public class CommandLineParser {
         } else if (type == Level.class) {
             try {
                 v = Level.parse(value.toUpperCase(Locale.CANADA));
-            } catch (Exception e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 handleParsingError("Not a valid log level parameter for option " + name);
                 return;
             }
@@ -395,7 +395,7 @@ public class CommandLineParser {
                 if (v == null) {
                     throw new IllegalArgumentException();
                 }
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 handleParsingError("Not a valid parameter for option " + name);
                 return;
             }
@@ -405,10 +405,11 @@ public class CommandLineParser {
                 try {
                     v = c.newInstance(value);
                 } catch (InvocationTargetException ite) {
-                    handleParsingError("Exception \"" + ite.getCause() + "\" while parsing option " + name);
+                    final Throwable trueEx = ite.getCause();
+                    handleParsingError("Exception \"" + trueEx + "\" while parsing option " + name);
                     return;
                 }
-            } catch (Exception e) {
+            } catch (RuntimeException | ReflectiveOperationException e) {
                 throw new AssertionError("unsupprted option field class: " + type);
             }
         }

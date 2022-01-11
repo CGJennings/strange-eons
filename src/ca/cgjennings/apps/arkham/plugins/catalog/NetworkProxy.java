@@ -309,7 +309,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        typeCombo = new javax.swing.JComboBox();
+        typeCombo = new javax.swing.JComboBox<>();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
 
@@ -385,7 +385,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
         jLabel1.setText(string( "proxy-l-info" )); // NOI18N
 
-        typeCombo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "proxy-cb-type0", "proxy-cb-type1", "proxy-cb-type2", "proxy-cb-type3" }));
+        typeCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "proxy-cb-type0", "proxy-cb-type1", "proxy-cb-type2", "proxy-cb-type3" }));
         typeCombo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 typeComboActionPerformed(evt);
@@ -404,7 +404,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
                         .addComponent(typeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,7 +487,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
     private javax.swing.JTextField portField;
     private javax.swing.JLabel portLabel;
     private javax.swing.JPanel proxyPanel;
-    private javax.swing.JComboBox typeCombo;
+    private javax.swing.JComboBox<String> typeCombo;
     private javax.swing.JTextField userField;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables

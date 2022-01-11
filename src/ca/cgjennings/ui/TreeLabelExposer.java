@@ -45,14 +45,11 @@ public class TreeLabelExposer {
             exposePath(tree.getPathForLocation(e.getX(), e.getY()));
         }
     };
-    private final TreeSelectionListener selectionListener = new TreeSelectionListener() {
-        @Override
-        public void valueChanged(TreeSelectionEvent e) {
-            exposePath(path); // redraw row when selection state changes
-        }
-    };
+    // redraw row when selection state changes
+    private final TreeSelectionListener selectionListener = (e) -> exposePath(path);
     private JComponent helper = new JComponent() {
         @Override
+        @SuppressWarnings("unchecked")
         public void paint(Graphics g1) {
             Graphics2D g = (Graphics2D) g1;
             boolean selected = tree.isRowSelected(row);
@@ -95,7 +92,7 @@ public class TreeLabelExposer {
                     Graphics2D clone = (Graphics2D) g.create();
                     try {
                         clone.translate(paintBounds.x, paintBounds.y);
-                        ((Painter) painter).paint(clone, renderer, renderer.getWidth(), renderer.getHeight());
+                        ((Painter<JComponent>) painter).paint(clone, renderer, renderer.getWidth(), renderer.getHeight());
                     } finally {
                         clone.dispose();
                     }

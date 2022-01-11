@@ -133,6 +133,9 @@
             <Property name="dragEnabled" type="boolean" value="true"/>
             <Property name="visibleRowCount" type="int" value="-1"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Button&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -169,7 +172,8 @@
             <Property name="visibleRowCount" type="int" value="1"/>
           </Properties>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList() {&#xd;&#xa;&#x9;@Override&#xd;&#xa;&#x9;public Dimension getPreferredSize() {&#xd;&#xa;&#x9;&#x9;Dimension d = super.getPreferredSize();&#xd;&#xa;&#x9;&#x9;d.width += 64; // space to easily add more icons&#xd;&#xa;&#x9;&#x9;d.height = 22; // 3 + 3 + 16&#xd;&#xa;&#x9;&#x9;return d;&#xd;&#xa;&#x9;}&#xd;&#xa;};"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList&lt;Button&gt;() {&#xd;&#xa;&#x9;@Override&#xd;&#xa;&#x9;public Dimension getPreferredSize() {&#xd;&#xa;&#x9;&#x9;Dimension d = super.getPreferredSize();&#xd;&#xa;&#x9;&#x9;d.width += 64; // space to easily add more icons&#xd;&#xa;&#x9;&#x9;d.height = 22; // 3 + 3 + 16&#xd;&#xa;&#x9;&#x9;return d;&#xd;&#xa;&#x9;}&#xd;&#xa;};"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Button&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
