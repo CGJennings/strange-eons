@@ -13,6 +13,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -21,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 /**
  * Utility methods for creating and converting images, icons, and other
@@ -93,7 +95,20 @@ public final class ImageUtilities {
      * @param im the image to be provided in integer RGB format
      * @return the original image, or a copy converted to a suitable format
      */
-    public static BufferedImage ensureIntRGBFormat(BufferedImage im) {
+    public static BufferedImage ensureIntRGBFormat(Image image) {
+        if (!(image instanceof BufferedImage)) {
+            waitForImage(image);
+            BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = im.createGraphics();
+            try {
+                g.drawImage(image, 0, 0, null);
+            } finally {
+                g.dispose();
+            }
+            return im;
+        }
+        
+        BufferedImage im = (BufferedImage) image;
         final int type = im.getType();
         if (type != BufferedImage.TYPE_INT_RGB && type != BufferedImage.TYPE_INT_ARGB && type != BufferedImage.TYPE_INT_ARGB_PRE) {
             BufferedImage dest = createCompatibleIntRGBFormat(im);
@@ -406,18 +421,11 @@ public final class ImageUtilities {
                         public void filterPixels(int[] pixels, int start, int end) {
                             for (int i = 0; i < pixels.length; ++i) {
                                 int argb = pixels[i];
+                                int alpha = (argb >>> 24) * 80 / 100;
                                 int gray = ((77 * ((argb >> 16) & 0xff))
                                         + (150 * ((argb >> 8) & 0xff))
                                         + (28 * (argb & 0xff))) / 255;
-
-                                gray = (255 - ((255 - gray) / 2));
-                                if (gray < 0) {
-                                    gray = 0;
-                                }
-                                if (gray > 255) {
-                                    gray = 255;
-                                }
-                                pixels[i] = (argb & 0xff000000) | (gray << 16) | (gray << 8) | (gray);
+                                pixels[i] = (alpha << 24) | (gray << 16) | (gray << 8) | (gray);
                             }
                         }
                     };
@@ -1045,5 +1053,29 @@ public final class ImageUtilities {
             }
         }
         return true;
+    }
+    
+    /**
+     * Waits for an image to load.
+     * Generic {@code Image} instances, such as those obtained from the
+     * {@code Toolkit} are designed to load in
+     * the background. As a result, certain methods may return wrong or
+     * temporary values. This method ensures that a target image is fully
+     * loaded (or failed to load) before returning.
+     * Note that {@code BufferedImage}s never load in the background.
+     * 
+     * @param im the image to wait for
+     * @return the image
+     */
+    public static Image waitForImage(Image im) {
+        if (im.getWidth(null) >= 0) return im;
+        
+        MediaTracker mt = new MediaTracker(new JLabel());
+        mt.addImage(im, 0);
+        try {
+            mt.waitForAll();
+        } catch (InterruptedException ie) {}
+        
+        return im;
     }
 }

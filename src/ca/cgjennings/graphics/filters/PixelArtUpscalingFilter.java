@@ -18,9 +18,9 @@ import java.util.Arrays;
  * destination must be of exactly double the width and height of the source.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.3
+ * @since 3.4
  */
-public class PixelArtUpsampleFilter extends AbstractImageFilter {
+public class PixelArtUpscalingFilter extends AbstractImageFilter {
 
     /**
      * Max alpha difference before pixels considered different.
@@ -34,13 +34,16 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
      * Max chrominance difference before pixels considered different.
      */
     private static final int THRESH_CHROMA = 26;
+    
+    /** For future use. Current implementation only performs 2x scaling. */
+    final int scale = 2;
 
-    public PixelArtUpsampleFilter() {
+    public PixelArtUpscalingFilter() {
     }
 
     @Override
     public Rectangle2D getBounds2D(BufferedImage source) {
-        return new Rectangle(0, 0, source.getWidth() * 2, source.getHeight() * 2);
+        return new Rectangle(0, 0, source.getWidth() * scale, source.getHeight() * scale);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
         if (destPoint == null) {
             destPoint = new Point2D.Double();
         }
-        destPoint.setLocation(sourcePoint.getX() * 2d, sourcePoint.getY() * 2d);
+        destPoint.setLocation(sourcePoint.getX()* scale, sourcePoint.getY() * scale);
         return destPoint;
     }
 
@@ -59,7 +62,7 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
         }
         return new BufferedImage(
                 destinationColorModel,
-                destinationColorModel.createCompatibleWritableRaster(source.getWidth() * 2, source.getHeight() * 2),
+                destinationColorModel.createCompatibleWritableRaster(source.getWidth() * scale, source.getHeight() * scale),
                 destinationColorModel.isAlphaPremultiplied(),
                 null);
     }
@@ -78,6 +81,27 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
                 throw new IllegalArgumentException("dest has bad dimensions");
             }
         }
+        
+        // This implements the EPX/Scale2x algorithm, except that it does not
+        // require exact matches of colour (that algorithm was designed for
+        // images using an indexed colour model). Instead, colours are tested
+        // for similarity by converting them to the YCbCr colour space. Then,
+        // if considered similar, an equal mix is used as the output colour.
+        //
+        // In Scale 2x each pixel is scaled up by 2x,         E0 E1
+        // from one source pixel, E, to four pixels E0-E3.    E2 E3
+        //
+        // The values of these pixels are determined by       A  B  C
+        // comparing the pixels around the source pixel E     D  E  F
+        // in the source image, called A-I.                   G  H  I
+        //
+        // The scaling rules are fast, simple and deterministic.
+        // See https://www.scale2x.it/
+        //
+        // Note that in practice, A, C, G, and I are only used in the Scale3x
+        // version. For completeness, they are included below but commented out.
+        
+        int /*A,*/ B, /*C,*/ D, E, F, /*G,*/ H /*, I*/;
 
         // each pass reads 3 source rows and produces 2 dest rows;
         // at the end of each row we will rotate the source rows
@@ -88,8 +112,6 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
         int[] dst0 = new int[w2];
         int[] dst1 = new int[w2];
 
-        // see https://www.scale2x.it/
-        int A, B, C, D, E, F, G, H, I;
 
         // preload source rows to rotate
         getARGB(src, 0, 0, w, 1, src1);
@@ -109,35 +131,32 @@ public class PixelArtUpsampleFilter extends AbstractImageFilter {
             }
 
             for (int x = 0, d = 0; x < w; ++x, d += 2) {
-                // A B C  load source pixels from around target pixel E
-                // D E F
-                // G H I
+                // load source pixels from around target pixel E
                 B = src0[x];
                 E = src1[x];
                 H = src2[x];
                 if (x > 0) {
                     final int xp = x - 1;
-                    A = src0[xp];
+                    /*A = src0[xp];*/
                     D = src1[xp];
-                    G = src2[xp];
+                    /*G = src2[xp];*/
                 } else {
-                    A = B;
+                    /*A = B;*/
                     D = E;
-                    G = H;
+                    /*G = H;*/
                 }
                 final int xn = x + 1;
                 if (xn < w) {
-                    C = src0[xn];
+                    /*C = src0[xn];*/
                     F = src1[xn];
-                    I = src2[xn];
+                    /*I = src2[xn];*/
                 } else {
-                    C = B;
+                    /*C = B;*/
                     F = E;
-                    I = H;
+                    /*I = H;*/
                 }
 
-                // E0 E1  choose four pixel values to represent E'
-                // E2 E3
+                // choose four pixel values to represent E'
                 if (!eq(B, H) && !eq(D, F)) {
                     // E0
                     dst0[d] = eq(D, B) ? blend(D, B) : E;
