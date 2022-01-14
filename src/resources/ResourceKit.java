@@ -452,25 +452,9 @@ public class ResourceKit {
      * @see Theme#applyThemeToImage
      */
     public static ThemedIcon getIcon(String iconResource) {
-        // this implementation is now almost trivial after adding ThemedIcons
-        if (iconResource == null) {
-            throw new NullPointerException("name");
-        }
-        if (!iconResource.isEmpty()) {
-            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
-                iconResource = "icons/" + iconResource;
-            }
-        }
-        iconResource = normalizeResourceIdentifier(iconResource);
-        ThemedIcon icon;
-        synchronized (thIconCache) {
-            icon = new ThemedIcon(iconResource);
-            thIconCache.put(iconResource, icon);
-        }
-        return icon;
+        // this implementation is trivial since adding ThemedIcons
+        return new ThemedIcon(iconResource);
     }
-
-    private static final HashMap<String, ThemedIcon> thIconCache = new HashMap<>();
 
     /**
      * Returns an image after allowing the installed theme an opportunity to
