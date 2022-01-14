@@ -55,13 +55,6 @@ public class ThemedIcon implements Icon {
      */
     public ThemedIcon(String resource, boolean deferLoading) {
         Objects.requireNonNull(resource, "resource");
-        if (!resource.isEmpty()) {
-            if (resource.charAt(0) != '/' && resource.indexOf(':') < 0) {
-                if (!resource.startsWith("icons/")) {
-                    resource = "icons/" + resource;
-                }
-            }
-        }
         this.resource = ResourceKit.normalizeResourceIdentifier(resource);
 
         if (!deferLoading) {

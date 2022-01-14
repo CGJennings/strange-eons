@@ -453,6 +453,13 @@ public class ResourceKit {
      */
     public static ThemedIcon getIcon(String iconResource) {
         // this implementation is trivial since adding ThemedIcons
+        if (!iconResource.isEmpty()) {
+            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
+                if (!iconResource.startsWith("icons/")) {
+                    iconResource = "icons/" + iconResource;
+                }
+            }
+        }        
         return new ThemedIcon(iconResource);
     }
 
