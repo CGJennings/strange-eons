@@ -317,6 +317,21 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
         return Collections.unmodifiableList(list);
     }
 
+    /**
+     * Returns a string description of this image, for debugging purposes.
+     */
+    @Override
+    public String toString() {
+        String s = getClass().getSimpleName() + "[\"" + getResource()
+                + "\", loaded resolutions " + tags[0].substring(1);
+        for (int i = 0; i < NUM_VARIANTS; ++i) {
+            if (cached[i] != null) {
+                s += ", " + tags[i].substring(1);
+            }
+        }
+        return s + ']';
+    }
+
     // Set this to true to get feedback on which resolution is being selected
     // or to check for icons in the UI that are not multi-res
     private static final boolean DEBUG = false;

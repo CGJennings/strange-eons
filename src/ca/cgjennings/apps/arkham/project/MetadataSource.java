@@ -710,24 +710,15 @@ public class MetadataSource {
                 }
             }
         } else {
-            if (iconName.startsWith("res://")) {
-                iconName = iconName.substring("res://".length());
-            }
             icon = TASK_ICON_CACHE.get(iconName);
 
             if (icon == null) {
-                // allow theming of custom icons
-                BufferedImage bi = new ThemedIcon(iconName).getImage();
-                if (bi != null) {
-                    if (bi.getWidth() > ICON_SIZE || bi.getHeight() > ICON_SIZE) {
-                        float scale = ImageUtilities.idealCoveringScaleForImage(ICON_SIZE, ICON_SIZE, bi.getWidth(), bi.getHeight());
-                        bi = ImageUtilities.resample(bi, scale);
-                    } else if (bi.getWidth() < ICON_SIZE && bi.getHeight() < ICON_SIZE) {
-                        ImageUtilities.center(bi, ICON_SIZE, ICON_SIZE);
-                    }
-                    icon = new ImageIcon(bi);
-                    TASK_ICON_CACHE.put(iconName, icon);
+                ThemedIcon customIcon = new ThemedIcon(iconName);
+                if (customIcon.getIconWidth() != ICON_SIZE || customIcon.getIconHeight() != ICON_SIZE) {
+                    customIcon = customIcon.derive(ICON_SIZE, ICON_SIZE, false);
                 }
+                icon = customIcon;
+                TASK_ICON_CACHE.put(iconName, icon);
             }
         }
 
