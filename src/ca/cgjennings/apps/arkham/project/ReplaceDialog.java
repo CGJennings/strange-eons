@@ -8,6 +8,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
  * Dialog to prompt user before repalcing files during a copy operation.
@@ -211,7 +212,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         jLabel2.setText(string( "proj-l-replace-file2" )); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/64.png"))); // NOI18N
+        jLabel1.setIcon(ResourceKit.getIcon("application/app.png").derive(64, 64));
 
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
@@ -222,7 +223,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
                     .addComponent(jLabel2))
                 .addContainerGap())
         );

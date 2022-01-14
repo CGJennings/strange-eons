@@ -715,7 +715,7 @@ public class MetadataSource {
             if (icon == null) {
                 ThemedIcon customIcon = new ThemedIcon(iconName);
                 if (customIcon.getIconWidth() != ICON_SIZE || customIcon.getIconHeight() != ICON_SIZE) {
-                    customIcon = customIcon.derive(ICON_SIZE, ICON_SIZE, false);
+                    customIcon = customIcon.derive(ICON_SIZE, ICON_SIZE);
                 }
                 icon = customIcon;
                 TASK_ICON_CACHE.put(iconName, icon);

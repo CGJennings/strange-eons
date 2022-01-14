@@ -28,6 +28,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Clipboard;
@@ -62,6 +63,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
@@ -351,12 +353,12 @@ public final class Client extends javax.swing.JFrame {
 
         portField.getEditor().setOpaque(false);
 
-        final String[] files = {"application/db16.png", "application/db32.png", "application/db64.png", "application/db256.png"};
-        LinkedList<BufferedImage> icons = new LinkedList<>();
-        for (String f : files) {
-            icons.add(image("icons/" + f));
+        List<Image> appImages = new LinkedList<>();
+        appImages.add(image("icons/application/db.png"));
+        for(int x = 2; x <= 16; x *= 2) {
+            appImages.add(image("icons/application/db@" + x + "x.png"));
         }
-        setIconImages(icons);
+        setIconImages(appImages);
 
         sourceTable.getColumnModel().getColumn(0).setCellRenderer(sourceRenderer);
         sourceTable.getColumnModel().getColumn(1).setCellRenderer(sourceRenderer);

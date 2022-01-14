@@ -262,7 +262,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
 
         if (parent == null) {
             try {
-                ed.setIconImage(ImageIO.read(resources.ResourceKit.class.getResource("/resources/icons/application/32.png")));
+                ed.setIconImage(ImageIO.read(resources.ResourceKit.class.getResource("/resources/icons/application/app@2x.png")));
             } catch (Throwable ex) {
                 StrangeEons.log.log(Level.WARNING, "unable to load fatal dialog icon", ex);
             }

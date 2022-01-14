@@ -23,8 +23,8 @@ import resources.ResourceKit;
  * {@code reload@2x.png}, and {@code reload@3x.png}, and when drawn to a
  * graphics context the most appropriate version will be selected automatically.
  * Missing images will be filled in by scaling from an image that is available.
- * The following "@Nx" values are currently supported: "@1.25", "@1.5", "@1.75",
- * "@2", "@2.25", "@2.5", "@3", "@3.5", "@4"
+ * The following "@Nx" values are currently supported: "@1.25x", "@1.5x",
+ * "@1.75x", "@2x", "@2.25x", "@2.5x", "@3x", "@3.5x", "@4x", "@8x", "@16x"
  *
  * @author Christopher G. Jennings (cjennings@acm.org)
  * @since 3.4
@@ -48,7 +48,9 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
     private static final int X3 = 7;
     private static final int X3_5 = 8;
     private static final int X4 = 9;
-    private static final int NUM_VARIANTS = 10;
+    private static final int X8 = 10;
+    private static final int X16 = 11;
+    private static final int NUM_VARIANTS = 12;
 
     /**
      * The scaling factors for each supported size variant. This is a superset
@@ -56,14 +58,15 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
      * densities.
      */
     private static final float[] scales = new float[]{
-        1f, 1.25f, 1.5f, 1.75f, 2f, 2.25f, 2.5f, 3f, 3.5f, 4f
+        1f, 1.25f, 1.5f, 1.75f, 2f, 2.25f, 2.5f, 3f, 3.5f, 4f, 8f, 16f
     };
 
     /**
      * File name tags to add to the original source path for each scale.
      */
     private static final String[] tags = new String[]{
-        "", "@1.25x", "@1.5x", "@1.75x", "@2x", "@2.25x", "@2.5x", "@3x", "@3.5x", "@4x"
+        "", "@1.25x", "@1.5x", "@1.75x", "@2x", "@2.25x", "@2.5x", "@3x",
+        "@3.5x", "@4x", "@8x", "@16x"
     };
 
     /**
@@ -72,7 +75,7 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
      * choice for scale 1.25 is scale 2.5 because that is exactly double 1.25.
      */
     private static final int[] firstChoiceAlternate = new int[]{
-        X2, X2_5, X3, X3_5, X4, X3, X3, X4, X4, X3
+        X2, X2_5, X3, X3_5, X4, X3, X3, X4, X4, X8, X16, X8
     };
 
     private final BufferedImage[] cached = new BufferedImage[NUM_VARIANTS];
@@ -259,7 +262,7 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
                 if (bi == null && variant < X3 && alternate != X3) {
                     bi = loadVariantResource(X3);
                 }
-                if (bi == null) {
+                if (bi == null && alternate != X4) {
                     bi = loadVariantResource(X4);
                 }
                 // finally, use an existing image to create the target image
@@ -300,11 +303,11 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
         // find the variant that will be at least that large;
         // we will choose the variant for whichever dimension ends up
         // giving us the largest source image
-        int varForW, varForH;
-        for (varForW = 0; scaledWidths[varForW] < destW && varForW < scales.length; ++varForW);
-        for (varForH = 0; scaledHeights[varForH] < destH && varForH < scales.length; ++varForH);
+        int var = 0;
+        for (; var < NUM_VARIANTS && scaledWidths[var] < destW; ++var);
+        for (; var < NUM_VARIANTS && scaledHeights[var] < destH; ++var);
 
-        final int variant = Math.min(scales.length - 1, Math.max(varForW, varForH));
+        final int variant = Math.min(scales.length - 1, var);
         return getImageVariant(variant, true);
     }
 

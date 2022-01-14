@@ -166,18 +166,10 @@ public class ThemedIcon implements Icon {
      * 
      * @param width the new width (on 1:1 displays)
      * @param height the new height (on 1:1 displays)
-     * @param disabledState if true, the icon is always rendered in the
-     * disabled state
      * @return an icon for the new size
      */
-    public final ThemedIcon derive(int width, int height, boolean disabledState) {
-        ThemedIcon derived = new ThemedIcon(this, width, height);
-        if (disabledState) {
-            getDisabledMultiResolutionImage();
-            derived.mim = dim;
-            derived.dim = dim;
-        }
-        return derived;
+    public final ThemedIcon derive(int width, int height) {
+        return new ThemedIcon(this, width, height);
     }
 
 

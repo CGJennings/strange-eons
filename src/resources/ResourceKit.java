@@ -124,7 +124,7 @@ import static resources.Language.string;
  * <p>
  * Alternatively, you can create a URL object for a resource using the special
  * protocol {@code res:}, for example:<br>
- * {@code URL u = new URL( "res://icons/application/256.png" );}
+ * {@code URL u = new URL( "res://icons/application/app.png" );}
  *
  * <p>
  * Note that the URLs produced with these two different methods are <b>not</b>

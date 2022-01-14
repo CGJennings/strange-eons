@@ -272,10 +272,10 @@ public final class register extends CommandLineParser {
         extractIcon("32", "app", 24);
         extractIcon("16", "app", 16);
 
-        extractIcon("db256", "debugger", 96);
-        extractIcon("db64", "debugger", 48);
-        extractIcon("db32", "debugger", 24);
-        extractIcon("db16", "debugger", 16);
+        extractIcon("db@8x", "debugger", 96);
+        extractIcon("db@4x", "debugger", 48);
+        extractIcon("db@2x", "debugger", 24);
+        extractIcon("db", "debugger", 16);
 
         extractIcon("document", "eon", 96);
         extractIcon("document", "eon", 48);

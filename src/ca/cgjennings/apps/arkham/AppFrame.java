@@ -334,7 +334,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             message = string(message);
             int choice = JOptionPane.showConfirmDialog(
                     AppFrame.this, message, string("cat-new-version-title"), JOptionPane.YES_NO_OPTION, 0,
-                    ResourceKit.getIcon("application/128.png")
+                    ResourceKit.getIcon("application/app.png").derive(128, 128)
             );
             if (choice == JOptionPane.YES_OPTION) {
                 // load a fresh (non-cached) copy of the default catalog

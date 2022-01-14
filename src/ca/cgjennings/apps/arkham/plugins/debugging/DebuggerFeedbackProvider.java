@@ -51,9 +51,9 @@ class DebuggerFeedbackProvider {
     private void init() {
         glue = Box.createHorizontalGlue();
         label = new JTip();
-        label.setIcon(ResourceKit.getIcon("application/db16.png"));
+        label.setIcon(ResourceKit.getIcon("application/start-debugger.png"));
         JLabel tip = (JLabel) label.getTipComponent();
-        tip.setIcon(ResourceKit.getIcon("application/db32.png"));
+        tip.setIcon(ResourceKit.getIcon("application/db.png").derive(32, 32));
         tip.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 1),
                 BorderFactory.createCompoundBorder(

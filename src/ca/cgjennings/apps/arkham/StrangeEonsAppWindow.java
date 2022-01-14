@@ -16,6 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.Icon;
@@ -58,12 +59,11 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * @return a list of frame icons at various sizes
      */
     public static List<Image> getApplicationFrameIcons() {
-//		boolean isTestMode = BundleInstaller.getTestBundle() != null;
         if (frameIcons == null) {
-            frameIcons = new ArrayList<>(4);
-            for (int size = 256; size >= 16; size >>= 1) {
-                BufferedImage image = ResourceKit.getThemedImage("icons/application/" + size + ".png");
-                frameIcons.add(image);
+            frameIcons = new ArrayList<>(5);
+            frameIcons.add(ResourceKit.getThemedImage("icons/application/app.png"));
+            for(int x = 2; x <= 16; x *= 2) {
+                frameIcons.add(ResourceKit.getThemedImage("icons/application/app@" + x + "x.png"));
             }
             frameIcons = Collections.unmodifiableList(frameIcons);
         }

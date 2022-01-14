@@ -1375,7 +1375,7 @@ public class Commands {
      *
      * @see StrangeEonsAppWindow#showAboutDialog()
      */
-    public static final AbstractCommand ABOUT = new AbstractCommand("app-about", "application/16.png") {
+    public static final AbstractCommand ABOUT = new AbstractCommand("app-about", "application/app.png") {
         @Override
         public void actionPerformed(ActionEvent e) {
             StrangeEons.getWindow().showAboutDialog();
