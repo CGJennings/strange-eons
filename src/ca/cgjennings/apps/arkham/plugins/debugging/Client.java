@@ -67,6 +67,7 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
@@ -120,6 +121,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import resources.Settings;
+import java.util.logging.Logger;
 
 /**
  * The script debugger client application. This client-side application allows
@@ -131,6 +133,7 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 public final class Client extends javax.swing.JFrame {
+    static final Logger log = Logger.getLogger(Client.class.getName());
 
     /**
      * Creates a new debugger client window.
@@ -143,7 +146,7 @@ public final class Client extends javax.swing.JFrame {
             e.printStackTrace(System.err);
         }
 
-        debugIcon = new ImageIcon(image("icons/application/db64.png"));
+        debugIcon = new ImageIcon(image("icons/application/db@4x.png"));
 
         initComponents();
         statusPanel.add(status, BorderLayout.EAST);
@@ -565,6 +568,9 @@ public final class Client extends javax.swing.JFrame {
     };
 
     private static BufferedImage image(String res) {
+        if (res == null) {
+            log.log(Level.SEVERE, "null image");
+        }
         URL url = Client.class.getResource("/resources/" + res);
         if (url != null) {
             try {
@@ -572,10 +578,15 @@ public final class Client extends javax.swing.JFrame {
             } catch (IOException e) {
             }
         }
-        return null;
+        
+        log.log(Level.WARNING, "missing or bad image {0}", res);
+        return new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
     }
 
     private static Icon icon(String res, int size) {
+        if (res == null) {
+            log.log(Level.SEVERE, "null icon");
+        }        
         BufferedImage img = image("icons/" + res);
         if (img == null) {
             return null;
