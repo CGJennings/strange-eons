@@ -7,7 +7,7 @@ import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.StyleUtilities;

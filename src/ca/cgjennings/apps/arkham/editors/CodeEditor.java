@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.ContextBar;
@@ -27,6 +28,7 @@ import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
 import ca.cgjennings.ui.textedit.CSSStyler;
+import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
 import ca.cgjennings.ui.textedit.EditorCommands;
 import ca.cgjennings.ui.textedit.InputHandler;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
@@ -238,7 +240,7 @@ public class CodeEditor extends AbstractSupportEditor {
     public CodeEditor(File file, String encoding, CodeType codeType) throws IOException {
         this();
         type = codeType;
-        codeType.initializeEditor(this);
+        initializeForCodeType();
         setFile(file);
         this.encoding = encoding;
 
@@ -274,9 +276,9 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public CodeEditor(String text, String encoding, CodeType codeType) {
         this();
-        codeType.initializeEditor(this);
         this.encoding = encoding;
         type = codeType;
+        initializeForCodeType();
 
         editor.setText(text);
         editor.select(0, 0);
@@ -285,6 +287,10 @@ public class CodeEditor extends AbstractSupportEditor {
 
         editor.setComponentPopupMenu(createPopupMenu());
         setReadOnly(true);
+    }
+    
+    private void initializeForCodeType() {
+        
     }
 
     public void setReadOnly(boolean readOnly) {
@@ -389,260 +395,6 @@ public class CodeEditor extends AbstractSupportEditor {
         setUnsavedChanges(false);
     }
 
-    /**
-     * The file types that can be edited by a {@code CodeEditor}.
-     */
-    public static enum CodeType {
-        PLAIN("txt", "pa-new-text", null, null, null, MetadataSource.ICON_DOCUMENT),
-        JAVASCRIPT("js", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_SCRIPT),
-        TYPESCRIPT("ts", "prj-prop-typescript", TextEncoding.SOURCE_CODE, TypeScriptTokenizer.class, null, MetadataSource.ICON_TYPESCRIPT),
-        JAVA("java", "prj-prop-java", TextEncoding.SOURCE_CODE, JavaTokenizer.class, null, MetadataSource.ICON_JAVA),
-        PROPERTIES("properties", "prj-prop-props", TextEncoding.STRINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_PROPERTIES),
-        SETTINGS("settings", "prj-prop-txt", TextEncoding.SETTINGS, PropertyTokenizer.class, PropertyNavigator.class, MetadataSource.ICON_SETTINGS),
-        CLASS_MAP("classmap", "prj-prop-class-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CLASS_MAP),
-        CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_CONVERSION_MAP),
-        SILHOUETTES("silhouettes", "prj-prop-sil", TextEncoding.SETTINGS, ResourceFileTokenizer.class, ResourceFileNavigator.class, MetadataSource.ICON_SILHOUETTES),
-        TILES("tiles", "prj-prop-tiles", TextEncoding.SETTINGS, ResourceFileTokenizer.class, TileSetNavigator.class, MetadataSource.ICON_TILE_SET),
-        HTML("html", "pa-new-html", TextEncoding.HTML_CSS, HTMLTokenizer.class, HTMLNavigator.class, MetadataSource.ICON_HTML),
-        CSS("css", "prj-prop-css", TextEncoding.HTML_CSS, CSSTokenizer.class, null, MetadataSource.ICON_STYLE_SHEET),
-        PLAIN_UTF8("utf8", "prj-prop-utf8", TextEncoding.UTF8, null, null, MetadataSource.ICON_FILE),
-        AUTOMATION_SCRIPT("ajs", "prj-prop-script", TextEncoding.SOURCE_CODE, JavaScriptTokenizer.class, JavaScriptNavigator.class, MetadataSource.ICON_AUTOMATION_SCRIPT),;
-
-        private final String enc;
-        private final Class<? extends Tokenizer> tokenizer;
-        private final Class<? extends Navigator> navigator;
-        private final Icon icon;
-        private final boolean escapeOnSave;
-        private final String ext;
-        private final String description;
-
-        /**
-         * Declare a new code type.
-         *
-         * @param extension file extension
-         * @param descKey string key for localized string that describes format
-         * @param defaultEncoding default text encoding, null for UTF-8
-         * @param tokenizer tokenizer to syntax highlight code, null for none
-         * @param navigator navigator implementation to list important document
-         * nodes, null for none
-         * @param icon icon that represents the file type
-         */
-        private CodeType(
-                String extension, String descKey, String defaultEncoding,
-                Class<? extends Tokenizer> tokenizer, Class<? extends Navigator> navigator,
-                Icon icon
-        ) {
-            if (extension == null) {
-                throw new NullPointerException("extension");
-            }
-            if (defaultEncoding == null) {
-                defaultEncoding = TextEncoding.UTF8;
-            }
-            this.ext = extension;
-            this.enc = defaultEncoding;
-            this.tokenizer = tokenizer;
-            this.icon = icon;
-            this.escapeOnSave = !defaultEncoding.equals(TextEncoding.UTF8);
-            this.description = string(descKey);
-            this.navigator = navigator;
-        }
-
-        private static final CodeType[] readOnlyValues = values();
-
-        /**
-         * Return the type of this file, based on its extension, or null.
-         */
-        public static CodeType forFile(File f) {
-            if (f == null) {
-                return null;
-            }
-            String ext = ProjectUtilities.getFileExtension(f);
-            for (int i = 0; i < readOnlyValues.length; ++i) {
-                if (readOnlyValues[i].getExtension().equals(ext)) {
-                    return readOnlyValues[i];
-                }
-            }
-            return null;
-        }
-
-        public String getExtension() {
-            return ext;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getEncodingName() {
-            return enc;
-        }
-
-        public Charset getEncodingCharset() {
-            return Charset.forName(enc);
-        }
-
-        public Tokenizer createTokenizer() {
-            try {
-                if (tokenizer != null) {
-                    return tokenizer.getConstructor().newInstance();
-                }
-            } catch (Exception ex) {
-                StrangeEons.log.log(Level.SEVERE, "exception while creating tokenizer", ex);
-            }
-            return new PlainTextTokenizer();
-        }
-
-        public Navigator createNavigator(CodeEditor ed) {
-            try {
-                if (navigator != null) {
-                    Navigator nav = navigator.getConstructor().newInstance();
-                    nav.install(ed);
-                    return nav;
-                }
-            } catch (Exception ex) {
-                StrangeEons.log.log(Level.SEVERE, "exception while creating navigator", ex);
-            }
-            return null;
-        }
-
-        public Icon getIcon() {
-            return icon;
-        }
-
-        public boolean getAutomaticCharacterEscaping() {
-            return escapeOnSave;
-        }
-
-        /**
-         * If this file type should be processed automatically after writing it,
-         * perform that processing.
-         */
-        void processAfterWrite(CodeEditor host, File source, String text) {
-            if (source == null) {
-                return;
-            }
-
-            if (this == TYPESCRIPT) {
-                host.startedCodeGeneration();
-                TypeScript.transpile(text, transpiled -> {
-                    final File js = this.getDependentFile(source);
-                    try {
-                        ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
-                        StrangeEons.log.fine("wrote transpiled code");
-                    } catch (IOException ex) {
-                        StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
-                    }
-                    host.refreshDependentFiles(this, js);
-                    host.finishedCodeGeneration();
-                });
-            }
-
-            return;
-        }
-
-        /**
-         * If this type generates another editable file type, returns the file
-         * name that the specified file would generate. For example, for
-         * {@code source.ts} this might return {@code source.js}.
-         *
-         * @param source the file containing source code of this type
-         * @return the file that compiled code should be written to, or null if
-         * this file type does not generate code
-         */
-        public File getDependentFile(File source) {
-            if (source == null || this != TYPESCRIPT) {
-                return null;
-            }
-            return ProjectUtilities.changeExtension(source, "js");
-        }
-
-        /**
-         * Given a file of this type, if that file's contents are controlled by
-         * another file that currently exists, returns that file. For example,
-         * for {@code source.js} this might return {@code source.ts}.
-         *
-         * @param source the file that might be controlled by another file
-         * @return the file that controls the content of this file, or null
-         */
-        public File getDeterminativeFile(File source) {
-            if (source == null || this != JAVASCRIPT) {
-                return null;
-            }
-
-            File tsFile = ProjectUtilities.changeExtension(source, "ts");
-            if (tsFile.exists()) {
-                return tsFile;
-            }
-            return null;
-        }
-
-        /**
-         * Returns whether this code type represents runnable script code.
-         */
-        public boolean isRunnable() {
-            return this == JAVASCRIPT || this == AUTOMATION_SCRIPT || this == TYPESCRIPT;
-        }
-
-        private void initializeEditor(CodeEditor ce) {
-            JSourceCodeEditor ed = ce.getEditor();
-            Tokenizer t = createTokenizer();
-            ed.setTokenizer(t);
-            ed.setAbbreviationTable(AbbreviationTableManager.getTable(this));
-            ce.setFrameIcon(icon);
-            ce.encoding = enc;
-            ce.setCharacterEscapingEnabled(escapeOnSave);
-            ce.setNavigator(createNavigator(ce));
-
-            if (t != null) {
-                EnumSet<TokenType> toSpellCheck = t.getNaturalLanguageTokenTypes();
-                if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
-                    ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
-                    SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = Settings.getUser().getBoolean("spelling-code-enabled");
-                }
-            }
-
-            if (this == TYPESCRIPT) {
-                TypeScript.warmUp();
-            }
-        }
-
-        /**
-         * Normalizes the code type by converting variant types to their common
-         * base type. If the type is a more specialized version of an existing
-         * type, then this will return a simple common type. This is useful if
-         * you are interested in the basic file type and do not rely on
-         * information like the file extension, icon, or encoding. In
-         * particular, it is guaranteed that the tokenizer for the returned type
-         * will match the tokenizer of the original type.
-         *
-         * <p>
-         * This method performs the following conversions:
-         * <ul>
-         * <li> All plain text types are converted to {@code PLAIN}.
-         * <li> All script types are converted to {@code JAVASCRIPT}.
-         * </ul>
-         *
-         * <p>
-         * Note that this list could change if new code types are added in
-         * future versions):
-         *
-         * @return the most basic code type with the same tokenizer as this type
-         */
-        public CodeType normalize() {
-            CodeType type = this;
-            switch (type) {
-                case PLAIN_UTF8:
-                    type = CodeType.PLAIN;
-                    break;
-                case AUTOMATION_SCRIPT:
-                    type = CodeType.JAVASCRIPT;
-                    break;
-                default:
-                // keep original type
-            }
-            return type;
-        }
-    }
 
     private String encoding = "utf-8";
     private CodeType type = CodeType.PLAIN;
@@ -1549,7 +1301,27 @@ public class CodeEditor extends AbstractSupportEditor {
         String text = editor.getText();
         ProjectUtilities.copyReader(new StringReader(escape(text)), f, encoding);
         refreshNavigator(text);
-        type.processAfterWrite(this, f, text);
+        processAfterWrite(f, text);
+    }
+    
+    private void processAfterWrite(File source, String text) {
+        if (source == null) {
+            return;
+        }
+        if (type == TYPESCRIPT) {
+            startedCodeGeneration();
+            TypeScript.transpile(text, transpiled -> {
+                final File js = type.getDependentFile(source);
+                try {
+                    ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);
+                    StrangeEons.log.fine("wrote transpiled code");
+                } catch (IOException ex) {
+                    StrangeEons.log.log(Level.SEVERE, "failed to write transpiled file", ex);
+                }
+                refreshDependentFiles(type, js);
+                finishedCodeGeneration();
+            });
+        }        
     }
 
     /**
@@ -1592,14 +1364,10 @@ public class CodeEditor extends AbstractSupportEditor {
 
     @Override
     protected StrangeEonsEditor spinOffImpl() {
-        CodeEditor clone = new CodeEditor();
+        CodeEditor clone = new CodeEditor(getText(), type);
         clone.setFile(getFile());
         clone.encoding = encoding;
-        clone.type = type;
-        type.initializeEditor(clone);
-        clone.editor.setText(editor.getText());
-        clone.editor.select(0, 0);
-        clone.editor.getDocument().clearUndoHistory();
+        clone.setUnsavedChanges(hasUnsavedChanges());
         return clone;
     }
 

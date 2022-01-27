@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import java.io.File;
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class Run extends TaskAction {
         if (debug && !ScriptDebugging.isInstalled()) {
             return false;
         }
-        CodeEditor.CodeType ct = CodeEditor.CodeType.forFile(member.getFile());
+        CodeType ct = CodeType.forFile(member.getFile());
         return ct != null && ct.isRunnable();
     }
 
@@ -93,7 +94,7 @@ public class Run extends TaskAction {
                     }
                 }
             }
-            CodeEditor.CodeType ct = CodeEditor.CodeType.forFile(member.getFile());
+            CodeType ct = CodeType.forFile(member.getFile());
             if (ct.getDependentFile(f) != null) {
                 f = ct.getDependentFile(f);
             }
