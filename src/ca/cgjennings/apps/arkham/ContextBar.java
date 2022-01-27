@@ -8,7 +8,7 @@ import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.deck.PageView;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.math.Interpolation;
 import ca.cgjennings.ui.BlankIcon;

@@ -6,7 +6,7 @@ import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;

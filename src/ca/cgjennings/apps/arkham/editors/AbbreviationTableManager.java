@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.ui.textedit.completion.AbbreviationTable;
 import gamedata.Game;
 import java.io.File;

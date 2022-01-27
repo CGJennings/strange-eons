@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.io.File;
@@ -372,7 +373,7 @@ public final class ConsoleErrorLocation {
         }
 
         try {
-            CodeEditor ed = new CodeEditor(f, CodeEditor.CodeType.JAVASCRIPT);
+            CodeEditor ed = new CodeEditor(f, CodeType.JAVASCRIPT);
             StrangeEons.getWindow().addEditor(ed);
             return ed.getEditor();
         } catch (IOException e) {
@@ -414,7 +415,7 @@ public final class ConsoleErrorLocation {
         }
 
         // create a new read-only editor to display the resource
-        CodeEditor ed = new CodeEditor(script, CodeEditor.CodeType.JAVASCRIPT);
+        CodeEditor ed = new CodeEditor(script, CodeType.JAVASCRIPT);
         ed.putClientProperty("showing", id);
 
         String title = id;

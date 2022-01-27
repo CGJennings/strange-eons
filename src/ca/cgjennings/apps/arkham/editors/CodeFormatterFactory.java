@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
@@ -36,7 +37,7 @@ public final class CodeFormatterFactory {
      *
      * @param type the code type to format
      */
-    public static Formatter getFormatter(CodeEditor.CodeType type) {
+    public static Formatter getFormatter(CodeType type) {
         Formatter f;
         switch (type) {
             case PLAIN:
