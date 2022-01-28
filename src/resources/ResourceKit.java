@@ -31,6 +31,7 @@ import ca.cgjennings.io.InvalidFileFormatException;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
 import ca.cgjennings.layout.TextStyle;
+import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
 import ca.cgjennings.ui.JUtilities;
@@ -89,6 +90,7 @@ import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.StyleContext;
 import static resources.Language.string;
 
 /**
@@ -459,7 +461,7 @@ public class ResourceKit {
                     iconResource = "icons/" + iconResource;
                 }
             }
-        }        
+        }
         return new ThemedIcon(iconResource);
     }
 
@@ -1060,25 +1062,42 @@ public class ResourceKit {
      */
     public synchronized static Font getEditorFont() {
         if (editorFont == null) {
+            Font baseFont;
             String family = RawSettings.getSetting("edit-font-family");
             if (family == null || family.equalsIgnoreCase("default")) {
-                if (Locale.getDefault().getLanguage().equals("en")) {
-                    family = "Consolas,Inconsolata,Monospaced";
+                if (PlatformSupport.PLATFORM_IS_MAC) {
+                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Menlo", "Monaco", "Consolas", Font.MONOSPACED);
                 } else {
-                    family = "Monospaced";
+                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Consolas", Font.MONOSPACED);
                 }
+            } else {
+                baseFont = locateAvailableFont(family, Font.MONOSPACED);
             }
-            Font baseFont = new Font(ResourceKit.findAvailableFontFamily(family, "Monospaced"), Font.PLAIN, 12);
             Settings rk = Settings.getShared();
             editorFont = baseFont.deriveFont(
                     (rk.getYesNo("edit-font-bold") ? Font.BOLD : 0)
                     | (rk.getYesNo("edit-font-italic") ? Font.ITALIC : 0),
                     rk.getPointSize("edit-font"));
-            editorFont = enableKerningAndLigatures(editorFont);
         }
         return editorFont;
     }
     private static Font editorFont;
+    
+    private static Font locateAvailableFont(String... families) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        if (families == null | families.length == 0) {
+            throw new IllegalArgumentException("missing families");
+        }
+        Font font = null;
+        for (int i=0; i<families.length; ++i) {
+            font = sc.getFont(families[i], Font.PLAIN, 13);
+            if (families[i].equals(font.getFamily())) break;
+        }
+        if (font == null) {
+            font = new Font(Font.MONOSPACED, Font.PLAIN, 13);
+        }
+        return font;
+    }
 
     /**
      * Returns a font that is optimized for displaying characters at very small
