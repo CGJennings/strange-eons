@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * A {@link Navigator} implementation for HTML files.
  */
-public class Html_Navigator implements Navigator {
+public class HtmlNavigator implements Navigator {
 
     @Override
     public void install(CodeEditor editor) {

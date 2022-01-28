@@ -1,7 +1,7 @@
 package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.Html_Navigator;
+import ca.cgjennings.apps.arkham.editors.HtmlNavigator;
 import ca.cgjennings.apps.arkham.editors.Navigator;
 import org.fife.rsta.ac.html.HtmlLanguageSupport;
 
@@ -30,6 +30,6 @@ public class HtmlCodeSupport extends DefaultCodeSupport {
 
     @Override
     public Navigator createNavigator(CodeEditor codeEditor) {
-        return new Html_Navigator();
+        return new HtmlNavigator();
     }
 }
