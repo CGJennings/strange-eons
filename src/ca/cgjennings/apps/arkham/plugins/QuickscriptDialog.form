@@ -102,23 +102,23 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="editor" alignment="0" pref="468" max="32767" attributes="0"/>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="clearCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="64" max="32767" attributes="0"/>
+              <EmptySpace pref="80" max="32767" attributes="0"/>
               <Component id="debugBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="runBtn" linkSize="1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
+          <Component id="editor" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <Component id="editor" pref="363" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="editor" pref="374" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="runBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="debugBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -142,24 +142,6 @@
       </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="StyleUtilities.small( runBtn );"/>
-      </AuxValues>
-    </Component>
-    <Component class="ca.cgjennings.ui.textedit.JSourceCodeEditor" name="editor">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.MatteColorBorderInfo">
-            <MatteColorBorder bottom="1" left="0" right="0" top="0">
-              <Color PropertyName="color" blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
-            </MatteColorBorder>
-          </Border>
-        </Property>
-        <Property name="componentPopupMenu" type="javax.swing.JPopupMenu" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code=" editorPopup " type="code"/>
-        </Property>
-        <Property name="text" type="java.lang.String" value="println(&quot;Hello, Other World!&quot;);"/>
-      </Properties>
-      <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="editor.selectAll();&#xa;editor.setTokenizer( new ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer() );"/>
       </AuxValues>
     </Component>
     <Component class="javax.swing.JCheckBox" name="clearCheck">
@@ -193,6 +175,13 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="StyleUtilities.small( debugBtn );"/>
       </AuxValues>
+    </Component>
+    <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="editor">
+      <Properties>
+        <Property name="codeType" type="ca.cgjennings.ui.textedit.CodeType" editor="org.netbeans.modules.form.editors.EnumEditor">
+          <Value id="JAVASCRIPT"/>
+        </Property>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

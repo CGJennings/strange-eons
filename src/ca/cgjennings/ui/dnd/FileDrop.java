@@ -3,16 +3,15 @@ package ca.cgjennings.ui.dnd;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetListener;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.io.Reader;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
@@ -20,7 +19,7 @@ import javax.swing.border.Border;
 
 /**
  * A support class that allows interface components to easily accept files being
- * dropped on them from the other components or from the platform.
+ * dropped on them from other components or from the platform.
  *
  * @author Adapted from public domain code by Robert Harder and Nathan Blomquist
  * @since 1.61
@@ -29,10 +28,9 @@ public class FileDrop {
 
     private JComponent borderOwner;
     private Border oldBorder;
-    private DropTargetListener dropListener;
+    private DropTargetListener dndListener;
     private FileFilter filter;
-
-    private HashSet<DropListener> listeners = null;
+    private DropListener listener;
 
     private static final Logger log = Logger.getLogger(FileDrop.class.getPackage().getName());
 
@@ -57,7 +55,8 @@ public class FileDrop {
      * over it.
      *
      * @param component the component that will accept files
-     * @param listener the listener that will be notified when files are dropped
+     * @param listener the optional simple listener that will be notified when
+     * files are dropped
      */
     public FileDrop(Component component, Listener listener) {
         this(component, (component instanceof JComponent) ? (JComponent) component : null, listener);
@@ -71,8 +70,8 @@ public class FileDrop {
      * @param component the component that will accept files
      * @param borderOwner if non-{@code null}, a component whose border will
      * change to indicate that files are being dragged over the component
-     * @param listener the simple listener that will be notified when files are
-     * dropped
+     * @param listener the optional simple listener that will be notified when
+     * files are dropped
      */
     public FileDrop(Component component, JComponent borderOwner, Listener listener) {
         this(component, borderOwner, false, listener);
@@ -88,18 +87,72 @@ public class FileDrop {
      * change to indicate that files are being dragged over the component
      * @param attachToDescendants if {@code true}, then all of the descendants
      * of the component will also listen for file drops
-     * @param listener an optional simple listener that will be notified when
+     * @param listener the optional simple listener that will be notified when
      * files are dropped
      */
-    public FileDrop(final Component component, JComponent borderOwner, boolean attachToDescendants, final Listener listener) {
-        if (component == null) {
-            throw new NullPointerException("component");
-        }
-//		if( listener == null ) throw new NullPointerException( "listener" );
+    public FileDrop(Component component, JComponent borderOwner, boolean attachToDescendants, final Listener listener) {
+        Objects.requireNonNull(component, "component");
 
         this.borderOwner = borderOwner;
+        setListener(listener);
+        initDropListener();
+        makeDropTarget(component, attachToDescendants);
+    }
 
-        dropListener = new DropTargetListener() {
+    /**
+     * Creates a new {@code FileDrop} on the specified components. The drop will
+     * initially have no listener attached.
+     *
+     * @param borderOwner if non-{@code null}, a component whose border will
+     * change to indicate that files are being dragged over the component
+     * @param components the components that will accept files
+     * @see #setListener
+     */
+    public FileDrop(JComponent borderOwner, Component... components) {
+        Objects.requireNonNull(components, "component");
+        if (components.length == 0) {
+            throw new IllegalArgumentException("empty component list");
+        }
+
+        this.borderOwner = borderOwner;
+        initDropListener();
+        for( Component c : components) {
+            makeDropTarget(c, false);
+        }
+    }
+
+    /**
+     * Sets the drop listener to a simple listener that receives a non-null,
+     * non-empty array of files. Only one listener may be attached to the
+     * {@link FileDrop}.
+     *
+     * @param simpleListener the listener, or null to stop receiving events
+     */
+    public final void setListener(final Listener simpleListener) {
+        if (simpleListener == null) {
+            listener = null;
+        } else {
+            this.listener = new DropListener() {
+                @Override
+                public void filesDropped(DropEvent dropEvent) {
+                    simpleListener.filesDropped(dropEvent.files.toArray(new File[0]));
+                }
+            };
+        }
+    }
+
+    /**
+     * Sets the drop listener to receive detailed information about dropped
+     * files. Only one listener may be attached to the {@link FileDrop}.
+     *
+     * @param complexListener the listener, or null to stop receiving events
+     */
+    public void setListener(final DropListener complexListener) {
+        listener = complexListener;
+    }
+
+    private void initDropListener() {
+        dndListener = new DropTargetListener() {
             @Override
             public void dragEnter(DropTargetDragEvent evt) {
                 if (canAcceptDrag(evt)) {
@@ -146,50 +199,18 @@ public class FileDrop {
                                 fileList.remove(f);
                             }
                         }
-                        if (fileList.size() > 0) {
+                        if (!fileList.isEmpty()) {
                             if (listener != null) {
-                                listener.filesDropped(fileList.toArray(new File[0]));
-                            }
-                            if (listeners != null) {
-                                DropEvent event = new DropEvent(fileList, component, evt.getLocation());
+                                Component target = null;
+                                if (evt.getSource() instanceof Component) {
+                                    target = (Component) evt.getSource();
+                                }
+                                listener.filesDropped(new DropEvent(fileList, target, evt.getLocation()));
                             }
                         }
                         evt.getDropTargetContext().dropComplete(true);
-                    } // not a file list, check for a reader
-                    else {
-                        DataFlavor[] flavors = tr.getTransferDataFlavors();
-                        boolean handled = false;
-                        for (DataFlavor flavor : flavors) {
-                            if (flavor.isRepresentationClassReader()) {
-                                log.finest("accepting reader");
-                                evt.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY);
-                                Reader reader = null;
-                                handled = true;
-                                try {
-                                    reader = flavor.getReaderForText(tr);
-                                    File[] files = createFileArrayFromReader(new BufferedReader(reader));
-                                    if (files != null && files.length > 0) {
-                                        listener.filesDropped(files);
-                                    }
-                                    evt.getDropTargetContext().dropComplete(true);
-                                } catch (IOException e) {
-                                    log.log(Level.INFO, "could not covnvert reader to file list", e);
-                                    handled = false;
-                                } finally {
-                                    if (reader != null) {
-                                        try {
-                                            reader.close();
-                                        } catch (IOException e) {
-                                            log.log(Level.WARNING, null, e);
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        if (!handled) {
-                            evt.rejectDrop();
-                        }
+                    } else {
+                        evt.rejectDrop();
                     }
                 } catch (java.awt.datatransfer.UnsupportedFlavorException | IOException ufe) {
                     log.log(Level.WARNING, null, ufe);
@@ -210,36 +231,12 @@ public class FileDrop {
                 }
             }
         };
-
-        // create drop target(s) on the component and children
-        makeDropTarget(component, attachToDescendants);
     }
-
-    private File[] createFileArrayFromReader(BufferedReader r) throws IOException {
-        List<File> list = new java.util.LinkedList<>();
-        String line = null;
-        while ((line = r.readLine()) != null) {
-            try {
-                // KDE seems to append '\0' to the end of the reader
-                if (NULL_CHAR_STRING.equals(line) || line.isEmpty()) {
-                    continue;
-                }
-                File f = new File(new java.net.URI(line));
-                if (filter == null || filter.accept(f)) {
-                    list.add(f);
-                }
-            } catch (java.net.URISyntaxException ex) {
-                log.log(Level.WARNING, "exception converting local URI to file", ex);
-            }
-        }
-        return list.toArray(new File[0]);
-    }
-    private static String NULL_CHAR_STRING = "\0";
 
     private void makeDropTarget(final java.awt.Component c, boolean recursive) {
         final java.awt.dnd.DropTarget dt = new java.awt.dnd.DropTarget();
         try {
-            dt.addDropTargetListener(dropListener);
+            dt.addDropTargetListener(dndListener);
         } catch (java.util.TooManyListenersException e) {
             log.log(Level.SEVERE, "attempt to attach file drop handler when another drop listener was attached", e);
         }
@@ -251,12 +248,12 @@ public class FileDrop {
                 c.setDropTarget(null);
                 log.finest("drop target cleared from component");
             } else {
-                new java.awt.dnd.DropTarget(c, dropListener);
+                new java.awt.dnd.DropTarget(c, dndListener);
                 log.finest("drop target added to component");
             }
         });
         if (c.getParent() != null) {
-            new java.awt.dnd.DropTarget(c, dropListener);
+            new java.awt.dnd.DropTarget(c, dndListener);
         }
 
         if (recursive && (c instanceof java.awt.Container)) {
@@ -275,31 +272,17 @@ public class FileDrop {
      */
     private boolean canAcceptDrag(final java.awt.dnd.DropTargetDragEvent evt) {
         java.awt.datatransfer.DataFlavor[] flavors = evt.getCurrentDataFlavors();
+        if ((evt.getSourceActions() & DnDConstants.ACTION_COPY) == 0) {
+            return false;
+        }
 
         for (int i = 0; i < flavors.length; ++i) {
             final DataFlavor curFlavor = flavors[i];
-            if (curFlavor.equals(java.awt.datatransfer.DataFlavor.javaFileListFlavor)
-                    || curFlavor.isRepresentationClassReader()) {
+            if (curFlavor.equals(java.awt.datatransfer.DataFlavor.javaFileListFlavor)) {
                 return true;
             }
         }
         return false;
-    }
-
-    public void addListener(DropListener listener) {
-        if (listener == null) {
-            throw new NullPointerException("listener");
-        }
-        if (listeners == null) {
-            listeners = new HashSet<>();
-        }
-        listeners.add(listener);
-    }
-
-    public void removeListener(DropListener listener) {
-        if (listeners != null) {
-            listeners.remove(listener);
-        }
     }
 
     /**
@@ -406,6 +389,7 @@ public class FileDrop {
      *
      * @since 1.61
      */
+    @FunctionalInterface
     public interface Listener {
 
         /**

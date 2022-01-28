@@ -31,14 +31,18 @@ import java.nio.charset.Charset;
 import java.util.EnumSet;
 import java.util.logging.Level;
 import javax.swing.Icon;
+import org.fife.rsta.ac.java.JavaParser;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.parser.Parser;
+import org.fife.ui.rsyntaxtextarea.parser.XmlParser;
 import resources.Language;
 import resources.Settings;
 
 /**
  * The file types that can be edited by a {@code CodeEditor}.
- *
- *
+ * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public enum CodeType {
     PLAIN(
@@ -244,6 +248,27 @@ public enum CodeType {
     
     String getLanguageIdentifier() {
         return languageId;
+    }
+    
+    void installSyntaxParser(CodeEditorBase ed) {
+        final RSyntaxTextArea rsta = ed.getTextArea();
+        
+        Parser p;
+        switch(this.normalize()) {
+            case JAVASCRIPT:
+                p = new StrangeRhinoParser(ed);
+                break;
+            case JAVA:
+                p = new JavaParser(rsta);
+                break;
+            default:
+                p = null;
+        }
+        
+        rsta.clearParsers();
+        if (p != null) {
+            rsta.addParser(p);
+        }
     }
 
     public Tokenizer createTokenizer() {
