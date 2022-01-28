@@ -25,9 +25,8 @@ final class SyntaxTextArea extends RSyntaxTextArea {
     public SyntaxTextArea(CodeEditorBase editor) {
         super();
         this.editor = editor;
-        
-        String themeName = ca.cgjennings.ui.theme.ThemeInstaller.isDark() ? "dark" : "vs";
-        try (InputStream in = Theme.class.getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/" + themeName + ".xml")) {
+        String themeName = ca.cgjennings.ui.theme.ThemeInstaller.isDark() ? "dark.xml" : "light.xml";
+        try (InputStream in = SyntaxTextArea.class.getResourceAsStream(themeName)) {
             Theme.load(in).apply(this);
         } catch (IOException ex) {
             StrangeEons.log.warning("unable to load editor theme, using default");
@@ -35,14 +34,12 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         
         setTabSize(4);
         setTabsEmulated(true);
-        setAntiAliasingEnabled(true);
-        setFractionalFontMetricsEnabled(true);
         setPaintTabLines(true);
         setHighlightSecondaryLanguages(true);
         setMarkOccurrences(true);
         setMarkOccurrencesDelay(250);
         setParserDelay(400);
-        setFadeCurrentLineHighlight(true);        
+        setFadeCurrentLineHighlight(true);
     }
     
     private CodeEditorBase.PopupMenuBuilder menuBuilder = null;

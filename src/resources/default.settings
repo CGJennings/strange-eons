@@ -352,12 +352,10 @@ invert-wheel-zoom = no
 enable-experimental-features = no
 
 # This describes the font to be used in the text entry components of the
-# component editors. If commented out or the family is "default", the standard
-# text control font is used.
+# component editors. If commented out or the family is "default", a standard
+# monospaced font is used.
 edit-font-family = default
-#edit-font-family = Monospaced
-#edit-font-family = Consolas,Inconsolata,Bitstream Vera Sans Mono,Lucida Sans Typewriter,Monospaced
-edit-font-pointsize = 12
+edit-font-pointsize = 13
 edit-font-bold = no
 edit-font-italic = no
 

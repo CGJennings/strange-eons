@@ -1067,9 +1067,9 @@ public class ResourceKit {
             family = family == null ? "" : family.trim();
             if (family.isEmpty() || family.equalsIgnoreCase("default")) {
                 if (PlatformSupport.PLATFORM_IS_MAC) {
-                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Menlo", "Monaco", "Consolas", Font.MONOSPACED);
+                    baseFont = locateAvailableFont("Menlo", "Monaco", "Consolas", Font.MONOSPACED);
                 } else {
-                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Consolas", Font.MONOSPACED);
+                    baseFont = locateAvailableFont("Consolas", Font.MONOSPACED);
                 }
             } else {
                 baseFont = locateAvailableFont(family, Font.MONOSPACED);
