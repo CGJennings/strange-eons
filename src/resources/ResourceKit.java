@@ -1064,7 +1064,8 @@ public class ResourceKit {
         if (editorFont == null) {
             Font baseFont;
             String family = RawSettings.getSetting("edit-font-family");
-            if (family == null || family.equalsIgnoreCase("default")) {
+            family = family == null ? "" : family.trim();
+            if (family.isEmpty() || family.equalsIgnoreCase("default")) {
                 if (PlatformSupport.PLATFORM_IS_MAC) {
                     baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Menlo", "Monaco", "Consolas", Font.MONOSPACED);
                 } else {
