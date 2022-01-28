@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.util.Collections;
@@ -134,7 +135,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * @param editor the editor to display the navigation point within
      */
     public void visit(CodeEditor editor) {
-        JSourceCodeEditor ed = editor.getEditor();
+        CodeEditorBase ed = editor.getEditor();
         NavigationPoint target = this;
         Navigator navigator = editor.getNavigator();
         if (navigator != null) {
@@ -144,14 +145,14 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
             }
         }
         int offset = target.offset;
-        if (offset > ed.getDocumentLength()) {
-            offset = ed.getDocumentLength();
+        if (offset > ed.getLength()) {
+            offset = ed.getLength();
         }
         int line = ed.getLineOfOffset(offset);
         offset = ed.getLineStartOffset(line);
         ed.select(offset, offset);
-        ed.setFirstDisplayedLine(Math.max(0, line - ed.getDisplayedLineCount() / 2));
-        ed.requestFocusInWindow();
+        ed.scrollToLine(line);
+        ed.requestFocus();
     }
 
     /**

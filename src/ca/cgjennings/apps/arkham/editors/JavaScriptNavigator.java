@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import org.mozilla.javascript.Node;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.ArrayLiteral;
@@ -35,18 +36,12 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
     public JavaScriptNavigator() {
     }
 
-    JSourceCodeEditor editor;
-    private final Highlighter highlighter = new Highlighter();
-
     @Override
     public void install(CodeEditor editor) {
-        this.editor = editor.getEditor();
-        this.editor.addHighlighter(highlighter);
     }
 
     @Override
     public void uninstall(CodeEditor editor) {
-        this.editor.removeHighlighter(highlighter);
     }
 
     @Override
@@ -56,7 +51,6 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
         currentPointList = points;
         parse(text);
         SyntaxError[] errors = getErrors();
-        highlighter.update(editor, errors);
         currentPointList = null;
 
         if (errors != null) {

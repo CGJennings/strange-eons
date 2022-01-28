@@ -5,7 +5,6 @@ import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -40,6 +39,8 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         setMarkOccurrencesDelay(250);
         setParserDelay(400);
         setFadeCurrentLineHighlight(true);
+        setCodeFoldingEnabled(true);
+        setCloseMarkupTags(true);
     }
     
     private CodeEditorBase.PopupMenuBuilder menuBuilder = null;

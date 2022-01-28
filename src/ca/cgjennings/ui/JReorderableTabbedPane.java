@@ -207,20 +207,6 @@ public class JReorderableTabbedPane extends JTabbedPane {
     private int[] yPoint = new int[3];
     private boolean paintTriangle = false;
 
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			public void run() {
-//				JFrame w = new JFrame();
-//				JReorderableTabbedPane p = new JReorderableTabbedPane();
-//				p.add( new JLabel( "<html><h1>T1</h1><h1>This is a test</h1>Just so you know." ) );
-//				p.add( new JLabel( "<html><h1>T2</h1><h1>This is a test</h1>Just so you know." ) );
-//				w.add(p);
-//				w.setSize(640,480);
-//				w.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				w.setVisible( true );
-//			}
-//		});
-//	}
     protected Component getDragImageRepresentativeComponent(int dragIndex) {
         return getComponentAt(dragIndex);
     }

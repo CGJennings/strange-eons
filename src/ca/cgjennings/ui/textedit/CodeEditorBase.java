@@ -2,14 +2,14 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.font.TextAttribute;
-import java.util.Collections;
+import java.awt.geom.Rectangle2D;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.swing.AbstractAction;
@@ -17,12 +17,15 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import resources.ResourceKit;
 
@@ -46,7 +49,12 @@ public class CodeEditorBase extends JPanel {
         super(new BorderLayout());
 
         textArea = new SyntaxTextArea(this);
-        textArea.setFont(ResourceKit.getEditorFont());
+        try {
+            textArea.setFont(ResourceKit.getEditorFont());
+        } catch (Exception ex) {
+            // this may fail if SE is not running (e.g., in IDE palette);
+            // we can ignore and keep default font
+        }
 
         setCodeType(null);
 
@@ -56,7 +64,7 @@ public class CodeEditorBase extends JPanel {
 
         errorStrip = new ErrorStrip(textArea);
         add(errorStrip, BorderLayout.LINE_END);
-        
+
         addKeyBindings();
     }
 
@@ -65,7 +73,37 @@ public class CodeEditorBase extends JPanel {
         addKeyBinding("AS+DOWN", RSyntaxTextAreaEditorKit.rtaLineDownAction);
     }
 
-    RSyntaxTextArea getTextArea() {
+    // forward all focus requests to the text area
+    @Override
+    public void requestFocus() {
+        textArea.requestFocus();
+        textArea.requestFocusInWindow();
+    }
+
+    @Override
+    public void requestFocus(FocusEvent.Cause cause) {
+        textArea.requestFocus(cause);
+        textArea.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean requestFocus(boolean temporary) {
+        boolean gotFocus = textArea.requestFocus(temporary);
+        textArea.requestFocusInWindow();
+        return gotFocus;
+    }
+
+    @Override
+    public boolean requestFocusInWindow() {
+        return textArea.requestFocusInWindow();
+    }
+
+    @Override
+    public boolean requestFocusInWindow(FocusEvent.Cause cause) {
+        return textArea.requestFocusInWindow(cause);
+    }
+
+    SyntaxTextArea getTextArea() {
         return textArea;
     }
 
@@ -108,7 +146,7 @@ public class CodeEditorBase extends JPanel {
         textArea.getActionMap().put(action, proxy);
         textArea.getInputMap().put(keyStroke, action);
     }
-    
+
     /**
      * Add a key binding to trigger an editor action.
      *
@@ -117,7 +155,7 @@ public class CodeEditorBase extends JPanel {
      */
     public void addKeyBinding(String keyStroke, ActionListener action) {
         addKeyBinding(parseKeyStroke(keyStroke), action);
-    }    
+    }
 
     /**
      * Add a key binding to trigger an editor action.
@@ -135,7 +173,7 @@ public class CodeEditorBase extends JPanel {
         textArea.getActionMap().put(action, proxy);
         textArea.getInputMap().put(ks, action);
     }
-    
+
     /**
      * Add a key binding to trigger an editor action.
      *
@@ -144,7 +182,7 @@ public class CodeEditorBase extends JPanel {
      */
     public void addKeyBinding(String keyStroke, Action action) {
         addKeyBinding(parseKeyStroke(keyStroke), action);
-    }    
+    }
 
     /**
      * Add a key binding to trigger an editor action.
@@ -156,22 +194,24 @@ public class CodeEditorBase extends JPanel {
         textArea.getActionMap().put(action, action);
         textArea.getInputMap().put(ks, action);
     }
-    
-    /**
-     * Add a key binding to trigger an editor action.
-     *
-     * @param keyStroke the key stroke that should trigger the action
-     * @param action the name of the action to perform, which must be in the action map
-     */
-    public void addKeyBinding(String keyStroke, String action) {
-        addKeyBinding(parseKeyStroke(keyStroke), action);
-    }    
 
     /**
      * Add a key binding to trigger an editor action.
      *
      * @param keyStroke the key stroke that should trigger the action
-     * @param action the name of the action to perform, which must be in the action map
+     * @param action the name of the action to perform, which must be in the
+     * action map
+     */
+    public void addKeyBinding(String keyStroke, String action) {
+        addKeyBinding(parseKeyStroke(keyStroke), action);
+    }
+
+    /**
+     * Add a key binding to trigger an editor action.
+     *
+     * @param keyStroke the key stroke that should trigger the action
+     * @param action the name of the action to perform, which must be in the
+     * action map
      */
     public void addKeyBinding(KeyStroke ks, String action) {
         if (textArea.getActionMap().get(action) == null) {
@@ -183,17 +223,26 @@ public class CodeEditorBase extends JPanel {
     /**
      * Changes the code type used for syntax highlighting and related features.
      *
-     * @param type the new type of code being edited
+     * @param type the new type of code being edited; if null, {@code PLAIN}
+     * type is used
      */
     public void setCodeType(CodeType type) {
         if (type == null) {
             type = CodeType.PLAIN;
         }
-        this.type = type;
-        textArea.setSyntaxEditingStyle(type.getLanguageIdentifier());
-        textArea.setCodeFoldingEnabled(true);
+        
+        // uninstall old code support before switching type, so the support
+        // can look up the existing type during uninstall
+        if (codeSupport != null) {
+            codeSupport.uninstall(this);
+            codeSupport = null;
+        }
 
-        type.installSyntaxParser(this);
+        // now set the new type prospectively, so that the new code support can
+        // also look up the type during install
+        this.type = type;
+
+        setCodeSupport(type.createCodeSupport());
     }
 
     /**
@@ -203,6 +252,60 @@ public class CodeEditorBase extends JPanel {
      */
     public CodeType getCodeType() {
         return type;
+    }
+    
+    /**
+     * Installs code editing support. A default support package is installed
+     * by setting the code type, but this can be used to install custom support.
+     * 
+     * @param support the code support to apply to the editor
+     */
+    public final void setCodeSupport(CodeSupport support) {
+        if (support == codeSupport) return;
+        
+        if (codeSupport != null) {
+            codeSupport.uninstall(this);
+            codeSupport = null;
+        }
+       
+        if (support != null ) {
+            support.install(this);
+        } else {
+            textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
+        }
+
+        codeSupport = support;
+    }
+    
+    /**
+     * Returns the currently installed code support.
+     * 
+     * @return the installed code support
+     */
+    public final CodeSupport getCodeSupport() {
+        return codeSupport;
+    }
+    
+    private CodeSupport codeSupport;
+
+    /**
+     * Sets whether this editor should be editable. If false, the editor is
+     * read-only.
+     *
+     * @param editable whether to allow modifications to the document
+     */
+    public void setEditable(boolean editable) {
+        textArea.setEditable(editable);
+    }
+
+    /**
+     * Returns whether this editor is editable. If false, the editor is
+     * read-only.
+     *
+     * @return whether the editor allows modifications
+     */
+    public boolean isEditable() {
+        return textArea.isEditable();
     }
 
     /**
@@ -249,7 +352,7 @@ public class CodeEditorBase extends JPanel {
         try {
             return textArea.getText(start, length);
         } catch (BadLocationException ble) {
-            StrangeEons.log.log(Level.WARNING, ble, null);
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
             return "";
         }
     }
@@ -276,12 +379,28 @@ public class CodeEditorBase extends JPanel {
     }
 
     /**
+     * Returns the length of the specified line.
+     *
+     * @param line the zero-based line number
+     * @return the line length in characters
+     */
+    public int getLineLength(int line) {
+        int len = 0;
+        try {
+            len = textArea.getLineEndOffset(line) - textArea.getLineStartOffset(line);
+        } catch (BadLocationException ble) {
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
+        }
+        return len;
+    }
+
+    /**
      * Returns the currently selected text.
      *
-     * @return the current selection
+     * @return the current selection, or an empty string if there is none
      */
     public String getSelectedText() {
-        return textArea.getSelectedText();
+        return hasSelection() ? textArea.getSelectedText() : "";
     }
 
     /**
@@ -292,6 +411,82 @@ public class CodeEditorBase extends JPanel {
      */
     public void setSelectedText(String text) {
         textArea.replaceSelection(text);
+    }
+
+    /**
+     * Returns the selected lines as an array of strings.
+     *
+     * @param doNotIncludeLineIfCaretAtStart if the selection ends at offset 0
+     * within a line (i.e., it immediately follows a newline), then the line
+     * that includes the selection end will not be included
+     * @return an array of strings, where each string is one line of the
+     * selection
+     */
+    public String[] getSelectedLineText(boolean doNotIncludeLineIfCaretAtStart) {
+        int[] sel = getSelectedLineRange(doNotIncludeLineIfCaretAtStart);
+        int firstLine = sel[0];
+        int lastLine = sel[1];
+        if (firstLine > lastLine) {
+            int swap = firstLine;
+            firstLine = lastLine;
+            lastLine = swap;
+        }
+        String[] lines = new String[lastLine - firstLine + 1];
+        for (int i = 0; i < lines.length; ++i) {
+            lines[i] = getLineText(firstLine + i);
+        }
+
+        int selStart = getLineStartOffset(firstLine);
+        int selEnd = getLineEndOffset(lastLine) - 1;
+        select(selStart, selEnd);
+
+        return lines;
+    }
+
+    /**
+     * Returns an array of two integers that describe the line numbers covered
+     * by the current selection. The order is selection start first, then
+     * selection end. Therefore, the second value may be greater than the first.
+     *
+     * @param doNotIncludeLineIfCaretAtStart
+     * @return the array {@code [startLine, endLine]}
+     */
+    private int[] getSelectedLineRange(boolean doNotIncludeLineIfCaretAtStart) {
+        int firstLine = getSelectionStartLine();
+        int lastLine = getSelectionEndLine();
+        if (doNotIncludeLineIfCaretAtStart) {
+            if (firstLine > lastLine) {
+                if (getLineStartOffset(firstLine) == getSelectionStart()) {
+                    --firstLine;
+                }
+            } else if (lastLine > firstLine) {
+                if (getLineStartOffset(lastLine) == getSelectionEnd()) {
+                    --lastLine;
+                }
+            }
+        }
+        return new int[]{firstLine, lastLine};
+    }
+
+    /**
+     * Replaces the selection with the lines in the provided array.
+     *
+     * @param lines the lines of text, one per line per element
+     */
+    public void setSelectedLineText(String[] lines) {
+        int len = 0;
+        for (int i = 0; i < lines.length; ++i) {
+            len += lines[i].length();
+        }
+        StringBuilder b = new StringBuilder(len + lines.length);
+        for (int i = 0; i < lines.length; ++i) {
+            if (i > 0) {
+                b.append('\n');
+            }
+            b.append(lines[i]);
+        }
+
+        setSelectedText(b.toString());
     }
 
     /**
@@ -331,6 +526,24 @@ public class CodeEditorBase extends JPanel {
      */
     public int getSelectionEnd() {
         return textArea.getSelectionEnd();
+    }
+
+    /**
+     * Returns the line of the selection start.
+     *
+     * @return the selection start line
+     */
+    public int getSelectionStartLine() {
+        return getLineOfOffset(getSelectionStart());
+    }
+
+    /**
+     * Returns the line of the selection end.
+     *
+     * @return the selection end line
+     */
+    public int getSelectionEndLine() {
+        return getLineOfOffset(getSelectionEnd());
     }
 
     /**
@@ -428,7 +641,7 @@ public class CodeEditorBase extends JPanel {
         try {
             return textArea.getLineOfOffset(offset);
         } catch (BadLocationException ble) {
-            StrangeEons.log.log(Level.WARNING, ble, null);
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
             return offset < 0 ? 0 : getLength();
         }
     }
@@ -443,7 +656,7 @@ public class CodeEditorBase extends JPanel {
         try {
             return textArea.getLineStartOffset(line);
         } catch (BadLocationException ble) {
-            StrangeEons.log.log(Level.WARNING, ble, null);
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
             return line < 0 ? 0 : getLength();
         }
     }
@@ -458,16 +671,133 @@ public class CodeEditorBase extends JPanel {
         try {
             return textArea.getLineEndOffset(line);
         } catch (BadLocationException ble) {
-            StrangeEons.log.log(Level.WARNING, ble, null);
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
             return line < 0 ? 0 : getLength();
         }
     }
 
     /**
-     * Requests that the editor control gain focus.
+     * Returns the position of the text insertion caret for the text component.
+     *
+     * @return the position of the text insertion caret for the text component ≥
+     * 0
      */
-    public void requestFocus() {
-        textArea.requestFocusInWindow();
+    public int getCaretPosition() {
+        return textArea.getCaretPosition();
+    }
+
+    /**
+     * Sets the position of the text insertion caret for the text component.
+     *
+     * @param offset the new caret position, from 0 to the document length
+     */
+    public void setCaretPosition(int offset) {
+        textArea.setCaretPosition(offset);
+    }
+
+    /**
+     * Returns the position of the mark for the text component. This is the end
+     * of the selection that is opposite the caret.
+     *
+     * @return the position of the mark for the text component ≥ 0
+     */
+    public int getMarkPosition() {
+        return textArea.getCaretPosition() == textArea.getSelectionStart()
+                ? textArea.getSelectionEnd()
+                : textArea.getSelectionStart();
+    }
+
+    /**
+     * Sets the position of the mark for the text component.
+     *
+     * @param offset the position of the mark for the text component ≥ 0
+     */
+    public void setMarkPosition(int offset) {
+        offset = Math.max(0, Math.min(offset, getLength()));
+        if (textArea.getCaretPosition() == textArea.getSelectionStart()) {
+            textArea.setSelectionEnd(offset);
+        } else {
+            textArea.setSelectionStart(offset);
+        }
+    }
+
+    /**
+     * Returns the line number of the text insertion caret.
+     *
+     * @return the line number ≥ 0
+     */
+    public int getCaretLine() {
+        return textArea.getCaretLineNumber();
+    }
+
+    /**
+     * Moves the caret to the start of the specified line.
+     *
+     * @param line the zero-based line number
+     */
+    public void setCaretLine(int line) {
+        int start = getLineStartOffset(line);
+        select(start, start);
+    }
+
+    /**
+     * Returns the offset of the text insertion caret from the start of its
+     * line.
+     *
+     * @return the offset of the text insertion caret from the line start offset
+     * ≥ 0
+     */
+    public int getCaretOffsetFromLineStart() {
+        return textArea.getCaretOffsetFromLineStart();
+    }
+
+    /**
+     * Returns the line number of the line at the top of the view.
+     *
+     * @return the first visible line ≥ 0
+     */
+    public int getFirstDisplayedLine() {
+        Rectangle rect = textArea.getVisibleRect();
+        int offset = textArea.viewToModel2D(rect.getLocation());
+        if (offset < 0) {
+            return 0;
+        }
+        return getLineOfOffset(offset);
+    }
+
+    /**
+     * Scroll the editor view to display the specified line.
+     *
+     * @param line the line number ≥ 0
+     */
+    public void scrollToLine(int line) {
+        int y;
+        try {
+            line = Math.max(0, Math.min(line, getLineCount()));
+            y = textArea.yForLine(line);
+            JViewport vp = scroll.getViewport();
+            scroll.getVerticalScrollBar().setValue(Math.max(0, y - vp.getHeight() / 2));
+            scroll.getHorizontalScrollBar().setValue(0);
+        } catch (BadLocationException ble) {
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
+        }
+    }
+
+    /**
+     * Scroll the editor view to display the specified offset.
+     *
+     * @param offset the offset to scroll into view
+     */
+    public void scrollToOffset(int offset) {
+        try {
+            offset = Math.max(0, Math.min(offset, getLength()));
+            Rectangle2D rect = textArea.modelToView2D(offset);
+            JViewport vp = scroll.getViewport();
+            scroll.getVerticalScrollBar().setValue(Math.max(0, (int) rect.getY() - vp.getHeight() / 2));
+            scroll.getHorizontalScrollBar().setValue(Math.max(0, (int) rect.getX() - vp.getWidth() / 2));
+        } catch (BadLocationException ble) {
+            StrangeEons.log.log(Level.WARNING, "uncaught", ble);
+        }
     }
 
     /**
@@ -635,5 +965,21 @@ public class CodeEditorBase extends JPanel {
 
                 return KeyStroke.getKeyStroke(code, modifiers);
         }
+    }
+
+    public void addDocumentListener(DocumentListener listener) {
+        textArea.getDocument().addDocumentListener(listener);
+    }
+
+    public void removeDocumentListener(DocumentListener listener) {
+        textArea.getDocument().removeDocumentListener(listener);
+    }
+
+    public void addCaretListener(CaretListener listener) {
+        textArea.addCaretListener(listener);
+    }
+
+    public void removeCaretListener(CaretListener listener) {
+        textArea.removeCaretListener(listener);
     }
 }

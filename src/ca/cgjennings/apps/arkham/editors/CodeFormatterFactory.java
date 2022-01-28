@@ -51,19 +51,19 @@ public final class CodeFormatterFactory {
             case JAVASCRIPT:
             case TYPESCRIPT:
                 if (js == null) {
-                    js = new JSFormatter();
+                    js = new ScriptedFormatter("beautify-js.min.js", "js_beautify");
                 }
                 f = js;
                 break;
             case CSS:
                 if (css == null) {
-                    css = new CSSFormatter();
+                    css = new ScriptedFormatter("beautify-css.min.js", "css_beautify");
                 }
                 f = css;
                 break;
             case HTML:
                 if (html == null) {
-                    html = new HTMLFormatter();
+                    html = new ScriptedFormatter("beautify-html.min.js", "html_beautify");
                 }
                 f = html;
                 break;
@@ -120,27 +120,6 @@ public final class CodeFormatterFactory {
                 StrangeEons.log.log(Level.SEVERE, "formatter failed", ex);
             }
             return code;
-        }
-    }
-
-    private static class JSFormatter extends ScriptedFormatter {
-
-        JSFormatter() {
-            super("beautify-js.min.js", "js_beautify");
-        }
-    }
-
-    private static class CSSFormatter extends ScriptedFormatter {
-
-        CSSFormatter() {
-            super("beautify-css.min.js", "css_beautify");
-        }
-    }
-
-    private static class HTMLFormatter extends ScriptedFormatter {
-
-        HTMLFormatter() {
-            super("beautify-html.min.js", "html_beautify");
         }
     }
 }
