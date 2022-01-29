@@ -34,6 +34,11 @@ public class ScriptCodeSupport extends DefaultCodeSupport {
     public Navigator createNavigator(CodeEditor codeEditor) {
         return new JavaScriptNavigator();
     }
+    
+    @Override
+    public Formatter createFormatter() {
+        return new ScriptedFormatter("beautify-js.js", "js_beautify");
+    }
 
     /**
      * A document parser that highlights syntax errors in Strange Rhino scripts.

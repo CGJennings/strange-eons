@@ -2,7 +2,8 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
-import ca.cgjennings.apps.arkham.project.MetadataSource;
+import static ca.cgjennings.apps.arkham.TextEncoding.*;
+import static ca.cgjennings.apps.arkham.project.MetadataSource.*;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.File;
 import java.nio.charset.Charset;
@@ -12,107 +13,70 @@ import resources.Language;
 
 /**
  * The file types that can be edited by a {@code CodeEditor}.
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
 public enum CodeType {
-    PLAIN(
-            "txt",
-            "pa-new-text",
-            MetadataSource.ICON_DOCUMENT, DefaultCodeSupport.class, null
-    ),
-    PLAIN_UTF8(
-            "utf8",
-            "prj-prop-utf8",
-            MetadataSource.ICON_FILE,
-            DefaultCodeSupport.class,
-            TextEncoding.UTF8
-    ),   
-    JAVASCRIPT(
-            "js",
-            "prj-prop-script",
-            MetadataSource.ICON_SCRIPT,
-            ScriptCodeSupport.class,
-            TextEncoding.SOURCE_CODE
-    ),
-    AUTOMATION_SCRIPT(
-            "ajs",
-            "prj-prop-script",
-            MetadataSource.ICON_AUTOMATION_SCRIPT,
-            ScriptCodeSupport.class,
-            TextEncoding.SOURCE_CODE
-    ),     
-    TYPESCRIPT(
-            "ts",
-            "prj-prop-typescript",
-            MetadataSource.ICON_TYPESCRIPT,
-            HtmlCodeSupport.class,
-            TextEncoding.SOURCE_CODE
-    ),
-    JAVA(
-            "java",
-            "prj-prop-java",
-            MetadataSource.ICON_JAVA,
-            JavaCodeSupport.class,
-            TextEncoding.SOURCE_CODE
-    ),
-    PROPERTIES(
-            "properties",
-            "prj-prop-props",
-            MetadataSource.ICON_PROPERTIES,
-            PropertyFileCodeSupport.class,
-            TextEncoding.STRINGS
-    ),
-    SETTINGS(
-            "settings",
-            "prj-prop-txt",
-            MetadataSource.ICON_SETTINGS,
-            PropertyFileCodeSupport.class,
-            TextEncoding.SETTINGS
-    ),
-    CLASS_MAP(
-            "classmap",
-            "prj-prop-class-map",
-            MetadataSource.ICON_CLASS_MAP,
-            ResourceFileCodeSupport.class,
-            TextEncoding.SETTINGS
-    ),
-    CONVERSION_MAP(
-            "conversionmap",
-            "prj-prop-conversion-map",
-            MetadataSource.ICON_CONVERSION_MAP,
-            ResourceFileCodeSupport.class,
-            TextEncoding.SETTINGS
-    ),
-    SILHOUETTES(
-            "silhouettes",
-            "prj-prop-sil",
-            MetadataSource.ICON_SILHOUETTES,
-            ResourceFileCodeSupport.class,
-            TextEncoding.SETTINGS
-    ),
-    TILES(
-            "tiles",
-            "prj-prop-tiles",
-            MetadataSource.ICON_TILE_SET,
-            ResourceFileCodeSupport.class,
-            TextEncoding.SETTINGS
-    ),
-    HTML(
-            "html",
-            "pa-new-html",
-            MetadataSource.ICON_HTML,
-            HtmlCodeSupport.class,
-            TextEncoding.HTML_CSS
-    ),
-    CSS(
-            "css",
-            "prj-prop-css",
-            MetadataSource.ICON_STYLE_SHEET,
-            CssCodeSupport.class,
-            TextEncoding.HTML_CSS
-    );
-    
+    /**
+     * Plain text document.
+     */
+    PLAIN("txt", "pa-new-text", ICON_DOCUMENT, PlainTextSupport.class, UTF8),
+    /**
+     * Raw UTF-8 text data not meant to be read as prose.
+     */
+    PLAIN_UTF8("utf8", "prj-prop-utf8", ICON_FILE, DefaultCodeSupport.class, UTF8),
+    /**
+     * Script file.
+     */
+    JAVASCRIPT("js", "prj-prop-script", ICON_SCRIPT, ScriptCodeSupport.class, SOURCE_CODE),
+    /**
+     * An automation script file; same as {@link JAVASCRIPT} but with a
+     * different extension so it runs instead of edits by default.
+     */
+    AUTOMATION_SCRIPT("ajs", "prj-prop-script", ICON_AUTOMATION_SCRIPT, ScriptCodeSupport.class, SOURCE_CODE),
+    /**
+     * TypeScript source script file.
+     */
+    TYPESCRIPT("ts", "prj-prop-typescript", ICON_TYPESCRIPT, TypeScriptCodeSupport.class, SOURCE_CODE),
+    /**
+     * Java language source file.
+     */
+    JAVA("java", "prj-prop-java", ICON_JAVA, JavaCodeSupport.class, SOURCE_CODE),
+    /**
+     * Java property file; called a string table in projects.
+     */
+    PROPERTIES("properties", "prj-prop-props", ICON_PROPERTIES, PropertyFileCodeSupport.class, STRINGS),
+    /**
+     * Settings file; used to store program or plug-in defaults.
+     */
+    SETTINGS("settings", "prj-prop-txt", ICON_SETTINGS, PropertyFileCodeSupport.class, TextEncoding.SETTINGS),
+    /**
+     * Class map file; describes new game component types.
+     */
+    CLASS_MAP("classmap", "prj-prop-class-map", ICON_CLASS_MAP, ResourceFileCodeSupport.class, PARSED_RESOURCE),
+    /**
+     * Conversion map file; describes what components a component can be
+     * converted into.
+     */
+    CONVERSION_MAP("conversionmap", "prj-prop-conversion-map", ICON_CONVERSION_MAP, ResourceFileCodeSupport.class, PARSED_RESOURCE),
+    /**
+     * Silhouette file; used to add new shapes to token editor.
+     */
+    SILHOUETTES("silhouettes", "prj-prop-sil", ICON_SILHOUETTES, ResourceFileCodeSupport.class, PARSED_RESOURCE),
+    /**
+     * Tile file; used to add graphic tiles to deck editor.
+     */
+    TILES("tiles", "prj-prop-tiles", ICON_TILE_SET, ResourceFileCodeSupport.class, PARSED_RESOURCE),
+    /**
+     * HTML document.
+     */
+    HTML("html", "pa-new-html", ICON_HTML, HtmlCodeSupport.class, HTML_CSS),
+    /**
+     * CSS style sheet for an HTML document.
+     */
+    CSS("css", "prj-prop-css", ICON_STYLE_SHEET, CssCodeSupport.class, HTML_CSS);
+
     private final String fileExtension;
     private final String description;
     private final String defaultEncoding;
@@ -161,26 +125,34 @@ public enum CodeType {
         return null;
     }
 
-    /** Returns the primary file extension used to identify the code type. */
+    /**
+     * Returns the primary file extension used to identify the code type.
+     */
     public String getExtension() {
         return fileExtension;
     }
 
-    /** Returns a human-friendly description of the code type. */
+    /**
+     * Returns a human-friendly description of the code type.
+     */
     public String getDescription() {
         return description;
     }
 
-    /** Returns the name of the standard text encoding for the file type. */
+    /**
+     * Returns the name of the standard text encoding for the file type.
+     */
     public String getEncodingName() {
         return defaultEncoding;
     }
 
-    /** Returns the charset for the standard text encoding. */
+    /**
+     * Returns the charset for the standard text encoding.
+     */
     public Charset getEncodingCharset() {
         return Charset.forName(defaultEncoding);
     }
-    
+
     CodeSupport createCodeSupport() {
         try {
             return supportClass.getDeclaredConstructor().newInstance();
@@ -190,12 +162,17 @@ public enum CodeType {
         return new DefaultCodeSupport();
     }
 
-    /** Returns an icon for the code type. */
+    /**
+     * Returns an icon for the code type.
+     */
     public Icon getIcon() {
         return icon;
     }
 
-    /** Returns whether this file type should have characters converted to and from Unicode escapes automatically. */
+    /**
+     * Returns whether this file type should have characters converted to and
+     * from Unicode escapes automatically.
+     */
     public boolean getAutomaticCharacterEscaping() {
         return escapeOnSave;
     }
@@ -272,7 +249,7 @@ public enum CodeType {
                 type = CodeType.JAVASCRIPT;
                 break;
             default:
-                // keep original type
+            // keep original type
         }
         return type;
     }

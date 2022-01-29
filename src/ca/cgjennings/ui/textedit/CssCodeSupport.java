@@ -24,4 +24,9 @@ public class CssCodeSupport extends DefaultCodeSupport {
         ls.uninstall(editor.getTextArea());
         super.uninstall(editor);
     }
+
+    @Override
+    public Formatter createFormatter() {
+        return new ScriptedFormatter("beautify-css.js", "css_beautify");
+    }
 }

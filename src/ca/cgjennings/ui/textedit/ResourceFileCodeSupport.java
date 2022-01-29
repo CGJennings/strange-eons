@@ -10,7 +10,7 @@ import ca.cgjennings.apps.arkham.editors.ResourceFileNavigator;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
-public class ResourceFileCodeSupport extends DefaultCodeSupport {
+public class ResourceFileCodeSupport extends PropertyFileCodeSupport {
 
     @Override
     public Navigator createNavigator(CodeEditor codeEditor) {

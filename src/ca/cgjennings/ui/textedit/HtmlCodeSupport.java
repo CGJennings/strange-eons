@@ -32,4 +32,9 @@ public class HtmlCodeSupport extends DefaultCodeSupport {
     public Navigator createNavigator(CodeEditor codeEditor) {
         return new HtmlNavigator();
     }
+    
+    @Override
+    public Formatter createFormatter() {
+        return new ScriptedFormatter("beautify-html.js", "html_beautify");
+    }
 }

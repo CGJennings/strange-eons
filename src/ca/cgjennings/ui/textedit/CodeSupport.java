@@ -28,4 +28,11 @@ public interface CodeSupport {
      * none is supported.
      */
     Navigator createNavigator(CodeEditor editor);
+    
+    /**
+     * Creates a suitable code formatter for the specified code type.
+     * 
+     * @return a formatter that tidies source code, or null if none is available
+     */
+    Formatter createFormatter();
 }

@@ -37,10 +37,16 @@ public class DefaultCodeSupport implements CodeSupport {
     public Navigator createNavigator(CodeEditor codeEditor) {
         return null;
     }
+    
+    @Override
+    public Formatter createFormatter() {
+        return null;
+    }
 
     /**
      * Returns a syntax area language ID for the specified editor. The default
-     * implementation returns a value based on the editor's code type.
+     * implementation returns a value based on
+     * {@linkplain CodeEditorBase#getCodeType() the editor's code type}.
      *
      * @param editor the editor to determine a language ID for
      * @return a language ID for the editor; may return null for plain text
