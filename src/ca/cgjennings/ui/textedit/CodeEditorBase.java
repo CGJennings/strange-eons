@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
@@ -129,6 +130,16 @@ public class CodeEditorBase extends JPanel {
 
     public final void removeCaretListener(CaretListener listener) {
         textArea.removeCaretListener(listener);
+    }
+    
+    @Override
+    public final void addFocusListener(FocusListener listener) {
+        textArea.addFocusListener(listener);
+    }
+    
+    @Override
+    public final void removeFocusListener(FocusListener listener) {
+        textArea.removeFocusListener(listener);
     }
     
     /**
@@ -358,14 +369,8 @@ public class CodeEditorBase extends JPanel {
      */
     public void setEditable(boolean editable) {
         if (editable == textArea.isEditable()) return;
-        if (editable) {
-            textArea.setEditable(true);
-        } else {
-            int start = textArea.getSelectionStart();
-            int end = textArea.getSelectionEnd();
-            textArea.setEditable(false);
-            textArea.select(start, end);
-        }
+        textArea.setEditable(editable);
+        textArea.setHighlightCurrentLine(editable);
     }
 
     /**
@@ -1044,6 +1049,16 @@ public class CodeEditorBase extends JPanel {
          */
         JPopupMenu buildMenu(CodeEditorBase editor, JPopupMenu menu);
     }
+    
+    /**
+     * Simulates pressing the specified key in the editor.
+     * 
+     * @param keyStroke the non-null key to simulate
+     */
+    public void type(KeyStroke keyStroke) {
+        KeyEvent event = new KeyEvent(textArea, keyStroke.getKeyEventType(), System.currentTimeMillis(), keyStroke.getModifiers(), keyStroke.getKeyCode(), keyStroke.getKeyChar());
+        textArea.dispatchEvent(event);
+    }    
 
     /**
      * Converts a string to a single key stroke. The string may use one of two
@@ -1135,7 +1150,7 @@ public class CodeEditorBase extends JPanel {
 
                 try {
                     code = KeyEvent.class.getField("VK_".concat(key)).getInt(null);
-                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                } catch (ReflectiveOperationException | RuntimeException e) {
                     StrangeEons.log.log(Level.WARNING, "invalid key stroke: {0}", keyStroke);
                     return null;
                 }
@@ -1148,28 +1163,24 @@ public class CodeEditorBase extends JPanel {
     
     private class InsertTabOrAbbreviationAction extends RSyntaxTextAreaEditorKit.InsertTabAction {
         private static final long serialVersionUID = 1L;
+        private boolean isExpanding;
         
         @Override
         public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
             // check if an abbreviation can be expanded at this location, and
             // if so, expand it and return; otherwise proceed with the standard
             // Tab insert behaviour
-            if (textArea.isEditable() && textArea.isEnabled() && !hasSelection()) {
-                if (abbreviations != null && abbreviations.expandAbbreviation(CodeEditorBase.this)) {
-                    return;
+            if (textArea.isEditable() && textArea.isEnabled() && !hasSelection() && !isExpanding) {
+                isExpanding = true;
+                try {
+                    if (abbreviations != null && abbreviations.expandAbbreviation(CodeEditorBase.this)) {
+                        return;
+                    }
+                } finally {
+                    isExpanding = false;
                 }
             }
             super.actionPerformedImpl(e, textArea);
         }
-    }
-    
-    /**
-     * Simulates pressing the specified key in the editor.
-     * 
-     * @param keyStroke the non-null key to simulate
-     */
-    public void type(KeyStroke keyStroke) {
-        KeyEvent event = new KeyEvent(textArea, keyStroke.getKeyEventType(), System.currentTimeMillis(), keyStroke.getModifiers(), keyStroke.getKeyCode(), keyStroke.getKeyChar());
-        textArea.dispatchEvent(event);
     }
 }

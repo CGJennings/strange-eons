@@ -14,7 +14,11 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.AbbreviationTable;
 import gamedata.Game;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,9 +94,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         });
 
         previewCode.setFont(expField.getFont());
-//        previewCode.setLineHighlightEnabled(false);
         previewCode.setWhitespaceVisible(true);
-//        previewCode.setCaretBlinkEnabled(false);
 
         expField.getDocument().addDocumentListener(new DocumentEventAdapter() {
             @Override
@@ -104,7 +106,6 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
                     previewCode.setEditable(true);
                     previewCode.setText("x");                    
                     previewCode.type(KeyStroke.getKeyStroke("TAB"));
-//                    previewCode.getInputHandler().executeAction(EditorCommands.INSERT_BLOCK_TAB, previewCode, null);
                     previewCode.setEditable(false);
                     previewCode.clearUndoHistory();
                 } else {
@@ -115,7 +116,28 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
 
         pack();
         setLocationRelativeTo(parent);
+        installPreviewCodeVisibleSelectionWorkaround();
     }
+
+    private void installPreviewCodeVisibleSelectionWorkaround() {
+        // workaround: editor preview will not show selection until it is
+        // focused at least once        
+        workaroundListener = new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                previewCode.removeFocusListener(workaroundListener);
+                workaroundListener = null;
+                if (abrvTable.getRowCount() > 0) {
+                    abrvTable.addRowSelectionInterval(0, 0);
+                } else {
+                    expField.requestFocusInWindow();
+                }
+            }
+        };
+        previewCode.addFocusListener(workaroundListener);
+        previewCode.requestFocusInWindow();
+    }
+    private FocusListener workaroundListener;
 
     private int previousSel = -1;
 

@@ -41,6 +41,8 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         setFadeCurrentLineHighlight(true);
         setCodeFoldingEnabled(true);
         setCloseMarkupTags(true);
+        setAntiAliasingEnabled(true);
+        setFractionalFontMetricsEnabled(true);
     }
     
     private CodeEditorBase.PopupMenuBuilder menuBuilder = null;
