@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
+import javax.swing.InputMap;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JViewport;
@@ -50,6 +51,7 @@ public class CodeEditorBase extends JPanel {
     private ErrorStrip errorStrip;
     private AbbreviationTable abbreviations;
     private CodeType type;
+    private boolean ready = false;
 
     /**
      * Creates a new code editor control.
@@ -75,6 +77,8 @@ public class CodeEditorBase extends JPanel {
         add(errorStrip, BorderLayout.LINE_END);
 
         addKeyBindings();
+        
+        ready = true;
     }
 
     protected void addKeyBindings() {
@@ -146,6 +150,37 @@ public class CodeEditorBase extends JPanel {
     public final void removeFocusListener(FocusListener listener) {
         textArea.removeFocusListener(listener);
     }
+    
+    /**
+     * Returns a named editor action.
+     * 
+     * @param actionName the name of the action to return
+     * @return the action matching the name, or null
+     */
+    public Action getAction(String actionName) {
+        return textArea.getActionMap().get(actionName);
+    }
+    
+    public Action[] getActions() {
+        return textArea.getActions();
+    }
+    
+    public boolean canPerformAction(String actionName) {
+        return performActionImpl(actionName, true);
+    }
+    
+    public boolean performAction(String actionName) {
+        return performActionImpl(actionName, false);
+    }
+    
+    private boolean performActionImpl(String actionName, boolean testOnly) {
+        Action a = getAction(actionName);
+        if (a == null || !a.isEnabled()) return false;
+        if (testOnly) return true;
+        a.actionPerformed(new ActionEvent(textArea, 0, actionName));
+        return true;
+    }
+
     
     /**
      * Sets the abbreviation table for this editor, replacing any default

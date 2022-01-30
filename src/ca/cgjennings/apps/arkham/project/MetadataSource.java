@@ -909,19 +909,13 @@ public class MetadataSource {
                 return false;
             }
 
-            if (ProjectUtilities.matchExtension(m, "text")) {
+            if (ProjectUtilities.matchExtension(m, "text", "txt", "utf8")) {
                 return true;
             }
             if (ProjectUtilities.matchExtension(m, "settings", "collection")) {
                 return false;
             }
 
-            if (ProjectUtilities.matchExtension(m, "txt")) {
-                Task t = m.getTask();
-                if (t != null && NewTaskType.PLUGIN_TYPE.equals(t.getSettings().get(Task.KEY_TYPE))) {
-                    return false;
-                }
-            }
             return true;
         }
     }

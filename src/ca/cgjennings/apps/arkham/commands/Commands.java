@@ -31,9 +31,10 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.textedit.CodeAction;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.textedit.EditorCommands;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.Tokenizer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.MouseInfo;
@@ -495,7 +496,7 @@ public class Commands {
                 } else {
                     hex = String.format("%06x", c.getRGB() & 0x00ff_ffff);
                 }
-                String colour = (Locale.getDefault().getCountry().equals(Locale.US)) ? "color" : "colour";
+                String colour = Locale.getDefault().getCountry().equals("US") ? "color" : "colour";
                 mt.tagSelectedText("<" + colour + " #" + hex + ">", "</" + colour + ">", false);
             }
         }
@@ -932,7 +933,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (!i.isSelectionLocked()) {
                         return true;
@@ -945,7 +945,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(true);
                 }
@@ -960,7 +959,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (i.isSelectionLocked()) {
                         return true;
@@ -973,7 +971,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(false);
                 }
@@ -988,7 +985,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (i.isSelectionLocked()) {
                         return true;
@@ -1001,7 +997,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(false);
                 }
@@ -1165,20 +1160,15 @@ public class Commands {
     /**
      * Moves the selected lines up in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(EditorCommands.MOVE_SELECTION_UP).key("move-selection-up");
+    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(CodeAction.moveUp).key("move-selection-up");
     /**
      * Moves the selected lines down in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(EditorCommands.MOVE_SELECTION_DOWN).key("move-selection-down");
+    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(CodeAction.moveDown).key("move-selection-down");
     /**
      * Comments out the selected lines in a code editor.
      */
-    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(EditorCommands.COMMENT_SELECTION).key("comment-selection");
-    /**
-     * Uncomments the selected lines in a code editor, reversing a previously
-     * performed {@link #COMMENT_OUT} command.
-     */
-    public static final DelegatedCommand UNCOMMENT = new HSourceCommand("app-uncomment", "toolbar/uncomment.png").forComments().forAction(EditorCommands.UNCOMMENT_SELECTION).key("uncomment-selection");
+    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(CodeAction.toggleComment).key("comment-selection");
 
     /**
      * Removes trailing spaces from the ends of source lines.
@@ -1186,21 +1176,20 @@ public class Commands {
     public static final DelegatedCommand REMOVE_TRAILING_SPACES = new HSourceCommand("app-trim-right", "toolbar/trim-right.png") {
         @Override
         public void performDefaultAction(ActionEvent e) {
-            final JSourceCodeEditor ed = getEditor();
+            final CodeEditorBase ed = getEditor();
             if (ed == null) {
                 return;
             }
             try {
-                ed.getDocument().beginCompoundEdit();
+                ed.beginCompoundEdit();
                 int caretPos = ed.getCaretPosition();
                 int caretLine = ed.getLineOfOffset(caretPos);
                 int caretOffset = caretPos - ed.getLineStartOffset(caretLine);
-                int topLine = ed.getFirstDisplayedLine();
 
-                if (caretPos == ed.getMarkPosition()) {
+                if (!ed.hasSelection()) {
                     ed.selectAll();
                 }
-                String[] lines = EditorCommands.getSelectedLineText(ed, true);
+                String[] lines = ed.getSelectedLineText(true);
                 for (int i = 0; i < lines.length; ++i) {
                     String line = lines[i];
                     int len = line.length();
@@ -1209,14 +1198,13 @@ public class Commands {
                     }
                     lines[i] = line.substring(0, len);
                 }
-                EditorCommands.setSelectedLineText(ed, lines, lines.length);
+                ed.setSelectedLineText(lines);
 
                 // replace caret as close as possible to previous position
                 caretOffset = Math.min(caretOffset, ed.getLineLength(caretLine));
                 ed.setCaretPosition(ed.getLineStartOffset(caretLine) + caretOffset);
-                ed.setFirstDisplayedLine(topLine);
             } finally {
-                ed.getDocument().endCompoundEdit();
+                ed.endCompoundEdit();
             }
         }
     };
@@ -1234,33 +1222,9 @@ public class Commands {
     }.forCodeEditor();
 
     /**
-     * Plays the macro that was most recently recorded in a code editor.
-     */
-    public static final DelegatedCommand PLAY_MACRO = new HSourceCommand("app-play-macro", "toolbar/play-macro.png").forPlaying().forAction(EditorCommands.PLAY_LAST_MACRO).key("play-last-macro");
-    /**
-     * Starts recording a macro in the code editor.
-     */
-    public static final DelegatedCommand START_RECORDING_MACRO = new HSourceCommand("app-record-macro").forAction(EditorCommands.BEGIN_MACRO).key("begin-macro");
-    /**
-     * Stops recording a macro in the code editor.
-     */
-    public static final DelegatedCommand STOP_RECORDING_MACRO = new HSourceCommand("app-stop-macro").forRecording().forAction(EditorCommands.END_MACRO).key("end-macro");
-    /**
      * Opens the code completion popup in the current code editor, if available.
      */
-    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, EditorCommands.COMPLETE_CODE) {
-        @Override
-        public boolean isDefaultActionApplicable() {
-            if (super.isDefaultActionApplicable()) {
-                JSourceCodeEditor ed = getEditor();
-                Tokenizer t = ed.getTokenizer();
-                if (t != null && t.getCodeCompleter() != null) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }.key("complete-code");
+    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, CodeAction.completeCode);
 
     /**
      * Formats (pretty prints) the current editor content, if a suitable

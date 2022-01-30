@@ -51,7 +51,6 @@ import java.nio.charset.StandardCharsets;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import javax.print.PrintException;
@@ -276,14 +275,6 @@ public class CodeEditor extends AbstractSupportEditor {
         setNavigator(nav);
 
         encoding = type.getEncodingName();
-// FIXME
-//        if (t != null) {
-//            EnumSet<TokenType> toSpellCheck = t.getNaturalLanguageTokenTypes();
-//            if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
-//                ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
-//                SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = Settings.getUser().getBoolean("spelling-code-enabled");
-//            }
-//        }
     }
 
     public void setReadOnly(boolean readOnly) {

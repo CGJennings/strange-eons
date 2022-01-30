@@ -189,13 +189,6 @@ public class Open extends TaskAction {
         }
 
         CodeEditor ed = null;
-        // backwards compatibility: very old parsed resources used ".txt"
-        // extension, but in a plug-in task context
-        if ("txt".equals(ext)) {
-            if (!MetadataSource.TextMetadata.isDocType(member)) {
-                ed = new CodeEditor(f, CodeType.SETTINGS);
-            }
-        }
         // check extension against known code types
         if (ed == null) {
             for (CodeType type : CodeType.values()) {
@@ -203,6 +196,12 @@ public class Open extends TaskAction {
                     continue;
                 }
                 ed = new CodeEditor(f, type);
+            }
+        }
+        // check some fallback types
+        if (ed == null) {
+            if (MetadataSource.TextMetadata.isDocType(member)) {
+                ed = new CodeEditor(f, CodeType.PLAIN);
             }
         }
         if (ed != null) {

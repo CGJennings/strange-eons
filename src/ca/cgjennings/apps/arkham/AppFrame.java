@@ -893,13 +893,8 @@ final class AppFrame extends StrangeEonsAppWindow {
         javax.swing.JMenuItem srcShiftUpItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem srcShiftDownItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem commentItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem uncommentItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator15 = new javax.swing.JPopupMenu.Separator();
         sortSourceItem = new javax.swing.JMenuItem();
-        javax.swing.JPopupMenu.Separator jSeparator8 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem playMacroItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem recordMacroItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem stopMacroItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator3 = new javax.swing.JPopupMenu.Separator();
         sortSourceItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenuItem abbreviationsItem = new javax.swing.JMenuItem();
@@ -1468,29 +1463,12 @@ final class AppFrame extends StrangeEonsAppWindow {
         commentItem.setName("commentItem"); // NOI18N
         sourceMenu.add(commentItem);
 
-        uncommentItem.setAction( Commands.UNCOMMENT );
-        uncommentItem.setName("uncommentItem"); // NOI18N
-        sourceMenu.add(uncommentItem);
-
         jSeparator15.setName("jSeparator15"); // NOI18N
         sourceMenu.add(jSeparator15);
 
         sortSourceItem.setAction( Commands.SORT );
         sortSourceItem.setName("sortSourceItem"); // NOI18N
         sourceMenu.add(sortSourceItem);
-        sourceMenu.add(jSeparator8);
-
-        playMacroItem.setAction( Commands.PLAY_MACRO );
-        playMacroItem.setName("playMacroItem"); // NOI18N
-        sourceMenu.add(playMacroItem);
-
-        recordMacroItem.setAction( Commands.START_RECORDING_MACRO );
-        recordMacroItem.setName("recordMacroItem"); // NOI18N
-        sourceMenu.add(recordMacroItem);
-
-        stopMacroItem.setAction( Commands.STOP_RECORDING_MACRO );
-        stopMacroItem.setName("stopMacroItem"); // NOI18N
-        sourceMenu.add(stopMacroItem);
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         sourceMenu.add(jSeparator3);
