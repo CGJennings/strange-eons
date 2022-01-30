@@ -393,8 +393,8 @@ deck-pack-layout-quality = 2
 play-factory-audio = no
 
 # Default settings for Find/Replace
-find-incremental = yes
 find-case-sensitive = no
+find-whole-word = no
 find-regular-expression = no
 
 # Default compression options for image conversion

@@ -13,6 +13,7 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -29,7 +30,11 @@ import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.RTextAreaHighlighter;
 import org.fife.ui.rtextarea.RTextScrollPane;
+import org.fife.ui.rtextarea.SearchContext;
+import org.fife.ui.rtextarea.SearchEngine;
+import org.fife.ui.rtextarea.SearchResult;
 import resources.ResourceKit;
 
 /**
@@ -450,7 +455,12 @@ public class CodeEditorBase extends JPanel {
      * @return the line text
      */
     public String getLineText(int line) {
-        return getText(getLineStartOffset(line), getLineEndOffset(line));
+        int start = getLineStartOffset(line), end = getLineEndOffset(line);
+        // trim off \n from range to return
+        if (end > start && getTextRange(end-1, end).equals("\n")) {
+            --end;
+        }
+        return getTextRange(start, end);
     }
 
     /**
@@ -1058,7 +1068,155 @@ public class CodeEditorBase extends JPanel {
     public void type(KeyStroke keyStroke) {
         KeyEvent event = new KeyEvent(textArea, keyStroke.getKeyEventType(), System.currentTimeMillis(), keyStroke.getModifiers(), keyStroke.getKeyCode(), keyStroke.getKeyChar());
         textArea.dispatchEvent(event);
-    }    
+    }
+
+    /**
+     * Begins a search of the document. When a new search is started or the
+     * parameters of an ongoing search are changed, this will restart searching
+     * from the current position, selecting the initial match if any.
+     * In this case, the method will return a {@link Result} that describes the
+     * initial match (or no match if none occurs). If this is called with the
+     * same parameters as an ongoing search, null is returned and no initial
+     * search is performed. (A return value of null does not, therefore, mean
+     * that there are no matches.)
+     * 
+     * @param pattern the pattern to search for
+     * @param matchCase true if the search should be case sensitive
+     * @param wholeWord true to match only whole words
+     * @param regexp true if the pattern is a regular expression
+     * @param wrap true if the search should wrap around the document start or end
+     */
+    public Result beginSearch(String pattern, boolean matchCase, boolean wholeWord, boolean regexp, boolean wrap) {
+        Objects.requireNonNull(pattern, "pattern");
+
+        boolean doInitialSearch = false;
+
+        if (searchContext == null) {
+            searchContext = new SearchContext();
+            searchContext.setMarkAll(true);
+            doInitialSearch = true;
+        }
+        
+        if (!pattern.equals(searchContext.getSearchFor())) {
+            searchContext.setSearchFor(pattern);
+            doInitialSearch = true;
+        }
+        if (searchContext.getMatchCase() != matchCase) {
+            searchContext.setMatchCase(matchCase);
+            doInitialSearch = true;
+        }
+        if (searchContext.getWholeWord() != wholeWord) {
+            searchContext.setWholeWord(wholeWord);
+            doInitialSearch = true;
+        }
+        if (searchContext.isRegularExpression() != regexp) {
+            searchContext.setRegularExpression(regexp);
+            doInitialSearch = true;
+        }
+        if (searchContext.getSearchWrap() != wrap) {
+            searchContext.setSearchWrap(wrap);
+            doInitialSearch = true;
+        }
+        
+        if (doInitialSearch) {
+            // disable symbol occurrence highlighting during search as it
+            // tends to look confusing
+            textArea.setMarkOccurrences(false);
+            
+            SearchEngine.markAll(textArea, searchContext);
+
+            int start = Math.min(getSelectionStart(), getSelectionEnd());
+            setCaretPosition(start);
+            searchContext.setSearchForward(true);
+            return new Result(SearchEngine.find(textArea, searchContext), searchContext);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Searches for the next match of the current search.
+     * @param forward if true, searches forward through the document; else backward
+     * @return the result of the search operation
+     */
+    public Result findNext(boolean forward) {
+        if (searchContext == null) return new Result(forward);
+        searchContext.setSearchForward(forward);
+        return new Result(SearchEngine.find(textArea, searchContext), searchContext);
+    }  
+
+   /**
+     * Replaces the next match of the current search.
+     * @param forward if true, searches forward through the document; else backward
+     * @param replacement the string to replace the next match with
+     * @return the result of the search operation
+     */
+    public Result replaceNext(boolean forward, String replacement) {
+        if (searchContext == null) return new Result(forward);
+        searchContext.setSearchForward(forward);
+        searchContext.setReplaceWith(replacement);
+        Result result = new Result(SearchEngine.replace(textArea, searchContext), searchContext);
+        if (result.found) {
+            SearchEngine.markAll(textArea, searchContext);
+        }
+        return result;
+    }
+    
+    /**
+     * Replaces all occurrences of the current search.
+     * @param replacement the string to replace all occurrences with
+     * @return the result of the search operation
+     */
+    public Result replaceAll(String replacement) {
+        if (searchContext == null) return new Result(true);
+        searchContext.setReplaceWith(replacement);
+        Result result = new Result(SearchEngine.replaceAll(textArea, searchContext), searchContext);
+        if (result.found) {
+            SearchEngine.markAll(textArea, searchContext);
+        }
+        return result;
+    }
+    
+    /**
+     * Ends the current search, if any.
+     */
+    public void endSearch() {
+        if (searchContext == null) return;
+        // clear search highlighting
+        searchContext.setSearchFor("");
+        SearchEngine.markAll(textArea, searchContext);
+        searchContext = null;
+        // re-enable symbol occurrence highlighting
+        textArea.setMarkOccurrences(true);
+    }
+    
+    /**
+     * The result of a search or replace operation.
+     */
+    public static class Result {
+        private Result(boolean forward) {
+            this.wrapped = false;
+            this.found = false;
+            this.matchCount = 0;
+            this.wasForward = forward;
+        }
+        private Result(SearchResult source, SearchContext searchContext) {
+            this.wrapped = source.isWrapped();
+            this.found = source.wasFound();
+            this.matchCount = source.getCount();
+            this.wasForward = searchContext.getSearchForward();
+        }
+        /** True if a result was found or replaced. */
+        public final boolean found;
+        /** The number of matches (will be 0 or 1 unless the result of a replace all. */
+        public final int matchCount;
+        /** True if the search wrapped past the start or end of the document. */
+        public final boolean wrapped;
+        /** True if the search direction was forward. */
+        public final boolean wasForward;
+    }
+    
+    private SearchContext searchContext;
 
     /**
      * Converts a string to a single key stroke. The string may use one of two

@@ -25,11 +25,9 @@ import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
-import ca.cgjennings.ui.textedit.CSSStyler;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.Formatter;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -37,7 +35,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -45,7 +42,6 @@ import java.awt.print.Printable;
 import java.awt.print.PrinterAbortException;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
-import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -101,13 +97,11 @@ public class CodeEditor extends AbstractSupportEditor {
 
         sideBarPanel.setVisible(false);
         findPanel.setVisible(false);
-        // set Find checkbox options
-        findPanelShown(null);
 
         MarkupTargetFactory.enableTargeting(findField, false);
         MarkupTargetFactory.enableTargeting(replaceField, false);
 
-        editor.getDocument().addDocumentListener(new DocumentEventAdapter() {
+        editor.addDocumentListener(new DocumentEventAdapter() {
             @Override
             public void changedUpdate(DocumentEvent e) {
                 setUnsavedChanges(true);
@@ -147,19 +141,16 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
-        getEditor().setFileDropEnabled(true);
-        getEditor().addPropertyChangeListener(JSourceCodeEditor.FILE_DROP_PROPERTY, (PropertyChangeEvent evt) -> {
-            List list = (List) evt.getNewValue();
-            File[] files = new File[list.size()];
-            for (int i = 0; i < list.size(); ++i) {
-                files[i] = (File) list.get(i);
-            }
+        FileDrop.Listener dropListener = (f) -> {
             if (fileDropListener == null) {
-                doDefaultFileDrop(files);
+                doDefaultFileDrop(f);
             } else {
-                fileDropListener.filesDropped(files);
+                fileDropListener.filesDropped(f);
             }
-        });
+        };
+        new FileDrop(navPanel, null, true, dropListener);
+        new FileDrop(findPanel, null, true, dropListener);
+        new FileDrop(null, sideBarSplitter).setListener(dropListener);
 
         editor.putClientProperty(ContextBar.BAR_INSIDE_PROPERTY, true);
         editor.addCaretListener(new CaretListener() {
@@ -182,7 +173,6 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
-        installStrangeEonsEditorCommands(editor);
         createTimer((int) NAVIGATOR_SCAN_DELAY);
 
         EventQueue.invokeLater(editor::requestFocusInWindow);
@@ -233,7 +223,7 @@ public class CodeEditor extends AbstractSupportEditor {
         readFile();
 
         editor.select(0, 0);
-        editor.getDocument().clearUndoHistory();
+        editor.clearUndoHistory();
         setUnsavedChanges(false);
 
         editor.setComponentPopupMenu(createPopupMenu());
@@ -266,23 +256,39 @@ public class CodeEditor extends AbstractSupportEditor {
         type = codeType;
         initializeForCodeType();
 
-        editor.setText(text);
-        editor.select(0, 0);
-        editor.getDocument().clearUndoHistory();
+        editor.setInitialText(text);
         setUnsavedChanges(false);
 
         editor.setComponentPopupMenu(createPopupMenu());
         setReadOnly(true);
     }
-    
+
     private void initializeForCodeType() {
-        
+        editor.setCodeType(type);
+
+        setFrameIcon(type.getIcon());
+        setCharacterEscapingEnabled(type.getAutomaticCharacterEscaping());
+
+        Navigator nav = null;
+        if (editor.getCodeSupport() != null) {
+            nav = editor.getCodeSupport().createNavigator(this);
+        }
+        setNavigator(nav);
+
+        encoding = type.getEncodingName();
+// FIXME
+//        if (t != null) {
+//            EnumSet<TokenType> toSpellCheck = t.getNaturalLanguageTokenTypes();
+//            if (toSpellCheck != null && !toSpellCheck.isEmpty()) {
+//                ed.addHighlighter(new SpellingHighlighter(toSpellCheck));
+//                SpellingHighlighter.ENABLE_SPELLING_HIGHLIGHT = Settings.getUser().getBoolean("spelling-code-enabled");
+//            }
+//        }
     }
 
     public void setReadOnly(boolean readOnly) {
         if (readOnly == editor.isEditable()) {
             final boolean editable = !readOnly;
-            editor.setCaretBlinkEnabled(editable);
             editor.setEditable(editable);
             Icon i = type.getIcon();
             if (readOnly) {
@@ -348,17 +354,16 @@ public class CodeEditor extends AbstractSupportEditor {
         if (getFile() == null) {
             return;
         }
-        JSourceCodeEditor ed = getEditor();
+        CodeEditorBase ed = getEditor();
         int line = ed.getLineOfOffset(ed.getCaretPosition());
 
         readFile();
 
         int offset = ed.getLineStartOffset(line);
         if (offset < 0) {
-            offset = ed.getDocumentLength();
+            offset = ed.getLength();
         }
         ed.select(offset, offset);
-        ed.scrollToCaret();
     }
 
     private void readFile() throws IOException {
@@ -380,7 +385,6 @@ public class CodeEditor extends AbstractSupportEditor {
         refreshNavigator(text);
         setUnsavedChanges(false);
     }
-
 
     private String encoding = "utf-8";
     private CodeType type = CodeType.PLAIN;
@@ -409,12 +413,11 @@ public class CodeEditor extends AbstractSupportEditor {
         findNextBtn = new javax.swing.JButton();
         replaceAllBtn = new javax.swing.JButton();
         replaceBtn = new javax.swing.JButton();
-        incrementalCheck = new javax.swing.JCheckBox();
         caseSensCheck = new javax.swing.JCheckBox();
         regExpCheck = new javax.swing.JCheckBox();
         regExpErrorLabel = new javax.swing.JLabel();
+        wholeWordCheck = new javax.swing.JCheckBox();
         sideBarSplitter = new javax.swing.JSplitPane();
-        editor = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
         sideBarPanel = new javax.swing.JPanel();
         navPanel = new javax.swing.JPanel();
         navScroll = new javax.swing.JScrollPane();
@@ -422,6 +425,7 @@ public class CodeEditor extends AbstractSupportEditor {
         navTitle = new javax.swing.JPanel();
         javax.swing.JLabel navLabel = new javax.swing.JLabel();
         ca.cgjennings.apps.arkham.ToolCloseButton sourceNavCloseButton = new ca.cgjennings.apps.arkham.ToolCloseButton();
+        editor = new ca.cgjennings.ui.textedit.CodeEditorBase();
 
         addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -449,7 +453,7 @@ public class CodeEditor extends AbstractSupportEditor {
         closeBtn.setBackground(UIManager.getColor(Theme.PROJECT_HEADER_BACKGROUND));
         closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                closeBtncloseClicked(evt);
+                findCloseBtnClicked(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -458,12 +462,6 @@ public class CodeEditor extends AbstractSupportEditor {
         titlePanel.add(closeBtn, gridBagConstraints);
 
         findPanel.add(titlePanel, java.awt.BorderLayout.NORTH);
-
-        searchControlsPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                findPanelShown(evt);
-            }
-        });
 
         icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         icon.setIcon( ResourceKit.getIcon( "ui/find-lr.png" ) );
@@ -517,34 +515,36 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
-        incrementalCheck.setFont(incrementalCheck.getFont().deriveFont(incrementalCheck.getFont().getSize()-1f));
-        incrementalCheck.setSelected(true);
-        incrementalCheck.setText(string( "find-incremental" )); // NOI18N
-        incrementalCheck.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                storeFindCheckStates(evt);
-            }
-        });
-
         caseSensCheck.setFont(caseSensCheck.getFont().deriveFont(caseSensCheck.getFont().getSize()-1f));
+        caseSensCheck.setSelected(Settings.getUser().getBoolean("find-case-sensitive"));
         caseSensCheck.setText(string( "find-case-sense" )); // NOI18N
         caseSensCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                storeFindCheckStates(evt);
+                findOptionsChanged(evt);
             }
         });
 
         regExpCheck.setFont(regExpCheck.getFont().deriveFont(regExpCheck.getFont().getSize()-1f));
+        regExpCheck.setSelected(Settings.getUser().getBoolean("find-regular-expression"));
         regExpCheck.setText(string( "find-reg-exp" )); // NOI18N
         regExpCheck.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                storeFindCheckStates(evt);
+                findOptionsChanged(evt);
             }
         });
 
         regExpErrorLabel.setFont(regExpErrorLabel.getFont().deriveFont(regExpErrorLabel.getFont().getSize()-1f));
         regExpErrorLabel.setForeground(java.awt.Color.red);
         regExpErrorLabel.setText(" ");
+
+        wholeWordCheck.setFont(wholeWordCheck.getFont().deriveFont(wholeWordCheck.getFont().getSize()-1f));
+        wholeWordCheck.setSelected(Settings.getUser().getBoolean("find-whole-word"));
+        wholeWordCheck.setText(string( "find-whole-word" )); // NOI18N
+        wholeWordCheck.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                findOptionsChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout searchControlsPanelLayout = new javax.swing.GroupLayout(searchControlsPanel);
         searchControlsPanel.setLayout(searchControlsPanelLayout);
@@ -556,19 +556,13 @@ public class CodeEditor extends AbstractSupportEditor {
                 .addGap(18, 18, 18)
                 .addGroup(searchControlsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(searchControlsPanelLayout.createSequentialGroup()
-                        .addComponent(incrementalCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(caseSensCheck)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(regExpCheck))
-                    .addGroup(searchControlsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(searchControlsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(regExpErrorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 617, Short.MAX_VALUE)
                             .addGroup(searchControlsPanelLayout.createSequentialGroup()
                                 .addGroup(searchControlsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(findField, javax.swing.GroupLayout.DEFAULT_SIZE, 275, Short.MAX_VALUE)
+                                    .addComponent(findField, javax.swing.GroupLayout.DEFAULT_SIZE, 279, Short.MAX_VALUE)
                                     .addGroup(searchControlsPanelLayout.createSequentialGroup()
                                         .addComponent(findNextBtn)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -581,8 +575,15 @@ public class CodeEditor extends AbstractSupportEditor {
                                         .addComponent(replaceBtn)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(replaceAllBtn))
-                                    .addComponent(replaceField, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE))
-                                .addGap(8, 8, 8)))))
+                                    .addComponent(replaceField, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                                .addGap(8, 8, 8))))
+                    .addGroup(searchControlsPanelLayout.createSequentialGroup()
+                        .addComponent(caseSensCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(wholeWordCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(regExpCheck)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -610,9 +611,9 @@ public class CodeEditor extends AbstractSupportEditor {
                         .addComponent(regExpErrorLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(searchControlsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                            .addComponent(incrementalCheck)
                             .addComponent(caseSensCheck)
-                            .addComponent(regExpCheck))))
+                            .addComponent(regExpCheck)
+                            .addComponent(wholeWordCheck))))
                 .addContainerGap())
         );
 
@@ -622,25 +623,13 @@ public class CodeEditor extends AbstractSupportEditor {
                 EventQueue.invokeLater( new Runnable() {
                     @Override
                     public void run() {
-                        ca.cgjennings.ui.textedit.JSourceCodeEditor editor = getEditor();
+                        CodeEditorBase editor = getEditor();
                         if( e.getKeyChar() == 27 ) { // Escape
-                            editor.requestFocusInWindow();
-                            findPanel.setVisible( false );
+                            findCloseBtnClicked(null);
                             return;
                         }
-                        if( e.getSource() == findField ) {
-                            // do syntax checking if in regexp mode
-                            if( regExpCheck.isSelected() ) createPattern();
-                            // do incremental searches
-                            if( !incrementalCheck.isSelected() ) return;
-                            if( e.getKeyChar() != '\n' ) {
-                                if( findField.getText().length() > 0 ) {
-                                    findNextActionPerformed( null );
-                                } else {
-                                    int sel = Math.min( editor.getSelectionStart(), editor.getSelectionEnd() );
-                                    editor.select( sel, sel );
-                                }
-                            }
+                        if( e.getSource() == findField && e.getKeyChar() != '\n' ) {
+                            updateFindParameters();
                         }
                     }
                 });
@@ -664,7 +653,6 @@ public class CodeEditor extends AbstractSupportEditor {
                 sideBarSplitterPropertyChange(evt);
             }
         });
-        sideBarSplitter.setRightComponent(editor);
 
         sideBarPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sideBarPanel.setLayout(new java.awt.BorderLayout());
@@ -729,6 +717,7 @@ public class CodeEditor extends AbstractSupportEditor {
         sideBarPanel.add(navPanel, java.awt.BorderLayout.CENTER);
 
         sideBarSplitter.setLeftComponent(sideBarPanel);
+        sideBarSplitter.setRightComponent(editor);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -754,14 +743,14 @@ public class CodeEditor extends AbstractSupportEditor {
     private void doDefaultFileDrop(File[] files) {
         final String sep = System.getProperty("file.separator");
         final String resources = "resources" + sep;
-        final JSourceCodeEditor ed = getEditor();
+        final CodeEditorBase ed = getEditor();
 
         File file = getFile();
         boolean quote = getFileNameExtension().equals("js")
                 || getFileNameExtension().equals("html") || getFileNameExtension().equals("css");
         boolean doubleQuote = getFileNameExtension().equals("java");
 
-        ed.getDocument().beginCompoundEdit();
+        ed.beginCompoundEdit();
         try {
             for (File f : files) {
                 String insert = null;
@@ -801,7 +790,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 }
             }
         } finally {
-            ed.getDocument().endCompoundEdit();
+            ed.endCompoundEdit();
         }
     }
 
@@ -829,6 +818,7 @@ public class CodeEditor extends AbstractSupportEditor {
                     getRootPane().validate();
                 }
             }.play();
+            updateFindParameters();
         } else {
             findNextBtn.doClick();
         }
@@ -860,7 +850,7 @@ public class CodeEditor extends AbstractSupportEditor {
             }
             return false;
         } else if (command == Commands.FORMAT_CODE) {
-            return CodeFormatterFactory.getFormatter(getCodeType()) != null;
+            return editor.getCodeSupport().createFormatter() != null;
         }
 
         return super.isCommandApplicable(command);
@@ -891,7 +881,10 @@ public class CodeEditor extends AbstractSupportEditor {
         setReadOnly(!editable);
     }
 
-	private void closeBtncloseClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtncloseClicked
+	private void findCloseBtnClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findCloseBtnClicked
+            editor.endSearch();
+            editor.requestFocusInWindow();
+
             final Dimension preferredSize = findPanel.getPreferredSize();
             final int startHeight = preferredSize.height;
             findPanel.setPreferredSize(preferredSize);
@@ -909,213 +902,47 @@ public class CodeEditor extends AbstractSupportEditor {
                     getRootPane().validate();
                 }
             }.play();
-}//GEN-LAST:event_closeBtncloseClicked
+}//GEN-LAST:event_findCloseBtnClicked
 
-	private void findNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findNextActionPerformed
-            StrangeEons.setWaitCursor(true);
-            try {
+    private boolean updateFindParameters() {
+        if (!checkPattern()) {
+            return false;
+        }
+        CodeEditorBase.Result result = getEditor().beginSearch(
+                findField.getText(),
+                caseSensCheck.isSelected(),
+                wholeWordCheck.isSelected(),
+                regExpCheck.isSelected(),
+                true
+        );
+        describeResult(result);
+        return true;
+    }
 
-                Pattern pattern = createPattern();
-                if (pattern == null) {
-                    return;
-                }
-
-                JSourceCodeEditor ed = getEditor();
-
-                // search from current pos to end of file, or, if we at the previous
-                // match, search from current pos + 1
-                int s = ed.getSelectionStart();
-                int e = ed.getDocumentLength();
-
-                int oldStart = ed.getSelectionStart();
-                int oldEnd = ed.getSelectionEnd();
-
-                String selection = ed.getSelectedText();
-                if (selection.length() > 0 && pattern.matcher(selection).matches()) {
-                    if (regExpCheck.isSelected()) {
-                        s += selection.length();
-                    } else {
-                        ++s;
-                    }
-                }
-                boolean didRollover = false;
-                if (s >= e) {
-                    s = 0;
-                    didRollover = true;
-                }
-
-                ed.setSelectionStart(s);
-                ed.setSelectionEnd(e);
-                String searchFrame = ed.getSelectedText();
-
-                regExpErrorLabel.setText(" ");
-
-                currentSearch = pattern.matcher(searchFrame);
-                if (currentSearch.find()) {
-                    ed.setSelectionStart(s + currentSearch.start());
-                    ed.setSelectionEnd(s + currentSearch.end());
-                } else {
-                    ed.select(e, e);
-                    if (didRollover) {
-                        regExpErrorLabel.setText(string("find-no-matches"));
-                        getToolkit().beep();
-                    } else {
-                        findNextActionPerformed(evt);
-
-                        String labelText = regExpErrorLabel.getText();
-                        if (labelText.equals(string("find-no-matches"))) {
-                            ed.select(oldStart, oldEnd);
-                        } else if (labelText.equals(" ")) {
-                            regExpErrorLabel.setText(string("find-eof"));
-                        }
-                    }
-                }
-            } finally {
-                StrangeEons.setWaitCursor(false);
+    private void describeResult(CodeEditorBase.Result result) {
+        String desc = " ";
+        if (result != null && !findField.getText().isEmpty()) {
+            if (!result.found) {
+                desc = string("find-no-matches");
+                getToolkit().beep();
+            } else if (result.wrapped) {
+                desc = string(result.wasForward ? "find-eof" : "find-tof");
             }
-	}//GEN-LAST:event_findNextActionPerformed
-
-	private void findPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPrevActionPerformed
-            StrangeEons.setWaitCursor(true);
-            try {
-                Pattern pattern = createPattern();
-                if (pattern == null) {
-                    return;
-                }
-
-                JSourceCodeEditor ed = getEditor();
-
-                // search from current pos to end of file, or, if we are at the previous
-                // match, search up to the position just before the current one
-                int s = ed.getSelectionEnd();
-
-                int oldStart = ed.getSelectionStart();
-                int oldEnd = ed.getSelectionEnd();
-
-                String selection = ed.getSelectedText();
-                if (!selection.isEmpty() && pattern.matcher(selection).matches()) {
-                    if (regExpCheck.isSelected()) {
-                        s -= selection.length();
-                    } else {
-                        --s;
-                    }
-                }
-
-                boolean didRollover = false;
-                if (s <= 0) {
-                    s = ed.getDocumentLength();
-                    didRollover = true;
-                }
-
-                String searchFrame = ed.getText(0, s);
-
-                int start = s, end = -1;
-                currentSearch = pattern.matcher(searchFrame);
-                for (int i = s; i >= 0; --i) {
-                    if (currentSearch.find(i)) {
-                        if (end == -1) {
-                            start = currentSearch.start();
-                            end = currentSearch.end();
-                        } else if (end == currentSearch.end()) {
-                            // if using regexps, this might not be the longest
-                            // possible match anchored at this end position:
-                            // after the initial match, keep the loop going and
-                            // track the lowest start pos that has the same end pos
-                            start = currentSearch.start();
-                        }
-                    }
-                }
-
-                regExpErrorLabel.setText(" ");
-
-                if (end >= 0) {
-                    ed.select(start, end);
-                } else {
-                    if (didRollover) {
-                        regExpErrorLabel.setText(string("find-no-matches"));
-                        getToolkit().beep();
-                    } else {
-                        end = ed.getDocumentLength();
-                        ed.select(0, 0);
-                        findPrevActionPerformed(evt);
-
-                        String labelText = regExpErrorLabel.getText();
-                        if (labelText.equals(string("find-no-matches"))) {
-                            ed.select(oldStart, oldEnd);
-                        } else if (labelText.equals(" ")) {
-                            regExpErrorLabel.setText(string("find-tof"));
-                        }
-                    }
-                }
-            } finally {
-                StrangeEons.setWaitCursor(false);
-            }
-	}//GEN-LAST:event_findPrevActionPerformed
-
-	private void replaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceActionPerformed
-            Pattern pattern = createPattern();
-            if (pattern == null) {
-                return;
-            }
-            String replacement = replaceField.getText();
-            if (!regExpCheck.isSelected()) {
-                replacement = Matcher.quoteReplacement(replacement);
-            }
-            String selection = getEditor().getSelectedText();
-            if (selection != null) {
-                Matcher m = pattern.matcher(selection);
-                if (m.matches()) {
-                    getEditor().setSelectedText(m.replaceFirst(replacement));
-                }
-            }
-            findNextActionPerformed(null);
-	}//GEN-LAST:event_replaceActionPerformed
-
-	private void replaceAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceAllActionPerformed
-            Pattern pattern = createPattern();
-            if (pattern == null) {
-                return;
-            }
-            String replacement = replaceField.getText();
-            if (!regExpCheck.isSelected()) {
-                replacement = Matcher.quoteReplacement(replacement);
-            }
-            Matcher m = pattern.matcher(getEditor().getText());
-            getEditor().setText(m.replaceAll(replacement));
-	}//GEN-LAST:event_replaceAllActionPerformed
-
-	private void storeFindCheckStates(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_storeFindCheckStates
-            Settings s = Settings.getUser();
-            if (evt.getSource() == regExpCheck) {
-                if (regExpCheck.isSelected()) {
-                    incrementalCheck.setEnabled(false);
-                    incrementalCheck.setSelected(false);
-                } else {
-                    incrementalCheck.setSelected(s.getBoolean("find-incremental"));
-                    incrementalCheck.setEnabled(true);
-                }
-                createPattern();
-            }
-
-            if (incrementalCheck.isEnabled()) {
-                s.set("find-incremental", incrementalCheck.isSelected() ? "yes" : "no");
-            }
-            s.set("find-case-sensitive", caseSensCheck.isSelected() ? "yes" : "no");
-            s.set("find-regular-expression", regExpCheck.isSelected() ? "yes" : "no");
-	}//GEN-LAST:event_storeFindCheckStates
-
-	private void findPanelShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_findPanelShown
-            Settings s = Settings.getUser();
-            regExpCheck.setSelected(s.getBoolean("find-regular-expression"));
-            if (regExpCheck.isSelected()) {
-                incrementalCheck.setSelected(false);
-                incrementalCheck.setEnabled(false);
+        }
+        regExpErrorLabel.setText(desc);
+    }
+    
+    private void findNext(boolean forward, boolean replace) {
+        if (updateFindParameters()) {
+            CodeEditorBase.Result result;
+            if (replace) {
+                result = getEditor().replaceNext(forward, replaceField.getText());
             } else {
-                incrementalCheck.setSelected(s.getBoolean("find-incremental"));
-                incrementalCheck.setEnabled(true);
+                result = getEditor().findNext(forward);
             }
-            caseSensCheck.setSelected(s.getBoolean("find-case-sensitive"));
-	}//GEN-LAST:event_findPanelShown
+            describeResult(result);
+        }
+    }
 
 	private void navListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_navListValueChanged
             if (navIsChanging > 0) {
@@ -1187,6 +1014,32 @@ public class CodeEditor extends AbstractSupportEditor {
         }
     }//GEN-LAST:event_navListMousePressed
 
+    private void findOptionsChanged(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findOptionsChanged
+        final Settings s = Settings.getUser();
+        s.setBoolean("find-case-sensitive", caseSensCheck.isSelected());
+        s.setBoolean("find-whole-word", wholeWordCheck.isSelected());
+        s.setBoolean("find-regular-expression", regExpCheck.isSelected());
+        updateFindParameters();
+    }//GEN-LAST:event_findOptionsChanged
+
+    private void replaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceActionPerformed
+        findNext(true, true);
+    }//GEN-LAST:event_replaceActionPerformed
+
+    private void replaceAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceAllActionPerformed
+        if (updateFindParameters()) {
+            getEditor().replaceAll(replaceField.getText());
+        }
+    }//GEN-LAST:event_replaceAllActionPerformed
+
+    private void findNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findNextActionPerformed
+        findNext(true, false);
+    }//GEN-LAST:event_findNextActionPerformed
+
+    private void findPrevActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findPrevActionPerformed
+        findNext(false, false);
+    }//GEN-LAST:event_findPrevActionPerformed
+
     private static final String KEY_LAST_FIND = "last-find";
     private static final String KEY_LAST_REPLACE = "last-replace";
 
@@ -1201,29 +1054,26 @@ public class CodeEditor extends AbstractSupportEditor {
     private long lastNavUpdate;
     private int navIsChanging;
 
-    private Pattern createPattern() {
+    private boolean checkPattern() {
         String patternText = findField.getText();
         Settings.getUser().set(KEY_LAST_FIND, patternText);
         Settings.getUser().set(KEY_LAST_REPLACE, replaceField.getText());
+
+        regExpErrorLabel.setText(" ");
         if (errorHighlight != null) {
             findField.getHighlighter().removeHighlight(errorHighlight);
         }
-        if (patternText.isEmpty()) {
-            regExpErrorLabel.setText(" ");
-            return null;
-        }
-        if (!regExpCheck.isSelected()) {
-            patternText = Pattern.quote(patternText);
+
+        if (!regExpCheck.isSelected() || patternText.isEmpty()) {
+            return true;
         }
 
-        Pattern pattern;
         try {
             int flags = Pattern.MULTILINE | Pattern.UNICODE_CASE | Pattern.UNIX_LINES;
             if (!caseSensCheck.isSelected()) {
                 flags |= Pattern.CASE_INSENSITIVE;
             }
-            pattern = Pattern.compile(patternText, flags);
-            regExpErrorLabel.setText(" ");
+            Pattern.compile(patternText, flags);
         } catch (PatternSyntaxException e) {
             String message = PatternExceptionLocalizer.localize(patternText, e);
             regExpErrorLabel.setText(message);
@@ -1239,25 +1089,23 @@ public class CodeEditor extends AbstractSupportEditor {
                 }
             }
             findField.requestFocusInWindow();
-            return null;
+            return false;
         }
-        return pattern;
+        return true;
     }
 
-    private Matcher currentSearch;
     private Object errorHighlight;
     private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc_5600));
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox caseSensCheck;
     private ca.cgjennings.apps.arkham.ToolCloseButton closeBtn;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor editor;
+    private ca.cgjennings.ui.textedit.CodeEditorBase editor;
     private javax.swing.JTextField findField;
     private javax.swing.JButton findNextBtn;
     private javax.swing.JPanel findPanel;
     private javax.swing.JButton findPrevBtn;
     private javax.swing.JLabel icon;
-    private javax.swing.JCheckBox incrementalCheck;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JList<NavigationPoint> navList;
     private javax.swing.JPanel navPanel;
@@ -1272,9 +1120,10 @@ public class CodeEditor extends AbstractSupportEditor {
     private javax.swing.JPanel sideBarPanel;
     private javax.swing.JSplitPane sideBarSplitter;
     private javax.swing.JPanel titlePanel;
+    private javax.swing.JCheckBox wholeWordCheck;
     // End of variables declaration//GEN-END:variables
 
-    public final JSourceCodeEditor getEditor() {
+    public final CodeEditorBase getEditor() {
         return editor;
     }
 
@@ -1289,7 +1138,7 @@ public class CodeEditor extends AbstractSupportEditor {
         refreshNavigator(text);
         processAfterWrite(f, text);
     }
-    
+
     private void processAfterWrite(File source, String text) {
         if (source == null) {
             return;
@@ -1307,7 +1156,7 @@ public class CodeEditor extends AbstractSupportEditor {
                 refreshDependentFiles(type, js);
                 finishedCodeGeneration();
             });
-        }        
+        }
     }
 
     /**
@@ -1387,14 +1236,15 @@ public class CodeEditor extends AbstractSupportEditor {
 
     @Override
     protected void exportImpl(int type, File f) throws IOException {
-        CSSStyler styler = new CSSStyler(editor.getTokenizer());
-        String html = styler.style(editor.getText());
-        html = "<html>\n<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n<title>"
-                + f.getName() + "</title>\n"
-                + styler.getCSS(true)
-                + "<body>\n<pre>\n" + html + "</pre>\n</body>\n</html>";
-
-        ProjectUtilities.copyReader(new StringReader(html), f, ProjectUtilities.ENC_UTF8);
+// FIXME        
+//        CSSStyler styler = new CSSStyler(editor.getTokenizer());
+//        String html = styler.style(editor.getText());
+//        html = "<html>\n<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n<title>"
+//                + f.getName() + "</title>\n"
+//                + styler.getCSS(true)
+//                + "<body>\n<pre>\n" + html + "</pre>\n</body>\n</html>";
+//
+//        ProjectUtilities.copyReader(new StringReader(html), f, ProjectUtilities.ENC_UTF8);
     }
 
     @Override
@@ -1466,52 +1316,6 @@ public class CodeEditor extends AbstractSupportEditor {
      */
     public void setCharacterEscapingEnabled(boolean characterEscaping) {
         this.characterEscaping = characterEscaping;
-    }
-
-    private static void installStrangeEonsEditorCommands(JSourceCodeEditor ed) {
-        final InputHandler ih = ed.getInputHandler();
-
-        final ActionListener EVAL = (ActionEvent e) -> {
-            JSourceCodeEditor ed1 = EditorCommands.findEditor(e);
-            if (!ed1.isEditable()) {
-                ed1.getToolkit().beep();
-                return;
-            }
-            ed1.getDocument().beginCompoundEdit();
-            try {
-                if (ed1.getSelectionStart() == ed1.getSelectionEnd()) {
-                    ih.executeAction(EditorCommands.HOME, ed1, "");
-                    ih.executeAction(EditorCommands.SELECT_END, ed1, "");
-                }
-                String expression = ed1.getSelectedText();
-                Object result = null;
-                try {
-                    result = ProjectUtilities.runScript("Selected Text", expression);
-                    if (result instanceof Double) {
-                        String v = result.toString();
-                        if (v.endsWith(".0")) {
-                            v = v.substring(0, v.length() - 2);
-                        }
-                        result = v;
-                    }
-                } catch (Exception ex) {
-                    result = ex;
-                }
-                int start = Math.min(ed1.getSelectionStart(), ed1.getSelectionEnd());
-                String replacement = String.valueOf(result);
-                ed1.setSelectedText(replacement);
-                ed1.select(start, start + replacement.length());
-            } finally {
-                ed1.getDocument().endCompoundEdit();
-            }
-        };
-
-        ih.addKeyBinding("P+EQUALS", EVAL);
-        ih.addKeyBinding("C+EQUALS", EVAL);
-
-        ih.addKeyBinding("S+DELETE", EditorCommands.CUT);
-        ih.addKeyBinding("C+INSERT", EditorCommands.COPY);
-        ih.addKeyBinding("S+INSERT", EditorCommands.PASTE);
     }
 
     /**
@@ -1592,14 +1396,19 @@ public class CodeEditor extends AbstractSupportEditor {
      * Otherwise, do nothing.
      */
     public void format() {
-        CodeFormatterFactory.Formatter f = CodeFormatterFactory.getFormatter(type);
+        Formatter f = editor.getCodeSupport().createFormatter();
         if (f != null) {
             int line = editor.getCaretLine();
             String formatted = f.format(editor.getText());
             editor.setText(formatted);
-            int offset = editor.getLineCount() < line ? editor.getDocumentLength() : editor.getLineStartOffset(line);
-            editor.setCaretPosition(line);
-            editor.scrollToCaret();
+
+            int offset;
+            if (editor.getLineCount() <= line) {
+                offset = editor.getLineStartOffset(editor.getLineOfOffset(editor.getLength()));
+            } else {
+                offset = editor.getLineStartOffset(line);
+            }
+            editor.setCaretPosition(offset);
         }
     }
 
@@ -1830,7 +1639,7 @@ public class CodeEditor extends AbstractSupportEditor {
      * @return the document length
      */
     public int getDocumentLength() {
-        return getEditor().getDocumentLength();
+        return getEditor().getLength();
     }
 
     private int activeCodeGenerationRequests = 0;
@@ -1936,14 +1745,14 @@ public class CodeEditor extends AbstractSupportEditor {
             return;
         }
 
-        JSourceCodeEditor ed = getEditor();
-
+        CodeEditorBase ed = getEditor();
+        ed.beginCompoundEdit();
         StrangeEons.setWaitCursor(true);
         try {
             if (ed.getSelectionStart() == ed.getSelectionEnd()) {
                 ed.selectAll();
             }
-            String[] lines = EditorCommands.getSelectedLineText(ed, false);
+            String[] lines = ed.getSelectedLineText(false);
             lines = sortDialog.getSorter().sort(lines);
             boolean delDupes = sortDialog.getDeleteDuplicates();
 
@@ -1965,6 +1774,7 @@ public class CodeEditor extends AbstractSupportEditor {
 
             ed.setSelectedText(b.toString());
         } finally {
+            ed.endCompoundEdit();
             StrangeEons.setWaitCursor(false);
         }
     }
