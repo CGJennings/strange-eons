@@ -19,7 +19,7 @@ import ca.cgjennings.apps.arkham.project.DeckPacker;
 import ca.cgjennings.apps.arkham.sheet.MarkerStyle;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.textedit.completion.AbbreviationTable;
+import ca.cgjennings.ui.textedit.AbbreviationTable;
 import gamedata.Game;
 import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;

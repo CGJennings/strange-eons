@@ -408,6 +408,9 @@ public class Language implements Iterable<String> {
      * @return the UI language instance
      */
     public synchronized static Language getInterface() {
+        if (uiLang == null) {
+            setInterfaceLocale(null);
+        }
         return uiLang;
     }
 
@@ -417,6 +420,9 @@ public class Language implements Iterable<String> {
      * @return the game language instance
      */
     public synchronized static Language getGame() {
+        if (gameLang == null) {
+            setGameLocale(null);
+        }
         return gameLang;
     }
 
@@ -485,7 +491,6 @@ public class Language implements Iterable<String> {
      * @return the localized string, or [MISSING: key]
      */
     public static String string(String key) {
-        GUIBuilderCheck();
         return getInterface().get(key);
     }
 
@@ -499,19 +504,7 @@ public class Language implements Iterable<String> {
      * @return the localized, formatted string or [MISSING: key]
      */
     public static String string(String key, Object... args) {
-        GUIBuilderCheck();
         return getInterface().get(key, args);
-    }
-
-    /**
-     * {@link #string} must call this to ensure some language is installed so
-     * that calls from components in the GUI builder will work; otherwise
-     * editors with components like PortraitPanel can't be loaded.
-     */
-    private static void GUIBuilderCheck() {
-        if (uiLang == null) {
-            setInterfaceLocale(null);
-        }
     }
 
     /**

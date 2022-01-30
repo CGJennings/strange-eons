@@ -240,18 +240,11 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
       <SubComponents>
-        <Component class="ca.cgjennings.ui.textedit.JSourceCodeEditor" name="previewCode">
+        <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="previewCode">
           <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder>
-                  <Color PropertyName="color" blue="c0" green="c0" red="c0" type="rgb"/>
-                </LineBorder>
-              </Border>
-            </Property>
-            <Property name="caretBlinkEnabled" type="boolean" value="false"/>
-            <Property name="editable" type="boolean" value="false"/>
-            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="codeFoldingEnabled" type="boolean" value="false"/>
+            <Property name="contentFeedbackVisible" type="boolean" value="false"/>
+            <Property name="numberLineVisible" type="boolean" value="false"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">

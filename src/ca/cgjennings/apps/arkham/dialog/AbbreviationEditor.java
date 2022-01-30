@@ -11,8 +11,7 @@ import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JUtilities;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.completion.AbbreviationTable;
+import ca.cgjennings.ui.textedit.AbbreviationTable;
 import gamedata.Game;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -24,6 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.AbstractTableModel;
@@ -65,8 +65,6 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         loadTables();
 
         abrvTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
-            //				if( e.getValueIsAdjusting() ) return;
-
             int row = abrvTable.getSelectedRow();
 
             if (expField.hasFocus()) {
@@ -92,9 +90,9 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         });
 
         previewCode.setFont(expField.getFont());
-        previewCode.setLineHighlightEnabled(false);
-        previewCode.setVisibleSpaceEnabled(true);
-        previewCode.setCaretBlinkEnabled(false);
+//        previewCode.setLineHighlightEnabled(false);
+        previewCode.setWhitespaceVisible(true);
+//        previewCode.setCaretBlinkEnabled(false);
 
         expField.getDocument().addDocumentListener(new DocumentEventAdapter() {
             @Override
@@ -104,9 +102,11 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
                     at.put("x", expField.getText());
                     previewCode.setAbbreviationTable(at);
                     previewCode.setEditable(true);
-                    previewCode.setText("x");
-                    previewCode.getInputHandler().executeAction(EditorCommands.INSERT_BLOCK_TAB, previewCode, null);
+                    previewCode.setText("x");                    
+                    previewCode.type(KeyStroke.getKeyStroke("TAB"));
+//                    previewCode.getInputHandler().executeAction(EditorCommands.INSERT_BLOCK_TAB, previewCode, null);
                     previewCode.setEditable(false);
+                    previewCode.clearUndoHistory();
                 } else {
                     previewCode.setText("");
                 }
@@ -142,7 +142,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         syntaxTip = new ca.cgjennings.ui.JTip();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        previewCode = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
+        previewCode = new ca.cgjennings.ui.textedit.CodeEditorBase();
         jLabel3 = new javax.swing.JLabel();
         gameCombo = new ca.cgjennings.ui.JGameCombo();
         javax.swing.JLabel spacerLabel = new javax.swing.JLabel();
@@ -203,10 +203,9 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        previewCode.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(192, 192, 192)));
-        previewCode.setCaretBlinkEnabled(false);
-        previewCode.setEditable(false);
-        previewCode.setEnabled(false);
+        previewCode.setCodeFoldingEnabled(false);
+        previewCode.setContentFeedbackVisible(false);
+        previewCode.setNumberLineVisible(false);
         jPanel1.add(previewCode, java.awt.BorderLayout.CENTER);
 
         jLabel3.setFont(jLabel3.getFont().deriveFont(jLabel3.getFont().getSize()-1f));
@@ -314,7 +313,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
             col.setResizable(false);
 
             if (!markupMode) {
-                previewCode.setTokenizer(((CodeType) sel).createTokenizer());
+                previewCode.setCodeType((CodeType) sel, false);
             }
         }
     }//GEN-LAST:event_tableComboActionPerformed
@@ -382,7 +381,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton okBtn;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor previewCode;
+    private ca.cgjennings.ui.textedit.CodeEditorBase previewCode;
     private ca.cgjennings.ui.JTip syntaxTip;
     // End of variables declaration//GEN-END:variables
 

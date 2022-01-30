@@ -1,6 +1,7 @@
 package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
 import java.awt.BorderLayout;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
@@ -26,6 +27,7 @@ import javax.swing.text.Document;
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.RTextScrollPane;
 import resources.ResourceKit;
 
@@ -40,6 +42,7 @@ public class CodeEditorBase extends JPanel {
     private SyntaxTextArea textArea;
     private RTextScrollPane scroll;
     private ErrorStrip errorStrip;
+    private AbbreviationTable abbreviations;
     private CodeType type;
 
     /**
@@ -69,9 +72,18 @@ public class CodeEditorBase extends JPanel {
     }
 
     protected void addKeyBindings() {
+        addKeyBinding("TAB", new InsertTabOrAbbreviationAction());
         addKeyBinding("AS+UP", RSyntaxTextAreaEditorKit.rtaLineUpAction);
         addKeyBinding("AS+DOWN", RSyntaxTextAreaEditorKit.rtaLineDownAction);
     }
+
+    final SyntaxTextArea getTextArea() {
+        return textArea;
+    }
+
+    final RTextScrollPane getScrollPane() {
+        return scroll;
+    }    
 
     // forward all focus requests to the text area
     @Override
@@ -102,21 +114,47 @@ public class CodeEditorBase extends JPanel {
     public boolean requestFocusInWindow(FocusEvent.Cause cause) {
         return textArea.requestFocusInWindow(cause);
     }
-
-    SyntaxTextArea getTextArea() {
-        return textArea;
+    
+    public final void addDocumentListener(DocumentListener listener) {
+        textArea.getDocument().addDocumentListener(listener);
     }
 
-    RTextScrollPane getScrollPane() {
-        return scroll;
+    public final void removeDocumentListener(DocumentListener listener) {
+        textArea.getDocument().removeDocumentListener(listener);
     }
+
+    public final void addCaretListener(CaretListener listener) {
+        textArea.addCaretListener(listener);
+    }
+
+    public final void removeCaretListener(CaretListener listener) {
+        textArea.removeCaretListener(listener);
+    }
+    
+    /**
+     * Sets the abbreviation table for this editor, replacing any default
+     * table determined by the code type.
+     * 
+     * @param table the new table, or null to disable abbreviations
+     */
+    public void setAbbreviationTable(AbbreviationTable table) {
+        abbreviations = table;
+    }
+    
+    /**
+     * Returns the current abbreviation table for this editor.
+     * @return the current table, or null if none is set
+     */
+    public AbbreviationTable getAbbreviationTable() {
+        return abbreviations;
+    }    
 
     /**
      * Returns the edited document.
      *
      * @return the document object
      */
-    public Document getDocument() {
+    public final Document getDocument() {
         return textArea.getDocument();
     }
 
@@ -221,12 +259,30 @@ public class CodeEditorBase extends JPanel {
     }
 
     /**
-     * Changes the code type used for syntax highlighting and related features.
+     * Changes the code type used for syntax highlighting and enables any
+     * additional support features that are available for the language.
      *
      * @param type the new type of code being edited; if null, {@code PLAIN}
      * type is used
      */
     public void setCodeType(CodeType type) {
+        setCodeType(type, true);
+    }
+
+    /**
+     * Changes the code type used for syntax highlighting.
+     * If advanced editing features are requested, the editor may also install
+     * additional features such as code completion and syntax checking, where
+     * supported. Otherwise, only basic syntax highlighting is provided.
+     *
+     * @param type the new type of code being edited; if null, {@code PLAIN}
+     * type is used
+     * @param enableAdvancedFeatures if true, enables additional high-level
+     * language support where available; if false, provides only basic
+     * syntax highlighting support
+     * 
+     */
+    public void setCodeType(CodeType type, boolean enableAdvancedFeatures) {
         if (type == null) {
             type = CodeType.PLAIN;
         }
@@ -241,8 +297,14 @@ public class CodeEditorBase extends JPanel {
         // now set the new type prospectively, so that the new code support can
         // also look up the type during install
         this.type = type;
-
-        setCodeSupport(type.createCodeSupport());
+        
+        if (enableAdvancedFeatures) {
+            setCodeSupport(type.createCodeSupport());
+            setAbbreviationTable(AbbreviationTableManager.getTable(type));
+        } else {
+            setCodeSupport(new DefaultCodeSupport());
+            abbreviations = null;            
+        }
     }
 
     /**
@@ -295,7 +357,15 @@ public class CodeEditorBase extends JPanel {
      * @param editable whether to allow modifications to the document
      */
     public void setEditable(boolean editable) {
-        textArea.setEditable(editable);
+        if (editable == textArea.isEditable()) return;
+        if (editable) {
+            textArea.setEditable(true);
+        } else {
+            int start = textArea.getSelectionStart();
+            int end = textArea.getSelectionEnd();
+            textArea.setEditable(false);
+            textArea.select(start, end);
+        }
     }
 
     /**
@@ -379,6 +449,16 @@ public class CodeEditorBase extends JPanel {
     }
 
     /**
+     * Returns the text of the current line, that is, the line containing
+     * the caret.
+     *
+     * @return the line text
+     */    
+    public String getLineText() {
+        return getLineText(getCaretLine());
+    }
+
+    /**
      * Returns the length of the specified line.
      *
      * @param line the zero-based line number
@@ -404,13 +484,20 @@ public class CodeEditorBase extends JPanel {
     }
 
     /**
-     * Replaces the selection with the specified text. If there is no selection,
-     * inserts the text at the caret position.
+     * Replaces the selection with the specified text, selecting the new text.
      *
      * @param text the text to insert
      */
     public void setSelectedText(String text) {
-        textArea.replaceSelection(text);
+        beginCompoundEdit();
+        try {
+            replaceSelection(null);
+            int start = getCaretPosition();
+            replaceSelection(text);
+            select(start, getCaretPosition());
+        } finally {
+            endCompoundEdit();
+        }
     }
 
     /**
@@ -497,6 +584,27 @@ public class CodeEditorBase extends JPanel {
      */
     public void insert(String text, int offset) {
         textArea.insert(text, offset);
+    }
+    
+    /**
+     * Replaces the selection with new text. If there is no
+     * selection, inserts text at the caret position.
+     * 
+     * @param text the text to insert
+     */
+    public void replaceSelection(String text) {
+        textArea.replaceSelection(text);
+    }
+    
+    /**
+     * Replaces the specified text range with new text.
+     * 
+     * @param text the text to insert
+     * @param start the start offset of the range to replace
+     * @param end the end offset of the range to replace
+     */
+    public void replaceRange(String text, int start, int end) {
+        textArea.replaceRange(text, start, end);
     }
 
     /**
@@ -804,6 +912,7 @@ public class CodeEditorBase extends JPanel {
      * Sets whether white space should be visible.
      *
      * @param visible if true, white space is rendered as symbols
+     * @see #isWhitespaceVisible() 
      */
     public void setWhitespaceVisible(boolean visible) {
         textArea.setWhitespaceVisible(visible);
@@ -814,9 +923,77 @@ public class CodeEditorBase extends JPanel {
      * Returns whether white space should be visible.
      *
      * @return true if white space is rendered as symbols
+     * @see #setWhitespaceVisible(boolean) 
      */
     public boolean isWhitespaceVisible() {
         return textArea.isWhitespaceVisible();
+    }
+    
+    /**
+     * Sets whether line numbers are shown. 
+     * @param visible if true, lines are numbered
+     * @see #isNumberLineVisible() 
+     */
+    public void setNumberLineVisible(boolean visible) {
+        scroll.setLineNumbersEnabled(visible);
+    }
+    
+    /**
+     * Returns whether line numbers are shown.
+     * @return true if lines are numbered
+     * @see #setNumberLineVisible(boolean) 
+     */
+    public boolean isNumberLineVisible() {
+        return scroll.getLineNumbersEnabled();
+    }
+    
+    /**
+     * Sets whether feedback on the document content, such as icons
+     * marking rows with errors, is visible.
+     * 
+     * @param visible if true, feedback will be visible
+     * @see #isContentFeedbackVisible() 
+     */
+    public void setContentFeedbackVisible(boolean visible) {
+        if (visible == isContentFeedbackVisible()) return;
+        if (visible) {
+            add(errorStrip, BorderLayout.LINE_END);   
+        } else {
+            remove(errorStrip);
+        }
+        scroll.setIconRowHeaderEnabled(visible);
+    }
+    
+    /**
+     * Sets whether feedback on the document content is visible. 
+     * @return true if feedback is visible
+     * @see #setContentFeedbackVisible(boolean)
+     */
+    public boolean isContentFeedbackVisible() {
+        return errorStrip.getParent() == this;
+    }
+    
+    /**
+     * Sets whether or not code folding is enabled for supported code types.
+     * @param enable if true, code blocks can be hidden by clicking the fold
+     * control in the margin
+     * @see #isCodeFoldingEnabled() 
+     */
+    public void setCodeFoldingEnabled(boolean enable) {
+        if (enable == isCodeFoldingEnabled()) return;
+        
+        textArea.setCodeFoldingEnabled(enable);
+        scroll.setFoldIndicatorEnabled(enable);
+    }
+    
+    /**
+     * Returns whether or not code folding is enabled for supported code types.
+     * @return true if code blocks can be hidden by clicking the fold
+     * control in the margin
+     * @see #setCodeFoldingEnabled(boolean) 
+     */    
+    public boolean isCodeFoldingEnabled() {
+        return textArea.isCodeFoldingEnabled();
     }
 
     /**
@@ -967,19 +1144,32 @@ public class CodeEditorBase extends JPanel {
         }
     }
 
-    public void addDocumentListener(DocumentListener listener) {
-        textArea.getDocument().addDocumentListener(listener);
-    }
 
-    public void removeDocumentListener(DocumentListener listener) {
-        textArea.getDocument().removeDocumentListener(listener);
+    
+    private class InsertTabOrAbbreviationAction extends RSyntaxTextAreaEditorKit.InsertTabAction {
+        private static final long serialVersionUID = 1L;
+        
+        @Override
+        public void actionPerformedImpl(ActionEvent e, RTextArea textArea) {
+            // check if an abbreviation can be expanded at this location, and
+            // if so, expand it and return; otherwise proceed with the standard
+            // Tab insert behaviour
+            if (textArea.isEditable() && textArea.isEnabled() && !hasSelection()) {
+                if (abbreviations != null && abbreviations.expandAbbreviation(CodeEditorBase.this)) {
+                    return;
+                }
+            }
+            super.actionPerformedImpl(e, textArea);
+        }
     }
-
-    public void addCaretListener(CaretListener listener) {
-        textArea.addCaretListener(listener);
-    }
-
-    public void removeCaretListener(CaretListener listener) {
-        textArea.removeCaretListener(listener);
+    
+    /**
+     * Simulates pressing the specified key in the editor.
+     * 
+     * @param keyStroke the non-null key to simulate
+     */
+    public void type(KeyStroke keyStroke) {
+        KeyEvent event = new KeyEvent(textArea, keyStroke.getKeyEventType(), System.currentTimeMillis(), keyStroke.getModifiers(), keyStroke.getKeyCode(), keyStroke.getKeyChar());
+        textArea.dispatchEvent(event);
     }
 }

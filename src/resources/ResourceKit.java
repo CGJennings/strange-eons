@@ -1078,7 +1078,7 @@ public class ResourceKit {
             editorFont = baseFont.deriveFont(
                     (rk.getYesNo("edit-font-bold") ? Font.BOLD : 0)
                     | (rk.getYesNo("edit-font-italic") ? Font.ITALIC : 0),
-                    rk.getPointSize("edit-font"));
+                    rk.getPointSize("edit-font", 12f));
         }
         return editorFont;
     }

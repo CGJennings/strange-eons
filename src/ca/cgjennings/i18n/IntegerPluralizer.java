@@ -405,6 +405,9 @@ public class IntegerPluralizer {
      * pluralized strings
      */
     public Language getLanguage() {
+        if (language == null) {
+            language = Language.getInterface();
+        }
         return language;
     }
 
@@ -423,7 +426,7 @@ public class IntegerPluralizer {
         this.language = language;
     }
 
-    private Language language = Language.getInterface();
+    private Language language;
 
     @Override
     public String toString() {
