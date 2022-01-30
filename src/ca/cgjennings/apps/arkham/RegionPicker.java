@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.dnd.ScrapBook;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -176,7 +177,7 @@ public class RegionPicker extends javax.swing.JDialog {
         }
 
         HashSet<Rectangle> set = new HashSet<>();
-        JSourceCodeEditor ced = ((CodeEditor) ed).getEditor();
+        CodeEditorBase ced = ((CodeEditor) ed).getEditor();
 
         String text = ced.getText();
         addHighlightsFromPattern(set, PAT_DQUOTE.matcher(text));
@@ -204,7 +205,7 @@ public class RegionPicker extends javax.swing.JDialog {
     private Rectangle getRegionFromEditor() {
         StrangeEonsEditor ed = StrangeEons.getWindow().getActiveEditor();
         if (ed != null && ed instanceof CodeEditor) {
-            JSourceCodeEditor ced = ((CodeEditor) ed).getEditor();
+            CodeEditorBase ced = ((CodeEditor) ed).getEditor();
             String sel = ced.getSelectedText();
             boolean bump = false;
             if ((sel.startsWith("\"") && sel.endsWith("\""))
@@ -228,13 +229,13 @@ public class RegionPicker extends javax.swing.JDialog {
         if (ed != null && ed instanceof CodeEditor && getRegionFromEditor() != null) {
             CodeEditor ced = (CodeEditor) ed;
             int start = Math.min(ced.getEditor().getSelectionStart(), ced.getEditor().getSelectionStart());
-            ced.getEditor().getDocument().beginCompoundEdit();
+            ced.getEditor().beginCompoundEdit();
             try {
                 String text = regionToString(r);
                 ced.getEditor().setSelectedText(text);
                 ced.getEditor().select(start, start + text.length());
             } finally {
-                ced.getEditor().getDocument().endCompoundEdit();
+                ced.getEditor().endCompoundEdit();
             }
         }
     }

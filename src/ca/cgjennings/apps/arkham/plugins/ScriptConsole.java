@@ -635,9 +635,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             final ConsoleErrorLocation el = getErrorAtPoint(e.getPoint());
             if (el != null) {
                 String label;
-                if (el.getIdentifier().startsWith("javadoc:")) {
-                    label = string("plug-console-go-to-javadoc", el.getShortIdentifier());
-                } else if (el.getLineNumber() < 1) {
+                if (el.getLineNumber() < 1) {
                     label = string("plug-console-go-to-error-no-line-number", el.getShortIdentifier());
                 } else {
                     label = string("plug-console-go-to-error", el.getShortIdentifier(), el.getLineNumber());

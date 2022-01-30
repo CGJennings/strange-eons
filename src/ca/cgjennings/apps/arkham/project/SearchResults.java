@@ -9,6 +9,7 @@ import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.DefaultTreeCellRenderer;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.TreeLabelExposer;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.Color;
 import java.awt.Component;
@@ -420,7 +421,7 @@ class SearchResults extends javax.swing.JDialog implements Searcher.ResultReceiv
             }
         }
         if (eds[0] instanceof CodeEditor && result.line >= 1) {
-            JSourceCodeEditor editor = ((CodeEditor) eds[0]).getEditor();
+            CodeEditorBase editor = ((CodeEditor) eds[0]).getEditor();
             int sol = editor.getLineStartOffset(result.line - 1);
             if (sol >= 0 && result.start > 0) {
                 editor.select(sol + result.start, sol + result.end);

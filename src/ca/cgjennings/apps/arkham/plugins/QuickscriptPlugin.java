@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import static resources.Language.string;
@@ -43,7 +43,7 @@ public final class QuickscriptPlugin implements Plugin {
      * @return the source code editor
      * @since 3.0
      */
-    public JSourceCodeEditor getEditor() {
+    public CodeEditorBase getEditor() {
         initDialog();
         return dialog.getEditor();
     }

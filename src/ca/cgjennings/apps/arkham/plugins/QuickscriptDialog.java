@@ -9,17 +9,13 @@ import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.dnd.FileDrop;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.beans.PropertyChangeEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,11 +24,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
 import java.util.logging.Level;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
@@ -102,8 +96,6 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             return menu;
         });
 
-        // FIXME
-//        editor.setAbbreviationTable(AbbreviationTableManager.getTable(CodeType.JAVASCRIPT));
         clearCheck.setSelected(Settings.getUser().getYesNo(ScriptMonkey.CLEAR_CONSOLE_ON_RUN_KEY));
 
         String recoveredCode = getRecoveredCode();
@@ -275,9 +267,8 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         }
     }
 
-    public JSourceCodeEditor getEditor() {
-        // FIXME
-        return null;
+    public CodeEditorBase getEditor() {
+        return editor;
     }
 
     public static String readScriptFile(File f) throws IOException {

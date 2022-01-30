@@ -6,6 +6,8 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.project.Member;
+import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.io.File;
 import java.io.IOException;
@@ -118,76 +120,52 @@ public final class ConsoleErrorLocation {
     }
 
     private void parseJavaElement(String text, int openParenIndex) {
-//        String classInfo = text.substring(0, openParenIndex);
-//
-//        // try to find the .java file and a line number
-//        String file = null;
-//        int colon = text.lastIndexOf(':');
-//        if (colon > openParenIndex) {
-//            file = text.substring(openParenIndex + 1, colon);
-//            String lineText = text.substring(colon + 1);
-//            int close = lineText.lastIndexOf(')');
-//            if (close >= 0) {
-//                lineText = lineText.substring(0, close);
-//            }
-//            try {
-//                lineNumber = Integer.parseInt(lineText);
-//            } catch (NumberFormatException nfe) {
-//                // leave line number set to 0
-//            }
-//        } else {
-//            // there is no line number; we leave file == null and lineNumber == 0
-//            // as the parentheses contain either Unknown Source or Native Method
-//        }
-//
-//        // see if we can find this in the API database, which means it is
-//        // a standard SE or Java class---in this case, we will set the
-//        // identifier to a javadoc: URL that displays the class documentation
-//        String[] parts = classInfo.split("\\.");
-//        APINode node = APIDatabase.getPackageRoot();
-//        int i = 0;
-//        for (; i < parts.length; ++i) {
-//            APINode child = node.find(parts[i]);
-//            if (child == null) {
-//                break;
-//            }
-//            node = child;
-//        }
-//        // we were able to partially match a class, but not the whole thing;
-//        // assume the user has defined a new class in a standard package
-//        // (or else the class is package private and not in the docs)
-//        if (node instanceof PackageNode) {
-//            node = APIDatabase.getPackageRoot();
-//        }
-//
-//        if (node == APIDatabase.getPackageRoot()) {
-//            // not in API database, try to find matching user source code
-//            // if the .java file is not null
-//            if (file != null && parts.length > 0) {
-//                StringBuilder b = new StringBuilder(80);
-//                b.append("res:");
-//                if ("resources".equals(parts[0])) {
-//                    b.append("//");
-//                } else {
-//                    b.append('/').append(parts[0]).append('/');
-//                }
-//                i = 1;
-//                for (; i < parts.length; ++i) {
-//                    if (parts[i].isEmpty() || Character.isUpperCase(parts[i].charAt(0))) {
-//                        break;
-//                    }
-//                    b.append(parts[i]).append('/');
-//                }
-//                b.append(file);
-//                parsePlainScriptElement(b.append(':').append(lineNumber).toString());
-//                URL existsTest = ResourceKit.composeResourceURL(identifier);
-//                if (existsTest == null) {
-//                    identifier = null;
-//                }
-//            }
-//        } else {
-//            identifier = "javadoc:" + node.getFullyQualifiedName().replace('.', '/');
-//        }
+        String classInfo = text.substring(0, openParenIndex);
+
+        // try to find the .java file and a line number
+        String file = null;
+        int colon = text.lastIndexOf(':');
+        if (colon > openParenIndex) {
+            file = text.substring(openParenIndex + 1, colon);
+            String lineText = text.substring(colon + 1);
+            int close = lineText.lastIndexOf(')');
+            if (close >= 0) {
+                lineText = lineText.substring(0, close);
+            }
+            try {
+                lineNumber = Integer.parseInt(lineText);
+            } catch (NumberFormatException nfe) {
+                // leave line number set to 0
+            }
+        } else {
+            // there is no line number; we leave file == null and lineNumber == 0
+            // as the parentheses contain either Unknown Source or Native Method
+        }
+        
+        // try to find matching .java file in user source code
+        String[] parts = classInfo.split("\\.");
+        if (file != null && parts.length > 0) {
+            StringBuilder b = new StringBuilder(80);
+            b.append("res:");
+            if ("resources".equals(parts[0])) {
+                b.append("//");
+            } else {
+                b.append('/').append(parts[0]).append('/');
+            }
+            int i = 1;
+            for (; i < parts.length; ++i) {
+                if (parts[i].isEmpty() || Character.isUpperCase(parts[i].charAt(0))) {
+                    break;
+                }
+                b.append(parts[i]).append('/');
+            }
+            b.append(file);
+            parsePlainScriptElement(b.append(':').append(lineNumber).toString());
+            URL existsTest = ResourceKit.composeResourceURL(identifier);
+            if (existsTest == null) {
+                identifier = null;
+            }
+        }
     }
 
     /**
@@ -268,35 +246,12 @@ public final class ConsoleErrorLocation {
      * exactly one equivalent file can be located in an appropriate location in
      * the open project. If the identifier refers to a Java class, then it may
      * be opened in a source editor window if a relevant source file can be
-     * located. Otherwise, if the relevant class can be found in the
-     * {@linkplain APIDatabase API database}, then its documentation will be
-     * shown. If the file cannot be located or it cannot be opened for some
+     * located. If the file cannot be located or it cannot be opened for some
      * other reason, then error feedback (typically a beep) will be provided and
      * no editor will be opened.
      */
     public void open() {
-        if (identifier.startsWith("javadoc:")) {
-//            APIBrowser b = null;
-//            for (StrangeEonsEditor ed : StrangeEons.getWindow().getEditors()) {
-//                if (ed instanceof APIBrowser) {
-//                    APIBrowser candidate = (APIBrowser) ed;
-//                    if (Boolean.TRUE == candidate.getClientProperty("common")) {
-//                        b = candidate;
-//                        break;
-//                    }
-//                }
-//            }
-//            if (b != null) {
-//                b.setURL(identifier);
-//            } else {
-//                b = new APIBrowser(identifier);
-//                b.putClientProperty("common", Boolean.TRUE);
-//                StrangeEons.addEditor(b);
-//            }
-//            b.select();
-            return;
-        }
-        JSourceCodeEditor editor = findEditorForIdentifier(identifier);
+        CodeEditorBase editor = findEditorForIdentifier(identifier);
         if (editor != null) {
             editor.requestFocus();
             showLineInEditor(editor, lineNumber);
@@ -305,8 +260,7 @@ public final class ConsoleErrorLocation {
         UIManager.getLookAndFeel().provideErrorFeedback(null);
     }
 
-    // SUPPORT CODE FOR open() ////////////////////////////////////////////////
-    private JSourceCodeEditor findEditorForIdentifier(String id) {
+    private CodeEditorBase findEditorForIdentifier(String id) {
         if (id.equals("Quickscript")) {
             return findQuickscript();
         }
@@ -317,7 +271,7 @@ public final class ConsoleErrorLocation {
     }
 
     @SuppressWarnings("empty-statement")
-    private JSourceCodeEditor findProjectFile(String id) {
+    private CodeEditorBase findProjectFile(String id) {
         if (id == null || id.isEmpty()) {
             return null;
         }
@@ -382,7 +336,7 @@ public final class ConsoleErrorLocation {
         }
     }
 
-    private JSourceCodeEditor findResourceScript(String id) {
+    private CodeEditorBase findResourceScript(String id) {
         // see if this gets mapped to a project: URL
         if (id.indexOf(':') >= 0) {
             URL url = ResourceKit.composeResourceURL(id);
@@ -429,7 +383,7 @@ public final class ConsoleErrorLocation {
         return ed.getEditor();
     }
 
-    private JSourceCodeEditor findQuickscript() {
+    private CodeEditorBase findQuickscript() {
         QuickscriptPlugin qs = (QuickscriptPlugin) StrangeEons.getApplication().getLoadedPlugin(QuickscriptPlugin.class.getName());
         if (qs == null) {
             return null;
@@ -442,17 +396,14 @@ public final class ConsoleErrorLocation {
         return d.getEditor();
     }
 
-    private void showLineInEditor(JSourceCodeEditor ed, int line) {
+    private void showLineInEditor(CodeEditorBase ed, int line) {
         if (--line < 0) {
             return; // lines in editor start from 0, but incoming param starts at 1
         }
         int offset = ed.getLineStartOffset(line);
-        if (offset < 0) {
-            UIManager.getLookAndFeel().provideErrorFeedback(ed);
-            return;
-        }
-        ed.select(offset, offset);
-        ed.setFirstDisplayedLine(Math.max(0, line - ed.getDisplayedLineCount() / 2));
+        ed.setCaretLine(line);
+        ed.scrollToLine(line);
+        JUtilities.findWindow(ed).requestFocus();
         ed.requestFocusInWindow();
     }
 }

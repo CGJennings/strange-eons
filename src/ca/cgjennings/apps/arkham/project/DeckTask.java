@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.dnd.FileDrop;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.io.File;
 import java.util.ArrayList;
 import static resources.Language.string;
@@ -186,7 +186,7 @@ public class DeckTask extends NewTaskType {
 
     static class CopiesFileDropListener implements FileDrop.Listener {
 
-        private final JSourceCodeEditor ed;
+        private final CodeEditorBase ed;
 
         public CopiesFileDropListener(CodeEditor editor) {
             ed = editor.getEditor();
@@ -203,7 +203,7 @@ public class DeckTask extends NewTaskType {
 
             int lineOfLastInsert = -1;
             int colOfLastInsert = 0;
-            ed.getDocument().beginCompoundEdit();
+            ed.beginCompoundEdit();
             try {
                 for (int i = 0; i < files.length; ++i) {
                     String name = files[i].getName();
@@ -263,7 +263,7 @@ public class DeckTask extends NewTaskType {
                     ed.requestFocusInWindow();
                 }
             } finally {
-                ed.getDocument().endCompoundEdit();
+                ed.endCompoundEdit();
             }
         }
     }

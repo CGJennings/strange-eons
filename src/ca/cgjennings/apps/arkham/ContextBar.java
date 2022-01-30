@@ -1984,7 +1984,6 @@ public final class ContextBar {
 
         registerButton(new CommandButton(Commands.RUN_FILE).hideIfDisabled());
         registerButton(new CommandButton(Commands.COMMENT_OUT).hideIfDisabled());
-        registerButton(new CommandButton(Commands.UNCOMMENT).hideIfDisabled());
         registerButton(new CommandButton(Commands.REMOVE_TRAILING_SPACES).hideIfDisabled());
         registerButton(new CommandButton(Commands.SORT).hideIfDisabled());
     }
