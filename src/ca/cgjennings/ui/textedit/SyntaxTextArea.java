@@ -3,10 +3,15 @@ package ca.cgjennings.ui.textedit;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
+import java.awt.Desktop;
+import java.awt.event.InputEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.event.HyperlinkEvent;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
@@ -43,6 +48,25 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         setCloseMarkupTags(true);
         setAntiAliasingEnabled(true);
         setFractionalFontMetricsEnabled(true);
+        setHyperlinksEnabled(true);
+        setLinkScanningMask(InputEvent.CTRL_DOWN_MASK);
+
+        addHyperlinkListener(li -> {
+            if (li.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                URL url = li.getURL();
+                String proto = url.getProtocol();
+                if (proto.equals("http") || proto.equals("https") || proto.equals("mailto")) {
+                    try {
+                        Desktop.getDesktop().browse(url.toURI());
+                    } catch(RuntimeException | IOException | URISyntaxException ex) {
+                        // not supported or browse failed
+                        getToolkit().beep();
+                    }
+                    return;
+                }
+                // ... other handling
+            }
+        });
     }
     
     private CodeEditorBase.PopupMenuBuilder menuBuilder = null;
