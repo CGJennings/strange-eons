@@ -7,6 +7,7 @@ import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.MarkupTargetFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
@@ -28,6 +29,7 @@ import ca.cgjennings.ui.text.ErrorSquigglePainter;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
 import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
 import ca.cgjennings.ui.textedit.Formatter;
+import ca.cgjennings.ui.textedit.HtmlStyler;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -1227,15 +1229,11 @@ public class CodeEditor extends AbstractSupportEditor {
 
     @Override
     protected void exportImpl(int type, File f) throws IOException {
-// FIXME     
-//        CSSStyler styler = new CSSStyler(editor.getTokenizer());
-//        String html = styler.style(editor.getText());
-//        html = "<html>\n<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n<title>"
-//                + f.getName() + "</title>\n"
-//                + styler.getCSS(true)
-//                + "<body>\n<pre>\n" + html + "</pre>\n</body>\n</html>";
-//
-//        ProjectUtilities.copyReader(new StringReader(html), f, ProjectUtilities.ENC_UTF8);
+        HtmlStyler styler = new HtmlStyler(getCodeType());
+        styler.setText(editor.getText());
+        String html = "<!DOCTYPE html><html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'></head><body>"
+                + styler.styleAll() + "</body></html>";
+        ProjectUtilities.writeTextFile(f, html, TextEncoding.HTML_CSS);
     }
 
     @Override
