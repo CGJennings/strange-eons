@@ -132,6 +132,9 @@
       <SubComponents>
         <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="paintCode">
           <Properties>
+            <Property name="codeType" type="ca.cgjennings.ui.textedit.CodeType" editor="org.netbeans.modules.form.editors.EnumEditor">
+              <Value id="JAVASCRIPT"/>
+            </Property>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
           <Constraints>
@@ -146,6 +149,9 @@
         </Component>
         <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="settingsCode">
           <Properties>
+            <Property name="codeType" type="ca.cgjennings.ui.textedit.CodeType" editor="org.netbeans.modules.form.editors.EnumEditor">
+              <Value id="SETTINGS"/>
+            </Property>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
           <Constraints>

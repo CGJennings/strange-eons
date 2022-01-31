@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.editors;
 
-import ca.cgjennings.ui.textedit.CodeType;
 import static resources.Language.string;
 import resources.Settings;
 
@@ -21,8 +20,6 @@ class CLEExportDialog extends javax.swing.JDialog {
         super(parent, true);
         this.ed = ed;
         initComponents();
-        paintCode.setCodeType(CodeType.JAVASCRIPT);
-        settingsCode.setCodeType(CodeType.SETTINGS);
         Settings.getUser().getYesNo("card-layout-export-back");
         frontBtn.setSelected(true);
         updateCode(true);
@@ -76,9 +73,11 @@ class CLEExportDialog extends javax.swing.JDialog {
 
         tab.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
+        paintCode.setCodeType(ca.cgjennings.ui.textedit.CodeType.JAVASCRIPT);
         paintCode.setEditable(false);
         tab.addTab(string("cle-export-paint-code"), paintCode); // NOI18N
 
+        settingsCode.setCodeType(ca.cgjennings.ui.textedit.CodeType.SETTINGS);
         settingsCode.setEditable(false);
         tab.addTab(string("cle-export-settings"), settingsCode); // NOI18N
 
