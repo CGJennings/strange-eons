@@ -1227,7 +1227,7 @@ public class CodeEditor extends AbstractSupportEditor {
 
     @Override
     protected void exportImpl(int type, File f) throws IOException {
-// FIXME        
+// FIXME     
 //        CSSStyler styler = new CSSStyler(editor.getTokenizer());
 //        String html = styler.style(editor.getText());
 //        html = "<html>\n<head>\n<meta http-equiv='Content-Type' content='text/html; charset=utf-8'>\n<title>"

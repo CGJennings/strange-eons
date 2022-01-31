@@ -5,7 +5,6 @@ import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.dnd.ScrapBook;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;

@@ -14,7 +14,6 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.AbbreviationTable;
 import gamedata.Game;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;

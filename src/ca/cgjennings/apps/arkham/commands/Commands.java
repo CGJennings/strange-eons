@@ -33,7 +33,6 @@ import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.CodeAction;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.EditorCommands;
 import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.Color;
 import java.awt.Component;

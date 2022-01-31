@@ -8,7 +8,6 @@ import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;

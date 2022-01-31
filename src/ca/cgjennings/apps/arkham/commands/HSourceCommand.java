@@ -5,10 +5,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.KeyStroke;
 import resources.AcceleratorTable;
 

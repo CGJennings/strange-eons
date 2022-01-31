@@ -10,7 +10,6 @@ import ca.cgjennings.ui.DefaultTreeCellRenderer;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.TreeLabelExposer;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;

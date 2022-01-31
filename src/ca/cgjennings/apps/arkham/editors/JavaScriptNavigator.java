@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
-import ca.cgjennings.ui.textedit.CodeEditorBase;
 import org.mozilla.javascript.Node;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.ArrayLiteral;
@@ -18,7 +17,6 @@ import org.mozilla.javascript.ast.RegExpLiteral;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.VariableDeclaration;
 import org.mozilla.javascript.ast.VariableInitializer;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.Icon;

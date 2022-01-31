@@ -12,7 +12,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.CoreUpdateDialog;
 import ca.cgjennings.graphics.shapes.SVGVectorImage;
 import java.awt.EventQueue;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
