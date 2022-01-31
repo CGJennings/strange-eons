@@ -7,7 +7,6 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.deck.PageView;
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.math.Interpolation;
@@ -17,14 +16,7 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.anim.AnimationUtilities;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.Tokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.CSSTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.HTMLTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.Color;
@@ -1622,42 +1614,8 @@ public final class ContextBar {
          * ({@code CodeType.JAVASCRIPT}) is assumed
          */
         public CodeType getCodeType() {
-            if (markup && (target instanceof JSourceCodeEditor)) {
-                StrangeEonsEditor ed = getEditor();
-                if (ed instanceof CodeEditor && ((CodeEditor) ed).getEditor() == target) {
-                    return ((CodeEditor) ed).getCodeType();
-                }
-
-                // if this is a standalone editor component,
-                // try to infer an appropriate code type
-                Tokenizer tz = ((JSourceCodeEditor) target).getTokenizer();
-                if (tz == null) {
-                    return CodeType.PLAIN;
-                }
-                Class t = tz.getClass();
-
-                if (t == JavaScriptTokenizer.class) {
-                    return CodeType.JAVASCRIPT;
-                }
-                if (t == JavaTokenizer.class) {
-                    return CodeType.JAVA;
-                }
-                if (t == PropertyTokenizer.class) {
-                    return CodeType.SETTINGS;
-                }
-                if (t == HTMLTokenizer.class) {
-                    return CodeType.HTML;
-                }
-                if (t == CSSTokenizer.class) {
-                    return CodeType.CSS;
-                }
-                if (t == PlainTextTokenizer.class) {
-                    return CodeType.PLAIN;
-                }
-
-                // give up
-                StrangeEons.log.log(Level.WARNING, "don''t know CodeType to infer for tokenizer: {0}", t);
-                return CodeType.PLAIN;
+            if (markup && (target instanceof CodeEditorBase)) {
+                return ((CodeEditorBase) target).getCodeType();
             }
             return null;
         }
