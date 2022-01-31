@@ -14,10 +14,8 @@ import ca.cgjennings.ui.IconBorder;
 import ca.cgjennings.ui.TreeLabelExposer;
 import ca.cgjennings.ui.table.JHeadlessTable;
 import ca.cgjennings.ui.table.MultilineTableCellRenderer;
-import ca.cgjennings.ui.textedit.HTMLStyler;
-import ca.cgjennings.ui.textedit.Token;
-import ca.cgjennings.ui.textedit.TokenType;
-import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
+import ca.cgjennings.ui.textedit.CodeType;
+import ca.cgjennings.ui.textedit.HtmlStyler;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -1914,7 +1912,7 @@ public final class Client extends javax.swing.JFrame {
                     c = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
                 }
             } else {
-                SourceModel model = (SourceModel) sourceTable.getModel();
+                SourceFile model = (SourceFile) sourceTable.getModel();
                 String id = model.identifierUnderPoint(sourceTable, p);
 
                 if (id != null) {
@@ -2703,19 +2701,23 @@ public final class Client extends javax.swing.JFrame {
             return this;
         }
     };
-    private static final LineInfo[] EMPTY_TABLE = new LineInfo[0];
-    private SourceModel source = new SourceModel();
+    
+    private static final SourceLine[] EMPTY_TABLE = new SourceLine[0];
+    private SourceFile source = new SourceFile();
 
     /**
-     * Table model for source code files.
+     * A source file with debug information.
      */
-    private class SourceModel extends AbstractTableModel {
-
+    private class SourceFile extends AbstractTableModel {
         private String file;
-        private LineInfo[] lines = EMPTY_TABLE;
-        private final JavaScriptTokenizer tokenizer = new JavaScriptTokenizer();
-        private final HTMLStyler codeStyler = new HTMLStyler(tokenizer);
+        private SourceLine[] lines = EMPTY_TABLE;
+        private final HtmlStyler styler = new HtmlStyler(CodeType.JAVASCRIPT, true, true);
+        private ExpressionDetector detector = new ExpressionDetector("");
 
+        /**
+         * Changes the document represented by this file.
+         * @param url the server document URL
+         */
         public void setSource(String url) {
             waitCursor(true);
             try {
@@ -2729,6 +2731,9 @@ public final class Client extends javax.swing.JFrame {
             }
         }
 
+        /**
+         * Synchronizes the state of this source file with the server.
+         */
         public void synch() {
             if (file == null) {
                 return;
@@ -2755,12 +2760,16 @@ public final class Client extends javax.swing.JFrame {
             }
 
             if (lineUpdate) {
-                codeStyler.reset();
-                lines = new LineInfo[text.length];
+                detector = new ExpressionDetector(text);
+                styler.setText(detector.getText());
+                
+                lines = new SourceLine[text.length];
+                
                 for (int i = 0; i < text.length; ++i) {
-                    lines[i] = new LineInfo(
+                    lines[i] = new SourceLine(
                             i + 1, false, false, text[i],
-                            "<html><pre>" + codeStyler.styleLine(text[i], i));
+                            "<html>" + styler.styleLine(i)
+                    );
                 }
 
                 TableColumn col = sourceTable.getColumnModel().getColumn(0);
@@ -2835,7 +2844,7 @@ public final class Client extends javax.swing.JFrame {
             if (col != 1) {
                 return null; // the source col, not the line num col
             }
-            LineInfo lineInfo = lines[row];
+            SourceLine lineInfo = lines[row];
             final String sourceLine = lineInfo.text;
             TableCellRenderer r = t.getCellRenderer(row, col);
 
@@ -2863,83 +2872,9 @@ public final class Client extends javax.swing.JFrame {
             }
 
             // find the identifier that our column is in
-            String expression = null;
-            boolean inID = false;
-            int start = 0;
-            for (int i = 0; i <= sourceLine.length(); ++i) {
-                // add a sentinel to the end of the line so we always end the current ID, if any
-                char ch = i == sourceLine.length() ? '\0' : sourceLine.charAt(i);
-
-                if (inID) {
-                    // valid ID part?
-                    // Note: if a '.', we allow it only before the column under the cursor;
-                    // that way you can point at the last word of "id.property" to look
-                    // up "id.property", or the first word to look up just "id"
-                    if (!(Character.isJavaIdentifierPart(ch) || (ch == '.' && i < col))) {
-                        // we found an ID, is the point under the cursor within the ID?
-                        // if so, capture the expression and stop looping
-                        if (col < i) {
-                            expression = sourceLine.substring(start, i);
-                            break;
-                        }
-                        inID = false;
-                    }
-
-                } else {
-                    // valid ID start?
-                    if (Character.isJavaIdentifierStart(ch) || ch == '@' || ch == '#') {
-                        // if we are after the point under the cursor, then the cursor is not
-                        // over a valid ID so we can stop looping
-                        if (col < i) {
-                            break;
-                        }
-                        start = i;
-                        inID = true;
-                    }
-                }
-            }
-
-            // check if our identifer is actually a keyword, comment or other non-ID
-            if (expression != null) {
-                if (row >= tokenizer.getLineCount()) {
-                    AssertionError e = new AssertionError("invalid state: tokenizer does not represent displayed document");
-                    e.printStackTrace(System.err);
-                    return null;
-                }
-                Token prevToken = null;
-                Token token = tokenizer.tokenize(sourceLine, row);
-                int offset = 0;
-
-                // NOTE: we use start instead of col because sometimes the tokenizer
-                // mistokenizes a segment after a dot, e.g., in Object.get it thinks
-                // get is a keyword
-                while (offset <= start && token != null) {
-                    offset += token.length();
-                    prevToken = token;
-                    token = token.next();
-                }
-                token = prevToken;
-                // find this ID in list of acceptable IDs
-                boolean found = false;
-                if (token != null) {
-                    for (int i = 0; i < acceptedIDs.length; ++i) {
-                        if (acceptedIDs[i] == token.type()) {
-                            found = true;
-                            break;
-                        }
-                    }
-                }
-                if (!found) {
-                    expression = null;
-                }
-            }
-
-            return expression;
+            return detector.getIdentifierExpressionAt(row, col);
         }
         private final JTextField idLookupField = new JTextField();
-        private final TokenType[] acceptedIDs = new TokenType[]{
-            TokenType.PLAIN, TokenType.KEYWORD2, TokenType.LITERAL_SPECIAL_1, TokenType.LITERAL_SPECIAL_2
-        };
     };
 
     /**
@@ -2966,7 +2901,7 @@ public final class Client extends javax.swing.JFrame {
 
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            LineInfo info = (LineInfo) value;
+            SourceLine info = (SourceLine) value;
             setFont(table.getFont());
             final boolean lastLine = row == table.getRowCount() - 1;
             if (column == 0) {
@@ -3012,7 +2947,7 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Represents a line in the current source file.
      */
-    private static class LineInfo {
+    private static class SourceLine {
 
         public Integer number;
         public boolean breakable;
@@ -3020,7 +2955,7 @@ public final class Client extends javax.swing.JFrame {
         public String text;
         public String formatted;
 
-        public LineInfo(Integer number, boolean breakable, boolean breakpoint, String text, String formatted) {
+        public SourceLine(Integer number, boolean breakable, boolean breakpoint, String text, String formatted) {
             this.number = number;
             this.breakable = breakable;
             this.breakpoint = breakpoint;
@@ -3031,7 +2966,7 @@ public final class Client extends javax.swing.JFrame {
         /**
          * Updates whether this line info represents the line as being a valid
          * breakpoint and having a break set, and returns {@code true} if this
-         * changes the internal state of this object. This does not effect
+         * changes the internal state of this object. This does not affect
          * whether the line has a breakpoint on the server.
          *
          * @param breakable if {@code true} represents that the line should be

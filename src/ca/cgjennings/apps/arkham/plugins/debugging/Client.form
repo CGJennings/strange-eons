@@ -144,7 +144,7 @@
                   <Component id="stopBtn" linkSize="1" min="-2" pref="36" max="-2" attributes="0"/>
                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                   <Component id="onTopBtn" linkSize="1" min="-2" pref="18" max="-2" attributes="0"/>
-                  <EmptySpace pref="16" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
