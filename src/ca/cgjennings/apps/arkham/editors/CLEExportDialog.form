@@ -130,7 +130,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Component class="ca.cgjennings.ui.textedit.JSourceCodeEditor" name="paintCode">
+        <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="paintCode">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
@@ -138,13 +138,13 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Painting Code">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="cle-export-paint-code" replaceFormat="string( &quot;{key}&quot; )"/>
+                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="cle-export-paint-code" replaceFormat="string(&quot;{key}&quot;)"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="ca.cgjennings.ui.textedit.JSourceCodeEditor" name="settingsCode">
+        <Component class="ca.cgjennings.ui.textedit.CodeEditorBase" name="settingsCode">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
@@ -152,7 +152,7 @@
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Settings">
                 <Property name="tabTitle" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
-                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="cle-export-settings" replaceFormat="string( &quot;{key}&quot; )"/>
+                  <ResourceString bundle="resources/text/interface/eons-text.properties" key="cle-export-settings" replaceFormat="string(&quot;{key}&quot;)"/>
                 </Property>
               </JTabbedPaneConstraints>
             </Constraint>
