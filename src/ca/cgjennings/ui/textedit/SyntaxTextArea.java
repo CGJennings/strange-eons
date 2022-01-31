@@ -16,15 +16,22 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
 /**
- * Syntax highlighting text area used by {@link CodeEditorBase}.
- * Customizes behaviour of the underlying implementation.
- * 
+ * Syntax highlighting text area used by {@link CodeEditorBase}. Customizes
+ * behaviour of the underlying implementation.
+ *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
 final class SyntaxTextArea extends RSyntaxTextArea {
-        
+
+    /**
+     * Editor that embeds this component; may be null.
+     */
     private CodeEditorBase editor;
+
+    public SyntaxTextArea() {
+        this(null);
+    }
 
     public SyntaxTextArea(CodeEditorBase editor) {
         super();
@@ -35,7 +42,7 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         } catch (IOException ex) {
             StrangeEons.log.warning("unable to load editor theme, using default");
         }
-        
+
         setTabSize(4);
         setTabsEmulated(true);
         setPaintTabLines(true);
@@ -58,7 +65,7 @@ final class SyntaxTextArea extends RSyntaxTextArea {
                 if (proto.equals("http") || proto.equals("https") || proto.equals("mailto")) {
                     try {
                         Desktop.getDesktop().browse(url.toURI());
-                    } catch(RuntimeException | IOException | URISyntaxException ex) {
+                    } catch (RuntimeException | IOException | URISyntaxException ex) {
                         // not supported or browse failed
                         getToolkit().beep();
                     }
@@ -68,31 +75,64 @@ final class SyntaxTextArea extends RSyntaxTextArea {
             }
         });
     }
-    
+
+    public void loadDefaultTheme() {
+        if (defaultTheme != null) {
+            defaultTheme.apply(this);
+        } else {
+            URL themeUrl = null;
+            final ca.cgjennings.ui.theme.Theme seTheme = ca.cgjennings.ui.theme.ThemeInstaller.getInstalledTheme();
+            if (seTheme != null) {
+                themeUrl = seTheme.getSyntaxThemeUrl();
+            }
+                    
+            final boolean dark = ca.cgjennings.ui.theme.ThemeInstaller.isDark();
+            final URL url = SyntaxTextArea.class.getResource(dark ? "dark.xml" : "light.xml");
+            loadTheme(url);
+        }
+    }
+    private static Theme defaultTheme;
+
+    public void loadTheme(URL themeUrl) {
+        try (InputStream in = themeUrl.openStream()) {
+            Theme th = Theme.load(in);
+            th.apply(this);
+            if (defaultTheme == null) {
+                defaultTheme = th;
+            }
+        } catch (IOException ex) {
+            StrangeEons.log.warning("unable to load editor theme " + themeUrl + ", using default");
+        }
+    }
+
     private CodeEditorBase.PopupMenuBuilder menuBuilder = null;
-    
+
     public void setPopupMenuBuilder(CodeEditorBase.PopupMenuBuilder pmb) {
         menuBuilder = pmb;
     }
-    
+
     public CodeEditorBase.PopupMenuBuilder getPopupMenuBuilder() {
         return menuBuilder;
     }
-    
+
     @Override
     public JPopupMenu getComponentPopupMenu() {
         return createPopupMenu();
     }
-    
+
     @Override
     protected JPopupMenu createPopupMenu() {
+        if (editor == null) {
+            return super.createPopupMenu();
+        }
+
         JPopupMenu menu = createDefaultMenu();
         if (menuBuilder != null) {
             menu = menuBuilder.buildMenu(editor, menu);
         }
         return menu;
     }
-    
+
     private JPopupMenu createDefaultMenu() {
         JPopupMenu menu = new JPopupMenu();
         menu.add(makeItem(Commands.CUT, this::cut));
@@ -102,14 +142,14 @@ final class SyntaxTextArea extends RSyntaxTextArea {
         menu.add(makeItem(Commands.SELECT_ALL, this::selectAll));
         return menu;
     }
-    
+
     private JMenuItem makeItem(AbstractCommand base, Runnable perform) {
         JMenuItem item = new JMenuItem();
         if (perform != null) {
             item.addActionListener(li -> perform.run());
             item.setText(base.getName());
             item.setIcon(base.getIcon());
-            item.setAccelerator(base.getAccelerator());            
+            item.setAccelerator(base.getAccelerator());
         } else {
             item.setAction(base);
         }

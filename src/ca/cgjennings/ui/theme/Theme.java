@@ -295,6 +295,16 @@ public abstract class Theme {
     public BufferedImage applyThemeToImage(BufferedImage source) {
         return source;
     }
+    
+    /**
+     * Returns a URL for a file that describes this theme's preferred syntax
+     * highlighting theme, or null to use a default.
+     * 
+     * @return URL of a document describing the syntax theme, or null
+     */
+    public URL getSyntaxThemeUrl() {
+        return null;
+    }   
 
     /**
      * A UI key that controls a boolean property that affects whether document

@@ -37,7 +37,7 @@ public class DefaultCodeSupport implements CodeSupport {
     public Navigator createNavigator(CodeEditor codeEditor) {
         return null;
     }
-    
+
     @Override
     public Formatter createFormatter() {
         return null;
@@ -52,41 +52,49 @@ public class DefaultCodeSupport implements CodeSupport {
      * @return a language ID for the editor; may return null for plain text
      */
     protected String languageIdFor(CodeEditorBase editor) {
-        String id = null;
+        return editor == null ? null : languageIdFor(editor.getCodeType());
+    }
 
-        if (editor != null && editor.getCodeType() != null) {
-            switch (editor.getCodeType().normalize()) {
-                case JAVA:
-                    id = SyntaxConstants.SYNTAX_STYLE_JAVA;
-                    break;
-                case JAVASCRIPT:
-                    id = SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT;
-                    break;
-                case TYPESCRIPT:
-                    id = SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT;
-                    break;
-                case HTML:
-                    id = SyntaxConstants.SYNTAX_STYLE_HTML;
-                    break;
-                case CSS:
-                    id = SyntaxConstants.SYNTAX_STYLE_CSS;
-                    break;
-                case SETTINGS:
-                case PROPERTIES:
-                    id = SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
-                    break;
-                case CLASS_MAP:
-                case CONVERSION_MAP:
-                case SILHOUETTES:
-                case TILES:
-                    id = SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
-                    break;
-                default:
-                    id = SyntaxConstants.SYNTAX_STYLE_NONE;
-                    break;
-            }
+    /**
+     * Returns the default syntax area language ID for a code type.
+     * 
+     * @param type the code type to return a syntax ID for
+     * @return returns an ID for the type; if the type is null or unknown,
+     * returns an ID for plain text
+     */
+    static String languageIdFor(CodeType type) {
+        String id;
+        type = type == null ? CodeType.PLAIN : type;
+        switch (type.normalize()) {
+            case JAVA:
+                id = SyntaxConstants.SYNTAX_STYLE_JAVA;
+                break;
+            case JAVASCRIPT:
+                id = SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT;
+                break;
+            case TYPESCRIPT:
+                id = SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT;
+                break;
+            case HTML:
+                id = SyntaxConstants.SYNTAX_STYLE_HTML;
+                break;
+            case CSS:
+                id = SyntaxConstants.SYNTAX_STYLE_CSS;
+                break;
+            case SETTINGS:
+            case PROPERTIES:
+                id = SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
+                break;
+            case CLASS_MAP:
+            case CONVERSION_MAP:
+            case SILHOUETTES:
+            case TILES:
+                id = SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
+                break;
+            default:
+                id = SyntaxConstants.SYNTAX_STYLE_NONE;
+                break;
         }
-
         return id;
     }
 }
