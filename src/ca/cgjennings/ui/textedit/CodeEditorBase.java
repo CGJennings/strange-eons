@@ -3,6 +3,7 @@ package ca.cgjennings.ui.textedit;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -147,6 +148,14 @@ public class CodeEditorBase extends JPanel {
     @Override
     public final void removeFocusListener(FocusListener listener) {
         textArea.removeFocusListener(listener);
+    }
+    
+    public Font getFont() {
+        return ready ? textArea.getFont() : super.getFont();
+    }
+    
+    public void setFont(Font font) {
+        if (ready) textArea.setFont(font);
     }
     
     /**
