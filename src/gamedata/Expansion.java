@@ -118,6 +118,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * the expansion
      * @see #getSymbol(int)
      */
+    @Deprecated
     public BufferedImage getSymbol(boolean inverse) {
         if (symbols == null) {
             return null;
@@ -332,6 +333,7 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * java.lang.String, java.awt.image.BufferedImage,
      * java.awt.image.BufferedImage[])
      */
+    @Deprecated
     public static synchronized Expansion register(Game forGame, String code, String nameKey, String iconResource, String normalSymbol, String inverseSymbol) {
         BufferedImage normal;
         BufferedImage inverse;

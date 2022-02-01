@@ -1573,6 +1573,7 @@ public class BundleInstaller {
      * @return {@code true} if the JavaFX runtime is available
      * @deprecated This method returns {@code false}.
      */
+    @Deprecated
     public static boolean isFXRuntimeAvailable() {
         return false;
     }

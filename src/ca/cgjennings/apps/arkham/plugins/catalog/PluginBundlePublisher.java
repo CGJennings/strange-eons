@@ -237,6 +237,7 @@ public class PluginBundlePublisher {
      * @deprecated The Pack200 tools used by this method have been removed from
      * Java. Calling this method on a packed file will throw an exception.
      */
+    @Deprecated
     public static void unpackBundle(File source, File dest) throws IOException {
         if (source == null) {
             throw new NullPointerException("fin");

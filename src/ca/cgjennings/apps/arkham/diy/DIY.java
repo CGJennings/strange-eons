@@ -476,6 +476,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     /**
      * @deprecated Replaced by {@link #getVersion()}.
      */
+    @Deprecated
     public final int getCardVersion() {
         return getVersion();
     }

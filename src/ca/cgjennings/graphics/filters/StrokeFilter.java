@@ -43,7 +43,7 @@ public final class StrokeFilter extends AbstractImageFilter {
      * @throws IllegalArgumentException if the width is less than 1
      */
     public StrokeFilter(int color, int width) {
-        setARGB(color);
+        setColorRGB(color);
         setWidth(width);
     }
 
@@ -152,26 +152,6 @@ public final class StrokeFilter extends AbstractImageFilter {
      * @return the ARGB value of the stroke colour
      */
     public int getColorRGB() {
-        return color;
-    }
-
-    /**
-     * Sets the stroke colour using an ARGB value.
-     *
-     * @param argb the stroke colour
-     * @deprecated Replaced by {@link #setColorRGB(int)} for consistency.
-     */
-    public void setARGB(int argb) {
-        this.color = argb;
-    }
-
-    /**
-     * Returns the stroke colour as an ARGB value.
-     *
-     * @return the ARGB value of the stroke colour
-     * @deprecated Replaced by {@link #getColorRGB()} for consistency.
-     */
-    public int getARGB() {
         return color;
     }
 
@@ -533,15 +513,4 @@ public final class StrokeFilter extends AbstractImageFilter {
             }
         }
     }
-
-//	public static void main(String[] args) {
-//		try {
-//			BufferedImage bi = ImageIO.read( new File("d:\\in2.png") );
-//			StrokeFilter sf = new StrokeFilter(Color.MAGENTA, 2, Position.CENTER );
-//			bi = sf.filter( bi, null );
-//			ImageIO.write( bi, "png", new File("d:\\out.png") );
-//		} catch( Throwable t ) {
-//			t.printStackTrace();
-//		}
-//	}
 }

@@ -395,6 +395,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      * @deprecated Use
      * {@link ImageUtilities#idealCoveringScaleForImage(double, double, double, double)}.
      */
+    @Deprecated
     public static double idealScaleForImage(double idealWidth, double idealHeight, double imageWidth, double imageHeight) {
         return ImageUtilities.idealCoveringScaleForImage(idealWidth, idealHeight, imageWidth, imageHeight);
     }
@@ -440,6 +441,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
      *
      * @deprecated Use {@link StrangeImage#get} to load user-supplied images.
      */
+    @Deprecated
     public static BufferedImage imagePathToImage(String path) {
         return StrangeImage.get(path).asBufferedImage();
     }

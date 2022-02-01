@@ -192,6 +192,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
      * @param identifier the portrait identifier to load
      * @return the image as a bitmap
      */
+    @Deprecated
     public static BufferedImage fetchImage(String identifier) {
         return StrangeImage.getAsBufferedImage(identifier);
     }
@@ -202,6 +203,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
      * @param identifier the portrait identifier to test
      * @return true if the image exists
      */
+    @Deprecated
     public static boolean imageExists(String identifier) {
         return StrangeImage.exists(identifier);
     }
@@ -212,6 +214,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
      * @param identifier an identifier containing a local file path or URL
      * @return a URL that can be used to read the identified content
      */
+    @Deprecated
     public static URL translatePathToImageURL(String identifier) {
         return StrangeImage.identifierToURL(identifier);
     }
@@ -228,6 +231,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
      * {@code !StrangeImage.isFileIdentifier( identifier )} as a replacement for
      * this call.
      */
+    @Deprecated
     public static boolean isURLString(String identifier) {
         return !StrangeImage.isFileIdentifier(identifier);
     }
@@ -242,6 +246,7 @@ public final class GraphicStyleFactory implements ParametricStyleFactory {
      * {@link StrangeImage#getMissingImage()} to get the missing image as a
      * {@link BufferedImage} or {@link StrangeImage}, respectively.
      */
+    @Deprecated
     public static BufferedImage getMissingImage() {
         return ResourceKit.getMissingImage();
     }

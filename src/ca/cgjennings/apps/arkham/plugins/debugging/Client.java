@@ -2863,7 +2863,7 @@ public final class Client extends javax.swing.JFrame {
             p.y = idLookupField.getHeight() / 2;
 
             // find the index of the character under the mouse
-            col = idLookupField.viewToModel(p);
+            col = idLookupField.viewToModel2D(p);
             if (col >= sourceLine.length()) {
                 col = sourceLine.length() - 1;
             }
