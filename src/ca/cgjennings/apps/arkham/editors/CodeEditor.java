@@ -64,6 +64,7 @@ import javax.swing.Icon;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
@@ -175,7 +176,7 @@ public class CodeEditor extends AbstractSupportEditor {
         });
 
         createTimer((int) NAVIGATOR_SCAN_DELAY);
-
+        editor.setPopupMenuBuilder(this::createPopupMenu);
         EventQueue.invokeLater(editor::requestFocusInWindow);
     }
 
@@ -220,14 +221,8 @@ public class CodeEditor extends AbstractSupportEditor {
         initializeForCodeType();
         setFile(file);
         this.encoding = encoding;
-
         readFile();
-
-        editor.select(0, 0);
-        editor.clearUndoHistory();
         setUnsavedChanges(false);
-
-        editor.setComponentPopupMenu(createPopupMenu());
     }
 
     /**
@@ -259,8 +254,6 @@ public class CodeEditor extends AbstractSupportEditor {
 
         editor.setInitialText(text);
         setUnsavedChanges(false);
-
-        editor.setComponentPopupMenu(createPopupMenu());
         setReadOnly(true);
     }
 
@@ -374,7 +367,7 @@ public class CodeEditor extends AbstractSupportEditor {
         }
 
         text = unescape(text);
-        editor.setText(text);
+        editor.setInitialText(text);
         refreshNavigator(text);
         setUnsavedChanges(false);
     }
@@ -1313,8 +1306,7 @@ public class CodeEditor extends AbstractSupportEditor {
      * @return a context menu populated with menu items for the current
      * selection and code type
      */
-    protected JPopupMenu createPopupMenu() {
-        final JPopupMenu menu = new JPopupMenu();
+    protected JPopupMenu createPopupMenu(CodeEditorBase editor, JPopupMenu menu) {
 
         menu.addPopupMenuListener(new PopupMenuListener() {
             @Override
@@ -1339,18 +1331,16 @@ public class CodeEditor extends AbstractSupportEditor {
             }
         });
 
-        if (isCommandApplicable(Commands.FORMAT_CODE)) {
-            menu.add(Commands.FORMAT_CODE);
-            menu.addSeparator();
-        }
+        // insert items before default menu
+        int pos = 0;
 
-        if (type.isRunnable()) {
-            menu.add(Commands.RUN_FILE);
+        if (isCommandApplicable(Commands.RUN_FILE)) {
+            menu.insert(Commands.RUN_FILE, pos++);
             if (ScriptDebugging.isInstalled()) {
-                menu.add(Commands.DEBUG_FILE);
+                menu.insert(Commands.DEBUG_FILE, pos++);
             }
-            menu.addSeparator();
-        }
+            menu.insert(new JSeparator(), pos++);
+        }        
 
         if (type == CodeType.HTML) {
             JMenuItem browse = new JMenuItem(string("pa-browse-name"));
@@ -1368,14 +1358,15 @@ public class CodeEditor extends AbstractSupportEditor {
                 }
             });
             if (getFile() != null && DesktopIntegration.BROWSE_SUPPORTED) {
-                menu.add(browse);
-                menu.addSeparator();
+                menu.insert(browse, pos++);
+                menu.insert(new JSeparator(), pos++);
             }
         }
-
-        menu.add(Commands.CUT);
-        menu.add(Commands.COPY);
-        menu.add(Commands.PASTE);
+        
+        if (isCommandApplicable(Commands.FORMAT_CODE)) {
+            menu.insert(Commands.FORMAT_CODE, pos++);
+            menu.insert(new JSeparator(), pos++);
+        }
 
         return menu;
     }

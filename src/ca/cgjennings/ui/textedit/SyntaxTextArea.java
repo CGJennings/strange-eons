@@ -3,12 +3,12 @@ package ca.cgjennings.ui.textedit;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
-import java.awt.Desktop;
+import ca.cgjennings.platform.DesktopIntegration;
 import java.awt.event.InputEvent;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.logging.Level;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.event.HyperlinkEvent;
@@ -64,9 +64,10 @@ final class SyntaxTextArea extends RSyntaxTextArea {
                 String proto = url.getProtocol();
                 if (proto.equals("http") || proto.equals("https") || proto.equals("mailto")) {
                     try {
-                        Desktop.getDesktop().browse(url.toURI());
-                    } catch (RuntimeException | IOException | URISyntaxException ex) {
+                        DesktopIntegration.browse(url);
+                    } catch (IOException ex) {
                         // not supported or browse failed
+                        StrangeEons.log.log(Level.WARNING, "failed to open " +  url, ex);
                         getToolkit().beep();
                     }
                     return;

@@ -33,7 +33,6 @@ import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.textedit.CodeAction;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.MouseInfo;
@@ -568,8 +567,8 @@ public class Commands {
         private InsertImageDialog insertImageDlg;
     };
     /**
-     * Opens a dialog that allows the user to select an image, a tag for which
-     * will be inserted into the markup target.
+     * Opens a dialog that allows the user to select an symbol or character
+     * to be inserted into the markup target.
      */
     public static final DelegatedCommand MARKUP_INSERT_CHARACTERS = new HMarkupCommand("app-insert-chars", "toolbar/symbol.png") {
         @Override
@@ -580,7 +579,7 @@ public class Commands {
 
             String text = d.getSelectedText();
             if (text != null) {
-                if (!(mt.getTarget() instanceof JSourceCodeEditor) && (text.indexOf('>') >= 0 || text.indexOf('<') >= 0)) {
+                if (!(mt.getTarget() instanceof CodeEditorBase) && (text.indexOf('>') >= 0 || text.indexOf('<') >= 0)) {
                     StringBuilder b = new StringBuilder(text.length() + 16);
                     for (int i = 0; i < text.length(); ++i) {
                         char ch = text.charAt(i);

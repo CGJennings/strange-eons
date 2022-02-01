@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
@@ -59,6 +61,36 @@ public class DesktopIntegration {
             showFeedback(feedbackComponent);
         }
     }
+
+    /**
+     * Displays a Web page in the system browser. This is a convenience that
+     * accepts a URL object.
+     * @param url the location to open
+     * @throws IOException if an I/O error occurs while starting the browser or
+     * the URL is malformed
+     */    
+    public static void browse(URL url) throws IOException {
+        try {
+            browse(url.toURI());
+        } catch (URISyntaxException use) {
+            throw new IOException(use);
+        }
+    }
+    
+    /**
+     * Displays a Web page in the system browser. This is a convenience that
+     * accepts a URL string.
+     * @param url the location to open
+     * @throws IOException if an I/O error occurs while starting the browser or
+     * the URL is malformed
+     */
+    public static void browse(String url) throws IOException {
+        try {
+            browse(new URL(url).toURI());
+        } catch (URISyntaxException use) {
+            throw new IOException(use);
+        }
+    }    
 
     /**
      * This is {@code true} if the {@link #browse} method is supported.
@@ -319,7 +351,7 @@ public class DesktopIntegration {
         }
 
         final Component target = c;
-        Timer t = new Timer(4_000, (ActionEvent e) -> {
+        Timer t = new Timer(1_000, (ActionEvent e) -> {
             try {
                 if (target != StrangeEons.getWindow()) {
                     JUtilities.hideWaitCursor(target);

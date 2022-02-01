@@ -1,5 +1,7 @@
 package ca.cgjennings.apps.arkham;
 
+import ca.cgjennings.ui.textedit.CodeEditorBase;
+
 /**
  * A markup target is an adapter that allows modification of the text in user
  * interface components that can contain markup text for a game component. The
@@ -187,4 +189,21 @@ public interface MarkupTarget {
      * If the target is a component, then it will request input focus.
      */
     void requestFocus();
+    
+    /**
+     * Returns true if the target is a source code editor, or false if the
+     * target is another type of text component.
+     * 
+     * @return true if the editor is a code editor
+     */
+    boolean isCodeEditor();
+    
+    /**
+     * If the markup target is inside of a code editing component, returns
+     * the code editor containing the target. Otherwise returns null.
+     * 
+     * @return the code editor component containing the the markup target,
+     * or null if the target is not part of a code editor
+     */
+    CodeEditorBase getCodeEditor();
 }

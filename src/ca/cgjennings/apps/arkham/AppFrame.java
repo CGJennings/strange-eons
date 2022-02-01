@@ -2595,7 +2595,7 @@ final class AppFrame extends StrangeEonsAppWindow {
                     return;
                 }
             } catch(Exception ex) {
-                // user still chose to quie
+                // user still chose to quit
             }
             response.performQuit();
         });
