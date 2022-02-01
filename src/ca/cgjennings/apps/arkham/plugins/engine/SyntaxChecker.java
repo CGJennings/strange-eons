@@ -1,22 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
-import ca.cgjennings.apps.arkham.editors.NavigationPoint;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.IdeErrorReporter;
-import ca.cgjennings.ui.textedit.ErrorHighlighter;
-import ca.cgjennings.ui.textedit.HighlightedLine;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.MarginNote;
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Set;
-import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
 
 /**
  * Determines the compile-time errors and warnings in a script without executing
@@ -209,134 +196,6 @@ public class SyntaxChecker extends AbstractUtilityParser {
             hash = 41 * hash + (this.message != null ? this.message.hashCode() : 0);
             hash = 41 * hash + (this.warning ? 1 : 0);
             return hash;
-        }
-    }
-
-    /**
-     * A code highlighter that underlines syntax errors and warnings.
-     */
-    public static class Highlighter extends ErrorHighlighter {
-
-        private Color warnColor;
-        private Color errorColor;
-        private SyntaxError[] errors;
-        private HashSet<Integer> marked = new HashSet<>();
-        private JSourceCodeEditor editor;
-
-        /**
-         * Creates a new syntax error highlighter.
-         */
-        public Highlighter() {
-            warnColor = UIManager.getColor("nimbusAlertYellow");
-            if (warnColor == null) {
-                warnColor = new Color(0xffb629);
-            }
-            errorColor = UIManager.getColor("nimbusRed");
-            if (errorColor == null) {
-                errorColor = Color.RED;
-            }
-        }
-
-        /**
-         * Creates a new syntax error highlighter that underlines with the
-         * specified colours.
-         *
-         * @param warnColor the colour for warnings
-         * @param errorColor the colour for errors
-         */
-        public Highlighter(Color warnColor, Color errorColor) {
-            this.warnColor = warnColor;
-            this.errorColor = errorColor;
-        }
-
-        /**
-         * Updates the highlighter with the current set of errors, as returned
-         * from {@link #parse(java.lang.String)}.
-         *
-         * @param errors the new set of errors to display (may be {@code null})
-         */
-        public void update(JSourceCodeEditor editor, SyntaxError[] errors) {
-            this.editor = editor;
-            if (errors != this.errors) {
-                this.errors = errors;
-                marked.clear();
-                if (errors != null) {
-                    for (SyntaxError err : errors) {
-                        marked.add(editor.getLineOfOffset(err.offset()));
-                    }
-                }
-                editor.repaint();
-            }
-        }
-
-        @Override
-        public void paint(Graphics2D g, HighlightedLine hl) {
-            int line = hl.line();
-            if (marked.contains(line)) {
-                int lineStart = hl.startOffset();
-                int lineEnd = hl.endOffset();
-
-                // paint warning lines first, then error lines
-                boolean warning = true;
-                for (;;) {
-                    setColor(warning ? warnColor : errorColor);
-                    for (SyntaxError err : errors) {
-                        if (err.isWarning() == warning) {
-                            int start = err.offset();
-                            if (start >= lineStart && start < lineEnd) {
-                                int end = Math.min(start + err.length(), lineEnd) - lineStart;
-                                start -= lineStart;
-                                paintErrorLine(g, hl, start, end);
-                            }
-                        }
-                    }
-                    if (warning == true) {
-                        warning = false;
-                    } else {
-                        break;
-                    }
-                }
-                restore(g);
-            }
-        }
-
-        @Override
-        public Set<MarginNote> getMarginNotes(int lineIndex) {
-            Set<MarginNote> notes = null;
-            if (marked.contains(lineIndex)) {
-                int lineStart = editor.getLineStartOffset(lineIndex);
-                int lineEnd = editor.getLineEndOffset(lineIndex);
-                for (SyntaxError err : errors) {
-                    int start = err.offset();
-                    if (start >= lineStart && start < lineEnd) {
-                        MarginNote note;
-                        if (err.isWarning()) {
-                            note = new MarginNote(NavigationPoint.ICON_WARNING, err.message(), MarginNote.LOW_PRIORITY);
-                        } else {
-                            note = new MarginNote(NavigationPoint.ICON_ERROR, err.message(), MarginNote.HIGH_PRIORITY);
-                        }
-                        if (notes == null) {
-                            notes = Collections.singleton(note);
-                        } else {
-                            if (notes.size() == 1) {
-                                notes = new HashSet<>(notes);
-                            }
-                            notes.add(note);
-                        }
-                    }
-                }
-            }
-            return notes;
-        }
-
-        @Override
-        public String getToolTipText(MouseEvent e) {
-            return null;
-        }
-
-        @Override
-        public JPopupMenu getPopupMenu(MouseEvent e, HighlightedLine hl) {
-            return null;
         }
     }
 }

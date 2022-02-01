@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.editors;
 
-import ca.cgjennings.ui.textedit.Highlighter;
 import java.util.List;
 
 /**

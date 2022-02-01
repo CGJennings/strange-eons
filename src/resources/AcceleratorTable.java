@@ -3,8 +3,8 @@ package resources;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.io.EscapedLineWriter;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.textedit.InputHandler;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -216,7 +216,7 @@ public final class AcceleratorTable {
         if (description == null || description.isEmpty()) {
             return null;
         }
-        return InputHandler.parseKeyStroke(description);
+        return CodeEditorBase.parseKeyStroke(description);
     }
 
     /**
@@ -328,25 +328,9 @@ public final class AcceleratorTable {
                 return new AcceleratorTable();
             }
             appRef = new SoftReference<>(t);
-
-            if (InputHandler.getDefaultBindingInstaller() == null) {
-                installDefaultBindingInstaller();
-            }
         }
         return t;
     }
 
     private static SoftReference<AcceleratorTable> appRef;
-
-    private static void installDefaultBindingInstaller() {
-        InputHandler.setDefaultBindingInstaller((InputHandler ih) -> {
-            AcceleratorTable at = getApplicationTable();
-            for (String name : InputHandler.getActionNames()) {
-                KeyStroke ks = at.get(name);
-                if (ks != null) {
-                    ih.addKeyBinding(ks, InputHandler.getAction(name));
-                }
-            }
-        });
-    }
 }
