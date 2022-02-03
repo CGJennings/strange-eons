@@ -1,20 +1,13 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.graphics.ImageUtilities;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
-import javax.swing.UIManager;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 
 /**
- * A custom subclass of the Nimbus look-and-feel with customizations specific to
- * Strange Eons.
+ * Custom subclass of the Nimbus look-and-feel.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
  */
 @SuppressWarnings("serial")
 class StrangeNimbus extends NimbusLookAndFeel {
@@ -25,13 +18,9 @@ class StrangeNimbus extends NimbusLookAndFeel {
     @Override
     public Icon getDisabledIcon(JComponent component, Icon icon) {
         if (icon != null) {
-            Object fo = UIManager.get(Theme.DISABLED_ICON_FILTER);
-            if (fo instanceof BufferedImageOp) {
-                BufferedImage bi = ImageUtilities.iconToImage(icon);
-                bi = ((BufferedImageOp) fo).filter(bi, null);
-                icon = new ImageIcon(bi);
-            } else {
-                icon = ImageUtilities.createDisabledIcon(icon);
+            icon = Theme.getDisabledIcon(component, icon);
+            if (icon == null) {
+                icon = super.getDisabledIcon(component, icon);
             }
         }
         return icon;

@@ -57,7 +57,7 @@ public class PluginTestTheme extends Theme {
         defaults.put(CONSOLE_ERROR, new Color(0x9d_f939));
         defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xe1_f393));
         defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x4b_3d28));
-        defaults.put(CONSOLE_BACKGROUND_PAINTER, new DefaultConsolePainter());
+        defaults.put(CONSOLE_BACKGROUND_PAINTER, new HydraConsolePainter());
     }
 
     @Override

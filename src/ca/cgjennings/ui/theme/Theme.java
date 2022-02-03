@@ -5,14 +5,20 @@ import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
+import ca.cgjennings.ui.icon.ThemedIcon;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.net.URL;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import resources.Language;
 import resources.ResourceKit;
 
@@ -173,6 +179,20 @@ public abstract class Theme {
      */
     public String getLookAndFeelClassName() {
         return StrangeNimbus.class.getName();
+    }
+    
+    /**
+     * Returns an instance of the look and feel for the theme. If
+     * {@link #getLookAndFeelClassName()} returns null, then
+     * the theme installer will call this instead. The base class
+     * throws an {@link UnsupportedOperationException}. If the
+     * class name is null and this returns null, the app will refuse
+     * to start.
+     * 
+     * @return a non-null look-and-feel instance for the theme
+     */
+    public LookAndFeel createLookAndFeelInstance() {
+        throw new UnsupportedOperationException("override this if getLookAndFeelClassName returns null");
     }
 
     /**
@@ -507,4 +527,30 @@ public abstract class Theme {
      * with a common set of icons.
      */
     public static final String OVERRIDE_LAF_MESSAGE_ICONS = "override-icons";
+    
+    /**
+     * A helper that returns a disabled version of any icon. Used by
+     * look-and-feel implementations to provide default disabled icons.
+     * 
+     * @param component
+     * @param icon
+     * @return 
+     */
+    public static Icon getDisabledIcon(JComponent component, Icon icon) {
+        if (icon != null) {
+            if (icon instanceof ThemedIcon) {
+                return ((ThemedIcon) icon).disabled();
+            }
+            
+            Object fo = UIManager.get(Theme.DISABLED_ICON_FILTER);
+            if (fo instanceof BufferedImageOp) {
+                BufferedImage bi = ImageUtilities.iconToImage(icon);
+                bi = ((BufferedImageOp) fo).filter(bi, null);
+                icon = new ImageIcon(bi);
+            } else {
+                icon = ImageUtilities.createDisabledIcon(icon);
+            }
+        }
+        return icon;
+    }
 }

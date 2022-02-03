@@ -14,6 +14,7 @@ import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -234,7 +235,14 @@ public class ThemeInstaller {
     private static void installImpl(Theme theme) throws Exception {
         installStrangeEonsUIDefaults(theme);
         theme.modifyManagerDefaults(UIManager.getDefaults());
-        LookAndFeel laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
+        
+        // create laf
+        LookAndFeel laf;
+        if (theme.getLookAndFeelClassName() != null) {
+            laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
+        } else {
+            laf = Objects.requireNonNull(theme.createLookAndFeelInstance(), "theme returned null look and feel instance");
+        }
 
         UIDefaults lafDefs = laf.getDefaults();
 

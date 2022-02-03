@@ -12,15 +12,13 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 /**
- * Paints the default wave background pattern used by {@link HydraTheme} and
- * {@link AbstractBaseTheme}.
+ * Paints the default wave background pattern used by {@link HydraTheme}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
  */
-class DefaultConsolePainter extends CachingPainter<JComponent> {
+class HydraConsolePainter extends CachingPainter<JComponent> {
 
-    public DefaultConsolePainter() {
+    public HydraConsolePainter() {
         super((Painter<JComponent>) (Graphics2D g, JComponent o, int w, int h) -> {
             UIDefaults uid = UIManager.getDefaults();
             Color background = uid.getColor(Theme.CONSOLE_BACKROUND);

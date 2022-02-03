@@ -1203,7 +1203,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         markupMenu.setText(string("app-markup")); // NOI18N
         markupMenu.setName("markupMenu"); // NOI18N
 
-        alignmentItem.setAction( Commands.MARKUP_ALIGNMENT );
+        alignmentItem.setAction(Commands.MARKUP_ALIGNMENT);
         alignmentItem.setName("alignmentItem"); // NOI18N
         markupMenu.add(alignmentItem);
 

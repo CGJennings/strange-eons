@@ -657,7 +657,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="alignmentItem">
               <Properties>
                 <Property name="action" type="javax.swing.Action" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code=" Commands.MARKUP_ALIGNMENT " type="code"/>
+                  <Connection code="Commands.MARKUP_ALIGNMENT" type="code"/>
                 </Property>
                 <Property name="name" type="java.lang.String" value="alignmentItem" noResource="true"/>
               </Properties>

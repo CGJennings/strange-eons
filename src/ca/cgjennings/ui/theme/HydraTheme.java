@@ -29,7 +29,7 @@ public class HydraTheme extends Theme {
         defaults.put(CONSOLE_ERROR, new Color(0xf9_9d39));
         defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xf3_e193));
         defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x3d_4b28));
-        defaults.put(CONSOLE_BACKGROUND_PAINTER, new DefaultConsolePainter());
+        defaults.put(CONSOLE_BACKGROUND_PAINTER, new HydraConsolePainter());
     }
 
     @Override

@@ -123,7 +123,9 @@ public final class InstalledTheme extends InstalledBundleObject {
             // make sure that the L&F class needed by the theme exists
             // (this will eliminate themes based on Nimbus when Java 6u10 is not installed)
             try {
-                Class.forName(theme.getLookAndFeelClassName(), false, ClassLoader.getSystemClassLoader());
+                if (theme.getLookAndFeelClassName() != null) {
+                    Class.forName(theme.getLookAndFeelClassName(), false, ClassLoader.getSystemClassLoader());
+                }
             } catch (Throwable t) {
                 throw new MissingCoreComponentException("theme's underlying Look and feel unavailable: " + theme.getLookAndFeelClassName());
             }
