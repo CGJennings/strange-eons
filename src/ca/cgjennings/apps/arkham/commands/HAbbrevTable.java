@@ -16,7 +16,7 @@ final class HAbbrevTable extends AbstractCommand {
     private final boolean markup;
 
     public HAbbrevTable(boolean markup) {
-        super("app-markup-abbreviations");
+        super("app-markup-abbreviations", "edit-abbreviations");
         this.markup = markup;
     }
 

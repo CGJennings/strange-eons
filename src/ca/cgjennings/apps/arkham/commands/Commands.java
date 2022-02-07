@@ -232,7 +232,7 @@ public class Commands {
     /**
      * Activates a search tool in an editor that supports this command.
      */
-    public static final DelegatedCommand FIND = new DelegatedCommand("app-find");
+    public static final DelegatedCommand FIND = new DelegatedCommand("app-find", "find");
     /**
      * Activates the find in project field, making it visible if necessary.
      */
@@ -257,7 +257,7 @@ public class Commands {
      *
      * @see StrangeEonsAppWindow#showPreferencesDialog
      */
-    public static final AbstractCommand PREFERENCES = new AbstractCommand("app-settings") {
+    public static final AbstractCommand PREFERENCES = new AbstractCommand("app-settings", "preferences") {
         @Override
         public void actionPerformed(ActionEvent e) {
             StrangeEons.getWindow().showPreferencesDialog(null, null);
@@ -322,7 +322,7 @@ public class Commands {
     /**
      * Toggles visibility of the source code navigator.
      */
-    public static final AbstractToggleCommand VIEW_SOURCE_NAVIGATOR = new AbstractToggleCommand("app-source-nav") {
+    public static final AbstractToggleCommand VIEW_SOURCE_NAVIGATOR = new AbstractToggleCommand("app-source-nav", "view-navigator") {
         {
             setSelected(CodeEditor.isNavigatorVisible());
         }

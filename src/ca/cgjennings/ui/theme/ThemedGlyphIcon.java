@@ -38,6 +38,12 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class ThemedGlyphIcon extends AbstractThemedIcon {
+    /**
+     * Prefix used to identify a glyph icon descriptor to {@link ResourceKit.getIcon()}.
+     * This is ignored, if present, at the start of a descriptor string.
+     */
+    public static final String GLYPH_RESOURCE_PREFIX = "gly:";
+    
 
     private static Font defaultFont;
     private String descriptor;
@@ -112,6 +118,9 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
      */
     public ThemedGlyphIcon(String descriptor) {
         this.descriptor = Objects.requireNonNull(descriptor);
+        if (descriptor.startsWith(GLYPH_RESOURCE_PREFIX)) {
+            this.descriptor = descriptor.substring(GLYPH_RESOURCE_PREFIX.length());
+        }
     }
     
     @Override

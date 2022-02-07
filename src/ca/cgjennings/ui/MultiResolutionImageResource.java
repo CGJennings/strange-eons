@@ -89,9 +89,6 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
 
     public MultiResolutionImageResource(String baseResource) {
         BufferedImage base = ResourceKit.getImageQuietly(baseResource);
-        if (base == null) {
-            base = ResourceKit.getMissingImage();
-        }
         cached[X1] = base;
 
         int lastDot = baseResource.lastIndexOf('.');

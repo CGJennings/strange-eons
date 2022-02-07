@@ -41,6 +41,7 @@ import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
+import static ca.cgjennings.ui.theme.ThemedGlyphIcon.GLYPH_RESOURCE_PREFIX;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -472,39 +473,53 @@ public class ResourceKit {
      * @see Theme#applyThemeToImage
      */
     public static ThemedIcon getIcon(String iconResource) {
-        if (!iconResource.isEmpty()) {
-            iconResource = getIconMapping(iconResource);
+        ThemedIcon icon;
+        
+        // see if this resource has been mapped to a new location or type
+        iconResource = getIconMapping(iconResource);
+        
+        // see if this resource ends in a query parameter and if so extract it
+        String query = null;
+        {
             int question = iconResource.lastIndexOf('?');
             if (question >= 0) {
-                ThemedIcon complete;
-                String query = iconResource.substring(question + 1);
+                query = iconResource.substring(question + 1);
                 iconResource = iconResource.substring(0, question);
-                switch (query) {
-                    case "task":
-                        complete = new TaskIcon(iconResource);
-                        break;
-                    default:
-                        complete = getIcon(iconResource);
-                        StrangeEons.log.warning("unknown icon query parameter " + query);
-                }
-                return complete;
-            }            
-            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
-                if (iconResource.indexOf('/') < 0) {
-                    return new ThemedGlyphIcon(iconResource);
-                }
-                if (!iconResource.startsWith("icons/")) {
-                    iconResource = "icons/" + iconResource;
-                }
             }
         }
-        return new ThemedImageIcon(iconResource);
+        
+        // check for a glyph-based icon descriptor
+        if (iconResource.startsWith(ThemedGlyphIcon.GLYPH_RESOURCE_PREFIX)) {
+            icon = new ThemedGlyphIcon(iconResource);
+        } else {
+            // relative to icons directory by default
+            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
+                if (!iconResource.startsWith("icons/")) {
+                   iconResource = "icons/" + iconResource;
+                }
+            }
+            icon = new ThemedImageIcon(iconResource);
+        }
+        return applyIconQuery(icon, query);
+    }
+    
+    private static ThemedIcon applyIconQuery(ThemedIcon icon, String query) {
+        if (query != null) {
+            switch (query) {
+                case "task":
+                    icon = new TaskIcon(icon);
+                    break;
+                default:
+                    StrangeEons.log.warning("unknown icon query ?" + query);
+            }
+        }
+        return icon;
     }
 
     private static String getIconMapping(String iconResource) {
         String normalized = iconResource;
         // toolbar/h1.png -> toolbar/h1
-        if (normalized.endsWith(".png")) {
+        if (normalized.endsWith(".png") || normalized.endsWith(".jpg")) {
             normalized = normalized.substring(0, normalized.length() - 4);
         }
         // icons/toolbar/h1 -> toolbar/h1
