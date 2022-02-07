@@ -70,14 +70,14 @@ const ImageUtils = (function () {
             let im = resources.ResourceKit.getImageQuietly(resPath);
             return im === null ? null : new swing.ImageIcon(im);
         } else {
-            let icon = new ca.cgjennings.ui.theme.ThemedIcon(resPath);
+            let icon = new ca.cgjennings.ui.theme.ThemedImageIcon(resPath);
             return icon.image === null ? null : icon;
         }
     };
 
     ImageUtils.createIcon = function createIcon(image, size) {
         if (isNaN(size))
-            size = 16;
+            size = 18;
         return ca.cgjennings.graphics.ImageUtilities.createIconForSize(valImage(image), size);
     };
 

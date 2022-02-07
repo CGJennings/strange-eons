@@ -11,6 +11,7 @@ import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JLinkLabel;
 import ca.cgjennings.ui.JTip;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -73,7 +74,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             throw new NullPointerException("title");
         }
         settings = Settings.getUser();
-        init(title, iconImage);
+        init(title, new ThemedImageIcon(iconImage).derive(ICON_SIZE, ICON_SIZE));
     }
 
     /**
@@ -89,9 +90,9 @@ public class FillInPreferenceCategory implements PreferenceCategory {
         }
         settings = Settings.getUser();
         if (iconResource == null || iconResource.isEmpty()) {
-            init(title, null);
+            init(title, (Icon) null);
         } else {
-            init(title, ResourceKit.getThemedImage(iconResource));
+            init(title, iconResource);
         }
     }
 
@@ -107,7 +108,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public FillInPreferenceCategory(PluginContext context, String title, BufferedImage iconImage) {
         settings = context.getSettings();
-        init(title, iconImage);
+        init(title, new ThemedImageIcon(iconImage).derive(ICON_SIZE, ICON_SIZE));
     }
 
     /**
@@ -121,16 +122,20 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      */
     public FillInPreferenceCategory(PluginContext context, String title, String iconResource) {
         settings = context.getSettings();
-        init(title, ResourceKit.getThemedImage(iconResource));
+        init(title, iconResource);
     }
 
-    private void init(String title, BufferedImage iconImage) {
+    private void init(String title, String iconResource) {
+        init(title, new ThemedImageIcon(iconResource));        
+    }
+    
+    private void init(String title, Icon icon) {
         panel = new JPanel();
         RiverLayout layout = new RiverLayout();
         indentHgapOffset = layout.getHgap();
         panel.setLayout(layout);
         this.title = title;
-        icon = ca.cgjennings.graphics.ImageUtilities.createIconForSize(iconImage, ICON_SIZE);
+        this.icon = icon;
     }
 
     @Override

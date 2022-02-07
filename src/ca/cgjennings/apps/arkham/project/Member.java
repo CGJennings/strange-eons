@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.io.File;
@@ -240,7 +241,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * @return an icon for this member
      */
     @Override
-    public Icon getIcon() {
+    public ThemedIcon getIcon() {
         return getMetadataSource().getIcon(this);
     }
 

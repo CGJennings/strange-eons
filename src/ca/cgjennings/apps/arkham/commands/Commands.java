@@ -176,7 +176,7 @@ public class Commands {
     /**
      * Exports content from editors that support this command.
      */
-    public static final DelegatedCommand EXPORT = new DelegatedCommand("app-export");
+    public static final DelegatedCommand EXPORT = new DelegatedCommand("app-export", "export");
     /**
      * Prints content from editors that support this command.
      */
@@ -198,7 +198,7 @@ public class Commands {
     /**
      * Adds a clone of the current document to the application.
      */
-    public static final DelegatedCommand SPIN_OFF = new DelegatedCommand("app-clone");
+    public static final DelegatedCommand SPIN_OFF = new DelegatedCommand("app-clone", "spin-off");
     /**
      * Clears all content from editors that support this command.
      */
@@ -295,7 +295,7 @@ public class Commands {
     /**
      * Toggles visibility of the context bar.
      */
-    public static final AbstractToggleCommand VIEW_CONTEXT_BAR = new AbstractToggleCommand("app-context-bar", "ui/view/contextbar.png") {
+    public static final AbstractToggleCommand VIEW_CONTEXT_BAR = new AbstractToggleCommand("app-context-bar", "context-bar") {
         {
             setSelected(Settings.getShared().getYesNo("show-context-bar"));
         }
@@ -1228,7 +1228,7 @@ public class Commands {
      * Formats (pretty prints) the current editor content, if a suitable
      * formatter is available.
      */
-    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null, "format-code");
+    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", "format-code", "format-code");
 
     /**
      * Displays the source code abbreviation table editor.
@@ -1303,17 +1303,17 @@ public class Commands {
     /**
      * Opens the User Manual for browsing.
      */
-    public static final AbstractCommand HELP_USER_MANUAL = new HDocPageCommand("app-user-manual", "um-index");
+    public static final AbstractCommand HELP_USER_MANUAL = new HDocPageCommand("app-user-manual", "um-index", "user-manual");
 
     /**
      * Opens the Developer Manual for browsing.
      */
-    public static final AbstractCommand HELP_DEV_MANUAL = new HDocPageCommand("app-dev-manual", "dm-index");
+    public static final AbstractCommand HELP_DEV_MANUAL = new HDocPageCommand("app-dev-manual", "dm-index", "dev-manual");
 
     /**
      * Opens the Translation Manual for browsing.
      */
-    public static final AbstractCommand HELP_TRANSLATOR_MANUAL = new HDocPageCommand("app-translator-manual", "tm-index");
+    public static final AbstractCommand HELP_TRANSLATOR_MANUAL = new HDocPageCommand("app-translator-manual", "tm-index", "translation-manual");
 
     /**
      * Opens the JS API documentation for browsing.
@@ -1323,7 +1323,7 @@ public class Commands {
     /**
      * Opens the Java API documentation for browsing.
      */
-    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/");
+    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/", "help-api");
 
     /**
      * Files a bug report with no specific message or exception information.

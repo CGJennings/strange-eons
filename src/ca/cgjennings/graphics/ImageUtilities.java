@@ -7,7 +7,9 @@ import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import ca.cgjennings.graphics.filters.InversionFilter;
 import ca.cgjennings.graphics.filters.TrimFilter;
 import ca.cgjennings.graphics.filters.TurnAndFlipFilter;
+import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -19,6 +21,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.MultiResolutionImage;
 import java.awt.image.PixelGrabber;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -352,7 +355,11 @@ public final class ImageUtilities {
             return null;
         }
         if (icon.getIconWidth() != size || icon.getIconHeight() != size) {
-            icon = createIconForSize(iconToImage(icon), size);
+            if (icon instanceof ThemedIcon) {
+                icon = ((ThemedIcon) icon).derive(size);
+            } else {            
+                icon = createIconForSize(iconToImage(icon), size);
+            }
         }
         return icon;
     }
@@ -369,8 +376,12 @@ public final class ImageUtilities {
         if (i == null) {
             return null;
         }
-        if (i instanceof ThemedIcon) {
-            return ((ThemedIcon) i).getImage();
+        if (i instanceof ThemedImageIcon) {
+            MultiResolutionImage mri = ((ThemedImageIcon) i).getMultiResolutionImage();
+            if (mri instanceof BufferedImage) {
+                return (BufferedImage) mri;
+            }
+            return (BufferedImage) mri.getResolutionVariant(i.getIconWidth(), i.getIconHeight());
         }
         if (i instanceof ImageIcon) {
             Image ii = ((ImageIcon) i).getImage();
@@ -394,11 +405,14 @@ public final class ImageUtilities {
      * @param src the icon to convert
      * @return a version of the icon with a suitable "disabled" effect applied
      */
-    public static ImageIcon createDisabledIcon(Icon src) {
+    public static Icon createDisabledIcon(Icon src) {
         if (src == null) {
             return null;
         }
-        return new ImageIcon(createDisabledImage(iconToImage(src)));
+        if (src instanceof ThemedIcon) {
+            return ((ThemedIcon) src).disabled();
+        }
+        return Theme.getDisabledIcon(null, src);
     }
 
     /**

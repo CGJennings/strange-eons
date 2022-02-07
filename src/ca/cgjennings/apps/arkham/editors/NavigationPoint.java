@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -251,103 +251,103 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * An object cluster icon sometimes used by navigation points. Typical use
      * is to represent a class or object.
      */
-    public static final Icon ICON_CLUSTER = new ThemedIcon("icons/ui/dev/class.png", true);
+    public static final Icon ICON_CLUSTER = ResourceKit.getIcon("class");
     /**
      * An object cluster icon with a bar through it sometimes used by navigation
      * points. Typical use is to represent a class or object assigned to a
      * constant.
      */
-    public static final Icon ICON_CLUSTER_BAR = new ThemedIcon("icons/ui/dev/class-bar.png", true);
+    public static final Icon ICON_CLUSTER_BAR = ResourceKit.getIcon("class-bar");
     /**
      * An object package icon sometimes used by navigation points. Typical use
      * is to represent a package of classes.
      */
-    public static final Icon ICON_PACKAGE = new ThemedIcon("icons/ui/dev/package.png", true);
+    public static final Icon ICON_PACKAGE = ResourceKit.getIcon("package");
     /**
      * A hexagon icon sometimes used by navigation points. Typical use is to
      * represent a script library.
      */
-    public static final Icon ICON_HEXAGON = new ThemedIcon("icons/ui/dev/hexagon.png", true);
+    public static final Icon ICON_HEXAGON = ResourceKit.getIcon("hexagon");
     /**
      * A circle icon sometimes used by navigation points. Typical use is to
      * represent a field (member variable).
      */
-    public static final Icon ICON_CIRCLE = new ThemedIcon("icons/ui/dev/circle.png", true);
+    public static final Icon ICON_CIRCLE = ResourceKit.getIcon("circle");
     /**
      * A circle icon with a bar through it sometimes used by navigation points.
      * Typical use is to represent a static or constant field (member variable).
      */
-    public static final Icon ICON_CIRCLE_BAR = new ThemedIcon("icons/ui/dev/circle-bar.png", true);
+    public static final Icon ICON_CIRCLE_BAR = ResourceKit.getIcon("circle-bar");
     /**
      * A small circle icon sometimes used by navigation points. Typical use is
      * to represent a keyword.
      */
-    public static final Icon ICON_CIRCLE_SMALL = new ThemedIcon("icons/ui/dev/circle-small.png", true);
+    public static final Icon ICON_CIRCLE_SMALL = ResourceKit.getIcon("circle-small");
     /**
      * A diamond icon sometimes used by navigation points. Typical use is to
      * represent a function or method.
      */
-    public static final Icon ICON_DIAMOND = new ThemedIcon("icons/ui/dev/diamond.png", true);
+    public static final Icon ICON_DIAMOND = ResourceKit.getIcon("diamond");
     /**
      * A diamond icon with a bar through it sometimes used by navigation points.
      * Typical use is to represent a constant function or static method.
      */
-    public static final Icon ICON_DIAMOND_BAR = new ThemedIcon("icons/ui/dev/diamond-bar.png", true);
+    public static final Icon ICON_DIAMOND_BAR = ResourceKit.getIcon("diamond-bar");
     /**
      * A leftward diamond icon sometimes used by navigation points. Typical use
      * is to represent a getter function.
      */
-    public static final Icon ICON_DIAMOND_LEFT = new ThemedIcon("icons/ui/dev/getter.png", true);
+    public static final Icon ICON_DIAMOND_LEFT = ResourceKit.getIcon("getter");
     /**
      * A rightward diamond icon sometimes used by navigation points. Typical use
      * is to represent a setter function.
      */
-    public static final Icon ICON_DIAMOND_RIGHT = new ThemedIcon("icons/ui/dev/setter.png", true);
+    public static final Icon ICON_DIAMOND_RIGHT = ResourceKit.getIcon("setter");
     /**
      * A square icon sometimes used by navigation points. Typical use is to
      * represent a variable.
      */
-    public static final Icon ICON_SQUARE = new ThemedIcon("icons/ui/dev/square.png", true);
+    public static final Icon ICON_SQUARE = ResourceKit.getIcon("square");
     /**
      * A square icon with a bar through it sometimes used by navigation points.
      * Typical use is to represent a static variable or constant.
      */
-    public static final Icon ICON_SQUARE_BAR = new ThemedIcon("icons/ui/dev/square-bar.png", true);
+    public static final Icon ICON_SQUARE_BAR = ResourceKit.getIcon("square-bar");
     /**
      * A square icon in an alternative colour that is sometimes used by
      * navigation points. Typical use is to represent a function or method
      * parameter.
      */
-    public static final Icon ICON_SQUARE_ALTERNATIVE = new ThemedIcon("icons/ui/dev/square-alt.png", true);
+    public static final Icon ICON_SQUARE_ALTERNATIVE = ResourceKit.getIcon("square-alt");
     /**
      * A square icon with a bar through it in an alternative colour that is
      * sometimes used by navigation points. Typical use is to represent an
      * enumeration value.
      */
-    public static final Icon ICON_SQUARE_ALTERNATIVE_BAR = new ThemedIcon("icons/ui/dev/square-alt-bar.png", true);
+    public static final Icon ICON_SQUARE_ALTERNATIVE_BAR = ResourceKit.getIcon("square-alt-bar");
     /**
      * A triangle icon sometimes used by navigation points. Typical use is to
      * represent a property key name.
      */
-    public static final Icon ICON_TRIANGLE = new ThemedIcon("icons/ui/dev/triangle.png", true);
+    public static final Icon ICON_TRIANGLE = ResourceKit.getIcon("triangle");
     /**
      * A Greek cross icon sometimes used by navigation points. Typical use is to
      * represent a generator function.
      */
-    public static final Icon ICON_CROSS = new ThemedIcon("icons/ui/dev/cross.png", true);
+    public static final Icon ICON_CROSS = ResourceKit.getIcon("cross");
     /**
      * A Greek cross icon with a bar through it sometimes used by navigation
      * points. Typical use is to represent a constant generator function.
      */
-    public static final Icon ICON_CROSS_BAR = new ThemedIcon("icons/ui/dev/cross-bar.png", true);
+    public static final Icon ICON_CROSS_BAR = ResourceKit.getIcon("cross-bar");
     /**
      * An error symbol icon sometimes used by navigation points. Typical use is
      * to represent compiler errors.
      */
-    public static final Icon ICON_ERROR = ImageUtilities.createIconForSize(ResourceKit.getThemedImage("icons/ui/error.png"), 12);
+    public static final Icon ICON_ERROR = ResourceKit.getIcon("error").tiny();
     /**
      * A warning symbol icon sometimes used by navigation points. Typical use is
      * to represent compiler warnings or other style hints.
      */
-    public static final Icon ICON_WARNING = ImageUtilities.createIconForSize(ResourceKit.getThemedImage("icons/ui/warning.png"), 12);
+    public static final Icon ICON_WARNING = ResourceKit.getIcon("warning").tiny();
 }

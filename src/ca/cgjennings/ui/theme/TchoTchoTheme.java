@@ -1,11 +1,14 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.MultiResolutionImageResource;
 import java.awt.image.BufferedImage;
+import java.awt.image.MultiResolutionImage;
 import javax.imageio.ImageIO;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import resources.Language;
+import resources.ResourceKit;
 
 /**
  * A fallback theme that uses the system look and feel. (This theme was
@@ -37,6 +40,23 @@ public class TchoTchoTheme extends Theme {
         }
 
         return super.getThemeRepresentativeImage();
+    }
+
+    @Override
+    public MultiResolutionImage getThemeImage() {
+        try {
+            String platformImage = null;
+            if (PlatformSupport.PLATFORM_IS_WINDOWS) {
+                platformImage = "TchoTchoWindows.png";
+            } else if (PlatformSupport.PLATFORM_IS_MAC) {
+                platformImage = "TchoTchoMac.png";
+            }
+            if (platformImage != null) {
+                return new MultiResolutionImageResource(ResourceKit.getIdentifier(TchoTchoTheme.class, platformImage));
+            }
+        } catch (Throwable t) {
+        }
+        return super.getThemeImage();
     }
 
     /**

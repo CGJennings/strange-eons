@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.NewEditorDialog;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,7 +40,7 @@ public class New extends TaskActionTree {
         private String ext;
         private String defaultName;
         private String[] taskTypes;
-        private Icon icon;
+        private ThemedIcon icon;
 
         /**
          * Create a new action that you will supply your own file creation logic
@@ -107,7 +108,7 @@ public class New extends TaskActionTree {
             if (icon == null) {
                 icon = MetadataSource.ICON_BLANK;
             }
-            this.icon = icon;
+            this.icon = ThemedIcon.create(icon);
         }
 
         @Override
@@ -116,7 +117,7 @@ public class New extends TaskActionTree {
         }
 
         @Override
-        public Icon getIcon() {
+        public ThemedIcon getIcon() {
             return icon;
         }
 

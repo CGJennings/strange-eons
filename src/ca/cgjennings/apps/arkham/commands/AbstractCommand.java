@@ -2,7 +2,7 @@ package ca.cgjennings.apps.arkham.commands;
 
 import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import javax.swing.AbstractAction;
@@ -216,12 +216,9 @@ public abstract class AbstractCommand extends AbstractAction {
             setIcon((Icon) null);
             return;
         }
-        
-        if (iconResource.indexOf(':') < 0 && !iconResource.startsWith("/")) {
-            iconResource = "icons/" + iconResource;
-        }
 
-        setIcon(new ThemedIcon(iconResource));
+
+        setIcon(ResourceKit.getIcon(iconResource));
     }
 
     /**

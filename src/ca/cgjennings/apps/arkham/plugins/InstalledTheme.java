@@ -1,9 +1,13 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.MultiResolutionImageResource;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
+import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
+import java.awt.image.MultiResolutionImage;
 import java.io.IOException;
 import javax.swing.Icon;
 import resources.CoreComponents.MissingCoreComponentException;
@@ -25,7 +29,7 @@ public final class InstalledTheme extends InstalledBundleObject {
     private String id;
 
     private String name, desc;
-    private BufferedImage image;
+    private MultiResolutionImage image;
     private Icon icon, largeIcon;
 
     /**
@@ -77,10 +81,21 @@ public final class InstalledTheme extends InstalledBundleObject {
     /**
      * Returns the theme's representative image.
      *
+     * @deprecated Prefer {@link #getImage()}.
+     * 
      * @return the representative image for the theme
      */
+    @Deprecated
     @Override
     public BufferedImage getRepresentativeImage() {
+        return ImageUtilities.ensureIntRGBFormat(image.getResolutionVariant(ICON_SIZE_LARGE, ICON_SIZE_LARGE));
+    }
+    
+    /**
+     * Returns the theme's representative image.
+     * @return the representative image for the theme
+     */
+    public MultiResolutionImage getImage() {
         return image;
     }
 
@@ -92,7 +107,7 @@ public final class InstalledTheme extends InstalledBundleObject {
     @Override
     public Icon getIcon() {
         if (icon == null) {
-            icon = ImageUtilities.createIconForSize(image, ICON_SIZE_SMALL);
+            icon = new ThemedImageIcon(image, ICON_SIZE_SMALL, ICON_SIZE_SMALL);
         }
         return icon;
     }
@@ -104,7 +119,7 @@ public final class InstalledTheme extends InstalledBundleObject {
      */
     public Icon getLargeIcon() {
         if (largeIcon == null) {
-            largeIcon = ImageUtilities.createIconForSize(image, ICON_SIZE_LARGE);
+            largeIcon = new ThemedImageIcon(image, ICON_SIZE_LARGE, ICON_SIZE_LARGE);
         }
         return largeIcon;
     }
@@ -116,9 +131,15 @@ public final class InstalledTheme extends InstalledBundleObject {
             if (name == null) {
                 name = id;
             }
-            image = theme.getThemeRepresentativeImage();
+            image = theme.getThemeImage();
             if (image == null) {
-                image = ResourceKit.getImage("/ca/cgjennings/ui/theme/default.png");
+                BufferedImage bim = theme.getThemeRepresentativeImage();
+                if (bim != null) {
+                    image = new BaseMultiResolutionImage(bim);
+                }
+            }
+            if (image == null) {
+                image = new MultiResolutionImageResource("/ca/cgjennings/ui/theme/default.png");
             }
             // make sure that the L&F class needed by the theme exists
             // (this will eliminate themes based on Nimbus when Java 6u10 is not installed)

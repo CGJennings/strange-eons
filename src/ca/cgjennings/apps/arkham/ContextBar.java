@@ -18,6 +18,7 @@ import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.anim.AnimationUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import gamedata.Game;
 import java.awt.Color;
 import java.awt.Component;
@@ -930,11 +931,12 @@ public final class ContextBar {
     private static Icon coerceIconSize(Icon i) {
         final int ICON_SIZE = getPreferredContextBarIconSize();
         if (i != null) {
-            if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
-                BufferedImage bi = ImageUtilities.iconToImage(i);
-                bi = ImageUtilities.trim(bi);
-                i = ImageUtilities.createIconForSize(bi, ICON_SIZE);
-            }
+            i = ThemedIcon.create(i).derive(ICON_SIZE);
+//            if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
+//                BufferedImage bi = ImageUtilities.iconToImage(i);
+//                bi = ImageUtilities.trim(bi);
+//                i = ImageUtilities.createIconForSize(bi, ICON_SIZE);
+//            }
         } else {
             StrangeEons.log.log(Level.WARNING, "using blank icon for null context bar button icon");
             i = new BlankIcon(ICON_SIZE, ICON_SIZE);

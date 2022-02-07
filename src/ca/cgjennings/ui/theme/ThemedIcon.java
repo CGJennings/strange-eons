@@ -1,212 +1,107 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.ui.MultiResolutionImageResource;
-import ca.cgjennings.algo.SplitJoin;
-import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.ui.FilteredMultiResolutionImage;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.AbstractMultiResolutionImage;
-import java.awt.image.BufferedImage;
-import java.util.Objects;
+import java.io.File;
 import javax.swing.Icon;
-import resources.ResourceKit;
 
 /**
- * An icon that whose image can change according to the installed {@link Theme}.
- * Supports {@linkplain MultiResolutionImageResource multi-resolution images}
- * using file name suffixes (such as {@code myicon@2x.png}).
+ * Interface implemented by all Strange Eons icons.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
  */
-public class ThemedIcon implements Icon {
-    private String resource;
-    private volatile FilteredMultiResolutionImage mim;
-    private FilteredMultiResolutionImage dim;
-    private int width, height;
-    
+public interface ThemedIcon extends Icon {
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version.
+     * Returns a new icon that renders the same image as this icon, but at a
+     * different size.
      *
-     * @param resource the resource identifier for the icon
-     * @see Theme#applyThemeToImage(java.lang.String)
+     * @param newWidth the new width ≥ 1
+     * @param newHeight the new height ≥ 1
+     * @return an icon with the revised dimensions
      */
-    public ThemedIcon(String resource) {
-        this(resource, false);
-    }
+    ThemedIcon derive(int newWidth, int newHeight);
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then it will not
-     * be loaded until the first time it is used. Otherwise, the image may
-     * start loading immediately.
+     * Returns a new icon that renders the same image as this icon, but at a
+     * different size.
      *
-     * @param resource the resource identifier for the icon
-     * @param deferLoading if {@code true}, the image is loaded lazily
-     * @see Theme#applyThemeToImage(java.lang.String)
+     * @param newSize the new width and height ≥ 1
+     * @return an icon with the revised dimensions
      */
-    public ThemedIcon(String resource, boolean deferLoading) {
-        Objects.requireNonNull(resource, "resource");
-        this.resource = ResourceKit.normalizeResourceIdentifier(resource);
-
-        if (!deferLoading) {
-            if (Runtime.getRuntime().availableProcessors() > 1) {
-                SplitJoin.getInstance().execute(this::getMultiResolutionImage);
-            } else {
-                getMultiResolutionImage();
-            }
-        }
-    }
-    
-    /**
-     * Creates a new themed icon that overrides the size of the image base image
-     * resource to return the indicated size.
-     * 
-     * @param resource the resource identifier for the icon
-     * @param width the desired icon width (for 1:1 displays)
-     * @param height the desired icon height (for 1:1 displays)
-     */
-    public ThemedIcon(String resource, int width, int height) {
-        this(resource, true);
-        if (width < 1 || height < 1) {
-            throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
-        }
-        getMultiResolutionImage();
-        this.width = width;
-        this.height = height;
-    }
-    
-    private ThemedIcon(ThemedIcon src, int width, int height) {
-        if (width < 1 || height < 1) {
-            throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
-        }
-        src.getMultiResolutionImage();
-        mim = src.mim;
-        dim = src.dim;
-        resource = src.getResource();
-        this.width = width;
-        this.height = height;
+    default ThemedIcon derive(int newSize) {
+        return derive(newSize, newSize);
     }
 
     /**
-     * Returns the resource identifier for this icon.
+     * Returns a new icon that renders the same image as this icon, but as if
+     * for a permanently disabled component.
      *
-     * @return the image resource
+     * @return a disabled verison of the icon
      */
-    public String getResource() {
-        return resource;
-    }
-    
-    /**
-     * Returns an image that can be used to render the icon's image at
-     * multiple resolutions.
-     * 
-     * @return a multi-resolution version of the source image
-     */
-    public final AbstractMultiResolutionImage getMultiResolutionImage() {
-        FilteredMultiResolutionImage mim = this.mim;
-        if (mim == null) {
-            synchronized(this) {
-                mim = this.mim;
-                if (mim == null) {
-                    // create base image that returns "raw" image resources
-                    MultiResolutionImageResource resIm = new MultiResolutionImageResource(resource);
-
-                    // get the intended icon size at 1:1 scale
-                    BufferedImage base = resIm.getBaseImage();
-                    width = base.getWidth();
-                    height = base.getHeight();
-
-                    // wrap the base image to ensure theme is applied
-                    this.mim = mim = new FilteredMultiResolutionImage(resIm) {
-                        @Override
-                        public Image applyEffect(Image source) {
-                            Theme th = ThemeInstaller.getInstalledTheme();
-                            if (th != null) {
-                                source = th.applyThemeToImage(ImageUtilities.ensureIntRGBFormat(source));
-                            }
-                            return source;                    
-                        }
-                    };
-                }
-            }
-        }
-        return mim;
-    }
-    
-    /**
-     * Returns a multi-resolution image that can be used to render a version
-     * of the icon's image to reflect the disabled component state.
-     * 
-     * @return 
-     */
-    public final AbstractMultiResolutionImage getDisabledMultiResolutionImage() {
-        if (dim == null) {
-            dim = new FilteredMultiResolutionImage(getMultiResolutionImage()) {
-                @Override
-                public Image applyEffect(Image source) {
-                    return ImageUtilities.createDisabledImage((BufferedImage) source);
-                }
-            };
-        }
-        return dim;
-    }
-    
-    /**
-     * Returns an icon with the same base image as this icon,
-     * but which renders with a different nominal size or state.
-     * 
-     * @param width the new width (on 1:1 displays)
-     * @param height the new height (on 1:1 displays)
-     * @return an icon for the new size
-     */
-    public final ThemedIcon derive(int width, int height) {
-        return new ThemedIcon(this, width, height);
-    }
-
+    ThemedIcon disabled();
 
     /**
-     * Returns the (possibly themed) base image that will be used by the icon.
-     * The base image is used by the icon when no desktop scaling is applied,
-     * and so determines the base size of the icon.
+     * Creates a themed icon from any arbitrary icon. If passed a themed icon,
+     * returns it unchanged. If passed null, returns null. If passed some other
+     * type of icon, it is converted to an equivalent themed icon.
      *
-     * @return the image drawn by the icon at 1:1 scale
+     * @param icon the icon to create a themed version for
+     * @return a themed icon that renders the same graphic as the specified icon
      */
-    public final BufferedImage getImage() {
-        if (mim == null) {
-            getMultiResolutionImage();
+    public static ThemedIcon create(Icon icon) {
+        if (icon == null) {
+            return null;
         }
-        return (BufferedImage) mim.getBaseImage();
+        return (icon instanceof ThemedIcon) ? (ThemedIcon) icon : new ForeignIcon(icon);
     }
 
-    @Override
-    public int getIconWidth() {
-        if (mim == null) getMultiResolutionImage();
-        return width;
+    /**
+     * Creates a themed icon based on the platform desktop icon for the
+     * specified icon.
+     *
+     * @param file the non-null file to create an icon for
+     */
+    public static ThemedIcon create(File platformFile) {
+        return new ForeignIcon(platformFile);
+    }
+    
+    default ThemedIcon tiny() {
+        return derive(TINY, TINY);
+    }
+    
+    default ThemedIcon small() {
+        return derive(SMALL, SMALL);
     }
 
-    @Override
-    public int getIconHeight() {
-        if (mim == null) getMultiResolutionImage();
-        return height;
+    default ThemedIcon mediumSmall() {
+        return derive(MEDIUM_SMALL, MEDIUM_SMALL);
     }
-
-    @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        if (mim == null) getMultiResolutionImage();
-        
-        if (c != null && !c.isEnabled()) {
-            g.drawImage(getDisabledMultiResolutionImage(), x, y, width, height, null);
-            return;
-        }
-        g.drawImage(mim, x, y, width, height, null);
+    
+    default ThemedIcon medium() {
+        return derive(MEDIUM, MEDIUM);
     }
+    
+    default ThemedIcon mediumLarge() {
+        return derive(MEDIUM_LARGE, MEDIUM_LARGE);
+    }
+    
+    default ThemedIcon large() {
+        return derive(LARGE, LARGE);
+    }
+    
+    default ThemedIcon veryLarge() {
+        return derive(VERY_LARGE, VERY_LARGE);
+    }    
+    
+    default ThemedIcon gigantic() {
+        return derive(GIGANTIC, GIGANTIC);
+    }
+    
+    public static final int TINY = 12;
+    public static final int SMALL = 18;
+    public static final int MEDIUM_SMALL = 24;
+    public static final int MEDIUM = 32;
+    public static final int MEDIUM_LARGE = 48;
+    public static final int LARGE = 64;
+    public static final int VERY_LARGE = 96;
+    public static final int GIGANTIC = 256;
 }

@@ -5,20 +5,22 @@ import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
-import ca.cgjennings.ui.icon.ThemedIcon;
+import ca.cgjennings.ui.MultiResolutionImageResource;
+import java.awt.Component;
+import java.awt.Composite;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
+import java.awt.image.MultiResolutionImage;
 import java.net.URL;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
-import javax.swing.UIManager;
 import resources.Language;
 import resources.ResourceKit;
 
@@ -102,9 +104,12 @@ public abstract class Theme {
      * The base implementation attempts to locate an image in the same package
      * as the theme's class, with the same name, but with a file extension of
      * either ".png" or ".jp2" (in that order).
+     * 
+     * @deprecated Prefer {@link #getThemeImage()}.
      *
      * @return the theme's representative image
      */
+    @Deprecated
     public BufferedImage getThemeRepresentativeImage() {
         BufferedImage bi = null;
         try {
@@ -122,6 +127,32 @@ public abstract class Theme {
         } catch (Exception e) {
         }
         return bi;
+    }
+
+    /**
+     * Returns a representative image for the theme. The base class attempts
+     * to find an image in the same package as the theme's class, with the same
+     * name, but with a file extension of either {@code ".png"} or {@code ".jp2"}
+     * (in that order). Multiple versions of the image can be provided using
+     * {@code "@Nx"} file name suffixes, as in {@code MyTheme.png},
+     * {@code MyTheme@2x.png}.
+     * 
+     * @return the theme's representative image
+     */    
+    public MultiResolutionImage getThemeImage() {
+        MultiResolutionImage mim = null;
+        try {
+            String ext = ".png";
+            for (int i = 0; i < 2 && mim == null; ++i) {
+                URL u = getClass().getResource(getClass().getSimpleName() + ext);
+                if (u != null) {
+                    mim = new MultiResolutionImageResource("/" + getClass().getName().replace('.', '/') + ext);
+                }
+                ext = ".jp2";
+            }
+        } catch (Exception e) {
+        }
+        return mim;
     }
 
     /**
@@ -532,25 +563,46 @@ public abstract class Theme {
      * A helper that returns a disabled version of any icon. Used by
      * look-and-feel implementations to provide default disabled icons.
      * 
-     * @param component
-     * @param icon
-     * @return 
+     * @param component the component that the icon is for; may be null
+     * @param icon the icon to convert
+     * @return a version of the icon that will render in a disabled state
      */
     public static Icon getDisabledIcon(JComponent component, Icon icon) {
-        if (icon != null) {
-            if (icon instanceof ThemedIcon) {
-                return ((ThemedIcon) icon).disabled();
-            }
-            
-            Object fo = UIManager.get(Theme.DISABLED_ICON_FILTER);
-            if (fo instanceof BufferedImageOp) {
-                BufferedImage bi = ImageUtilities.iconToImage(icon);
-                bi = ((BufferedImageOp) fo).filter(bi, null);
-                icon = new ImageIcon(bi);
-            } else {
-                icon = ImageUtilities.createDisabledIcon(icon);
-            }
+        // ThemedIcons know how to render themselves as disabled and
+        // will check the component's enabled state
+        if (icon instanceof ThemedIcon) {
+            icon = component == null ? ((ThemedIcon) icon).disabled() : icon;
+        } else if  (icon != null) {
+            // wrap the icon with one that will render it in a disabled state
+            icon = new DisabledIconWrapper(icon);
         }
         return icon;
+    }
+    
+    private static class DisabledIconWrapper implements Icon {
+        private Icon wrapped;
+
+        public DisabledIconWrapper(Icon toWrap) {
+            wrapped = toWrap;
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            Graphics2D g2 = (Graphics2D) g;
+            Composite oldComp = g2.getComposite();
+            g2.setComposite(AbstractThemedIcon.DISABLED_COMPOSITE);
+            wrapped.paintIcon(c, g, x, y);
+            g2.setComposite(oldComp);
+        }
+
+        @Override
+        public int getIconWidth() {
+            return wrapped.getIconWidth();
+        }
+
+        @Override
+        public int getIconHeight() {
+            return wrapped.getIconHeight();
+        }        
     }
 }

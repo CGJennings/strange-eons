@@ -27,6 +27,7 @@ import ca.cgjennings.graphics.shapes.AbstractVectorImage;
 import ca.cgjennings.graphics.shapes.SVGVectorImage;
 import ca.cgjennings.graphics.shapes.VectorIcon;
 import ca.cgjennings.graphics.shapes.VectorImage;
+import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.io.InvalidFileFormatException;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
@@ -35,9 +36,12 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.TaskIcon;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
-import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -84,6 +88,7 @@ import javax.imageio.ImageIO;
 import javax.print.attribute.Attribute;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -310,6 +315,19 @@ public class ResourceKit {
         StrangeEons app = StrangeEons.getApplication();
         userResourceFolder = app == null ? null : app.getCommandLineArguments().resfolder;
     }
+    
+    /**
+     * Returns a resource path for a resource that is relative
+     * to the specified class.
+     * 
+     * @param base the class that the resource is stored relative to
+     * @param relativePathToResource the path to the resource relative to the class
+     * @return the resource path of the resource (whether or not it exists)
+     */
+    public static String getIdentifier(Class<?> base, String relativePathToResource) {
+        String path = "/" + base.getPackageName().replace('.', '/') + '/' + relativePathToResource;
+        return normalizeResourceIdentifier(path);
+    }
 
     /**
      * Returns a normalized version of the identifier. Because
@@ -442,10 +460,10 @@ public class ResourceKit {
      * load the icon from the resource "foo/icon.png", you could use either
      * "res://foo/icon.png" or "/resources/foo/icon.png".
      * <p>
-     * The returned icon is a {@link ThemedIcon} instance. This means that the
-     * currently installed {@link Theme} will be given an opportunity to modify
-     * the resource location, modify the returned image before it is converted
-     * into an icon, or both.
+     * The returned icon is a {@link ThemedImageIcon} instance. This means that
+     * the currently installed {@link Theme} will be given an opportunity to
+     * modify the resource location, modify the returned image before it is
+     * converted into an icon, or both.
      *
      * @param iconResource the resource identifier for the icon
      * @return an icon consisting of the requested image or a theme-dependent
@@ -454,15 +472,72 @@ public class ResourceKit {
      * @see Theme#applyThemeToImage
      */
     public static ThemedIcon getIcon(String iconResource) {
-        // this implementation is trivial since adding ThemedIcons
         if (!iconResource.isEmpty()) {
+            iconResource = getIconMapping(iconResource);
+            int question = iconResource.lastIndexOf('?');
+            if (question >= 0) {
+                ThemedIcon complete;
+                String query = iconResource.substring(question + 1);
+                iconResource = iconResource.substring(0, question);
+                switch (query) {
+                    case "task":
+                        complete = new TaskIcon(iconResource);
+                        break;
+                    default:
+                        complete = getIcon(iconResource);
+                        StrangeEons.log.warning("unknown icon query parameter " + query);
+                }
+                return complete;
+            }            
             if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
+                if (iconResource.indexOf('/') < 0) {
+                    return new ThemedGlyphIcon(iconResource);
+                }
                 if (!iconResource.startsWith("icons/")) {
                     iconResource = "icons/" + iconResource;
                 }
             }
         }
-        return new ThemedIcon(iconResource);
+        return new ThemedImageIcon(iconResource);
+    }
+
+    private static String getIconMapping(String iconResource) {
+        String normalized = iconResource;
+        // toolbar/h1.png -> toolbar/h1
+        if (normalized.endsWith(".png")) {
+            normalized = normalized.substring(0, normalized.length() - 4);
+        }
+        // icons/toolbar/h1 -> toolbar/h1
+        if (normalized.startsWith("icons/")) {
+            normalized = normalized.substring(6);
+        } else if (normalized.startsWith("res://icons/")) {
+            normalized = normalized.substring(12);
+        } else if (normalized.startsWith("/resources/icons/")) {
+            normalized = normalized.substring(17);
+        }
+        String mapping = iconMap.get(normalized);
+        if (mapping == null && !normalized.startsWith("/")) {
+            int justTheFileName = normalized.lastIndexOf('/');
+            if (justTheFileName >= 0) {
+                mapping = iconMap.get(normalized.substring(justTheFileName + 1));
+            }
+        }
+        return mapping == null ? iconResource : mapping;
+    }
+
+    private static Map<String, String> iconMap;
+
+    static {
+        iconMap = new HashMap<>();
+        try (InputStream in = ResourceKit.class.getResourceAsStream("icons/map.properties")) {
+            EscapedLineReader elr = new EscapedLineReader(in);
+            String[] pair;
+            while ((pair = elr.readProperty()) != null) {
+                iconMap.put(pair[0], pair[1]);
+            }
+        } catch (IOException | RuntimeException ioe) {
+            StrangeEons.log.log(Level.SEVERE, "unable to load icon map", ioe);
+        }
     }
 
     /**
@@ -1083,16 +1158,18 @@ public class ResourceKit {
         return editorFont;
     }
     private static Font editorFont;
-    
+
     private static Font locateAvailableFont(String... families) {
         StyleContext sc = StyleContext.getDefaultStyleContext();
         if (families == null | families.length == 0) {
             throw new IllegalArgumentException("missing families");
         }
         Font font = null;
-        for (int i=0; i<families.length; ++i) {
+        for (int i = 0; i < families.length; ++i) {
             font = sc.getFont(families[i], Font.PLAIN, 13);
-            if (families[i].equals(font.getFamily())) break;
+            if (families[i].equals(font.getFamily())) {
+                break;
+            }
         }
         if (font == null) {
             font = new Font(Font.MONOSPACED, Font.PLAIN, 13);

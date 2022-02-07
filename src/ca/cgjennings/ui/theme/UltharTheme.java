@@ -2,6 +2,9 @@ package ca.cgjennings.ui.theme;
 
 import java.awt.Color;
 import java.awt.Insets;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -19,10 +22,40 @@ public class UltharTheme extends Theme {
 
     @Override
     public String getLookAndFeelClassName() {
-        return "com.formdev.flatlaf.Flat"
-                + (isDark() ? "Dark" : "Light")
-                + "Laf";
+        return null;
     }
+
+    @Override
+    public LookAndFeel createLookAndFeelInstance() {
+        if (isDark()) {
+            return new com.formdev.flatlaf.FlatDarkLaf() {
+                @Override
+                public Icon getDisabledIcon(JComponent component, Icon icon) {
+                    if (icon != null) {
+                        icon = Theme.getDisabledIcon(component, icon);
+                        if (icon == null) {
+                            icon = super.getDisabledIcon(component, icon);
+                        }
+                    }
+                    return icon;
+                }
+            };
+        }
+        return new com.formdev.flatlaf.FlatLightLaf() {
+            @Override
+            public Icon getDisabledIcon(JComponent component, Icon icon) {
+                if (icon != null) {
+                    icon = Theme.getDisabledIcon(component, icon);
+                    if (icon == null) {
+                        icon = super.getDisabledIcon(component, icon);
+                    }
+                }
+                return icon;
+            }
+        };
+    }
+    
+    
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {

@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.apps.arkham.StrangeEonsEditor.EditorListener;
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyVetoException;
@@ -126,10 +127,10 @@ class TAttachedEditor extends JInternalFrame {
         if (icon == currentIcon) {
             return;
         }
-        currentIcon = icon;
-        if (icon != null && icon.getIconHeight() < ICON_HEIGHT) {
-            icon = ImageUtilities.createIconForSize(ImageUtilities.iconToImage(icon), ICON_HEIGHT);
+        if (icon != null && icon.getIconHeight() != ThemedIcon.MEDIUM_SMALL) {
+            icon = ThemedIcon.create(icon).mediumSmall();
         }
+        currentIcon = icon;
         attachedIcon = icon;
         detachedIcon = ImageUtilities.createGhostedIcon(icon);
         super.setFrameIcon(attachedIcon);
@@ -138,7 +139,6 @@ class TAttachedEditor extends JInternalFrame {
         }
         updateTab();
     }
-    private static final int ICON_HEIGHT = 24;
     // the true icon passed to the setter
     private Icon currentIcon;
     // the sized, normal version
