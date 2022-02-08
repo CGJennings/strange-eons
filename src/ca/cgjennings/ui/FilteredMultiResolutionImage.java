@@ -18,7 +18,7 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
         private MultiResolutionImage sourceImage;
         private Image base;
         private Image cacheSource;
-        private Image cacheDisabled;
+        private Image cacheFiltered;
         
         public FilteredMultiResolutionImage(MultiResolutionImage source) {
             this.sourceImage = Objects.requireNonNull(source, "source");
@@ -35,12 +35,23 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
         @Override
         public Image getBaseImage() {
             if (base == null) {
-                if (sourceImage instanceof MultiResolutionImageResource) {
-                    base = ((MultiResolutionImageResource) sourceImage).getBaseImage();
+                Image unfilteredBase = null;
+                
+                // we want to avoid generating all of the variants (else clause)
+                // so we look for various specialized ways to avoid it based
+                // on common implementations of MultiResolutionImage
+                if (sourceImage instanceof FilteredMultiResolutionImage) {
+                    unfilteredBase = ((FilteredMultiResolutionImage) sourceImage).getBaseImage();
+                } else if (sourceImage instanceof MultiResolutionImageResource) {
+                    unfilteredBase = ((MultiResolutionImageResource) sourceImage).getBaseImage();
+                } else if (sourceImage instanceof Image) {
+                    final Image si = (Image) sourceImage;
+                    unfilteredBase = sourceImage.getResolutionVariant(si.getWidth(null), si.getHeight(null));
                 } else {
-                    base = sourceImage.getResolutionVariants().get(0);
-                }                
-                base = applyEffect(sourceImage.getResolutionVariants().get(0));
+                    unfilteredBase = base = sourceImage.getResolutionVariants().get(0);
+                }
+                
+                base = applyEffect(unfilteredBase);
             }
             return base;
         }
@@ -57,11 +68,11 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
         @Override
         public Image getResolutionVariant(double destImageWidth, double destImageHeight) {
             Image var = sourceImage.getResolutionVariant(destImageWidth, destImageHeight);
-            if (var != cacheSource || cacheDisabled == null) {
+            if (var != cacheSource || cacheFiltered == null) {
                 cacheSource = var;
-                cacheDisabled = applyEffect(var);
+                cacheFiltered = applyEffect(var);
             }
-            return cacheDisabled;
+            return cacheFiltered;
         }
 
         @Override
