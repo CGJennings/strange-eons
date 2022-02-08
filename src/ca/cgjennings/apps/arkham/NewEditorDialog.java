@@ -240,8 +240,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         }
         if (defaultIcons == null) {
             defaultIcons = new Icon[]{
-                ResourceKit.getIcon("/editors/blank-editor-icon.png"),
-                ResourceKit.getIcon("/editors/blank-editor-icon.png")
+                ResourceKit.getIcon("res://editors/blank-editor-icon.png"),
+                ResourceKit.getIcon("res://editors/blank-editor-icon.png")
             };
         }
         if (gc instanceof Deck) {

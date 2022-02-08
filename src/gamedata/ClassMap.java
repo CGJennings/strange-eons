@@ -680,7 +680,7 @@ public class ClassMap implements Iterable<Entry> {
     private static final HashMap<String, Entry> categories = new HashMap<>();
     private static final int BANNER_WIDTH = 117;
     private static final int BANNER_HEIGHT = 362;
-    private static final ThemedIcon DEFAULT_CATEGORY_ICON = ResourceKit.getIcon("/editors/category.png");
-    private static final ThemedIcon DEFAULT_ITEM_ICON = ResourceKit.getIcon("/editors/missing.png");
-    private static final ThemedIcon DEFAULT_SCRIPTED_ICON = ResourceKit.getIcon("/editors/script.png");
+    private static final ThemedIcon DEFAULT_CATEGORY_ICON = ResourceKit.getIcon("res://editors/category.png");
+    private static final ThemedIcon DEFAULT_ITEM_ICON = ResourceKit.getIcon("res://editors/missing.png");
+    private static final ThemedIcon DEFAULT_SCRIPTED_ICON = ResourceKit.getIcon("res://editors/script.png");
 }
