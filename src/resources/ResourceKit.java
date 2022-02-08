@@ -52,13 +52,16 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.font.TextAttribute;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
@@ -172,6 +175,15 @@ public class ResourceKit {
      * This class cannot be instantiated.
      */
     private ResourceKit() {
+    }
+    
+    /**
+     * Returns an estimate of the desktop scaling factor of the primary display.
+     * @return the scaling factor, or 1 if no scaling appears to be applied
+     */
+    public static double estimateDesktopScalingFactor() {
+        int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+        return dpi > 96 ? (double) dpi / 96d : 1d;
     }
 
     /**
@@ -2617,11 +2629,14 @@ public class ResourceKit {
      * the default is {@code icons/banner}.
      * @return an image with a transparent lower edge
      * @throws NullPointerException if the source image is {@code null}
-     */    
+     */
     public static ThemedIcon createBleedBanner(String resource) {
         if (resource.indexOf('/') < 0) {
             resource = "icons/banner/" + resource;
         }
+        return bannerCache.get(resource);
+    }
+    private static ThemedIcon createBleedBannerImpl(String resource) {
         MultiResolutionImageResource mim = new MultiResolutionImageResource(resource);
         BufferedImage bleedGradient = getImage("icons/banner/gradient.png");
         FilteredMultiResolutionImage filtered = new FilteredMultiResolutionImage(mim) {
@@ -2648,6 +2663,25 @@ public class ResourceKit {
         return new ThemedImageIcon(filtered, BANNER_WIDTH, BANNER_HEIGHT);
     }
     private static final int BANNER_WIDTH = 117, BANNER_HEIGHT = 362;
+    
+    private static final AbstractResourceCache<String,ThemedIcon> bannerCache = new AbstractResourceCache<>(ThemedIcon.class, "Banners") {
+        @Override
+        protected ThemedIcon loadResource(String canonicalIdentifier) {
+            return createBleedBannerImpl(canonicalIdentifier);
+        }
+        @Override
+        protected long estimateResourceMemoryUse(ThemedIcon resource) {
+            double scale = estimateDesktopScalingFactor();
+            if (scale > 1d) {
+                // total memory required is typically 1 base image + 1 scaled image
+                double base = (BANNER_WIDTH * BANNER_HEIGHT) * 4d;
+                base += base * scale * scale;
+                return (long) base;
+            } else {
+                return (long) (BANNER_WIDTH * BANNER_HEIGHT * 4);
+            }
+        }
+    };
     
 
     /**
