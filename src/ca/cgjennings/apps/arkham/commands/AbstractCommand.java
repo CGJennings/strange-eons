@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.commands;
 
 import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import javax.swing.AbstractAction;

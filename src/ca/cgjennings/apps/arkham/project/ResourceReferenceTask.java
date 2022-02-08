@@ -52,9 +52,6 @@ class ResourceReferenceTask extends NewTaskType {
         new BusyDialog(StrangeEons.getWindow(), string("pt-resref-extract"), () -> {
             try {
                 File appFile = BundleInstaller.getApplicationLibrary();
-                if (appFile.isDirectory() && StrangeEons.getBuildNumber() == 99_999) {
-                    appFile = new File(System.getenv("programfiles") + "/StrangeEons/SE3/strange-eons.jar");
-                }
                 if (!appFile.isDirectory() && appFile.exists()) {
                     unpack(task, appFile);
                 }

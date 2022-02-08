@@ -11,13 +11,10 @@ import ca.cgjennings.apps.arkham.diy.DIY;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.debugging.Client;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.IconProvider;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import gamedata.ClassMap.Entry;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -29,7 +26,6 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import resources.CoreComponents.MissingCoreComponentException;
 import resources.Language;
@@ -412,33 +408,15 @@ public class ClassMap implements Iterable<Entry> {
                 iconURL = iconURL.trim();
                 int semi = iconURL.indexOf(';');
                 if (semi >= 0) {
-                    String bannerURL = iconURL.substring(semi + 1).trim();
-                    iconURL = iconURL.substring(0, semi).trim();
-
                     try {
-                        BufferedImage bi = ResourceKit.getThemedImage(bannerURL);
-                        if (bi.getWidth() != BANNER_WIDTH || bi.getHeight() != BANNER_HEIGHT) {
-                            // "upgrade" old banners
-                            if (bi.getWidth() == BANNER_WIDTH) {
-                                StrangeEons.log.log(Level.INFO, "converting 2.x banner to new size: {0}", bannerURL);
-                                BufferedImage temp = new BufferedImage(BANNER_WIDTH, BANNER_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-                                Graphics2D g = temp.createGraphics();
-                                try {
-                                    bi = ResourceKit.createBleedBanner(bi);
-                                    g.drawImage(bi, 0, 0, null);
-                                } finally {
-                                    g.dispose();
-                                }
-                                bi = temp;
-                            } else {
-                                StrangeEons.log.log(Level.WARNING, "resizing banner to standard size: {0}", bannerURL);
-                                bi = ImageUtilities.resample(bi, BANNER_WIDTH, BANNER_HEIGHT);
-                                bi = ResourceKit.createBleedBanner(bi);
-                            }
-                        } else {
-                            bi = ResourceKit.createBleedBanner(bi);
+                        String bannerURL = iconURL.substring(semi + 1).trim();
+                        iconURL = iconURL.substring(0, semi).trim();                    
+                        ThemedIcon bannerIcon = ResourceKit.createBleedBanner(bannerURL);
+                        if (bannerIcon.getIconWidth() != BANNER_WIDTH || bannerIcon.getIconHeight() != BANNER_HEIGHT) {
+                            bannerIcon = bannerIcon.derive(BANNER_WIDTH, BANNER_HEIGHT);
+                            StrangeEons.log.log(Level.WARNING, "resizing banner to standard " + BANNER_WIDTH + 'x' + BANNER_HEIGHT +  " size: " + bannerURL);
                         }
-                        banner = new ImageIcon(bi);
+                        banner = bannerIcon;
                     } catch (Exception e) {
                         StrangeEons.log.log(Level.WARNING, "error reading category banner: " + key, e);
                     }

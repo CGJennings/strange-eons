@@ -22,7 +22,6 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import resources.Settings;

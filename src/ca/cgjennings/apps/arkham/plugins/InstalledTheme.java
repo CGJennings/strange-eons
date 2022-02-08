@@ -12,7 +12,6 @@ import java.io.IOException;
 import javax.swing.Icon;
 import resources.CoreComponents.MissingCoreComponentException;
 import resources.Language;
-import resources.ResourceKit;
 
 /**
  * Provides the information needed to allow the user to select a theme, and for

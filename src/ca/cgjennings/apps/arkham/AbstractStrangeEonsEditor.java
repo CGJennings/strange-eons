@@ -11,7 +11,6 @@ import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.ProjectView;
 import ca.cgjennings.ui.BlankIcon;
-import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

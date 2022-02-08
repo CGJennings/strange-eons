@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commandable;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.component.GameComponent;
-import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.File;
 import java.util.EventListener;
 import javax.swing.Icon;

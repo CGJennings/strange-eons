@@ -43,7 +43,6 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -68,9 +67,6 @@ public class EndUserExpansion extends javax.swing.JDialog {
     public EndUserExpansion(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
-        banner.setIcon(new ImageIcon(
-                ResourceKit.createBleedBanner(ImageUtilities.iconToImage(banner.getIcon()))
-        ));
         backBtn.setIcon(ResourceKit.getIcon("ui/go-back.png"));
         nextBtn.setIcon(ResourceKit.getIcon("ui/continue.png"));
 
@@ -161,7 +157,8 @@ public class EndUserExpansion extends javax.swing.JDialog {
         setTitle(string( "eue-l-title" )); // NOI18N
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-expansion.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("new-expansion.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setOpaque(true);
@@ -188,7 +185,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jLabel1))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +233,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                             .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(gameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         page1Layout.setVerticalGroup(
             page1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,7 +248,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(gameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         cardPanel.add(page1, "p1");
@@ -353,7 +350,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                     .addGroup(page3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(page3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(saveField, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                            .addComponent(saveField, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
                             .addComponent(jLabel9))))
                 .addContainerGap())
         );
@@ -370,7 +367,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         cardPanel.add(page3, "p3");
@@ -424,7 +421,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(backNextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(backNextPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                         .addComponent(cancelBtn2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(backBtn)

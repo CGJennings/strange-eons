@@ -1,8 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;

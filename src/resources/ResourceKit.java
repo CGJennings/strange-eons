@@ -35,13 +35,14 @@ import ca.cgjennings.layout.TextStyle;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
+import ca.cgjennings.ui.FilteredMultiResolutionImage;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.MultiResolutionImageResource;
 import ca.cgjennings.ui.theme.TaskIcon;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
-import static ca.cgjennings.ui.theme.ThemedGlyphIcon.GLYPH_RESOURCE_PREFIX;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
@@ -89,7 +90,6 @@ import javax.imageio.ImageIO;
 import javax.print.attribute.Attribute;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
-import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -2589,25 +2589,12 @@ public class ResourceKit {
         }
     }
 
-    /**
-     * Returns a new image equivalent to the original but with an alpha gradient
-     * applied to the bottom edge. This method is used to create the bleed
-     * effect that is seen in the banner image found in the left margin of some
-     * dialogs, such as the dialog for creating new game component editors.
-     * Applying the alpha gradient as a separate step allows the images used for
-     * this purpose to be saved without an alpha channel, significantly reducing
-     * file size. It also ensures consistency even when the banner image may be
-     * supplied by a plug-in.
-     *
-     * @param source the source banner image
-     * @return an image with a transparent lower edge
-     * @throws NullPointerException if the source image is {@code null}
-     */
+    @Deprecated
     public static BufferedImage createBleedBanner(Image source) {
         if (source == null) {
             throw new NullPointerException("source");
         }
-        BufferedImage grad = getImage("icons/application/gradient.png");
+        BufferedImage grad = getImage("icons/banner/gradient.png");
         BufferedImage dest = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = dest.createGraphics();
         try {
@@ -2619,6 +2606,49 @@ public class ResourceKit {
         }
         return dest;
     }
+
+    /**
+     * Returns a bleed banner icon. This is an icon based on a variation of
+     * a standard image, {@code icons/banner/banner.jpg}, with a specific
+     * alpha gradient effect applied to the bottom edge. (An example use
+     * is the new game component dialog.)
+     *
+     * @param source the source banner image; if does not specify a directory,
+     * the default is {@code icons/banner}.
+     * @return an image with a transparent lower edge
+     * @throws NullPointerException if the source image is {@code null}
+     */    
+    public static ThemedIcon createBleedBanner(String resource) {
+        if (resource.indexOf('/') < 0) {
+            resource = "icons/banner/" + resource;
+        }
+        MultiResolutionImageResource mim = new MultiResolutionImageResource(resource);
+        BufferedImage bleedGradient = getImage("icons/banner/gradient.png");
+        FilteredMultiResolutionImage filtered = new FilteredMultiResolutionImage(mim) {
+            @Override
+            public Image applyEffect(Image source) {
+                BufferedImage im = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = im.createGraphics();
+                try {
+                    g.drawImage(source, 0, 0, null);
+
+                    g.setComposite(AlphaComposite.DstOut);
+                    if (im.getWidth() == BANNER_WIDTH && im.getHeight() == BANNER_HEIGHT) {
+                        g.drawImage(bleedGradient, 0, BANNER_HEIGHT - bleedGradient.getHeight(), null);
+                    } else {
+                        g.scale((double) im.getWidth() / (double) BANNER_WIDTH, (double) im.getHeight() / (double) BANNER_HEIGHT);
+                        g.drawImage(bleedGradient, 0, BANNER_HEIGHT - bleedGradient.getHeight(), BANNER_WIDTH, bleedGradient.getHeight(), null);
+                    }
+                } finally {
+                    g.dispose();
+                }
+                return im;
+            }
+        };
+        return new ThemedImageIcon(filtered, BANNER_WIDTH, BANNER_HEIGHT);
+    }
+    private static final int BANNER_WIDTH = 117, BANNER_HEIGHT = 362;
+    
 
     /**
      * Creates a new wait icon (an animated icon that indicates a lengthy

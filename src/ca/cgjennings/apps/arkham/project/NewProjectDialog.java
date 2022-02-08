@@ -39,7 +39,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         initComponents();
         AbstractGameComponentEditor.localizeComboBoxLabels(formatCombo, null);
         ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
-        bannerIcon.setImage(ResourceKit.createBleedBanner(bannerIcon.getImage()));
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
@@ -199,11 +198,11 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
                         .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
                                 .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
                                 .addComponent(okBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cancelBtn))
-                            .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE))))
+                            .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -213,7 +212,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(projLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                        .addComponent(projLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
                         .addGap(10, 10, 10))
                     .addGroup(contentPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -267,7 +266,8 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         getContentPane().add(contentPanel, java.awt.BorderLayout.CENTER);
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-proj.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("new-proj.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setOpaque(true);

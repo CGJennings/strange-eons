@@ -38,7 +38,7 @@
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="catScroll" pref="263" max="32767" attributes="0"/>
+                          <Component id="catScroll" pref="322" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="helpBtn" min="-2" max="-2" attributes="0"/>
@@ -50,7 +50,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="componentLabel" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="componentScroll" alignment="1" pref="292" max="32767" attributes="0"/>
+                          <Component id="componentScroll" alignment="1" pref="350" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                               <Component id="okBtn" min="-2" max="-2" attributes="0"/>
@@ -120,8 +120,8 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
         </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/resources/editors/default-category.jpg"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="resources.ResourceKit.createBleedBanner(&quot;default-category.jpg&quot;)&#xd;&#xa;" type="code"/>
         </Property>
         <Property name="verticalAlignment" type="int" value="1"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">

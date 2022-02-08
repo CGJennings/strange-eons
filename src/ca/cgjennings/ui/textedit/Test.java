@@ -1,8 +1,6 @@
 package ca.cgjennings.ui.textedit;
 import java.awt.*;
 import javax.swing.*;
-import org.fife.ui.rtextarea.*;
-import org.fife.ui.rsyntaxtextarea.*;
 
 /**
  * A simple example showing how to use RSyntaxTextArea to add Java syntax
