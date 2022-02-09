@@ -181,8 +181,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             if (label.getFont() != null && label.getFont().getSize2D() > defaultLabelFontSize) {
                 label.setForeground(UIManager.getColor(Theme.PREFS_HEADING));
             }
-        } else if (c instanceof JTable) {
-            JTable table = (JTable) c;
         } else if (c instanceof JScrollPane) {
             c.setOpaque(true);
         }
