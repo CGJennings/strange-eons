@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import javax.swing.JComponent;
 import static resources.Language.string;
+import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -21,7 +22,7 @@ import resources.Settings;
 class CatPlugins extends FillInPreferenceCategory {
 
     public CatPlugins() {
-        super(string("sd-l-plugins-cat"), "icons/application/prefs-plugins.png");
+        super(string("sd-l-plugins-cat"), ResourceKit.getIcon("plugin"));
 
         Font fieldFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
 
