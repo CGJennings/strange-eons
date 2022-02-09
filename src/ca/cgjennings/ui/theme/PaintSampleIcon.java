@@ -36,7 +36,7 @@ public class PaintSampleIcon extends AbstractThemedIcon {
     protected void paintIcon(Component c, Graphics2D g, int x, int y) {
         Paint oldPaint = g.getPaint();
         g.setPaint(paint);
-        g.fillOval(x, y, width, height);
+        g.fillOval(x+1, y+1, width-2, height-2);
         g.setPaint(oldPaint);
     }
 }

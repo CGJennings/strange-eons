@@ -7,6 +7,7 @@ import ca.cgjennings.graphics.filters.ColorOverlayFilter;
 import ca.cgjennings.graphics.filters.GlowFilter;
 import ca.cgjennings.graphics.filters.StrokeFilter;
 import ca.cgjennings.math.Interpolation;
+import ca.cgjennings.ui.theme.PaintSampleIcon;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -508,48 +509,6 @@ public final class SymbolVariantUtilities {
         return ImageUtilities.copy(source);
     }
 
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame();
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.setSize( 640, 800 );
-//				final JLabel i = new JLabel();
-//				i.setOpaque( true );
-//				i.setBackground( Color.CYAN );
-//				f.add( i );
-//				new FileDrop(  i, new FileDrop.Listener() {
-//					@Override
-//					public void filesDropped( File[] files ) {
-//						try {
-//							BufferedImage bi = ImageIO.read( files[0] );
-//							if( bi == null ) return;
-//							bi = extractSymbol( bi );
-//							bi = standardizeSize( bi, 78 );
-////							bi = outline( bi, 0xffaa7744, 4 );
-//							bi = shadow( bi, 0, 0, 0xff000000, 4, 2 );
-////							bi = recolor( bi, 0xff0000, 0x00ff00 );
-//
-//							bi =ImageUtilities.resample( bi, 8f );
-//							Graphics2D g = bi.createGraphics();
-//							try {
-//								g.setColor( Color.MAGENTA );
-//								g.drawRect( 0, 0, bi.getWidth()-1, bi.getHeight()-1 );
-//							} finally {
-//								g.dispose();
-//							}
-//							i.setIcon( new ImageIcon( bi ) );
-//						} catch( Exception e ) {
-//							e.printStackTrace();
-//						}
-//					}
-//				});
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
     /**
      * Creates an icon that can be returned from
      * {@link ExpansionSymbolTemplate#getVariantIcon(int)}. The icon uses a
@@ -560,18 +519,7 @@ public final class SymbolVariantUtilities {
      * @return an icon that can be used to represent the variant visually
      */
     public static Icon createDefaultVariantIcon(Paint characteristicPaint) {
-        BufferedImage circle = ResourceKit.getImage("expansiontokens/default-variant-base.png");
-        BufferedImage icon = new BufferedImage(circle.getWidth(), circle.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = icon.createGraphics();
-        try {
-            g.setPaint(characteristicPaint);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.fillOval(1, 1, 14, 14);
-            g.drawImage(circle, 0, 0, null);
-        } finally {
-            g.dispose();
-        }
-        return new ImageIcon(icon);
+        return new PaintSampleIcon(characteristicPaint);
     }
 
     /**
