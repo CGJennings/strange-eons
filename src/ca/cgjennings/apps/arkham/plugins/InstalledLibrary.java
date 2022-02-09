@@ -1,10 +1,13 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import static ca.cgjennings.apps.arkham.plugins.PluginRoot.*;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.swing.Icon;
 import resources.Language;
 import resources.ResourceKit;
@@ -86,13 +89,25 @@ public final class InstalledLibrary extends InstalledBundleObject {
 
     @Override
     public ThemedIcon getIcon() {
-        return ResourceKit.getIcon("library").small();
+        if (libraryIcon == null) {
+            try {
+                PluginRoot root = getBundle().getPluginRoot();
+                if (root != null) {
+                    String image = root.getClientProperty(PluginRoot.CLIENT_KEY_IMAGE);
+                    if (image != null) {
+                        libraryIcon = new ThemedImageIcon(image);
+                    }
+                }
+            } catch (IOException ex) {
+                StrangeEons.log.log(Level.WARNING, "could not read plug-in root");
+            }
+            if (libraryIcon == null) {
+                libraryIcon = ResourceKit.getIcon("library").small();
+            }
+        }
+        return libraryIcon;
     }
-    
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        return ImageUtilities.iconToImage(getIcon().mediumSmall());
-    }
+    private ThemedIcon libraryIcon;
 
     @Override
     public String toString() {

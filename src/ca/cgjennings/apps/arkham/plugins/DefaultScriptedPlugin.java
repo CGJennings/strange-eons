@@ -2,20 +2,16 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -307,6 +303,11 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
                 if (retval != null && retval instanceof ThemedIcon) {
                     ScriptMonkey.getSharedConsole().flush();
                     return (ThemedIcon) retval;
+                }
+                retval = monkey.ambivalentCall("getRepresentativeImage");
+                if (retval != null && retval instanceof BufferedImage) {
+                    ScriptMonkey.getSharedConsole().flush();
+                    return new ThemedImageIcon((BufferedImage) retval);
                 }
             }
             

@@ -143,7 +143,7 @@ public abstract class AbstractPlugin implements Plugin {
             String base = getPluginIconBaseName();
             
             for (int i=0; i<ICON_SUFFIXES.length; ++i) {
-                URL url = getClass().getResource(base + ICON_SUFFIXES[i]);
+                URL url = ResourceKit.class.getResource(base + ICON_SUFFIXES[i]);
                 if (url != null) {
                     pluginIcon = new ThemedImageIcon(base + ICON_SUFFIXES[i], ThemedImageIcon.SMALL, ThemedImageIcon.SMALL);
                 }
@@ -167,7 +167,7 @@ public abstract class AbstractPlugin implements Plugin {
      * @return package path to the class or script to use to locate an icon
      */
     protected String getPluginIconBaseName() {
-        return getClass().getName().replace('.', '/');
+        return '/' + getClass().getName().replace('.', '/');
     }
     private static final String[] ICON_SUFFIXES = new String[]{".png", ".jp2"};
     

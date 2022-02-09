@@ -77,19 +77,6 @@ public final class InstalledTheme extends InstalledBundleObject {
     public String getDescription() {
         return desc;
     }
-
-    /**
-     * Returns the theme's representative image.
-     *
-     * @deprecated Prefer {@link #getImage()}.
-     * 
-     * @return the representative image for the theme
-     */
-    @Deprecated
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        return ImageUtilities.ensureIntRGBFormat(image.getResolutionVariant(ICON_SIZE_LARGE, ICON_SIZE_LARGE));
-    }
     
     /**
      * Returns the theme's representative image.

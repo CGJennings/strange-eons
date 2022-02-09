@@ -126,19 +126,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     /**
-     * Returns the representative image of the plug-in. If necessary, a new
-     * instance of the plug-in will be created temporarily in order to get this
-     * information.
-     *
-     * @return the representative name reported by the plug-in (may be
-     * {@code null})
-     */
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        return ImageUtilities.iconToImage(getIcon().mediumSmall());
-    }
-
-    /**
      * Returns a prefix that can be used to define a private namespace for the
      * plug-in when accessing settings. The same prefix will be used by the
      * plug-in context.
