@@ -1,6 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import static resources.Language.string;
@@ -115,8 +118,17 @@ public final class QuickscriptPlugin implements Plugin {
 
     @Override
     public BufferedImage getRepresentativeImage() {
-        return resources.ResourceKit.getThemedImage("/ca/cgjennings/apps/arkham/plugins/quickscript.png");
+        return ImageUtilities.iconToImage(getPluginIcon());
     }
+    
+    @Override
+    public ThemedIcon getPluginIcon() {
+       if (pluginIcon == null) {
+           return new ThemedImageIcon("/ca/cgjennings/apps/arkham/plugins/quickscript.png");
+       }
+       return pluginIcon;
+    }
+    private ThemedIcon pluginIcon;
 
     @Override
     public boolean isPluginUsable() {

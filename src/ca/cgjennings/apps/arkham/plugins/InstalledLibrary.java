@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import static ca.cgjennings.apps.arkham.plugins.PluginRoot.*;
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.swing.Icon;
@@ -84,16 +85,13 @@ public final class InstalledLibrary extends InstalledBundleObject {
     }
 
     @Override
-    public BufferedImage getRepresentativeImage() {
-        if (image == null) {
-            image = ImageUtilities.iconToImage(PluginBundle.getIcon("selibrary", true));
-        }
-        return image;
+    public ThemedIcon getIcon() {
+        return ResourceKit.getIcon("library").small();
     }
-
+    
     @Override
-    public Icon getIcon() {
-        return icon;
+    public BufferedImage getRepresentativeImage() {
+        return ImageUtilities.iconToImage(getIcon().mediumSmall());
     }
 
     @Override

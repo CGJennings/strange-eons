@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.plugins;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -115,7 +116,7 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
      * @return an icon for the plug-in
      */
     @Override
-    public abstract Icon getIcon();
+    public abstract ThemedIcon getIcon();
 
     /**
      * Returns the representative image of the plug-in. If necessary, a new

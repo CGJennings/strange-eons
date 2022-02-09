@@ -150,9 +150,6 @@ public class Task extends Member {
         if (resource == null) {
             throw new NullPointerException();
         }
-        if (ResourceKit.composeResourceURL(resource) == null) {
-            throw new AssertionError("missing icon resource: " + resource);
-        }
         customIcons.add(resource);
     }
 

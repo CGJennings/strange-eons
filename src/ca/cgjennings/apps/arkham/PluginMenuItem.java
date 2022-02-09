@@ -4,19 +4,16 @@ import ca.cgjennings.apps.arkham.plugins.InstalledPlugin;
 import ca.cgjennings.apps.arkham.plugins.Plugin;
 import ca.cgjennings.apps.arkham.plugins.PluginContext;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.util.logging.Level;
-import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
-import resources.Settings;
 
 /**
  * A {@code JMenuItem} that is based on an activated plug-in.
@@ -78,33 +75,18 @@ final class PluginMenuItem extends JCheckBoxMenuItem {
         }
     }
 
-    public static Icon getIconForPlugin(Plugin plugin, int size) {
-        BufferedImage image = null;
-
-        if (Settings.getShared().getYesNo("use-plugin-icons")) {
-            image = plugin.getRepresentativeImage();
-        }
-
-        Icon icon = null;
-        if (image != null) {
-            icon = ImageUtilities.createIconForSize(image, size);
+    public static ThemedIcon getIconForPlugin(Plugin plugin, int size) {
+        ThemedIcon icon = plugin.getPluginIcon();
+        if (icon == null) {
+            icon = new BlankIcon(size);
         } else {
-            icon = getDummyIcon(size);
+            icon = icon.derive(size);
         }
         return icon;
     }
 
-    private static Icon getDummyIcon(int size) {
-        if (dummyIcon == null || dummyIcon.getIconWidth() != size) {
-            dummyIcon = new BlankIcon(size);
-        }
-        return dummyIcon;
-    }
-
-    private static Icon dummyIcon;
-
     private void initPluginIcon() {
-        setIcon(getIconForPlugin(plugin, getPreferredSize().height - 2));
+        setIcon(getIconForPlugin(plugin, ThemedIcon.SMALL));
     }
 
     public void update() {

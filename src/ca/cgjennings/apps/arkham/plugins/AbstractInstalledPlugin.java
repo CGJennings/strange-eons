@@ -3,12 +3,14 @@ package ca.cgjennings.apps.arkham.plugins;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.swing.Icon;
 import static resources.Language.string;
+import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -32,7 +34,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     private String name;
     private String desc;
     private float version;
-    private BufferedImage image;
     private Icon icon;
     private int type;
     private String prefix;
@@ -65,21 +66,17 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      * @return an icon for the plug-in
      */
     @Override
-    public Icon getIcon() {
-        synchronized (this) {
-            if (icon == null) {
-                BufferedImage bi = getRepresentativeImage();
-                if (bi == null) {
-                    File f = null;
-                    PluginBundle bundle = getBundle();
-                    if (bundle != null) {
-                        f = bundle.getFile();
-                    }
-                    icon = PluginBundle.getIcon(f, true);
-                } else {
-                    icon = ImageUtilities.createIconForSize(bi, 18);
-                }
+    public ThemedIcon getIcon() {
+        collectPluginInfo();
+        ThemedIcon icon = plugin.getPluginIcon();
+        if (icon == null) {
+            PluginBundle bundle = getBundle();
+            if (bundle != null) {
+                icon = PluginBundle.getIcon(bundle.getFile(), true);                    
             }
+        }
+        if (icon == null) {
+            icon = ResourceKit.getIcon("plugin").small();
         }
         return icon;
     }
@@ -138,8 +135,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      */
     @Override
     public BufferedImage getRepresentativeImage() {
-        collectPluginInfo();
-        return image;
+        return ImageUtilities.iconToImage(getIcon().mediumSmall());
     }
 
     /**
@@ -285,7 +281,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
             desc = p.getPluginDescription();
             version = p.getPluginVersion();
             type = p.getPluginType();
-            image = p.getRepresentativeImage();
 
             collectPluginInfo(p);
 

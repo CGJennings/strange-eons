@@ -4,6 +4,7 @@ import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.MultiResolutionImageResource;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
@@ -29,7 +30,7 @@ public final class InstalledTheme extends InstalledBundleObject {
 
     private String name, desc;
     private MultiResolutionImage image;
-    private Icon icon, largeIcon;
+    private ThemedIcon icon, largeIcon;
 
     /**
      * Creates a new {@link InstalledTheme} instance that describes the theme
@@ -104,7 +105,7 @@ public final class InstalledTheme extends InstalledBundleObject {
      * @return a small icon
      */
     @Override
-    public Icon getIcon() {
+    public ThemedIcon getIcon() {
         if (icon == null) {
             icon = new ThemedImageIcon(image, ICON_SIZE_SMALL, ICON_SIZE_SMALL);
         }

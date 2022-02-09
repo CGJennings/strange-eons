@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 
 /**
@@ -180,15 +181,25 @@ public interface Plugin {
     public boolean isPluginUsable();
 
     /**
-     * Returns an image that may be used to represent the plug-in on a menu or
-     * toolbar. Strange Eons may resize the image to fit available space, and
-     * may modify it to suit the context of use. Return <tt>null</tt> to
-     * indicate that the plug-in does not have a representative image.
+     * Returns an image that may be used to represent the plug-in.
      *
+     * @deprecated Prefer {@link #getPluginIcon()}.
+     * 
      * @return an image that can be used as a menu item icon
      */
+    @Deprecated
     public BufferedImage getRepresentativeImage();
 
+    /**
+     * Returns an icon that may be used to represent the plug-in on a menu or
+     * toolbar. Strange Eons may {@linkplain ThemedIcon#derive(int) derive
+     * different sizes} from this icon to fit the context where it is being
+     * displayed.
+     * 
+     * @return an icon that can be used to represent this plug-in
+     */
+    public ThemedIcon getPluginIcon();
+    
     /**
      * Return a string that describes the key stroke that is the preferred
      * default accelerator key for this plug-in. In most cases, you should
