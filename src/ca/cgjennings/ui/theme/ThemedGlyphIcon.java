@@ -50,8 +50,8 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     private Font font;
     private Layer[] layer;
 
-//  All rendering is at a standard design size of 18 by 18; the graphics
-//  context is transformed as needed for other sizes.
+    //  All rendering is at a standard design size of 18 by 18; the graphics
+    //  context is transformed as needed for other sizes.
     private static final int I_SIZE = 18;
     private static final float F_SIZE = 18f;
     private static final double D_SIZE = 18d;
@@ -125,7 +125,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     
     @Override
     public ThemedGlyphIcon derive(int newWidth, int newHeight) {
-        if (newWidth < 0 || newHeight < 0) {
+        if (newWidth < 1 || newHeight < 1) {
             throw new IllegalArgumentException("invalid size " + newWidth + 'x' + newHeight);
         }
 
@@ -156,11 +156,6 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             int defaultFgIndex = COLOURS.length - (layer[0].bg != null ? 2 : 1);
             layer[0].fg = COLOURS[defaultFgIndex][LIGHT_FG];
             layer[0].fgDarkMode = COLOURS[defaultFgIndex][DARK_FG];
-        }
-        if (width == 0 || height == 0) {
-            if (width == 0 || height == 0) {
-                return;
-            }
         }
         if (font == null) {
             font = getDefaultFont();
@@ -370,6 +365,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                 }
             }
         }
+        descriptor = null;
     }
 
     private Layer parseLayer(String layerStr, boolean previousLayerHasBackground) {
