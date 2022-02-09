@@ -1252,7 +1252,7 @@ public class Commands {
     /**
      * Opens the plug-in catalog.
      */
-    public static final AbstractCommand PLUGIN_CATALOG = new AbstractCommand("app-catalog") {
+    public static final AbstractCommand PLUGIN_CATALOG = new AbstractCommand("app-catalog", "catalog") {
         @Override
         public void actionPerformed(ActionEvent e) {
             CatalogDialog d = new CatalogDialog(StrangeEons.getWindow());
@@ -1263,7 +1263,7 @@ public class Commands {
     /**
      * Opens the plug-in manager.
      */
-    public static final AbstractCommand PLUGIN_MANAGER = new AbstractCommand("app-toolbox-manage") {
+    public static final AbstractCommand PLUGIN_MANAGER = new AbstractCommand("app-toolbox-manage", "plugin-manager") {
         @Override
         public void actionPerformed(ActionEvent e) {
             PluginManager d = new PluginManager();

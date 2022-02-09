@@ -2,11 +2,13 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.Window;
 import java.awt.image.BufferedImage;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
  * A plug-in that allows editing and running small scripts from within Strange
@@ -119,7 +121,7 @@ public final class QuickscriptPlugin implements Plugin {
     @Override
     public ThemedIcon getPluginIcon() {
        if (pluginIcon == null) {
-           return new ThemedImageIcon("/ca/cgjennings/apps/arkham/plugins/quickscript.png");
+           pluginIcon = ResourceKit.getIcon("quickscript");
        }
        return pluginIcon;
     }
