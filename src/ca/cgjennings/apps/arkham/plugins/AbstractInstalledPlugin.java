@@ -75,6 +75,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
                 icon = PluginBundle.getIcon(bundle.getFile(), true);                    
             }
         }
+        // can't find bundle? shouldn't happen
         if (icon == null) {
             icon = ResourceKit.getIcon("plugin").small();
         }

@@ -326,9 +326,9 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
                 
                 if (pluginIcon == null) {
                     if (getPluginType() == EXTENSION) {
-                        pluginIcon = ResourceKit.getIcon("plugin").small();
-                    } else {
                         pluginIcon = ResourceKit.getIcon("extension").small();
+                    } else {
+                        pluginIcon = ResourceKit.getIcon("plugin").small();
                     }
                 }
             }
