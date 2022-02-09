@@ -1,6 +1,5 @@
 package ca.cgjennings.ui.table;
 
-import java.util.Vector;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -14,10 +13,6 @@ import javax.swing.table.TableModel;
 public class JHeadlessTable extends JResizableTable {
 
     public JHeadlessTable(Object[][] rowData, Object[] columnNames) {
-        super(rowData, columnNames);
-    }
-
-    public JHeadlessTable(Vector rowData, Vector columnNames) {
         super(rowData, columnNames);
     }
 

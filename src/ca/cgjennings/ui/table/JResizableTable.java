@@ -1,7 +1,6 @@
 package ca.cgjennings.ui.table;
 
 import java.util.EventObject;
-import java.util.Vector;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.MouseInputAdapter;
@@ -16,10 +15,6 @@ import javax.swing.table.TableModel;
 public class JResizableTable extends JTable {
 
     public JResizableTable(Object[][] rowData, Object[] columnNames) {
-        super(rowData, columnNames);
-    }
-
-    public JResizableTable(Vector rowData, Vector columnNames) {
         super(rowData, columnNames);
     }
 
