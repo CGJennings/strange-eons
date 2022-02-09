@@ -132,22 +132,6 @@ public abstract class AbstractPlugin implements Plugin {
 
     /**
      * {@inheritDoc}
-     * <p>
-     * The abstract implementation looks in the folder where the class is
-     * located for an image with the same name as the class but with a
-     * <tt>.png</tt> or <tt>.jp2</tt> extension. If found, it attempts to read
-     * an image from the file. If successful, the image is returned; otherwise,
-     * {@code null} is returned.
-     */
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        ThemedIcon icon = getPluginIcon();
-        if (icon == null) return null;
-        return ImageUtilities.iconToImage(icon.derive(24));
-    }
-
-    /**
-     * {@inheritDoc}
      * 
      * <p>The abstract base class looks for an image in the same package and with
      * the same base file name as the class file.

@@ -115,11 +115,6 @@ public final class QuickscriptPlugin implements Plugin {
     public int getPluginType() {
         return ACTIVATED;
     }
-
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        return ImageUtilities.iconToImage(getPluginIcon());
-    }
     
     @Override
     public ThemedIcon getPluginIcon() {

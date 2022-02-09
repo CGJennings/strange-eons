@@ -287,55 +287,6 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     public Object call(String name, Object[] args) {
         return monkey.call(name, args);
     }
-
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        ThemedIcon icon = getPluginIcon();
-        return icon == null ? null : ImageUtilities.iconToImage(icon);
-        
-//        // Stage 1: look to see if the script contains this method
-//        if (scriptEvalsOK) {
-//            Object retval = monkey.ambivalentCall("getRepresentativeImage");
-//            if (retval != null && retval instanceof BufferedImage) {
-//                ScriptMonkey.getSharedConsole().flush();
-//                return (BufferedImage) retval;
-//            }
-//        }
-//        // Stage 2: look for a file with the same name as the script but a.png
-//        //          file extension
-//        if (scriptFile.length() < 3 || !scriptFile.substring(scriptFile.length() - 3).equalsIgnoreCase(".js")) {
-//            return null;
-//        }
-//        String imageFile = scriptFile.substring(0, scriptFile.length() - 2) + "png";
-//
-//        BufferedImage im = null;
-//        for (int ext = 0; ext < 2; ++ext) {
-//            URL imageURL = null;
-//            try {
-//                if (ScriptMonkey.isLibraryNameAURL(imageFile)) {
-//                    imageURL = new URL(imageFile);
-//                } else {
-//                    imageURL = new File(imageFile).toURI().toURL();
-//                }
-//            } catch (MalformedURLException malformedURLException) {
-//            }
-//
-//            if (imageURL != null) {
-//                try {
-//                    im = ImageIO.read(imageURL);
-//                } catch (IOException ex) {
-//                }
-//            }
-//
-//            if (im == null && ext == 0) {
-//                imageFile = scriptFile.substring(0, scriptFile.length() - 2) + "jp2";
-//            } else {
-//                break;
-//            }
-//        }
-//
-//        return im;
-    }
     
     /**
      * {@inheritDoc}
