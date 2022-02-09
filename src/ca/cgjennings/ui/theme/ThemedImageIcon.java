@@ -97,10 +97,10 @@ public class ThemedImageIcon implements ThemedIcon {
     public ThemedImageIcon(MultiResolutionImage image, int width, int height) {
         if (width < 1 || height < 1) {
             throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
-        }        
+        }
         this.mim = wrapMultiImageForTheme(Objects.requireNonNull(image, "image"));
         this.width = width;
-        this.height = height;
+        this.height = height;        
     }
     
     /**
@@ -128,11 +128,12 @@ public class ThemedImageIcon implements ThemedIcon {
     
     private ThemedImageIcon(ThemedImageIcon src, int width, int height) {
         src.getMultiResolutionImage();
+        resource = src.resource;
         mim = src.mim;
         dim = src.dim;
-        resource = src.getResource();
         this.width = width;
         this.height = height;
+        disabled = src.disabled;
     }
 
     /**
@@ -271,5 +272,10 @@ public class ThemedImageIcon implements ThemedIcon {
         } else {
             g.drawImage(mim, x, y, width, height, null);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return super.toString() + ", image=\"" + resource + '"';
     }
 }

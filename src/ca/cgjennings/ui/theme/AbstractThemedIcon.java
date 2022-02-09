@@ -60,4 +60,9 @@ public abstract class AbstractThemedIcon implements ThemedIcon {
     }
     
     static final Composite DISABLED_COMPOSITE = AlphaComposite.SrcOver.derive(0.4f);
+    
+    @Override
+    public String toString() {
+        return "ThemedIcon: size=" + getIconWidth() + 'x' + getIconHeight();
+    }
 }
