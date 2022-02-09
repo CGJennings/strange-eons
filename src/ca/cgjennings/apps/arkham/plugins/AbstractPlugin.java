@@ -1,13 +1,8 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.net.URL;
-import javax.imageio.ImageIO;
 import resources.ResourceKit;
 
 /**

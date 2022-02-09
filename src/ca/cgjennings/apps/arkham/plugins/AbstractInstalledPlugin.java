@@ -2,10 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.theme.ThemedIcon;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.swing.Icon;

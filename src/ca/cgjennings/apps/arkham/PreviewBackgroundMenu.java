@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.graphics.paints.CheckeredPaint;
 import ca.cgjennings.ui.theme.PaintSampleIcon;
-import gamedata.SymbolVariantUtilities;
 import java.awt.Component;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;

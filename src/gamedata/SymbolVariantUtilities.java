@@ -11,11 +11,8 @@ import ca.cgjennings.ui.theme.PaintSampleIcon;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import resources.ResourceKit;
 
 /**
  * This class provides some static utility methods that can aid plug-in

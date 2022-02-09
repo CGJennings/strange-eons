@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.MultiResolutionImageResource;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;

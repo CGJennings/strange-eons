@@ -1,12 +1,8 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
-import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
-import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.Window;
-import java.awt.image.BufferedImage;
 import static resources.Language.string;
 import resources.ResourceKit;
 

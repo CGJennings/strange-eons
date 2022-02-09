@@ -391,14 +391,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             }
         }
         if (!szString.isEmpty()) {
-            int plusMinus = szString.indexOf('-');
-            for (int i=0; i<2; ++i) {
-                if (plusMinus >= 0) {
-                    adjString = szString.substring(plusMinus + i);
-                    szString = szString.substring(0, plusMinus);
-                    break;
-                }
-                plusMinus = szString.indexOf('+');
+            int plusMinus = Math.min(indexOfOrLength(szString, '-'), indexOfOrLength(szString, '+') + 1);
+            if (plusMinus < szString.length()) {
+                adjString = szString.substring(plusMinus);
+                szString = szString.substring(0, plusMinus);
             }
         }
 
@@ -494,6 +490,11 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         }
 
         return layer;
+    }
+    
+    private static int indexOfOrLength(String s, char ch) {
+        int index = s.indexOf(ch);
+        return index < 0 ? s.length() : index;
     }
 
     /**

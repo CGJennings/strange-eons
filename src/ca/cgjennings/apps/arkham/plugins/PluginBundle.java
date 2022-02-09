@@ -18,7 +18,6 @@ import java.util.jar.JarOutputStream;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.swing.Icon;
 import static resources.Language.string;
 import resources.ResourceKit;
 
