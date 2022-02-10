@@ -1110,7 +1110,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         descPane.setBackground(UIManager.getColor(Theme.PLUGIN_README_BACKGROUND));
         descPane.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.darkGray), javax.swing.BorderFactory.createEmptyBorder(8, 8, 8, 8)));
         descPane.setContentType("text/html"); // NOI18N
-        descPane.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        descPane.setFont(descPane.getFont().deriveFont(descPane.getFont().getSize()+2f));
         descPane.setForeground(UIManager.getColor(Theme.PLUGIN_README_FOREGROUND));
         descPane.setComponentPopupMenu(descriptionPopup);
 
