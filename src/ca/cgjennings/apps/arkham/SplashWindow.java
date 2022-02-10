@@ -233,7 +233,7 @@ class SplashWindow extends JFrame {
         }
 
         try {
-            splashImage = new MultiResolutionImageResource("icons/application/" + resource + ".png");
+            splashImage = new MultiResolutionImageResource("icons/splash/" + resource + ".png");
         } catch (Exception e) {
             StrangeEons.log.log(Level.SEVERE, "INIT: unable to load splash image {0}", resource);
         }

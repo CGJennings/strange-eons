@@ -12,7 +12,7 @@
 
 @cat-example
 
-@cat-decks-and-boards | editors/cat-board.png; editors/board-banner.jpg
+@cat-decks-and-boards | editors/cat-board.png; board-banner.jpg
   @app-new-deck = script:editors/plain-deck.js||*
 
 @cat-markers
