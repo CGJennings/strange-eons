@@ -1748,17 +1748,17 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private GregorianCalendar now = new GregorianCalendar();
     private int daysToConsiderNew = 90;
 
-    static final Icon ICON_NEW_PLUGIN = ResourceKit.getIcon("catalog/not-installed-new.png");
-    static final Icon ICON_NOT_INSTALLED = ResourceKit.getIcon("catalog/not-installed.png");
-    static final Icon ICON_UP_TO_DATE = ResourceKit.getIcon("catalog/up-to-date.png");
-    static final Icon ICON_INSTALLED_IS_NEWER = ResourceKit.getIcon("catalog/installed-is-newer.png");
-    static final Icon ICON_UPDATE_AVAILABLE = ResourceKit.getIcon("catalog/update-available.png");
-    static final Icon ICON_APP_UPDATE = ResourceKit.getIcon("catalog/app-update.png");
+    static final Icon ICON_NEW_PLUGIN = ResourceKit.getIcon("cat-not-installed-new");
+    static final Icon ICON_NOT_INSTALLED = ResourceKit.getIcon("cat-not-installed");
+    static final Icon ICON_UP_TO_DATE = ResourceKit.getIcon("cat-up-to-date");
+    static final Icon ICON_INSTALLED_IS_NEWER = ResourceKit.getIcon("cat-installed-is-newer");
+    static final Icon ICON_UPDATE_AVAILABLE = ResourceKit.getIcon("cat-update-available");
+    static final Icon ICON_APP_UPDATE = ResourceKit.getIcon("cat-app-update");
 
-    static final Icon CORE_ICON_NEW_PLUGIN = ResourceKit.getIcon("catalog/core-not-installed-new.png");
-    static final Icon CORE_ICON_NOT_INSTALLED = ResourceKit.getIcon("catalog/core-not-installed.png");
-    static final Icon CORE_ICON_UP_TO_DATE = ResourceKit.getIcon("catalog/core-up-to-date.png");
-    static final Icon CORE_ICON_INSTALLED_IS_NEWER = ResourceKit.getIcon("catalog/core-installed-is-newer.png");
-    static final Icon CORE_ICON_UPDATE_AVAILABLE = ResourceKit.getIcon("catalog/core-update-available.png");
+    static final Icon CORE_ICON_NEW_PLUGIN = ResourceKit.getIcon("cat-core-not-installed-new");
+    static final Icon CORE_ICON_NOT_INSTALLED = ResourceKit.getIcon("cat-core-not-installed");
+    static final Icon CORE_ICON_UP_TO_DATE = ResourceKit.getIcon("cat-core-up-to-date");
+    static final Icon CORE_ICON_INSTALLED_IS_NEWER = ResourceKit.getIcon("cat-core-installed-is-newer");
+    static final Icon CORE_ICON_UPDATE_AVAILABLE = ResourceKit.getIcon("cat-core-update-available");
     static final Icon CORE_ICON_APP_UPDATE = ICON_APP_UPDATE;
 }
