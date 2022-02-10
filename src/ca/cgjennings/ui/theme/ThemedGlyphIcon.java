@@ -1,6 +1,9 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.ScriptConsole;
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
+import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
@@ -19,6 +22,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -32,6 +36,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
 import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+import resources.ResourceKit;
 
 /**
  *
@@ -295,55 +300,6 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
 
     private static String codePointStr(int codePoint) {
         return new StringBuilder(2).appendCodePoint(codePoint).toString();
-    }
-
-    public static void main(String[] argv) {
-        EventQueue.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(new NimbusLookAndFeel() {
-                    @Override
-                    public Icon getDisabledIcon(JComponent c, Icon i) {
-                        return i;
-                    }
-                });
-            } catch (UnsupportedLookAndFeelException ulaf) {
-            }
-            JFrame f = new JFrame();
-            final JLabel label = new JLabel(new ThemedGlyphIcon("F023A"));
-            JTextField tf = new JTextField("F023A");
-            tf.getDocument().addDocumentListener(new DocumentEventAdapter() {
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    try {
-                        label.setIcon(new ThemedGlyphIcon(tf.getText().trim()));
-                    } catch (Exception ex) {
-                    }
-                }
-            });
-            
-            Color dark = new Color(0x323232);
-            Color light = new Color(0xe0e0e0);
-
-            final JComponent cp = (JComponent) f.getContentPane();
-            label.setBackground(light);
-            label.setOpaque(true);
-            cp.add(label);
-            cp.add(tf, BorderLayout.NORTH);
-            cp.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        label.setBackground(label.getBackground() == light ? dark : light);
-                    } else {
-                        label.setEnabled(!label.isEnabled());
-                    }
-                }
-            });
-            f.setSize(200, 200);
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.setLocationByPlatform(true);
-            f.setVisible(true);
-        });
     }
     
 
@@ -640,5 +596,74 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             };            
         }
         COLOURS[COLOURS.length-1] = defaultVariants;
+    }
+    
+    /** Injects built-in icons into the script console window for visual inspection. */
+    public static void debugDump() {
+        final ScriptConsole con = ScriptMonkey.getSharedConsole();
+        con.setVisible(true);
+        try (InputStream in = ResourceKit.class.getResourceAsStream("icons/map.properties")) {
+            EscapedLineReader elr = new EscapedLineReader(in);
+            String[] pair;
+            while ((pair = elr.readProperty()) != null) {
+                javax.swing.JLabel entry = new javax.swing.JLabel(pair[0], ResourceKit.getIcon(pair[0]), javax.swing.JLabel.LEADING);
+                entry.setFont(ResourceKit.getEditorFont());
+                con.getWriter().insertComponent(entry);
+                con.getWriter().println();
+            }
+            con.getWriter().flush();
+        } catch (IOException | RuntimeException ioe) {
+            StrangeEons.log.log(Level.SEVERE, "unable to load icon map", ioe);
+        }
+    }
+    
+    /** Starts a simple tool to help construct built-in glyph icons interactively. */
+    public static void main(String[] argv) {
+        EventQueue.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(new NimbusLookAndFeel() {
+                    @Override
+                    public Icon getDisabledIcon(JComponent c, Icon i) {
+                        return i;
+                    }
+                });
+            } catch (UnsupportedLookAndFeelException ulaf) {
+            }
+            JFrame f = new JFrame();
+            final JLabel label = new JLabel(new ThemedGlyphIcon("gly:F0198"));
+            JTextField tf = new JTextField("gly:F0198");
+            tf.getDocument().addDocumentListener(new DocumentEventAdapter() {
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    try {
+                        label.setIcon(new ThemedGlyphIcon(tf.getText().trim()));
+                    } catch (Exception ex) {
+                    }
+                }
+            });
+            
+            Color dark = new Color(0x323232);
+            Color light = new Color(0xe0e0e0);
+
+            final JComponent cp = (JComponent) f.getContentPane();
+            label.setBackground(light);
+            label.setOpaque(true);
+            cp.add(label);
+            cp.add(tf, BorderLayout.NORTH);
+            cp.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (e.getButton() == MouseEvent.BUTTON1) {
+                        label.setBackground(label.getBackground() == light ? dark : light);
+                    } else {
+                        label.setEnabled(!label.isEnabled());
+                    }
+                }
+            });
+            f.setSize(200, 200);
+            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            f.setLocationByPlatform(true);
+            f.setVisible(true);
+        });
     }    
 }
