@@ -9,6 +9,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -106,13 +107,18 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
 
     @SuppressWarnings("unchecked")
     private void initStyles() {
-        backgroundColor = color(Theme.CONSOLE_BACKROUND, Color.WHITE);
-        outColor = color(Theme.CONSOLE_OUTPUT, Color.BLACK);
-        errorColor = color(Theme.CONSOLE_ERROR, Color.RED);
-        console.setSelectionColor(color(Theme.CONSOLE_SELECTION_BACKGROUND, Color.YELLOW));
-        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND, Color.BLACK));
+        backgroundColor = color(Theme.CONSOLE_BACKROUND, console.getBackground());
+        outColor = color(Theme.CONSOLE_OUTPUT, console.getForeground());
+        errorColor = color(Theme.CONSOLE_ERROR, ThemeInstaller.isDark() ? new Color(0xef5350) : new Color(0xb71c1c));
+        console.setSelectionColor(color(Theme.CONSOLE_SELECTION_BACKGROUND, console.getSelectionColor()));
+        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND, console.getSelectedTextColor()));
         bgpainter = (Painter<JComponent>) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
-        console.setFont(UIManager.getDefaults().getFont(Theme.CONSOLE_FONT));
+        
+        Font font = UIManager.getDefaults().getFont(Theme.CONSOLE_FONT);
+        if (font == null) {
+            font = ResourceKit.getEditorFont();
+        }        
+        console.setFont(font);
         outcon.createStyles();
         errcon.createStyles();
     }
@@ -341,7 +347,6 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         scrollPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         console.setEditable(false);
-        console.setBackground(new java.awt.Color(61, 75, 40));
         console.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         console.setDragEnabled(true);
         console.setOpaque(false);

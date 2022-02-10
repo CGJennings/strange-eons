@@ -297,7 +297,7 @@ public class ThemeInstaller {
         ui.put(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND, rollover.darker());
         ui.put(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND, new Color(0x40_b3ff).darker());
 
-        ui.put(Theme.CONSOLE_FONT, new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        ui.put(Theme.CONSOLE_FONT, ResourceKit.getEditorFont());
     }
 
     private static void installStrangeEonsUIFallbackDefaults(Theme theme) {
