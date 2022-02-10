@@ -339,7 +339,7 @@ public final class ContextBar {
                 //    if the parent is an editor, clear the target if it is not
                 //    the selected editor
                 Container parent = newTarget.getParent();
-                while (newTarget != null && parent != null) {
+                while (parent != null) {
                     if (parent instanceof StrangeEonsEditor) {
                         if (parent != StrangeEons.getWindow().getActiveEditor()) {
                             newTarget = null;
@@ -1499,7 +1499,7 @@ public final class ContextBar {
 
         @Override
         public void paintIcon(Component comp, Graphics g, int x, int y) {
-            if (c.isSelected()) {
+            if (c.isSelected() && c instanceof Button) {
                 g.setColor(BUTTON_SELECTED_BACKGROUND);
                 g.fillRect(x, y, i.getIconWidth(), i.getIconHeight());
             }
@@ -1912,9 +1912,9 @@ public final class ContextBar {
         registerButton(new MarkupCommandButton(Commands.MARKUP_INSERT_IMAGE).multilineOnly());
         registerButton(new MarkupCommandButton(Commands.MARKUP_INSERT_CHARACTERS).multilineOnly());
 
-        registerButton(new ParagraphButton("LEFT", string("para-b-left"), "al-text-left.png", 0, -1, -1));
-        registerButton(new ParagraphButton("CENTRE", string("para-b-centre"), "al-text-centre.png", 1, -1, -1));
-        registerButton(new ParagraphButton("RIGHT", string("para-b-right"), "al-text-right.png", 2, -1, -1));
+        registerButton(new ParagraphButton("LEFT", string("para-b-left"), "al-text-left", 0, -1, -1));
+        registerButton(new ParagraphButton("CENTRE", string("para-b-centre"), "al-text-centre", 1, -1, -1));
+        registerButton(new ParagraphButton("RIGHT", string("para-b-right"), "al-text-right", 2, -1, -1));
         registerButton(new MarkupCommandButton(Commands.MARKUP_ALIGNMENT).multilineOnly());
 
         registerButton(new DeckCommandButton(Commands.TO_FRONT));
