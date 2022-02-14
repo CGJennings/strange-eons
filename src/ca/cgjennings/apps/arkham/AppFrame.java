@@ -906,12 +906,12 @@ final class AppFrame extends StrangeEonsAppWindow {
         windowMenu =  new WindowMenu() ;
         helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem helpItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem userManualItem = new javax.swing.JMenuItem();
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        javax.swing.JMenuItem userManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devManualItem = new javax.swing.JMenuItem();
+        javax.swing.JMenuItem translatorManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devJavaApiItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devJsApiItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem translatorManualItem = new javax.swing.JMenuItem();
         jSeparator25 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem bugReportItem = new javax.swing.JMenuItem();
         aboutSeparator = new javax.swing.JPopupMenu.Separator();
@@ -1516,16 +1516,20 @@ final class AppFrame extends StrangeEonsAppWindow {
         helpItem.setName("helpItem"); // NOI18N
         helpMenu.add(helpItem);
 
+        jSeparator11.setName("jSeparator11"); // NOI18N
+        helpMenu.add(jSeparator11);
+
         userManualItem.setAction( Commands.HELP_USER_MANUAL );
         userManualItem.setName("userManualItem"); // NOI18N
         helpMenu.add(userManualItem);
 
-        jSeparator11.setName("jSeparator11"); // NOI18N
-        helpMenu.add(jSeparator11);
-
         devManualItem.setAction( Commands.HELP_DEV_MANUAL );
         devManualItem.setName("devManualItem"); // NOI18N
         helpMenu.add(devManualItem);
+
+        translatorManualItem.setAction( Commands.HELP_TRANSLATOR_MANUAL );
+        translatorManualItem.setName("translatorManualItem"); // NOI18N
+        helpMenu.add(translatorManualItem);
 
         devJavaApiItem.setAction( Commands.HELP_DEV_JAVA_API);
         devJavaApiItem.setName("devJavaApiItem"); // NOI18N
@@ -1534,10 +1538,6 @@ final class AppFrame extends StrangeEonsAppWindow {
         devJsApiItem.setAction( Commands.HELP_DEV_JS_API);
         devJsApiItem.setName("devJsApiItem"); // NOI18N
         helpMenu.add(devJsApiItem);
-
-        translatorManualItem.setAction( Commands.HELP_TRANSLATOR_MANUAL );
-        translatorManualItem.setName("translatorManualItem"); // NOI18N
-        helpMenu.add(translatorManualItem);
 
         jSeparator25.setName("jSeparator25"); // NOI18N
         helpMenu.add(jSeparator25);

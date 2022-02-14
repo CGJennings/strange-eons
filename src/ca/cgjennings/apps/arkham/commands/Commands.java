@@ -1318,12 +1318,12 @@ public class Commands {
     /**
      * Opens the JS API documentation for browsing.
      */
-    public static final AbstractCommand HELP_DEV_JS_API = new HDocPageCommand("app-dev-jsapi", "https://cgjennings.github.io/se3docs/assets/jsdoc/");
+    public static final AbstractCommand HELP_DEV_JS_API = new HDocPageCommand("app-dev-jsapi", "https://cgjennings.github.io/se3docs/assets/jsdoc/", "help-js-api");
 
     /**
      * Opens the Java API documentation for browsing.
      */
-    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/", "help-api");
+    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/", "help-java-api");
 
     /**
      * Files a bug report with no specific message or exception information.

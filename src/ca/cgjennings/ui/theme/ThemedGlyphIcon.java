@@ -636,6 +636,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             JFrame f = new JFrame();
             final JLabel label = new JLabel(new ThemedGlyphIcon("gly:F0198"));
             JTextField tf = new JTextField("gly:F0198");
+            tf.setDragEnabled(true);
             tf.getDocument().addDocumentListener(new DocumentEventAdapter() {
                 @Override
                 public void changedUpdate(DocumentEvent e) {
