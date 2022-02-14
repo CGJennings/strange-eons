@@ -723,6 +723,7 @@ public class JUtilities {
      */
     public static void setIconPair(AbstractButton button, Icon standard, Icon highlight, boolean rollover) {
         button.setIcon(standard);
+        button.setPressedIcon(highlight);
         button.setSelectedIcon(highlight);
         if (rollover) {
             button.setRolloverEnabled(true);

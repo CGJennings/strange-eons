@@ -73,14 +73,14 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         coarseTab.setBackground(TAB_BACKGROUND);
         fineTab.setBackground(TAB_BACKGROUND);
 
-        JUtilities.setIconPair(upBtn, "ui/button/up.png", "ui/button/up-hi.png", true);
-        JUtilities.setIconPair(downBtn, "ui/button/down.png", "ui/button/down-hi.png", true);
-        JUtilities.setIconPair(leftBtn, "ui/button/left.png", "ui/button/left-hi.png", true);
-        JUtilities.setIconPair(rightBtn, "ui/button/right.png", "ui/button/right-hi.png", true);
-        JUtilities.setIconPair(rotateLeftBtn, "ui/button/rotate-left.png", "ui/button/rotate-left-hi.png", true);
-        JUtilities.setIconPair(rotateRightBtn, "ui/button/rotate-right.png", "ui/button/rotate-right-hi.png", true);
-        JUtilities.setIconPair(scaleUpBtn, "ui/button/scale-up.png", "ui/button/scale-up-hi.png", true);
-        JUtilities.setIconPair(scaleDownBtn, "ui/button/scale-down.png", "ui/button/scale-down-hi.png", true);
+        JUtilities.setIconPair(upBtn, "up", "up-hi", true);
+        JUtilities.setIconPair(downBtn, "down", "down-hi", true);
+        JUtilities.setIconPair(leftBtn, "left", "left-hi", true);
+        JUtilities.setIconPair(rightBtn, "right", "right-hi", true);
+        JUtilities.setIconPair(rotateLeftBtn, "rotate-left", "rotate-left-hi", true);
+        JUtilities.setIconPair(rotateRightBtn, "rotate-right", "rotate-right-hi", true);
+        JUtilities.setIconPair(scaleUpBtn, "scale-up", "scale-up-hi", true);
+        JUtilities.setIconPair(scaleDownBtn, "scale-down", "scale-down-hi", true);
 
         final Cursor HAND = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
         upBtn.setCursor(HAND);
@@ -991,7 +991,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
             double oldY = portrait.getPanY();
             double oldRot = portrait.getRotation();
             // pop in a dummy image
-            portrait.setSource("res://icons/1x1.png");
+            portrait.setSource("res://icons/1x1");
             // put in the real image
             portrait.setSource(s);
             // if the new image has the same dimensions,
@@ -1206,7 +1206,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                         Image image = (Image) t.getTransferData(DataFlavor.imageFlavor);
                         JUtilities.showWaitCursor(this);
                         try {
-                            File tempFile = File.createTempFile("se-pasted-image-", ".png");
+                            File tempFile = File.createTempFile("se-pasted-image-", "");
                             BufferedImage bi = ImageUtilities.imageToBufferedImage(image);
                             ImageIO.write(bi, "png", tempFile);
                             tempFile.deleteOnExit();

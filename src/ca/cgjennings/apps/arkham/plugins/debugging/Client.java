@@ -809,7 +809,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         onTopBtn.setBackground(java.awt.Color.black);
-        onTopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/keep-on-top.png"))); // NOI18N
+        onTopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/keep-on-top.png"))); // NOI18N
         onTopBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         onTopBtn.setBorderPainted(false);
         onTopBtn.setFocusable(false);
@@ -869,7 +869,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         infoBtn.setBackground(java.awt.Color.black);
-        infoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/table.png"))); // NOI18N
+        infoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/table.png"))); // NOI18N
         infoBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         infoBtn.setBorderPainted(false);
         infoBtn.setFocusable(false);
@@ -945,7 +945,7 @@ public final class Client extends javax.swing.JFrame {
                 .addComponent(stopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(onTopBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         toolPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {backBtn, breakBtn, breakDebuggerBtn, breakEnterBtn, breakExitBtn, breakThrowBtn, debugBtn, infoBtn, onTopBtn, runBtn, stepIntoBtn, stepOutBtn, stepOverBtn, stopBtn, walkBtn});
@@ -1399,8 +1399,8 @@ public final class Client extends javax.swing.JFrame {
                     .addComponent(typeHeadLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
-                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE))
+                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
                 .addContainerGap())
         );
         typePanelLayout.setVerticalGroup(
@@ -1487,7 +1487,7 @@ public final class Client extends javax.swing.JFrame {
                 .addComponent(infoSelectCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(refreshBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 317, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 310, Short.MAX_VALUE)
                 .addComponent(clearCaches)
                 .addGap(18, 18, 18)
                 .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)

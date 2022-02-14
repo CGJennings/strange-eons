@@ -6,6 +6,7 @@ import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.FilteredMultiResolutionImage;
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.AbstractMultiResolutionImage;
 import java.awt.image.BaseMultiResolutionImage;
@@ -23,12 +24,9 @@ import resources.ResourceKit;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-public class ThemedImageIcon implements ThemedIcon {
+public class ThemedImageIcon extends AbstractThemedIcon {
     private String resource;
     private volatile FilteredMultiResolutionImage mim;
-    private FilteredMultiResolutionImage dim;
-    private int width, height;
-    private boolean disabled;
     
 
     /**
@@ -130,7 +128,6 @@ public class ThemedImageIcon implements ThemedIcon {
         src.getMultiResolutionImage();
         resource = src.resource;
         mim = src.mim;
-        dim = src.dim;
         this.width = width;
         this.height = height;
         disabled = src.disabled;
@@ -194,24 +191,6 @@ public class ThemedImageIcon implements ThemedIcon {
     }
     
     /**
-     * Returns a multi-resolution image that can be used to render a version
-     * of the icon's image to reflect the disabled component state.
-     * 
-     * @return 
-     */
-    public final AbstractMultiResolutionImage getDisabledMultiResolutionImage() {
-        if (dim == null) {
-            dim = new FilteredMultiResolutionImage(getMultiResolutionImage()) {
-                @Override
-                public Image applyEffect(Image source) {
-                    return ImageUtilities.createDisabledImage((BufferedImage) source);
-                }
-            };
-        }
-        return dim;
-    }
-    
-    /**
      * Returns an icon with the same base image as this icon,
      * but which renders with a different nominal size or state.
      * 
@@ -219,6 +198,7 @@ public class ThemedImageIcon implements ThemedIcon {
      * @param newHeight the new height (on 1:1 displays)
      * @return an icon for the new size
      */
+    @Override
     public final ThemedImageIcon derive(int newWidth, int newHeight) {
         if (newWidth < 1 || newHeight < 1) {
             throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
@@ -229,26 +209,12 @@ public class ThemedImageIcon implements ThemedIcon {
         return new ThemedImageIcon(this, newWidth, newHeight);
     }
     
+    @Override
     public final ThemedImageIcon disabled() {
         if (disabled) return this;
         ThemedImageIcon di = new ThemedImageIcon(this, width, height);
         di.disabled = true;
         return di;
-    }
-
-
-    /**
-     * Returns the (possibly themed) base image that will be used by the icon.
-     * The base image is used by the icon when no desktop scaling is applied,
-     * and so determines the base size of the icon.
-     *
-     * @return the image drawn by the icon at 1:1 scale
-     */
-    public final BufferedImage getImage() {
-        if (mim == null) {
-            getMultiResolutionImage();
-        }
-        return (BufferedImage) mim.getBaseImage();
     }
 
     @Override
@@ -264,14 +230,9 @@ public class ThemedImageIcon implements ThemedIcon {
     }
 
     @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
+    public void paintIcon(Component c, Graphics2D g, int x, int y) {
         if (mim == null) getMultiResolutionImage();
-        
-        if (disabled || (c != null && !c.isEnabled())) {
-            g.drawImage(getDisabledMultiResolutionImage(), x, y, width, height, null);
-        } else {
-            g.drawImage(mim, x, y, width, height, null);
-        }
+        g.drawImage(mim, x, y, width, height, null);
     }
     
     @Override

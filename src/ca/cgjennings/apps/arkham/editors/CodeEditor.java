@@ -450,7 +450,7 @@ public class CodeEditor extends AbstractSupportEditor {
         findPanel.add(titlePanel, java.awt.BorderLayout.NORTH);
 
         icon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        icon.setIcon( ResourceKit.getIcon( "ui/find-lr.png" ) );
+        icon.setIcon(ResourceKit.getIcon("find-lr"));
         icon.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 4, 0, 0));
         icon.setIconTextGap(0);
 
