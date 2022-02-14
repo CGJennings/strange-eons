@@ -1612,7 +1612,9 @@ public class CodeEditor extends AbstractSupportEditor {
     protected void printImpl(final PrinterJob job) throws PrintException, PrinterException {
         String source = getText();
         JTextComponent tc = new JTextArea();
-        tc.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 10));
+        tc.setForeground(Color.BLACK);
+        tc.setBackground(Color.WHITE);        
+        tc.setFont(getEditor().getFont().deriveFont(10f));
         tc.setText(source);
         Printable p = tc.getPrintable(new MessageFormat(getFile().getPath()), new MessageFormat("{0}"));
         job.setPrintable(p);
