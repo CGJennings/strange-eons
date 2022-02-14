@@ -48,13 +48,17 @@ import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.Toolkit;
@@ -2597,6 +2601,42 @@ public class ResourceKit {
             ComponentMetadata.writeMetadataToStream(oo, gc);
             oo.writeObject(gc);
         }
+    }
+
+    /**
+     * Creates a custom cursor using an image resource, which may be a
+     * multiresolution image resource.
+     * 
+     * @param cursorImage the base image resource to use for the cursor
+     * @param hotspot the location of the hotspot on the base image
+     * @param cursorName the cursor name, for accessibility
+     * @param fallback the cursor to return if your cursor cannot be supported
+     * @return the custom cursor, or the fallback
+     */
+    public static Cursor createCustomCursor(String cursorImage, Point hotspot, String cursorName, Cursor fallback) {
+        try {
+            MultiResolutionImageResource mri = new MultiResolutionImageResource(cursorImage);
+            Dimension d = Toolkit.getDefaultToolkit().getBestCursorSize(1, 1);
+            if (d.width > 0 && d.height > 0) {
+                BufferedImage base = mri.getBaseImage();
+                BufferedImage scaled = mri.getResolutionVariant(d.width, d.height);
+                if (scaled.getWidth() != d.width || scaled.getHeight() != d.height) {
+                    scaled = ImageUtilities.resample(scaled, d.width, d.height);
+                }
+
+                double hx = (double) hotspot.x * (double) scaled.getWidth() / (double) base.getWidth();
+                double hy = (double) hotspot.y * (double) scaled.getHeight() / (double) base.getHeight();
+                Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(
+                        scaled,
+                        new Point((int) (hx+0.5d), (int) (hy+0.5d)),
+                        cursorName
+                );
+                return custom;
+            }
+        } catch (HeadlessException hex) {
+            // use fallback
+        }
+        return fallback;
     }
 
     @Deprecated

@@ -199,38 +199,24 @@ public class EyeDropper extends JLabel {
             // robot not supported
         }
 
-        // fallback cursor if we can't set our custom one
-        dragCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
-        regularCursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-
-        BufferedImage ed = ResourceKit.getThemedImage("icons/ui/controls/eyedropper.png");
-        regularIcon = new ImageIcon(ed);
+        // icon to use to represent eyedropper, replaced by a blank verison
+        // when dragging
+        regularIcon = ResourceKit.getIcon("eyedropper");
         dragIcon = new BlankIcon(regularIcon.getIconWidth(), regularIcon.getIconHeight());
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        Dimension d = tk.getBestCursorSize(ed.getWidth(), ed.getHeight());
-        // we can make a cursor at least as big as our image,
-        // so we will use a custom cursor
-        if (d.width >= ed.getWidth() && d.height >= ed.getHeight()) {
-            Point hotspot = new Point(0, ed.getHeight() - 1);
-            // we need to extend the image
-            if (d.width != ed.getWidth() || d.height != ed.getHeight()) {
-                BufferedImage resized = new BufferedImage(d.width, d.height, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g = resized.createGraphics();
-                try {
-                    g.drawImage(ed, 0, 0, null);
-                } finally {
-                    g.dispose();
-                }
-                ed = resized;
-            }
-            dragCursor = tk.createCustomCursor(ed, hotspot, "Eye Dropper");
-        }
-
+        
+        // fallback cursor if we can't set our custom one
+        regularCursor = Cursor.getDefaultCursor();
+        dragCursor = ResourceKit.createCustomCursor(
+                "res:icons/cursors/dropper-cursor.png",
+                new Point(1, 30),
+                "Eye Dropper",
+                Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR)
+        );
         isInitialized = true;
     }
     private static boolean isInitialized = false;
-    private static Robot robot;
     private static Icon regularIcon, dragIcon;
+    private static Robot robot;
     private static Cursor dragCursor, regularCursor;
 
     private boolean opaqueCache;
@@ -239,22 +225,4 @@ public class EyeDropper extends JLabel {
     private boolean updateBackground;
 
     private static int globalDragCount = 0;
-
-//	public static void main( String[] args ) {
-//		java.awt.EventQueue.invokeLater( new Runnable() {
-//			public void run() {
-//				EyeDropper ed = new EyeDropper();
-//				ed.addPropertyChangeListener( DROPPER_COLOR_CHANGED, new PropertyChangeListener() {
-//					public void propertyChange( PropertyChangeEvent evt ) {
-//						System.err.println( evt.getNewValue() );
-//					}
-//				});
-//				javax.swing.JFrame f = new javax.swing.JFrame( "Eye Dropper Test" );
-//				f.add( ed );
-//				f.pack();
-//				f.setDefaultCloseOperation( javax.swing.JFrame.EXIT_ON_CLOSE );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }

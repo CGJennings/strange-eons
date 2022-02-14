@@ -9,6 +9,7 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -20,11 +21,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -652,10 +657,34 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             cp.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
+                    // left click to toggle light/dark
                     if (e.getButton() == MouseEvent.BUTTON1) {
                         label.setBackground(label.getBackground() == light ? dark : light);
-                    } else {
+                    }
+                    
+                    // right click to toggle enabled/disabled
+                    else if (e.getButton() == MouseEvent.BUTTON3) {
                         label.setEnabled(!label.isEnabled());
+                    }
+                    
+                    // middle button to save as a PNG
+                    else if (e.getButton() == MouseEvent.BUTTON2) {
+                        BufferedImage im = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+                        Graphics2D g = im.createGraphics();
+                        try {
+                            ThemedIcon icon = ((ThemedGlyphIcon) label.getIcon()).derive(128);
+                            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                            icon.paintIcon(null, g, 0, 0);
+                        } finally {
+                            g.dispose();
+                        }
+                        try {
+                            File output = File.createTempFile("glyph-icon-", ".png");
+                            ImageIO.write(im, "png", output);
+                            System.out.println(output.getAbsolutePath());
+                        } catch (IOException ex) {
+                            ex.printStackTrace(System.out);
+                        }
                     }
                 }
             });

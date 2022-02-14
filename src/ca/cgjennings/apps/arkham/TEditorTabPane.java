@@ -152,13 +152,8 @@ class TEditorTabPane extends JCloseableTabbedPane {
 
     @Override
     protected Cursor getDragOutCursor() {
-        if (dragOutCursor == null) {
-            BufferedImage ci = ResourceKit.getImage("icons/ui/controls/detach-cursor.png");
-            dragOutCursor = ImageUtilities.createCustomCursor(getToolkit(), ci, ci.getWidth() / 2, 0, "TabDetach");
-        }
-        return dragOutCursor; // Cursor.getPredefinedCursor( Cursor.MOVE_CURSOR );
+        return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
     }
-    private Cursor dragOutCursor;
 
     @Override
     protected boolean isDragOutSupported() {
