@@ -1,27 +1,16 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
-import ca.cgjennings.ui.theme.Theme;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import javax.swing.ButtonModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JSpinner;
-import javax.swing.UIManager;
 import resources.ResourceKit;
 import resources.Settings;
 
 /**
- * A user interface control that cycles through a fixes set of options. This is
+ * A user interface control that cycles through a fixed set of options. This is
  * similar to a {@link JSpinner}, but the selected value cannot be edited with
  * the keyboard and the control has a button-like appearance rather than a
  * field-like appearance.
@@ -89,32 +78,19 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      */
     public JCycleButton(M[] model, String[] settingValues) {
         this.settingValues = settingValues;
-        setIcon(icon);
 
         metric = new JButton();
         initButton(this);
         initButton(metric);
 
         setCycleModel(model);
-//		setPressedIcon( icon );
     }
 
     private void initButton(JButton b) {
-        b.setIcon(icon);
+        b.setIcon(ResourceKit.getIcon("cycle"));
         b.setIconTextGap(GAP);
         b.setHorizontalTextPosition(LEADING);
         b.setHorizontalAlignment(TRAILING);
-
-        int marginAdj = UIManager.getDefaults().getInt(Theme.CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT);
-        if (marginAdj != 0) {
-            Insets margin = b.getMargin();
-            if (getComponentOrientation().isLeftToRight()) {
-                margin.right += marginAdj;
-            } else {
-                margin.left += marginAdj;
-            }
-            b.setMargin(margin);
-        }
     }
 
     /**
@@ -198,7 +174,7 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
         if (model == null) {
             this.cycleModel = null;
-            gaps = null;
+            gaps = new int[0];
         } else {
             this.cycleModel = model.clone();
             gaps = new int[model.length];
@@ -327,41 +303,4 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
             return sel < 0 ? null : settingValues[getSelectedIndex()];
         }
     }
-
-    private Icon icon = new Icon() {
-        BufferedImage lo = ResourceKit.getThemedImage("icons/ui/controls/cycle.png");
-        BufferedImage hi = ResourceKit.getThemedImage("icons/ui/controls/cycle-hi.png");
-        Color lineColor = new Color(0x77000000, true);
-        Color disabledColor = new Color(0x77ffffff, true);
-
-        @Override
-        public void paintIcon(Component c, Graphics g1, int x, int y) {
-            ButtonModel m = getModel();
-            boolean highlight = m.isPressed() || m.isSelected() || (!isEnabled());
-            BufferedImage image = highlight ? hi : lo;
-            boolean ltr = getComponentOrientation().isLeftToRight();
-            Graphics2D g = (Graphics2D) g1;
-            Paint paint = g.getPaint();
-            g.setPaint(isEnabled() ? lineColor : disabledColor);
-            if (ltr) {
-                g.drawImage(image, null, x + 5, y);
-                g.drawLine(x, y, x, y + lo.getHeight() - 1);
-            } else {
-                g.drawImage(image, null, x, y);
-                int x1 = x + lo.getWidth() + 4; // i.e. +5-1
-                g.drawLine(x1, y, x1, y + lo.getHeight() - 1);
-            }
-            g.setPaint(paint);
-        }
-
-        @Override
-        public int getIconWidth() {
-            return lo.getWidth() + 5;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return lo.getHeight();
-        }
-    };
 }
