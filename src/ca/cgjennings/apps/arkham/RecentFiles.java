@@ -62,7 +62,6 @@ public class RecentFiles {
             key = KEY_DOCUMENT_LIST;
             list = docs;
         }
-        installExitTask();
     }
 
     /**
@@ -174,12 +173,13 @@ public class RecentFiles {
     }
 
     static {
-        boolean hasOldList = RawSettings.getUserSetting("recent-file-1") != null;
+        final boolean hasOldList = RawSettings.getUserSetting("recent-file-1") != null;
         if (hasOldList) {
             transitionOldFileList();
         } else {
             initializeFileLists();
         }
+        installExitTask();
         installRenameListener();
     }
 
@@ -258,12 +258,7 @@ public class RecentFiles {
             } catch (NumberFormatException e) {
             }
         }
-        if (maxFiles < 0) {
-            maxFiles = 0;
-        } else if (maxFiles > MAXIMUM_LIST_SIZE) {
-            maxFiles = MAXIMUM_LIST_SIZE;
-        }
-        return maxFiles;
+        return Math.min(MAXIMUM_LIST_SIZE, Math.max(0, maxFiles));
     }
 
     /**
