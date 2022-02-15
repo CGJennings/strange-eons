@@ -485,6 +485,9 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
         if ((file == null && newFile != null) || (file != null && !file.equals(newFile))) {
             setUnsavedChanges(true);
         }
+        if (newFile != null) {
+            RecentFiles.addRecentDocument(newFile);
+        }
         file = newFile;
     }
 
