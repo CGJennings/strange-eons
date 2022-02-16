@@ -88,7 +88,7 @@ public final class PortraitControl extends JComponent {
     public void setPortrait(Portrait p) {
         if (p == null) {
             // disable control
-            p = null;
+            this.p = null;
             w = h = 0;
         } else {
             this.p = p;
