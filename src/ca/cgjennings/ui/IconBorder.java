@@ -272,15 +272,15 @@ public class IconBorder extends AbstractBorder {
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        if (icon == null) {
-            return;
-        }
-
         final boolean enabled = c.isEnabled();
-        Icon i = enabled ? icon : disabledIcon;
+        Icon i = enabled ? icon : (disabledIcon == null ? icon : disabledIcon);
 
         if (!noFillHint) {
             fillBorder(c, g, x, y, width, height, enabled);
+        }
+        
+        if (i == null) {
+            return;
         }
 
         if (rightSide) {
