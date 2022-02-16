@@ -6,9 +6,11 @@ import ca.cgjennings.apps.arkham.deck.item.StyleApplicator;
 import ca.cgjennings.apps.arkham.deck.item.StyleCapture;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.swing.Icon;
 import resources.Language;
@@ -35,13 +37,13 @@ public final class Game implements Comparable<Game>, IconProvider {
     private String code;
     private String uiName;
     private String gameName;
-    private Icon icon;
+    private ThemedIcon icon;
     private ExpansionSymbolTemplate template;
 
     private Game() {
     }
 
-    private Game(String code, String uiName, String gameName, BufferedImage iconImage, ExpansionSymbolTemplate template) {
+    private Game(String code, String uiName, String gameName, ThemedIcon icon, ExpansionSymbolTemplate template) {
         if (code == null) {
             throw new NullPointerException("code");
         }
@@ -62,10 +64,10 @@ public final class Game implements Comparable<Game>, IconProvider {
         this.code = code;
         this.uiName = uiName;
         this.gameName = gameName;
-        if (iconImage == null) {
-            iconImage = ResourceKit.getImage("editors/game-XX.png");
+        if (icon == null) {
+            icon = ResourceKit.getIcon("res://editors/game-XX.png");
         }
-        icon = ImageUtilities.createIconForSize(iconImage, ICON_SIZE);
+        this.icon = icon.derive(ICON_SIZE);
         if (template == null) {
             // workaround for Arkham Horror using default template: we have changed
             // the default template to only supply darkl and light variants
@@ -76,6 +78,10 @@ public final class Game implements Comparable<Game>, IconProvider {
             }
         }
         this.template = template;
+    }
+    
+    private Game(String code, String uiName, String gameName, BufferedImage iconImage, ExpansionSymbolTemplate template) {
+        this(code, uiName, gameName, ImageUtilities.createIconForSize(iconImage, ICON_SIZE), template);
     }
 
     /**
@@ -123,7 +129,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * specific icon is not available
      */
     @Override
-    public Icon getIcon() {
+    public ThemedIcon getIcon() {
         return icon;
     }
 
@@ -312,7 +318,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @since 2.1a9
      */
     public static Game register(String code, String gameName) {
-        return register(code, gameName, null);
+        return register(code, gameName, (String) null);
     }
 
     /**
@@ -321,6 +327,8 @@ public final class Game implements Comparable<Game>, IconProvider {
      * interface name is determined using {@code Language.string( code )} and
      * the game name is determined using {@code Language.gstring( code )}.)
      *
+     * @deprecated Prefer methods that take an icon or image resource.
+     * 
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param key the string table key to use when looking up the game name(s)
      * @param iconImage an image to use to represent the game; if {@code null} a
@@ -334,6 +342,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @see #register(java.lang.String, java.lang.String, java.lang.String,
      * java.awt.image.BufferedImage, gamedata.ExpansionSymbolTemplate)
      */
+    @Deprecated
     public static Game register(String code, String key, BufferedImage iconImage) {
         if (key == null) {
             throw new NullPointerException("key");
@@ -344,6 +353,87 @@ public final class Game implements Comparable<Game>, IconProvider {
             throw new IllegalArgumentException("game code already registered: " + code);
         }
         Game g = new Game(code, Language.string(key), Language.gstring(key), iconImage, null);
+        games.put(code, g);
+        gameCache = null;
+        return g;
+    }
+
+    /**
+     * Register a new game with an associated icon. This method looks up the
+     * names for the game using a string key and {@link Language}. (The
+     * interface name is determined using {@code Language.string( code )} and
+     * the game name is determined using {@code Language.gstring( code )}.)
+     *
+     * 
+     * @param code a short code string for the game, usually 2-6 capital letters
+     * @param key the string table key to use when looking up the game name(s)
+     * @param icon an image resource to use as an icon to represent the game; if {@code null} a
+     * default image is used (see
+     * {@link #register(java.lang.String, java.lang.String)}).
+     * @return the registered game
+     * @throws IllegalArgumentException if a game with this code is already
+     * registered, or if the code contains characters that are not legal for
+     * file names
+     * @throws NullPointerException if the code or key is {@code null}
+     * @see #register(java.lang.String, java.lang.String, java.lang.String,
+     * java.awt.image.BufferedImage, gamedata.ExpansionSymbolTemplate)
+     */    
+    public static Game register(String code, String key, String icon) {
+        Objects.requireNonNull(key, "key");
+        return register(code, Language.string(key), Language.gstring(key), icon, null);
+    }    
+
+    /**
+     * 
+     * Register a new game with an associated icon. Games are registered using a
+     * short identifier code, usually 2-6 letters and all caps. For example, the
+     * game Arkham Horror is registered as <tt>AH</tt>.
+     *
+     * <p>
+     * When a component is created, a setting named {@code game} will be added
+     * to it, set to the game code indicated by the class map file. The parent
+     * settings for that component will then be the settings instance for the
+     * associated game. Components not associated with a specific game in their
+     * class map will be associated with the special "all games" game. (Generic
+     * components like {@link Marker}s use this game.)
+     *
+     * <p>
+     * Expansions are also associated with particular games, so that only the
+     * expansions that match the component currently being edited are listed as
+     * choices for that component.
+     *
+     * <p>
+     * <b>Game Editions:</b> For games that have more than one edition, treat
+     * different editions as different games if they use substantially different
+     * rules or graphic design.
+     * 
+     * @deprecated Prefer methods that take an icon or image resource.
+     *
+     * @param code a short code string for the game, usually 2-6 capital letters
+     * @param uiName the name of the game, in the user interface locale
+     * @param gameName the name of the game, in the game locale
+     * @param iconImage an image to use to represent the game; if {@code null} a
+     * default image is used (see
+     * {@link #register(java.lang.String, java.lang.String)}).
+     * @param template an expansion symbol template that describes the expansion
+     * symbols for this game, or {@code null} to use a default template
+     * @return the registered game
+     * @throws IllegalArgumentException if a game with this code is already
+     * registered, or if the code contains characters that are not legal for
+     * file names
+     * @throws NullPointerException if the code or either name is {@code null}
+     * @see #getSettings()
+     * @see #getAllGamesInstance()
+     * @see ClassMap
+     */
+    @Deprecated
+    public static Game register(String code, String uiName, String gameName, BufferedImage iconImage, ExpansionSymbolTemplate template) {
+        Lock.test();
+        init();
+        if (games.containsKey(code) && !Lock.hasBeenLocked()) {
+            throw new IllegalArgumentException("game code already registered: " + code);
+        }
+        Game g = new Game(code, uiName, gameName, iconImage, template);
         games.put(code, g);
         gameCache = null;
         return g;
@@ -375,7 +465,59 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param uiName the name of the game, in the user interface locale
      * @param gameName the name of the game, in the game locale
-     * @param iconImage an image to use to represent the game; if {@code null} a
+     * @param icon an image resource to use to represent the game; if {@code null} a
+     * default image is used (see
+     * {@link #register(java.lang.String, java.lang.String)}).
+     * @param template an expansion symbol template that describes the expansion
+     * symbols for this game, or {@code null} to use a default template
+     * @return the registered game
+     * @throws IllegalArgumentException if a game with this code is already
+     * registered, or if the code contains characters that are not legal for
+     * file names
+     * @throws NullPointerException if the code or either name is {@code null}
+     * @see #getSettings()
+     * @see #getAllGamesInstance()
+     * @see ClassMap
+     */    
+    public static Game register(String code, String uiName, String gameName, String icon, ExpansionSymbolTemplate template) {
+        ThemedIcon i = null;
+        if (icon != null) {
+            if (!icon.startsWith("res:") && !icon.startsWith("/")) {
+                icon = "res://" + icon;
+            }
+            i = ResourceKit.getIcon(icon);
+        }
+        
+        return register(code, uiName, gameName, i, template);
+    }
+
+    /**
+     * Register a new game with an associated icon. Games are registered using a
+     * short identifier code, usually 2-6 letters and all caps. For example, the
+     * game Arkham Horror is registered as <tt>AH</tt>.
+     *
+     * <p>
+     * When a component is created, a setting named {@code game} will be added
+     * to it, set to the game code indicated by the class map file. The parent
+     * settings for that component will then be the settings instance for the
+     * associated game. Components not associated with a specific game in their
+     * class map will be associated with the special "all games" game. (Generic
+     * components like {@link Marker}s use this game.)
+     *
+     * <p>
+     * Expansions are also associated with particular games, so that only the
+     * expansions that match the component currently being edited are listed as
+     * choices for that component.
+     *
+     * <p>
+     * <b>Game Editions:</b> For games that have more than one edition, treat
+     * different editions as different games if they use substantially different
+     * rules or graphic design.
+     *
+     * @param code a short code string for the game, usually 2-6 capital letters
+     * @param uiName the name of the game, in the user interface locale
+     * @param gameName the name of the game, in the game locale
+     * @param icon an icon instance to use to represent the game; if {@code null} a
      * default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @param template an expansion symbol template that describes the expansion
@@ -389,17 +531,17 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @see #getAllGamesInstance()
      * @see ClassMap
      */
-    public static Game register(String code, String uiName, String gameName, BufferedImage iconImage, ExpansionSymbolTemplate template) {
+    public static Game register(String code, String uiName, String gameName, Icon icon, ExpansionSymbolTemplate template) {
         Lock.test();
         init();
         if (games.containsKey(code) && !Lock.hasBeenLocked()) {
             throw new IllegalArgumentException("game code already registered: " + code);
         }
-        Game g = new Game(code, uiName, gameName, iconImage, template);
+        Game g = new Game(code, uiName, gameName, ThemedIcon.create(icon), template);
         games.put(code, g);
         gameCache = null;
         return g;
-    }
+    }    
 
     private static void init() {
         if (!initialized) {
@@ -408,7 +550,7 @@ public final class Game implements Comparable<Game>, IconProvider {
             Game allGames = new Game(ALL_GAMES_CODE,
                     Language.string("game-all"),
                     Language.gstring("game-all"),
-                    null, null
+                    (ThemedIcon) null, null
             );
             games.put(ALL_GAMES_CODE, allGames);
             gameCache = null;

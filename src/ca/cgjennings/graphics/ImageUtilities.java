@@ -329,15 +329,12 @@ public final class ImageUtilities {
      * @param size the maximum width and height of the icon
      * @return an icon created from {@code image}
      */
-    public static Icon createIconForSize(BufferedImage image, int size) {
-        if (image.getWidth() > size || image.getHeight() > size) {
-            double scale = ImageUtilities.idealCoveringScaleForImage(size, size, image.getWidth(), image.getHeight());
-            image = ImageUtilities.resample(image, (float) scale);
+    public static ThemedIcon createIconForSize(BufferedImage image, int size) {
+        if (image.getWidth() != image.getHeight()) {
+            int maxDimen = Math.max(image.getWidth(), image.getHeight());
+            image = center(image, maxDimen, maxDimen);
         }
-        if (image.getWidth() < size || image.getHeight() < size) {
-            image = center(image, size, size);
-        }
-        return new ImageIcon(image);
+        return new ThemedImageIcon(image);
     }
 
     /**
