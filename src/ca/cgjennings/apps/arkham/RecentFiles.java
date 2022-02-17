@@ -174,11 +174,18 @@ public class RecentFiles {
 
     static {
         final boolean hasOldList = RawSettings.getUserSetting("recent-file-1") != null;
-        if (hasOldList) {
-            transitionOldFileList();
-        } else {
+        final boolean hasNewList = RawSettings.getUserSetting(KEY_PROJECT_LIST + '1') != null
+                || RawSettings.getUserSetting(KEY_DOCUMENT_LIST + '1') != null;
+        
+        // if there are entries in the new format, ignore entries in the old
+        // format; this allows old and new versions to be used on the same
+        // device without causing a delay on each startup
+        if (hasNewList) {
             initializeFileLists();
+        } else if (hasOldList) {
+            transitionOldFileList();
         }
+
         installExitTask();
         installRenameListener();
     }
