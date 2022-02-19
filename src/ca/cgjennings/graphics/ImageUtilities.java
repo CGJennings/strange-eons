@@ -1,7 +1,6 @@
 package ca.cgjennings.graphics;
 
 import ca.cgjennings.graphics.filters.AbstractImageFilter;
-import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.CheckeredScreenFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import ca.cgjennings.graphics.filters.InversionFilter;

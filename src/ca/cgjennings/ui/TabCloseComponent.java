@@ -1,6 +1,5 @@
 package ca.cgjennings.ui;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,15 +12,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
 import resources.ResourceKit;

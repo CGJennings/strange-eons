@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JCloseableTabbedPane;
 import ca.cgjennings.ui.StyleUtilities;
 import java.awt.Component;
@@ -12,7 +11,6 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.font.TextAttribute;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.util.Collections;
 import javax.swing.Icon;

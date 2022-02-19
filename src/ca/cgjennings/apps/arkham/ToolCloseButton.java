@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham;
 import java.awt.Color;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicButtonUI;
 import resources.ResourceKit;

@@ -12,7 +12,6 @@ import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
 import java.awt.image.MultiResolutionImage;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import resources.ResourceKit;
 

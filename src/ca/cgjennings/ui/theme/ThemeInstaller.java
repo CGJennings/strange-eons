@@ -10,7 +10,6 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.MnemonicInstaller;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
