@@ -973,6 +973,7 @@ public final class ProjectView extends javax.swing.JPanel {
         projTree.setDragEnabled(true);
         projTree.setDropMode(javax.swing.DropMode.ON);
         projTree.setName("projTree"); // NOI18N
+        projTree.setRowHeight(22);
         projTree.setShowsRootHandles( false );
         projTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

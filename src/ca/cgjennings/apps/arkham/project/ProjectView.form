@@ -154,6 +154,7 @@
                       <Value id="ON"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="projTree" noResource="true"/>
+                    <Property name="rowHeight" type="int" value="22"/>
                     <Property name="showsRootHandles" type="boolean" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
                       <Connection code=" false " type="code"/>
                     </Property>
