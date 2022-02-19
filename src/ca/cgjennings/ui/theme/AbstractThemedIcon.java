@@ -33,7 +33,12 @@ public abstract class AbstractThemedIcon implements ThemedIcon {
     public final void paintIcon(Component c, Graphics g, int x, int y) {
         Graphics2D g2 = (Graphics2D) g;
         Object oldAA = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
+        Object oldTerp = g2.getRenderingHint(RenderingHints.KEY_INTERPOLATION);
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // keep bicubic interpolation if that's been set, otherwise compromise with bilinear
+        if (oldTerp != RenderingHints.VALUE_INTERPOLATION_BICUBIC) {
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        }
         if (disabled || (c != null && !c.isEnabled())) {
             Composite oldComp = g2.getComposite();
             g2.setComposite(DISABLED_COMPOSITE);
@@ -42,8 +47,11 @@ public abstract class AbstractThemedIcon implements ThemedIcon {
         } else {
             paintIcon(c, g2, x, y);
         }
-        if (oldAA != RenderingHints.VALUE_ANTIALIAS_ON) {
+        if (oldAA != null) {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, oldAA);
+        }
+        if (oldTerp != null) {
+            g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, oldTerp);
         }
     }
     

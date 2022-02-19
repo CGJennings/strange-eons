@@ -5,7 +5,6 @@ import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.FilteredMultiResolutionImage;
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.AbstractMultiResolutionImage;
@@ -13,6 +12,7 @@ import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
 import java.awt.image.MultiResolutionImage;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import resources.ResourceKit;
 
@@ -22,7 +22,7 @@ import resources.ResourceKit;
  * using file name suffixes (such as {@code myicon@2x.png}).
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
+ * @since 3.4
  */
 public class ThemedImageIcon extends AbstractThemedIcon {
     private String resource;
@@ -30,27 +30,23 @@ public class ThemedImageIcon extends AbstractThemedIcon {
     
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version.
+     * Creates a new themed icon from an image resource.
      *
-     * @param resource the resource identifier for the icon
-     * @see Theme#applyThemeToImage(java.lang.String)
+     * @param resource the non-null image resource, e.g.,
+     * {@code "res://path/image.png"}
      */
     public ThemedImageIcon(String resource) {
         this(resource, false);
     }
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then it will not
+     * Creates a new themed icon from an image resource.
+     * If {@code deferLoading} is {@code true}, then it will not
      * be loaded until the first time it is used. Otherwise, the image may
-     * start loading immediately.
+     * start loading immediately in a background thread.
      *
-     * @param resource the resource identifier for the icon
+     * @param resource the the non-null image resource, e.g.,
+     * {@code "res://path/image.png"}
      * @param deferLoading if {@code true}, the image is loaded lazily
      * @see Theme#applyThemeToImage(java.lang.String)
      */
@@ -58,31 +54,39 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         Objects.requireNonNull(resource, "resource");
         this.resource = ResourceKit.normalizeResourceIdentifier(resource);
 
-        if (!deferLoading) {
-            if (Runtime.getRuntime().availableProcessors() > 1) {
-                SplitJoin.getInstance().execute(this::getMultiResolutionImage);
-            } else {
-                getMultiResolutionImage();
-            }
+        if (!deferLoading && Runtime.getRuntime().availableProcessors() > 1) {
+            SplitJoin.getInstance().execute(this::getMultiResolutionImage);
         }
     }
     
     /**
-     * Creates a new themed icon that overrides the size of the image base image
-     * resource to return the indicated size.
+     * Creates a new themed icon with the specified size. This is
+     * a cover for creating an icon of equal width and height.
      * 
-     * @param resource the resource identifier for the icon
-     * @param width the desired icon width (for 1:1 displays)
-     * @param height the desired icon height (for 1:1 displays)
+     * @param resource the the non-null image resource, e.g.,
+     * {@code "res://path/image.png"}
+     * @param size the desired icon width and height
      */
-    public ThemedImageIcon(String resource, int width, int height) {
+    public ThemedImageIcon(String resource, int size) {
+        this(resource, size, size);
+    }    
+    
+    /**
+     * Creates a new themed icon with the specified size.
+     * 
+     * @param resource the the non-null image resource, e.g.,
+     * {@code "res://path/image.png"}
+     * @param iconWidth the desired icon width (for 1:1 displays)
+     * @param iconHeight the desired icon height (for 1:1 displays)
+     */
+    public ThemedImageIcon(String resource, int iconWidth, int iconHeight) {
         this(resource, true);
-        if (width < 1 || height < 1) {
-            throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
+        if (iconWidth < 1 || iconHeight < 1) {
+            throw new IllegalArgumentException("bad dimensions: " + iconWidth + 'x' + iconHeight);
         }
         getMultiResolutionImage();
-        this.width = width;
-        this.height = height;
+        this.width = iconWidth;
+        this.height = iconHeight;
     }
     
     /**
@@ -108,6 +112,11 @@ public class ThemedImageIcon extends AbstractThemedIcon {
      * the size of the first image; this can be changed by calling
      * {@link #derive(int,int)}.
      * 
+     * <p>
+     * If only one source image is available, it is recommended to use
+     * {@link ThemedSingleImageIcon} instead, as this will generally
+     * produce a higher quality image.
+     * 
      * @param images a non-null array of at least one image 
      */
     public ThemedImageIcon(BufferedImage... images) {
@@ -118,7 +127,7 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         width = images[0].getWidth();
         height = images[0].getHeight();
         
-        // sort into size order
+        // sort from narrowest to widest
         Arrays.sort(images, (a, b) -> b.getWidth() - a.getWidth());
         
         mim = wrapMultiImageForTheme(new BaseMultiResolutionImage(images));
@@ -132,9 +141,10 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         this.height = height;
         disabled = src.disabled;
     }
-
+  
     /**
      * Returns the resource identifier for this icon.
+     * This will be null if the icon was not created from a resource identifier.
      *
      * @return the image resource
      */
@@ -206,6 +216,7 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         if (width == newWidth && height == newHeight) {
             return this;
         }
+        
         return new ThemedImageIcon(this, newWidth, newHeight);
     }
     
