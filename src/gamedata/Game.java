@@ -4,9 +4,9 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.Marker;
 import ca.cgjennings.apps.arkham.deck.item.StyleApplicator;
 import ca.cgjennings.apps.arkham.deck.item.StyleCapture;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.IconProvider;
 import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -78,10 +78,6 @@ public final class Game implements Comparable<Game>, IconProvider {
             }
         }
         this.template = template;
-    }
-    
-    private Game(String code, String uiName, String gameName, BufferedImage iconImage, ExpansionSymbolTemplate template) {
-        this(code, uiName, gameName, ImageUtilities.createIconForSize(iconImage, ICON_SIZE), template);
     }
 
     /**
@@ -344,18 +340,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      */
     @Deprecated
     public static Game register(String code, String key, BufferedImage iconImage) {
-        if (key == null) {
-            throw new NullPointerException("key");
-        }
-        Lock.test();
-        init();
-        if (games.containsKey(code) && !Lock.hasBeenLocked()) {
-            throw new IllegalArgumentException("game code already registered: " + code);
-        }
-        Game g = new Game(code, Language.string(key), Language.gstring(key), iconImage, null);
-        games.put(code, g);
-        gameCache = null;
-        return g;
+        return register(code, Language.string(key), Language.gstring(key), iconImage, null);
     }
 
     /**
@@ -433,7 +418,7 @@ public final class Game implements Comparable<Game>, IconProvider {
         if (games.containsKey(code) && !Lock.hasBeenLocked()) {
             throw new IllegalArgumentException("game code already registered: " + code);
         }
-        Game g = new Game(code, uiName, gameName, iconImage, template);
+        Game g = new Game(code, uiName, gameName, new ThemedSingleImageIcon(iconImage).derive(ICON_SIZE), template);
         games.put(code, g);
         gameCache = null;
         return g;
@@ -465,7 +450,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @param code a short code string for the game, usually 2-6 capital letters
      * @param uiName the name of the game, in the user interface locale
      * @param gameName the name of the game, in the game locale
-     * @param icon an image resource to use to represent the game; if {@code null} a
+     * @param iconResource an image resource to use to represent the game; if {@code null} a
      * default image is used (see
      * {@link #register(java.lang.String, java.lang.String)}).
      * @param template an expansion symbol template that describes the expansion
@@ -479,13 +464,13 @@ public final class Game implements Comparable<Game>, IconProvider {
      * @see #getAllGamesInstance()
      * @see ClassMap
      */    
-    public static Game register(String code, String uiName, String gameName, String icon, ExpansionSymbolTemplate template) {
+    public static Game register(String code, String uiName, String gameName, String iconResource, ExpansionSymbolTemplate template) {
         ThemedIcon i = null;
-        if (icon != null) {
-            if (!icon.startsWith("res:") && !icon.startsWith("/")) {
-                icon = "res://" + icon;
+        if (iconResource != null) {
+            if (!iconResource.startsWith("res:") && !iconResource.startsWith("/")) {
+                iconResource = "res://" + iconResource;
             }
-            i = ResourceKit.getIcon(icon);
+            i = ResourceKit.getIcon(iconResource);
         }
         
         return register(code, uiName, gameName, i, template);

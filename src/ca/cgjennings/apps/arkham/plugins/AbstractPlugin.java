@@ -140,7 +140,7 @@ public abstract class AbstractPlugin implements Plugin {
             for (int i=0; i<ICON_SUFFIXES.length; ++i) {
                 URL url = ResourceKit.class.getResource(base + ICON_SUFFIXES[i]);
                 if (url != null) {
-                    pluginIcon = new ThemedImageIcon(base + ICON_SUFFIXES[i], ThemedImageIcon.SMALL, ThemedImageIcon.SMALL);
+                    pluginIcon = new ThemedImageIcon(base + ICON_SUFFIXES[i], ThemedImageIcon.SMALL);
                 }
             }
             if (pluginIcon == null) {

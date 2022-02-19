@@ -95,7 +95,7 @@ public final class InstalledLibrary extends InstalledBundleObject {
                 if (root != null) {
                     String image = root.getClientProperty(PluginRoot.CLIENT_KEY_IMAGE);
                     if (image != null) {
-                        libraryIcon = new ThemedImageIcon(image);
+                        libraryIcon = new ThemedImageIcon(image).small();
                     }
                 }
             } catch (IOException ex) {

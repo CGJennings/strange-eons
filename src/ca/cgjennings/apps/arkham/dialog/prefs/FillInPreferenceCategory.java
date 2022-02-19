@@ -86,7 +86,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     public FillInPreferenceCategory(String title, String iconResource) {
         this(null, title, iconResource);
     }
-    
+
     /**
      * Create a new preferences category that will use plain settings keys (that
      * is, the exact keys that are specified).
@@ -111,13 +111,9 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     public FillInPreferenceCategory(PluginContext context, String title, BufferedImage iconImage) {
         this(null, title, imageToIcon(iconImage));
     }
-    
+
     private static ThemedIcon imageToIcon(BufferedImage im) {
-        if (im == null) return null;
-        if (im.getWidth() <= ICON_SIZE && im.getHeight() <= ICON_SIZE) {
-            im = ImageUtilities.center(im, ICON_SIZE, ICON_SIZE);
-        }
-        return new ThemedImageIcon(im).derive(ICON_SIZE, ICON_SIZE);
+        return (ThemedIcon) ImageUtilities.createIconForSize(im, ICON_SIZE);
     }
 
     /**
@@ -132,7 +128,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     public FillInPreferenceCategory(PluginContext context, String title, String iconResource) {
         this(context, title, (iconResource == null || iconResource.isEmpty()) ? null : new ThemedImageIcon(iconResource));
     }
-    
+
     /**
      * Create a new preferences panel that will use decorated settings keys that
      * are unique to a given plug-in.
@@ -146,11 +142,11 @@ public class FillInPreferenceCategory implements PreferenceCategory {
         this.title = Objects.requireNonNull(title, "title");
         settings = context == null ? Settings.getUser() : context.getSettings();
         this.icon = icon == null ? new BlankIcon(ICON_SIZE) : ThemedIcon.create(icon).derive(ICON_SIZE);
-        
+
         panel = new JPanel();
         RiverLayout layout = new RiverLayout();
         indentHgapOffset = layout.getHgap();
-        panel.setLayout(layout);        
+        panel.setLayout(layout);
     }
 
     @Override
@@ -191,6 +187,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             }
         }
     }
+
     private static final float defaultLabelFontSize;
 
     static {

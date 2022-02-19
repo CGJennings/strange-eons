@@ -5,15 +5,17 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Set;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import resources.Language;
 import resources.ResourceKit;
 import resources.Settings;
@@ -397,11 +399,34 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
      * code is already registered and the database is locked
      * @see #getBaseGameExpansion()
      */
+    @Deprecated
     public static synchronized Expansion register(Game forGame, String code, String uiName, String gameName, BufferedImage iconImage, BufferedImage[] symbols) {
-        if (code == null) {
-            throw new NullPointerException("code");
+        ThemedIcon icon = null;
+        if (iconImage != null) {
+            if (iconImage.getWidth() > ICON_WIDTH || iconImage.getHeight() > ICON_HEIGHT) {
+                float scale = ImageUtilities.idealCoveringScaleForImage(ICON_WIDTH, ICON_HEIGHT, iconImage.getWidth(), iconImage.getHeight());
+                iconImage = ImageUtilities.resample(iconImage, scale);
+            }
+            iconImage = ImageUtilities.center(iconImage, ICON_WIDTH, ICON_HEIGHT);
+            icon = new ThemedSingleImageIcon(iconImage, ICON_WIDTH, ICON_HEIGHT);
         }
-        if (code.length() == 0) {
+        
+        return register(forGame, code, uiName, gameName, icon, symbols);
+    }
+    
+    public static synchronized Expansion register(Game forGame, String code, String uiName, String gameName, String iconResource, BufferedImage[] symbols) {
+        ThemedIcon i = null;
+        if (iconResource != null) {
+            if (!iconResource.startsWith("res:") && !iconResource.startsWith("/")) {
+                iconResource = "res://" + iconResource;
+            }
+            i = ResourceKit.getIcon(iconResource);
+        }
+        return register(forGame, code, uiName, gameName, i, symbols);
+    }
+    
+    public static synchronized Expansion register(Game forGame, String code, String uiName, String gameName, Icon icon, BufferedImage[] symbols) {
+        if (Objects.requireNonNull(code, "code").isEmpty()) {
             throw new IllegalArgumentException("expansion code cannot be empty");
         }
 
@@ -419,19 +444,15 @@ public final class Expansion implements Comparable<Expansion>, IconProvider {
             throw new IllegalArgumentException("expansion code already registered: " + code);
         }
 
-        if (iconImage == null) {
-            iconImage = ResourceKit.getImage("icons/un-expansion-icon.png");
-        }
-        if (iconImage.getWidth() > ICON_WIDTH || iconImage.getHeight() > ICON_HEIGHT) {
-            float scale = ImageUtilities.idealCoveringScaleForImage(ICON_WIDTH, ICON_HEIGHT, iconImage.getWidth(), iconImage.getHeight());
-            iconImage = ImageUtilities.resample(iconImage, scale);
-        }
-        iconImage = ImageUtilities.center(iconImage, ICON_WIDTH, ICON_HEIGHT);
-
         if (forGame == null) {
             forGame = Game.getAllGamesInstance();
         }
-        Expansion e = new Expansion(forGame, code, uiName, gameName, new ImageIcon(iconImage), symbols);
+        
+        if (icon == null) {
+            icon = ResourceKit.getIcon("un-expansion-icon.png");
+        }
+        
+        Expansion e = new Expansion(forGame, code, uiName, gameName, ThemedIcon.create(icon).derive(ICON_WIDTH, ICON_HEIGHT), symbols);
 
         int number = -1;
         for (Expansion older : exps.values()) {

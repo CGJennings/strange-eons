@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -307,7 +308,7 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
                 retval = monkey.ambivalentCall("getRepresentativeImage");
                 if (retval != null && retval instanceof BufferedImage) {
                     ScriptMonkey.getSharedConsole().flush();
-                    return new ThemedImageIcon((BufferedImage) retval);
+                    return new ThemedSingleImageIcon((BufferedImage) retval);
                 }
             }
             
