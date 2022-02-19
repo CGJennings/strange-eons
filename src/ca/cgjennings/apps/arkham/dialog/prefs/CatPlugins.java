@@ -22,7 +22,7 @@ import resources.Settings;
 class CatPlugins extends FillInPreferenceCategory {
 
     public CatPlugins() {
-        super(string("sd-l-plugins-cat"), ResourceKit.getIcon("plugin"));
+        super(string("sd-l-plugins-cat"), ResourceKit.getIcon("plugin-prefs"));
 
         Font fieldFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
 
