@@ -9,7 +9,6 @@ import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -28,7 +27,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -476,7 +474,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     private static void parseColour(String colour, Layer layer, boolean isBg, boolean previousLayerHasBackground) {
         if (colour.length() == 6 || colour.length() == 8) {
             try {
-                Color c = new Color(Integer.valueOf(colour, 16), colour.length() == 8);
+                Color c = new Color((int) Long.parseLong(colour, 16), colour.length() == 8);
                 if (isBg) {
                     layer.bg = c;
                     layer.bgDarkMode = c;
