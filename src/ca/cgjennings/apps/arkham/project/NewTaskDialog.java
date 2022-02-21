@@ -40,7 +40,6 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         initComponents();
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
         getRootPane().setDefaultButton(okBtn);
         name.selectAll();
         name.requestFocusInWindow();
