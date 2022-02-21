@@ -2734,7 +2734,7 @@ public class ResourceKit {
             int[] coords = new int[]{
                 15, 4, 23, 7, 26, 15, 23, 23, 15, 27, 7, 23, 4, 15, 7, 7
             };
-            Color interior = new Color(0x69_a9c9);
+            Color interior = new Color(0x69a9c9);
             Ellipse2D.Float shape = new Ellipse2D.Float();
             for (int frame = 0; frame < 8; ++frame) {
                 int pos = frame;

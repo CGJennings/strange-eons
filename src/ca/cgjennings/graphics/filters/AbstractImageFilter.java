@@ -353,7 +353,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             pixels = (int[]) image.getRaster().getDataElements(x, y, width, height, pixels);
             int count = width * height;
             for (int i = 0; i < count; ++i) {
-                pixels[i] |= 0xff00_0000;
+                pixels[i] |= 0xff000000;
             }
             return pixels;
         }
@@ -490,7 +490,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
                 for (int y = y0; y < y1; ++y) {
                     sourceRaster.getDataElements(0, y, w, 1, pixelRow);
                     for (int x = 0; x < w; ++x) {
-                        dest[dx++] = pixelRow[x] | 0xff00_0000;
+                        dest[dx++] = pixelRow[x] | 0xff000000;
                     }
                 }
             } else {
@@ -626,7 +626,7 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
                 for (int y = y0; y < y1; ++y) {
                     sourceRaster.getDataElements(0, y, w, 1, pixelRow);
                     for (int x = 0; x < w; ++x) {
-                        pixelRow[x] |= 0xff00_0000;
+                        pixelRow[x] |= 0xff000000;
                     }
                     process(y, pixelRow);
                     destRaster.setDataElements(0, y, w, 1, pixelRow);

@@ -96,7 +96,7 @@ public final class SymbolVariantUtilities {
             // clear alpha if below threshold
             int argb = pixels[i];
             if ((argb >>> 24) < 8) {
-                pixels[i] = argb & 0xff_ffff;
+                pixels[i] = argb & 0xffffff;
             }
         }
 
@@ -117,7 +117,7 @@ public final class SymbolVariantUtilities {
 
     private static void extractTransparent(int[] pixels, int min, int max) {
         for (int i = 0; i < pixels.length; ++i) {
-            pixels[i] &= 0xff00_0000;
+            pixels[i] &= 0xff000000;
         }
     }
 
@@ -384,9 +384,9 @@ public final class SymbolVariantUtilities {
      */
     public static boolean isMonochrome(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
-        int exemplar = pixels[0] & 0xff_ffff;
+        int exemplar = pixels[0] & 0xffffff;
         for (int i = 1; i < pixels.length; ++i) {
-            if (exemplar != (pixels[i] & 0xff_ffff)) {
+            if (exemplar != (pixels[i] & 0xffffff)) {
                 return false;
             }
         }
@@ -403,7 +403,7 @@ public final class SymbolVariantUtilities {
     public static boolean isGreyscale(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
         for (int i = 0; i < pixels.length; ++i) {
-            final int rgb = pixels[i] & 0xff_ffff;
+            final int rgb = pixels[i] & 0xffffff;
             final int r = rgb >> 16 & 0xff;
             final int g = rgb >> 8 & 0xff;
             final int b = rgb & 0xff;
@@ -457,7 +457,7 @@ public final class SymbolVariantUtilities {
         );
 
         for (int i = 0; i < pixels.length; ++i) {
-            final int alpha = pixels[i] & 0xff00_0000;
+            final int alpha = pixels[i] & 0xff000000;
             if (alpha != 0) {
                 final int bri = pixels[i] & 0xff;
                 final float scale = (float) splineFunction.f(bri);

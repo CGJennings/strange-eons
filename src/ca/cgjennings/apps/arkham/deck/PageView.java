@@ -678,16 +678,16 @@ public final class PageView extends JComponent {
     }
     public final static Color PAGE = Color.WHITE;
     public final static Color BORDER = Color.GRAY;
-    public final static Color MARGIN = new Color(0xee_f7f7);
-    public final static Color GRID = new Color(0x88_9cbc);
-    public final static Color CROP = new Color(0x44_4466);
-    public final static Color INACTIVE_HANDLE = new Color(0x33_4a8a);
-    public final static Color ACTIVE_HANDLE = new Color(0x88_9cbc);
+    public final static Color MARGIN = new Color(0xeef7f7);
+    public final static Color GRID = new Color(0x889cbc);
+    public final static Color CROP = new Color(0x444466);
+    public final static Color INACTIVE_HANDLE = new Color(0x334a8a);
+    public final static Color ACTIVE_HANDLE = new Color(0x889cbc);
     public final static Color GRID_OUTLINE = Color.DARK_GRAY;
-    public final static Color SELECTION = new Color(0xe5_7a00);
+    public final static Color SELECTION = new Color(0xe57a00);
     public final static Color SELECTION_TAIL = SELECTION.brighter();
     public final static Color SILHOUETTE = Color.BLACK;
-    public final static Color SILHOUETTE_OUTLINE = new Color(0x00_44ae);
+    public final static Color SILHOUETTE_OUTLINE = new Color(0x0044ae);
     private final static Stroke GRID_OUTLINE_STROKE = new BasicStroke(2f);
     private final static Stroke GRID_MINOR_STROKE = new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 0f, new float[]{1f, 3f}, 0f);
     private final static Stroke GRID_MAJOR_STROKE = new BasicStroke(1f);

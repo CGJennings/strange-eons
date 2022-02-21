@@ -331,7 +331,7 @@ public class BlurFilter extends AbstractImageFilter {
                 final int rowCount = rows;
                 units[i] = () -> {
                     if (alphaOnly) {
-                        blurBlockAlpha(in, out, width, height, y0, y0 + rowCount - 1, radius, lut, alphaOnlyRGB & 0xff_ffff);
+                        blurBlockAlpha(in, out, width, height, y0, y0 + rowCount - 1, radius, lut, alphaOnlyRGB & 0xffffff);
                     } else {
                         blurBlock(in, out, width, height, y0, y0 + rowCount - 1, radius, lut);
                     }
@@ -341,7 +341,7 @@ public class BlurFilter extends AbstractImageFilter {
             sj.runUnchecked(units);
         } else {
             if (alphaOnly) {
-                blurBlockAlpha(in, out, width, height, 0, height - 1, radius, lut, alphaOnlyRGB & 0xff_ffff);
+                blurBlockAlpha(in, out, width, height, 0, height - 1, radius, lut, alphaOnlyRGB & 0xffffff);
             } else {
                 blurBlock(in, out, width, height, 0, height - 1, radius, lut);
             }

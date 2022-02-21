@@ -47,20 +47,20 @@ public class PluginTestTheme extends Theme {
         Color base = new Color(0x876e2f);
         defaults.put("nimbusBase", base);
         defaults.put("nimbusSelectionBackground", base.darker());
-        defaults.put("control", new Color(0xd9_c89e));
-        defaults.put("nimbusFocus", new Color(0xbf_6204));
+        defaults.put("control", new Color(0xd9c89e));
+        defaults.put("nimbusFocus", new Color(0xbf6204));
 
         // these keys are defined by Strange Eons rather than the look and feel
-        defaults.put(Theme.EDITOR_TAB_BACKGROUND, new ColorUIResource(0x56_4723));
+        defaults.put(Theme.EDITOR_TAB_BACKGROUND, new ColorUIResource(0x564723));
     }
 
     @Override
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
-        defaults.put(CONSOLE_BACKROUND, new Color(0x4b_3d28));
-        defaults.put(CONSOLE_OUTPUT, new Color(0xe1_f393));
-        defaults.put(CONSOLE_ERROR, new Color(0x9d_f939));
-        defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xe1_f393));
-        defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x4b_3d28));
+        defaults.put(CONSOLE_BACKROUND, new Color(0x4b3d28));
+        defaults.put(CONSOLE_OUTPUT, new Color(0xe1f393));
+        defaults.put(CONSOLE_ERROR, new Color(0x9df939));
+        defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xe1f393));
+        defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x4b3d28));
         defaults.put(CONSOLE_BACKGROUND_PAINTER, new HydraConsolePainter());
     }
 

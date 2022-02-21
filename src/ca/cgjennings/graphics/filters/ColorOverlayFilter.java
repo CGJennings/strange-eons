@@ -50,7 +50,7 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
      * @return the colour value to be applied
      */
     public int getColorRGB() {
-        return rgb | 0xff00_0000; // set alpha to 255
+        return rgb | 0xff000000; // set alpha to 255
     }
 
     /**
@@ -98,24 +98,24 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
 
     @Override
     public void filterPixels(int[] argb, int start, int end) {
-        final int rgb = this.rgb & 0xff_ffff;
+        final int rgb = this.rgb & 0xffffff;
         if (invert) {
             for (int i = start; i < end; ++i) {
                 final int p = argb[i];
-                argb[i] = ((0xff00_0000 - (p & 0xff00_0000)) & 0xff00_0000) | rgb;
+                argb[i] = ((0xff000000 - (p & 0xff000000)) & 0xff000000) | rgb;
             }
         } else {
             for (int i = start; i < end; ++i) {
                 final int p = argb[i];
-                argb[i] = (p & 0xff00_0000) | rgb;
+                argb[i] = (p & 0xff000000) | rgb;
             }
         }
     }
 
     @Override
     public int filterPixel(int argb) {
-        final int rgb = this.rgb & 0xff_ffff;
-        final int a = (invert ? (0xff00_0000 - (argb & 0xff00_0000)) : argb) & 0xff00_0000;
+        final int rgb = this.rgb & 0xffffff;
+        final int a = (invert ? (0xff000000 - (argb & 0xff000000)) : argb) & 0xff000000;
         return a | rgb;
     }
 
@@ -156,17 +156,17 @@ public class ColorOverlayFilter extends AbstractPixelwiseFilter {
     private static void overlay(int[] in, int width, int y0, int rows, int rgb, boolean invert) {
         int i = y0 * width;
         final int limit = i + width * rows;
-        rgb &= 0xff_ffff;
+        rgb &= 0xffffff;
 
         if (invert) {
             for (; i < limit; ++i) {
                 final int p = in[i];
-                in[i] = ((0xff00_0000 - (p & 0xff00_0000)) & 0xff00_0000) | rgb;
+                in[i] = ((0xff000000 - (p & 0xff000000)) & 0xff000000) | rgb;
             }
         } else {
             for (i = 0; i < limit; ++i) {
                 final int p = in[i];
-                in[i] = (p & 0xff00_0000) | rgb;
+                in[i] = (p & 0xff000000) | rgb;
             }
         }
     }

@@ -158,7 +158,7 @@ public class ConsequenceSet implements Iterable<String> {
     public void installDefaultStyle(Color color) {
         int rgb = 0;
         if (color != null) {
-            rgb = color.getRGB() & 0xff_ffff;
+            rgb = color.getRGB() & 0xffffff;
         }
         String hex = String.format("%06x", rgb);
         setDeletedEntryMarkup("<li value='@n;'><font color='#777777'><s>", "</s></font></li>");

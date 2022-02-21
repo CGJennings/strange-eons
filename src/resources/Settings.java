@@ -1060,8 +1060,8 @@ public class Settings implements Serializable, Iterable<String> {
         final int argb = colour.getRGB();
 
         String v;
-        if ((argb & 0xff00_0000) == 0xff00_0000) {
-            v = String.format("%06x", (argb & 0xff_ffff));
+        if ((argb & 0xff000000) == 0xff000000) {
+            v = String.format("%06x", (argb & 0xffffff));
         } else {
             v = String.format("%08x", argb);
         }
@@ -1212,15 +1212,15 @@ public class Settings implements Serializable, Iterable<String> {
      * Returns a (possibly cached) {@code Colour} for an argb int.
      */
     private static Colour argbToColour(int argb) {
-        if (argb == 0xff00_0000) {
+        if (argb == 0xff000000) {
             return BLACK;
-        } else if (argb == 0xffff_ffff) {
+        } else if (argb == 0xffffffff) {
             return WHITE;
         }
         return new Colour(argb, true);
     }
     private static final Colour BLACK = new Colour(0);
-    private static final Colour WHITE = new Colour(0xff_ffff);
+    private static final Colour WHITE = new Colour(0xffffff);
 
     /**
      * Converts a value to an argb int.
@@ -1266,7 +1266,7 @@ public class Settings implements Serializable, Iterable<String> {
             }
 
             if (value.length() == 6) {
-                return 0xff00_0000 | Integer.parseInt(value, 16);
+                return 0xff000000 | Integer.parseInt(value, 16);
             } else if (value.length() == 8) {
                 return (int) (Long.parseLong(value, 16) & 0xffffffffL);
             }
@@ -3150,8 +3150,8 @@ public class Settings implements Serializable, Iterable<String> {
         public String toString() {
             int argb = getRGB();
             String v;
-            if ((argb & 0xff00_0000) == 0xff00_0000) {
-                v = String.format("%06x", (argb & 0xff_ffff));
+            if ((argb & 0xff000000) == 0xff000000) {
+                v = String.format("%06x", (argb & 0xffffff));
             } else {
                 v = String.format("%08x", argb);
             }

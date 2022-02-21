@@ -2892,11 +2892,11 @@ public final class Client extends javax.swing.JFrame {
         private final Border lastNumberBorder = BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 0, Color.DARK_GRAY),
                 numberBorder);
-        private final Color selectionBkg = new Color(0xB9_DBFD);
-        private final Color numberBkg = new Color(0xf2_f2f2);
-        private final Color breakBkg = new Color(0xFD_B9D4);
-        private final Color stackTopBkg = new Color(0xD4_FDB9);
-        private final Color stackTopUninterruptedBkg = new Color(0xB9_D4FD);
+        private final Color selectionBkg = new Color(0xB9DBFD);
+        private final Color numberBkg = new Color(0xf2f2f2);
+        private final Color breakBkg = new Color(0xFDB9D4);
+        private final Color stackTopBkg = new Color(0xD4FDB9);
+        private final Color stackTopUninterruptedBkg = new Color(0xB9D4FD);
         private Font linkFont;
 
         @Override

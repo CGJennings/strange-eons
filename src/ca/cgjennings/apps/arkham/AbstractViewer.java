@@ -87,8 +87,8 @@ public abstract class AbstractViewer extends JPanel {
                 return DEFAULT_DARK_BACKGROUND;
         }
     }
-    static final Paint DEFAULT_DARK_BACKGROUND = new Color(0x19_1919);
-    static final Paint DEFAULT_LIGHT_BACKGROUND = new Color(0xf6_f6f6);
+    static final Paint DEFAULT_DARK_BACKGROUND = new Color(0x191919);
+    static final Paint DEFAULT_LIGHT_BACKGROUND = new Color(0xf6f6f6);
     static final Paint DEFAULT_CHECKERED_BACKGROUND = new CheckeredPaint();
 
     public Paint getBackgroundPaint() {
@@ -265,7 +265,7 @@ public abstract class AbstractViewer extends JPanel {
         int width = fm.stringWidth(label);
         int height = fm.getAscent() + fm.getDescent();
         int xp = getWidth() - width - LABEL_GAP_X - LABEL_MARGIN * 2, yp = getHeight() - height - LABEL_GAP_Y;
-        g.setColor(new Color(0x77ff_ffff, true));
+        g.setColor(new Color(0x77ffffff, true));
         g.fillRoundRect(xp, yp + 1, width + 4 + LABEL_MARGIN * 2, height + 2, LABEL_ARC, LABEL_ARC);
         g.setColor(Color.BLACK);
         g.drawRoundRect(xp, yp + 1, width + 4 + LABEL_MARGIN * 2, height + 2, LABEL_ARC, LABEL_ARC);

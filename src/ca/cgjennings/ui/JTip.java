@@ -43,8 +43,8 @@ public class JTip extends JLabel {
 
     private static final Border TIP_BORDER = JUtilities.createCompoundBorder(
             BorderFactory.createLineBorder(Color.GRAY, 1),
-            BorderFactory.createLineBorder(new Color(0x24_9bcc), 1),
-            BorderFactory.createLineBorder(new Color(0x80_c9e8), 1),
+            BorderFactory.createLineBorder(new Color(0x249bcc), 1),
+            BorderFactory.createLineBorder(new Color(0x80c9e8), 1),
             BorderFactory.createEmptyBorder(6, 6, 6, 6)
     );
 

@@ -1013,7 +1013,7 @@ public final class ImageUtilities {
         for (int y = 0; y < height; ++y) {
             AbstractImageFilter.getARGB(bi, 0, y, width, 1, row);
             for (int x = 0; x < width; ++x) {
-                if ((row[x] & 0xff00_0000) != 0xff00_0000) {
+                if ((row[x] & 0xff000000) != 0xff000000) {
                     return false;
                 }
             }

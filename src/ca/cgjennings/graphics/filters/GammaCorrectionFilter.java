@@ -106,7 +106,7 @@ public class GammaCorrectionFilter extends AbstractPixelwiseFilter {
     public void filterPixels(int[] argb, int start, int end) {
         for (int p = start; p < end; ++p) {
             int rgb = argb[p];
-            argb[p] = (rgb & 0xff00_0000)
+            argb[p] = (rgb & 0xff000000)
                     | (rTable[(rgb >> 16) & 0xff] << 16)
                     | (gTable[(rgb >> 8) & 0xff] << 8)
                     | (bTable[rgb & 0xff]);

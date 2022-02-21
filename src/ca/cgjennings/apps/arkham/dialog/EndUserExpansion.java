@@ -574,7 +574,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         int[] rgbPix = getARGB(template, 0, 0, w, h, null);
         int[] alphaPix = getARGB(alphaSource, 0, 0, w, h, null);
         for (int i = 0; i < rgbPix.length; ++i) {
-            rgbPix[i] = (rgbPix[i] & 0xff_ffff) | (alphaPix[i] & 0xff00_0000);
+            rgbPix[i] = (rgbPix[i] & 0xffffff) | (alphaPix[i] & 0xff000000);
         }
 
         BufferedImage icon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
@@ -615,7 +615,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
             // image size (+1) and the glow image has a 1 pixel margin (+1)
             g.drawImage(icon, 2, 2, null);
             g.setComposite(AlphaComposite.SrcIn);
-            g.setColor(new Color(0xff_ffbe));
+            g.setColor(new Color(0xffffbe));
             g.fillRect(2, 2, ICON_WIDTH - 2, ICON_HEIGHT - 2);
         } finally {
             g.dispose();
@@ -717,7 +717,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         drops = new SymbolPanel[t.getVariantCount() + 1];
         drops[0] = new SymbolPanel(string("expsym-desc-icon"), null);
         drops[0].drop.setImage(ResourceKit.getImage("icons/un-expansion-icon.png"));
-        drops[0].drop.setBackgroundPaint(new Color(0x8a_8a8a));
+        drops[0].drop.setBackgroundPaint(new Color(0x8a8a8a));
 
         for (int i = 1; i < drops.length; ++i) {
             drops[i] = new SymbolPanel(t.getVariantName(i - 1), t.getVariantIcon(i - 1));

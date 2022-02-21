@@ -1080,7 +1080,7 @@ public class CodeEditor extends AbstractSupportEditor {
     }
 
     private Object errorHighlight;
-    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc_5600));
+    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc5600));
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox caseSensCheck;

@@ -206,7 +206,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
         // assume that this is a single colour symbol...
         else if (range < 32) {
             for (int i = 0; i < pixels.length; ++i) {
-                pixels[i] = (pixels[i] & 0xff00_0000) | RGB;
+                pixels[i] = (pixels[i] & 0xff000000) | RGB;
             }
         } // (Case 3 in the description above)
         // ...else scale the image between the target colour and white
@@ -236,7 +236,7 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
             final int B = RGB & 0xff;
 
             for (int i = 0; i < pixels.length; ++i) {
-                final int alphaChannel = pixels[i] & 0xff00_0000;
+                final int alphaChannel = pixels[i] & 0xff000000;
                 if (alphaChannel != 0) {
                     final float scale = (float) splineFunction.f(pixels[i] & 0xff);
 
@@ -259,9 +259,9 @@ public abstract class AbstractExpansionSymbolTemplate implements ExpansionSymbol
         return grey;
     }
 
-    private static final int DARK = 0x23_1f20;
-    private static final int LIGHT = 0xff_ffff;
-    private static final int GOLD = 0xc5_8930;
+    private static final int DARK = 0x231f20;
+    private static final int LIGHT = 0xffffff;
+    private static final int GOLD = 0xc58930;
     private static final int[] VARIANT_RGB = {DARK, LIGHT, GOLD};
     private static Icon[] VARIANT_ICONS;
 

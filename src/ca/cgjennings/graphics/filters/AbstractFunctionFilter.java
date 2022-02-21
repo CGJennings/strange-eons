@@ -81,8 +81,8 @@ public abstract class AbstractFunctionFilter extends AbstractPixelwiseFilter imp
         }
         for (int i = start; i < end; ++i) {
             int argb = pixels[i];
-            pixels[i] = (argb & 0xff00_0000)
-                    | (table[(argb & 0xff_0000) >>> 16] << 16)
+            pixels[i] = (argb & 0xff000000)
+                    | (table[(argb & 0xff0000) >>> 16] << 16)
                     | (table[(argb & 0xff00) >>> 8] << 8)
                     | (table[argb & 0xff]);
         }

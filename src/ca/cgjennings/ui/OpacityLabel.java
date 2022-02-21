@@ -32,7 +32,7 @@ public class OpacityLabel extends JLabel {
             float[] hsb = Color.RGBtoHSB(base.getRed(), base.getBlue(), base.getGreen(), null);
             base = new Color(Color.HSBtoRGB(hsb[0], 0f, hsb[2]));
         }
-        Color bg = new Color(base.getRGB() & 0xff_ffff, true);
+        Color bg = new Color(base.getRGB() & 0xffffff, true);
 
         g.setPaint(bgPaint);
         g.fillRect(0, 0, getWidth(), getHeight());

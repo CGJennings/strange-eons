@@ -492,7 +492,7 @@ public class Commands {
                 if (c.getAlpha() < 255) {
                     hex = String.format("%08x", c.getRGB());
                 } else {
-                    hex = String.format("%06x", c.getRGB() & 0x00ff_ffff);
+                    hex = String.format("%06x", c.getRGB() & 0x00ffffff);
                 }
                 String colour = Locale.getDefault().getCountry().equals("US") ? "color" : "colour";
                 mt.tagSelectedText("<" + colour + " #" + hex + ">", "</" + colour + ">", false);

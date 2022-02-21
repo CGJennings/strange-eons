@@ -44,14 +44,14 @@ public class Curve extends Line {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
             g.setColor(Color.WHITE);
             g.fillRect(0, 0, ICON_SIZE, ICON_SIZE);
-            g.setColor(new Color(0x80_8080));
+            g.setColor(new Color(0x808080));
             g.drawRect(2, 2, ICON_SIZE - 4, ICON_SIZE - 4);
-            g.setColor(new Color(0xc0_c0c0));
+            g.setColor(new Color(0xc0c0c0));
             g.drawRect(3, 3, ICON_SIZE - 6, ICON_SIZE - 6);
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             g.setStroke(new BasicStroke(6f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
-            g.setColor(new Color(0x33_3333));
+            g.setColor(new Color(0x333333));
             QuadCurve2D c = new QuadCurve2D.Float(
                     8, ICON_SIZE - 12,
                     ICON_SIZE - 8, ICON_SIZE - 8,
@@ -59,7 +59,7 @@ public class Curve extends Line {
             );
             g.draw(c);
             g.setStroke(new BasicStroke(4, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
-            g.setColor(new Color(0x79_B7EC));
+            g.setColor(new Color(0x79B7EC));
             g.draw(c);
             g.dispose();
             icon = ThemeInstaller.getInstalledTheme().applyThemeToImage(icon);

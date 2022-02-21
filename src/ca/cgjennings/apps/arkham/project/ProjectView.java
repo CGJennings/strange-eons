@@ -1320,7 +1320,7 @@ public final class ProjectView extends javax.swing.JPanel {
     }
 
     private Object errorHighlight;
-    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc_5600));
+    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc5600));
 
     @SuppressWarnings("unchecked")
 	private void closeFindBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFindBtnActionPerformed

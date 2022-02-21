@@ -187,7 +187,7 @@ public class BloomFilter extends BlurFilter {
             dG = clamp((int) (dG + alpha * sG));
             dB = clamp((int) (dB + alpha * sB));
 
-            out[i] = (dRGB & 0xff00_0000) | (dR << 16) | (dG << 8) | dB;
+            out[i] = (dRGB & 0xff000000) | (dR << 16) | (dG << 8) | dB;
         }
     }
 
