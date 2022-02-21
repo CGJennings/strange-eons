@@ -34,6 +34,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.DocumentEvent;
@@ -101,22 +102,26 @@ import resources.ResourceKit;
  * </dl>
  *
  * <p>
- * <strong>The design grid</strong><br>
- * The icon is composed against a hypothetical design grid that is 18 units by
- * 18 units. All size adjustments and position offsets use these units. Hence, a
- * <code>DX</code> value of 1 will shift the glyph 1/18 of the icon width to the
- * right of the center.
+ * <stromg>Icon colours</strong><br>
+ * A colour is either a Web-style hex string or a single character that
+ * describes a standard palette colour. The standard palette colours are: r
+ * (red), o (orange), y (yellow), g (green), b (blue), i (indigo), v (violet), p
+ * (pink), w (brown), t (teal) c (cyan), k (grey), 0 (black) or 1 (white). The
+ * actual colour obtained may vary depending on the installed theme. A Web-style
+ * colour can be 3 or 6 hex digits (4 or 8 if an alpha value is included)
+ * in ARGB order (not RGBA). They may start with <code>#</code>, which is ignored.
+ * Web colours may also be modified by the theme, although most themes do not
+ * do so. To explicitly forbid modifying a colour, append a <code>!</code>.
+ * For example, the following would produce pure red that cannot be modified:
+ * <code>#f00!</code>, as would <code>ff0000!</code>.
+ * A <code>!</code> can be added to a palette colour, but it had no effect as
+ * palette colours are always determined by the theme.
  *
  * <p>
- * <stromg>Icon colours</strong><br>
- * A colour is either a 6 or 8 digit hex string, or one of following standard
- * values: r (red), o (orange), y (yellow), g (green), b (blue), i (indigo), v
- * (violet), p (pink), w (brown), t (teal) c (cyan), k (grey), 0 (black) or 1
- * (white). The actual colour obtained may vary depending on the installed
- * theme. Colours have light and dark variants which are chosen based on whether
- * the theme is light or dark. For example, a dark mode theme has dark
+ * Palette colours have light and dark variants which are chosen based on
+ * whether the theme is light or dark. For example, a dark mode theme has dark
  * backgrounds, so the light variant is typically chosen. Using a capital letter
- * for a colour code will switch a light variant to dark or vice-versa. The
+ * for the colour code will switch a light variant to dark or vice-versa. The
  * default colour when none is specified is a "typical" colour taken from the
  * theme designed to pair with standard label text.
  *
@@ -125,6 +130,13 @@ import resources.ResourceKit;
  * circle (disc) behind the glyph. When a background colour is used, the
  * background defaults to using a dark colour for the background and a light
  * colour for the glyph, and the default foreground is white.
+ *
+ * <p>
+ * <strong>The design grid and icon position adjustments</strong><br>
+ * The icon is composed against a hypothetical design grid that is 18 units by
+ * 18 units. All size adjustments and position offsets use these units. Hence, a
+ * <code>DX</code> value of 1 will shift the glyph 1/18 of the icon width to the
+ * right of the center.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -448,7 +460,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             }
         } catch (ParseError error) {
             String message = error.getMessage();
-            offset += error.offset;            
+            offset += error.offset;
             StrangeEons.log.warning(
                     message + " in glyph icon at offset " + offset + "\n  "
                     + descriptor + "\n  "
@@ -462,10 +474,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     private void parseGlyphBlock(Layer layer, String layerStr, boolean previousLayerHasBackground) {
         // split into tokens for code point, foreground, background
         String[] tokens = layerStr.split(",", -1);
-        
+
         if (tokens.length > 3) {
-            throw new ParseError("extra parameters", layerStr.length()-1);
-        }        
+            throw new ParseError("extra parameters", layerStr.length() - 1);
+        }
 
         // parse the code point token
         String cpString = tokens[0];
@@ -511,19 +523,20 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         parseColour(layer, tokens.length > 2 ? tokens[2] : "", bgOffset, true, previousLayerHasBackground);
         parseColour(layer, tokens.length > 1 ? tokens[1] : "", fgOffset, false, previousLayerHasBackground);
     }
-    
+
     private static int indexOrLength(String s, char ch) {
         int i = s.indexOf(ch);
         return i < 0 ? s.length() : i;
     }
 
     /**
-     * As a special case, the icon size can be missing or combined with the
-     * font adjustment if the font adjustment starts with an explicit + or -.
-     * For example, @t+2 is equivalent to @t,2 and @-1 is equivalent to
+     * As a special case, the icon size can be missing or combined with the font
+     * adjustment if the font adjustment starts with an explicit + or -. For
+     * example, @t+2 is equivalent to @t,2 and @-1 is equivalent to
+     *
      * @,-1 which in turn is equivalent to @s,-1. This helper function handles
-     * this by rewriting an adjustment string that follows these patterns
-     * so that it follows the standard syntax. Then {@link #parseAdjustmentBlock}
+     * this by rewriting an adjustment string that follows these patterns so
+     * that it follows the standard syntax. Then {@link #parseAdjustmentBlock}
      * can treat all cases with the same logic.
      */
     private static String injectPhantomComma(String adjString) {
@@ -536,14 +549,13 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         }
         return adjString;
     }
-    
 
     private void parseAdjustmentBlock(Layer layer, String adjString) {
         // split into tokens for icon size, font size, dx, dy
         String[] tokens = injectPhantomComma(adjString).split(",", -1);
 
         if (tokens.length > 4) {
-            throw new ParseError("extra parameters", adjString.length()-1);
+            throw new ParseError("extra parameters", adjString.length() - 1);
         }
 
         // icon size: letter size or number of pixels
@@ -595,12 +607,12 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
 
         // font size and glyph position adjustments
         float[] adj = new float[3];
-        for (int i=0; i<3 && (i+1)<tokens.length; ++i) {
-            if (!tokens[i+1].isEmpty()) {
+        for (int i = 0; i < 3 && (i + 1) < tokens.length; ++i) {
+            if (!tokens[i + 1].isEmpty()) {
                 try {
-                    adj[i] = Float.parseFloat(tokens[i+1]);
+                    adj[i] = Float.parseFloat(tokens[i + 1]);
                 } catch (NumberFormatException nfe) {
-                    throw new ParseError("invalid adjustment value \"" + tokens[i+1] + '"', offset);
+                    throw new ParseError("invalid adjustment value \"" + tokens[i + 1] + '"', offset);
                 }
             }
             offset += tokens[i].length() + 1;
@@ -609,6 +621,23 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         layer.fontAdj = adj[0];
         layer.xAdj = adj[1];
         layer.yAdj = adj[2];
+    }
+
+    /**
+     * Convert a 3- or 4-digit hex value to 6 or 8 digits. Does not check if
+     * color is valid, only if it has a relevant length.
+     */
+    private static String extendShortColor(String shortHex) {
+        final int len = shortHex.length();
+        if (len == 3 || len == 4) {
+            StringBuilder b = new StringBuilder(len * 2);
+            for (int i = 0; i < len; ++i) {
+                char digit = shortHex.charAt(i);
+                b.append(digit).append(digit);
+            }
+            return b.toString();
+        }
+        return shortHex;
     }
 
     /**
@@ -621,12 +650,27 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
      * @param previousLayerHasBackground the value of previousLayerHasBackground
      */
     private static void parseColour(Layer layer, String colour, int offset, boolean isBg, boolean previousLayerHasBackground) {
+        // accept Web-style # at start of colour, but do not require
+        if (colour.startsWith("#")) {
+            colour = colour.substring(1);
+        }
+
+        boolean mustBeExact = false;
+        if (colour.endsWith("!")) {
+            colour = colour.substring(0, colour.length() - 1);
+            mustBeExact = true;
+        }
+
+        colour = extendShortColor(colour);
+
         if (colour.length() == 6 || colour.length() == 8) {
             try {
                 Color c = new Color((int) Long.parseLong(colour, 16), colour.length() == 8);
-                Theme th = ThemeInstaller.getInstalledTheme();
-                if (th != null) {
-                    c = th.applyThemeToColor(c);
+                if (!mustBeExact) {
+                    Theme th = ThemeInstaller.getInstalledTheme();
+                    if (th != null) {
+                        c = th.applyThemeToColor(c);
+                    }
                 }
                 if (isBg) {
                     layer.bg = c;
@@ -640,14 +684,18 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                 throw new ParseError("invalid colour \"" + colour + '"', offset);
             }
         }
-        
+
+        if (colour.length() > 1) {
+            throw new ParseError("invalid colour \"" + colour + '"', offset);
+        }
+
         // the default bg is null, and if this is a stacked glyph
         // we will ignore the background if one was set previously
         if (isBg && (previousLayerHasBackground || colour.isEmpty())) {
             return;
         }
-        
-        // the deault fg is white if there is a background,
+
+        // the default fg is white if there is a background,
         // otherwise the default foreground colour
         if (colour.isEmpty()) {
             if (layer.bg != null || previousLayerHasBackground) {
@@ -666,27 +714,31 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         // For foregrounds, the variant is normally opposite the theme IF
         // there is no background. When there is a background, the variant is
         // normally the same as the theme to contrast with the background
-        if (isBg) {
-            boolean darkIfDarkMode = reverseLightDark;
-            if (darkIfDarkMode) {
-                layer.bg = Palette.get.light.opaque.fromCode(colourCode);
-                layer.bgDarkMode = Palette.get.dark.opaque.fromCode(colourCode);
+        try {
+            if (isBg) {
+                boolean darkIfDarkMode = reverseLightDark;
+                if (darkIfDarkMode) {
+                    layer.bg = Palette.get.light.opaque.fromCode(colourCode);
+                    layer.bgDarkMode = Palette.get.dark.opaque.fromCode(colourCode);
+                } else {
+                    layer.bg = Palette.get.dark.opaque.fromCode(colourCode);
+                    layer.bgDarkMode = Palette.get.light.opaque.fromCode(colourCode);
+                }
             } else {
-                layer.bg = Palette.get.dark.opaque.fromCode(colourCode);
-                layer.bgDarkMode = Palette.get.light.opaque.fromCode(colourCode);
+                boolean darkIfDarkMode = reverseLightDark;
+                if (layer.bg != null || previousLayerHasBackground) {
+                    darkIfDarkMode = !darkIfDarkMode;
+                }
+                if (darkIfDarkMode) {
+                    layer.fg = Palette.get.light.translucent.fromCode(colourCode);
+                    layer.fgDarkMode = Palette.get.dark.translucent.fromCode(colourCode);
+                } else {
+                    layer.fg = Palette.get.dark.translucent.fromCode(colourCode);
+                    layer.fgDarkMode = Palette.get.light.translucent.fromCode(colourCode);
+                }
             }
-        } else {
-            boolean darkIfDarkMode = reverseLightDark;
-            if (layer.bg != null || previousLayerHasBackground) {
-                darkIfDarkMode = !darkIfDarkMode;
-            }
-            if (darkIfDarkMode) {
-                layer.fg = Palette.get.light.translucent.fromCode(colourCode);
-                layer.fgDarkMode = Palette.get.dark.translucent.fromCode(colourCode);
-            } else {
-                layer.fg = Palette.get.dark.translucent.fromCode(colourCode);
-                layer.fgDarkMode = Palette.get.light.translucent.fromCode(colourCode);
-            }   
+        } catch (IllegalArgumentException iae) {
+            throw new ParseError("unknown colour code \"" + colour + '"', offset);
         }
     }
 
@@ -732,15 +784,25 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             JTextField tf = new JTextField("gly:F0198");
             tf.setDragEnabled(true);
             tf.getDocument().addDocumentListener(new DocumentEventAdapter() {
+                private int last, lastHandled;
+
                 @Override
                 public void changedUpdate(DocumentEvent e) {
-                    try {
-                        String desc = tf.getText().trim();
-                        if (!desc.isEmpty()) {
-                            label.setIcon(new ThemedGlyphIcon(desc));
+                    ++last;
+                    SwingUtilities.invokeLater(() -> {
+                        if (lastHandled != last) {
+                            lastHandled = last;
+                            try {
+                                String desc = tf.getText().trim();
+                                System.out.println(desc);
+                                if (!desc.isEmpty()) {
+                                    label.setIcon(new ThemedGlyphIcon(desc));
+                                }
+                            } catch (Exception ex) {
+                                StrangeEons.log.log(Level.SEVERE, "uncaught exception during parse", ex);
+                            }
                         }
-                    } catch (Exception ex) {
-                    }
+                    });
                 }
             });
 
