@@ -99,6 +99,8 @@ public final class ThemedSingleImageIcon extends AbstractThemedIcon {
             throw new IllegalArgumentException("bad size: " + iconWidth + 'x' + iconHeight);
         }
         source = Objects.requireNonNull(sourceImage, "sourceImage");
+        width = iconWidth;
+        height = iconHeight;
     }
 
     /**
