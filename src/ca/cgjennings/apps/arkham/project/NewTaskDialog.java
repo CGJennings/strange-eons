@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.event.DocumentEvent;

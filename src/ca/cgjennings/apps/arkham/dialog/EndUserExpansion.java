@@ -756,7 +756,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         }
     }
 
-    @SuppressWarnings("deprecated")
+    @SuppressWarnings("deprecation")
     private void installExpansion(Game g, String code, String name, BufferedImage[] images) {
         Expansion.register(g, code, name, name, images[0], Arrays.copyOfRange(images, 1, images.length - 1));
     }

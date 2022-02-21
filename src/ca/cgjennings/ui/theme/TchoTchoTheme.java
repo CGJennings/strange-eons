@@ -1,14 +1,9 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.platform.PlatformSupport;
-import ca.cgjennings.ui.MultiResolutionImageResource;
-import java.awt.image.BufferedImage;
-import java.awt.image.MultiResolutionImage;
-import javax.imageio.ImageIO;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import resources.Language;
-import resources.ResourceKit;
 
 /**
  * A fallback theme that uses the system look and feel. (This theme was
@@ -26,37 +21,6 @@ public class TchoTchoTheme extends Theme {
     @Override
     public String getThemeName() {
         return Language.string("sd-theme-tcho-tcho-name");
-    }
-
-    @Override
-    public BufferedImage getThemeRepresentativeImage() {
-        try {
-            if (PlatformSupport.PLATFORM_IS_WINDOWS) {
-                return ImageIO.read(getClass().getResource("TchoTchoWindows.png"));
-            } else if (PlatformSupport.PLATFORM_IS_MAC) {
-                return ImageIO.read(getClass().getResource("TchoTchoOSX.png"));
-            }
-        } catch (Throwable t) {
-        }
-
-        return super.getThemeRepresentativeImage();
-    }
-
-    @Override
-    public MultiResolutionImage getThemeImage() {
-        try {
-            String platformImage = null;
-            if (PlatformSupport.PLATFORM_IS_WINDOWS) {
-                platformImage = "TchoTchoWindows.png";
-            } else if (PlatformSupport.PLATFORM_IS_MAC) {
-                platformImage = "TchoTchoMac.png";
-            }
-            if (platformImage != null) {
-                return new MultiResolutionImageResource(ResourceKit.getIdentifier(TchoTchoTheme.class, platformImage));
-            }
-        } catch (Throwable t) {
-        }
-        return super.getThemeImage();
     }
 
     /**
@@ -114,4 +78,9 @@ public class TchoTchoTheme extends Theme {
     }
 
     private String replacementClass;
+    
+    @Override
+    public String getThemeGroup() {
+        return "\udbff\udfff_zz";
+    }        
 }

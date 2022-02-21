@@ -3,13 +3,18 @@ package ca.cgjennings.apps.arkham.dialog.prefs;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.InstalledTheme;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import ca.cgjennings.ui.anim.AnimationUtilities;
 import ca.cgjennings.ui.theme.ThemeInstaller;
+import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
+import java.awt.image.BufferedImage;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -56,10 +61,13 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         javax.swing.JLabel recentFileLabel = new javax.swing.JLabel();
         recentFileField = new javax.swing.JSpinner();
         useDarkCheck = new javax.swing.JCheckBox();
-        javax.swing.JLabel validationRulesSect1 = new javax.swing.JLabel();
+        javax.swing.JLabel darkThemeLabel = new javax.swing.JLabel();
         darkThemeBox = new javax.swing.JLabel();
         darkThemeCombo = new javax.swing.JComboBox<>();
         lightThemeCombo = new javax.swing.JComboBox<>();
+        javax.swing.JLabel darkThemeLabel1 = new javax.swing.JLabel();
+        darkScreenshot = new javax.swing.JLabel();
+        lightScreenshot = new javax.swing.JLabel();
 
         setBackground(java.awt.Color.white);
 
@@ -72,7 +80,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
 
         lightThemeBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lightThemeBox.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        lightThemeBox.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 226, 120), 1, true));
+        lightThemeBox.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 226, 120), 2, true));
 
         validationRulesSect.setFont(validationRulesSect.getFont().deriveFont(validationRulesSect.getFont().getStyle() | java.awt.Font.BOLD, validationRulesSect.getFont().getSize()+1));
         validationRulesSect.setForeground(new java.awt.Color(135, 103, 5));
@@ -120,13 +128,13 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
             }
         });
 
-        validationRulesSect1.setFont(validationRulesSect1.getFont().deriveFont(validationRulesSect1.getFont().getStyle() | java.awt.Font.BOLD, validationRulesSect1.getFont().getSize()+1));
-        validationRulesSect1.setForeground(new java.awt.Color(135, 103, 5));
-        validationRulesSect1.setText(string("sd-l-theme-dark")); // NOI18N
+        darkThemeLabel.setFont(darkThemeLabel.getFont().deriveFont(darkThemeLabel.getFont().getStyle() | java.awt.Font.BOLD, darkThemeLabel.getFont().getSize()+1));
+        darkThemeLabel.setForeground(new java.awt.Color(135, 103, 5));
+        darkThemeLabel.setText(string("sd-l-theme-dark")); // NOI18N
 
         darkThemeBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         darkThemeBox.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        darkThemeBox.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 226, 120), 1, true));
+        darkThemeBox.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 226, 120), 2, true));
 
         darkThemeCombo.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -150,6 +158,14 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
             }
         });
 
+        darkThemeLabel1.setFont(darkThemeLabel1.getFont().deriveFont(darkThemeLabel1.getFont().getStyle() | java.awt.Font.BOLD, darkThemeLabel1.getFont().getSize()+1));
+        darkThemeLabel1.setForeground(new java.awt.Color(135, 103, 5));
+        darkThemeLabel1.setText(string("sd-l-theme-light")); // NOI18N
+
+        darkScreenshot.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
+        lightScreenshot.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -159,77 +175,80 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(themeLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(themeLabel1))
+                    .addComponent(themeSect)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(themeSect)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(validationRulesSect)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(20, 20, 20)
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(markupSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(markupBold)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(markupItalic))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(markupFamily, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(miscSect)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(singleInstanceCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(openZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(recentFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(11, 11, 11)
-                                        .addComponent(recentFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(hideRecentFileLabel))))
+                            .addComponent(validationRulesSect)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(20, 20, 20)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(validationRulesSect1)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lightThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lightThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(useDarkCheck)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(darkThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(darkThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(markupSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(markupBold)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(markupItalic))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(markupFamily, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(miscSect)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(singleInstanceCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openZipCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(recentFileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addComponent(recentFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(hideRecentFileLabel))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(darkThemeLabel)
+                            .addComponent(useDarkCheck)
+                            .addComponent(darkThemeLabel1)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lightThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(lightScreenshot, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lightThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(darkThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(darkScreenshot, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(darkThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(themeSect)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(8, 8, 8)
                 .addComponent(themeLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(darkThemeLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lightThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lightThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lightThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lightScreenshot, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(validationRulesSect1)
+                .addComponent(lightThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(darkThemeLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(useDarkCheck)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(darkThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(darkThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(darkThemeBox, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(darkScreenshot, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(darkThemeCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(validationRulesSect)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(markupFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,44 +275,70 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     }// </editor-fold>//GEN-END:initComponents
 
 	private void lightThemeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lightThemeComboActionPerformed
-            updateThemeIcons();
+            updateThemeIcons(true);
 }//GEN-LAST:event_lightThemeComboActionPerformed
 
 	private void lightThemeComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_lightThemeComboFocusLost
-            updateThemeIcons();
+            updateThemeIcons(true);
 }//GEN-LAST:event_lightThemeComboFocusLost
 
     private void useDarkCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useDarkCheckActionPerformed
         boolean checked = useDarkCheck.isSelected();
         darkThemeBox.setEnabled(checked);
         darkThemeCombo.setEnabled(checked);
+        darkScreenshot.setEnabled(checked);
     }//GEN-LAST:event_useDarkCheckActionPerformed
 
     private void darkThemeComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_darkThemeComboActionPerformed
-        updateThemeIcons();
+        updateThemeIcons(false);
     }//GEN-LAST:event_darkThemeComboActionPerformed
 
     private void darkThemeComboFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_darkThemeComboFocusLost
-        updateThemeIcons();
+        updateThemeIcons(false);
     }//GEN-LAST:event_darkThemeComboFocusLost
 
-    private void updateThemeIcons() {
-        InstalledTheme it = (InstalledTheme) lightThemeCombo.getSelectedItem();
-        if (it != null) {
-            AnimationUtilities.animateIconTransition(lightThemeBox, it.getLargeIcon());
+    private void updateThemeIcons(boolean light) {
+        InstalledTheme it;
+        JComboBox<InstalledTheme> themeCombo;
+        JLabel themeBox, screenshotBox;
+
+        if (light) {
+            themeCombo = lightThemeCombo;
+            themeBox = lightThemeBox;
+            screenshotBox = lightScreenshot;
+        } else {
+            themeCombo = darkThemeCombo;
+            themeBox = darkThemeBox;
+            screenshotBox = darkScreenshot;
         }
 
-        it = (InstalledTheme) darkThemeCombo.getSelectedItem();
+        it = (InstalledTheme) themeCombo.getSelectedItem();
         if (it != null) {
-            AnimationUtilities.animateIconTransition(darkThemeBox, it.getLargeIcon());
+            AnimationUtilities.animateIconTransition(themeBox, it.getLargeIcon());
+            new Thread(() -> {
+                BufferedImage im = it.getScreenshot();
+                EventQueue.invokeLater(() -> {
+                    if (it == themeCombo.getSelectedItem()) {
+                        if (im == null) {
+                            screenshotBox.setIcon(null);
+                            screenshotBox.setToolTipText(null);
+                        } else {
+                            screenshotBox.setIcon(new ThemedSingleImageIcon(im, 67, 50));
+                            screenshotBox.setToolTipText("<html><img width=200 height=150 src='" + it.getScreenshotUrl() + "'>");
+                        }
+                    }
+                });
+            }).start();
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup apiGroup;
+    private javax.swing.JLabel darkScreenshot;
     private javax.swing.JLabel darkThemeBox;
     private javax.swing.JComboBox<InstalledTheme> darkThemeCombo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lightScreenshot;
     private javax.swing.JLabel lightThemeBox;
     private javax.swing.JComboBox<InstalledTheme> lightThemeCombo;
     private javax.swing.JCheckBox markupBold;

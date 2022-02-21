@@ -395,17 +395,16 @@ public class BundleInstaller {
 
             // Only add built-in themes on the first scan
             try {
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_ULTHAR_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DREAMLANDS_CLASS));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.HydraTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.DagonTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.UltharTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.DreamlandsTheme.class.getName()));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
             //  - add system L&F theme
             try {
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_TCHO_TCHO_CLASS));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.TchoTchoTheme.class.getName()));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "native theme not available", e);
             }

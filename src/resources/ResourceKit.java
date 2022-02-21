@@ -571,19 +571,17 @@ public class ResourceKit {
 
     /**
      * Returns an image after allowing the installed theme an opportunity to
-     * modify it; use this for user interface code when an image is required
-     * rather than an icon.
+     * modify it to match the interface theme. This should not be used
+     * on images that will be drawn on game components!
      *
      * @param resource the image resource to theme
      * @return the themed version of the image
      */
     public static BufferedImage getThemedImage(String resource) {
+        BufferedImage bi = getImage(resource);
         Theme t = ThemeInstaller.getInstalledTheme();
-        BufferedImage bi;
         if (t != null) {
-            bi = t.applyThemeToImage(resource);
-        } else {
-            bi = getImage(resource);
+            bi = t.applyThemeToImage(bi);
         }
         return bi;
     }

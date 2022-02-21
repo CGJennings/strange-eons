@@ -38,39 +38,6 @@ import resources.Settings;
  * @since 3.0
  */
 public class ThemeInstaller {
-
-    /**
-     * Class name of the built-in "Dagon" theme.
-     */
-    public static final String THEME_DAGON_CLASS = "ca.cgjennings.ui.theme.DagonTheme";
-    /**
-     * Class name of the built-in "Hydra" theme.
-     */
-    public static final String THEME_HYDRA_CLASS = "ca.cgjennings.ui.theme.HydraTheme";
-    /**
-     * Class name of the built-in "Yuggoth" theme.
-     */
-    public static final String THEME_YUGGOTH_CLASS = "ca.cgjennings.ui.theme.YuggothTheme";
-    /**
-     * Class name of the built-in "Ulthar" theme.
-     */
-    public static final String THEME_ULTHAR_CLASS = "ca.cgjennings.ui.theme.UltharTheme";
-    /**
-     * Class name of the built-in "Dreamlands" theme.
-     */
-    public static final String THEME_DREAMLANDS_CLASS = "ca.cgjennings.ui.theme.DreamlandsTheme";
-
-    /**
-     * Class name of the built-in "Tcho Tcho" theme, which is based on the
-     * system look and feel.
-     */
-    public static final String THEME_TCHO_TCHO_CLASS = "ca.cgjennings.ui.theme.TchoTchoTheme";
-    /**
-     * Class name of the theme applied during plug-in testing.
-     */
-    public static final String THEME_PLUGIN_TEST_THEME = "ca.cgjennings.ui.theme.PluginTestTheme";
-
-    private static final String FALLBACK_THEME_CLASS = THEME_DAGON_CLASS;
     private static final String KEY_THEME_CLASS = "theme";
     private static final String KEY_DARK_THEME_CLASS = "dark-theme";
     private static final String KEY_AUTO_DARK = "auto-select-dark-theme";
@@ -193,7 +160,7 @@ public class ThemeInstaller {
             }
         }
         if (themeClass == null || themeClass.length() == 0) {
-            themeClass = FALLBACK_THEME_CLASS;
+            themeClass = HydraTheme.class.getName();
         }
 
         // if testing a plug-in, override default with special testing theme
@@ -217,7 +184,7 @@ public class ThemeInstaller {
             }
             // no test bundle was a theme, use the special test theme
             if (!foundTheme && Settings.getShared().getYesNo(KEY_USE_TEST_THEME)) {
-                themeClass = THEME_PLUGIN_TEST_THEME;
+                themeClass = PluginTestTheme.class.getName();
             }
         }
 

@@ -1,6 +1,6 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.graphics.filters.AbstractImageFilter;
+import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GammaCorrectionFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKGROUND_PAINTER;
@@ -39,8 +39,12 @@ public class PluginTestTheme extends Theme {
         // is actually loaded
         greyFilt = new GreyscaleFilter();
         sepiaFilt = new GammaCorrectionFilter(2d, 1.32d, 0.8d);
+        
+        // apply theme to standard palette
+        BufferedImage im = Palette.get.toImage();
+        Palette.get = Palette.fromImage(applyThemeToImage(im));
 
-        Color base = new Color(0x87_6e2f);
+        Color base = new Color(0x876e2f);
         defaults.put("nimbusBase", base);
         defaults.put("nimbusSelectionBackground", base.darker());
         defaults.put("control", new Color(0xd9_c89e));
@@ -74,7 +78,12 @@ public class PluginTestTheme extends Theme {
         sepiaFilt.filter(bi, bi);
         return bi;
     }
+    
+    @Override
+    public Color applyThemeToColor(Color c) {
+        return new Color(sepiaFilt.filterPixel(greyFilt.filterPixel(c.getRGB())), true);
+    }
 
-    private AbstractImageFilter greyFilt;
-    private AbstractImageFilter sepiaFilt;
+    private AbstractPixelwiseFilter greyFilt;
+    private AbstractPixelwiseFilter sepiaFilt;
 }

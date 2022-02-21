@@ -304,14 +304,14 @@ use-generic-serif-body-for-languages = ru
 
 # Specify the interface theme to install, assuming it is available.
 # Some of the built-in themes:
-#     ca.cgjennings.ui.theme.DagonTheme       [green Nimbus variant]
-#     ca.cgjennings.ui.theme.HydraTheme       [blue Nimbus variant]
+#     ca.cgjennings.ui.theme.HydraTheme       [default theme]
+#     ca.cgjennings.ui.theme.DagonTheme       [dark version of default theme]
 #     ca.cgjennings.ui.theme.TchoTchoTheme    [emulate native platform look and feel]
 #     ca.cgjennings.ui.theme.PluginTestTheme  [used when running in bundle test mode]
 #
 theme = ca.cgjennings.ui.theme.HydraTheme
+dark-theme = ca.cgjennings.ui.theme.DagonTheme
 auto-select-dark-theme = yes
-dark-theme = ca.cgjennings.ui.theme.YuggothTheme
 
 # Specify the default look-and-feel to use if nothing is specified on
 # the command line. The "auto" value will use the Nimbus cross-platform

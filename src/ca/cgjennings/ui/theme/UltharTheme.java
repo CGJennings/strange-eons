@@ -92,6 +92,11 @@ public class UltharTheme extends Theme {
     }
 
     @Override
+    public String getThemeGroup() {
+        return "\udbff\udfff_00";
+    }
+    
+    @Override
     public boolean isDark() {
         return false;
     }

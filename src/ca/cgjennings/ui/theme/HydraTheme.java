@@ -36,4 +36,9 @@ public class HydraTheme extends Theme {
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
         defaults.put("TitledBorder.titleColor", new Color(0x3d_4b28));
     }
+
+    @Override
+    public String getThemeGroup() {
+        return "\udbff\udfff_98";
+    }
 }

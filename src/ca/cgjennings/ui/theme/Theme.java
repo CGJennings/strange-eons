@@ -1,11 +1,9 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
 import ca.cgjennings.ui.MultiResolutionImageResource;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Font;
@@ -15,14 +13,11 @@ import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferedImage;
 import java.awt.image.MultiResolutionImage;
 import java.net.URL;
-import java.util.logging.Level;
-import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
 import resources.Language;
-import resources.ResourceKit;
 
 /**
  * A {@code Theme} encapsulates a UI design theme. Themes are applied while
@@ -82,6 +77,20 @@ public abstract class Theme {
     }
 
     /**
+     * Returns a string that names a group to which the theme belongs. Themes
+     * that have the same group will be placed together in the list of
+     * selectable themes. The base class returns the theme name. Themes that
+     * complement each other, such as light and dark variants of the same theme,
+     * should return the same group name. It is recommended to use the name of
+     * the light theme as the group name for both.
+     *
+     * @return a non-null string naming the theme's group
+     */
+    public String getThemeGroup() {
+        return getThemeName();
+    }
+
+    /**
      * Returns whether the theme is, on the whole, light-on-dark, similar to OS
      * "dark modes". The base class returns {@code false}.
      *
@@ -93,53 +102,16 @@ public abstract class Theme {
     }
 
     /**
-     * Returns a representative image for the theme. Typical images are 48 by 48
-     * pixels and are framed by the theme frame image provided in the plug-in
-     * authoring kit. This image may be resized as needed by Strange Eons for
-     * various purposes, such as displaying the image as an icon for the theme
-     * in the {@link Preferences} dialog, or in a list of installed plug-in
-     * bundles.
-     *
-     * <p>
-     * The base implementation attempts to locate an image in the same package
-     * as the theme's class, with the same name, but with a file extension of
-     * either ".png" or ".jp2" (in that order).
-     * 
-     * @deprecated Prefer {@link #getThemeImage()}.
+     * Returns an icon for the theme. The base class attempts to find an image
+     * in the same package as the theme's class, with the same name, but with a
+     * file extension of either {@code ".png"} or {@code ".jp2"} (in that
+     * order). Multiple versions of the image can be provided using
+     * {@code "@Nx"} file name suffixes, as in {@code MyTheme.png},
+     * {@code MyTheme@2x.png}.
      *
      * @return the theme's representative image
      */
-    @Deprecated
-    public BufferedImage getThemeRepresentativeImage() {
-        BufferedImage bi = null;
-        try {
-            String ext = ".png";
-            for (int i = 0; i < 2 && bi == null; ++i) {
-                URL u = getClass().getResource(getClass().getSimpleName() + ext);
-                if (u != null) {
-                    bi = ImageIO.read(u);
-                    if (bi != null) {
-                        bi = ImageUtilities.ensureIntRGBFormat(bi);
-                    }
-                }
-                ext = ".jp2";
-            }
-        } catch (Exception e) {
-        }
-        return bi;
-    }
-
-    /**
-     * Returns a representative image for the theme. The base class attempts
-     * to find an image in the same package as the theme's class, with the same
-     * name, but with a file extension of either {@code ".png"} or {@code ".jp2"}
-     * (in that order). Multiple versions of the image can be provided using
-     * {@code "@Nx"} file name suffixes, as in {@code MyTheme.png},
-     * {@code MyTheme@2x.png}.
-     * 
-     * @return the theme's representative image
-     */    
-    public MultiResolutionImage getThemeImage() {
+    public ThemedIcon getThemeIcon() {
         MultiResolutionImage mim = null;
         try {
             String ext = ".png";
@@ -152,7 +124,13 @@ public abstract class Theme {
             }
         } catch (Exception e) {
         }
-        return mim;
+
+        // use the default fallback
+        if (mim == null) {
+            mim = new MultiResolutionImageResource("/ca/cgjennings/ui/theme/default.png");
+        }
+
+        return new ThemedImageIcon(mim, ThemedImageIcon.MEDIUM_LARGE, ThemedImageIcon.MEDIUM_LARGE);
     }
 
     /**
@@ -211,15 +189,14 @@ public abstract class Theme {
     public String getLookAndFeelClassName() {
         return StrangeNimbus.class.getName();
     }
-    
+
     /**
      * Returns an instance of the look and feel for the theme. If
-     * {@link #getLookAndFeelClassName()} returns null, then
-     * the theme installer will call this instead. The base class
-     * throws an {@link UnsupportedOperationException}. If the
-     * class name is null and this returns null, the app will refuse
-     * to start.
-     * 
+     * {@link #getLookAndFeelClassName()} returns null, then the theme installer
+     * will call this instead. The base class throws an
+     * {@link UnsupportedOperationException}. If the class name is null and this
+     * returns null, the app will refuse to start.
+     *
      * @return a non-null look-and-feel instance for the theme
      */
     public LookAndFeel createLookAndFeelInstance() {
@@ -268,75 +245,13 @@ public abstract class Theme {
     }
 
     /**
-     * Gives the theme the opportunity to modify a {@link ThemedIcon} or an
-     * image read using {@link ResourceKit#getThemedImage}. The base class
-     * performs the following steps:
-     * <ol>
-     * <li> Read the image as if by calling {@link ResourceKit#getImage}.
-     * <li> Call {@link #applyThemeToImage(java.awt.image.BufferedImage)} with
-     * the image just read.
-     * <li> Return the result.
-     * </ol>
+     * Gives the theme the opportunity to modify a image to reflect the theme.
+     * The base class returns {@code source} unmodified.
      *
      * <p>
-     * Themes can customize the look of an image by swapping the image for
-     * another resource, modifying the result, or both. To swap images, simply
-     * compare the requested resource name to see if it is on your swap list,
-     * and if so, call the super class implementation with the replacement
-     * resource instead. To change the look of every image algorithmically,
-     * override {@link #applyThemeToImage(java.awt.image.BufferedImage)}.
-     *
-     * <p>
-     * Here is an example of substituting the resource identifier:
-     * <pre>
-     * public BufferedImage applyThemeToImage( String resource ) {
-     *     // if we have an alternate version of the image stored in our
-     *     // own resource folder, we will use it instead
-     *     String themedResource = "mytheme/myicons/" + resource;
-     *     if( ResourceKit.composeResourceURL( themedResource ) != null ) {
-     *         resource = themedResource;
-     *     }
-     *     return super.applyThemeToImage( resource );
-     * }
-     * </pre>
-     *
-     * <p>
-     * Here is an example that changes images algorithmically:
-     * <pre>
-     * public BufferedImage applyThemeToImage( BufferedImage source ) {
-     *     BufferedImage copy = ca.cgjennings.graphics.ImageUtilities.copy( source );
-     *     Graphics2D g = copy.createGraphics();
-     *     try {
-     *         int w = copy.getWidth(), h = copy.getHeight();
-     *         g.setPaint( Color.RED );
-     *         g.drawLine( 0, 0, w, h );
-     *         g.drawLine( w, 0, 0, h );
-     *     } finally {
-     *         g.dispose();
-     *     }
-     *     return copy;
-     * }
-     * </pre>
-     *
-     * @param resource the image resource that is requested
-     * @return the image to use to satisfy the request
-     */
-    public BufferedImage applyThemeToImage(String resource) {
-        BufferedImage bi = ResourceKit.getImageQuietly(resource);
-        if (bi != null) {
-            return applyThemeToImage(bi);
-        }
-        StrangeEons.log.log(Level.WARNING, "failed to load image resource {0}", resource);
-        return null;
-    }
-
-    /**
-     * Gives the theme the opportunity to modify a image to reflect the
-     * installed theme. This version of the method is called in cases where
-     * there is no resource identifier available for the image. The base class
-     * returns {@code source} unmodified. If you wish to modify images for your
-     * theme, it is important that you make your changes to a
-     * <i>copy</i> of the original image to avoid corrupting the image cache.
+     * <strong>Important:</strong> Themes that wish to override this to modify
+     * images must be sure to return a <em>copy</em> of the original image and
+     * leave the {@code source} unmodified to avoid corrupting the image cache.
      *
      * @param source the image to apply themeing to
      * @return a themed copy of the image, or the original image if it is not
@@ -346,16 +261,27 @@ public abstract class Theme {
     public BufferedImage applyThemeToImage(BufferedImage source) {
         return source;
     }
-    
+
+    /**
+     * Gives the theme the opportunity to modify a colour to reflect the theme.
+     * The base class returns the input without changes.
+     *
+     * @param source the non-null colour to modify
+     * @return a modified colour, or the original colour
+     */
+    public Color applyThemeToColor(Color source) {
+        return source;
+    }
+
     /**
      * Returns a URL for a file that describes this theme's preferred syntax
      * highlighting theme, or null to use a default.
-     * 
+     *
      * @return URL of a document describing the syntax theme, or null
      */
     public URL getSyntaxThemeUrl() {
         return null;
-    }   
+    }
 
     /**
      * A UI key that controls a boolean property that affects whether document
@@ -558,11 +484,11 @@ public abstract class Theme {
      * with a common set of icons.
      */
     public static final String OVERRIDE_LAF_MESSAGE_ICONS = "override-icons";
-    
+
     /**
      * A helper that returns a disabled version of any icon. Used by
      * look-and-feel implementations to provide default disabled icons.
-     * 
+     *
      * @param component the component that the icon is for; may be null
      * @param icon the icon to convert
      * @return a version of the icon that will render in a disabled state
@@ -572,14 +498,15 @@ public abstract class Theme {
         // will check the component's enabled state
         if (icon instanceof ThemedIcon) {
             icon = component == null ? ((ThemedIcon) icon).disabled() : icon;
-        } else if  (icon != null) {
+        } else if (icon != null) {
             // wrap the icon with one that will render it in a disabled state
             icon = new DisabledIconWrapper(icon);
         }
         return icon;
     }
-    
+
     private static class DisabledIconWrapper implements Icon {
+
         private Icon wrapped;
 
         public DisabledIconWrapper(Icon toWrap) {
@@ -603,6 +530,6 @@ public abstract class Theme {
         @Override
         public int getIconHeight() {
             return wrapped.getIconHeight();
-        }        
+        }
     }
 }
