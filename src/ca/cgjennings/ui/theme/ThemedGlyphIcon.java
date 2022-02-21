@@ -50,7 +50,7 @@ import resources.ResourceKit;
  * using a combination of sizes, positions, orientations, and colours. A
  * descriptor has the following syntax:
  *
- * <pre>[gly:]CP[!][%][,FG[,BG]][@[Z][+|-ADJ[,DX[,DY]]]][;...]</pre>
+ * <pre>[gly:]CP[!][%][,FG[,BG]][@[Z][,+|-ADJ[,DX[,DY]]]][;...]</pre>
  *
  * <dl>
  * <dt><code>gly:</code><dd>This character sequence is used to distinguish a
@@ -92,9 +92,7 @@ import resources.ResourceKit;
  * decrease the font size for this glyph. The number may include a radix point
  * (.) and fractional component.
  * <dt><code>,DX</code><dd>Adjusts the relative horizontal position of the glyph
- * from center, in design grid units (see below). Note that the font size
- * adjustment <em>must</em> be present to include an offset adjustment, but the
- * font size adjustment can be <code>+0</code>.
+ * from center, in design grid units (see below).
  * <dt><code>,DY</code><dd>Adjusts the relative vertical position of the glyph
  * from center, in design grid units (see below).
  * <dt><code>;...</code><dd>Glyphs may be stacked by listing multiple layers
@@ -171,6 +169,9 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
      */
     public ThemedGlyphIcon(Font font, int codePoint, Color fg, Color bg) {
         this.font = font;
+        if (fg == null) {
+            fg = Palette.get.contrasting(null).translucent.foreground;
+        }
         this.layers = new Layer[]{new Layer(codePoint, fg, bg, fg, bg)};
     }
 
@@ -220,16 +221,6 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     protected void paintIcon(Component c, Graphics2D g, int x, int y) {
         if (descriptor != null) {
             parseDescriptor();
-        } else if (layers[0].fg == null) {
-            // the foreground can only be null if a non-descriptor constructor
-            // was used; we'll replace null with the same default as a
-            // descriptor would have yielded
-            if (COLOURS == null) {
-                initColours();
-            }
-            int defaultFgIndex = COLOURS.length - (layers[0].bg != null ? 2 : 1);
-            layers[0].fg = COLOURS[defaultFgIndex][LIGHT_FG];
-            layers[0].fgDarkMode = COLOURS[defaultFgIndex][DARK_FG];
         }
         if (font == null) {
             font = getDefaultFont();
@@ -381,10 +372,6 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     }
 
     private void parseDescriptor() {
-        if (COLOURS == null) {
-            initColours();
-        }
-
         // set a default size for the icon        
         int offset = 0;
         String desc = descriptor;
@@ -461,15 +448,12 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             }
         } catch (ParseError error) {
             String message = error.getMessage();
-            offset += error.offset;
-            StringBuilder b = new StringBuilder(128);
-            b.append(message).append(" in glyph icon at offset ").append(offset).append(": \n")
-                    .append(descriptor).append('\n');
-            for (int i = 0; i < offset; ++i) {
-                b.append(' ');
-            }
-            b.append('^');
-            StrangeEons.log.warning(b.toString());
+            offset += error.offset;            
+            StrangeEons.log.warning(
+                    message + " in glyph icon at offset " + offset + "\n  "
+                    + descriptor + "\n  "
+                    + (" ".repeat(offset)) + '^'
+            );
             return BROKEN_LAYER;
         }
         return layer;
@@ -478,6 +462,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     private void parseGlyphBlock(Layer layer, String layerStr, boolean previousLayerHasBackground) {
         // split into tokens for code point, foreground, background
         String[] tokens = layerStr.split(",", -1);
+        
+        if (tokens.length > 3) {
+            throw new ParseError("extra parameters", layerStr.length()-1);
+        }        
 
         // parse the code point token
         String cpString = tokens[0];
@@ -512,33 +500,54 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         }
         // the default font only contains PUA symbols, so if this is a
         // "normal" character, substitute a different font
-        if (font == null && layer.str.codePointAt(0) < 0xF0001) {
+        if (font == null && layer.str.codePointAt(0) < 0xf0001 && layer.str.codePointAt(0) != 0xf68c) {
             layer.font = new Font(Font.DIALOG, Font.BOLD, I_SIZE - 3);
         }
 
-        // parse the foreground/background tokens
-        int offset = cpString.length() + 1;
-        parseColour(layer, tokens.length > 1 ? tokens[1] : "", offset, false, previousLayerHasBackground);
-        offset += tokens.length > 1 ? tokens[1].length() : 0;
-        parseColour(layer, tokens.length > 2 ? tokens[2] : "", offset, true, previousLayerHasBackground);
+        // parse the foreground/background tokens: if a background is specified,
+        // it must be parsed first since the default foreground depends on it
+        int fgOffset = cpString.length() + 1;
+        int bgOffset = fgOffset + (tokens.length > 1 ? tokens[1].length() : 0);
+        parseColour(layer, tokens.length > 2 ? tokens[2] : "", bgOffset, true, previousLayerHasBackground);
+        parseColour(layer, tokens.length > 1 ? tokens[1] : "", fgOffset, false, previousLayerHasBackground);
     }
+    
+    private static int indexOrLength(String s, char ch) {
+        int i = s.indexOf(ch);
+        return i < 0 ? s.length() : i;
+    }
+
+    /**
+     * As a special case, the icon size can be missing or combined with the
+     * font adjustment if the font adjustment starts with an explicit + or -.
+     * For example, @t+2 is equivalent to @t,2 and @-1 is equivalent to
+     * @,-1 which in turn is equivalent to @s,-1. This helper function handles
+     * this by rewriting an adjustment string that follows these patterns
+     * so that it follows the standard syntax. Then {@link #parseAdjustmentBlock}
+     * can treat all cases with the same logic.
+     */
+    private static String injectPhantomComma(String adjString) {
+        int splitPoint = Math.min(
+                indexOrLength(adjString, ','),
+                Math.min(indexOrLength(adjString, '+'), indexOrLength(adjString, '-'))
+        );
+        if (splitPoint < adjString.length() && adjString.charAt(splitPoint) != ',') {
+            adjString = adjString.substring(0, splitPoint) + ',' + adjString.substring(splitPoint);
+        }
+        return adjString;
+    }
+    
 
     private void parseAdjustmentBlock(Layer layer, String adjString) {
         // split into tokens for icon size, font size, dx, dy
-        String[] tokens = adjString.split(",", -1);
+        String[] tokens = injectPhantomComma(adjString).split(",", -1);
 
-        // tracks the "next" token, bumped if there is no icon size
-        int t = 1;
-        String szString = tokens[0];
-
-        // if the first token starts with '+' or '-', then the icon size
-        // was not specified and this starts with a font size adjustment
-        if (!szString.isEmpty() && (szString.charAt(0) == '+' || szString.charAt(0) == '-')) {
-            t = 0;
-            szString = "";
+        if (tokens.length > 4) {
+            throw new ParseError("extra parameters", adjString.length()-1);
         }
 
         // icon size: letter size or number of pixels
+        String szString = tokens[0];
         if (!szString.isEmpty()) {
             int size = -1;
             if (Character.isDigit(szString.charAt(0))) {
@@ -582,23 +591,19 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         }
 
         // offset into adjString, for error reporting
-        int offset = szString.length() + t;
+        int offset = szString.length() + 1;
 
         // font size and glyph position adjustments
         float[] adj = new float[3];
-        for (int i = 0; i < 3 && t < tokens.length; ++i) {
-            if (!tokens[t].isEmpty()) {
+        for (int i=0; i<3 && (i+1)<tokens.length; ++i) {
+            if (!tokens[i+1].isEmpty()) {
                 try {
-                    adj[i] = Float.parseFloat(tokens[t]);
+                    adj[i] = Float.parseFloat(tokens[i+1]);
                 } catch (NumberFormatException nfe) {
-                    throw new ParseError("invalid adjustment value \"" + tokens[t] + '"', offset);
+                    throw new ParseError("invalid adjustment value \"" + tokens[i+1] + '"', offset);
                 }
             }
-            offset += tokens[t++].length() + 1;
-        }
-
-        if (t < tokens.length) {
-            throw new ParseError("extra parameters", offset);
+            offset += tokens[i].length() + 1;
         }
 
         layer.fontAdj = adj[0];
@@ -619,6 +624,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         if (colour.length() == 6 || colour.length() == 8) {
             try {
                 Color c = new Color((int) Long.parseLong(colour, 16), colour.length() == 8);
+                Theme th = ThemeInstaller.getInstalledTheme();
+                if (th != null) {
+                    c = th.applyThemeToColor(c);
+                }
                 if (isBg) {
                     layer.bg = c;
                     layer.bgDarkMode = c;
@@ -631,114 +640,54 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                 throw new ParseError("invalid colour \"" + colour + '"', offset);
             }
         }
+        
+        // the default bg is null, and if this is a stacked glyph
+        // we will ignore the background if one was set previously
         if (isBg && (previousLayerHasBackground || colour.isEmpty())) {
-            // the default bg is null, and if this is a stacked glyph
-            // we will ignore any background that might be specified
             return;
         }
+        
+        // the deault fg is white if there is a background,
+        // otherwise the default foreground colour
         if (colour.isEmpty()) {
-            colour = "\0"; // becomes default foreground
-            // the default fg is white when a bg is set
-            if (!isBg && layer.bg != null) {
+            if (layer.bg != null || previousLayerHasBackground) {
                 colour = "1";
+            } else {
+                colour = "x";
             }
         }
 
         char colourCode = colour.charAt(0);
-        boolean reverseLightDark = false;
-        if (Character.isUpperCase(colourCode)) {
-            colourCode = Character.toLowerCase(colourCode);
-            reverseLightDark = true;
-        }
+        boolean reverseLightDark = Character.isUpperCase(colourCode);
 
-        int c = COLOUR_CODES.indexOf(colourCode);
-        if (c < 0) {
-            c = COLOUR_CODES.length();
-            // when no colour is specified AND there is a background,
-            // treat the default as '1' (white) instead of the menu text colour
-            if (layer.bg != null || previousLayerHasBackground) {
-                --c;
-            }
-        }
-
+        // For backgrounds, the variant (light/dark) is normally opposite the
+        // theme: dark for light themes, light for dark themes.
+        //
+        // For foregrounds, the variant is normally opposite the theme IF
+        // there is no background. When there is a background, the variant is
+        // normally the same as the theme to contrast with the background
         if (isBg) {
-            // for backgrounds, use the dark colour on light UI
-            if (reverseLightDark) {
-                layer.bg = COLOURS[c][LIGHT_BG];
-                layer.bgDarkMode = COLOURS[c][DARK_BG];
+            boolean darkIfDarkMode = reverseLightDark;
+            if (darkIfDarkMode) {
+                layer.bg = Palette.get.light.opaque.fromCode(colourCode);
+                layer.bgDarkMode = Palette.get.dark.opaque.fromCode(colourCode);
             } else {
-                layer.bg = COLOURS[c][DARK_BG];
-                layer.bgDarkMode = COLOURS[c][LIGHT_BG];
+                layer.bg = Palette.get.dark.opaque.fromCode(colourCode);
+                layer.bgDarkMode = Palette.get.light.opaque.fromCode(colourCode);
             }
-            return;
-        }
-
-        // for foregrounds, use dark colour on light UI
-        //               OR use light colour if there is a background        
-        boolean darkIfDarkMode = layer.bg != null || previousLayerHasBackground;
-        if (reverseLightDark) {
-            darkIfDarkMode = !darkIfDarkMode;
-        }
-        if (darkIfDarkMode) {
-            layer.fg = COLOURS[c][LIGHT_FG];
-            layer.fgDarkMode = COLOURS[c][DARK_FG];
         } else {
-            layer.fg = COLOURS[c][DARK_FG];
-            layer.fgDarkMode = COLOURS[c][LIGHT_FG];
-        }
-    }
-
-    private static final String COLOUR_CODES = "roygbivctwpe01";
-    private static Color[][] COLOURS;
-    private static final int LIGHT_BG = 0, DARK_BG = 1, LIGHT_FG = 2, DARK_FG = 3;
-
-    private static void initColours() {
-        int[] rgb = new int[]{
-            //  light bg  dark bg   light fg    dark fg
-            0xEF5350, 0xb71c1c, 0xf8e57373, 0xf8b71c1c, // (r)ed
-            0xFFA726, 0xe65100, 0xf8ffb74d, 0xf8e65100, // (o)range
-            0xFFEE58, 0xf9a825, 0xf8fff176, 0xf8f9a825, // (y)ellow
-            0x66BB6A, 0x33691e, 0xf8aed581, 0xf833691e, // (g)reen
-            0x42A5F5, 0x0d47a1, 0xf864b5f8, 0xf80d47a1, // (b)lue
-            0x5C6BC0, 0x1a237e, 0xf87986cb, 0xf81a237e, // (i)ndigo
-            0x7E57C2, 0x4a1f8c, 0xf89575cd, 0xf84a1f8c, // (v)iolet
-            0x26C6DA, 0x006064, 0xf84dd0e1, 0xf8006064, // (c)yan
-            0x26A69A, 0x004d40, 0xf84db6ac, 0xf8004d40, // (t)eal
-            0x8D6E63, 0x4e342e, 0xf8a1887f, 0xf84e342e, // bro(w)n
-            0xEC407A, 0x880e4f, 0xf8F06292, 0xf8880e4f, // (p)ink
-            0xBDBDBD, 0x424242, 0xf8bdbdbd, 0xf8424242, // gre(e)y
-            0x000000, 0x000000, 0xf8000000, 0xf8000000, // (0) force black
-            0xffffff, 0xffffff, 0xf8ffffff, 0xf8ffffff, // (1) force white
-        };
-        COLOURS = new Color[(rgb.length / 4) + 1][]; // +1 for default row
-        for (int i = 0, c = 0; i < rgb.length;) {
-            Color[] variant = new Color[4];
-            COLOURS[c++] = variant;
-            for (int v = 0; v < 4; ++v) {
-                final int clr = rgb[i++];
-                variant[v] = new Color(clr, (clr & 0xff000000) != 0);
+            boolean darkIfDarkMode = reverseLightDark;
+            if (layer.bg != null || previousLayerHasBackground) {
+                darkIfDarkMode = !darkIfDarkMode;
             }
+            if (darkIfDarkMode) {
+                layer.fg = Palette.get.light.translucent.fromCode(colourCode);
+                layer.fgDarkMode = Palette.get.dark.translucent.fromCode(colourCode);
+            } else {
+                layer.fg = Palette.get.dark.translucent.fromCode(colourCode);
+                layer.fgDarkMode = Palette.get.light.translucent.fromCode(colourCode);
+            }   
         }
-        // final row is for default colours, we will extract these from
-        // the colours used for menu items; the idea is use the same colour
-        // as menu item text (and other labels, usually) but to give it
-        // some translucency so it doesn't dominate labels visually
-        JMenuItem source = new JMenuItem("a");
-        Color textOpaque = source.getForeground();
-        Color textTransl = new Color((textOpaque.getRGB() & 0xffffff) | 0xcc000000, true);
-        Color itemOpaque = source.getBackground();
-        Color itemTransl = new Color((itemOpaque.getRGB() & 0xffffff) | 0xcc000000, true);
-        Color[] defaultVariants;
-        if (ThemeInstaller.isDark()) {
-            defaultVariants = new Color[]{
-                itemOpaque, itemOpaque, textTransl, itemTransl
-            };
-        } else {
-            defaultVariants = new Color[]{
-                itemOpaque, itemOpaque, itemTransl, textTransl
-            };
-        }
-        COLOURS[COLOURS.length - 1] = defaultVariants;
     }
 
     /**
@@ -786,7 +735,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                 @Override
                 public void changedUpdate(DocumentEvent e) {
                     try {
-                        label.setIcon(new ThemedGlyphIcon(tf.getText().trim()));
+                        String desc = tf.getText().trim();
+                        if (!desc.isEmpty()) {
+                            label.setIcon(new ThemedGlyphIcon(desc));
+                        }
                     } catch (Exception ex) {
                     }
                 }

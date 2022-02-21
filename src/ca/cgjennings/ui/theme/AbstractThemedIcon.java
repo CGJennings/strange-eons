@@ -13,8 +13,8 @@ import java.awt.RenderingHints;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public abstract class AbstractThemedIcon implements ThemedIcon {
-    protected int width = 18;
-    protected int height = 18;
+    protected int width = SMALL;
+    protected int height = SMALL;
     protected boolean disabled;
     
     @Override
