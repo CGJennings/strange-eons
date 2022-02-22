@@ -1,6 +1,6 @@
 package ca.cgjennings.ui.theme;
 
-import java.awt.Color;
+import resources.Settings.Colour;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -16,7 +16,8 @@ import javax.swing.JMenuItem;
  * @since 3.4
  */
 public final class Palette {
-    Palette(Subset light, Subset dark) {
+    Palette(Subset pastel, Subset light, Subset dark) {
+        this.pastel = Objects.requireNonNull(pastel);
         this.light = Objects.requireNonNull(light);
         this.dark = Objects.requireNonNull(dark);
         if (ThemeInstaller.isDark()) {
@@ -33,11 +34,18 @@ public final class Palette {
      * colour is available as either light or dark, and opaque or translucent.
      */
     public static final int NUM_COLORS = 16;
+    private static final int NUM_VARIANTS = 6;
     
     /**
      * The current palette.
      */
     public static Palette get = createDefaultPalette();
+    
+    /**
+     * The pastel subset of the palette. These are brighter and paler than
+     * the light subset.
+     */
+    public final Subset pastel;
     
     /** The light subset of the palette. */
     public final Subset light;
@@ -65,7 +73,7 @@ public final class Palette {
      * @param c the component to consider as the source of the background
      */
     public final Subset contrasting(Component c) {
-        Color bg = null;
+        java.awt.Color bg = null;
         while (c != null && bg != null) {
             if (c.isOpaque()) {
                 bg = c.getBackground();
@@ -129,7 +137,7 @@ public final class Palette {
     }
     
     public static final class Variant {
-        Variant(Color[] init) {
+        Variant(Colour[] init) {
             red = init[0];
             orange = init[1];
             yellow = init[2];
@@ -149,37 +157,37 @@ public final class Palette {
         }
         
         /** A default foreground colour, typically similar to the standard text colour. */
-        public final Color foreground;
+        public final Colour foreground;
         /** A default background colour, typically similar to the standard component or menu background. */
-        public final Color background;
+        public final Colour background;
         /** A red colour, code <code>R</code>. */
-        public final Color red;
+        public final Colour red;
         /** An orange colour, code <code>O</code>. */
-        public final Color orange;
+        public final Colour orange;
         /** A yellow colour, code <code>Y</code>. */
-        public final Color yellow;
+        public final Colour yellow;
         /** A green colour, code <code>G</code>. */
-        public final Color green;
+        public final Colour green;
         /** A blue colour, code <code>B</code>. */
-        public final Color blue;
+        public final Colour blue;
         /** An indigo colour, code <code>I</code>. */
-        public final Color indigo;
+        public final Colour indigo;
         /** A violet colour, code <code>V</code>. */
-        public final Color violet;
+        public final Colour violet;
         /** A cyan colour, code <code>C</code>. */
-        public final Color cyan;
+        public final Colour cyan;
         /** A teal colour, code <code>T</code>. */
-        public final Color teal;
+        public final Colour teal;
         /** A brown colour, code <code>W</code>. */
-        public final Color brown;
+        public final Colour brown;
         /** A pink colour, code <code>P</code>. */
-        public final Color pink;
+        public final Colour pink;
         /** A grey colour, code <code>E</code>. */
-        public final Color grey;
+        public final Colour grey;
         /** A black colour, code <code>0</code> or <code>K</code>. */
-        public final Color black;
+        public final Colour black;
         /** A white colour, code <code>1</code> or <code>H</code>. */
-        public final Color white;
+        public final Colour white;
         
         /**
          * Returns one of the colours in the variant, specified by code.
@@ -188,8 +196,8 @@ public final class Palette {
          * @return the matching colour
          * @throws IllegalArgumentException if the code is invalid
          */
-        public Color fromCode(char code) {
-            Color c;
+        public Colour fromCode(char code) {
+            Colour c;
             switch (code) {
                 case 'r': case 'R': c = red; break;
                 case 'o': case 'O': c = orange; break;
@@ -220,8 +228,8 @@ public final class Palette {
          * @return the matching colour
          * @throws IllegalArgumentException if the code is invalid
          */
-        public Color get(int i) {
-            Color c;
+        public Colour get(int i) {
+            Colour c;
             switch (i) {
                 case 0: c = red; break;
                 case 1: c = orange; break;
@@ -265,38 +273,39 @@ public final class Palette {
         }
         
         int[] rgb = new int[] {
-            // lt op  dk op     lt tr     dk tr
-            0xEF5350, 0xb71c1c, 0xe57373, 0xb71c1c, // (r)ed
-            0xFFA726, 0xe65100, 0xffb74d, 0xe65100, // (o)range
-            0xFFEE58, 0xf9a825, 0xfff176, 0xf9a825, // (y)ellow
-            0x66BB6A, 0x33691e, 0xaed581, 0x33691e, // (g)reen
-            0x42A5F5, 0x0d47a1, 0x64b5f8, 0x0d47a1, // (b)lue
-            0x5C6BC0, 0x1a237e, 0x7986cb, 0x1a237e, // (i)ndigo
-            0x7E57C2, 0x4a1f8c, 0x9575cd, 0x4a1f8c, // (v)iolet
-            0x26C6DA, 0x006064, 0x4dd0e1, 0x006064, // (c)yan
-            0x26A69A, 0x004d40, 0x4db6ac, 0x004d40, // (t)eal
-            0x8D6E63, 0x4e342e, 0xa1887f, 0x4e342e, // bro(w)n
-            0xEC407A, 0x880e4f, 0xF06292, 0x880e4f, // (p)ink
-            0xBDBDBD, 0x424242, 0xbdbdbd, 0x424242, // gr(e)y
-            0x000000, 0x000000, 0x000000, 0x000000, // (0) force black
-            0xffffff, 0xffffff, 0xffffff, 0xffffff, // (1) force white
-            fill,     text,     fill,     text,
-            text,     fill,     text,     fill
+            // ps op  lt op     dk op     ps tr     lt tr     dk tr
+            0xffcdd2, 0xef5350, 0xb71c1c, 0xffcdd2, 0xe57373, 0xb71c1c, // (r)ed
+            0xffe0b2, 0xffa726, 0xe65100, 0xffe0b2, 0xffb74d, 0xe65100, // (o)range
+            0xfff9c4, 0xffee58, 0xf9a825, 0xfff9c4, 0xfff176, 0xf9a825, // (y)ellow
+            0xc8e6c9, 0x66bb6a, 0x33691e, 0xc8e6c9, 0xaed581, 0x33691e, // (g)reen
+            0xbbdefb, 0x42a5f5, 0x0d47a1, 0xbbdefb, 0x64b5f8, 0x0d47a1, // (b)lue
+            0xc5cae9, 0x5c6bc0, 0x1a237e, 0xc5cae9, 0x7986cb, 0x1a237e, // (i)ndigo
+            0xd1c4e9, 0x7e57c2, 0x4a1f8c, 0xd1c4e9, 0x9575cd, 0x4a1f8c, // (v)iolet
+            0xb2ebf2, 0x26c6da, 0x006064, 0xb2ebf2, 0x4dd0e1, 0x006064, // (c)yan
+            0xb2dfdb, 0x26a69a, 0x004d40, 0xb2dfdb, 0x4db6ac, 0x004d40, // (t)eal
+            0xd7ccc8, 0x8d6e63, 0x4e342e, 0xd7ccc8, 0xa1887f, 0x4e342e, // bro(w)n
+            0xf8bbd0, 0xec407a, 0x880e4f, 0xf8bbd0, 0xf06292, 0x880e4f, // (p)ink
+            0xf5f5f5, 0xbdbdbd, 0x424242, 0xf5f5f5, 0xbdbdbd, 0x424242, // gr(e)y
+            0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, // (0) force black
+            0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, 0xffffff, // (1) force white
+            fill,     fill,     text,     fill,     fill,     text,
+            text,     text,     fill,     text,     text,     fill
         };
         
-        Variant[] variants = new Variant[4];
-        for (int group=0; group<4; ++group) {
-            int alpha = group < 2 ? 0xff000000 : 0xee000000;
-            Color[] variant = new Color[NUM_COLORS];
-            for (int i=group, v=0; i<rgb.length; i +=4, ++v) {
-                variant[v] = new Color(rgb[i] | alpha, true);
+        Variant[] variants = new Variant[NUM_VARIANTS];
+        for (int group=0; group<NUM_VARIANTS; ++group) {
+            int alpha = group < 3 ? 0xff000000 : 0xee000000;
+            Colour[] variant = new Colour[NUM_COLORS];
+            for (int i=group, v=0; i<rgb.length; i += NUM_VARIANTS, ++v) {
+                variant[v] = new Colour(rgb[i] | alpha, true);
             }
             variants[group] = new Variant(variant);
         }
         
         return new Palette(
-                new Subset(variants[0], variants[2]),
-                new Subset(variants[1], variants[3])
+                new Subset(variants[0], variants[3]),
+                new Subset(variants[1], variants[4]),
+                new Subset(variants[2], variants[5])
         );
     }
     
@@ -310,7 +319,10 @@ public final class Palette {
      * the palette
      */
     public BufferedImage toImage() {
-        Variant[] variants = new Variant[] { light.opaque, dark.opaque, light.translucent, dark.translucent };
+        Variant[] variants = new Variant[] {
+            pastel.opaque, light.opaque, dark.opaque,
+            pastel.translucent, light.translucent, dark.translucent
+        };
         BufferedImage im = new BufferedImage(variants.length, NUM_COLORS, BufferedImage.TYPE_INT_ARGB);
         for (int y=0; y<NUM_COLORS; ++y) {
             for (int x=0; x<variants.length; ++x) {
@@ -329,19 +341,19 @@ public final class Palette {
      * @return the palette image
      */
     public static Palette fromImage(BufferedImage im) {
-        final int NUM_VARIANTS = 4;
         Variant[] variants = new Variant[NUM_VARIANTS];
-        Color[] colors = new Color[NUM_COLORS];
+        Colour[] colors = new Colour[NUM_COLORS];
         for (int x=0; x<NUM_VARIANTS; ++x) {
             for (int y=0; y<NUM_COLORS; ++y) {
-                colors[y] = new Color(im.getRGB(x, y), true);
+                colors[y] = new Colour(im.getRGB(x, y), true);
             }
             variants[x] = new Variant(colors);
         }
 
         return new Palette(
-                new Subset(variants[0], variants[2]),
-                new Subset(variants[1], variants[3])
+                new Subset(variants[0], variants[3]),
+                new Subset(variants[1], variants[4]),
+                new Subset(variants[2], variants[5])
         );   
     }
     
