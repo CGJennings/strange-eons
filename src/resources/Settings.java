@@ -3210,7 +3210,26 @@ public class Settings implements Serializable, Iterable<String> {
          * @return the adjusted colour
          */
         public Colour derive(int newAlpha) {
+            newAlpha = Math.max(0, Math.min(255, newAlpha));
             return new Colour((getRGB() & 0xffffff) | (newAlpha << 24), true);
+        }
+        
+        /**
+         * Returns a derived colour that shifts the hue and scales the
+         * brightness and saturation of this colour.
+         * The result will have the same alpha value as this colour.
+         * 
+         * @param hueShift the angle to shift the hue by, in rotations
+         * @param satFactor the factor to apply to the saturation
+         * @param briFactor the factor to apply to the brightness
+         * @return the derived colour
+         */
+        public Colour derive(float hueShift, float satFactor, float briFactor) {
+            float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
+            hsb[0] += hueShift;
+            hsb[1] = Math.max(0f, Math.min(1f, hsb[1] * satFactor));
+            hsb[2] = Math.max(0f, Math.min(1f, hsb[2] * briFactor));
+            return new Colour(HSBtoRGB(hsb[0], hsb[1], hsb[2]) & 0xffffff | (getAlpha() << 24), true);
         }
         
         /**
