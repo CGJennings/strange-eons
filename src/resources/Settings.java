@@ -3206,12 +3206,12 @@ public class Settings implements Serializable, Iterable<String> {
         /**
          * Returns a version of this colour with a different alpha value.
          * 
-         * @param newAlpha the new alpha value, from 0-255
+         * @param newAlpha the new alpha value, from 0 to 1
          * @return the adjusted colour
          */
-        public Colour derive(int newAlpha) {
-            newAlpha = Math.max(0, Math.min(255, newAlpha));
-            return new Colour((getRGB() & 0xffffff) | (newAlpha << 24), true);
+        public Colour derive(float newAlpha) {
+            int a = (int) (Math.max(0f, Math.min(1f, newAlpha)) * 255f);
+            return new Colour((getRGB() & 0xffffff) | (a << 24), true);
         }
         
         /**

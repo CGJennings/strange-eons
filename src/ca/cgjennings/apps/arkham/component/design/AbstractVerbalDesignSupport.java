@@ -3,9 +3,11 @@ package ca.cgjennings.apps.arkham.component.design;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.ui.EditorPane;
+import ca.cgjennings.ui.theme.Palette;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.Color;
+import resources.Settings.Colour;
 import java.awt.Component;
-import java.awt.Font;
 import java.io.StringReader;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
@@ -78,9 +80,8 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
             return;
         }
         try {
-            StringBuilder b = new StringBuilder("<html><body style='font-family: SansSerif; font-size: 11pt'>");
+            StringBuilder b = new StringBuilder(512);
             valid = analyze(gc, b);
-            b.append("</body></html>");
             String newReport = b.toString();
             if (!newReport.equals(report)) {
                 report = newReport;
@@ -123,17 +124,8 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
 
         View v = (View) view;
         if (v.lastSynchedWithAnalysis != analysis) {
-            HTMLEditorKit kit = (HTMLEditorKit) v.getEditorKit();
-            HTMLDocument doc = (HTMLDocument) kit.createDefaultDocument();
-            doc.setTokenThreshold(5_000);
-            v.setDocument(doc);
-            try {
-                kit.read(new StringReader(report), doc, 0);
-            } catch (Exception e) {
-                StrangeEons.log.log(Level.SEVERE, null, e);
-            }
+            v.setContent(report);
             v.lastSynchedWithAnalysis = analysis;
-            v.select(0, 0);
         }
     }
 
@@ -144,15 +136,60 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
 
     @SuppressWarnings("serial")
     private static class View extends EditorPane {
+        private Colour bg;
+        private String content = "";
+        
+        public String head() {
+            String family = getFont().getFamily();
+            family = '"' + family.replace("\"", "\\\"").replace("'", "\\'") + '"';            
+            return "<html><body style='padding: 4; font-family: " + family +
+                ",SansSerif; font-size: 11pt; background: #" + bg + "'>";
+        }
+        
+        public String tail() {
+            return "</body></html>";
+        }
+        
+        public void setContent(String content) {
+            this.content = content == null ? "" : content;
+            
+            HTMLEditorKit kit = (HTMLEditorKit) getEditorKit();
+            HTMLDocument doc = (HTMLDocument) kit.createDefaultDocument();
+            doc.setTokenThreshold(5000);
+            setDocument(doc);
+            try {
+                kit.read(new StringReader(head() + content + tail()), doc, 0);
+            } catch (Exception e) {
+                StrangeEons.log.log(Level.SEVERE, null, e);
+            }            
+        }
+        
+        public String getContent() {
+            return content;
+        }
 
         public View() {
-            super("text/html", "<html><body></body></html>");
+            super("text/html", "<html></html>");
+            
+            bg = Palette.get.light.opaque.yellow
+                    .mix(Palette.get.pastel.opaque.yellow);
+            
+            setBackground(bg);
             setForeground(Color.BLACK);
-            setBackground(new Color(250, 255, 196));
-            setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+            setOpaque(true);
+            setBorder(BorderFactory.createEmptyBorder());
             setEditable(false);
-            setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 11));
+            setContent("");
         }
+        
+        public void setBackground(Color c) {
+            bg = Colour.from(c).derive(1f);
+            if (getEditorKit() instanceof HTMLEditorKit) {
+                setContent(content);
+            }
+            super.setBackground(c);
+        }
+        
         private int lastSynchedWithAnalysis = -1;
     }
 
