@@ -3140,6 +3140,80 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         /**
+         * Given a standard {@link Color} object, converts it to a {@code Colour}.
+         * 
+         * @param c the color to convert
+         * @return the original object if it is already a {@code Colour}, otherwise
+         * an equivalent {@code Colour}; returns null if passed null
+         */        
+        public static Colour from(Color c) {
+            return (c instanceof Colour) ? (Colour) c : (c == null ? null : new Colour(c.getRGB(), true));
+        }
+
+        /**
+         * Mixes this colour with an equal amount of another colour.
+         * 
+         * @param with the colour to mix this colour with
+         * @return the mixed colour
+         * @see #mix(java.awt.Color, float)
+         */
+        public Colour mix(Color with) {
+            return mix(with, 0.5f);
+        }
+        
+        /**
+         * Mixes this colour with another colour.
+         * The colours are mixed in a linear RGB (not sRGB) space for 
+         * results that more closely match human perception.
+         * Only the colours are mixed; the new colour will retain the alpha
+         * value of this colour.
+         * 
+         * @param with the colour to mix this colour with
+         * @param thisAmount the proportion of this colour to include, from 0f-1f
+         * @return the mixed colour
+         */
+        public Colour mix(Color with, float thisAmount) {
+            if (thisAmount >= 1f) {
+                return this;
+            }
+            if (thisAmount <= 0f) {
+                return from(with);
+            }
+            
+            int rgb1 = getRGB(), rgb2 = with.getRGB();
+
+            if (rgb1 == rgb2) {
+                return this;
+            }
+            
+            final float thatAmount = 1f - thisAmount;
+            
+            float r1 = ((rgb1 & 0xff0000) >> 16) / 255f;
+            float r2 = ((rgb2 & 0xff0000) >> 16) / 255f;
+            r1 = (float) Math.sqrt((r1*r1*thisAmount) + (r2*r2*thatAmount));
+            
+            float g1 = ((rgb1 & 0x00ff00) >> 8) / 255f;
+            float g2 = ((rgb2 & 0x00ff00) >> 8) / 255f;
+            g1 = (float) Math.sqrt((g1*g1*thisAmount) + (g2*g2*thatAmount));
+            
+            float b1 = (rgb1 & 0x0000ff) / 255f;
+            float b2 = (rgb2 & 0x0000ff) / 255f;
+            b1 = (float) Math.sqrt((b1*b1*thisAmount) + (b2*b2*thatAmount));
+            
+            return new Colour(r1, g1, b1, getAlpha()/255f);
+        }
+        
+        /**
+         * Returns a version of this colour with a different alpha value.
+         * 
+         * @param newAlpha the new alpha value, from 0-255
+         * @return the adjusted colour
+         */
+        public Colour derive(int newAlpha) {
+            return new Colour((getRGB() & 0xffffff) | (newAlpha << 24), true);
+        }
+        
+        /**
          * Returns a string suitable for storing this colour as a setting value.
          *
          * @return a string of either 6 or 8 hexadecimal digits (depending on
