@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -406,6 +407,24 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             super(out, true);
         }
 
+        public void insertImage(Color c) {
+            final int SIZE = console.getFont().getSize() + 2;
+            BufferedImage im = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = im.createGraphics();
+            try {
+                if (c.getAlpha() < 255) {
+                    g.setPaint(new ca.cgjennings.graphics.paints.CheckeredPaint());
+                    g.fillRect(0, 0, SIZE, SIZE);
+                }
+                g.setPaint(c);
+                g.fillRect(0, 0, SIZE, SIZE);
+            } finally {
+                g.dispose();
+            }
+            insertImage(im);
+            print(" #" + resources.Settings.Colour.from(c).toString() + ' ');
+        }
+        
         public void insertImage(Image img) {
             insertImage(new ImageIcon(img));
         }
