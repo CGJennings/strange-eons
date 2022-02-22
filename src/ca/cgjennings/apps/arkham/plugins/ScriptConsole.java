@@ -50,6 +50,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
 import javax.swing.Painter;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTextPaneUI;
@@ -840,7 +841,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     private void __postinsert() {
         int endOfDoc = console.getDocument().getLength();
-        if (!isVisible() && getParent().isVisible()) {
+
+        if (!isVisible() && (getOwner() == null || getOwner().isVisible())) {
             setVisible(true);
         }
 
