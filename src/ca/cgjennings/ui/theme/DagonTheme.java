@@ -44,21 +44,15 @@ public class DagonTheme extends Theme {
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
-//        defaults.put(EDITOR_TAB_BACKGROUND, new Color(0xD4_D7D0));
-//        defaults.put("nimbusBase", new Color(0x56_6924));
-//        defaults.put("nimbusSelection", new Color(0xBF_6204));
-//        defaults.put("nimbusSelectionBackground", new Color(0xBF_6204));
-//        defaults.put("control", new Color(0xBE_C1B4));
-//        defaults.put("nimbusFocus", new Color(0xe5_9900));
-//        defaults.put("info", new Color(0xF1_DFBD));
-
         defaults.put(CONSOLE_BACKROUND, new Color(9, 15, 25));
         defaults.put(CONSOLE_OUTPUT, new Color(0xf3e193));
         defaults.put(CONSOLE_ERROR, new Color(0xf99d39));
         defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xf3e193));
         defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x3d4b28));
         defaults.put(CONSOLE_BACKGROUND_PAINTER, new BackdropPainter());
+        
         defaults.put(EDITOR_TAB_BACKGROUND, new Color(0x1b2327));
+        
         defaults.put(CONTEXT_BAR_BACKGROUND, Color.BLACK);
         defaults.put(CONTEXT_BAR_FOREGROUND, new Color(0x424548));
         defaults.put(CONTEXT_BAR_BUTTON_BACKGROUND, Color.BLACK);
@@ -81,6 +75,7 @@ public class DagonTheme extends Theme {
         Color SELECTION_BACKGROUND = new ColorUIResource(0x685d9c);
         defaults.put("text", TEXT);
         defaults.put("nimbusSelectedText", TEXT);
+        defaults.put("nimbusSelection", SELECTION_BACKGROUND);
         defaults.put("nimbusSelectionBackground", SELECTION_BACKGROUND);
         defaults.put("TextField.selectionForeground", TEXT);
         defaults.put("TextField.selectionBackground", SELECTION_BACKGROUND);
@@ -103,52 +98,6 @@ public class DagonTheme extends Theme {
         defaults.put("info", TIP_BACKGROUND);
         defaults.put("infoText", TIP_FOREGROUND);
         defaults.put("ToolTip.foreground", TIP_FOREGROUND);
-        
-        /*
-        
-        
-        
-        Color caretForeground = new Color( 230, 230, 230);
-        Color selectionBackground = new Color( 104, 93, 156);
-        Color selectedText = Color.WHITE;
-        
-        defaults.put("info", Color.BLACK);        
-        UIManager.put( "control", new Color(0x1b2327) );
-        defaults.put("nimbusBase", new Color(0x37474f));        
-        defaults.put("nimbusAlertYellow", new Color(248, 187, 0));
-        defaults.put("nimbusDisabledText", new Color(150, 150, 150));
-        defaults.put("nimbusFocus", new Color(0xffc107));
-        defaults.put("nimbusGreen", new Color(176, 179, 50));
-        defaults.put("nimbusInfoBlue", new Color(66, 139, 221));
-        
-        UIManager.put( "nimbusLightBackground", new Color( 18, 30, 49) );
-        
-        defaults.put("nimbusOrange", new Color(191, 98, 4));
-        defaults.put("nimbusRed", new Color(169, 46, 34));
-        
-
-        
-        
-
-        UIManager.put("selection.highlight", new Color(202, 152, 0));
-        UIManager.put( "textArea.background", new Color( 128, 128, 128) );        
-        
-        
-                UIManager.put( "List[Selected].textForeground", UIManager.getColor( "nimbusSelectedText" ) );
-        */
-
-//
-
-//        
-//        defaults.put("text", new Color(0xd9dcdd));
-//        // trees, lists, etc.
-//        defaults.put("nimbusLightBackground", new Color(0x37474f));
-//        // panels
-
-//        
-//        defaults.put("SplitPane.background", new Color(0x1b1d22));
-//        defaults.put("TitledBorder.titleColor", new Color(0xeeffff));        
-     
 
         // Menus
         Color MENU = new ColorUIResource(0x111111);
@@ -230,11 +179,11 @@ public class DagonTheme extends Theme {
     
     @Override
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
-        Color CON_BACKGROUND = new Color(0x3d_4b28);
-        Color CON_TEXT = new Color(0xf3_e193);
-        Color CON_ERROR_TEXT = new Color(0xf9_9d39);
-        Color CON_SELECTION = new Color(0xf3_e193);
-        Color CON_SELECTION_TEXT = new Color(0x3d_4b28);
+        Color CON_BACKGROUND = new Color(0x3d4b28);
+        Color CON_TEXT = new Color(0xf3e193);
+        Color CON_ERROR_TEXT = new Color(0xf99d39);
+        Color CON_SELECTION = new Color(0xf3e193);
+        Color CON_SELECTION_TEXT = new Color(0x3d4b28);
 
         defaults.put(CONSOLE_BACKROUND, CON_BACKGROUND);
         defaults.put(CONSOLE_OUTPUT, CON_TEXT);
