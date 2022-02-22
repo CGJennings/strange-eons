@@ -186,11 +186,41 @@ public class CommandLineArguments implements Cloneable {
 
     /**
      * Non-standard debugging and performance option.
+     * 
+     * <p>
+     * Setting this option will disable optional hardware acceleration
+     * regardless of platform. This option supersedes all other
+     * acceleration-related options.
+     */
+    public boolean xDisableAcceleration = false;
+    
+    /**
+     * Non-standard debugging and performance option.
+     * 
+     * <p>
+     * Since many video card drivers do not fully support hardware acceleration,
+     * it is disabled by default on Windows.
+     * Setting this option will enable it, which means enabling 
+     * Direct3D acceleration unless the {@link #xOpenGL} option is also set.
+     */
+    public boolean xEnableWindowsAcceleration = false;
+    
+    /**
+     * Non-standard debugging and performance option.
      * <p>
      * This option attempts to enable the OpenGL rendering pipeline for graphics
      * instead of using the default pipeline. It may result in improved
      * performance on some systems, although it may also result in rendering
      * issues if driver support is poor.
+     * 
+     * <p>
+     * On Windows, the {@link xWinAccel#xEnableWindowsAcceleration} option must also be set. Adding this
+     * switch will request OpenGL instead of Direct3D acceleration.
+     * 
+     * <p>
+     * On Linux, the default is to try to use xrender-based acceleration.
+     * Adding this switch will attempt to use OpenGL instead. Either option
+     * can fail, in which case software rendering is used.
      */
     public boolean xOpenGL = false;
 

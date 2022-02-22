@@ -198,8 +198,8 @@ final class About extends javax.swing.JDialog {
         tp.set("fg", String.format(Locale.ROOT, "#%06X", aboutText.getForeground().getRGB() & 0xffffff));
         tp.set("inv", UIManager.getBoolean("useDarkTheme") ? "-inv" : "");
 
-        // updated May 25 2021
-        final int ANONYMOUS_COUNT = 12;
+        // updated Feb 17 2022
+        final int ANONYMOUS_COUNT = 13;
         tp.set("supporter-list",
                 "Audrey Latimer (Arkham Horror Queen Anne), "
                 + "Andrew Carpena, "
@@ -220,6 +220,7 @@ final class About extends javax.swing.JDialog {
                 + "Charles Robb, "
                 + "Paul Sacco, "
                 + "Sergio Garcia Sanchez, "
+                + "Tobias Walter, "
                 + "Mateusz Wasilewski, "
         );
         tp.set("anon-count",

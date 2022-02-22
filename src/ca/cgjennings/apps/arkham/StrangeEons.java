@@ -403,6 +403,8 @@ public final class StrangeEons {
     /**
      * Top-level initialization function, called from {@code main()} immediately
      * after instance is created.
+     * 
+     * <p>This <strong>must</strong> be called before Java2D initializes.
      */
     private void initialize() {
         try {
@@ -416,7 +418,14 @@ public final class StrangeEons {
                 log.info("disabled plug-in loading");
             }
 
-            applyGraphicsOptions(commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
+            boolean enableAccel = PlatformSupport.PLATFORM_IS_WINDOWS
+                    ? commandLineArguments.xEnableWindowsAcceleration
+                    : true;
+            if (commandLineArguments.xDisableAcceleration) {
+                enableAccel = false;
+            }
+            
+            applyGraphicsOptions(enableAccel, commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
             applyTextAntialiasingOptions(commandLineArguments.xAAText);
             initStage1();
         } catch (final Throwable t) {
@@ -436,11 +445,54 @@ public final class StrangeEons {
         }
     }
 
-    private static void applyGraphicsOptions(boolean preferOpenGl, boolean avoidAnimation) {
-        if (preferOpenGl) {
-            System.setProperty("sun.java2d.opengl", "True");
-            System.setProperty("sun.java2d.opengl.fbobject", "false");
+    /**
+     * Apply options to prefer OpenGL (over DirectX) for for default or
+     * user-specified text antialiasing settings. This must be
+     * called before the AWT/Swing is initialized.
+     *
+     * @param textAA the user-specified setting, or null for a platform default
+     */    
+    private static void applyGraphicsOptions(boolean enableAcceleration, boolean preferOpenGl, boolean avoidAnimation) {
+        // start with all accelerated renderers disabled, then selectively enable
+        boolean d3d = false, opengl = false, xrender = false, metal = false;
+        if (enableAcceleration) {
+            if (PlatformSupport.PLATFORM_IS_WINDOWS) {
+                if (preferOpenGl) {
+                    opengl = true;
+                } else {
+                    d3d = true;
+                }
+            } else if (PlatformSupport.PLATFORM_IS_OTHER) {
+                if (preferOpenGl) {
+                    opengl = true;
+                } else {
+                    xrender = true;
+                }
+            } else if (PlatformSupport.PLATFORM_IS_MAC) {
+                metal = true;
+                opengl = true;
+                if (preferOpenGl) {
+                    metal = false;
+                }
+            }
         }
+        
+        if (log.isLoggable(Level.INFO)) {
+            log.log(Level.INFO,
+                    "renderer selection matrix: Software=true, Direct3D={0}, Metal={1}, OpenGL={2}, XRender={3}",
+                    new Object[]{d3d, metal, opengl, xrender}
+            );
+        }
+        
+        System.setProperty("sun.java2d.d3d", d3d ? "true" : "false");
+        
+        System.setProperty("sun.java2d.opengl", opengl ? "True" : "false");
+        System.setProperty("sun.java2d.opengl.fbobject", "false");
+        
+        System.setProperty("sun.java2d.xrender", xrender ? "True" : "false");
+        
+        System.setProperty("sun.java2d.metal", metal ? "true" : "false");
+
         if (avoidAnimation) {
             System.setProperty("ca.cgjennings.anim.enabled", "false");
         }
@@ -484,6 +536,8 @@ public final class StrangeEons {
         if (System.getProperty("swing.aatext") == null) {
             System.setProperty("swing.aatext", "true");
         }
+        
+        log.log(Level.INFO, "set text antialiasing mode to {0}", textAA);
     }
 
     /**

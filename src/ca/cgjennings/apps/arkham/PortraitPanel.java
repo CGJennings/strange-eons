@@ -15,6 +15,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -29,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
@@ -119,6 +121,95 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                 }
             }
         });
+        
+        portrait = createNullPortrait();
+    }
+    
+    private static Portrait createNullPortrait() {
+        return new Portrait() {
+            @Override
+            public void setSource(String resource) {
+            }
+
+            @Override
+            public String getSource() {
+                return "";
+            }
+
+            @Override
+            public BufferedImage getImage() {
+                return bi;
+            }
+            private BufferedImage bi = new BufferedImage(1,1,BufferedImage.TYPE_INT_ARGB);
+
+            @Override
+            public void setImage(String reportedSource, BufferedImage image) {
+            }
+
+            @Override
+            public double getScale() {
+                return 1d;
+            }
+
+            @Override
+            public void setScale(double scale) {
+            }
+
+            @Override
+            public double getPanX() {
+                return 0d;
+            }
+
+            @Override
+            public void setPanX(double x) {
+            }
+
+            @Override
+            public double getPanY() {
+                return 0d;
+            }
+
+            @Override
+            public void setPanY(double y) {
+            }
+
+            @Override
+            public void setPan(Point2D pan) {
+            }
+
+            @Override
+            public Point2D getPan(Point2D dest) {
+                return new Point2D.Double(0d, 0d);
+            }
+
+            @Override
+            public double getRotation() {
+                return 0d;
+            }
+
+            @Override
+            public void setRotation(double angleInDegrees) {
+            }
+
+            @Override
+            public void installDefault() {
+            }
+
+            @Override
+            public Dimension getClipDimensions() {
+                return new Dimension(1,1);
+            }
+
+            @Override
+            public BufferedImage getClipStencil() {
+                return null;
+            }
+
+            @Override
+            public EnumSet<Portrait.Feature> getFeatures() {
+                return EnumSet.noneOf(Portrait.Feature.class);
+            }
+        };
     }
 
     /**
@@ -239,12 +330,14 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
      * Sets the portrait that this panel will adjust.
      */
     public void setPortrait(Portrait p) {
-//        if( p != portrait ) {
         if (p == null) {
-            return;
+            p = createNullPortrait();
         }
+        portrait = p;
 
-        boolean rotates = p.getFeatures().contains(Portrait.Feature.ROTATE);
+        final EnumSet<Portrait.Feature> features = portrait.getFeatures();
+        
+        final boolean rotates = features.contains(Portrait.Feature.ROTATE);
         rotateLeftBtn.setVisible(rotates);
         rotateRightBtn.setVisible(rotates);
         rotationLabel.setVisible(rotates);
@@ -252,18 +345,14 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         degreeLabel.setVisible(rotates);
         rotateGapLabel.setVisible(rotates);
 
+        portraitControl.setPortrait(p);
+        
         updateNumericFields();
         if (childPanel != null) {
             childPanel.updatePanel();
         }
 
-        portraitControl.setPortrait(p);
-
-        if (p != portrait) {
-            validate();
-        }
-        portrait = p;
-//        }
+        validate();
     }
 
     public Portrait getPortrait() {
@@ -271,9 +360,6 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     }
 
     private void updateNumericFields() {
-        if (portrait == null) {
-            return;
-        }
         if (rotationField.isVisible()) {
             double theta = portrait.getRotation();
             rotationField.setText(formatter.format(theta));
@@ -333,23 +419,26 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         rotateRightBtn = new ca.cgjennings.ui.JRepeaterButton();
         rotationField = new javax.swing.JTextField();
         rotationLabel = new javax.swing.JLabel();
-        scaleDownBtn = new ca.cgjennings.ui.JRepeaterButton();
-        scaleUpBtn = new ca.cgjennings.ui.JRepeaterButton();
-        scaleField = new javax.swing.JTextField();
-        scaleLabel = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         degreeLabel = new javax.swing.JLabel();
         rotateGapLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        scaleLabel = new javax.swing.JLabel();
+        scaleDownBtn = new ca.cgjennings.ui.JRepeaterButton();
+        scaleField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        scaleUpBtn = new ca.cgjennings.ui.JRepeaterButton();
         jLabel2 = new javax.swing.JLabel();
         coarseTab = new javax.swing.JLabel();
         fineTab = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createTitledBorder(string("ae-panel-portrait"))); // NOI18N
+        setName("Form"); // NOI18N
         setLayout(new java.awt.GridBagLayout());
 
         imageLabel.setFont(imageLabel.getFont().deriveFont(imageLabel.getFont().getStyle() | java.awt.Font.BOLD, imageLabel.getFont().getSize()-1));
         imageLabel.setText(string("ae-panel-image")); // NOI18N
         imageLabel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
+        imageLabel.setName("imageLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -364,6 +453,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         portraitField.setColumns(40);
         portraitField.setFont(portraitField.getFont().deriveFont(portraitField.getFont().getSize()-1f));
         portraitField.setDragEnabled(true);
+        portraitField.setName("portraitField"); // NOI18N
         portraitField.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -376,21 +466,24 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         add(portraitField, gridBagConstraints);
 
         cardPanel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 1, java.awt.Color.gray), javax.swing.BorderFactory.createEmptyBorder(0, 6, 0, 0)));
+        cardPanel.setName("cardPanel"); // NOI18N
         cardPanel.setLayout(new java.awt.CardLayout());
 
+        coarseAdjustPanel.setName("coarseAdjustPanel"); // NOI18N
         coarseAdjustPanel.setLayout(new java.awt.GridBagLayout());
 
         portraitControl.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.gray));
+        portraitControl.setName("portraitControl"); // NOI18N
 
         javax.swing.GroupLayout portraitControlLayout = new javax.swing.GroupLayout(portraitControl);
         portraitControl.setLayout(portraitControlLayout);
         portraitControlLayout.setHorizontalGroup(
             portraitControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 381, Short.MAX_VALUE)
+            .addGap(0, 346, Short.MAX_VALUE)
         );
         portraitControlLayout.setVerticalGroup(
             portraitControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 163, Short.MAX_VALUE)
+            .addGap(0, 136, Short.MAX_VALUE)
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -402,19 +495,25 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
 
         cardPanel.add(coarseAdjustPanel, "c");
 
+        fineAdjustPanel.setName("fineAdjustPanel"); // NOI18N
+
         repeatMessageLabel.setFont(repeatMessageLabel.getFont().deriveFont(repeatMessageLabel.getFont().getStyle() | java.awt.Font.BOLD, repeatMessageLabel.getFont().getSize()-1));
         repeatMessageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         repeatMessageLabel.setText(" ");
+        repeatMessageLabel.setName("repeatMessageLabel"); // NOI18N
 
+        translationPanel.setName("translationPanel"); // NOI18N
         translationPanel.setLayout(new java.awt.BorderLayout());
 
         nudgePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 4));
+        nudgePanel.setName("nudgePanel"); // NOI18N
         nudgePanel.setLayout(new java.awt.GridBagLayout());
 
         leftBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         leftBtn.setToolTipText(string("ae-b-left")); // NOI18N
         leftBtn.setContentAreaFilled(false);
         leftBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        leftBtn.setName("leftBtn"); // NOI18N
         leftBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         leftBtn.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -427,6 +526,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         rightBtn.setToolTipText(string("ae-b-right")); // NOI18N
         rightBtn.setContentAreaFilled(false);
         rightBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        rightBtn.setName("rightBtn"); // NOI18N
         rightBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         rightBtn.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -439,6 +539,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         downBtn.setToolTipText(string("ae-b-down")); // NOI18N
         downBtn.setContentAreaFilled(false);
         downBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        downBtn.setName("downBtn"); // NOI18N
         downBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         downBtn.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -451,6 +552,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         upBtn.setToolTipText(string("ae-b-up")); // NOI18N
         upBtn.setContentAreaFilled(false);
         upBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        upBtn.setName("upBtn"); // NOI18N
         upBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         upBtn.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -461,6 +563,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
 
         translationPanel.add(nudgePanel, java.awt.BorderLayout.CENTER);
 
+        xyPosPanel.setName("xyPosPanel"); // NOI18N
         xyPosPanel.setLayout(new java.awt.GridBagLayout());
 
         xField.setColumns(6);
@@ -468,6 +571,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         xField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         xField.setText("0");
         xField.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        xField.setName("xField"); // NOI18N
         xField.addActionListener(this);
         xField.addFocusListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -480,6 +584,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         xyPosPanel.add(xField, gridBagConstraints);
 
         xLabel.setText("x");
+        xLabel.setName("xLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -492,6 +597,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         yField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         yField.setText("0");
         yField.setMargin(new java.awt.Insets(1, 1, 1, 1));
+        yField.setName("yField"); // NOI18N
         yField.addActionListener(this);
         yField.addFocusListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -504,6 +610,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         xyPosPanel.add(yField, gridBagConstraints);
 
         yLabel.setText("y");
+        yLabel.setName("yLabel"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -514,6 +621,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         resetBtn.setFont(resetBtn.getFont().deriveFont(resetBtn.getFont().getSize()-2f));
         resetBtn.setIcon( ResourceKit.getIcon( "ui/button/portrait-xy-reset.png" ) );
         resetBtn.setText(string("ae-b-reset")); // NOI18N
+        resetBtn.setName("resetBtn"); // NOI18N
         resetBtn.addActionListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -527,97 +635,66 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         nudegLabel.setFont(nudegLabel.getFont().deriveFont(nudegLabel.getFont().getStyle() | java.awt.Font.BOLD, nudegLabel.getFont().getSize()-1));
         nudegLabel.setText(string("ae-l-nudge")); // NOI18N
         nudegLabel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 4, 0), javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray)));
+        nudegLabel.setName("nudegLabel"); // NOI18N
         translationPanel.add(nudegLabel, java.awt.BorderLayout.NORTH);
+
+        scaleRotatePanel.setName("scaleRotatePanel"); // NOI18N
 
         rotateLeftBtn.setBorder(null);
         rotateLeftBtn.setToolTipText(string("de-tt-rotate-left")); // NOI18N
         rotateLeftBtn.setContentAreaFilled(false);
+        rotateLeftBtn.setName("rotateLeftBtn"); // NOI18N
         rotateLeftBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         rotateLeftBtn.addActionListener(this);
 
         rotateRightBtn.setBorder(null);
         rotateRightBtn.setToolTipText(string("de-tt-rotate-right")); // NOI18N
         rotateRightBtn.setContentAreaFilled(false);
+        rotateRightBtn.setName("rotateRightBtn"); // NOI18N
         rotateRightBtn.setPreferredSize(new java.awt.Dimension(24, 24));
         rotateRightBtn.addActionListener(this);
 
         rotationField.setColumns(5);
         rotationField.setFont(rotationField.getFont().deriveFont(rotationField.getFont().getSize()-1f));
         rotationField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        rotationField.setName("rotationField"); // NOI18N
         rotationField.addActionListener(this);
         rotationField.addFocusListener(this);
 
         rotationLabel.setFont(rotationLabel.getFont().deriveFont(rotationLabel.getFont().getStyle() | java.awt.Font.BOLD, rotationLabel.getFont().getSize()-1));
         rotationLabel.setText(string("ae-l-rotate")); // NOI18N
         rotationLabel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
-
-        scaleDownBtn.setBorder(null);
-        scaleDownBtn.setToolTipText(string("ae-tt-scale-down")); // NOI18N
-        scaleDownBtn.setContentAreaFilled(false);
-        scaleDownBtn.setPreferredSize(new java.awt.Dimension(24, 24));
-        scaleDownBtn.addActionListener(this);
-
-        scaleUpBtn.setBorder(null);
-        scaleUpBtn.setToolTipText(string("ae-tt-scale-up")); // NOI18N
-        scaleUpBtn.setContentAreaFilled(false);
-        scaleUpBtn.setPreferredSize(new java.awt.Dimension(24, 24));
-        scaleUpBtn.addActionListener(this);
-
-        scaleField.setColumns(5);
-        scaleField.setFont(scaleField.getFont().deriveFont(scaleField.getFont().getSize()-1f));
-        scaleField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        scaleField.addActionListener(this);
-        scaleField.addFocusListener(this);
-
-        scaleLabel.setFont(scaleLabel.getFont().deriveFont(scaleLabel.getFont().getStyle() | java.awt.Font.BOLD, scaleLabel.getFont().getSize()-1));
-        scaleLabel.setText(string("ae-l-scale")); // NOI18N
-        scaleLabel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
-
-        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
-        jLabel1.setText("%");
+        rotationLabel.setName("rotationLabel"); // NOI18N
 
         degreeLabel.setFont(degreeLabel.getFont().deriveFont(degreeLabel.getFont().getSize()-1f));
         degreeLabel.setText("°");
+        degreeLabel.setName("degreeLabel"); // NOI18N
 
         rotateGapLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 6, 0));
+        rotateGapLabel.setName("rotateGapLabel"); // NOI18N
 
         javax.swing.GroupLayout scaleRotatePanelLayout = new javax.swing.GroupLayout(scaleRotatePanel);
         scaleRotatePanel.setLayout(scaleRotatePanelLayout);
         scaleRotatePanelLayout.setHorizontalGroup(
             scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(scaleRotatePanelLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(rotateGapLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(rotateLeftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rotationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(degreeLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rotateRightBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(scaleRotatePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scaleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(rotationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, scaleRotatePanelLayout.createSequentialGroup()
-                            .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(scaleDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(rotateLeftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                                .addComponent(rotationField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(scaleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(degreeLabel)
-                                .addComponent(jLabel1))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(rotateRightBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(scaleUpBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(6, 6, 6)
+                .addComponent(rotateGapLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, scaleRotatePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(rotationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        scaleRotatePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {degreeLabel, jLabel1});
-
-        scaleRotatePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {rotationField, scaleField});
-
         scaleRotatePanelLayout.setVerticalGroup(
             scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(scaleRotatePanelLayout.createSequentialGroup()
@@ -631,15 +708,71 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                     .addComponent(rotateLeftBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(rotateGapLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(0, 0, 0))
+        );
+
+        jPanel1.setName("jPanel1"); // NOI18N
+
+        scaleLabel.setFont(scaleLabel.getFont().deriveFont(scaleLabel.getFont().getStyle() | java.awt.Font.BOLD, scaleLabel.getFont().getSize()-1));
+        scaleLabel.setText(string("ae-l-scale")); // NOI18N
+        scaleLabel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
+        scaleLabel.setName("scaleLabel"); // NOI18N
+
+        scaleDownBtn.setBorder(null);
+        scaleDownBtn.setToolTipText(string("ae-tt-scale-down")); // NOI18N
+        scaleDownBtn.setContentAreaFilled(false);
+        scaleDownBtn.setName("scaleDownBtn"); // NOI18N
+        scaleDownBtn.setPreferredSize(new java.awt.Dimension(24, 24));
+        scaleDownBtn.addActionListener(this);
+
+        scaleField.setColumns(5);
+        scaleField.setFont(scaleField.getFont().deriveFont(scaleField.getFont().getSize()-1f));
+        scaleField.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        scaleField.setName("scaleField"); // NOI18N
+        scaleField.addFocusListener(this);
+        scaleField.addActionListener(this);
+
+        jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
+        jLabel1.setText("%");
+        jLabel1.setName("jLabel1"); // NOI18N
+
+        scaleUpBtn.setBorder(null);
+        scaleUpBtn.setToolTipText(string("ae-tt-scale-up")); // NOI18N
+        scaleUpBtn.setContentAreaFilled(false);
+        scaleUpBtn.setName("scaleUpBtn"); // NOI18N
+        scaleUpBtn.setPreferredSize(new java.awt.Dimension(24, 24));
+        scaleUpBtn.addActionListener(this);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(scaleDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scaleUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(scaleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
                 .addComponent(scaleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(scaleRotatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(scaleDownBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(scaleField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(scaleUpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout fineAdjustPanelLayout = new javax.swing.GroupLayout(fineAdjustPanel);
@@ -649,11 +782,14 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
             .addGroup(fineAdjustPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(fineAdjustPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(repeatMessageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE)
+                    .addComponent(repeatMessageLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, fineAdjustPanelLayout.createSequentialGroup()
                         .addComponent(translationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(32, 32, 32)
-                        .addComponent(scaleRotatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(fineAdjustPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(scaleRotatePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         fineAdjustPanelLayout.setVerticalGroup(
@@ -664,8 +800,11 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                 .addGap(1, 1, 1)
                 .addGroup(fineAdjustPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(translationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scaleRotatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addGroup(fineAdjustPanelLayout.createSequentialGroup()
+                        .addComponent(scaleRotatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         cardPanel.add(fineAdjustPanel, "f");
@@ -682,6 +821,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         add(cardPanel, gridBagConstraints);
 
         jLabel2.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 1, java.awt.Color.gray));
+        jLabel2.setName("jLabel2"); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -693,8 +833,11 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
 
         coarseTab.setBackground(java.awt.Color.lightGray);
         coarseTab.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        coarseTab.setIcon( ResourceKit.getIcon( "ui/button/portrait-coarse.png" ) );
+        coarseTab.setIcon(ResourceKit.getIcon("ui/button/portrait-coarse.png"));
         coarseTab.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 0, 0, java.awt.Color.gray), javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 1)));
+        coarseTab.setMinimumSize(new java.awt.Dimension(16, 22));
+        coarseTab.setName("coarseTab"); // NOI18N
+        coarseTab.setPreferredSize(new java.awt.Dimension(16, 22));
         coarseTab.addMouseListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -709,7 +852,10 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         fineTab.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fineTab.setIcon( ResourceKit.getIcon( "ui/button/portrait-fine.png" ) );
         fineTab.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 0, 1, java.awt.Color.gray));
+        fineTab.setMinimumSize(new java.awt.Dimension(16, 22));
+        fineTab.setName("fineTab"); // NOI18N
         fineTab.setOpaque(true);
+        fineTab.setPreferredSize(new java.awt.Dimension(16, 22));
         fineTab.addMouseListener(this);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -733,9 +879,6 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         else if (evt.getSource() == rightBtn) {
             PortraitPanel.this.rightBtnActionPerformed(evt);
         }
-        else if (evt.getSource() == resetBtn) {
-            PortraitPanel.this.resetBtnActionPerformed(evt);
-        }
         else if (evt.getSource() == downBtn) {
             PortraitPanel.this.downBtnActionPerformed(evt);
         }
@@ -747,6 +890,9 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
         }
         else if (evt.getSource() == yField) {
             PortraitPanel.this.yFieldActionPerformed(evt);
+        }
+        else if (evt.getSource() == resetBtn) {
+            PortraitPanel.this.resetBtnActionPerformed(evt);
         }
         else if (evt.getSource() == rotateLeftBtn) {
             PortraitPanel.this.rotateLeftBtnActionPerformed(evt);
@@ -1077,6 +1223,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
     private javax.swing.JLabel imageLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private ca.cgjennings.ui.JRepeaterButton leftBtn;
     private javax.swing.JLabel nudegLabel;
     private javax.swing.JPanel nudgePanel;
