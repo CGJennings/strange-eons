@@ -298,7 +298,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         fillingInView = true;
         for (String s : locales) {
             languageModel.addElement(
-                    new LanguageCodeDescriptor(Language.parseLocaleDescription(s), false, true)
+                    new LanguageCodeDescriptor(Language.parseLocaleDescription(s))
             );
         }
         languageCombo.setModel(languageModel);

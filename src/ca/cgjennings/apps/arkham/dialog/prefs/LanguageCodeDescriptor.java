@@ -15,24 +15,8 @@ public class LanguageCodeDescriptor implements IconProvider {
     private Icon icon;
     private Locale locale;
     private boolean disabled;
-
-    public LanguageCodeDescriptor(String locale) {
-        this(Language.parseLocaleDescription(locale), false, false);
-    }
-
+    
     public LanguageCodeDescriptor(Locale locale) {
-        this(locale, false, false);
-    }
-
-    public LanguageCodeDescriptor(Locale locale, boolean disabled) {
-        this(locale, disabled, false);
-    }
-
-    public LanguageCodeDescriptor(String locale, boolean disabled, boolean useShortName) {
-        this(Language.parseLocaleDescription(locale), disabled, useShortName);
-    }
-
-    public LanguageCodeDescriptor(Locale locale, boolean disabled, boolean useShortName) {
         this.disabled = disabled;
         if (locale == null) {
             throw new NullPointerException("locale");
@@ -45,27 +29,12 @@ public class LanguageCodeDescriptor implements IconProvider {
         }
         this.locale = locale;
 
-        String user, local;
-        user = getLocaleDescription(locale);
-        local = useShortName ? user : getLocaleDescription(locale, locale);
         if (locale.getCountry().isEmpty()) {
             icon = Language.getIconForLanguage(locale); // disable effect for languages looks funky
         } else {
             icon = new IndentedIcon(icon(Language.getIconForCountry(locale)));
         }
-
-        StringBuilder b = new StringBuilder("<html><b>");
-        if (disabled) {
-            b.append("<font color='#999999'>");
-        }
-        b.append(user).append("</b>");
-        if (!user.equals(local)) {
-            if (!disabled) {
-                b.append("<font color='#777777'>");
-            }
-            b.append("&nbsp;/&nbsp;").append(local);
-        }
-        descriptor = b.toString();
+        descriptor = getLocaleDescription(locale);
     }
 
     private Icon icon(Icon i) {
@@ -109,6 +78,10 @@ public class LanguageCodeDescriptor implements IconProvider {
     public Icon getIcon() {
         return icon;
     }
+    
+    public boolean isDisabled() {
+        return disabled;
+    }
 
     @Override
     public String toString() {
@@ -140,6 +113,6 @@ public class LanguageCodeDescriptor implements IconProvider {
             }
             icon.paintIcon(c, g, x, y);
         }
-        private static final int INDENT = 8;
+        private static final int INDENT = 10;
     }
 }

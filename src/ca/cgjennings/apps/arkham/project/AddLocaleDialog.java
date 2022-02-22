@@ -68,8 +68,9 @@ class AddLocaleDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         FilteredListModel<LanguageCodeDescriptor> model = new FilteredListModel<>();
         for (Locale lang : Language.getLocales()) {
-            boolean disable = getFileName(lang).exists();
-            model.add(new LanguageCodeDescriptor(lang, disable));
+            if (!getFileName(lang).exists()) {
+                model.add(new LanguageCodeDescriptor(lang));
+            }
         }
         locList.setModel(model);
 
