@@ -251,17 +251,17 @@ public class ThemeInstaller {
         UIManager.put(Theme.PLUGIN_README_FOREGROUND, UIManager.getColor(Theme.PREFS_FOREGROUND));
 
         UIDefaults ui = UIManager.getDefaults();
-        ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x73_96ab));
+        ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x7396ab));
         ui.put(Theme.SIDEPANEL_TITLE_BACKGROUND, Color.BLACK);
         ui.put(Theme.SIDEPANEL_TITLE_FOREGROUND, Color.WHITE);
 
         ui.put(Theme.CONTEXT_BAR_BACKGROUND, Color.WHITE);
         ui.put(Theme.CONTEXT_BAR_FOREGROUND, Color.BLACK);
         ui.put(Theme.CONTEXT_BAR_BUTTON_BACKGROUND, Color.WHITE);
-        Color rollover = new Color(0xff_cb41);
+        Color rollover = new Color(0xffcb41);
         ui.put(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_BACKGROUND, rollover);
         ui.put(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND, rollover.darker());
-        ui.put(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND, new Color(0x40_b3ff).darker());
+        ui.put(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND, new Color(0x40b3ff).darker());
 
         ui.put(Theme.CONSOLE_FONT, ResourceKit.getEditorFont());
     }

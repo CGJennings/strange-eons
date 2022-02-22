@@ -3,12 +3,8 @@ package ca.cgjennings.ui.theme;
 import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GammaCorrectionFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKGROUND_PAINTER;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_ERROR;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_OUTPUT;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_BACKGROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_FOREGROUND;
+import static ca.cgjennings.ui.theme.Theme.*;
+import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.UIDefaults;
@@ -80,8 +76,8 @@ public class PluginTestTheme extends Theme {
     }
     
     @Override
-    public Color applyThemeToColor(Color c) {
-        return new Color(sepiaFilt.filterPixel(greyFilt.filterPixel(c.getRGB())), true);
+    public Colour applyThemeToColor(Color c) {
+        return new Colour(sepiaFilt.filterPixel(greyFilt.filterPixel(c.getRGB())), true);
     }
 
     private AbstractPixelwiseFilter greyFilt;

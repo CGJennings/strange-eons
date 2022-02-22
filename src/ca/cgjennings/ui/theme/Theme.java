@@ -3,6 +3,7 @@ package ca.cgjennings.ui.theme;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
 import ca.cgjennings.ui.MultiResolutionImageResource;
+import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -264,13 +265,26 @@ public abstract class Theme {
 
     /**
      * Gives the theme the opportunity to modify a colour to reflect the theme.
-     * The base class returns the input without changes.
+     * The base class returns the input without changes, other than ensuring
+     * it is a {@code Colour}.
      *
-     * @param source the non-null colour to modify
+     * @param source the colour to theme
      * @return a modified colour, or the original colour
      */
-    public Color applyThemeToColor(Color source) {
-        return source;
+    public Colour applyThemeToColor(Color source) {
+        return Colour.from(source);
+    }
+    
+    /**
+     * Gives the theme the opportunity to modify a colour to refelct the theme.
+     * This is a convenience that passes the ARGB value through
+     * {@link #applyThemeToColor(java.awt.Color)}.
+     * 
+     * @param argb the colour to theme, as an int in ARGB format
+     * @return a modified colour, or the original colour
+     */
+    public final Colour applyThemeToColor(int argb) {
+        return applyThemeToColor(new Colour(argb, true));
     }
 
     /**
