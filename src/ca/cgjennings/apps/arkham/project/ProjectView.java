@@ -2242,7 +2242,8 @@ public final class ProjectView extends javax.swing.JPanel {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             synchronized (this) {
-                return columnIndex == 0 ? keys.get(rowIndex) : values.get(rowIndex);
+                List<?> target = columnIndex == 0 ? keys : values;
+                return target.size() > rowIndex ? target.get(rowIndex) : "";
             }
         }
 
