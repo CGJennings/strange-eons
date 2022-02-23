@@ -41,7 +41,6 @@ public final class PropertyPalette extends ToolWindow {
      */
     private PropertyPalette() {
         super(StrangeEons.getWindow(), false);
-        JUtilities.makeUtilityWindow(this);
         initComponents();
         setBody(propertyPanel);
 

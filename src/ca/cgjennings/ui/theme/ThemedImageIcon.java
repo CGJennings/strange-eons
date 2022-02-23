@@ -24,9 +24,9 @@ import resources.ResourceKit;
  * @since 3.4
  */
 public class ThemedImageIcon extends AbstractThemedIcon {
+
     private String resource;
     private volatile FilteredMultiResolutionImage mim;
-    
 
     /**
      * Creates a new themed icon from an image resource.
@@ -39,10 +39,10 @@ public class ThemedImageIcon extends AbstractThemedIcon {
     }
 
     /**
-     * Creates a new themed icon from an image resource.
-     * If {@code deferLoading} is {@code true}, then it will not
-     * be loaded until the first time it is used. Otherwise, the image may
-     * start loading immediately in a background thread.
+     * Creates a new themed icon from an image resource. If {@code deferLoading}
+     * is {@code true}, then it will not be loaded until the first time it is
+     * used. Otherwise, the image may start loading immediately in a background
+     * thread.
      *
      * @param resource the the non-null image resource, e.g.,
      * {@code "res://path/image.png"}
@@ -57,22 +57,22 @@ public class ThemedImageIcon extends AbstractThemedIcon {
             SplitJoin.getInstance().execute(this::getMultiResolutionImage);
         }
     }
-    
+
     /**
-     * Creates a new themed icon with the specified size. This is
-     * a cover for creating an icon of equal width and height.
-     * 
+     * Creates a new themed icon with the specified size. This is a cover for
+     * creating an icon of equal width and height.
+     *
      * @param resource the the non-null image resource, e.g.,
      * {@code "res://path/image.png"}
      * @param size the desired icon width and height
      */
     public ThemedImageIcon(String resource, int size) {
         this(resource, size, size);
-    }    
-    
+    }
+
     /**
      * Creates a new themed icon with the specified size.
-     * 
+     *
      * @param resource the the non-null image resource, e.g.,
      * {@code "res://path/image.png"}
      * @param iconWidth the desired icon width (for 1:1 displays)
@@ -87,10 +87,10 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         this.width = iconWidth;
         this.height = iconHeight;
     }
-    
+
     /**
      * Creates a themed icon from a multiresolution image source.
-     * 
+     *
      * @param image the non-null image to use as a base for the icon
      * @param width the icon width
      * @param height the icon height
@@ -101,38 +101,42 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         }
         this.mim = wrapMultiImageForTheme(Objects.requireNonNull(image, "image"));
         this.width = width;
-        this.height = height;        
+        this.height = height;
     }
-    
+
     /**
      * Creates a new themed icon directly from one or images. Each image should
      * be a different version of the same graphic, but scaled for a different
-     * size or resolution. The initial size of the icon will be taken from
-     * the size of the first image; this can be changed by calling
+     * size or resolution. The initial size of the icon will be taken from the
+     * size of the first image; this can be changed by calling
      * {@link #derive(int,int)}.
-     * 
+     *
      * <p>
      * If only one source image is available, it is recommended to use
-     * {@link ThemedSingleImageIcon} instead, as this will generally
-     * produce a higher quality image.
-     * 
-     * @param images a non-null array of at least one image 
+     * {@link ThemedSingleImageIcon} instead, as this will generally produce a
+     * higher quality image.
+     *
+     * @param images a non-null array of at least one image
      */
     public ThemedImageIcon(BufferedImage... images) {
         if (Objects.requireNonNull(images, "images").length == 0) {
             throw new IllegalArgumentException("empty image array");
         }
-        
+
         width = images[0].getWidth();
         height = images[0].getHeight();
-        
+
         // sort from narrowest to widest
         Arrays.sort(images, (a, b) -> b.getWidth() - a.getWidth());
-        
+
         mim = wrapMultiImageForTheme(new BaseMultiResolutionImage(images));
     }
-    
+
     private ThemedImageIcon(ThemedImageIcon src, int width, int height) {
+
+        if (src.width > 18) {
+            System.out.println(src.resource);
+        }
         src.getMultiResolutionImage();
         resource = src.resource;
         mim = src.mim;
@@ -140,27 +144,27 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         this.height = height;
         disabled = src.disabled;
     }
-  
+
     /**
-     * Returns the resource identifier for this icon.
-     * This will be null if the icon was not created from a resource identifier.
+     * Returns the resource identifier for this icon. This will be null if the
+     * icon was not created from a resource identifier.
      *
      * @return the image resource
      */
     public String getResource() {
         return resource;
     }
-    
+
     /**
-     * Returns an image that can be used to render the icon's image at
-     * multiple resolutions.
-     * 
+     * Returns an image that can be used to render the icon's image at multiple
+     * resolutions.
+     *
      * @return a multi-resolution version of the source image
      */
     public final AbstractMultiResolutionImage getMultiResolutionImage() {
         FilteredMultiResolutionImage mim = this.mim;
         if (mim == null) {
-            synchronized(this) {
+            synchronized (this) {
                 mim = this.mim;
                 if (mim == null) {
                     // create base image that returns "raw" image resources
@@ -178,11 +182,11 @@ public class ThemedImageIcon extends AbstractThemedIcon {
         }
         return mim;
     }
-    
+
     /**
      * Wraps any multi-resolution image in a multi-resolution image that applies
      * any relevant theme effects.
-     * 
+     *
      * @param resIm the image to wrap
      * @return a themed version of the image
      */
@@ -198,11 +202,11 @@ public class ThemedImageIcon extends AbstractThemedIcon {
             }
         };
     }
-    
+
     /**
-     * Returns an icon with the same base image as this icon,
-     * but which renders with a different nominal size or state.
-     * 
+     * Returns an icon with the same base image as this icon, but which renders
+     * with a different nominal size or state.
+     *
      * @param newWidth the new width (on 1:1 displays)
      * @param newHeight the new height (on 1:1 displays)
      * @return an icon for the new size
@@ -211,17 +215,22 @@ public class ThemedImageIcon extends AbstractThemedIcon {
     public final ThemedImageIcon derive(int newWidth, int newHeight) {
         if (newWidth < 1 || newHeight < 1) {
             throw new IllegalArgumentException("bad dimensions: " + width + 'x' + height);
-        }        
+        }
+        if (mim == null) {
+            getMultiResolutionImage();
+        }
         if (width == newWidth && height == newHeight) {
             return this;
         }
-        
+
         return new ThemedImageIcon(this, newWidth, newHeight);
     }
-    
+
     @Override
     public final ThemedImageIcon disabled() {
-        if (disabled) return this;
+        if (disabled) {
+            return this;
+        }
         ThemedImageIcon di = new ThemedImageIcon(this, width, height);
         di.disabled = true;
         return di;
@@ -229,22 +238,28 @@ public class ThemedImageIcon extends AbstractThemedIcon {
 
     @Override
     public int getIconWidth() {
-        if (mim == null) getMultiResolutionImage();
+        if (mim == null) {
+            getMultiResolutionImage();
+        }
         return width;
     }
 
     @Override
     public int getIconHeight() {
-        if (mim == null) getMultiResolutionImage();
+        if (mim == null) {
+            getMultiResolutionImage();
+        }
         return height;
     }
 
     @Override
     public void paintIcon(Component c, Graphics2D g, int x, int y) {
-        if (mim == null) getMultiResolutionImage();
+        if (mim == null) {
+            getMultiResolutionImage();
+        }
         g.drawImage(mim, x, y, width, height, null);
     }
-    
+
     @Override
     public String toString() {
         return super.toString() + ", image=\"" + resource + '"';

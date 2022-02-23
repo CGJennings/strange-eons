@@ -325,14 +325,15 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
                     ext = ".jp2";
                 }
                 
-                if (pluginIcon == null) {
-                    if (getPluginType() == EXTENSION) {
-                        pluginIcon = ResourceKit.getIcon("extension").small();
-                    } else {
-                        pluginIcon = ResourceKit.getIcon("plugin").small();
-                    }
+            }
+            if (pluginIcon == null) {
+                if (getPluginType() == EXTENSION) {
+                    pluginIcon = ResourceKit.getIcon("extension");
+                } else {
+                    pluginIcon = ResourceKit.getIcon("plugin");
                 }
             }
+            pluginIcon = pluginIcon.small();
         }
         return pluginIcon;
     }

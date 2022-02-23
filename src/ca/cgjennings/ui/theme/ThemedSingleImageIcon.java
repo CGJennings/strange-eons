@@ -163,9 +163,9 @@ public final class ThemedSingleImageIcon extends AbstractThemedIcon {
         if (width == newWidth && height == newHeight) {
             return this;
         }
-        if (source == null) {
-            getImage();
-        }
-        return new ThemedSingleImageIcon(source, newWidth, newHeight);
+        ThemedSingleImageIcon derived = new ThemedSingleImageIcon(getImage(), newWidth, newHeight);
+        derived.disabled = disabled;
+        derived.resource = resource;
+        return derived;
     }
 }
