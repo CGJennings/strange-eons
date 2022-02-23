@@ -283,7 +283,7 @@ public class CommandLineArguments implements Cloneable {
                 + "  --resetPrefs          Resets all preferences to their default values.\n"
                 + "  --migratePrefs        Forces preference migration from an earlier version.\n"
                 + "  --run file            Run the script file non-interactively.\n"
-                + "  --X                   Displays help for non-standard options and exits.\n"
+                + "  --x                   Displays help for non-standard options and exits.\n"
                 + "\nNotes:\n"
                 + "  (1) Locales are defined using a two-letter ISO-639 language code, optionally\n"
                 + "      followed by an underscore and a two-letter ISO-3166 region code.\n"
@@ -296,17 +296,19 @@ public class CommandLineArguments implements Cloneable {
         if (cla.x) {
             System.out.println(
                     "Non-standard options:\n"
-                    + "  --XAAText                 Force method of antialiasing onscreen text:\n"
+                    + "  --xAAText                 Force method of antialiasing onscreen text:\n"
                     + "                              auto|off|on|gasp|lcd|lcd_hbgr|lcd_vrgb|lcd_vbgr\n"
-                    + "  --XDebugException         Throws a test exception during startup\n"
-                    + "  --XDisableFileRestore     Do not re-open files in use at the last exit\n"
-                    + "  --XDisableFilterThreads   Do not use threads to accelerate image filters\n"
-                    + "  --XDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
-                    + "  --XDisableProjectRestore  Do not re-open the project in use at the last exit\n"
-                    + "  --XDisableStartupThreads  Do not use threads to speed application startup\n"
-                    + "  --XDisableAnimation       Do not use animation effects\n"
-                    + "  --XDisableSystemMenu      Do not use system menu bar on OS X\n"
-                    + "  --XOpenGL                 If possible use OpenGL instead of default renderer\n"
+                    + "  --xDisableProjectRestore  Do not re-open the project in use at the last exit\n"
+                    + "  --xDisableFileRestore     Do not re-open files in use at the last exit\n"
+                    + "  --xDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
+                    + "  --xDisableStartupThreads  Do not use threads to speed application startup\n"
+                    + "  --xDisableFilterThreads   Do not use threads to accelerate image filters\n"
+                    + "  --xDisableAnimation       Do not use animation effects\n"
+                    + "  --xDisableAcceleration    Do not use hardware accelerated graphics\n"
+                    + "  --xOpenGL                 If possible use OpenGL instead of default renderer\n"
+                    + "  --xEnableWindowsAcceleration\n"
+                    + "                            Enable acceleration on Windows\n
+                    + "  --xDebugException         Throws a test exception during startup\n"
             );
             System.exit(0);
         }
