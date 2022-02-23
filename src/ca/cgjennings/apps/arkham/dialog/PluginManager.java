@@ -63,6 +63,8 @@ public class PluginManager extends javax.swing.JDialog {
     public PluginManager() {
         this(StrangeEons.getWindow());
         getRootPane().setDefaultButton(cancelBtn);
+        openPluginFolderBtn.putClientProperty("JButton.buttonType", "square");
+        downloadBtn.putClientProperty("JButton.buttonType", "square");
     }
 
     /**
@@ -348,7 +350,7 @@ public class PluginManager extends javax.swing.JDialog {
         downloadBtn.setFont(downloadBtn.getFont().deriveFont(downloadBtn.getFont().getSize()-1f));
         downloadBtn.setIcon( ResourceKit.getIcon("catalog"));
         downloadBtn.setText(string( "plug-l-download" )); // NOI18N
-        downloadBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        downloadBtn.setMargin(new java.awt.Insets(2, 4, 2, 4));
         downloadBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downloadBtnActionPerformed(evt);
@@ -359,7 +361,7 @@ public class PluginManager extends javax.swing.JDialog {
         openPluginFolderBtn.setIcon(ResourceKit.getIcon("folder"));
         openPluginFolderBtn.setText(string( "plug-l-open-folder" )); // NOI18N
         openPluginFolderBtn.setEnabled(  DesktopIntegration.SHOW_IN_SHELL_SUPPORTED );
-        openPluginFolderBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        openPluginFolderBtn.setMargin(new java.awt.Insets(2, 4, 2, 4));
         openPluginFolderBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openPluginFolderBtnActionPerformed(evt);
