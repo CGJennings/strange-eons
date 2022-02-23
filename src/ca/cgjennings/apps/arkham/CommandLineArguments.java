@@ -307,7 +307,7 @@ public class CommandLineArguments implements Cloneable {
                     + "  --xDisableAcceleration    Do not use hardware accelerated graphics\n"
                     + "  --xOpenGL                 If possible use OpenGL instead of default renderer\n"
                     + "  --xEnableWindowsAcceleration\n"
-                    + "                            Enable acceleration on Windows\n
+                    + "                            Enable acceleration on Windows\n"
                     + "  --xDebugException         Throws a test exception during startup\n"
             );
             System.exit(0);
