@@ -6,6 +6,10 @@ import java.awt.Color;
  * A basic, general purpose card tinting filter. It shifts hue, and scales
  * saturation and brightness of the pixels in the source image.
  *
+ * <p>
+ * <b>In-place filtering:</b> This class supports in-place filtering (the source
+ * and destination image may be the same).
+ * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class TintFilter extends TintOverlayFilter {
