@@ -9,7 +9,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
-import ca.cgjennings.ui.theme.ThemeInstaller;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -50,7 +50,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextPane;
 import javax.swing.Painter;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTextPaneUI;
@@ -109,11 +108,27 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
 
     @SuppressWarnings("unchecked")
     private void initStyles() {
-        backgroundColor = color(Theme.CONSOLE_BACKROUND, console.getBackground());
-        outColor = color(Theme.CONSOLE_OUTPUT, console.getForeground());
-        errorColor = color(Theme.CONSOLE_ERROR, ThemeInstaller.isDark() ? new Color(0xef5350) : new Color(0xb71c1c));
-        console.setSelectionColor(color(Theme.CONSOLE_SELECTION_BACKGROUND, console.getSelectionColor()));
-        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND, console.getSelectedTextColor()));
+        backgroundColor = color(
+                Theme.CONSOLE_BACKROUND,
+                Palette.get.background.opaque.background
+        );
+        outColor = color(
+                Theme.CONSOLE_OUTPUT,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.foreground
+        );
+        errorColor = color(
+                Theme.CONSOLE_ERROR,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.red
+        );
+        console.setSelectionColor(color(
+                Theme.CONSOLE_SELECTION_BACKGROUND,
+                Palette.get.harmonizing(backgroundColor.getRGB()).opaque.yellow
+        ));
+        console.setSelectedTextColor(color(
+                Theme.CONSOLE_SELECTION_FOREGROUND,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.foreground
+        ));
+        
         bgpainter = (Painter<JComponent>) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
         
         Font font = UIManager.getDefaults().getFont(Theme.CONSOLE_FONT);
