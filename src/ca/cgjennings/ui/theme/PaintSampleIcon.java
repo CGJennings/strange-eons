@@ -1,5 +1,6 @@
 package ca.cgjennings.ui.theme;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Paint;
@@ -37,6 +38,17 @@ public class PaintSampleIcon extends AbstractThemedIcon {
         Paint oldPaint = g.getPaint();
         g.setPaint(paint);
         g.fillOval(x+1, y+1, width-2, height-2);
+        if (c != null) {
+            Color bg = c.getBackground();
+            if (bg != null) {
+                int ring = 0xcc212121;
+                if ((bg.getRed()*30+bg.getGreen()*59+bg.getBlue()*11)/100 <= 115) {
+                    ring = 0xccf7f7f7;
+                }
+                g.setPaint(new Color(ring, true));
+                g.drawOval(x+1, y+1, width-2, height-2);
+            }
+        }
         g.setPaint(oldPaint);
     }
 }
