@@ -84,8 +84,6 @@ public class EditorPane extends JEditorPane {
     @Override
     public void addNotify() {
         super.addNotify();
-
-        // Java 6: use getParent()
         Container c = SwingUtilities.getUnwrappedParent(this);
         while (c != null && (c instanceof JViewport)) {
             c = SwingUtilities.getUnwrappedParent(c);
@@ -98,7 +96,10 @@ public class EditorPane extends JEditorPane {
     @Override
     protected void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        if (g.getRenderingHint(RenderingHints.KEY_ANTIALIASING) == null) {
+            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         super.paintComponent(g);
     }
 
