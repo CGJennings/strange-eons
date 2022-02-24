@@ -108,7 +108,7 @@ public class New extends TaskActionTree {
             if (icon == null) {
                 icon = MetadataSource.ICON_BLANK;
             }
-            this.icon = ThemedIcon.create(icon);
+            this.icon = ThemedIcon.create(icon).small();
         }
 
         @Override
@@ -267,13 +267,6 @@ public class New extends TaskActionTree {
         ta.add(new NewAction(string("pa-new-typescript"), string("pa-new-typescript-name"), "ts", "projects/new-empty.js", MetadataSource.ICON_TYPESCRIPT));
         ta.add(new NewAction(string("pa-new-diy"), string("pa-new-diy-name"), "js", "projects/new-diy.js", MetadataSource.ICON_SCRIPT, NewTaskType.PLUGIN_TYPE));
         ta.add(new NewAction(string("pa-new-plugin-script"), string("pa-new-plugin-script-name"), "js", "projects/new-plugin-script.js", MetadataSource.ICON_SCRIPT, NewTaskType.PLUGIN_TYPE));
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-//		ta.add( new NewAction( string("pa-new-"), string("pa-new--name"), "js", "projects/new-.js", NewTaskType.PLUGIN_TYPE ) );
-
         ta.add(null);
         ta.add(new NewGenericGameComponent(true));
 

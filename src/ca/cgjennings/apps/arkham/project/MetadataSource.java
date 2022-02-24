@@ -622,7 +622,7 @@ public class MetadataSource {
     public static final Icon ICON_COPIES_LIST = getIcon("copies");
     public static final Icon ICON_DOCUMENT = getIcon("doc");
     public static final Icon ICON_FONT = getIcon("font-file");
-    public static final Icon ICON_EON_DEFAULT = getIcon("eon-default");
+    public static final Icon ICON_EON_DEFAULT = getIcon("eon");
     public static final Icon ICON_EON_PLUGIN = getIcon("plugin");
     public static final Icon ICON_EON_EXTENSION = getIcon("extension");
     public static final Icon ICON_EON_THEME = getIcon("theme");
