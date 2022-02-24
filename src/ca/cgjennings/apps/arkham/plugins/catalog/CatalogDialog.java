@@ -443,7 +443,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
      */
     private void showPopupText() {
         if (popupText != null && !popupText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, popupText, getTitle(), JOptionPane.INFORMATION_MESSAGE, ResourceKit.getIcon("application/lantern.png"));
+            JOptionPane.showMessageDialog(this, popupText, getTitle(), JOptionPane.INFORMATION_MESSAGE);
         }
         popupText = null;
     }
