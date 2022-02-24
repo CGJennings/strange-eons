@@ -382,7 +382,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     @Override
     public Icon getIcon() {
         if (icon == null) {
-            icon = ResourceKit.getIcon("application/prefs-contextbar.png");
+            icon = ResourceKit.getIcon("prefs/contextbar.png");
         }
         return icon;
     }

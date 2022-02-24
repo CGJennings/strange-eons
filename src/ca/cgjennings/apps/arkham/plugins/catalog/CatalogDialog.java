@@ -439,7 +439,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
     /**
      * Called when the window gains focus if there is pop-up text. Shows the
-     * text in a a dialog and resets the text to {@code null}.
+     * text in a dialog and resets the text to {@code null}.
      */
     private void showPopupText() {
         if (popupText != null && !popupText.isEmpty()) {

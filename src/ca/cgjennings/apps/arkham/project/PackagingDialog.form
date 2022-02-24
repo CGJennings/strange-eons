@@ -129,8 +129,8 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/resources/icons/application/prefs-project.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="ResourceKit.getIcon(&quot;prefs/project.png&quot;)" type="code"/>
             </Property>
           </Properties>
           <AuxValues>

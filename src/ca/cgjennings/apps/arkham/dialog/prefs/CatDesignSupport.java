@@ -10,7 +10,7 @@ import static resources.Language.string;
 public class CatDesignSupport extends FillInPreferenceCategory {
 
     public CatDesignSupport() {
-        super(string("sd-l-design-support"), "icons/application/prefs-design.png");
+        super(string("sd-l-design-support"), "icons/prefs/design.png");
 
         heading(string("sd-l-design-support"));
 

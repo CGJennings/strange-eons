@@ -11,7 +11,7 @@ import resources.Settings;
 class CatDrawPerformance extends FillInPreferenceCategory {
 
     public CatDrawPerformance() {
-        super(string("sd-l-drawing"), "icons/application/prefs-drawing.png");
+        super(string("sd-l-drawing"), "icons/prefs/drawing.png");
 
         heading(string("sd-l-drawing"));
         subheading(string("sd-l-previews"));
