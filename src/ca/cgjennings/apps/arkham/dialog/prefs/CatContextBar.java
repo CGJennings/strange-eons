@@ -280,7 +280,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
         dstScroll.setViewportView(dstList);
 
         bin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bin.setIcon( ResourceKit.getIcon( "ui/button/delete.png" ) );
+        bin.setIcon(ResourceKit.getIcon("delete"));
         bin.setText(string("remove")); // NOI18N
 
         removeAllBtn.setFont(removeAllBtn.getFont().deriveFont(removeAllBtn.getFont().getSize()-1f));

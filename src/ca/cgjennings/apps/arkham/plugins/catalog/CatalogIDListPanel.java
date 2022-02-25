@@ -125,7 +125,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
 
         add(tableScroll, java.awt.BorderLayout.CENTER);
 
-        cutBtn.setIcon( ResourceKit.getIcon( "ui/button/cut.png" ) );
+        cutBtn.setIcon(ResourceKit.getIcon("cut").medium());
         cutBtn.setToolTipText(string("prj-re-cut-cat")); // NOI18N
         cutBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -133,7 +133,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
             }
         });
 
-        copyBtn.setIcon( ResourceKit.getIcon( "ui/button/copy.png" ) );
+        copyBtn.setIcon(ResourceKit.getIcon("copy").medium());
         copyBtn.setToolTipText(string("prj-re-copy-cat")); // NOI18N
         copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,7 +141,7 @@ public class CatalogIDListPanel extends javax.swing.JPanel {
             }
         });
 
-        pasteBtn.setIcon( ResourceKit.getIcon( "ui/button/paste.png" ) );
+        pasteBtn.setIcon(ResourceKit.getIcon("paste").medium());
         pasteBtn.setToolTipText(string("prj-re-paste-cat")); // NOI18N
         pasteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

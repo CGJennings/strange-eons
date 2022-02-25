@@ -346,7 +346,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
 
     private static Font getDefaultFont() {
         if (defaultFont == null) {
-            try (InputStream in = ThemedGlyphIcon.class.getResourceAsStream("/resources/icons/icon-data")) {
+            try (InputStream in = ThemedGlyphIcon.class.getResourceAsStream("/resources/icons/icons.bin")) {
                 defaultFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(F_SIZE);
             } catch (IOException | FontFormatException ex) {
                 StrangeEons.log.log(Level.SEVERE, "unable to load icon data");

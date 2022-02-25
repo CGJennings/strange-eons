@@ -80,6 +80,7 @@ public class DagonTheme extends Theme {
         defaults.put("TextField.selectionForeground", TEXT);
         defaults.put("TextField.selectionBackground", SELECTION_BACKGROUND);
         defaults.put("TextField.caretForeground", TEXT);
+        defaults.put("ComboBox:\"ComboBox.listRenderer\"[Selected].textForegound", TEXT);
         
         // Panels
         final Color BACKGROUND = new ColorUIResource(0x455a64);

@@ -3,7 +3,7 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import static ca.cgjennings.apps.arkham.plugins.debugging.Command.escapeHTML;
-import ca.cgjennings.graphics.ImageUtilities;
+import resources.ResourceKit;
 import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.CompoundPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
@@ -16,6 +16,8 @@ import ca.cgjennings.ui.table.JHeadlessTable;
 import ca.cgjennings.ui.table.MultilineTableCellRenderer;
 import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.ui.textedit.HtmlStyler;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -26,7 +28,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.datatransfer.Clipboard;
@@ -55,19 +56,16 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
@@ -78,8 +76,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.FocusManager;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -120,6 +116,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import resources.Settings;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 
 /**
  * The script debugger client application. This client-side application allows
@@ -144,11 +141,12 @@ public final class Client extends javax.swing.JFrame {
             e.printStackTrace(System.err);
         }
 
-        debugIcon = new ImageIcon(image("icons/application/db@4x.png"));
-
+        debugIcon = (ThemedImageIcon) new ThemedImageIcon("icons/application/db.png").large();
         initComponents();
         statusPanel.add(status, BorderLayout.EAST);
         new TreeLabelExposer(scopeTree);
+        refreshBtn.setIcon(ResourceKit.getIcon("refresh"));
+        clearCaches.setIcon(ResourceKit.getIcon("clear-caches"));
 
         initFrame();
         initTimer();
@@ -350,16 +348,10 @@ public final class Client extends javax.swing.JFrame {
     private HeartbeatLabel status = new HeartbeatLabel(string("msg-init"));
 
     private void initFrame() {
-        new IconBorder(new ImageIcon(image("icons/ui/find.png"))).install(filterField);
+        new IconBorder(ResourceKit.getIcon("find")).install(filterField);
 
         portField.getEditor().setOpaque(false);
-
-        List<Image> appImages = new LinkedList<>();
-        appImages.add(image("icons/application/db.png"));
-        for(int x = 2; x <= 16; x *= 2) {
-            appImages.add(image("icons/application/db@" + x + "x.png"));
-        }
-        setIconImages(appImages);
+        setIconImages(debugIcon.getMultiResolutionImage().getResolutionVariants());
 
         sourceTable.getColumnModel().getColumn(0).setCellRenderer(sourceRenderer);
         sourceTable.getColumnModel().getColumn(1).setCellRenderer(sourceRenderer);
@@ -542,9 +534,6 @@ public final class Client extends javax.swing.JFrame {
                 continue;
             }
             AbstractButton b = (AbstractButton) toolPanel.getComponent(i);
-            BufferedImage bi = ImageUtilities.iconToImage(b.getIcon());
-            bi = disableFilter.filter(bi, null);
-            b.setDisabledIcon(new ImageIcon(bi));
             b.putClientProperty("Nimbus.Overrides.InheritDefaults", Boolean.TRUE);
             b.putClientProperty("Nimbus.Overrides", fixes);
             b.updateUI();
@@ -565,40 +554,21 @@ public final class Client extends javax.swing.JFrame {
         }
     };
 
-    private static BufferedImage image(String res) {
-        if (res == null) {
-            log.log(Level.SEVERE, "null image");
-        }
-        URL url = Client.class.getResource("/resources/" + res);
-        if (url != null) {
-            try {
-                return ImageIO.read(url);
-            } catch (IOException e) {
-            }
-        }
-        
-        log.log(Level.WARNING, "missing or bad image {0}", res);
-        return new BufferedImage(16,16,BufferedImage.TYPE_INT_ARGB);
-    }
-
-    private static Icon icon(String res, int size) {
+    private static ThemedIcon icon(String res, int size) {
         if (res == null) {
             log.log(Level.SEVERE, "null icon");
-        }        
-        BufferedImage img = image("icons/" + res);
-        if (img == null) {
-            return null;
         }
-        if (size < 0) {
-            size = img.getWidth();
+        ThemedIcon icon = resources.ResourceKit.getIcon(res);
+        if (size > 0) {
+            icon = icon.derive(size);
         }
-        return ImageUtilities.createIconForSize(img, size);
+        return icon;
     }
 
-    private static Icon icon(String res) {
+    private static ThemedIcon icon(String res) {
         return icon(res, 14);
     }
-    private final Icon debugIcon;
+    private final ThemedImageIcon debugIcon;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -722,7 +692,7 @@ public final class Client extends javax.swing.JFrame {
 
         backBtn.setBackground(java.awt.Color.black);
         backBtn.setForeground(java.awt.Color.lightGray);
-        backBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/back-hi.png"))); // NOI18N
+        backBtn.setIcon(ResourceKit.getIcon("debug-server"));
         backBtn.setBorderPainted(false);
         backBtn.setMargin(new java.awt.Insets(1, 1, 1, 1));
         backBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -732,7 +702,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         runBtn.setBackground(java.awt.Color.black);
-        runBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/continue.png"))); // NOI18N
+        runBtn.setIcon(ResourceKit.getIcon("debugger/continue.png"));
         runBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         runBtn.setBorderPainted(false);
         runBtn.setFocusable(false);
@@ -744,7 +714,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakBtn.setBackground(java.awt.Color.black);
-        breakBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/pause.png"))); // NOI18N
+        breakBtn.setIcon(ResourceKit.getIcon("debugger/pause.png"));
         breakBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakBtn.setBorderPainted(false);
         breakBtn.setFocusable(false);
@@ -761,7 +731,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stopBtn.setBackground(java.awt.Color.black);
-        stopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/terminate.png"))); // NOI18N
+        stopBtn.setIcon(ResourceKit.getIcon("debugger/terminate.png"));
         stopBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stopBtn.setBorderPainted(false);
         stopBtn.setFocusable(false);
@@ -773,7 +743,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepIntoBtn.setBackground(java.awt.Color.black);
-        stepIntoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/stepin.png"))); // NOI18N
+        stepIntoBtn.setIcon(ResourceKit.getIcon("debugger/stepin.png"));
         stepIntoBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepIntoBtn.setBorderPainted(false);
         stepIntoBtn.setFocusable(false);
@@ -785,7 +755,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepOutBtn.setBackground(java.awt.Color.black);
-        stepOutBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/stepout.png"))); // NOI18N
+        stepOutBtn.setIcon(ResourceKit.getIcon("debugger/stepout.png"));
         stepOutBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepOutBtn.setBorderPainted(false);
         stepOutBtn.setFocusable(false);
@@ -797,7 +767,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepOverBtn.setBackground(java.awt.Color.black);
-        stepOverBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/stepover.png"))); // NOI18N
+        stepOverBtn.setIcon(ResourceKit.getIcon("debugger/stepover.png"));
         stepOverBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepOverBtn.setBorderPainted(false);
         stepOverBtn.setFocusable(false);
@@ -809,7 +779,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         onTopBtn.setBackground(java.awt.Color.black);
-        onTopBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/keep-on-top.png"))); // NOI18N
+        onTopBtn.setIcon(ResourceKit.getIcon("debugger/keep-on-top.png"));
         onTopBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         onTopBtn.setBorderPainted(false);
         onTopBtn.setFocusable(false);
@@ -821,7 +791,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         walkBtn.setBackground(java.awt.Color.black);
-        walkBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/walk.png"))); // NOI18N
+        walkBtn.setIcon(ResourceKit.getIcon("debugger/walk.png"));
         walkBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         walkBtn.setBorderPainted(false);
         walkBtn.setFocusable(false);
@@ -833,7 +803,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakEnterBtn.setBackground(java.awt.Color.black);
-        breakEnterBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/break-on-enter.png"))); // NOI18N
+        breakEnterBtn.setIcon(ResourceKit.getIcon("debugger/break-on-enter.png"));
         breakEnterBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakEnterBtn.setBorderPainted(false);
         breakEnterBtn.setFocusable(false);
@@ -845,7 +815,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakExitBtn.setBackground(java.awt.Color.black);
-        breakExitBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/break-on-exit.png"))); // NOI18N
+        breakExitBtn.setIcon(ResourceKit.getIcon("debugger/break-on-exit.png"));
         breakExitBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakExitBtn.setBorderPainted(false);
         breakExitBtn.setFocusable(false);
@@ -857,7 +827,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakThrowBtn.setBackground(java.awt.Color.black);
-        breakThrowBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/break-on-throw.png"))); // NOI18N
+        breakThrowBtn.setIcon(ResourceKit.getIcon("debugger/break-on-throw.png"));
         breakThrowBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakThrowBtn.setBorderPainted(false);
         breakThrowBtn.setFocusable(false);
@@ -869,7 +839,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         infoBtn.setBackground(java.awt.Color.black);
-        infoBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/table.png"))); // NOI18N
+        infoBtn.setIcon(ResourceKit.getIcon("info-tables"));
         infoBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         infoBtn.setBorderPainted(false);
         infoBtn.setFocusable(false);
@@ -881,7 +851,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakDebuggerBtn.setBackground(java.awt.Color.black);
-        breakDebuggerBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/debugger/break-on-debugger.png"))); // NOI18N
+        breakDebuggerBtn.setIcon(ResourceKit.getIcon("debugger/break-on-debugger.png"));
         breakDebuggerBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakDebuggerBtn.setBorderPainted(false);
         breakDebuggerBtn.setFocusable(false);
@@ -893,7 +863,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         debugBtn.setBackground(java.awt.Color.black);
-        debugBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/bug-report.png"))); // NOI18N
+        debugBtn.setIcon(ResourceKit.getIcon("debug-ui"));
         debugBtn.setSelected(true);
         debugBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         debugBtn.setBorderPainted(false);
@@ -1167,7 +1137,7 @@ public final class Client extends javax.swing.JFrame {
         scriptTitle.setBackground(java.awt.Color.black);
         scriptTitle.setFont(scriptTitle.getFont().deriveFont(scriptTitle.getFont().getStyle() | java.awt.Font.BOLD));
         scriptTitle.setForeground(java.awt.Color.white);
-        scriptTitle.setIcon( icon("project/folder.png") );
+        scriptTitle.setIcon( icon("folder") );
         scriptTitle.setText(string( "pane-script-list" )); // NOI18N
         scriptTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 2, 4));
         scriptTitle.setOpaque(true);
@@ -1206,7 +1176,7 @@ public final class Client extends javax.swing.JFrame {
         sourceTitle.setBackground(java.awt.Color.black);
         sourceTitle.setFont(sourceTitle.getFont().deriveFont(sourceTitle.getFont().getStyle() | java.awt.Font.BOLD));
         sourceTitle.setForeground(java.awt.Color.white);
-        sourceTitle.setIcon( icon("project/script.png") );
+        sourceTitle.setIcon( icon("script") );
         sourceTitle.setText(string( "pane-source-code" )); // NOI18N
         sourceTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
         sourceTitle.setOpaque(true);
@@ -1263,7 +1233,7 @@ public final class Client extends javax.swing.JFrame {
         stackTitle.setBackground(java.awt.Color.black);
         stackTitle.setFont(stackTitle.getFont().deriveFont(stackTitle.getFont().getStyle() | java.awt.Font.BOLD));
         stackTitle.setForeground(java.awt.Color.white);
-        stackTitle.setIcon( icon("project/copies.png") );
+        stackTitle.setIcon( icon("call-stack") );
         stackTitle.setText(string( "pane-call-stack" )); // NOI18N
         stackTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
         stackTitle.setOpaque(true);
@@ -1279,7 +1249,7 @@ public final class Client extends javax.swing.JFrame {
         watchTitle.setBackground(java.awt.Color.black);
         watchTitle.setFont(watchTitle.getFont().deriveFont(watchTitle.getFont().getStyle() | java.awt.Font.BOLD));
         watchTitle.setForeground(java.awt.Color.white);
-        watchTitle.setIcon( icon("project/table.png") );
+        watchTitle.setIcon( icon("table") );
         watchTitle.setText(string( "pane-watches" )); // NOI18N
         watchTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
         watchTitle.setOpaque(true);
@@ -1309,7 +1279,7 @@ public final class Client extends javax.swing.JFrame {
         scopeTitle.setBackground(java.awt.Color.black);
         scopeTitle.setFont(scopeTitle.getFont().deriveFont(scopeTitle.getFont().getStyle() | java.awt.Font.BOLD));
         scopeTitle.setForeground(java.awt.Color.white);
-        scopeTitle.setIcon( icon("toolbar/al-left.png") );
+        scopeTitle.setIcon( icon("al-left") );
         scopeTitle.setText(string( "pane-scope-tree" )); // NOI18N
         scopeTitle.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 4, 1, 4));
         scopeTitle.setOpaque(true);
@@ -1399,8 +1369,8 @@ public final class Client extends javax.swing.JFrame {
                     .addComponent(typeHeadLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(typePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
-                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
+                    .addComponent(typeLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                    .addComponent(propertyField, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE))
                 .addContainerGap())
         );
         typePanelLayout.setVerticalGroup(
@@ -2537,6 +2507,8 @@ public final class Client extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(final String args[]) {
+        System.setProperty("sun.java2d.d3d", "false");
+        
         ClientArguments arguments = new ClientArguments();
         arguments.parse(null, args);
         if (arguments.search) {
@@ -2684,7 +2656,7 @@ public final class Client extends javax.swing.JFrame {
     /**
      * Renders entries in the list of source files.
      */
-    private static final DefaultListCellRenderer fileListRenderer = new DefaultListCellRenderer() {
+    private final DefaultListCellRenderer fileListRenderer = new DefaultListCellRenderer() {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             String text = value.toString();
@@ -3433,9 +3405,9 @@ public final class Client extends javax.swing.JFrame {
     /**
      * The user object that represents a node in the scope tree.
      */
-    private static class ScopeDesc {
+    private class ScopeDesc {
 
-        private Icon icon;
+        private ThemedIcon icon;
         private String name;
         private String type;
         private String toolTip;
@@ -3479,19 +3451,19 @@ public final class Client extends javax.swing.JFrame {
         }
     }
 
-    private static final Icon ICON_OBJECT = icon("ui/dev/circle.png", -1);
-    private static final Icon ICON_FUNCTION = icon("ui/dev/ui/dev/triangle.png", -1);
-    private static final Icon ICON_LEAF_PROPERTY = icon("ui/dev/ui/dev/diamond.png", -1);
-    private static final Icon ICON_GLOBAL = icon("ui/dev/ui/dev/globe.png", -1);
-    private static final Icon ICON_CALL = icon("ui/dev/ui/dev/cross.png", -1);
-    private static final Icon ICON_NULL = icon("ui/dev/ui/dev/square.png", -1);
-    private static final Icon ICON_PACKAGE = icon("ui/dev/ui/dev/package.png", -1);
-    private static final Icon ICON_CLASS = icon("ui/dev/ui/dev/class.png", -1);
+    private final ThemedIcon ICON_OBJECT = icon("circle", -1);
+    private final ThemedIcon ICON_FUNCTION = icon("triangle", -1);
+    private final ThemedIcon ICON_LEAF_PROPERTY = icon("diamond", -1);
+    private final ThemedIcon ICON_GLOBAL = icon("debugger/globe.png", -1);
+    private final ThemedIcon ICON_CALL = icon("cross", -1);
+    private final ThemedIcon ICON_NULL = icon("square", -1);
+    private final ThemedIcon ICON_PACKAGE = icon("package", -1);
+    private final ThemedIcon ICON_CLASS = icon("class", -1);
 
     /**
      * A 3-pixel solid dark gray split pane.
      */
-    private static class ThinSplitPane extends JSplitPane {
+    private class ThinSplitPane extends JSplitPane {
 
         public ThinSplitPane() {
             setUI(new BasicSplitPaneUI());

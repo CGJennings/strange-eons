@@ -395,7 +395,7 @@ public class RegionPicker extends javax.swing.JDialog {
         mousePosLabel.setText("1000|1000 32x");
         mousePosLabel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 0, java.awt.Color.gray), javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
-        copyBtn.setIcon( ResourceKit.getIcon( "ui/button/copy.png" ) );
+        copyBtn.setIcon( ResourceKit.getIcon("copy").medium());
         copyBtn.setToolTipText(string( "copy" )); // NOI18N
         copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
