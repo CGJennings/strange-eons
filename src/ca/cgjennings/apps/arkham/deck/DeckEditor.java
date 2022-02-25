@@ -146,7 +146,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
         initComponents();
         findLabel.setBackground(findField.getBackground());
         ((JLabelledField) findField).setLabel(string("de-l-search"));
-        pageTab.addTab("", ResourceKit.getIcon("ui/deck/add-page.png"), new JPanel(), string("de-l-add-page"));
+        pageTab.addTab("", ResourceKit.getIcon("add-page"), new JPanel(), string("de-l-add-page"));
         optionLabel.setText(" ");
         localizeForPlatform();
         {

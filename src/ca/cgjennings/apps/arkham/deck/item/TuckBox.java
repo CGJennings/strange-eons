@@ -408,7 +408,7 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
     @Override
     public Icon getThumbnailIcon() {
         if (sharedIcon == null) {
-            sharedIcon = ResourceKit.getIcon("ui/deck/box.png");
+            sharedIcon = ResourceKit.getIcon("deck/box.png");
         }
         return sharedIcon;
     }

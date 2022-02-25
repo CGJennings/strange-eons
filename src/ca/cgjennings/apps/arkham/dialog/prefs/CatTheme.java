@@ -356,7 +356,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     public Icon getIcon() {
         return catIcon;
     }
-    private final Icon catIcon = ResourceKit.getIcon("prefs/theme.png");
+    private final Icon catIcon = ResourceKit.getIcon("prefs/look-and-feel.png");
 
     @Override
     public JPanel getPanel() {
