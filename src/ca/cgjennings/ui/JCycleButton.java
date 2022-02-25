@@ -1,11 +1,18 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.SwingUtilities;
 import resources.ResourceKit;
 import resources.Settings;
 
@@ -34,11 +41,8 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
     private Object[] cycleModel;
     private String[] settingValues;
-    private int[] gaps;
     private int index = 0;
     private M sel;
-    private JButton metric;
-    private static final int GAP = 8;
 
     /**
      * Creates a new cycle button with an empty model.
@@ -78,19 +82,22 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      */
     public JCycleButton(M[] model, String[] settingValues) {
         this.settingValues = settingValues;
-
-        metric = new JButton();
+        setIcon(ResourceKit.getIcon("cycle"));
         initButton(this);
-        initButton(metric);
-
         setCycleModel(model);
     }
 
     private void initButton(JButton b) {
-        b.setIcon(ResourceKit.getIcon("cycle"));
-        b.setIconTextGap(GAP);
-        b.setHorizontalTextPosition(LEADING);
-        b.setHorizontalAlignment(TRAILING);
+        b.setHorizontalTextPosition(TRAILING);
+        b.setHorizontalAlignment(LEADING);
+        b.putClientProperty("JButton.buttonType", "square");
+        Insets m = b.getMargin();        
+        if (b.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT) {
+            m.right = Math.min(m.right, 3);
+        } else {
+            m.left = Math.min(m.left, 3);
+        }
+        b.setMargin(m);
     }
 
     /**
@@ -151,6 +158,20 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
     public M getSelectedItem() {
         return sel;
     }
+    
+    @Override
+    public void setFont(Font font) {
+        preferredSize = null;
+        super.setFont(font);
+    }
+    
+    @Override
+    public void setIcon(Icon icon) {
+        preferredSize = null;
+        if (getIcon() == null) {
+            super.setIcon(icon);
+        }
+    }
 
     /**
      * Sets the model that the button cycles through. The button will make its
@@ -174,12 +195,12 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
         if (model == null) {
             this.cycleModel = null;
-            gaps = new int[0];
         } else {
             this.cycleModel = model.clone();
-            gaps = new int[model.length];
         }
-        computePreferredSize();
+        preferredSize = null;
+        getPreferredSize();
+        setSize(preferredSize);
         updateButtonFace();
     }
 
@@ -199,36 +220,37 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
         updateButtonFace();
         super.fireActionPerformed(event);
     }
-
-    private void computePreferredSize() {
-        Dimension max = new Dimension(0, 0);
-
-        if (cycleModel == null || cycleModel.length == 0) {
-            metric.setText(null);
-            max(max, -1);
-        } else {
-            for (int i = 0; i < cycleModel.length; ++i) {
-                metric.setText(cycleModel[i] == null ? null : cycleModel[i].toString());
-                max(max, i);
+    
+    @Override
+    public Dimension getPreferredSize() {
+        if (preferredSize == null) {
+            preferredSize = super.getPreferredSize();
+            if (cycleModel != null && cycleModel.length > 0) {
+                JButton b = new JButton();
+                b.setIcon(getIcon());
+                initButton(b);
+                for (int i=0; i<cycleModel.length; ++i) {
+                    b.setText(cycleModel[i] == null ? null : cycleModel[i].toString());
+                    Dimension d = b.getPreferredSize();
+                    preferredSize.width = Math.max(preferredSize.width, d.width);
+                    preferredSize.height = Math.max(preferredSize.height, d.height);
+                }
             }
-            for (int i = 0; i < gaps.length; ++i) {
-                gaps[i] = max.width - gaps[i] + GAP;
-            }
+            // an error margin is required in some cases, not sure why
+            preferredSize.width += 4;
         }
-
-        Dimension oldPref = getPreferredSize();
-        if (oldPref.width != max.width || oldPref.height != max.height) {
-            setPreferredSize(max);
-        }
+        return preferredSize;
     }
-
-    private void max(Dimension max, int gapIndex) {
-        Dimension pref = metric.getPreferredSize();
-        max.width = Math.max(max.width, pref.width);
-        max.height = Math.max(max.height, pref.height);
-        if (gapIndex >= 0) {
-            gaps[gapIndex] = pref.width;
-        }
+    private Dimension preferredSize;
+    
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+    
+    @Override
+    public Dimension getSize() {
+        return getPreferredSize();
     }
 
     @SuppressWarnings("unchecked")
@@ -248,10 +270,8 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
         if (sel == null) {
             setText(null);
-            setIconTextGap(GAP);
         } else {
             setText(sel.toString());
-            setIconTextGap(gaps[index]);
         }
     }
 
