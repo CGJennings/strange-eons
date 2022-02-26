@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -42,13 +43,15 @@ import resources.ResourceKit;
 
 /**
  * A resolution independent icon that is drawn using glyphs (symbols) taken from
- * a font. The icon design can be composed with multiple glyphs and use
- * different colours, positions, and orientations. Glyph icons are usually
- * created using a <em>descriptor</em>. This is a compact string that describes
- * how to compose the design. A descriptor can be as simple as the single code
+ * a font. A glyph icon can be created from a specific font, code point, and
+ * colour description, but more commonly it is created either from a label or
+ * descriptor. A label-based icon displays a letter chosen from automatically
+ * from a label string, optionally with a solid circular background.
+ * A descriptor is a compact string that describes how to compose the icon
+ * design. A descriptor can be as simple as the single code
  * point of the symbol you want to display, or it can compose multiple glyphs
- * using a combination of sizes, positions, orientations, and colours. A
- * descriptor has the following syntax:
+ * using a combination of sizes, positions, orientations, and colours.
+ * Descriptors have the following syntax:
  *
  * <pre>[gly:]CP[!][%][,FG[,BG]][@[Z][,+|-ADJ[,DX[,DY]]]][;...]</pre>
  *
@@ -80,8 +83,8 @@ import resources.ResourceKit;
  * offset components to occur. It is used to distinguish the adjustment block
  * from a colour block (which is optional).
  * <dt><code>Z</code><dd>The icon size (optional). This can be an integer number
- * of pixels/points or one of the following characters: <code>t</code> tiny,
- * <code>s</code>, <code>S</code> medium small, <code>m</code> medium,
+ * of points or one of the following characters: <code>t</code> tiny,
+ * <code>s</code> small, <code>S</code> medium small, <code>m</code> medium,
  * <code>M</code> medium large, <code>l</code> large, <code>L</code> very large,
  * <code>g</code> gigantic. The default is small, which is intended for menu
  * items and most buttons and labels. If an icon size is set in more than one
@@ -107,14 +110,14 @@ import resources.ResourceKit;
  * (red), o (orange), y (yellow), g (green), b (blue), i (indigo), v (violet), p
  * (pink), w (brown), t (teal) c (cyan), k (grey), 0 (black) or 1 (white). The
  * actual colour obtained may vary depending on the installed theme. A Web-style
- * colour can be 3 or 6 hex digits (4 or 8 if an alpha value is included)
- * in ARGB order (not RGBA). They may start with <code>#</code>, which is ignored.
- * Web colours may also be modified by the theme, although most themes do not
- * do so. To explicitly forbid modifying a colour, append a <code>!</code>.
- * For example, the following would produce pure red that cannot be modified:
- * <code>#f00!</code>, as would <code>ff0000!</code>.
- * A <code>!</code> can be added to a palette colour, but it had no effect as
- * palette colours are always determined by the theme.
+ * colour can be 3 or 6 hex digits (4 or 8 if an alpha value is included) in
+ * ARGB order (not RGBA). They may start with <code>#</code>, which is ignored.
+ * Web colours may also be modified by the theme, although most themes do not do
+ * so. To explicitly forbid modifying a colour, append a <code>!</code>. For
+ * example, the following would produce pure red that cannot be modified:
+ * <code>#f00!</code>, as would <code>ff0000!</code>. A <code>!</code> can be
+ * added to a palette colour, but it had no effect as palette colours are always
+ * determined by the theme.
  *
  * <p>
  * Palette colours have light and dark variants which are chosen based on
@@ -169,6 +172,37 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     }
 
     /**
+     * Creates a new glyph icon that displays a letter selected from a
+     * specified string. For example, given the string {@code "The monkey is
+     * happy."}, the icon might display the letter M (from monkey).
+     * 
+     * <p>
+     * <strong>Note:</strong> Tag strings and descriptors, while both strings,
+     * are interpreted completely differently.
+     * 
+     * @param label a string containing text from which a letter should be chosen
+     * for the icon to display
+     * @param fg an optional foreground colour, if null a default is selected
+     * @param bg an optional background colour, if null then no background is
+     * included
+     * @see #derive(java.lang.String)
+     * @see #ThemedGlyphIcon(java.lang.String) 
+     */
+    public ThemedGlyphIcon(String label, Color fg, Color bg) {
+        if (fg == null) {
+            fg = bg == null ? Palette.get.foreground.opaque.text
+                    : Palette.get.foreground.translucent.white;            
+        }
+        Layer layer = createTagLayer(label, fg, bg);
+        if (layer == BROKEN_LAYER) {
+            layer = createTagLayer("X", fg, bg);
+            layer.str = " ";
+        }
+        layers = new Layer[]{layer};
+        font = layer.font;
+    }
+
+    /**
      * Creates a new glyph icon that displays the specified code point using the
      * supplied font and colours.
      *
@@ -181,7 +215,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     public ThemedGlyphIcon(Font font, int codePoint, Color fg, Color bg) {
         this.font = font;
         if (fg == null) {
-            fg = Palette.get.contrasting(null).translucent.foreground;
+            fg = Palette.get.contrasting(null).translucent.text;
         }
         this.layers = new Layer[]{new Layer(codePoint, fg, bg, fg, bg)};
     }
@@ -227,6 +261,122 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         gi.height = newHeight;
         return gi;
     }
+
+    /**
+     * Returns a new icon with the same image as this icon, but "tagged" with a
+     * letter taken from a string. For example, given the string {@code "The monkey is
+     * happy."}, the icon might be tagged with the letter M (from monkey).
+     *
+     * <p>
+     * Generally, for the tag to be legible this icon must either be blank, have
+     * a background, or use a glyph that has a solid filled area around the
+     * middle.
+     *
+     * @param label the string to choose a tag letter from
+     * @return the tagged icon
+     */
+    public ThemedGlyphIcon derive(String label) {
+        Layer tagLayer = createTagLayer(label, Palette.get.foreground.translucent.white, null);
+        if (tagLayer == BROKEN_LAYER) {
+            // no suitable tag letter
+            return this;
+        }
+
+        ThemedGlyphIcon gi = new ThemedGlyphIcon(this);
+        // check if this icon already appears to have a tag layer;
+        // if so replace the tag and if not append the tag as a new
+        // layer
+        Layer last = gi.layers[gi.layers.length - 1];
+        if (last.str != null && last.str.length() > 0
+                && Character.isAlphabetic(last.str.codePointAt(0))
+                && tagLayer.fg.equals(last.fg)
+                && tagLayer.bg.equals(last.bg)
+                && tagLayer.fgDarkMode.equals(last.fgDarkMode)
+                && tagLayer.bgDarkMode.equals(last.bgDarkMode)
+                && tagLayer.font.equals(last.font)
+                && tagLayer.fontAdj == last.fontAdj
+                && !last.flip && !last.mirror && !last.turn
+                && last.xAdj == 0f && last.yAdj == 0f) {
+            if (tagLayer.str.equals(last.str)) {
+                return this;
+            }
+            gi.layers = Arrays.copyOf(gi.layers, gi.layers.length);
+        } else {
+            gi.layers = Arrays.copyOf(gi.layers, gi.layers.length + 1);
+        }
+        gi.layers[gi.layers.length - 1] = tagLayer;
+        return gi;
+    }
+
+    private static Layer createTagLayer(String label, Color fg, Color bg) {
+        if (label == null || label.isEmpty()) {
+            return BROKEN_LAYER;
+        }
+
+        label = label.toUpperCase();
+        
+        int tagLetter = -1;
+        String[] words = label.split("(\\s|'|_)+");
+        for (String w : words) {
+            if (w.isEmpty() || STOP_WORDS.contains(w)) {
+                continue;
+            }
+            int codepoint = w.codePointAt(0);
+            if (Character.isLetter(codepoint)) {
+                tagLetter = codepoint;
+                break;
+            }
+        }
+
+        // didn't find a typical tag, try harder before giving up
+        for (int attempt = 0; attempt < 2 && tagLetter < 0; ++attempt) {
+            for (int i = 0; i < label.length();) {
+                int codepoint = label.codePointAt(i);
+                if (attempt == 0 && Character.isLetterOrDigit(codepoint)) {
+                    tagLetter = codepoint;
+                    break;
+                }
+                if (attempt == 1 && !Character.isSpaceChar(codepoint)) {
+                    tagLetter = codepoint;
+                    break;
+                }
+                i += Character.isSupplementaryCodePoint(codepoint) ? 2 : 1;
+            }
+        }
+
+        // nothing suitable in string
+        if (tagLetter < 0) {
+            return BROKEN_LAYER;
+        }
+
+        Layer tagLayer = new Layer(tagLetter, fg, bg, fg, bg);
+        tagLayer.font = getTagFont();
+        tagLayer.fontAdj = -4f;
+
+        return tagLayer;
+    }
+
+    /**
+     * List of articles to ignore when choosing a word as the basis for a tag.
+     */
+    private static String STOP_WORDS
+            = // Note that any word only needs to appear once, even
+            // if it occurs in more than one language.
+            //
+            // English
+            "A AN THE "
+            + // French - L matches l'
+            "L LE LA LES UN UNE DES "
+            + // Italian
+            "IL LO LA I GLI UNA UN' DEI DEGLI DELLE "
+            + // Spanish
+            "EL LOS LAS UNA UNOS UNAS "
+            + // Portuguese
+            "O OS AS UM UMA UNS UMAS "
+            + // German
+            "EIN DER EINE DIE EIN DAS "
+            + // Swedish
+            "EN ETT ";
 
     @Override
     protected void paintIcon(Component c, Graphics2D g, int x, int y) {
@@ -512,7 +662,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         // the default font only contains PUA symbols, so if this is a
         // "normal" character, substitute a different font
         if (font == null && layer.str.codePointAt(0) < 0xf0001 && layer.str.codePointAt(0) != 0xf68c) {
-            layer.font = new Font(Font.DIALOG, Font.BOLD, I_SIZE - 3);
+            layer.font = getTagFont();
         }
 
         // parse the foreground/background tokens: if a background is specified,
@@ -521,6 +671,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         int bgOffset = fgOffset + (tokens.length > 1 ? tokens[1].length() : 0);
         parseColour(layer, tokens.length > 2 ? tokens[2] : "", bgOffset, true, previousLayerHasBackground);
         parseColour(layer, tokens.length > 1 ? tokens[1] : "", fgOffset, false, previousLayerHasBackground);
+    }
+
+    private static Font getTagFont() {
+        return new Font(Font.DIALOG, Font.BOLD, I_SIZE - 3);
     }
 
     private static int indexOrLength(String s, char ch) {
