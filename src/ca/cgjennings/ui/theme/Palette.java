@@ -152,41 +152,41 @@ public final class Palette {
             grey = init[11];
             black = init[12];
             white = init[13];
-            foreground = init[14];
-            background = init[15];
+            text = init[14];
+            fill = init[15];
         }
         
-        /** A default foreground colour, typically similar to the standard text colour. */
-        public final Colour foreground;
-        /** A default background colour, typically similar to the standard component or menu background. */
-        public final Colour background;
-        /** A red colour, code <code>R</code>. */
+        /** A default foreground colour, typically similar to the standard text colour. Code {@code X}.*/
+        public final Colour text;
+        /** A default background colour, typically similar to the standard component or menu background. {@code F}.*/
+        public final Colour fill;
+        /** A red colour, code {@code R}. */
         public final Colour red;
-        /** An orange colour, code <code>O</code>. */
+        /** An orange colour, code {@code O}. */
         public final Colour orange;
-        /** A yellow colour, code <code>Y</code>. */
+        /** A yellow colour, code {@code Y}. */
         public final Colour yellow;
-        /** A green colour, code <code>G</code>. */
+        /** A green colour, code {@code G}. */
         public final Colour green;
-        /** A blue colour, code <code>B</code>. */
+        /** A blue colour, code {@code B}. */
         public final Colour blue;
-        /** An indigo colour, code <code>I</code>. */
+        /** An indigo colour, code {@code I}. */
         public final Colour indigo;
-        /** A violet colour, code <code>V</code>. */
+        /** A violet colour, code {@code V}. */
         public final Colour violet;
-        /** A cyan colour, code <code>C</code>. */
+        /** A cyan colour, code {@code C}. */
         public final Colour cyan;
-        /** A teal colour, code <code>T</code>. */
+        /** A teal colour, code {@code T}. */
         public final Colour teal;
-        /** A brown colour, code <code>W</code>. */
+        /** A brown colour, code {@code W}. */
         public final Colour brown;
-        /** A pink colour, code <code>P</code>. */
+        /** A pink colour, code {@code P}. */
         public final Colour pink;
-        /** A grey colour, code <code>E</code>. */
+        /** A grey colour, code {@code E}. */
         public final Colour grey;
-        /** A black colour, code <code>0</code> or <code>K</code>. */
+        /** A black colour, code {@code 0} or {@code K}. */
         public final Colour black;
-        /** A white colour, code <code>1</code> or <code>H</code>. */
+        /** A white colour, code {@code 1} or {@code H}. */
         public final Colour white;
         
         /**
@@ -213,8 +213,8 @@ public final class Palette {
                 case 'e': case 'E': c = grey; break;
                 case '0': case 'k': case 'K': c = black; break;
                 case '1': case 'h': case 'H': c = white; break;
-                case 'x': case 'X': c = foreground; break;
-                case 'd': case 'D': c = background; break;
+                case 'x': case 'X': c = text; break;
+                case 'f': case 'F': c = fill; break;
                 default:
                     throw new IllegalArgumentException("unknown colour code " + code);
             }
@@ -245,8 +245,8 @@ public final class Palette {
                 case 11: c = grey; break;
                 case 12: c = black; break;
                 case 13: c = white; break;
-                case 14: c = foreground; break;
-                case 15: c = background; break;
+                case 14: c = text; break;
+                case 15: c = fill; break;
                 default:
                     throw new IllegalArgumentException("unknown colour index " + i);
             }
