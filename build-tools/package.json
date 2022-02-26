@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "description": "Automate aspects of building SE",
   "scripts": {
-    "ts": "update-ts-lib.js"
+    "build": "npm run ts && npm run flex",
+    "ts": "node ./scripts/update-ts-lib.js",
+    "flex": "node ./scripts/build-tokenizers.js"
   },
   "author": "CGJ",
   "devDependencies": {},

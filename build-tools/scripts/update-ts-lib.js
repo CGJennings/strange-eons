@@ -10,7 +10,7 @@ const DEBUG = false;
 const SOURCE = "https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js";
 const JAR_PATH = "ca/cgjennings/apps/arkham/plugins/typescript/typescriptServices.js";
 const LIB_NAME = "typescript-services.jar";
-const LIB_PATH = path.join("..", "lib", LIB_NAME);
+const LIB_PATH = path.join("..", "..", "lib", LIB_NAME);
 
 function downloadLib(url) {
     if (DEBUG) {

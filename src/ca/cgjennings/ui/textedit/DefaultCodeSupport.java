@@ -2,7 +2,9 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.editors.Navigator;
+import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 
 /**
  * Default code support; adds basic syntax highlighting based on the editor's
@@ -12,6 +14,14 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
  * @since 3.4
  */
 public class DefaultCodeSupport implements CodeSupport {
+    private static final String SYNTAX_SE_JAVASCRIPT = "text/sejavascript";
+    private static final String SYNTAX_RESOURCE_FILE = "text/resourcefile";
+    static {
+        // register our custom tokenizers
+        AbstractTokenMakerFactory factory = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
+        factory.putMapping(SYNTAX_SE_JAVASCRIPT, SEJavaScriptTokenMaker.class.getName());
+        factory.putMapping(SYNTAX_RESOURCE_FILE, ResourceFileTokenMaker.class.getName());
+    }
 
     @Override
     public void install(CodeEditorBase editor) {
@@ -70,7 +80,7 @@ public class DefaultCodeSupport implements CodeSupport {
                 id = SyntaxConstants.SYNTAX_STYLE_JAVA;
                 break;
             case JAVASCRIPT:
-                id = SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT;
+                id = SYNTAX_SE_JAVASCRIPT;
                 break;
             case TYPESCRIPT:
                 id = SyntaxConstants.SYNTAX_STYLE_TYPESCRIPT;
@@ -89,7 +99,7 @@ public class DefaultCodeSupport implements CodeSupport {
             case CONVERSION_MAP:
             case SILHOUETTES:
             case TILES:
-                id = SyntaxConstants.SYNTAX_STYLE_PROPERTIES_FILE;
+                id = SYNTAX_RESOURCE_FILE;
                 break;
             default:
                 id = SyntaxConstants.SYNTAX_STYLE_NONE;

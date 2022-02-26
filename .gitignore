@@ -28,3 +28,4 @@ hs_err_pid*
 nbproject/genfiles.properties
 *.db
 *.db
+.vscode/settings.json
