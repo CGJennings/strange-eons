@@ -1,5 +1,11 @@
 package ca.cgjennings.ui.textedit;
 
+/*
+ * This is an adaptation of the {@code RSyntaxTextArea} error strip to customize
+ * how the markers are painted. The adapted code is used under a BSD license, as
+ * described in the about dialog template.
+ */
+
 import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
 import java.awt.Component;
@@ -38,10 +44,6 @@ import org.fife.ui.rtextarea.RTextArea;
 
 /**
  * Displays markers for points of interest in a code editor.
- * <p>
- * This is an adaptation of the {@code RSyntaxTextArea} error strip to customize
- * how the markers are painted. The adapted code is used under a BSD license, as
- * described in the about dialog template.
  *
  * @author Robert Futrell (original author)
  * @author Chris Jennings (adaptation and customization)
