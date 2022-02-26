@@ -179,12 +179,7 @@ final class ErrorStrip extends JPanel {
      * @return The default color.
      */
     private ColorUIResource getDefaultCaretMarkerColor() {
-
-        if (RSyntaxUtilities.isLightForeground(getForeground())) {
-            return new ColorUIResource(textArea.getCaretColor());
-        }
-
-        return new ColorUIResource(Color.BLACK);
+        return new ColorUIResource(Palette.get.foreground.translucent.text);
     }
 
     /**
@@ -278,19 +273,6 @@ final class ErrorStrip extends JPanel {
             g.fillRect(PREFERRED_WIDTH/2 - 3, y0, 5, 4);
             g.drawLine(0, y0+2, getWidth(), y0+2);
         }
-    }
-
-    /**
-     * Returns a possibly brighter component for a color.
-     *
-     * @param i An RGB component for a color (0-255).
-     * @return A possibly brighter value for the component.
-     */
-    private static int possiblyBrighter(int i) {
-        if (i < 255) {
-            i += (int) ((255 - i) * 0.8f);
-        }
-        return i;
     }
 
     /**
