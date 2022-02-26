@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -69,7 +70,10 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
         if (icon == null) {
             PluginBundle bundle = getBundle();
             if (bundle != null) {
-                icon = PluginBundle.getIcon(bundle.getFile(), true);                    
+                icon = PluginBundle.getIcon(bundle.getFile(), true);
+                if (icon instanceof ThemedGlyphIcon) {
+                    icon = ((ThemedGlyphIcon) icon).derive(getName());
+                }
             }
         }
         // can't find bundle? shouldn't happen

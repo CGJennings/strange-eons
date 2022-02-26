@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
@@ -331,6 +332,9 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
                     pluginIcon = ResourceKit.getIcon("extension");
                 } else {
                     pluginIcon = ResourceKit.getIcon("plugin");
+                }
+                if (pluginIcon instanceof ThemedGlyphIcon) {
+                    pluginIcon = ((ThemedGlyphIcon) pluginIcon).derive(getPluginName());
                 }
             }
             pluginIcon = pluginIcon.small();
