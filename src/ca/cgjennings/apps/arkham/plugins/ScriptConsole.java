@@ -108,13 +108,11 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
 
     @SuppressWarnings("unchecked")
     private void initStyles() {
-        backgroundColor = color(
-                Theme.CONSOLE_BACKROUND,
-                Palette.get.background.opaque.background
+        backgroundColor = color(Theme.CONSOLE_BACKROUND,
+                Palette.get.background.opaque.fill
         );
-        outColor = color(
-                Theme.CONSOLE_OUTPUT,
-                Palette.get.contrasting(backgroundColor.getRGB()).opaque.foreground
+        outColor = color(Theme.CONSOLE_OUTPUT,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.text
         );
         errorColor = color(
                 Theme.CONSOLE_ERROR,
@@ -124,9 +122,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
                 Theme.CONSOLE_SELECTION_BACKGROUND,
                 Palette.get.harmonizing(backgroundColor.getRGB()).opaque.yellow
         ));
-        console.setSelectedTextColor(color(
-                Theme.CONSOLE_SELECTION_FOREGROUND,
-                Palette.get.contrasting(backgroundColor.getRGB()).opaque.foreground
+        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.text
         ));
         
         bgpainter = (Painter<JComponent>) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
