@@ -41,7 +41,7 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
                     try {
                         String proto = url.getProtocol();
                         if (proto.equals("jar") || proto.equals("res") || proto.equals("project")) {
-                            view.setPage(url);
+                            setPage(url);
                         } else if (DesktopIntegration.BROWSE_SUPPORTED) {
                             try {
                                 DesktopIntegration.browse(url.toURI());
@@ -50,7 +50,7 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
                             }
                         }
                     } catch (IOException ex) {
-                        view.setText(ex.toString());
+                        setPage(ex.toString());
                     }
                 } else {
                     StrangeEons.log.log(Level.WARNING, "activated invalid URL: {0}", e.getDescription());
