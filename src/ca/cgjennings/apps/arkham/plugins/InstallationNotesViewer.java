@@ -8,6 +8,8 @@ import ca.cgjennings.platform.DesktopIntegration;
 import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.theme.Theme;
+import java.awt.EventQueue;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -16,6 +18,7 @@ import java.net.URL;
 import java.util.logging.Level;
 import javax.swing.UIManager;
 import javax.swing.event.HyperlinkEvent;
+import javax.swing.text.html.HTMLDocument;
 import static resources.Language.string;
 
 /**
@@ -54,6 +57,11 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
                 }
             }
         });
+        view.addPropertyChangeListener("page", (ev) -> {
+            EventQueue.invokeLater(() -> {
+                view.setCaretPosition(0);
+            });
+        });
     }
 
     public InstallationNotesViewer(java.awt.Frame parent, String content) {
@@ -68,6 +76,7 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
     
     public void setPage(String html) {
         view.setText(html);
+        view.setCaretPosition(0);
     }
         
     public void setPage(URL url) {
@@ -79,7 +88,8 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
                     StringWriter sw = new StringWriter();
                     ProjectUtilities.copyReader(in, sw);
                     String html = new MarkdownTransformer().toHtmlDocument(sw.toString());
-                    view.setText(html);
+                    ((HTMLDocument) view.getDocument()).setBase(new URL(url, "."));
+                    setPage(html);
                 }
             } else {
                 view.setPage(url);
