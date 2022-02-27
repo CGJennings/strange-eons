@@ -101,6 +101,9 @@ public class DefaultCodeSupport implements CodeSupport {
             case TILES:
                 id = SYNTAX_RESOURCE_FILE;
                 break;
+            case MARKDOWN:
+                id = SyntaxConstants.SYNTAX_STYLE_MARKDOWN;
+                break;
             default:
                 id = SyntaxConstants.SYNTAX_STYLE_NONE;
                 break;

@@ -1,11 +1,16 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.platform.DesktopIntegration;
+import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.theme.Theme;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -20,7 +25,7 @@ import static resources.Language.string;
  * @since 2.0
  */
 @SuppressWarnings("serial")
-final class InstallationNotesViewer extends javax.swing.JDialog {
+public final class InstallationNotesViewer extends javax.swing.JDialog {
 
     private InstallationNotesViewer() {
         super(StrangeEons.getWindow(), true);
@@ -51,9 +56,6 @@ final class InstallationNotesViewer extends javax.swing.JDialog {
         });
     }
 
-    /**
-     * Creates new form InstallationNotesViewer
-     */
     public InstallationNotesViewer(java.awt.Frame parent, String content) {
         this();
         view.setText(content);
@@ -61,11 +63,34 @@ final class InstallationNotesViewer extends javax.swing.JDialog {
 
     public InstallationNotesViewer(java.awt.Frame parent, URL content) {
         this();
+        setPage(content);
+    }
+    
+    public void setPage(String html) {
+        view.setText(html);
+    }
+        
+    public void setPage(URL url) {
         try {
-            view.setPage(content);
-        } catch (IOException e) {
-            ErrorDialog.displayError("", e);
+            if (url == null) {
+                view.setText("<html></html>");
+            } else if (url.getPath().endsWith(".md")) {
+                try (InputStreamReader in = new InputStreamReader(url.openStream(), TextEncoding.UTF8_CS)) {
+                    StringWriter sw = new StringWriter();
+                    ProjectUtilities.copyReader(in, sw);
+                    String html = new MarkdownTransformer().toHtmlDocument(sw.toString());
+                    view.setText(html);
+                }
+            } else {
+                view.setPage(url);
+            }
+        } catch (IOException ex) {
+            ErrorDialog.displayError("", ex);
         }
+    }
+    
+    private static String fromMarkdown(String content) {
+        return new MarkdownTransformer().toHtmlDocument(content);
     }
 
     /**

@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.ImageViewer;
 import ca.cgjennings.apps.arkham.dialog.InsertCharsDialog;
 import ca.cgjennings.apps.arkham.dialog.VectorImageViewer;
+import ca.cgjennings.apps.arkham.plugins.InstallationNotesViewer;
 import ca.cgjennings.graphics.shapes.SVGVectorImage;
 import ca.cgjennings.graphics.shapes.VectorImage;
 import ca.cgjennings.imageio.PSDImageReader;
@@ -63,7 +64,7 @@ public class View extends TaskAction {
         if (ProjectUtilities.matchExtension(f, "psd")) {
             PSDImageReader psdr = new PSDImageReader(f);
             image = psdr.createComposite();
-        } else if (ProjectUtilities.matchExtension(f, vectorImageTypes)) {
+        } else if (ProjectUtilities.matchExtension(f, vectorImageSubtypes)) {
             VectorImage vi = new SVGVectorImage(f);
             return vi.createRasterImage(64, 64, true);
         } else {
@@ -80,7 +81,7 @@ public class View extends TaskAction {
         if (ProjectUtilities.matchExtension(f, imageTypes)) {
             try {
                 JDialog viewer;
-                if (ProjectUtilities.matchExtension(f, vectorImageTypes)) {
+                if (ProjectUtilities.matchExtension(f, vectorImageSubtypes)) {
                     VectorImage image = new SVGVectorImage(f);
                     VectorImageViewer iv = new VectorImageViewer(StrangeEons.getWindow(), image, f, false);
                     viewer = iv;
@@ -117,6 +118,11 @@ public class View extends TaskAction {
             } catch (IOException e) {
                 ErrorDialog.displayError(string("prj-err-open", f.getName()), e);
             }
+        } else if (ProjectUtilities.matchExtension(f, documentTypes)) {
+            InstallationNotesViewer v = new InstallationNotesViewer(StrangeEons.getWindow(), member.getURL());
+            moveWindow(project, v, cascade++);
+            v.setTitle(member.getBaseName());
+            v.setVisible(true);
         }
         return true;
     }
@@ -152,16 +158,19 @@ public class View extends TaskAction {
     /**
      * The subset of {@link #imageTypes} that represents vector images.
      */
-    static final String[] vectorImageTypes = new String[]{
+    static final String[] vectorImageSubtypes = new String[]{
         "svg", "svgz"
     };
     static final String[] fontTypes = new String[]{
         "ttf", "otf", "pfa", "pfb"
     };
+    static final String[] documentTypes = new String[] {
+        "md"
+    };
     static final String[] allTypes;
 
     static {
-        allTypes = new String[imageTypes.length + fontTypes.length];
+        allTypes = new String[imageTypes.length + fontTypes.length + documentTypes.length];
         int j = 0;
         for (int i = 0; i < imageTypes.length;) {
             allTypes[j++] = imageTypes[i++];
@@ -169,5 +178,8 @@ public class View extends TaskAction {
         for (int i = 0; i < fontTypes.length;) {
             allTypes[j++] = fontTypes[i++];
         }
+        for (int i = 0; i < documentTypes.length;) {
+            allTypes[j++] = documentTypes[i++];
+        }        
     }
 }

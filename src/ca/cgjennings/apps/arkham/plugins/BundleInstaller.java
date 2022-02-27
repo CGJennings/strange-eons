@@ -1201,16 +1201,19 @@ public class BundleInstaller {
 
             int names = 0;
             Locale loc = Language.getInterfaceLocale();
-            String[] matches = new String[5];
+            String[] matches = new String[10];
             for (int j = 0; j < 2; ++j) {
                 if (!loc.getLanguage().isEmpty()) {
                     if (!loc.getCountry().isEmpty()) {
+                        matches[names++] = "install_" + loc.getLanguage() + '_' + loc.getCountry() + ".md";
                         matches[names++] = "install_" + loc.getLanguage() + '_' + loc.getCountry() + ".html";
                     }
+                    matches[names++] = "install_" + loc.getLanguage() + ".md";
                     matches[names++] = "install_" + loc.getLanguage() + ".html";
                 }
                 loc = Language.getGameLocale();
             }
+            matches[names++] = "install.md";
             matches[names++] = "install.html";
 
             int bestMatchIndex = names;

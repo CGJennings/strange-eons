@@ -75,7 +75,12 @@ public enum CodeType {
     /**
      * CSS style sheet for an HTML document.
      */
-    CSS("css", "prj-prop-css", ICON_STYLE_SHEET, CssCodeSupport.class, HTML_CSS);
+    CSS("css", "prj-prop-css", ICON_STYLE_SHEET, CssCodeSupport.class, HTML_CSS),
+    /**
+     * Markdown document.
+     */
+    MARKDOWN("md", "pa-new-markdown", ICON_MARKDOWN, DefaultCodeSupport.class, UTF8),
+    ;
 
     private final String fileExtension;
     private final String description;

@@ -549,6 +549,7 @@ public class MetadataSource {
                 "csv", ICON_TABLE,
                 "htm", ICON_HTML,
                 "html", ICON_HTML,
+                "md", ICON_MARKDOWN,
                 "java", ICON_JAVA,
                 "jp2", ICON_IMAGE,
                 "jpg", ICON_IMAGE,
@@ -615,6 +616,7 @@ public class MetadataSource {
     public static final Icon ICON_COLLECTION = getIcon("collection");
     public static final Icon ICON_TABLE = getIcon("table");
     public static final Icon ICON_HTML = getIcon("html");
+    public static final Icon ICON_MARKDOWN = getIcon("markdown");
     public static final Icon ICON_STYLE_SHEET = getIcon("css");
     public static final Icon ICON_PLUGIN_ROOT = getIcon("root");
     public static final Icon ICON_CLASS = getIcon("class-file");
@@ -823,7 +825,7 @@ public class MetadataSource {
                         return;
                     }
 
-                    if (ProjectUtilities.matchExtension(m, View.vectorImageTypes)) {
+                    if (ProjectUtilities.matchExtension(m, View.vectorImageSubtypes)) {
                         data = new Object[]{thumbnail(image)};
                     } else {
                         data = new Object[]{
@@ -838,7 +840,7 @@ public class MetadataSource {
                     return;
                 }
 
-                if (ProjectUtilities.matchExtension(m, View.vectorImageTypes)) {
+                if (ProjectUtilities.matchExtension(m, View.vectorImageSubtypes)) {
                     add(pc, m, "prj-prop-thumb", (Icon) data[0]);
                 } else {
                     add(pc, m, "prj-prop-dim", (String) data[0]);
