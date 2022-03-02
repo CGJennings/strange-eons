@@ -13,6 +13,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -389,6 +390,9 @@ public class CodeEditorBase extends JPanel {
        
         if (support != null ) {
             support.install(this);
+            if (file != null) {
+                support.fileChanged(file);
+            }
         } else {
             textArea.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_NONE);
         }
@@ -406,6 +410,33 @@ public class CodeEditorBase extends JPanel {
     }
     
     private CodeSupport codeSupport;
+    
+    /**
+     * Associates the contents of the editor with a file.
+     * The editor itself does not use this information, but an attached
+     * code support may use this information to offer advanced editing
+     * support.
+     * 
+     * @param file the new, or null to remove any prior association
+     */
+    public void setFile(File file) {
+        if (!Objects.equals(this.file, file)) {
+            this.file = file;
+            if (codeSupport != null) {
+                codeSupport.fileChanged(file);
+            }
+        }
+    }
+    
+    /**
+     * Returns the file associated with this editor, if any.
+     * @return the associated file, or null
+     */
+    public File getFile() {
+        return file;
+    }
+    
+    private File file;
 
     /**
      * Sets whether this editor should be editable. If false, the editor is

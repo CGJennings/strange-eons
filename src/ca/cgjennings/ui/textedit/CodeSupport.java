@@ -2,6 +2,7 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.editors.Navigator;
+import java.io.File;
 
 /**
  * Classes that provide additional editing support for a code type.
@@ -35,4 +36,11 @@ public interface CodeSupport {
      * @return a formatter that tidies source code, or null if none is available
      */
     Formatter createFormatter();
+    
+    /**
+     * Called when the file associated with the editor changes.
+     * 
+     * @param file the file now associated with the editor
+     */
+    void fileChanged(File file);
 }

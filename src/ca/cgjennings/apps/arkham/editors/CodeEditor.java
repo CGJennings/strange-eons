@@ -12,7 +12,7 @@ import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import ca.cgjennings.apps.arkham.plugins.typescript.TypeScript;
+import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.apps.arkham.project.Member;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
@@ -1130,7 +1130,7 @@ public class CodeEditor extends AbstractSupportEditor {
         }
         if (type == TYPESCRIPT) {
             startedCodeGeneration();
-            TypeScript.transpile(text, transpiled -> {
+            TSLanguageServices.getShared().transpile(source.getName(), text, transpiled -> {
                 final File js = type.getDependentFile(source);
                 try {
                     ProjectUtilities.writeTextFile(js, transpiled, ProjectUtilities.ENC_SCRIPT);

@@ -2,6 +2,7 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.apps.arkham.editors.Navigator;
+import java.io.File;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
@@ -51,6 +52,10 @@ public class DefaultCodeSupport implements CodeSupport {
     @Override
     public Formatter createFormatter() {
         return null;
+    }
+    
+    @Override
+    public void fileChanged(File file) {
     }
 
     /**

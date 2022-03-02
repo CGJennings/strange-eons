@@ -2284,6 +2284,7 @@ public class ResourceKit {
         // create folder with saved folder, or default folder if there is no setting
         JFileChooser fc = null;
         try {
+            StrangeEons.log.log(Level.INFO, "creating file chooser {0} (path: \"{1}\")", new Object[]{key, f});
             fc = new JFileChooser(f);
         } catch (RuntimeException e) {
             // sometimes first attempt to create chooser fails with NPE,

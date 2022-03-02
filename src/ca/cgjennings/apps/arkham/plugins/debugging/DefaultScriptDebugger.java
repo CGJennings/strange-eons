@@ -111,6 +111,7 @@ public final class DefaultScriptDebugger {
     public static void install() {
         // make sure there is no race to install
         synchronized (DefaultScriptDebugger.class) {
+            StrangeEons.log.info("starting script debug server");
             if (theDebugger == null) {
                 theDebugger = new DefaultScriptDebugger();
             } else {

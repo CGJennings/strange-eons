@@ -263,8 +263,8 @@ public final class SEScriptEngineFactory extends ScriptEngineFactoryBase {
     @Override
     public String getProgram(String... statements) {
         StringBuilder b = new StringBuilder(statements.length * 32);
-        for (int i = 0; i < statements.length; i++) {
-            b.append(statements[i]).append(';');
+        for (String statement : statements) {
+            b.append(statement).append(';');
         }
         return b.toString();
     }
