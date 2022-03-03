@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.Icon;
 
 /**
  * A {@link Navigator} implementation for HTML files.
@@ -34,11 +35,20 @@ public class HtmlNavigator implements Navigator {
                 int h;
                 for (h = 1; h < 7; ++h) {
                     if (m.start(h) >= 0) {
+                        Icon hnIcon;
+                        switch(h){
+                            case 1: hnIcon = NavigationPoint.ICON_H1; break;
+                            case 2: hnIcon = NavigationPoint.ICON_H2; break;
+                            case 3: hnIcon = NavigationPoint.ICON_H3; break;
+                            case 4: hnIcon = NavigationPoint.ICON_H4; break;
+                            case 5: hnIcon = NavigationPoint.ICON_H5; break;
+                            case 6: hnIcon = NavigationPoint.ICON_H6; break;
+                            default: hnIcon = NavigationPoint.ICON_NONE; break;
+                        }
                         scope = h - 1;
                         list.add(new NavigationPoint(
                                 AbstractGameComponent.filterComponentText(m.group(h)),
-                                null, m.start(h), scope,
-                                NavigationPoint.ICON_DIAMOND
+                                null, m.start(h), scope, hnIcon
                         ));
                         break;
                     }
@@ -47,15 +57,15 @@ public class HtmlNavigator implements Navigator {
                     continue;
                 }
                 if (m.start(7) >= 0) {
-                    list.add(new NavigationPoint(AbstractGameComponent.filterComponentText(m.group(7)), null, m.start(7), 0, NavigationPoint.ICON_TRIANGLE));
+                    list.add(new NavigationPoint(AbstractGameComponent.filterComponentText(m.group(7)), null, m.start(7), 0, NavigationPoint.ICON_TITLE));
                     continue;
                 }
                 if (m.start(8) >= 0) {
-                    list.add(new NavigationPoint("<DIV>", null, m.start(8), scope, NavigationPoint.ICON_SQUARE));
+                    list.add(new NavigationPoint("<DIV>", null, m.start(8), scope, NavigationPoint.ICON_DIV));
                     continue;
                 }
                 if (m.start(9) >= 0) {
-                    list.add(new NavigationPoint("<TABLE>", null, m.start(9), scope, NavigationPoint.ICON_CROSS));
+                    list.add(new NavigationPoint("<TABLE>", null, m.start(9), scope, NavigationPoint.ICON_TABLE));
                 }
             }
         } catch (Throwable t) {

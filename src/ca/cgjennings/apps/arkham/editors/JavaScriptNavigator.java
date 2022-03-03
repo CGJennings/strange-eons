@@ -103,7 +103,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
         if (lhs instanceof Name) {
             String name = ((Name) lhs).getIdentifier();
             AstNode rhs = prop.getRight();
-            visitRHS(name, prop, rhs, NavigationPoint.ICON_CIRCLE);
+            visitRHS(name, prop, rhs, NavigationPoint.ICON_PROPERTY);
         }
     }
 
@@ -118,11 +118,11 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
             return;
         }
 
-        Icon icon = NavigationPoint.ICON_SQUARE;
+        Icon icon = NavigationPoint.ICON_VAR;
         if (var.isConst()) {
-            icon = NavigationPoint.ICON_SQUARE_BAR;
+            icon = NavigationPoint.ICON_CONST;
         } else if (var.isLet()) {
-            icon = NavigationPoint.ICON_SQUARE_ALTERNATIVE;
+            icon = NavigationPoint.ICON_LET;
         }
 
         for (Node varInit : var.getVariables()) {
@@ -193,7 +193,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
         } else if (rhs instanceof ObjectLiteral) {
             name = composeNameAndType(name, "object");
             currentPointList.add(new NavigationPoint(
-                    name, name, parent.getAbsolutePosition(), depth, NavigationPoint.ICON_CLUSTER
+                    name, name, parent.getAbsolutePosition(), depth, NavigationPoint.ICON_CLASS
             ));
             ++depth;
             for (Node n : ((ObjectLiteral) rhs).getElements()) {
@@ -234,7 +234,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
      */
     private void visitFunction(FunctionNode fn, String id, int token) {
         String value = "function";
-        Icon icon = NavigationPoint.ICON_DIAMOND;
+        Icon icon = NavigationPoint.ICON_FUNCTION;
         if (id == null) {
             id = fn.getName();
             if (id.isEmpty()) {
@@ -243,22 +243,16 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
         }
 
         if (fn.isExpressionClosure()) {
-            icon = NavigationPoint.ICON_TRIANGLE;
+            icon = NavigationPoint.ICON_FUNCTION;
             value = "closure";
         } else if (fn.isGenerator()) {
-            if (token == Token.CONST) {
-                icon = NavigationPoint.ICON_CROSS_BAR;
-            } else {
-                icon = NavigationPoint.ICON_CROSS;
-            }
+            icon = NavigationPoint.ICON_FUNCTION;
             value = "generator";
         } else {
             if (token == Token.GET) {
-                icon = NavigationPoint.ICON_DIAMOND_LEFT;
+                icon = NavigationPoint.ICON_GETTER;
             } else if (token == Token.SET) {
-                icon = NavigationPoint.ICON_DIAMOND_RIGHT;
-            } else if (token == Token.CONST) {
-                icon = NavigationPoint.ICON_DIAMOND_BAR;
+                icon = NavigationPoint.ICON_SETTER;
             }
         }
 

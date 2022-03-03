@@ -129,6 +129,34 @@ public class CompilationRoot {
     }
     
     /**
+     * Returns code completions for the specified position.
+     * 
+     * @param fileName the file name to get completions for
+     * @param position the position within the file at which completions should be performed
+     * @return possible code completions, or null if no completions are available
+     */
+    public CompletionInfo getCodeCompletions(String fileName, int position) {
+        CompletionInfo ci = ts.getCodeCompletions(langService(), fileName, position);
+        if (ci == null || ci.entries == null || ci.entries.isEmpty()) {
+            return null;
+        }
+        Collections.sort(ci.entries);
+        return ci;
+    }
+    
+    /**
+     * Returns additional details about a particular code completion.
+     * 
+     * @param fileName the file name that the completion was generated for
+     * @param position the position that the completion was generated for
+     * @param completion the completion to get details for
+     * @return additional details
+     */
+    public CompletionInfo.EntryDetails getCodeCompletionDetails(String fileName, int position, CompletionInfo.Entry completion) {
+        return ts.getCodeCompletionDetails(langService(), fileName, position, completion);
+    }
+    
+    /**
      * Returns the language service instance for this root, creating it
      * if necessary.
      * @return a language service object that delegates to this root

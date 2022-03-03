@@ -56,7 +56,7 @@ public class PropertyNavigator implements Navigator {
                 if (split < 0) {
                     split = line.length();
                 }
-                list.add(new NavigationPoint(line.substring(0, split).trim(), null, m.start(1), 0, NavigationPoint.ICON_TRIANGLE));
+                list.add(new NavigationPoint(line.substring(0, split).trim(), null, m.start(1), 0, NavigationPoint.ICON_SETTING));
             }
             java.util.Collections.sort(list);
         } catch (Throwable t) {

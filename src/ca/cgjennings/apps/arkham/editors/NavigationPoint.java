@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
+import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.util.Collections;
 import java.util.Comparator;
@@ -245,99 +246,43 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
     }
     private static final Comparator<NavigationPoint> OFFSET_ORDER = (NavigationPoint o1, NavigationPoint o2) -> o1.offset - o2.offset;
 
-    /**
-     * An object cluster icon sometimes used by navigation points. Typical use
-     * is to represent a class or object.
-     */
-    public static final Icon ICON_CLUSTER = ResourceKit.getIcon("class");
-    /**
-     * An object cluster icon with a bar through it sometimes used by navigation
-     * points. Typical use is to represent a class or object assigned to a
-     * constant.
-     */
-    public static final Icon ICON_CLUSTER_BAR = ResourceKit.getIcon("class-bar");
-    /**
-     * An object package icon sometimes used by navigation points. Typical use
-     * is to represent a package of classes.
-     */
-    public static final Icon ICON_PACKAGE = ResourceKit.getIcon("package");
-    /**
-     * A hexagon icon sometimes used by navigation points. Typical use is to
-     * represent a script library.
-     */
-    public static final Icon ICON_HEXAGON = ResourceKit.getIcon("hexagon");
-    /**
-     * A circle icon sometimes used by navigation points. Typical use is to
-     * represent a field (member variable).
-     */
-    public static final Icon ICON_CIRCLE = ResourceKit.getIcon("circle");
-    /**
-     * A circle icon with a bar through it sometimes used by navigation points.
-     * Typical use is to represent a static or constant field (member variable).
-     */
-    public static final Icon ICON_CIRCLE_BAR = ResourceKit.getIcon("circle-bar");
-    /**
-     * A small circle icon sometimes used by navigation points. Typical use is
-     * to represent a keyword.
-     */
-    public static final Icon ICON_CIRCLE_SMALL = ResourceKit.getIcon("circle-small");
-    /**
-     * A diamond icon sometimes used by navigation points. Typical use is to
-     * represent a function or method.
-     */
-    public static final Icon ICON_DIAMOND = ResourceKit.getIcon("diamond");
-    /**
-     * A diamond icon with a bar through it sometimes used by navigation points.
-     * Typical use is to represent a constant function or static method.
-     */
-    public static final Icon ICON_DIAMOND_BAR = ResourceKit.getIcon("diamond-bar");
-    /**
-     * A leftward diamond icon sometimes used by navigation points. Typical use
-     * is to represent a getter function.
-     */
-    public static final Icon ICON_DIAMOND_LEFT = ResourceKit.getIcon("getter");
-    /**
-     * A rightward diamond icon sometimes used by navigation points. Typical use
-     * is to represent a setter function.
-     */
-    public static final Icon ICON_DIAMOND_RIGHT = ResourceKit.getIcon("setter");
-    /**
-     * A square icon sometimes used by navigation points. Typical use is to
-     * represent a variable.
-     */
-    public static final Icon ICON_SQUARE = ResourceKit.getIcon("square");
-    /**
-     * A square icon with a bar through it sometimes used by navigation points.
-     * Typical use is to represent a static variable or constant.
-     */
-    public static final Icon ICON_SQUARE_BAR = ResourceKit.getIcon("square-bar");
-    /**
-     * A square icon in an alternative colour that is sometimes used by
-     * navigation points. Typical use is to represent a function or method
-     * parameter.
-     */
-    public static final Icon ICON_SQUARE_ALTERNATIVE = ResourceKit.getIcon("square-alt");
-    /**
-     * A square icon with a bar through it in an alternative colour that is
-     * sometimes used by navigation points. Typical use is to represent an
-     * enumeration value.
-     */
-    public static final Icon ICON_SQUARE_ALTERNATIVE_BAR = ResourceKit.getIcon("square-alt-bar");
-    /**
-     * A triangle icon sometimes used by navigation points. Typical use is to
-     * represent a property key name.
-     */
-    public static final Icon ICON_TRIANGLE = ResourceKit.getIcon("triangle");
-    /**
-     * A Greek cross icon sometimes used by navigation points. Typical use is to
-     * represent a generator function.
-     */
-    public static final Icon ICON_CROSS = ResourceKit.getIcon("cross");
-    /**
-     * A Greek cross icon with a bar through it sometimes used by navigation
-     * points. Typical use is to represent a constant generator function.
-     */
-    public static final Icon ICON_CROSS_BAR = ResourceKit.getIcon("cross-bar");
+    public static final Icon ICON_KEYWORD = ResourceKit.getIcon("token-keyword");
+    public static final Icon ICON_MODULE = ResourceKit.getIcon("token-module");
+    public static final Icon ICON_PACKAGE = ResourceKit.getIcon("token-package");
+    public static final Icon ICON_CLASS = ResourceKit.getIcon("token-class");
+    public static final Icon ICON_INTERFACE = ResourceKit.getIcon("token-interface");
+    public static final Icon ICON_ENUM = ResourceKit.getIcon("token-enum");
+    public static final Icon ICON_ENUM_MEMBER = ResourceKit.getIcon("token-enum-item");
+    public static final Icon ICON_VAR = ResourceKit.getIcon("token-var");
+    public static final Icon ICON_LET = ResourceKit.getIcon("token-let");
+    public static final Icon ICON_CONST = ResourceKit.getIcon("token-const");
+    public static final Icon ICON_PROPERTY = ResourceKit.getIcon("token-property");
+    public static final Icon ICON_FUNCTION = ResourceKit.getIcon("token-function");
+    public static final Icon ICON_METHOD = ResourceKit.getIcon("token-method");
+    public static final Icon ICON_GETTER = ResourceKit.getIcon("token-getter");
+    public static final Icon ICON_SETTER = ResourceKit.getIcon("token-setter");
+    public static final Icon ICON_TYPE = ResourceKit.getIcon("token-type");
+    public static final Icon ICON_ALIAS = ResourceKit.getIcon("token-alias");
+    public static final Icon ICON_PRIMITIVE = ResourceKit.getIcon("token-primitive");
+    public static final Icon ICON_CALL = ResourceKit.getIcon("token-call");
+    public static final Icon ICON_INDEX = ResourceKit.getIcon("token-index");
+    public static final Icon ICON_PARAMETER = ResourceKit.getIcon("token-parameter");
+    public static final Icon ICON_TYPE_PARAMETER = ResourceKit.getIcon("token-type-parameter");
+    public static final Icon ICON_LABEL = ResourceKit.getIcon("token-label");
+    public static final Icon ICON_DIRECTORY = ResourceKit.getIcon("token-directory");
+    public static final Icon ICON_GLOBAL = ResourceKit.getIcon("token-global");
+    public static final Icon ICON_H1 = ResourceKit.getIcon("token-h1"); 
+    public static final Icon ICON_H2 = ResourceKit.getIcon("token-h2"); 
+    public static final Icon ICON_H3 = ResourceKit.getIcon("token-h3"); 
+    public static final Icon ICON_H4 = ResourceKit.getIcon("token-h4"); 
+    public static final Icon ICON_H5 = ResourceKit.getIcon("token-h5"); 
+    public static final Icon ICON_H6 = ResourceKit.getIcon("token-h6"); 
+    public static final Icon ICON_TITLE = ResourceKit.getIcon("token-title"); 
+    public static final Icon ICON_DIV = ResourceKit.getIcon("token-div"); 
+    public static final Icon ICON_TABLE = ResourceKit.getIcon("token-table"); 
+    public static final Icon ICON_SETTING = ResourceKit.getIcon("token-setting"); 
+    
+
     /**
      * An error symbol icon sometimes used by navigation points. Typical use is
      * to represent compiler errors.
@@ -348,4 +293,8 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * to represent compiler warnings or other style hints.
      */
     public static final Icon ICON_WARNING = ResourceKit.getIcon("warning").tiny();
+    /**
+     * An empty icon the same size as the standard navigation point icons.
+     */
+    public static final Icon ICON_NONE = new BlankIcon().tiny();
 }

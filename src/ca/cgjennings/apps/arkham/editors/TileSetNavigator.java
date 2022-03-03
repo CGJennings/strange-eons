@@ -35,7 +35,7 @@ public class TileSetNavigator implements Navigator {
                 } else if (line.isEmpty()) {
                     newTileState = true;
                 } else if (newTileState) {
-                    list.add(new NavigationPoint(line, null, m.start(1), 0, NavigationPoint.ICON_TRIANGLE));
+                    list.add(new NavigationPoint(line, null, m.start(1), 0, NavigationPoint.ICON_SETTING));
                     newTileState = false;
                 }
             }

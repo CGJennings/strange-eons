@@ -35,6 +35,7 @@ import org.mozilla.javascript.Context;
  */
 public final class TSLanguageServices {
     private static TSLanguageServices shared = new TSLanguageServices();
+    private final boolean debuggable = StrangeEons.getReleaseType() == StrangeEons.ReleaseType.DEVELOPMENT;
 
     /**
      * Returns the shared default instance.
@@ -54,7 +55,7 @@ public final class TSLanguageServices {
                 engine = SEScriptEngineFactory.getDefaultScriptEngine();
                 cx.setOptimizationLevel(-1);
                 cx.setGeneratingSource(false);
-                cx.setGeneratingDebug(true); // TODO
+                cx.setGeneratingDebug(debuggable);
                 cx.setMaximumInterpreterStackDepth(Integer.MAX_VALUE);
                 // This file is stored in lib/typescript-services.jar to
                 // reduce build times and prevent IDEs from trying to
@@ -278,6 +279,20 @@ public final class TSLanguageServices {
     
     private static final int GET_DIAGNOSTICS = 8;
     
+        
+    /** Returns a collection of code completions or null. */
+    public CompletionInfo getCodeCompletions(Object languageService, String fileName, int position) {
+        return goSync(GET_COMPLETIONS, languageService, fileName, position);
+    }
+    
+    private static final int GET_COMPLETIONS = 9;
+
+    public CompletionInfo.EntryDetails getCodeCompletionDetails(Object languageService, String fileName, int position, CompletionInfo.Entry completion) {
+        return goSync(GET_COMPLETION_DETAILS, languageService, fileName, position, completion);
+    }
+    
+    private static final int GET_COMPLETION_DETAILS = 10;
+    
     /**
      * Handles an individual request by calling into the TS lib, returning
      * any result.
@@ -319,6 +334,12 @@ public final class TSLanguageServices {
                     break;
                 case GET_DIAGNOSTICS:
                     ((Request<List<Diagnostic>>)r).send(services.getDiagnostics(r.args[0], (String) r.args[1], (Boolean) r.args[2], (Boolean) r.args[3]));
+                    break;
+                case GET_COMPLETIONS:
+                    ((Request<CompletionInfo>)r).send(services.getCodeCompletions(r.args[0], (String) r.args[1], (Integer) r.args[2]));
+                    break;
+                case GET_COMPLETION_DETAILS:
+                    ((Request<CompletionInfo.EntryDetails>)r).send(services.getCodeCompletionDetails(r.args[0], (String) r.args[1], (Integer) r.args[2], (CompletionInfo.Entry) r.args[3]));
                     break;
                 default:
                     throw new AssertionError("unknown request type");
@@ -462,7 +483,7 @@ public final class TSLanguageServices {
         /** Returns the version of TypeScript services. */
         String getVersion();
 
-        /** Returns a simple transpilation of a single file with no type checking. */
+        /** Returns a simple transpilation of a single file with no checking. */
         String transpile(String fileName, String text);
 
         /** Creates a script snapshot from the text of a script. */
@@ -475,9 +496,15 @@ public final class TSLanguageServices {
         Object createLanguageService(Object host);
         
         /** Compiles a source file. */
-        CompiledSource compile(Object service, String fileName);
+        CompiledSource compile(Object languageService, String fileName);
         
         /** Returns a list of diagnostic messages for a file. */
-        List<Diagnostic> getDiagnostics(Object service, String fileName, boolean includeSyntactic, boolean includeSemantic);
+        List<Diagnostic> getDiagnostics(Object languageService, String fileName, boolean includeSyntactic, boolean includeSemantic);
+        
+        /** Returns a collection of code completions or null. */
+        CompletionInfo getCodeCompletions(Object languageService, String fileName, int position);
+        
+        /** Returns additional information about a code completion. */
+        CompletionInfo.EntryDetails getCodeCompletionDetails(Object languageService, String fileName, int position, CompletionInfo.Entry completion);
     }
 }

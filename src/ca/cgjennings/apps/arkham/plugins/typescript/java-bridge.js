@@ -211,3 +211,140 @@ function getDiagnostics(service, fileName, syntactic, semantic) {
     }
     return list;
 }
+
+function getCodeCompletions(service, fileName, position) {
+    let complInfo = service.getCompletionsAtPosition(fileName, position/*, options*/);
+    if (complInfo == null) {
+        return null;
+    }
+
+    // if a replacement span is specified, use it as a default for all completions
+    let defaultReplacementSpan = null;
+    if (complInfo.optionalReplacementSpan) {
+        let span = complInfo.optionalReplacementSpan;
+        defaultReplacementSpan = new TS_PACKAGE.TextSpan(span.start, span.length);
+    }
+        
+    let javaComplInfo = new TS_PACKAGE.CompletionInfo();
+    javaComplInfo.isMemberCompletion = !!complInfo.isMemberCompletion;
+    javaComplInfo.isNewIdentifierLocation = !!complInfo.isNewIdentifierLocation;
+    javaComplInfo.isIncomplete = !!complInfo.isIncomplete;
+    
+    let entries = new ArrayList(complInfo.entries.length);
+    for (let i=0; i<complInfo.entries.length; ++i) {
+        let entry = complInfo.entries[i];
+        
+        let javaEntry = new TS_PACKAGE.CompletionInfo.Entry(entry, parseInt(entry.sortText));
+        javaEntry.name = entry.name;
+        javaEntry.kind = entry.kind;
+        javaEntry.kindModifiers = entry.kindModifiers;
+        javaEntry.isRecommended = !!entry.isRecommended;
+        javaEntry.isSnippet = !!entry.isSnippet;
+        javaEntry.insertText = entry.insertText == null ? null : entry.insertText;
+        javaEntry.hasAction = !!entry.hasAction;
+        javaEntry.sourceDisplay = mergeSymbolDisplayParts(entry.sourceDisplay);
+
+        let span = defaultReplacementSpan;
+        if (entry.replacementSpan) {
+            span = new TS_PACKAGE.TextSpan(entry.replacementSpan.start, entry.replacementSpan.length);
+        }
+        javaEntry.replacementSpan = span;
+        entries.add(javaEntry);
+    }
+    javaComplInfo.entries = entries;
+    return javaComplInfo;
+}
+
+function mergeSymbolDisplayParts(parts) {
+    let s = "";
+    if (parts != null) {
+        for (let i=0; i<parts.length; ++i) {
+            s += parts[i].text;
+        }
+    }
+    return s;
+}
+
+function getCodeCompletionDetails(service, fileName, position, javaEntry) {
+    let entry = javaEntry.js;
+    let details = service.getCompletionEntryDetails(fileName, position, entry.name, undefined, entry.source, undefined, entry.data);
+    if (details == null) return null;
+    let javaDetails = new TS_PACKAGE.CompletionInfo.EntryDetails();
+    javaDetails.display = mergeSymbolDisplayParts(details.displayParts);
+    javaDetails.documentation = mergeSymbolDisplayParts(details.documentation);
+    javaDetails.source = mergeSymbolDisplayParts(details.sourceDisplay);
+    
+    if (details.codeActions) {
+        let actions = new ArrayList(details.codeActions.length);
+        for (let i=0; i<actions.length; ++i) {
+            actions.add(convertCodeAction(service, details.codeActions[i]));
+        }
+        javaDetails.codeActions = actions;
+    }
+    log(javaDetails);
+    return javaDetails;
+}
+
+function convertCodeAction(service, codeAction) {
+    let changes = new ArrayList(codeAction.changes.length);
+    for (let i=0; i<codeAction.changes.length; ++i) {
+        let ch = codeAction.changes[i];
+        let javaChange = new TS_PACKAGE.FileTextChanges(
+                ch.fileName, !!ch.isNewFile, covertTextChanges(ch.textChanges)
+        );
+        changes.add(javaChange);
+    }    
+    let javaAction = new TS_PACKAGE.CodeAction(
+            codeAction.description, changes, {
+                service: service,
+                action: codeAction
+            }
+    );
+    return javaAction;
+}
+
+function convertTextChanges(changes) {
+    let javaChanges = new ArrayList(changes.length);
+    for (let i=0; i<changes.length; ++i) {
+        let javaChange = new TS_PACKAGE.TextChange(
+                changes[i].span.start,
+                changes[i].span.length,
+                changes[i].newText
+        );
+        javaChanges.add(javaChange);
+    }
+    return javaChanges;
+}
+
+function applyCodeAction(javaCodeAction) {
+    let data = javaCodeAction.data;
+    data.service.applyAction(data.action);
+}
+/*
+public class CompletionInfo {
+    public CompletionInfo() {
+    }
+    
+    public boolean isMemberCompletion;
+    public boolean isNewIdentifierLocation;
+    public boolean isIncomplete;
+    public List<Entry> entries;
+    
+
+    public static class Entry {
+        public Entry(Object data) {
+            this.data = data;
+        }
+        
+        public String name;
+        public String kind;
+        public String kindModifiers;
+        public String insertText;
+        public TextSpan replacementSpan;
+        public boolean isRecommended;
+        
+
+        public final Object data;
+    }
+}
+ */

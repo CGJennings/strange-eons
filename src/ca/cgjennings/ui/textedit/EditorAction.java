@@ -9,8 +9,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
  * @since 3.4
  * @see CodeEditorBase#performAction(java.lang.String) 
  */
-public final class CodeAction {
-    private CodeAction() {}
+public final class EditorAction {
+    private EditorAction() {}
     
     public static final String completeCode = "AutoComplete";
     

@@ -31,7 +31,7 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
-import ca.cgjennings.ui.textedit.CodeAction;
+import ca.cgjennings.ui.textedit.EditorAction;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.Color;
 import java.awt.Component;
@@ -1158,15 +1158,15 @@ public class Commands {
     /**
      * Moves the selected lines up in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(CodeAction.moveUp).key("move-selection-up");
+    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(EditorAction.moveUp).key("move-selection-up");
     /**
      * Moves the selected lines down in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(CodeAction.moveDown).key("move-selection-down");
+    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(EditorAction.moveDown).key("move-selection-down");
     /**
      * Comments out the selected lines in a code editor.
      */
-    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(CodeAction.toggleComment).key("comment-selection");
+    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(EditorAction.toggleComment).key("comment-selection");
 
     /**
      * Removes trailing spaces from the ends of source lines.
@@ -1222,7 +1222,7 @@ public class Commands {
     /**
      * Opens the code completion popup in the current code editor, if available.
      */
-    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, CodeAction.completeCode);
+    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, EditorAction.completeCode);
 
     /**
      * Formats (pretty prints) the current editor content, if a suitable
