@@ -974,7 +974,7 @@ public class CodeEditor extends AbstractSupportEditor {
                             continue;
                         }
                         CodeEditor ced = (CodeEditor) eds[i];
-                        if (ced.sideBarSplitter.isEnabled()) {
+                        if (ced.sideBarSplitter.isEnabled() && ced.getNavigator() != null) {
                             ced.sideBarSplitter.setDividerLocation(newSize);
                         }
                     }
@@ -1404,14 +1404,9 @@ public class CodeEditor extends AbstractSupportEditor {
         if (navigator == nav) {
             return;
         }
-        if (navigator != null) {
-            navigator.uninstall(this);
-        }
 
         navigator = nav;
-
         if (navigator != null) {
-            navigator.install(this);
             refreshNavigator();
         }
 
