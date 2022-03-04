@@ -965,7 +965,7 @@ public class CodeEditor extends AbstractSupportEditor {
 
 	private void sideBarSplitterPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_sideBarSplitterPropertyChange
             if (JSplitPane.DIVIDER_LOCATION_PROPERTY.equals(evt.getPropertyName())) {
-                if (sideBarSplitter.isEnabled()) {
+                if (sideBarSplitter.isEnabled() && getNavigator() != null) {
                     int newSize = sideBarSplitter.getDividerLocation();
                     navSplitSize = newSize;
                     StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditors();
