@@ -4,20 +4,18 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
-import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.awt.EventQueue;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringWriter;
-import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import javax.script.ScriptException;
+import javax.swing.Icon;
 import org.mozilla.javascript.Context;
 
 /**
@@ -26,7 +24,8 @@ import org.mozilla.javascript.Context;
  * another thread. Each method generally comes in two flavours:
  * a synchronous version that blocks until the operation completes, or a 
  * version which accepts a callback. When callbacks are used, the
- * callback is always invoked on the event dispatch thread.
+ * callback is always invoked on the event dispatch thread. Synchronous
+ * methods can be called from any thread.
  * 
  * <p>For most purposes, it is easier and more convenient to use a
  * {@link CompilationRoot} to access these services.
@@ -37,6 +36,9 @@ public final class TSLanguageServices {
     private static TSLanguageServices shared = new TSLanguageServices();
     private final boolean debuggable = StrangeEons.getReleaseType() == StrangeEons.ReleaseType.DEVELOPMENT;
 
+    private volatile boolean hasLoaded;
+    private List<Runnable> tasksToRunWhenLoaded;
+
     /**
      * Returns the shared default instance.
      * @return a shared instance
@@ -45,6 +47,12 @@ public final class TSLanguageServices {
         return shared;
     }
     
+    /**
+     * Creates a new language service. The new service will immediately start
+     * loading in another thread. Since language service instances are expensive
+     * to create and designed to be shared, use the {@linkplain #getShared() shared}
+     * instance unless you know what you are doing.
+     */
     public TSLanguageServices() {
         workerThread = new Thread(() -> {
             long start = System.currentTimeMillis();
@@ -83,6 +91,15 @@ public final class TSLanguageServices {
             }        
             StrangeEons.log.log(Level.INFO, "services ready, started in {0}ms", System.currentTimeMillis() - start);
 
+            synchronized (TSLanguageServices.this) {
+                hasLoaded = true;
+                if (tasksToRunWhenLoaded != null) {
+                    for (Runnable task : tasksToRunWhenLoaded) {
+                        EventQueue.invokeLater(task);
+                    }
+                }
+            }
+            
             for (;;) {
                 try {
                     Request<?> request = queue.take();
@@ -94,6 +111,36 @@ public final class TSLanguageServices {
         }, "TypeScript service thread");
         workerThread.setDaemon(true);
         workerThread.start();
+    }
+    
+    /**
+     * Return whether the services have finished loading and begun accepting
+     * commands.
+     * 
+     * @return true if the services have finished initializing
+     */
+    public boolean isLoaded() {
+        return hasLoaded;
+    }
+    
+    /**
+     * Queues a task to run once the services have finished loading. If the
+     * services have already loaded, the task runs immediately. This method
+     * expects to be called from, and will run tasks on, the event dispatch thread.
+     * 
+     * @param task the task to run
+     */
+    public void runWhenLoaded(Runnable task) {
+        synchronized (this) {
+            if (hasLoaded) {
+                task.run();
+            } else {
+                if (tasksToRunWhenLoaded == null) {
+                    tasksToRunWhenLoaded = new ArrayList<>();
+                }
+                tasksToRunWhenLoaded.add(task);
+            }
+        }
     }
     
     /**

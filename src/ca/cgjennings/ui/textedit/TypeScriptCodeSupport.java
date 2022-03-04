@@ -9,6 +9,7 @@ import ca.cgjennings.apps.arkham.plugins.typescript.CompletionInfo;
 import ca.cgjennings.apps.arkham.plugins.typescript.Diagnostic;
 import ca.cgjennings.apps.arkham.plugins.typescript.FileTextChanges;
 import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.IconProvider;
 import java.awt.EventQueue;
@@ -106,6 +107,12 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         private final CodeEditorBase editor;
         private final DefaultParseResult result = new DefaultParseResult(this);
+        
+        /**
+         * If this is set, requests to parse the document are ignored.
+         * This is set when a parse task is happening in the background.
+         */
+        private boolean parseIsDeferred;
 
         public TSParser(CodeEditorBase editor) {
             this.editor = editor;
@@ -113,6 +120,20 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         @Override
         public ParseResult parse(RSyntaxDocument rsd, String string) {
+            if (parseIsDeferred) {
+                return result;
+            }
+            
+            // if the TS library hasn't loaded, wait and re-parse later
+            if (!TSLanguageServices.getShared().isLoaded()) {
+                parseIsDeferred = true;
+                TSLanguageServices.getShared().runWhenLoaded(() -> {
+                    parseIsDeferred = false;
+                    editor.getTextArea().forceReparsing(this);
+                });
+                return result;
+            }
+            
             try {
                 final long start = System.currentTimeMillis();
                 result.setError(null);
@@ -150,6 +171,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             setAutoActivationRules(true, ".");
         }
 
+        @Override
         public List<Completion> getCompletions(JTextComponent comp) {
             return getCompletionsImpl(comp);
         }
@@ -279,9 +301,103 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         @Override
         public Icon getIcon() {
+            return TypeScriptCodeSupport.iconForKind(source.kind, source.kindModifiers);
+        }
+
+        @Override
+        public String getInputText() {
+            return "";
+        }
+
+        @Override
+        public CompletionProvider getProvider() {
+            return provider;
+        }
+
+        @Override
+        public int getRelevance() {
+            return 0;
+        }
+
+        @Override
+        public String getReplacementText() {
+            return source.getTextToInsert();
+        }
+
+        @Override
+        public String getSummary() {
+            if (root != null) {
+                CompletionInfo.EntryDetails details = root.getCodeCompletionDetails(fileName, position, source);
+                if (details != null) {
+                    if (details.actions != null) {
+                        for (int i=0; i<details.actions.size(); ++i) {
+                            System.out.println("ACTION #" + (i+1));
+                            CodeAction action = details.actions.get(i);
+                            System.out.println(action.description);
+                            for (FileTextChanges changes : action.changes) {
+                                System.out.println(changes);
+                            }
+                        }
+                    }
+                    
+                    if (markdown == null) {
+                        markdown = new MarkdownTransformer();
+                    }
+                    return preOpenTag
+                            + details.display.replace("&", "&amp;").replace("<", "&lt;")
+                            + preCloseTag
+                            + markdown.render(details.documentation);
+//                    return details.display + "<p>" + details.documentation + "<p>" + details.source;
+                }
+            }
+            return null;
+        }
+        
+        private final String preOpenTag = 
+                "<style>pre, code { font-family: \""
+                + editor.getTextArea().getFont().getFamily()
+                + "\" }</style><pre style='margin: 0; font-weight: bold; color:#"
+                + Palette.get.foreground.opaque.blue
+                + "'><hr>"
+//                + Palette.get.background.opaque.yellow
+//                + "'>";
+        ;
+        private final String preCloseTag = "</pre>";
+
+        @Override
+        public String getToolTipText() {
+            return null;
+        }
+        
+        @Override
+        public String getText() {
+            return source.name;
+        }
+        
+        @Override
+        public String getSecondaryText() {
+            return source.kind;    
+        }        
+
+        @Override
+        public String toString() {
+            String s = source.name + " — ";
+            if (source.kindModifiers != null && !source.kindModifiers.isEmpty()) {
+                s += source.kindModifiers + ' ' + source.kind;
+            } else {
+                s += source.kind;
+            }
+            return s;
+        }
+    }
+    
+    private MarkdownTransformer markdown;
+    
+    
+    static Icon iconForKind(String kind, String kindModifiers) {
             Icon icon;
-            boolean isStatic = source.kindModifiers != null && source.kindModifiers.contains("static");
-            switch (source.kind) {
+            boolean isStatic = kindModifiers != null && kindModifiers.contains("static");
+            switch (kind) {
                 case "keyword":
                     icon = ICON_KEYWORD;
                     break;
@@ -363,83 +479,5 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                     break;
             }
             return icon;
-        }
-
-        @Override
-        public String getInputText() {
-            return "";
-        }
-
-        @Override
-        public CompletionProvider getProvider() {
-            return provider;
-        }
-
-        @Override
-        public int getRelevance() {
-            return 0;
-        }
-
-        @Override
-        public String getReplacementText() {
-            return source.getTextToInsert();
-        }
-
-        @Override
-        public String getSummary() {
-            System.out.println(source);
-            if (root != null) {
-                CompletionInfo.EntryDetails details = root.getCodeCompletionDetails(fileName, position, source);
-                if (details != null) {
-                    if (details.actions != null) {
-                        for (int i=0; i<details.actions.size(); ++i) {
-                            System.out.println("ACTION #" + (i+1));
-                            CodeAction action = details.actions.get(i);
-                            System.out.println(action.description);
-                            for (FileTextChanges changes : action.changes) {
-                                System.out.println(changes);
-                            }
-                        }
-                    }
-                    
-                    if (markdown == null) {
-                        markdown = new MarkdownTransformer();
-                    }
-                    return markdown.render(
-                      "```\n" + details.display + "\n```\n\n" + details.documentation
-                    );
-//                    return details.display + "<p>" + details.documentation + "<p>" + details.source;
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public String getToolTipText() {
-            return null;
-        }
-        
-        @Override
-        public String getText() {
-            return source.name;
-        }
-        
-        @Override
-        public String getSecondaryText() {
-            return source.kind;    
-        }        
-
-        @Override
-        public String toString() {
-            String s = source.name + " — ";
-            if (source.kindModifiers != null && !source.kindModifiers.isEmpty()) {
-                s += source.kindModifiers + ' ' + source.kind;
-            } else {
-                s += source.kind;
-            }
-            return s;
-        }
-    }
-    
-    private MarkdownTransformer markdown;
+    }    
 }

@@ -22,8 +22,10 @@ public class CompletionRenderer extends DefaultListCellRenderer {
     
     public CompletionRenderer(CodeEditorBase editor) {
         setHorizontalAlignment(JLabel.LEADING);
+        setVerticalAlignment(JLabel.CENTER);
         rhsRenderer.setHorizontalAlignment(JLabel.TRAILING);
-        font = editor.getTextArea().getFont().deriveFont(12f);
+        rhsRenderer.setVerticalAlignment(JLabel.CENTER);
+        font = editor.getTextArea().getFont();
         setFont(font);
         rhsRenderer.setFont(font.deriveFont(Font.ITALIC, font.getSize2D() - 2f));
     }
