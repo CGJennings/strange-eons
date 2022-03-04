@@ -1,4 +1,4 @@
-package ca.cgjennings.apps.arkham.editors;
+package ca.cgjennings.ui.textedit;
 
 /**
  * Navigator for editing files that are parsed by using a {@link ResourceParser}

@@ -1,6 +1,9 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.ui.textedit.CodeType;
+import ca.cgjennings.ui.textedit.Navigator;
+import ca.cgjennings.ui.textedit.NavigationHost;
+import ca.cgjennings.ui.textedit.NavigationPoint;
 import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.ContextBar;
@@ -85,7 +88,7 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public class CodeEditor extends AbstractSupportEditor {
+public class CodeEditor extends AbstractSupportEditor implements NavigationHost {
 
     /**
      * Creates a code editor with no file, encoding, or file type attached. Note
@@ -135,7 +138,7 @@ public class CodeEditor extends AbstractSupportEditor {
                     setIcon(np.getIcon());
                     setToolTipText(np.getLongDescription());
                     setBorder(
-                            BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createEmptyBorder(0, np.scope * 12, 0, 0))
+                            BorderFactory.createCompoundBorder(getBorder(), BorderFactory.createEmptyBorder(0, np.getScope() * 12, 0, 0))
                     );
                 }
                 return this;

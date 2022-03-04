@@ -1,4 +1,4 @@
-package ca.cgjennings.apps.arkham.editors;
+package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
@@ -32,14 +32,6 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
      * Create a new script navigator.
      */
     public JavaScriptNavigator() {
-    }
-
-    @Override
-    public void install(CodeEditor editor) {
-    }
-
-    @Override
-    public void uninstall(CodeEditor editor) {
     }
 
     @Override
@@ -259,7 +251,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
         // build nav point
         List<AstNode> params = fn.getParams();
         if (!params.isEmpty()) {
-            StringBuilder b = new StringBuilder(id).append("( <font color=gray>");
+            StringBuilder b = new StringBuilder(id).append("(<font color=gray>");
             int paramCount = params.size();
             for (int p = 0; p < paramCount; ++p) {
                 if (p > 0) {
@@ -272,7 +264,7 @@ public class JavaScriptNavigator extends SyntaxChecker implements Navigator {
                     StrangeEons.log.warning(n.debugPrint());
                 }
             }
-            b.append("</font> )");
+            b.append("</font>)");
             id = b.toString();
         } else {
             id += "()";

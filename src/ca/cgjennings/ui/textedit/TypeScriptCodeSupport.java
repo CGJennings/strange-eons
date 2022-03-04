@@ -1,13 +1,14 @@
 package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import static ca.cgjennings.apps.arkham.editors.NavigationPoint.*;
+import static ca.cgjennings.ui.textedit.NavigationPoint.*;
 import ca.cgjennings.apps.arkham.plugins.typescript.CodeAction;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationFactory;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationRoot;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompletionInfo;
 import ca.cgjennings.apps.arkham.plugins.typescript.Diagnostic;
 import ca.cgjennings.apps.arkham.plugins.typescript.FileTextChanges;
+import ca.cgjennings.apps.arkham.plugins.typescript.NavigationTree;
 import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.text.MarkdownTransformer;
@@ -392,7 +393,42 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
     }
     
     private MarkdownTransformer markdown;
-    
+
+    @Override
+    public Navigator createNavigator(NavigationHost host) {
+        return new Navigator() {
+            @Override
+            public List<NavigationPoint> getNavigationPoints(String sourceText) {
+                List<NavigationPoint> points;
+                if (root != null) {
+                    NavigationTree tree = root.getNavigationTree(identifier);
+                    points = new ArrayList<>(32);
+                    addPoints(points, tree, -1);
+                } else {
+                    points = Collections.emptyList();
+                }
+                return points;
+            }
+            
+            private void addPoints(List<NavigationPoint> points, NavigationTree tree, int level) {
+                if (level >= 0 && tree.location != null) {
+                    String longDesc = tree.kind + ' ' + tree.name;
+                    if (tree.kindModifiers != null) {
+                        longDesc = tree.kindModifiers.replace(',', ' ') + ' ' + longDesc;
+                    }
+                    NavigationPoint nav = new NavigationPoint(tree.name, longDesc, tree.location.start, level, iconForKind(tree.kind, tree.kindModifiers));
+                    points.add(nav);
+                }
+                if (tree.children != null) {
+                    ++level;
+                    final int len = tree.children.size();
+                    for (int i=0; i<len; ++i) {
+                        addPoints(points, tree.children.get(i), level);
+                    }
+                }
+            }
+        };
+    }
     
     static Icon iconForKind(String kind, String kindModifiers) {
             Icon icon;
@@ -479,5 +515,5 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                     break;
             }
             return icon;
-    }    
+    }
 }

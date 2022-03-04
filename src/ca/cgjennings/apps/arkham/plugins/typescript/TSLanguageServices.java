@@ -301,7 +301,7 @@ public final class TSLanguageServices {
     /**
      * Returns a list of diagnostic messages for a file.
      * 
-     * @param service the language service that manages the file
+     * @param languageService the language service that manages the file
      * @param fileName the file name to get diagnostics for
      * @param includeSyntactic if true, includes syntax-related diagnostics
      * @param includeSemantic if true, includes semantic diagnostics
@@ -314,7 +314,7 @@ public final class TSLanguageServices {
     /**
      * Returns a list of diagnostic messages for a file.
      * 
-     * @param service the language service that manages the file
+     * @param languageService the language service that manages the file
      * @param fileName the file name to get diagnostics for
      * @param includeSyntactic if true, includes syntax-related diagnostics
      * @param includeSemantic if true, includes semantic diagnostics
@@ -327,19 +327,49 @@ public final class TSLanguageServices {
     private static final int GET_DIAGNOSTICS = 8;
     
         
-    /** Returns a collection of code completions or null. */
+    /**
+     * Returns a collection of code completions or null.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @param position the offset into the source file
+     */
     public CompletionInfo getCodeCompletions(Object languageService, String fileName, int position) {
         return goSync(GET_COMPLETIONS, languageService, fileName, position);
     }
     
     private static final int GET_COMPLETIONS = 9;
 
+    /**
+     * Returns further details about a code completion returned from
+     * {@link #getCodeCompletions(java.lang.Object, java.lang.String, int)}.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @param position the offset into the source file
+     * @param completion the completion that details are requested for
+     * @return the additional details, such as signature and doc comments
+     */
     public CompletionInfo.EntryDetails getCodeCompletionDetails(Object languageService, String fileName, int position, CompletionInfo.Entry completion) {
         return goSync(GET_COMPLETION_DETAILS, languageService, fileName, position, completion);
     }
     
     private static final int GET_COMPLETION_DETAILS = 10;
     
+    /**
+     * Returns a file's current navigation tree.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @return the file's current navigation tree
+     */
+    public NavigationTree getNavigationTree(Object languageService, String fileName) {
+        return goSync(GET_NAVIGATION_TREE, languageService, fileName);
+    }
+
+    private static final int GET_NAVIGATION_TREE = 11;
+            
+            
     /**
      * Handles an individual request by calling into the TS lib, returning
      * any result.
@@ -387,6 +417,9 @@ public final class TSLanguageServices {
                     break;
                 case GET_COMPLETION_DETAILS:
                     ((Request<CompletionInfo.EntryDetails>)r).send(services.getCodeCompletionDetails(r.args[0], (String) r.args[1], (Integer) r.args[2], (CompletionInfo.Entry) r.args[3]));
+                    break;
+                case GET_NAVIGATION_TREE:
+                    ((Request<NavigationTree>)r).send(services.getNavigationTree(r.args[0], (String) r.args[1]));
                     break;
                 default:
                     throw new AssertionError("unknown request type");
@@ -553,5 +586,8 @@ public final class TSLanguageServices {
         
         /** Returns additional information about a code completion. */
         CompletionInfo.EntryDetails getCodeCompletionDetails(Object languageService, String fileName, int position, CompletionInfo.Entry completion);
+        
+        /** Returns an outline of the file. */
+        NavigationTree getNavigationTree(Object languageService, String fileName);
     }
 }

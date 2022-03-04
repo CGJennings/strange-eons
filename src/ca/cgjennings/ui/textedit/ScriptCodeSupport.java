@@ -1,9 +1,6 @@
 package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.JavaScriptNavigator;
-import ca.cgjennings.apps.arkham.editors.Navigator;
 import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
 import java.util.logging.Level;
 import javax.swing.text.BadLocationException;
@@ -31,7 +28,7 @@ public class ScriptCodeSupport extends DefaultCodeSupport {
     }
 
     @Override
-    public Navigator createNavigator(CodeEditor codeEditor) {
+    public Navigator createNavigator(NavigationHost host) {
         return new JavaScriptNavigator();
     }
     

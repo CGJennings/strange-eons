@@ -1,9 +1,5 @@
 package ca.cgjennings.ui.textedit;
 
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.Navigator;
-import ca.cgjennings.apps.arkham.editors.ResourceFileNavigator;
-
 /**
  * Code support for game resource files (class maps, tiles, and so on).
  *
@@ -13,7 +9,7 @@ import ca.cgjennings.apps.arkham.editors.ResourceFileNavigator;
 public class ResourceFileCodeSupport extends PropertyFileCodeSupport {
 
     @Override
-    public Navigator createNavigator(CodeEditor codeEditor) {
+    public Navigator createNavigator(NavigationHost host) {
         return new ResourceFileNavigator();
     }
 }

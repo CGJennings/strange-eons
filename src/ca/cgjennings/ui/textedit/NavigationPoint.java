@@ -1,7 +1,7 @@
-package ca.cgjennings.apps.arkham.editors;
+package ca.cgjennings.ui.textedit;
 
+import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.ui.BlankIcon;
-import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -22,7 +22,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
     private String description;
     private String longDescription;
     private int offset;
-    int scope;
+    private int scope;
     private Icon icon;
 
     /**

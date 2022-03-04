@@ -303,6 +303,12 @@ function convertCodeAction(service, codeAction) {
     return javaAction;
 }
 
+function convertSpan(span) {
+    return (span == null || span.start == null || span.length == null)
+    ? null
+    : new TS_PACKAGE.TextSpan(span.start, span.length);
+}
+
 function convertTextChanges(changes) {
     let javaChanges = new ArrayList(changes.length);
     for (let i=0; i<changes.length; ++i) {
@@ -320,31 +326,38 @@ function applyCodeAction(javaCodeAction) {
     let data = javaCodeAction.data;
     data.service.applyAction(data.action);
 }
-/*
-public class CompletionInfo {
-    public CompletionInfo() {
-    }
-    
-    public boolean isMemberCompletion;
-    public boolean isNewIdentifierLocation;
-    public boolean isIncomplete;
-    public List<Entry> entries;
-    
 
-    public static class Entry {
-        public Entry(Object data) {
-            this.data = data;
+function getNavigationTree(service, fileName) {
+    return convertNavigationTree(service.getNavigationTree(String(fileName)));
+}
+
+function convertNavigationTree(root) {
+    let jsRoot = new TS_PACKAGE.NavigationTree(root.text, root.kind,
+        root.kindModifiers, convertSpan(root.nameSpan || root.spans[0])
+    );
+    if (root.childItems) {
+        jsRoot.children = new ArrayList(root.childItems.length);
+        for (let i=0; i<root.childItems.length; ++i) {
+            jsRoot.children.add(convertNavigationTree(root.childItems[i]));
         }
-        
-        public String name;
-        public String kind;
-        public String kindModifiers;
-        public String insertText;
-        public TextSpan replacementSpan;
-        public boolean isRecommended;
-        
-
-        public final Object data;
     }
+    return jsRoot;
+}
+
+
+/*
+public class NavigationTree {
+    public NavigationTree(String name, String kind, String kindModifiers, TextSpan location) {
+        this.name = name;
+        this.kind = kind;
+        this.kindModifiers = kindModifiers;
+        this.location = location;
+    }
+    
+   public String name;
+   public String kind;
+   public String kindModifiers;
+   public TextSpan location;
+   public List<NavigationTree> children;
 }
  */

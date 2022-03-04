@@ -1,7 +1,5 @@
 package ca.cgjennings.ui.textedit;
 
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.Navigator;
 import java.io.File;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
@@ -45,7 +43,7 @@ public class DefaultCodeSupport implements CodeSupport {
     }
 
     @Override
-    public Navigator createNavigator(CodeEditor codeEditor) {
+    public Navigator createNavigator(NavigationHost host) {
         return null;
     }
 

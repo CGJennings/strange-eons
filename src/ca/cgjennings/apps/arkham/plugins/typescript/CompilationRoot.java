@@ -157,6 +157,17 @@ public class CompilationRoot {
     }
     
     /**
+     * Returns a file's current navigation tree.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @return the file's current navigation tree
+     */
+    public NavigationTree getNavigationTree(String fileName) {
+        return ts.getNavigationTree(langService(), fileName);
+    }    
+    
+    /**
      * Returns the language service instance for this root, creating it
      * if necessary.
      * @return a language service object that delegates to this root

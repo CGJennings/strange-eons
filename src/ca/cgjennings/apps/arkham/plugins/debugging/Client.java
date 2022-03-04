@@ -3451,14 +3451,14 @@ public final class Client extends javax.swing.JFrame {
         }
     }
 
-    private final ThemedIcon ICON_OBJECT = icon("circle", -1);
-    private final ThemedIcon ICON_FUNCTION = icon("triangle", -1);
-    private final ThemedIcon ICON_LEAF_PROPERTY = icon("diamond", -1);
-    private final ThemedIcon ICON_GLOBAL = icon("debugger/globe.png", -1);
-    private final ThemedIcon ICON_CALL = icon("cross", -1);
-    private final ThemedIcon ICON_NULL = icon("square", -1);
-    private final ThemedIcon ICON_PACKAGE = icon("package", -1);
-    private final ThemedIcon ICON_CLASS = icon("class", -1);
+    private final ThemedIcon ICON_OBJECT = icon("token-let", -1);
+    private final ThemedIcon ICON_FUNCTION = icon("token-function", -1);
+    private final ThemedIcon ICON_LEAF_PROPERTY = icon("token-property", -1);
+    private final ThemedIcon ICON_GLOBAL = icon("token-global", -1);
+    private final ThemedIcon ICON_CALL = icon("token-call", -1);
+    private final ThemedIcon ICON_NULL = icon("token-keyword", -1);
+    private final ThemedIcon ICON_PACKAGE = icon("token-package", -1);
+    private final ThemedIcon ICON_CLASS = icon("token-class", -1);
 
     /**
      * A 3-pixel solid dark gray split pane.

@@ -1,7 +1,5 @@
 package ca.cgjennings.ui.textedit;
 
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.Navigator;
 import java.io.File;
 
 /**
@@ -28,7 +26,7 @@ public interface CodeSupport {
      * @return the new navigator suited to the supported code type, or null if
      * none is supported.
      */
-    Navigator createNavigator(CodeEditor editor);
+    Navigator createNavigator(NavigationHost host);
     
     /**
      * Creates a suitable code formatter for the specified code type.
