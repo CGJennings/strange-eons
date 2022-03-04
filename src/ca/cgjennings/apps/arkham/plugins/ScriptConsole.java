@@ -94,6 +94,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     private OutputStream outstream, errstream;
     private Color outColor, errorColor, backgroundColor;
     private Painter<JComponent> bgpainter;
+    
+    private ConsoleInput conInput;
 
     private static Color color(String key, Color def) {
         Color c = UIManager.getDefaults().getColor(key);
@@ -197,6 +199,9 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
                 }
             }
         });
+        
+        conInput = new ConsoleInput(this);
+        conInput.setConsoleInputVisible(true);
     }
     private Timer flushTimer = new Timer(100, (ActionEvent e) -> {
         __flushAllPendingFragments();

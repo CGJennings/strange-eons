@@ -16,6 +16,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
+import org.mozilla.javascript.Context;
 
 /**
  * Adds a simple input field to a script console to evaluate script code. Press
@@ -155,22 +156,38 @@ public final class ConsoleInput extends javax.swing.JPanel {
         add(inputField, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private String partial = null;
+
     private void inputFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputFieldActionPerformed
         String code = inputField.getText().trim();
+        if (code.isEmpty()) return;
+        
         inputField.setText(null);
-        if (code.isEmpty()) {
-            return;
+        con.getWriter().println("> " + code);
+
+        if (partial != null) {
+            code = partial + '\n' + code;
+        }        
+        Context cx = Context.enter();
+        try {
+            if (!cx.stringIsCompilableUnit(code)) {
+                partial = code;
+                return;
+            }
+        } finally {
+            Context.exit();
         }
 
-        history.add(code);
+        partial = null;
+        history.add(code.replace('\n', ' '));
         historyIndex = history.size();
+        
         try {
             if (m == null) {
                 m = new ScriptMonkey("console");
             }
-            con.getWriter().println("> " + code);
             m.bind("last", code);
-            Object retval = m.eval("println('⤷ '+String(eval(last)));");
+            Object retval = m.eval("print('⤷ ');println(eval(last));");
             if (retval != null) {
                 con.getWriter().printObj(retval);
                 con.getWriter().println();
