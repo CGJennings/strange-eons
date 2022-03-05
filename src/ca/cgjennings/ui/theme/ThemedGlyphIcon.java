@@ -281,6 +281,10 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             // no suitable tag letter
             return this;
         }
+        
+        if (descriptor != null) {
+            parseDescriptor();
+        }
 
         ThemedGlyphIcon gi = new ThemedGlyphIcon(this);
         // check if this icon already appears to have a tag layer;
