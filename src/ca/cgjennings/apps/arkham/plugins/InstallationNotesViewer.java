@@ -9,7 +9,6 @@ import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.EventQueue;
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;

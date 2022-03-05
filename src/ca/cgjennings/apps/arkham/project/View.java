@@ -120,6 +120,7 @@ public class View extends TaskAction {
             }
         } else if (ProjectUtilities.matchExtension(f, documentTypes)) {
             InstallationNotesViewer v = new InstallationNotesViewer(StrangeEons.getWindow(), member.getURL());
+            v.setModalityType(null);
             moveWindow(project, v, cascade++);
             v.setTitle(member.getBaseName());
             v.setVisible(true);
