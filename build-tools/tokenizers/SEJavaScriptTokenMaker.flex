@@ -320,8 +320,10 @@ OctalDigit						= ([0-7])
 LetterOrDigit					= ({Letter}|{Digit})
 EscapedSourceCharacter				= ("u"{HexDigit}{HexDigit}{HexDigit}{HexDigit})
 NonSeparator						= ([^\t\f\r\n\ \(\)\{\}\[\]\;\,\.\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%\"\'\`]|"#"|"\\")
-IdentifierStart					= ({Letter}|"_"|"$"|"@"|"#")
+IdentifierStart					= ({Letter}|"_")
 IdentifierPart						= ({IdentifierStart}|{Digit}|("\\"{EscapedSourceCharacter}))
+KeyIdentifierStart              = ("$"|"@"|"#")
+KeyIdentifierPart                   = ({IdentifierPart}|"-")
 JS_MLCBegin				= "/*"
 JS_DocCommentBegin			= "/**"
 JS_MLCEnd					= "*/"
@@ -343,6 +345,7 @@ JS_NonAssignmentOperator		= ("+"|"-"|"<="|"^"|"++"|"<"|"*"|">="|"%"|"--"|">"|"/"
 JS_AssignmentOperator		= ("="|"-="|"*="|"/="|"|="|"&="|"^="|"+="|"%="|"<<="|">>="|">>>=")
 JS_Operator				= ({JS_NonAssignmentOperator}|{JS_AssignmentOperator})
 JS_Identifier				= ({IdentifierStart}{IdentifierPart}*)
+JS_KeyIdentifier            = ({KeyIdentifierStart}{KeyIdentifierPart}*)
 JS_ErrorIdentifier			= ({NonSeparator}+)
 JS_Regex					= ("/"([^\*\\/]|\\.)([^/\\]|\\.)*"/"[gim]*)
 
@@ -524,6 +527,7 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 
 	{LineTerminator}				{ addNullToken(); return firstToken; }
 	{JS_Identifier}					{ addToken(Token.IDENTIFIER); }
+    {JS_KeyIdentifier}              { addToken(Token.ANNOTATION); }
 	{Whitespace}					{ addToken(Token.WHITESPACE); }
 
 	/* String/Character literals. */
