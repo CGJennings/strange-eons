@@ -414,16 +414,16 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         java.awt.GridBagConstraints gridBagConstraints;
 
         northPanel = new javax.swing.JPanel();
-        overlayPanel = new ca.cgjennings.apps.arkham.dialog.OverlayPanel();
-        jLabel2 = new javax.swing.JLabel();
-        translatedInParentLabel = new javax.swing.JLabel();
-        notInDefaultLabel = new javax.swing.JLabel();
-        translatedLabel = new javax.swing.JLabel();
-        untranslatedLabel = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        javax.swing.JPanel legendPanel = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        translatedLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        translatedInParentLabel = new javax.swing.JLabel();
         translatedInParentTextLabel = new javax.swing.JLabel();
+        untranslatedLabel = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        notInDefaultLabel = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         filterField = new ca.cgjennings.ui.JFilterField();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
@@ -460,93 +460,85 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
 
         northPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.darkGray));
 
-        ca.cgjennings.ui.ArcBorder arcBorder1 = new ca.cgjennings.ui.ArcBorder();
-        overlayPanel.setBorder(arcBorder1);
-        overlayPanel.setLayout(new java.awt.GridBagLayout());
-
-        jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
-        jLabel2.setText(string( "dt-l-leg-new-key" )); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 22);
-        overlayPanel.add(jLabel2, gridBagConstraints);
-
-        translatedInParentLabel.setBackground(Palette.get.foreground.opaque.blue);
-        translatedInParentLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
-        translatedInParentLabel.setOpaque(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 12;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel.add(translatedInParentLabel, gridBagConstraints);
-
-        notInDefaultLabel.setBackground(Palette.get.foreground.opaque.orange);
-        notInDefaultLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
-        notInDefaultLabel.setOpaque(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 12;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel.add(notInDefaultLabel, gridBagConstraints);
+        jLabel8.setFont(jLabel8.getFont().deriveFont(jLabel8.getFont().getStyle() | java.awt.Font.BOLD));
+        jLabel8.setText(string( "dt-l-legend" )); // NOI18N
 
         translatedLabel.setBackground(Palette.get.foreground.opaque.text);
         translatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         translatedLabel.setOpaque(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 12;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel.add(translatedLabel, gridBagConstraints);
+
+        jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getSize()-1f));
+        jLabel7.setText(string( "dt-l-leg-translated" )); // NOI18N
+
+        translatedInParentLabel.setBackground(Palette.get.foreground.opaque.blue);
+        translatedInParentLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
+        translatedInParentLabel.setOpaque(true);
+
+        translatedInParentTextLabel.setFont(translatedInParentTextLabel.getFont().deriveFont(translatedInParentTextLabel.getFont().getSize()-1f));
+        translatedInParentTextLabel.setText(string( "dt-l-leg-translated-parent" )); // NOI18N
 
         untranslatedLabel.setBackground(Palette.get.foreground.opaque.grey);
         untranslatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         untranslatedLabel.setOpaque(true);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.ipadx = 12;
-        gridBagConstraints.ipady = 12;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
-        overlayPanel.add(untranslatedLabel, gridBagConstraints);
-
-        jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getSize()-1f));
-        jLabel7.setText(string( "dt-l-leg-translated" )); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel.add(jLabel7, gridBagConstraints);
-
-        jLabel8.setFont(jLabel8.getFont().deriveFont(jLabel8.getFont().getStyle() | java.awt.Font.BOLD));
-        jLabel8.setText(string( "dt-l-legend" )); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 16, 16, 18);
-        overlayPanel.add(jLabel8, gridBagConstraints);
 
         jLabel5.setFont(jLabel5.getFont().deriveFont(jLabel5.getFont().getSize()-1f));
         jLabel5.setText(string( "dt-l-leg-untranslated" )); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel.add(jLabel5, gridBagConstraints);
 
-        translatedInParentTextLabel.setFont(translatedInParentTextLabel.getFont().deriveFont(translatedInParentTextLabel.getFont().getSize()-1f));
-        translatedInParentTextLabel.setText(string( "dt-l-leg-translated-parent" )); // NOI18N
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 16);
-        overlayPanel.add(translatedInParentTextLabel, gridBagConstraints);
+        notInDefaultLabel.setBackground(Palette.get.foreground.opaque.orange);
+        notInDefaultLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
+        notInDefaultLabel.setOpaque(true);
+
+        jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
+        jLabel2.setText(string( "dt-l-leg-new-key" )); // NOI18N
+
+        javax.swing.GroupLayout legendPanelLayout = new javax.swing.GroupLayout(legendPanel);
+        legendPanel.setLayout(legendPanelLayout);
+        legendPanelLayout.setHorizontalGroup(
+            legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 497, Short.MAX_VALUE)
+            .addGroup(legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(legendPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jLabel8)
+                    .addGap(18, 18, 18)
+                    .addComponent(translatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(4, 4, 4)
+                    .addComponent(jLabel7)
+                    .addGap(16, 16, 16)
+                    .addComponent(translatedInParentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(4, 4, 4)
+                    .addComponent(translatedInParentTextLabel)
+                    .addGap(16, 16, 16)
+                    .addComponent(untranslatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(4, 4, 4)
+                    .addComponent(jLabel5)
+                    .addGap(16, 16, 16)
+                    .addComponent(notInDefaultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(4, 4, 4)
+                    .addComponent(jLabel2)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        legendPanelLayout.setVerticalGroup(
+            legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 16, Short.MAX_VALUE)
+            .addGroup(legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(legendPanelLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGroup(legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel8)
+                        .addComponent(jLabel7)
+                        .addComponent(translatedInParentTextLabel)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel2)
+                        .addGroup(legendPanelLayout.createSequentialGroup()
+                            .addGap(1, 1, 1)
+                            .addGroup(legendPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(translatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(translatedInParentLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(untranslatedLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(notInDefaultLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         filterField.setColumns(20);
         filterField.setLabel(string("search")); // NOI18N
@@ -561,17 +553,19 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         northPanelLayout.setHorizontalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(northPanelLayout.createSequentialGroup()
-                .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(legendPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(filterField, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
                 .addContainerGap())
         );
         northPanelLayout.setVerticalGroup(
             northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(northPanelLayout.createSequentialGroup()
-                .addGroup(northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(overlayPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap()
+                .addGroup(northPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(legendPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(filterField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1131,7 +1125,6 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private javax.swing.JButton nextUntransKeyBtn;
     private javax.swing.JPanel northPanel;
     private javax.swing.JLabel notInDefaultLabel;
-    private ca.cgjennings.apps.arkham.dialog.OverlayPanel overlayPanel;
     private ca.cgjennings.ui.JTip pluralTip;
     private javax.swing.JLabel regionLabel;
     private javax.swing.JLabel translatedInParentLabel;
