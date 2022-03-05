@@ -323,7 +323,7 @@ NonSeparator						= ([^\t\f\r\n\ \(\)\{\}\[\]\;\,\.\=\>\<\!\~\?\:\+\-\*\/\&\|\^\
 IdentifierStart					= ({Letter}|"_")
 IdentifierPart						= ({IdentifierStart}|{Digit}|("\\"{EscapedSourceCharacter}))
 KeyIdentifierStart              = ("$"|"@"|"#")
-KeyIdentifierPart                   = ({IdentifierPart}|"-")
+KeyIdentifierPart                   = ({IdentifierPart}|{KeyIdentifierStart}|"-")
 JS_MLCBegin				= "/*"
 JS_DocCommentBegin			= "/**"
 JS_MLCEnd					= "*/"
