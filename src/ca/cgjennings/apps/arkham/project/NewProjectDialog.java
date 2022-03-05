@@ -136,7 +136,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         projLocationField.setEditable(false);
         projLocationField.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
         projLocationField.setText("/example");
-        projLocationField.setDisabledTextColor(java.awt.Color.black);
+        projLocationField.setDisabledTextColor(Palette.get.foreground.opaque.text);
         projLocationField.setEnabled(false);
         projLocationField.setMargin(new java.awt.Insets(1, 1, 1, 1));
 
