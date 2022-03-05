@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.plugins.catalog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.event.ActionEvent;
 import static resources.Language.string;
 import resources.Settings;
@@ -87,7 +88,7 @@ public class CoreUpdateDialog extends javax.swing.JDialog implements AgnosticDia
 
         helpBtn.setHelpPage("plugins-intro#core-components");
 
-        restartLabel.setForeground(java.awt.Color.red);
+        restartLabel.setForeground(Palette.get.foreground.opaque.red);
         restartLabel.setText(string( "core-restart-required" )); // NOI18N
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);

@@ -17,6 +17,7 @@ import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JFileField.FileType;
 import ca.cgjennings.ui.JIconDrop;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Expansion;
 import gamedata.ExpansionSymbolTemplate;
@@ -367,7 +368,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         cardPanel.add(page3, "p3");
@@ -410,7 +411,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
             }
         });
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         javax.swing.GroupLayout backNextPanelLayout = new javax.swing.GroupLayout(backNextPanel);

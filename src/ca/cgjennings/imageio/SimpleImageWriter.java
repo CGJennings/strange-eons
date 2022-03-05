@@ -771,36 +771,6 @@ public class SimpleImageWriter {
         return iioparam;
     }
 
-//	public static void main( String[] args ) {
-////		BufferedImage i = new BufferedImage( 32, 32, BufferedImage.TYPE_INT_ARGB );
-////		Graphics2D g = i.createGraphics();
-////		g.setPaint( Color.RED );
-////		g.drawLine( 0, 0, 31, 31 );
-////		g.drawLine( 0, 31, 31, 0 );
-////		g.dispose();
-//
-//		BufferedImage i = null;
-//		try { i = ImageIO.read( new File( "d:\\test.png" ) ); } catch( Exception e ) { }
-//
-//		JPEG2000.registerReader( true );
-//		JPEG2000.registerWriter( true );
-//		SimpleImageWriter siw = new SimpleImageWriter( "jp2" );
-//		siw.setPixelsPerInch( 300 );
-//		siw.setComment( "Monkeypants!" );
-//		siw.setCompressionQuality( 0.02f );
-//
-//		siw.setCompressionEnabled( true );
-//		siw.setProgressiveScan( true );
-//
-//		try {
-//			File f = new File( "d:\\test.jp2" );
-//			siw.write( i, f );
-//			BufferedImage c = ImageIO.read( f );
-//			ImageIO.write( c, "png", new File( "d:\\test-out.png" ) );
-//		} catch( IOException e ) {
-//			e.printStackTrace();
-//		}
-//	}
     /**
      * Sets an internal encoding hint. These hints are typically used to work
      * around bugs with specific image format encoders.

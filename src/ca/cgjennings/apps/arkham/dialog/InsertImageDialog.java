@@ -9,6 +9,7 @@ import ca.cgjennings.apps.arkham.deck.item.PageItem.SnapClass;
 import ca.cgjennings.apps.arkham.deck.item.PageItem.SnapTarget;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -364,7 +365,7 @@ public final class InsertImageDialog extends javax.swing.JDialog implements Agno
         return value;
     }
     private Border acceptBorder;
-    private Border rejectBorder = BorderFactory.createLineBorder(Color.RED, 2);
+    private Border rejectBorder = BorderFactory.createLineBorder(Palette.get.background.opaque.red, 2);
 
     private void unitComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unitComboActionPerformed
         if (unitCombo.getSelectedIndex() >= 0) {

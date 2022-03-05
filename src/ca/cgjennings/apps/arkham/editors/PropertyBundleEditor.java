@@ -12,6 +12,7 @@ import ca.cgjennings.spelling.SpellingChecker;
 import ca.cgjennings.spelling.ui.JSpellingTextArea;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -471,7 +472,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 22);
         overlayPanel.add(jLabel2, gridBagConstraints);
 
-        translatedInParentLabel.setBackground(java.awt.Color.blue);
+        translatedInParentLabel.setBackground(Palette.get.foreground.opaque.blue);
         translatedInParentLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         translatedInParentLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -482,7 +483,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
         overlayPanel.add(translatedInParentLabel, gridBagConstraints);
 
-        notInDefaultLabel.setBackground(new java.awt.Color(204, 102, 0));
+        notInDefaultLabel.setBackground(Palette.get.foreground.opaque.orange);
         notInDefaultLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         notInDefaultLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -493,7 +494,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
         overlayPanel.add(notInDefaultLabel, gridBagConstraints);
 
-        translatedLabel.setBackground(new JList().getForeground());
+        translatedLabel.setBackground(Palette.get.foreground.opaque.text);
         translatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         translatedLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -504,7 +505,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 16, 4);
         overlayPanel.add(translatedLabel, gridBagConstraints);
 
-        untranslatedLabel.setBackground(java.awt.Color.gray);
+        untranslatedLabel.setBackground(Palette.get.foreground.opaque.grey);
         untranslatedLabel.setBorder(javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray));
         untranslatedLabel.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -1311,7 +1312,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
             }
             // Having the diff tag overrides all other conditions
             if (k.diff) {
-                c = Color.RED;
+                c = Palette.get.foreground.opaque.red;
             }
             setForeground(c);
             return this;

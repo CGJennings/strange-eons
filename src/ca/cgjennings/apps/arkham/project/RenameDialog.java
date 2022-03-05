@@ -6,6 +6,7 @@ import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.FilteredDocument;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -127,7 +128,7 @@ class RenameDialog extends javax.swing.JDialog implements AgnosticDialog {
             }
         });
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         spacer.setText("  ");

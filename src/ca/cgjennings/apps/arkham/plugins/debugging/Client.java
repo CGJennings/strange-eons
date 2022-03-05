@@ -16,6 +16,7 @@ import ca.cgjennings.ui.table.JHeadlessTable;
 import ca.cgjennings.ui.table.MultilineTableCellRenderer;
 import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.ui.textedit.HtmlStyler;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.BorderLayout;
@@ -1043,7 +1044,7 @@ public final class Client extends javax.swing.JFrame {
         connectPanel.add(connectBtn, gridBagConstraints);
 
         errorLabel.setFont(errorLabel.getFont().deriveFont(errorLabel.getFont().getSize()-1f));
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(string( "connect-error" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1094,7 +1095,7 @@ public final class Client extends javax.swing.JFrame {
         connectPanel.add(hostField, gridBagConstraints);
 
         errorLabel2.setFont(errorLabel2.getFont().deriveFont(errorLabel2.getFont().getSize()-1f));
-        errorLabel2.setForeground(java.awt.Color.red);
+        errorLabel2.setForeground(Palette.get.foreground.opaque.red);
         errorLabel2.setText(string( "connect-error2" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -1107,7 +1108,6 @@ public final class Client extends javax.swing.JFrame {
 
         mainPanel.setLayout(new java.awt.BorderLayout());
 
-        sourceSplit.setBorder(null);
         sourceSplit.setDividerLocation(300);
         sourceSplit.setOrientation(javax.swing.JSplitPane.VERTICAL_SPLIT);
         sourceSplit.setResizeWeight(0.5);

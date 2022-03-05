@@ -8,7 +8,7 @@ import java.awt.LinearGradientPaint;
 import javax.swing.JLabel;
 
 /**
- * Shows a gradient of relative hue changes.
+ * Shows a gradient of relative opacity changes.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -40,33 +40,5 @@ public class OpacityLabel extends JLabel {
         LinearGradientPaint lg = new LinearGradientPaint(0, 0, getWidth(), 0, new float[]{0f, 1f}, new Color[]{bg, base});
         g.setPaint(lg);
         g.fillRect(0, 0, getWidth(), getHeight());
-
-        /*
-
-		boolean enabled = isEnabled();
-
-		float delta = 1f / (float) SEGMENTS;
-		float segwidth = (float) getWidth() / (float) SEGMENTS;
-		Rectangle2D.Float r = new Rectangle2D.Float( 0f, 0f, segwidth, (float) getHeight() );
-
-		float opacity = 0f;
-		for( int i = 0; i <= SEGMENTS; ++i ) {
-			g.setPaint( mix( base, bg, opacity ) );
-			g.fill( r );
-			r.x += segwidth;
-			opacity += delta;
-//			if( i == SEGMENTS - 1 ) {
-//				r.width = (float) getWidth() - r.x;
-//			}
-		}
-         */
     }
-
-//	public static void main( String[] args ) {
-//		JFrame f = new JFrame();
-//		f.setDefaultCloseOperation( f.EXIT_ON_CLOSE );
-//		f.add( new OpacityLabel() );
-//		f.setSize( 320, 48 );
-//		f.setVisible( true );
-//	}
 }

@@ -33,6 +33,7 @@ import ca.cgjennings.ui.textedit.CodeEditorBase;
 import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
 import ca.cgjennings.ui.textedit.Formatter;
 import ca.cgjennings.ui.textedit.HtmlStyler;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -522,7 +523,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         });
 
         regExpErrorLabel.setFont(regExpErrorLabel.getFont().deriveFont(regExpErrorLabel.getFont().getSize()-1f));
-        regExpErrorLabel.setForeground(java.awt.Color.red);
+        regExpErrorLabel.setForeground(Palette.get.foreground.opaque.red);
         regExpErrorLabel.setText(" ");
 
         wholeWordCheck.setFont(wholeWordCheck.getFont().deriveFont(wholeWordCheck.getFont().getSize()-1f));

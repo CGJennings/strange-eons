@@ -7,6 +7,7 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.FilteredDocument;
 import ca.cgjennings.ui.JFileField.FileType;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -119,7 +120,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
         jLabel1.setText(string("prj-l-folder")); // NOI18N
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         cancelBtn.setText(string("cancel")); // NOI18N

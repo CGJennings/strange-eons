@@ -583,10 +583,10 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             Font f = console.getFont();
             attr = new SimpleAttributeSet(console.getInputAttributes());
             if (isError) {
-                StyleConstants.setForeground(attr, errorColor == null ? Color.RED : errorColor);
+                StyleConstants.setForeground(attr, errorColor == null ? Palette.get.foreground.opaque.red : errorColor);
                 StyleConstants.setBold(attr, true);
             } else {
-                StyleConstants.setForeground(attr, outColor == null ? Color.BLACK : outColor);
+                StyleConstants.setForeground(attr, outColor == null ? Palette.get.foreground.opaque.text : outColor);
                 StyleConstants.setBold(attr, f.isBold());
             }
         }

@@ -1,5 +1,6 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -74,7 +75,7 @@ public class JKeyStrokeField extends JTextField {
         filterKeys = filterPlainKeyStrokes;
 
         setSelectionColor(getBackground());
-        setSelectedTextColor(Color.RED);
+        setSelectedTextColor(Palette.get.foreground.opaque.red);
         setBorder(new StrokedBorder());
 
         addKeyListener(new KeyListener() {

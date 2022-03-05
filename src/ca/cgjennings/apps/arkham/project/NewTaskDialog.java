@@ -7,6 +7,7 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.FilteredDocument;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -135,7 +136,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         descPane.setText("<html>\r");
         jScrollPane2.setViewportView(descPane);
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         helpBtn.setHelpPage("proj-intro#adding-tasks");

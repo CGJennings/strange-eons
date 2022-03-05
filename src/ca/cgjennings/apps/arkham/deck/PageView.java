@@ -579,8 +579,6 @@ public final class PageView extends JComponent {
         paintDragAndDropCards(g, scale * 72d, quality, alphaComposite40, composite);
 
         // draw view clip for debugging (use negative markAdj to make visible)
-//		g.setPaint( Color.RED );
-//		g.draw( viewClip );
         if (DEBUG_DRAW) {
             frameTime = System.nanoTime() - frameTime;
             final double fps = 1000000000d / (double) frameTime;
