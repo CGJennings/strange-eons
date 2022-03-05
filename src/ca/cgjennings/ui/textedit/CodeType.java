@@ -67,7 +67,7 @@ public enum CodeType {
     /**
      * Tile file; used to add graphic tiles to deck editor.
      */
-    TILES("tiles", "prj-prop-tiles", ICON_TILE_SET, ResourceFileCodeSupport.class, PARSED_RESOURCE),
+    TILES("tiles", "prj-prop-tiles", ICON_TILE_SET, TileSetCodeSupport.class, PARSED_RESOURCE),
     /**
      * HTML document.
      */
