@@ -11,6 +11,21 @@ import javax.swing.JMenuItem;
 /**
  * A theme-aware palette of standard colours. The same standard set of
  * named colours is available with variations suitable for different contexts.
+ * The colours are divided into subsets, first by brightness, then by opacity.
+ * For example, you can request {@code Palette.get.dark.opaque.blue}.
+ * 
+ * <p>
+ * The special subsets {@code foreground} and {@code background} will be either
+ * light or dark depending on the theme. For example, if the theme is dark,
+ * then asking for a background colour returns a dark colour, matching the
+ * theme's dark background; asking for a foreground colour returns a light
+ * colour (to contrast with the dark background).
+ * 
+ * <p>
+ * The special colours {@code white} and {@code black} do not have light and
+ * dark versions: these return white or black as requested.
+ * The special colours {@code text} and {@code fill} return colours that can
+ * be used for text and a solid background, respectively.
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
