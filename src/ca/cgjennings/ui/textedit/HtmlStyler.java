@@ -61,11 +61,6 @@ public class HtmlStyler implements Iterable<String> {
                     if (noFontStyles) {
                         s.font = null;
                     }
-//                    if (s.font != null && noFontStyles) {
-//                        if (s.font.isBold() || s.font.isItalic()) {
-//                            s.font = s.font.deriveFont(Font.PLAIN, s.font.getSize2D());
-//                        }
-//                    }
                 }
             }
             th.apply(ta);
