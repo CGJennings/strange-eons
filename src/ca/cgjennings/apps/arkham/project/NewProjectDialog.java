@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import javax.swing.ImageIcon;
 import javax.swing.event.DocumentEvent;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
@@ -38,7 +37,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         super(parent, true);
         initComponents();
         AbstractGameComponentEditor.localizeComboBoxLabels(formatCombo, null);
-        ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
@@ -294,23 +292,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
             updateProjectFolder();
 }//GEN-LAST:event_fieldKeyReleased
 
-//	private static JFileChooser dirChooser;
-//	private static void createDirChooser() {
-//		dirChooser = new JFileChooser();
-//		dirChooser.setMultiSelectionEnabled( false );
-//		dirChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
-//		dirChooser.setAcceptAllFileFilterUsed( false );
-//		dirChooser.addChoosableFileFilter( new FileFilter() {
-//			@Override
-//			public boolean accept( File f ) {
-//				return f.isDirectory() && !Task.isTaskFolder( f );
-//			}
-//			@Override
-//			public String getDescription() {
-//				return string("prj-l-new-folder-filter");
-//			}
-//		} );
-//	}
 	private void formatComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_formatComboActionPerformed
             updateProjectFolder();
 	}//GEN-LAST:event_formatComboActionPerformed
@@ -345,8 +326,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
             }
         }
 
-//		if( resIdField.getText().length() == 0 )
-//			msg = string( "prj-err-resid" );
         errorLabel.setText(msg);
         PlatformSupport.getAgnosticOK(true, okBtn, cancelBtn).setEnabled(" ".equals(msg));
     }
