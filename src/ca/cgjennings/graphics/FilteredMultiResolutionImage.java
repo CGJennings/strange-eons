@@ -1,4 +1,4 @@
-package ca.cgjennings.ui;
+package ca.cgjennings.graphics;
 
 import java.awt.Image;
 import java.awt.image.AbstractMultiResolutionImage;
@@ -51,7 +51,7 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
                     unfilteredBase = base = sourceImage.getResolutionVariants().get(0);
                 }
                 
-                base = applyEffect(unfilteredBase);
+                base = applyFilter(unfilteredBase);
             }
             return base;
         }
@@ -63,14 +63,14 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
          * @param source the source image
          * @return the new image that applies the desired effects to the source
          */
-        public abstract Image applyEffect(Image source);
+        public abstract Image applyFilter(Image source);
 
         @Override
         public Image getResolutionVariant(double destImageWidth, double destImageHeight) {
             Image var = sourceImage.getResolutionVariant(destImageWidth, destImageHeight);
             if (var != cacheSource || cacheFiltered == null) {
                 cacheSource = var;
-                cacheFiltered = applyEffect(var);
+                cacheFiltered = applyFilter(var);
             }
             return cacheFiltered;
         }
@@ -79,7 +79,7 @@ public abstract class FilteredMultiResolutionImage extends AbstractMultiResoluti
         public List<Image> getResolutionVariants() {
             List<Image> sourceList = sourceImage.getResolutionVariants();
             List<Image> destList = new ArrayList<>(sourceList.size());
-            sourceList.forEach(im -> destList.add(applyEffect(im)));
+            sourceList.forEach(im -> destList.add(applyFilter(im)));
             return destList;
         }
 }

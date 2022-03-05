@@ -223,7 +223,14 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      */
     @Override
     public int compareTo(NavigationPoint rhs) {
-        return description.compareTo(rhs.description);
+        int d = offset - rhs.offset;
+        if (d == 0) {
+            d = scope - rhs.scope;
+            if (d == 0) {
+                d = description.compareTo(rhs.description);
+            }
+        }
+        return d;
     }
 
     /**
@@ -233,7 +240,7 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      */
     @SuppressWarnings(value = "unchecked")
     public static void sortByName(List<NavigationPoint> points) {
-        Collections.sort(points);
+        Collections.sort(points, NAME_ORDER);
     }
 
     /**
@@ -242,9 +249,9 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      * @param points the points to sort
      */
     public static void sortByOffset(List<NavigationPoint> points) {
-        Collections.sort(points, OFFSET_ORDER);
+        Collections.sort(points);
     }
-    private static final Comparator<NavigationPoint> OFFSET_ORDER = (NavigationPoint o1, NavigationPoint o2) -> o1.offset - o2.offset;
+    private static final Comparator<NavigationPoint> NAME_ORDER = (NavigationPoint o1, NavigationPoint o2) -> o1.description.compareTo(o2.description);
 
     public static final Icon ICON_KEYWORD = ResourceKit.getIcon("token-keyword");
     public static final Icon ICON_MODULE = ResourceKit.getIcon("token-module");

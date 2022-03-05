@@ -37,7 +37,6 @@ public class RegexNavigatorBase implements Navigator {
         }
         List<NavigationPoint> results = new ArrayList<>(32);
         match(sourceText, results);
-        java.util.Collections.sort(results);
         return results;
     }
     

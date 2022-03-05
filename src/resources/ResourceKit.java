@@ -35,9 +35,9 @@ import ca.cgjennings.layout.TextStyle;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
-import ca.cgjennings.ui.FilteredMultiResolutionImage;
+import ca.cgjennings.graphics.FilteredMultiResolutionImage;
 import ca.cgjennings.ui.JUtilities;
-import ca.cgjennings.ui.MultiResolutionImageResource;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.ui.theme.TaskIcon;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
@@ -2678,7 +2678,7 @@ public class ResourceKit {
         BufferedImage bleedGradient = getImage("icons/banner/gradient.png");
         FilteredMultiResolutionImage filtered = new FilteredMultiResolutionImage(mim) {
             @Override
-            public Image applyEffect(Image source) {
+            public Image applyFilter(Image source) {
                 BufferedImage im = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
                 Graphics2D g = im.createGraphics();
                 try {

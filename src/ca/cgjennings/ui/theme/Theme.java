@@ -2,7 +2,7 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
-import ca.cgjennings.ui.MultiResolutionImageResource;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.Component;

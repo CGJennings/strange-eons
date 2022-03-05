@@ -1,9 +1,9 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.ui.MultiResolutionImageResource;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.ui.FilteredMultiResolutionImage;
+import ca.cgjennings.graphics.FilteredMultiResolutionImage;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -193,7 +193,7 @@ public class ThemedImageIcon extends AbstractThemedIcon {
     private FilteredMultiResolutionImage wrapMultiImageForTheme(MultiResolutionImage resIm) {
         return new FilteredMultiResolutionImage(resIm) {
             @Override
-            public Image applyEffect(Image source) {
+            public Image applyFilter(Image source) {
                 Theme th = ThemeInstaller.getInstalledTheme();
                 if (th != null) {
                     source = th.applyThemeToImage(ImageUtilities.ensureIntRGBFormat(source));

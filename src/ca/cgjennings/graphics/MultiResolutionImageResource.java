@@ -1,4 +1,4 @@
-package ca.cgjennings.ui;
+package ca.cgjennings.graphics;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.graphics.ImageUtilities;

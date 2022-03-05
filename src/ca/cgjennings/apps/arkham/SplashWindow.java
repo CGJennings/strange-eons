@@ -1,6 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.ui.MultiResolutionImageResource;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.anim.Animation;
 import java.awt.Color;

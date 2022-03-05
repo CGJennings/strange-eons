@@ -1,5 +1,6 @@
 package ca.cgjennings.graphics;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.graphics.filters.AbstractImageFilter;
 import ca.cgjennings.graphics.filters.CheckeredScreenFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
@@ -186,6 +187,8 @@ public final class ImageUtilities {
     /**
      * Defines a new custom cursor for use with the default {@link Toolkit},
      * based on the specified image.
+     * 
+     * @deprecated Use {@link resources.ResourceKit#createCustomCursor(java.lang.String, java.awt.Point, java.lang.String, java.awt.Cursor)}.
      *
      * @param image the image to use for the cursor
      * @param hotspotX the x-coordinate of the cursor's hotspot (the image
@@ -195,14 +198,16 @@ public final class ImageUtilities {
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
      */
+    @Deprecated
     public static Cursor createCustomCursor(BufferedImage image, int hotspotX, int hotspotY) {
         return createCustomCursor(null, image, hotspotX, hotspotY, null);
     }
-    private static int customIndex;
 
     /**
      * Defines a new custom cursor for use with a {@link Toolkit}, based on the
      * specified image.
+     * 
+     * @deprecated Use {@link resources.ResourceKit#createCustomCursor(java.lang.String, java.awt.Point, java.lang.String, java.awt.Cursor)}.
      *
      * @param toolkit the toolkit on which to define the cursor ({@code null}
      * for default)
@@ -216,14 +221,14 @@ public final class ImageUtilities {
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
      */
+    @Deprecated
     public static Cursor createCustomCursor(Toolkit toolkit, BufferedImage image, int hotspotX, int hotspotY, String name) {
         if (toolkit == null) {
             toolkit = Toolkit.getDefaultToolkit();
         }
-        synchronized (toolkit) {
-            if (name == null) {
-                name = "Custom Cursor Number " + customIndex++;
-            }
+        if (name == null) {
+            name = "";
+            StrangeEons.log.warning("cursor has no name for accessibility tools");
         }
         Dimension d = toolkit.getBestCursorSize(image.getWidth(), image.getHeight());
 
