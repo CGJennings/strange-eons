@@ -493,13 +493,6 @@ public abstract class Theme {
     public static final String DISABLED_ICON_FILTER = "eons-difilt";
 
     /**
-     * A UI key for a boolean value that, if true and supported by the selected
-     * LaF class, will override the LaF icons for JOptionPane-style messages
-     * with a common set of icons.
-     */
-    public static final String OVERRIDE_LAF_MESSAGE_ICONS = "override-icons";
-
-    /**
      * A helper that returns a disabled version of any icon. Used by
      * look-and-feel implementations to provide default disabled icons.
      *

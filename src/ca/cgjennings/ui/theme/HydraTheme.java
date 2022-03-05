@@ -30,7 +30,6 @@ public class HydraTheme extends Theme {
 
     @Override
     public void modifyManagerDefaults(UIDefaults defaults) {
-        UIManager.put(OVERRIDE_LAF_MESSAGE_ICONS, true);
         defaults.put(CONSOLE_BACKROUND, new Color(0x34536b));
         defaults.put(CONSOLE_OUTPUT, new Color(0xf3e193));
         defaults.put(CONSOLE_ERROR, new Color(0xf99d39));

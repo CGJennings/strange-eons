@@ -212,13 +212,6 @@ public class ThemeInstaller {
 
         UIDefaults lafDefs = laf.getDefaults();
 
-        if (UIManager.getBoolean(Theme.OVERRIDE_LAF_MESSAGE_ICONS)) {
-            lafDefs.put("OptionPane.errorIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/error.png")));
-            lafDefs.put("OptionPane.warningIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/warning.png")));
-            lafDefs.put("OptionPane.questionIcon", null);
-            lafDefs.put("OptionPane.informationIcon", null);
-        }
-
         // put in the theme's L&F defaults
         theme.modifyLookAndFeelDefaults(lafDefs);
 
