@@ -102,7 +102,7 @@ final class SyntaxTextArea extends RSyntaxTextArea {
                 defaultTheme = th;
             }
         } catch (IOException ex) {
-            StrangeEons.log.warning("unable to load editor theme " + themeUrl + ", using default");
+            StrangeEons.log.log(Level.WARNING, "unable to load editor theme " + themeUrl + ", using default", ex);
         }
     }
 
