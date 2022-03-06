@@ -643,7 +643,7 @@ public class MetadataSource {
     public static final Icon ICON_TASK = getIcon("task");
     public static final Icon ICON_TASK_PLUGIN = getIcon("plugin-task");
     public static final Icon ICON_TASK_FACTORY = getIcon("factory-task");
-    public static final Icon ICON_TASK_EXPBOARD = getIcon("ahboard-task");
+    public static final Icon ICON_TASK_EXPBOARD = getIcon("expboard-task");
     public static final Icon ICON_TASK_CASEBOOK = getIcon("case-task");
     public static final Icon ICON_TASK_DECK = getIcon("deck-task");
     public static final Icon ICON_TASK_DOCUMENTATION = getIcon("doc-task");
