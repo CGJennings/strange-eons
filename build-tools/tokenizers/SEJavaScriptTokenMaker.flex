@@ -575,10 +575,8 @@ URL						= (((https?|f(tp|ile))"://"|"www.")({URLCharacters}{URLEndCharacter})?)
 										int start = zzStartRead;
 										int operatorLen = yycharat(0)=='+' ? 2 : 1;
 										int yylen = yylength(); // Cache before first addToken() invalidates it
-										//System.out.println("'" + yytext() + "': " + yylength() + ", " + (operatorLen+1));
 										addToken(zzStartRead,zzStartRead+operatorLen-1, Token.OPERATOR);
 										if (yylen>operatorLen+1) {
-											//System.out.println((start+operatorLen) + ", " + (zzMarkedPos-2));
 											addToken(start+operatorLen,zzMarkedPos-2, Token.WHITESPACE);
 										}
 										zzStartRead = zzCurrentPos = zzMarkedPos = zzMarkedPos - 1;

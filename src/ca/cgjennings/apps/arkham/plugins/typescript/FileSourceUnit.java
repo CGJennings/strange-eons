@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.Level;
-import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 
 /**
  * A source unit whose content is linked to a file. This should be

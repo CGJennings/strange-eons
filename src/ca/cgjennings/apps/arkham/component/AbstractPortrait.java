@@ -207,7 +207,6 @@ public abstract class AbstractPortrait implements Portrait {
             scale = ImageUtilities.idealBoundingScaleForImage(512, 512, iw, ih);
         }
 
-//		System.out.printf("%.0f,%.0f\n",iw*scale,ih*scale);
         return si.toBufferedImage((int) (iw * scale + 0.5), (int) (ih * scale + 0.5), false);
     }
 }

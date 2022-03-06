@@ -1,7 +1,6 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.ui.theme.Palette;
-import java.awt.Color;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

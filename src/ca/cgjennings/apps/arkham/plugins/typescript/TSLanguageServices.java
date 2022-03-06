@@ -15,7 +15,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import javax.script.ScriptException;
-import javax.swing.Icon;
 import org.mozilla.javascript.Context;
 
 /**

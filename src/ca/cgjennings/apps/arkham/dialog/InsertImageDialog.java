@@ -10,7 +10,6 @@ import ca.cgjennings.apps.arkham.deck.item.PageItem.SnapTarget;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.theme.Palette;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Toolkit;

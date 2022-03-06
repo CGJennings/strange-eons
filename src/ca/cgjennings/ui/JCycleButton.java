@@ -3,16 +3,13 @@ package ca.cgjennings.ui;
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.SwingUtilities;
 import resources.ResourceKit;
 import resources.Settings;
 

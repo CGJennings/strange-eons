@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.theme.Palette;
-import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.Color;
 import resources.Settings.Colour;
 import java.awt.Component;

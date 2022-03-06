@@ -9,7 +9,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
-import ca.cgjennings.ui.theme.ThemeInstaller;
 import ca.cgjennings.jvm.JarLoader;
 import java.awt.EventQueue;
 import java.io.File;

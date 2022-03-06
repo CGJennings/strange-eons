@@ -4,7 +4,6 @@ import ca.cgjennings.algo.TextIndex;
 import ca.cgjennings.algo.TextIndex.Query;
 import ca.cgjennings.ui.IconBorder;
 import ca.cgjennings.ui.theme.Palette;
-import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;

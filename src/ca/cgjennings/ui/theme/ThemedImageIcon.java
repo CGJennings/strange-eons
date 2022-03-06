@@ -133,10 +133,6 @@ public class ThemedImageIcon extends AbstractThemedIcon {
     }
 
     private ThemedImageIcon(ThemedImageIcon src, int width, int height) {
-
-        if (src.width > 18) {
-            System.out.println(src.resource);
-        }
         src.getMultiResolutionImage();
         resource = src.resource;
         mim = src.mim;
