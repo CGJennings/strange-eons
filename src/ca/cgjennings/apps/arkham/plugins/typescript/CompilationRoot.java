@@ -137,7 +137,6 @@ public class CompilationRoot {
      * @param includeSyntactic if true, includes syntax-related diagnostics
      * @param includeSemantic if true, includes semantic diagnostics
      * @param callback the callback to invoke with the result
-     * @return a list of diagnostics, possibly empty
      */    
     public void getDiagnostics(String fileName, boolean includeSyntactic, boolean includeSemantic, Consumer<List<Diagnostic>> callback) {
         ts.getDiagnostics(langService(), fileName, includeSyntactic, includeSemantic, (result) -> {
@@ -187,7 +186,18 @@ public class CompilationRoot {
      */
     public NavigationTree getNavigationTree(String fileName) {
         return ts.getNavigationTree(langService(), fileName);
-    }    
+    }
+    
+    /**
+     * Returns a file's current navigation tree.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @param callback the callback to invoke with the result
+     */
+    public void getNavigationTree(String fileName, Consumer<NavigationTree> callback) {
+        ts.getNavigationTree(langService(), fileName, callback);
+    }      
     
     /**
      * Returns the language service instance for this root, creating it

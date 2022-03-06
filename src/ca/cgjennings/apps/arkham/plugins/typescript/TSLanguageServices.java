@@ -361,6 +361,16 @@ public final class TSLanguageServices {
      * 
      * @param languageService the language service that manages the file
      * @param fileName the file name to get diagnostics for
+     */
+    public void getNavigationTree(Object languageService, String fileName, Consumer<NavigationTree> callback) {
+        go(GET_NAVIGATION_TREE, callback, languageService, fileName);
+    }    
+    
+    /**
+     * Returns a file's current navigation tree.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
      * @return the file's current navigation tree
      */
     public NavigationTree getNavigationTree(Object languageService, String fileName) {
