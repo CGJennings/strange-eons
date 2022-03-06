@@ -703,7 +703,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         runBtn.setBackground(java.awt.Color.black);
-        runBtn.setIcon(ResourceKit.getIcon("debugger/continue.png"));
+        runBtn.setIcon(ResourceKit.getIcon("debugger/db-continue.png"));
         runBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         runBtn.setBorderPainted(false);
         runBtn.setFocusable(false);
@@ -715,7 +715,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         breakBtn.setBackground(java.awt.Color.black);
-        breakBtn.setIcon(ResourceKit.getIcon("debugger/pause.png"));
+        breakBtn.setIcon(ResourceKit.getIcon("debugger/db-pause.png"));
         breakBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         breakBtn.setBorderPainted(false);
         breakBtn.setFocusable(false);
@@ -744,7 +744,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepIntoBtn.setBackground(java.awt.Color.black);
-        stepIntoBtn.setIcon(ResourceKit.getIcon("debugger/stepin.png"));
+        stepIntoBtn.setIcon(ResourceKit.getIcon("debugger/db-stepin.png"));
         stepIntoBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepIntoBtn.setBorderPainted(false);
         stepIntoBtn.setFocusable(false);
@@ -756,7 +756,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepOutBtn.setBackground(java.awt.Color.black);
-        stepOutBtn.setIcon(ResourceKit.getIcon("debugger/stepout.png"));
+        stepOutBtn.setIcon(ResourceKit.getIcon("debugger/db-stepout.png"));
         stepOutBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepOutBtn.setBorderPainted(false);
         stepOutBtn.setFocusable(false);
@@ -768,7 +768,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         stepOverBtn.setBackground(java.awt.Color.black);
-        stepOverBtn.setIcon(ResourceKit.getIcon("debugger/stepover.png"));
+        stepOverBtn.setIcon(ResourceKit.getIcon("debugger/db-stepover.png"));
         stepOverBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         stepOverBtn.setBorderPainted(false);
         stepOverBtn.setFocusable(false);
@@ -792,7 +792,7 @@ public final class Client extends javax.swing.JFrame {
         });
 
         walkBtn.setBackground(java.awt.Color.black);
-        walkBtn.setIcon(ResourceKit.getIcon("debugger/walk.png"));
+        walkBtn.setIcon(ResourceKit.getIcon("debugger/db-walk.png"));
         walkBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(6, 6, 6, 6));
         walkBtn.setBorderPainted(false);
         walkBtn.setFocusable(false);

@@ -203,7 +203,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/continue.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-continue.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -226,7 +226,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/pause.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-pause.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -273,7 +273,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/stepin.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-stepin.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -296,7 +296,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/stepout.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-stepout.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -319,7 +319,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/stepover.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-stepover.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -365,7 +365,7 @@
               <Color blue="0" green="0" id="black" palette="1" red="0" type="palette"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="ResourceKit.getIcon(&quot;debugger/walk.png&quot;)" type="code"/>
+              <Connection code="ResourceKit.getIcon(&quot;debugger/db-walk.png&quot;)" type="code"/>
             </Property>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">

@@ -267,6 +267,10 @@ public class CompilationRoot {
      * @return the suggested identifier
      */
     public String getSuggestedIdentifier(File file) {
+        if (file == null) {
+            return "unknown.ts";
+        }
+        
         File out = file;
         if (rootFile != null) {
             out = ProjectUtilities.makeFileRelativeTo(rootFile, file);
