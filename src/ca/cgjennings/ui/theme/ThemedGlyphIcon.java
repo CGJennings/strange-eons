@@ -602,7 +602,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                 layerStr = layerStr.substring(0, at);
                 if (adjString.isEmpty()) {
                     offset += layerStr.length() + 1;
-                    throw new IllegalArgumentException("Empty adjustment block");
+                    throw new ParseError("Empty adjustment block", offset);
                 }
             }
 
