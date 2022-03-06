@@ -10,7 +10,10 @@ import javax.swing.Icon;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * Implements the {@code ThemedIcon} interface for any icon.
+ * Wraps any arbitrary icon to convert it into a themed icon.
+ * This should not be used directly; instead call
+ * {@link ThemedIcon#create(javax.swing.Icon)}, which avoids wrapping
+ * the icon if it is already of the correct type.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -27,7 +30,7 @@ final class ForeignIcon extends AbstractThemedIcon {
 
     /**
      * Creates a themed icon based on the platform desktop icon
-     * for the specified icon.
+     * for the specified file.
      * @param file the non-null file to create an icon for
      */
     public ForeignIcon(File file) {

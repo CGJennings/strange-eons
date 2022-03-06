@@ -2,8 +2,11 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -1090,12 +1093,36 @@ public class CodeEditorBase extends JPanel {
     /**
      * Gutter icon for warnings.
      */
-    static final Icon ICON_WARNING = ResourceKit.getIcon("ui/warning.png");
+    static final Icon ICON_WARNING = new GutterIcon(NavigationPoint.ICON_WARNING);
     /**
      * Gutter icon for errors.
      */
-    static final Icon ICON_ERROR = ResourceKit.getIcon("ui/error.png");
+    static final Icon ICON_ERROR = new GutterIcon(NavigationPoint.ICON_ERROR);
 
+    /** Wraps an icon to center it properly in the gutter area. */
+    static final class GutterIcon implements Icon {
+        private Icon icon;
+        public GutterIcon(Icon wrapped) {
+            icon = ThemedIcon.create(wrapped).derive(12);
+        }
+
+        @Override
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            icon.paintIcon(c, g, x + 2, y);
+        }
+
+        @Override
+        public int getIconWidth() {
+            return 16;
+        }
+
+        @Override
+        public int getIconHeight() {
+            return 16;
+        }
+    }
+    
+    
     /**
      * Sets a popup menu builder, which can customize the popup menu before it
      * is displayed.
