@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Encapsulates a collection of script files that should be compiled together as
@@ -127,6 +128,27 @@ public class CompilationRoot {
         }
         return result;
     }
+    
+    /**
+     * Gathers a list of diagnostic messages in the background, passing them
+     * to the specified callback once they are available.
+     * 
+     * @param fileName the file name to get diagnostics for
+     * @param includeSyntactic if true, includes syntax-related diagnostics
+     * @param includeSemantic if true, includes semantic diagnostics
+     * @param callback the callback to invoke with the result
+     * @return a list of diagnostics, possibly empty
+     */    
+    public void getDiagnostics(String fileName, boolean includeSyntactic, boolean includeSemantic, Consumer<List<Diagnostic>> callback) {
+        ts.getDiagnostics(langService(), fileName, includeSyntactic, includeSemantic, (result) -> {
+            if (result == null) {
+                result = Collections.emptyList();
+            } else {
+                result = Collections.unmodifiableList(result);
+            }
+            callback.accept(result);
+        });
+    }    
     
     /**
      * Returns code completions for the specified position.

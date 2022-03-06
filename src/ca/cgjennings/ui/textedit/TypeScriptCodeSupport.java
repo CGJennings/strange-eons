@@ -110,10 +110,24 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         private final DefaultParseResult result = new DefaultParseResult(this);
         
         /**
-         * If this is set, requests to parse the document are ignored.
-         * This is set when a parse task is happening in the background.
+         * Most of the checking actually happens in another script. Once the
+         * latest result is returned to us, we will request a reparse to
+         * update the editor with the results.
          */
-        private boolean parseIsDeferred;
+        private List<Diagnostic> latestDiagnostics;
+        /**
+         * Tracks how many times we have asked for results, so we don't
+         * accidentally return a stale result.
+         */
+        private int requestNumber = 0;
+        
+        
+        /**
+         * The first time a parse is requested, it will be performed in the
+         * background to allow time for TS services to start up. Once the
+         * initial result is available, the parser will request a reparse
+         * and handle the result.
+         */
 
         public TSParser(CodeEditorBase editor) {
             this.editor = editor;
@@ -121,20 +135,29 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         @Override
         public ParseResult parse(RSyntaxDocument rsd, String string) {
-            if (parseIsDeferred) {
+            // no results are pending, start background request
+            if (latestDiagnostics == null) {
+                if (root != null) {
+                    try {
+                        root.add(identifier, rsd.getText(0, rsd.getLength()));
+                    } catch (BadLocationException ble) {
+                        // should be impossible
+                        StrangeEons.log.severe("impossible exception");
+                    }
+                    final int expectedRequestNumber = ++requestNumber;
+                    root.getDiagnostics(identifier, true, true, (results) -> {
+                        // if these are the most recently requested results,
+                        // keep a reference and request reparse
+                        if (expectedRequestNumber == requestNumber) {
+                            latestDiagnostics = results;
+                            editor.getTextArea().forceReparsing(this);
+                        }
+                    });
+                }
                 return result;
             }
             
-            // if the TS library hasn't loaded, wait and re-parse later
-            if (!TSLanguageServices.getShared().isLoaded()) {
-                parseIsDeferred = true;
-                TSLanguageServices.getShared().runWhenLoaded(() -> {
-                    parseIsDeferred = false;
-                    editor.getTextArea().forceReparsing(this);
-                });
-                return result;
-            }
-            
+            // there are results available, update the editor
             try {
                 final long start = System.currentTimeMillis();
                 result.setError(null);
@@ -144,9 +167,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 gutter.removeAllTrackingIcons();
 
                 if (root != null) {
-                    root.add(identifier, rsd.getText(0, rsd.getLength()));
-                    List<Diagnostic> diagnostics = root.getDiagnostics(identifier, true, true);
-                    for (Diagnostic d : diagnostics) {
+                    for (Diagnostic d : latestDiagnostics) {
                         if (d.hasLocation()) {
                             DefaultParserNotice notice = new DefaultParserNotice(
                                     this, d.message, d.line, d.offset, d.length
@@ -161,6 +182,8 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             } catch (BadLocationException ble) {
                 StrangeEons.log.log(Level.WARNING, ble, null);
                 result.setError(ble);
+            } finally {
+                latestDiagnostics = null;
             }
             return result;
         }
