@@ -1463,6 +1463,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
     /**
      * Updates the navigation panel to reflect the current state of the text.
      */
+    @Override
     public void refreshNavigator() {
         refreshNavigator(getEditor().getText());
     }

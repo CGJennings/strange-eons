@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import javax.swing.Icon;
+import javax.swing.Timer;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
@@ -108,11 +109,11 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         private final CodeEditorBase editor;
         private final DefaultParseResult result = new DefaultParseResult(this);
-        
+
         /**
          * Most of the checking actually happens in another script. Once the
-         * latest result is returned to us, we will request a reparse to
-         * update the editor with the results.
+         * latest result is returned to us, we will request a reparse to update
+         * the editor with the results.
          */
         private List<Diagnostic> latestDiagnostics;
         /**
@@ -120,15 +121,13 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
          * accidentally return a stale result.
          */
         private int requestNumber = 0;
-        
-        
+
         /**
          * The first time a parse is requested, it will be performed in the
          * background to allow time for TS services to start up. Once the
-         * initial result is available, the parser will request a reparse
-         * and handle the result.
+         * initial result is available, the parser will request a reparse and
+         * handle the result.
          */
-
         public TSParser(CodeEditorBase editor) {
             this.editor = editor;
         }
@@ -156,7 +155,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 }
                 return result;
             }
-            
+
             // there are results available, update the editor
             try {
                 final long start = System.currentTimeMillis();
@@ -206,9 +205,9 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 return Collections.emptyList();
             }
             root.add(identifier, editor.getText());
-            
+
             final String prefix = getAlreadyEnteredText(jtc);
-            
+
             final int caret = jtc.getCaretPosition();
             CompletionInfo info = root.getCodeCompletions(identifier, caret);
             if (info == null) {
@@ -270,7 +269,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             return Collections.emptyList();
         }
     }
-    
+
     private TSCompletion createTSCompletion(CompletionInfo.Entry source, CompletionProvider provider, String fileName, int position, String prefix) {
         TSCompletion comp = null;
 
@@ -284,7 +283,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         } else {
             System.out.println("other?");
         }
-        
+
         // fill in common basic values --- avoids need for long constructor
         if (comp != null) {
             comp.provider = provider;
@@ -293,11 +292,10 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             comp.position = position;
             comp.prefix = prefix;
         }
-        
+
         return comp;
     }
-    
-    
+
     /**
      * Base class for TypeScript completions.
      */
@@ -354,8 +352,8 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 CompletionInfo.EntryDetails details = root.getCodeCompletionDetails(fileName, position, source);
                 if (details != null) {
                     if (details.actions != null) {
-                        for (int i=0; i<details.actions.size(); ++i) {
-                            System.out.println("ACTION #" + (i+1));
+                        for (int i = 0; i < details.actions.size(); ++i) {
+                            System.out.println("ACTION #" + (i + 1));
                             CodeAction action = details.actions.get(i);
                             System.out.println(action.description);
                             for (FileTextChanges changes : action.changes) {
@@ -363,45 +361,42 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                             }
                         }
                     }
-                    
+
                     if (markdown == null) {
                         markdown = new MarkdownTransformer();
                     }
+
                     return preOpenTag
                             + details.display.replace("&", "&amp;").replace("<", "&lt;")
                             + preCloseTag
                             + markdown.render(details.documentation);
-//                    return details.display + "<p>" + details.documentation + "<p>" + details.source;
                 }
             }
             return null;
         }
-        
-        private final String preOpenTag = 
-                "<style>pre, code { font-family: \""
+
+        private final String preOpenTag
+                = "<style>pre, code { font-family: \""
                 + editor.getTextArea().getFont().getFamily()
                 + "\" }</style><pre style='margin: 0; font-weight: bold; color:#"
                 + Palette.get.foreground.opaque.blue
-                + "'><hr>"
-//                + Palette.get.background.opaque.yellow
-//                + "'>";
-        ;
+                + "'><hr>";
         private final String preCloseTag = "</pre>";
 
         @Override
         public String getToolTipText() {
             return null;
         }
-        
+
         @Override
         public String getText() {
             return source.name;
         }
-        
+
         @Override
         public String getSecondaryText() {
-            return source.kind;    
-        }        
+            return source.kind;
+        }
 
         @Override
         public String toString() {
@@ -414,25 +409,49 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             return s;
         }
     }
-    
+
     private MarkdownTransformer markdown;
 
     @Override
     public Navigator createNavigator(NavigationHost host) {
         return new Navigator() {
+            private final List<NavigationPoint> points = new ArrayList<>(32);
+            private NavigationTree latestRequest;
+            private int requestNumber = 0;
+
             @Override
             public List<NavigationPoint> getNavigationPoints(String sourceText) {
-                List<NavigationPoint> points;
-                if (root != null) {
-                    NavigationTree tree = root.getNavigationTree(identifier);
-                    points = new ArrayList<>(32);
-                    addPoints(points, tree, -1);
-                } else {
-                    points = Collections.emptyList();
+                if (latestRequest == null || root == null) {
+                    if (root != null) {
+                        final int expectedRequest = ++requestNumber;
+                        root.add(identifier, sourceText);
+                        root.getNavigationTree(identifier, (tree) -> {
+                            if (expectedRequest == requestNumber) {
+                                latestRequest = tree;
+                                host.refreshNavigator();
+                            }
+                        });
+                    } else {
+                        // compilation root does not exist yet, check again later
+                        Timer retryLater = new Timer(6000, (ev) -> {
+                            host.refreshNavigator();
+                        });
+                        retryLater.setRepeats(false);
+                        retryLater.start();
+                    }
+                    return points;
+                }
+
+                try {
+                    points.clear();
+                    addPoints(points, latestRequest, -1);
+                    Collections.sort(points);
+                } finally {
+                    latestRequest = null;
                 }
                 return points;
             }
-            
+
             private void addPoints(List<NavigationPoint> points, NavigationTree tree, int level) {
                 if (level >= 0 && tree.location != null) {
                     String longDesc = tree.kind + ' ' + tree.name;
@@ -445,98 +464,98 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 if (tree.children != null) {
                     ++level;
                     final int len = tree.children.size();
-                    for (int i=0; i<len; ++i) {
+                    for (int i = 0; i < len; ++i) {
                         addPoints(points, tree.children.get(i), level);
                     }
                 }
             }
         };
     }
-    
+
     static Icon iconForKind(String kind, String kindModifiers) {
-            Icon icon;
-            boolean isStatic = kindModifiers != null && kindModifiers.contains("static");
-            switch (kind) {
-                case "keyword":
-                    icon = ICON_KEYWORD;
-                    break;
-                case "module":
-                case "external module name":
-                    icon = ICON_MODULE;
-                    break;                    
-                case "class":
-                case "local class":
-                    icon = ICON_CLASS;
-                    break;
-                case "interface":
-                    icon = ICON_INTERFACE;
-                    break;
-                case "enum":
-                    icon = ICON_ENUM;
-                    break;                    
-                case "enum member":
-                    icon = ICON_ENUM_MEMBER;
-                    break;
-                case "var":
-                case "local var":
-                    icon = ICON_VAR;
-                    break;
-                case "let":
-                    icon = ICON_LET;
-                    break;
-                case "const":
-                    icon = ICON_CONST;
-                    break;
-                case "function":
-                case "local function":
-                    icon = ICON_FUNCTION;
-                    break;
-                case "method":
-                case "constructor":
-                    icon = ICON_METHOD;
-                    break;
-                case "getter":
-                    icon = ICON_GETTER;
-                    break;
-                case "setter":
-                    icon = ICON_SETTER;
-                    break;
-                case "property":
-                    icon = ICON_PROPERTY;
-                    break;
-                case "type":
-                    icon = ICON_TYPE;
-                    break;
-                case "alias":
-                    icon = ICON_ALIAS;
-                    break;
-                case "primitive type":
-                    icon = ICON_PRIMITIVE;
-                    break;
-                case "call":
-                case "construct":
-                    icon = ICON_CALL;
-                    break;                    
-                case "index":
-                    icon = ICON_INDEX;
-                    break;                    
-                case "parameter":
-                    icon = ICON_PARAMETER;
-                    break;
-                case "type parameter":
-                    icon = ICON_TYPE_PARAMETER;
-                    break;
-                case "label":
-                    icon = ICON_LABEL;
-                    break;
-                case "directory":
-                    icon = ICON_DIRECTORY;
-                    break;
-                // "JSX attribute", "string", "link", "link name", "link text"
-                default:
-                    icon = ICON_NONE;
-                    break;
-            }
-            return icon;
+        Icon icon;
+        boolean isStatic = kindModifiers != null && kindModifiers.contains("static");
+        switch (kind) {
+            case "keyword":
+                icon = ICON_KEYWORD;
+                break;
+            case "module":
+            case "external module name":
+                icon = ICON_MODULE;
+                break;
+            case "class":
+            case "local class":
+                icon = ICON_CLASS;
+                break;
+            case "interface":
+                icon = ICON_INTERFACE;
+                break;
+            case "enum":
+                icon = ICON_ENUM;
+                break;
+            case "enum member":
+                icon = ICON_ENUM_MEMBER;
+                break;
+            case "var":
+            case "local var":
+                icon = ICON_VAR;
+                break;
+            case "let":
+                icon = ICON_LET;
+                break;
+            case "const":
+                icon = ICON_CONST;
+                break;
+            case "function":
+            case "local function":
+                icon = ICON_FUNCTION;
+                break;
+            case "method":
+            case "constructor":
+                icon = ICON_METHOD;
+                break;
+            case "getter":
+                icon = ICON_GETTER;
+                break;
+            case "setter":
+                icon = ICON_SETTER;
+                break;
+            case "property":
+                icon = ICON_PROPERTY;
+                break;
+            case "type":
+                icon = ICON_TYPE;
+                break;
+            case "alias":
+                icon = ICON_ALIAS;
+                break;
+            case "primitive type":
+                icon = ICON_PRIMITIVE;
+                break;
+            case "call":
+            case "construct":
+                icon = ICON_CALL;
+                break;
+            case "index":
+                icon = ICON_INDEX;
+                break;
+            case "parameter":
+                icon = ICON_PARAMETER;
+                break;
+            case "type parameter":
+                icon = ICON_TYPE_PARAMETER;
+                break;
+            case "label":
+                icon = ICON_LABEL;
+                break;
+            case "directory":
+                icon = ICON_DIRECTORY;
+                break;
+            // "JSX attribute", "string", "link", "link name", "link text"
+            default:
+                icon = ICON_NONE;
+                break;
+        }
+        return icon;
     }
 }
