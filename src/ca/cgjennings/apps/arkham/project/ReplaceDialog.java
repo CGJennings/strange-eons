@@ -3,7 +3,9 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
@@ -11,7 +13,7 @@ import static resources.Language.string;
 import resources.ResourceKit;
 
 /**
- * Dialog to prompt user before repalcing files during a copy operation.
+ * Dialog to prompt user before replacing files during a copy operation.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -204,7 +206,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        titlePanel.setBackground(java.awt.Color.white);
+        titlePanel.setBackground(ThemeInstaller.isDark() ? Color.BLACK : Color.WHITE);
         titlePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
         infoLabel.setFont(infoLabel.getFont().deriveFont(infoLabel.getFont().getStyle() | java.awt.Font.BOLD));
