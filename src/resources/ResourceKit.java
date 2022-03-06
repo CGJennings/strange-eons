@@ -658,7 +658,13 @@ public class ResourceKit {
         }
         if (bi == null) {
             bi = getMissingImage();
-            StrangeEons.log.warning("image resource not found: " + resource);
+            
+            Throwable ex = null;
+            if (StrangeEons.getReleaseType() == StrangeEons.ReleaseType.DEVELOPMENT) {
+                ex = new FileNotFoundException(resource).fillInStackTrace();
+            }
+
+            StrangeEons.log.log(Level.WARNING, "image resource not found: " + resource, ex);
         }
         return bi;
     }
