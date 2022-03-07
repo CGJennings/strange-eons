@@ -198,11 +198,12 @@ final class About extends javax.swing.JDialog {
         tp.set("fg", String.format(Locale.ROOT, "#%06X", aboutText.getForeground().getRGB() & 0xffffff));
         tp.set("inv", UIManager.getBoolean("useDarkTheme") ? "-inv" : "");
 
-        // updated Feb 17 2022
+        // updated Mar 07 17 2022
         final int ANONYMOUS_COUNT = 13;
         tp.set("supporter-list",
                 "Audrey Latimer (Arkham Horror Queen Anne), "
                 + "Andrew Carpena, "
+                + "Gilles Chiniara, "
                 + "The Plaid Mentat (Daniel Crumly), "
                 + "Jesse Cruz, "
                 + "Mike Dawson, "
