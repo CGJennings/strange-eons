@@ -1,9 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.net.URL;
-import javax.imageio.ImageIO;
+import resources.ResourceKit;
 
 /**
  * Simplifies writing a plug-in by providing default implementations of all
@@ -127,29 +127,45 @@ public abstract class AbstractPlugin implements Plugin {
 
     /**
      * {@inheritDoc}
-     * <p>
-     * The abstract implementation looks in the folder where the class is
-     * located for an image with the same name as the class but with a
-     * <tt>.png</tt> or <tt>.jp2</tt> extension. If found, it attempts to read
-     * an image from the file. If successful, the image is returned; otherwise,
-     * {@code null} is returned.
+     * 
+     * <p>The abstract base class looks for an image in the same package and with
+     * the same base file name as the class file.
+     * 
+     * @return an icon representing the plugin
      */
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        BufferedImage image = null;
-        for (int i = 0; i < REPRESENTATIVE_IMAGE_SUFFIXES.length && image == null; ++i) {
-            URL url = getClass().getResource(getClass().getSimpleName() + REPRESENTATIVE_IMAGE_SUFFIXES[i]);
-            if (url != null) {
-                try {
-                    image = ImageIO.read(url);
-                } catch (IOException ex) {
+    public ThemedIcon getPluginIcon() {
+        if (pluginIcon == null) {
+            String base = getPluginIconBaseName();
+            
+            for (int i=0; i<ICON_SUFFIXES.length; ++i) {
+                URL url = ResourceKit.class.getResource(base + ICON_SUFFIXES[i]);
+                if (url != null) {
+                    pluginIcon = new ThemedImageIcon(base + ICON_SUFFIXES[i], ThemedImageIcon.SMALL);
+                }
+            }
+            if (pluginIcon == null) {
+                if (getPluginType() == EXTENSION) {
+                    pluginIcon = ResourceKit.getIcon("extension").small();
+                } else {
+                    pluginIcon = ResourceKit.getIcon("plugin").small();
                 }
             }
         }
-        return image;
+        return pluginIcon;
     }
-    private static final String[] REPRESENTATIVE_IMAGE_SUFFIXES = new String[]{".png", ".jp2"};
-
+    private ThemedIcon pluginIcon = null;
+    
+    /**
+     * Returns a base class path to use to locate the default icon,
+     * including a base file name but no extension.
+     * 
+     * @return package path to the class or script to use to locate an icon
+     */
+    protected String getPluginIconBaseName() {
+        return '/' + getClass().getName().replace('.', '/');
+    }
+    private static final String[] ICON_SUFFIXES = new String[]{".png", ".jp2"};
+    
     /**
      * {@inheritDoc}
      * <p>

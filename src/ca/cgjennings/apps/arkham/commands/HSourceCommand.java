@@ -4,11 +4,8 @@ import ca.cgjennings.apps.arkham.MarkupTarget;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.Tokenizer;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.KeyStroke;
 import resources.AcceleratorTable;
 
@@ -20,12 +17,10 @@ import resources.AcceleratorTable;
  */
 @SuppressWarnings("serial")
 class HSourceCommand extends DelegatedCommand {
-//	private CodeEditor.CodeType type;
 
     private boolean comments;
-    private boolean codeEditor;
-    private ActionListener al;
-    private int macroState;
+    private boolean forEditorTab;
+    private String forAction;
 
     public HSourceCommand(String nameKey) {
         super(nameKey);
@@ -35,9 +30,9 @@ class HSourceCommand extends DelegatedCommand {
         super(nameKey, iconResource);
     }
 
-    public HSourceCommand(String nameKey, String iconResource, ActionListener editorCommand) {
+    public HSourceCommand(String nameKey, String iconResource, String forAction) {
         super(nameKey, iconResource);
-        forAction(editorCommand);
+        this.forAction = forAction;
     }
 
     public HSourceCommand forComments() {
@@ -46,22 +41,12 @@ class HSourceCommand extends DelegatedCommand {
     }
 
     public HSourceCommand forCodeEditor() {
-        codeEditor = true;
+        forEditorTab = true;
         return this;
     }
 
-    public HSourceCommand forAction(ActionListener editorCommand) {
-        al = editorCommand;
-        return this;
-    }
-
-    public HSourceCommand forRecording() {
-        macroState = 1;
-        return this;
-    }
-
-    public HSourceCommand forPlaying() {
-        macroState = 2;
+    public HSourceCommand forAction(String forAction) {
+        this.forAction = forAction;
         return this;
     }
 
@@ -75,51 +60,43 @@ class HSourceCommand extends DelegatedCommand {
 
     @Override
     public void performDefaultAction(ActionEvent e) {
-        if (al == null) {
+        if (forAction == null) {
             throw new AssertionError("override me");
         }
-        JSourceCodeEditor ed = getEditor();
-        InputHandler ih = ed.getInputHandler();
-        ih.executeAction(al, ed, null);
+        CodeEditorBase ed = getEditor();
+        ed.performAction(forAction);
     }
 
     @Override
     public boolean isDefaultActionApplicable() {
-        if (codeEditor) {
-            return getCodeEditor() != null;
-        }
-
-        JSourceCodeEditor ed = getEditor();
-        if (ed != null) {
-            if (comments) {
-                Tokenizer t = ed.getTokenizer();
-                if (t == null) {
-                    return false;
-                }
-                String prefix = ed.getTokenizer().getCommentPrefix();
-                if (prefix == null || prefix.isEmpty()) {
-                    return false;
-                }
+        CodeEditorBase ed;
+        if (forEditorTab) {
+            CodeEditor tab = getCodeEditor();
+            if (tab == null) {
+                return false;
             }
-            if (macroState != 0) {
-                InputHandler ih = ed.getInputHandler();
-                if (macroState == 1) {
-                    return ih.getActionRecorder() != null;
-                } else {
-                    return ih.isMacroRecorded() || ih.getActionRecorder() != null;
-                }
-            }
-            return true;
+            ed = tab.getEditor();
+        } else {
+            ed = getEditor();
         }
-        return false;
+        if (ed == null) {
+            return false;
+        }
+        
+        if (forAction != null) {
+            return ed.canPerformAction(forAction);
+        }
+        
+        return true;
     }
 
-    protected JSourceCodeEditor getEditor() {
+    protected CodeEditorBase getEditor() {
         MarkupTarget mt = StrangeEons.getApplication().getMarkupTarget();
-        if (mt != null && mt.getTarget() instanceof JSourceCodeEditor) {
-            JSourceCodeEditor jed = (JSourceCodeEditor) mt.getTarget();
+        if (mt != null && mt.getTarget() instanceof CodeEditorBase) {
+            CodeEditorBase jed = (CodeEditorBase) mt.getTarget();
             return jed.isEditable() ? jed : null;
         }
+
         CodeEditor ed = getCodeEditor();
         return ed == null ? null : ed.getEditor();
     }

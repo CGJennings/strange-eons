@@ -276,10 +276,11 @@ public final class Subprocess {
 
         JButton btn;
         btn = new JButton(label);
-        btn.setIcon(ResourceKit.getIcon("ui/controls/close0.png"));
         btn.setRolloverEnabled(true);
-        btn.setIcon(ResourceKit.getIcon("ui/controls/close1.png"));
-        btn.setSelectedIcon(ResourceKit.getIcon("ui/controls/close2.png"));
+        btn.setIcon(ResourceKit.getIcon("tab-close"));
+        btn.setRolloverIcon(ResourceKit.getIcon("tab-close-hi"));
+        btn.setSelectedIcon(ResourceKit.getIcon("tab-close-press"));
+        btn.putClientProperty("JButton.buttonType", "square");
         btn.setContentAreaFilled(false);
         btn.setHorizontalTextPosition(SwingConstants.LEADING);
         btn.addActionListener((ActionEvent e) -> {

@@ -81,7 +81,7 @@ public final class UILibraryDialogTemplate extends javax.swing.JDialog implement
 
     public static Icon getDefaultIcon() {
         if (defaultIcon == null) {
-            defaultIcon = resources.ResourceKit.getIcon("application/64.png");
+            defaultIcon = resources.ResourceKit.getIcon("application/app.png").derive(64, 64);
         }
         return defaultIcon;
     }

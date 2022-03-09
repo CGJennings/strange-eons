@@ -1,27 +1,20 @@
 package ca.cgjennings.ui;
 
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
-import ca.cgjennings.ui.theme.Theme;
-import java.awt.Color;
-import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.Font;
 import java.awt.Insets;
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JSpinner;
-import javax.swing.UIManager;
 import resources.ResourceKit;
 import resources.Settings;
 
 /**
- * A user interface control that cycles through a fixes set of options. This is
+ * A user interface control that cycles through a fixed set of options. This is
  * similar to a {@link JSpinner}, but the selected value cannot be edited with
  * the keyboard and the control has a button-like appearance rather than a
  * field-like appearance.
@@ -45,11 +38,8 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
     private Object[] cycleModel;
     private String[] settingValues;
-    private int[] gaps;
     private int index = 0;
     private M sel;
-    private JButton metric;
-    private static final int GAP = 8;
 
     /**
      * Creates a new cycle button with an empty model.
@@ -89,32 +79,22 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
      */
     public JCycleButton(M[] model, String[] settingValues) {
         this.settingValues = settingValues;
-        setIcon(icon);
-
-        metric = new JButton();
+        setIcon(ResourceKit.getIcon("cycle"));
         initButton(this);
-        initButton(metric);
-
         setCycleModel(model);
-//		setPressedIcon( icon );
     }
 
     private void initButton(JButton b) {
-        b.setIcon(icon);
-        b.setIconTextGap(GAP);
-        b.setHorizontalTextPosition(LEADING);
-        b.setHorizontalAlignment(TRAILING);
-
-        int marginAdj = UIManager.getDefaults().getInt(Theme.CYCLE_BUTTON_ICON_MARGIN_ADJUSTMENT);
-        if (marginAdj != 0) {
-            Insets margin = b.getMargin();
-            if (getComponentOrientation().isLeftToRight()) {
-                margin.right += marginAdj;
-            } else {
-                margin.left += marginAdj;
-            }
-            b.setMargin(margin);
+        b.setHorizontalTextPosition(TRAILING);
+        b.setHorizontalAlignment(LEADING);
+        b.putClientProperty("JButton.buttonType", "square");
+        Insets m = b.getMargin();        
+        if (b.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT) {
+            m.right = Math.min(m.right, 3);
+        } else {
+            m.left = Math.min(m.left, 3);
         }
+        b.setMargin(m);
     }
 
     /**
@@ -175,6 +155,20 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
     public M getSelectedItem() {
         return sel;
     }
+    
+    @Override
+    public void setFont(Font font) {
+        preferredSize = null;
+        super.setFont(font);
+    }
+    
+    @Override
+    public void setIcon(Icon icon) {
+        preferredSize = null;
+        if (getIcon() == null) {
+            super.setIcon(icon);
+        }
+    }
 
     /**
      * Sets the model that the button cycles through. The button will make its
@@ -198,12 +192,12 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
         if (model == null) {
             this.cycleModel = null;
-            gaps = null;
         } else {
             this.cycleModel = model.clone();
-            gaps = new int[model.length];
         }
-        computePreferredSize();
+        preferredSize = null;
+        getPreferredSize();
+        setSize(preferredSize);
         updateButtonFace();
     }
 
@@ -223,36 +217,37 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
         updateButtonFace();
         super.fireActionPerformed(event);
     }
-
-    private void computePreferredSize() {
-        Dimension max = new Dimension(0, 0);
-
-        if (cycleModel == null || cycleModel.length == 0) {
-            metric.setText(null);
-            max(max, -1);
-        } else {
-            for (int i = 0; i < cycleModel.length; ++i) {
-                metric.setText(cycleModel[i] == null ? null : cycleModel[i].toString());
-                max(max, i);
+    
+    @Override
+    public Dimension getPreferredSize() {
+        if (preferredSize == null) {
+            preferredSize = super.getPreferredSize();
+            if (cycleModel != null && cycleModel.length > 0) {
+                JButton b = new JButton();
+                b.setIcon(getIcon());
+                initButton(b);
+                for (int i=0; i<cycleModel.length; ++i) {
+                    b.setText(cycleModel[i] == null ? null : cycleModel[i].toString());
+                    Dimension d = b.getPreferredSize();
+                    preferredSize.width = Math.max(preferredSize.width, d.width);
+                    preferredSize.height = Math.max(preferredSize.height, d.height);
+                }
             }
-            for (int i = 0; i < gaps.length; ++i) {
-                gaps[i] = max.width - gaps[i] + GAP;
-            }
+            // an error margin is required in some cases, not sure why
+            preferredSize.width += 4;
         }
-
-        Dimension oldPref = getPreferredSize();
-        if (oldPref.width != max.width || oldPref.height != max.height) {
-            setPreferredSize(max);
-        }
+        return preferredSize;
     }
-
-    private void max(Dimension max, int gapIndex) {
-        Dimension pref = metric.getPreferredSize();
-        max.width = Math.max(max.width, pref.width);
-        max.height = Math.max(max.height, pref.height);
-        if (gapIndex >= 0) {
-            gaps[gapIndex] = pref.width;
-        }
+    private Dimension preferredSize;
+    
+    @Override
+    public Dimension getMinimumSize() {
+        return getPreferredSize();
+    }
+    
+    @Override
+    public Dimension getSize() {
+        return getPreferredSize();
     }
 
     @SuppressWarnings("unchecked")
@@ -272,10 +267,8 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
 
         if (sel == null) {
             setText(null);
-            setIconTextGap(GAP);
         } else {
             setText(sel.toString());
-            setIconTextGap(gaps[index]);
         }
     }
 
@@ -327,41 +320,4 @@ public class JCycleButton<M> extends JButton implements SettingBackedControl {
             return sel < 0 ? null : settingValues[getSelectedIndex()];
         }
     }
-
-    private Icon icon = new Icon() {
-        BufferedImage lo = ResourceKit.getThemedImage("icons/ui/controls/cycle.png");
-        BufferedImage hi = ResourceKit.getThemedImage("icons/ui/controls/cycle-hi.png");
-        Color lineColor = new Color(0x77000000, true);
-        Color disabledColor = new Color(0x77ffffff, true);
-
-        @Override
-        public void paintIcon(Component c, Graphics g1, int x, int y) {
-            ButtonModel m = getModel();
-            boolean highlight = m.isPressed() || m.isSelected() || (!isEnabled());
-            BufferedImage image = highlight ? hi : lo;
-            boolean ltr = getComponentOrientation().isLeftToRight();
-            Graphics2D g = (Graphics2D) g1;
-            Paint paint = g.getPaint();
-            g.setPaint(isEnabled() ? lineColor : disabledColor);
-            if (ltr) {
-                g.drawImage(image, null, x + 5, y);
-                g.drawLine(x, y, x, y + lo.getHeight() - 1);
-            } else {
-                g.drawImage(image, null, x, y);
-                int x1 = x + lo.getWidth() + 4; // i.e. +5-1
-                g.drawLine(x1, y, x1, y + lo.getHeight() - 1);
-            }
-            g.setPaint(paint);
-        }
-
-        @Override
-        public int getIconWidth() {
-            return lo.getWidth() + 5;
-        }
-
-        @Override
-        public int getIconHeight() {
-            return lo.getHeight();
-        }
-    };
 }

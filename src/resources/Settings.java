@@ -1060,8 +1060,8 @@ public class Settings implements Serializable, Iterable<String> {
         final int argb = colour.getRGB();
 
         String v;
-        if ((argb & 0xff00_0000) == 0xff00_0000) {
-            v = String.format("%06x", (argb & 0xff_ffff));
+        if ((argb & 0xff000000) == 0xff000000) {
+            v = String.format("%06x", (argb & 0xffffff));
         } else {
             v = String.format("%08x", argb);
         }
@@ -1212,15 +1212,15 @@ public class Settings implements Serializable, Iterable<String> {
      * Returns a (possibly cached) {@code Colour} for an argb int.
      */
     private static Colour argbToColour(int argb) {
-        if (argb == 0xff00_0000) {
+        if (argb == 0xff000000) {
             return BLACK;
-        } else if (argb == 0xffff_ffff) {
+        } else if (argb == 0xffffffff) {
             return WHITE;
         }
         return new Colour(argb, true);
     }
     private static final Colour BLACK = new Colour(0);
-    private static final Colour WHITE = new Colour(0xff_ffff);
+    private static final Colour WHITE = new Colour(0xffffff);
 
     /**
      * Converts a value to an argb int.
@@ -1266,7 +1266,7 @@ public class Settings implements Serializable, Iterable<String> {
             }
 
             if (value.length() == 6) {
-                return 0xff00_0000 | Integer.parseInt(value, 16);
+                return 0xff000000 | Integer.parseInt(value, 16);
             } else if (value.length() == 8) {
                 return (int) (Long.parseLong(value, 16) & 0xffffffffL);
             }
@@ -3140,6 +3140,99 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         /**
+         * Given a standard {@link Color} object, converts it to a {@code Colour}.
+         * 
+         * @param c the color to convert
+         * @return the original object if it is already a {@code Colour}, otherwise
+         * an equivalent {@code Colour}; returns null if passed null
+         */        
+        public static Colour from(Color c) {
+            return (c instanceof Colour) ? (Colour) c : (c == null ? null : new Colour(c.getRGB(), true));
+        }
+
+        /**
+         * Mixes this colour with an equal amount of another colour.
+         * 
+         * @param with the colour to mix this colour with
+         * @return the mixed colour
+         * @see #mix(java.awt.Color, float)
+         */
+        public Colour mix(Color with) {
+            return mix(with, 0.5f);
+        }
+        
+        /**
+         * Mixes this colour with another colour.
+         * The colours are mixed in a linear RGB (not sRGB) space for 
+         * results that more closely match human perception.
+         * Only the colours are mixed; the new colour will retain the alpha
+         * value of this colour.
+         * 
+         * @param with the colour to mix this colour with
+         * @param thisAmount the proportion of this colour to include, from 0f-1f
+         * @return the mixed colour
+         */
+        public Colour mix(Color with, float thisAmount) {
+            if (thisAmount >= 1f) {
+                return this;
+            }
+            if (thisAmount <= 0f) {
+                return from(with);
+            }
+            
+            int rgb1 = getRGB(), rgb2 = with.getRGB();
+
+            if (rgb1 == rgb2) {
+                return this;
+            }
+            
+            final float thatAmount = 1f - thisAmount;
+            
+            float r1 = ((rgb1 & 0xff0000) >> 16) / 255f;
+            float r2 = ((rgb2 & 0xff0000) >> 16) / 255f;
+            r1 = (float) Math.sqrt((r1*r1*thisAmount) + (r2*r2*thatAmount));
+            
+            float g1 = ((rgb1 & 0x00ff00) >> 8) / 255f;
+            float g2 = ((rgb2 & 0x00ff00) >> 8) / 255f;
+            g1 = (float) Math.sqrt((g1*g1*thisAmount) + (g2*g2*thatAmount));
+            
+            float b1 = (rgb1 & 0x0000ff) / 255f;
+            float b2 = (rgb2 & 0x0000ff) / 255f;
+            b1 = (float) Math.sqrt((b1*b1*thisAmount) + (b2*b2*thatAmount));
+            
+            return new Colour(r1, g1, b1, getAlpha()/255f);
+        }
+        
+        /**
+         * Returns a version of this colour with a different alpha value.
+         * 
+         * @param newAlpha the new alpha value, from 0 to 1
+         * @return the adjusted colour
+         */
+        public Colour derive(float newAlpha) {
+            int a = (int) (Math.max(0f, Math.min(1f, newAlpha)) * 255f);
+            return new Colour((getRGB() & 0xffffff) | (a << 24), true);
+        }
+        
+        /**
+         * Returns a derived colour that shifts the hue and scales the
+         * brightness and saturation of this colour.
+         * The result will have the same alpha value as this colour.
+         * 
+         * @param hueShift the angle to shift the hue by, in rotations
+         * @param satFactor the factor to apply to the saturation
+         * @param briFactor the factor to apply to the brightness
+         * @return the derived colour
+         */
+        public Colour derive(float hueShift, float satFactor, float briFactor) {
+            float[] hsb = RGBtoHSB(getRed(), getGreen(), getBlue(), null);
+            hsb[0] += hueShift;
+            hsb[1] = Math.max(0f, Math.min(1f, hsb[1] * satFactor));
+            hsb[2] = Math.max(0f, Math.min(1f, hsb[2] * briFactor));
+            return new Colour(HSBtoRGB(hsb[0], hsb[1], hsb[2]) & 0xffffff | (getAlpha() << 24), true);
+        }
+        
+        /**
          * Returns a string suitable for storing this colour as a setting value.
          *
          * @return a string of either 6 or 8 hexadecimal digits (depending on
@@ -3150,8 +3243,8 @@ public class Settings implements Serializable, Iterable<String> {
         public String toString() {
             int argb = getRGB();
             String v;
-            if ((argb & 0xff00_0000) == 0xff00_0000) {
-                v = String.format("%06x", (argb & 0xff_ffff));
+            if ((argb & 0xff000000) == 0xff000000) {
+                v = String.format("%06x", (argb & 0xffffff));
             } else {
                 v = String.format("%08x", argb);
             }

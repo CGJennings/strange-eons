@@ -1,14 +1,16 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import javax.swing.Icon;
+import java.net.URL;
+import java.util.logging.Level;
+import javax.imageio.ImageIO;
 import resources.CoreComponents.MissingCoreComponentException;
 import resources.Language;
-import resources.ResourceKit;
 
 /**
  * Provides the information needed to allow the user to select a theme, and for
@@ -19,14 +21,13 @@ import resources.ResourceKit;
  * @since 3.0
  */
 public final class InstalledTheme extends InstalledBundleObject {
-
-    private static final int ICON_SIZE_LARGE = 48;
-    private static final int ICON_SIZE_SMALL = 16;
+    private static final int ICON_SIZE_LARGE = ThemedIcon.MEDIUM_LARGE;
+    private static final int ICON_SIZE_SMALL = ThemedIcon.SMALL;
     private String id;
 
-    private String name, desc;
-    private BufferedImage image;
-    private Icon icon, largeIcon;
+    private String name, desc, group;
+    private ThemedIcon icon, largeIcon;
+    private boolean dark;
 
     /**
      * Creates a new {@link InstalledTheme} instance that describes the theme
@@ -75,38 +76,57 @@ public final class InstalledTheme extends InstalledBundleObject {
     }
 
     /**
-     * Returns the theme's representative image.
-     *
-     * @return the representative image for the theme
-     */
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        return image;
-    }
-
-    /**
-     * Returns a small icon for the theme based upon the representative image.
+     * Returns a small icon for the theme.
      *
      * @return a small icon
      */
     @Override
-    public Icon getIcon() {
-        if (icon == null) {
-            icon = ImageUtilities.createIconForSize(image, ICON_SIZE_SMALL);
-        }
+    public ThemedIcon getIcon() {
         return icon;
     }
 
     /**
-     * Returns a large icon for the theme based upon the representative image.
+     * Returns a large icon for the theme.
      *
      * @return a large icon
      */
-    public Icon getLargeIcon() {
-        if (largeIcon == null) {
-            largeIcon = ImageUtilities.createIconForSize(image, ICON_SIZE_LARGE);
-        }
+    public ThemedIcon getLargeIcon() {
         return largeIcon;
+    }
+    
+    /**
+     * Returns a URL for the location of a screenshot image if one is available,
+     * otherwise returns null.
+     * 
+     * @return the preview screenshot URL for the theme, or null
+     */    
+    public URL getScreenshotUrl() {
+        try {
+            Class cl = Class.forName(id);            
+            URL url = cl.getResource(cl.getSimpleName() + "_screenshot.png");
+            return url;
+        } catch (ClassNotFoundException ex) { 
+            StrangeEons.log.log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
+    /**
+     * Returns a screenshot of the theme if one is available,
+     * otherwise returns null.
+     * 
+     * @return the preview screenshot for the theme, or null
+     */
+    public BufferedImage getScreenshot() {
+        try {
+            URL url = getScreenshotUrl();
+            if (url != null) {
+                return ImageIO.read(url);
+            }
+        } catch (IOException io) {
+            StrangeEons.log.log(Level.WARNING, "failed to read screenshot", io);
+        }
+        return null;
     }
 
     private void collectPluginInfo() throws PluginException {
@@ -116,17 +136,18 @@ public final class InstalledTheme extends InstalledBundleObject {
             if (name == null) {
                 name = id;
             }
-            image = theme.getThemeRepresentativeImage();
-            if (image == null) {
-                image = ResourceKit.getImage("/ca/cgjennings/ui/theme/default.png");
-            }
             // make sure that the L&F class needed by the theme exists
             // (this will eliminate themes based on Nimbus when Java 6u10 is not installed)
             try {
-                Class.forName(theme.getLookAndFeelClassName(), false, ClassLoader.getSystemClassLoader());
+                if (theme.getLookAndFeelClassName() != null) {
+                    Class.forName(theme.getLookAndFeelClassName(), false, ClassLoader.getSystemClassLoader());
+                }
             } catch (Throwable t) {
                 throw new MissingCoreComponentException("theme's underlying Look and feel unavailable: " + theme.getLookAndFeelClassName());
             }
+            
+            largeIcon = theme.getThemeIcon().mediumLarge();
+            icon = largeIcon.small();            
 
             desc = theme.getThemeDescription();
             if (desc == null) {
@@ -138,6 +159,13 @@ public final class InstalledTheme extends InstalledBundleObject {
                     desc = Language.string("sd-l-theme-desc");
                 }
             }
+            
+            group = theme.getThemeGroup();
+            if (group == null) {
+                group = "";
+            }
+            
+            dark = theme.isDark();
         } catch (Throwable t) {
             markFailed();
             throw new PluginException("unable to create theme instance", t);
@@ -169,5 +197,28 @@ public final class InstalledTheme extends InstalledBundleObject {
     @Override
     boolean isLoaded() {
         return true;
+    }
+
+    @Override
+    public int compareTo(InstalledBundleObject o) {
+        if (!(o instanceof InstalledTheme)) {
+            return super.compareTo(o);
+        }
+        // sort by group id, then light/dark, then name, then fall back on super
+        final InstalledTheme rhs = (InstalledTheme) o;
+        int cmp = group.compareTo(rhs.group);
+        if (cmp != 0) return cmp;
+        
+        if (rhs.dark) {
+            if (!dark) return -1;
+        } else if (dark) {
+            return 1;
+        }
+        
+        cmp = Language.getInterface().getCollator().compare(getName(), rhs.getName());
+        if (cmp == 0) {
+            cmp = super.compareTo(rhs);
+        }
+        return cmp;
     }
 }

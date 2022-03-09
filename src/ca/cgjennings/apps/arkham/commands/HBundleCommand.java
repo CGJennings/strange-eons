@@ -46,8 +46,8 @@ class HBundleCommand extends AbstractCommand {
     }
 
     @Override
-    public boolean isEnabled() {
-        return getTask() != null;
+    public void update() {
+        setEnabled(getTask() != null);
     }
 
     @Override

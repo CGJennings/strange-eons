@@ -9,6 +9,7 @@ import org.mozilla.javascript.Scriptable;
 import org.mozilla.javascript.ScriptableObject;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -27,6 +28,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -91,6 +94,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     private OutputStream outstream, errstream;
     private Color outColor, errorColor, backgroundColor;
     private Painter<JComponent> bgpainter;
+    
+    private ConsoleInput conInput;
 
     private static Color color(String key, Color def) {
         Color c = UIManager.getDefaults().getColor(key);
@@ -105,13 +110,31 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
 
     @SuppressWarnings("unchecked")
     private void initStyles() {
-        backgroundColor = color(Theme.CONSOLE_BACKROUND, Color.WHITE);
-        outColor = color(Theme.CONSOLE_OUTPUT, Color.BLACK);
-        errorColor = color(Theme.CONSOLE_ERROR, Color.RED);
-        console.setSelectionColor(color(Theme.CONSOLE_SELECTION_BACKGROUND, Color.YELLOW));
-        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND, Color.BLACK));
+        backgroundColor = color(Theme.CONSOLE_BACKROUND,
+                Palette.get.background.opaque.fill
+        );
+        outColor = color(Theme.CONSOLE_OUTPUT,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.text
+        );
+        errorColor = color(
+                Theme.CONSOLE_ERROR,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.red
+        );
+        console.setSelectionColor(color(
+                Theme.CONSOLE_SELECTION_BACKGROUND,
+                Palette.get.harmonizing(backgroundColor.getRGB()).opaque.yellow
+        ));
+        console.setSelectedTextColor(color(Theme.CONSOLE_SELECTION_FOREGROUND,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.text
+        ));
+        
         bgpainter = (Painter<JComponent>) UIManager.getDefaults().get(Theme.CONSOLE_BACKGROUND_PAINTER);
-        console.setFont(UIManager.getDefaults().getFont(Theme.CONSOLE_FONT));
+        
+        Font font = UIManager.getDefaults().getFont(Theme.CONSOLE_FONT);
+        if (font == null) {
+            font = ResourceKit.getEditorFont();
+        }        
+        console.setFont(font);
         outcon.createStyles();
         errcon.createStyles();
     }
@@ -176,6 +199,9 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
                 }
             }
         });
+        
+        conInput = new ConsoleInput(this);
+        conInput.setConsoleInputVisible(true);
     }
     private Timer flushTimer = new Timer(100, (ActionEvent e) -> {
         __flushAllPendingFragments();
@@ -340,7 +366,6 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         scrollPane.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         console.setEditable(false);
-        console.setBackground(new java.awt.Color(61, 75, 40));
         console.setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
         console.setDragEnabled(true);
         console.setOpaque(false);
@@ -400,6 +425,24 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             super(out, true);
         }
 
+        public void insertImage(Color c) {
+            final int SIZE = console.getFont().getSize() + 2;
+            BufferedImage im = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = im.createGraphics();
+            try {
+                if (c.getAlpha() < 255) {
+                    g.setPaint(new ca.cgjennings.graphics.paints.CheckeredPaint());
+                    g.fillRect(0, 0, SIZE, SIZE);
+                }
+                g.setPaint(c);
+                g.fillRect(0, 0, SIZE, SIZE);
+            } finally {
+                g.dispose();
+            }
+            insertImage(im);
+            print(" #" + resources.Settings.Colour.from(c).toString() + ' ');
+        }
+        
         public void insertImage(Image img) {
             insertImage(new ImageIcon(img));
         }
@@ -540,10 +583,10 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             Font f = console.getFont();
             attr = new SimpleAttributeSet(console.getInputAttributes());
             if (isError) {
-                StyleConstants.setForeground(attr, errorColor == null ? Color.RED : errorColor);
+                StyleConstants.setForeground(attr, errorColor == null ? Palette.get.foreground.opaque.red : errorColor);
                 StyleConstants.setBold(attr, true);
             } else {
-                StyleConstants.setForeground(attr, outColor == null ? Color.BLACK : outColor);
+                StyleConstants.setForeground(attr, outColor == null ? Palette.get.foreground.opaque.text : outColor);
                 StyleConstants.setBold(attr, f.isBold());
             }
         }
@@ -633,9 +676,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             final ConsoleErrorLocation el = getErrorAtPoint(e.getPoint());
             if (el != null) {
                 String label;
-                if (el.getIdentifier().startsWith("javadoc:")) {
-                    label = string("plug-console-go-to-javadoc", el.getShortIdentifier());
-                } else if (el.getLineNumber() < 1) {
+                if (el.getLineNumber() < 1) {
                     label = string("plug-console-go-to-error-no-line-number", el.getShortIdentifier());
                 } else {
                     label = string("plug-console-go-to-error", el.getShortIdentifier(), el.getLineNumber());
@@ -817,11 +858,13 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     private void __postinsert() {
         int endOfDoc = console.getDocument().getLength();
-        if (!isVisible() && getParent().isVisible()) {
+
+        if (!isVisible() && (getOwner() == null || getOwner().isVisible())) {
             setVisible(true);
         }
 
         try {
+            @SuppressWarnings("deprecation")
             Rectangle r = console.modelToView(endOfDoc);
             if (r != null) {
                 Rectangle vis = console.getVisibleRect();
@@ -865,14 +908,30 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
      * @return a description of the stack trace element at that line, or
      * {@code null}
      * @see #getErrorAtOffset(int)
+     *
+     * @deprecated
      */
+    @Deprecated
     public ConsoleErrorLocation getErrorAtPoint(Point p) {
         int pos = console.viewToModel(p);
-        if (pos < 0) {
-            return null;
-        }
-        return getErrorAtOffset(pos);
+        return pos < 0 ? null : getErrorAtOffset(pos);
     }
+    
+    /**
+     * Returns a description of the error at the offset into the console text
+     * under the specified point in the console window. Returns
+     * {@code null} if the line at that point does not represent a valid
+     * stack trace entry.
+     *
+     * @param p the point over the script console
+     * @return a description of the stack trace element at that line, or
+     * {@code null}
+     * @see #getErrorAtOffset(int)
+     */
+    public ConsoleErrorLocation getErrorAtPoint(Point2D p) {
+        int pos = console.viewToModel2D(p);
+        return pos < 0 ? null : getErrorAtOffset(pos);
+    }    
 
     /**
      * Returns a description of the error at the line at offset {@code pos} in

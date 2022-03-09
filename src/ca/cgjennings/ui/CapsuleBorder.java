@@ -164,23 +164,4 @@ public class CapsuleBorder extends AbstractBorder {
         }
         this.bottom = bottom;
     }
-
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame( "Border WIP" );
-//				JLabel t = new JLabel( "                 " );
-//				t.setBorder( new CompoundBorder(
-//						new CapsuleBorder(),
-//						new LineBorder( Color.RED, 1 )
-//				) );
-//				f.add( t );
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.setSize( 300, 64 );
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }

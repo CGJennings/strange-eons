@@ -60,6 +60,7 @@ public interface StrangeEonsEditor extends Commandable {
      * @return the current title, which is guaranteed not to be {@code null}
      */
     public String getTitle();
+    
 
     /**
      * Sets the preferred icon to use for this editor window. This icon may be
@@ -67,19 +68,21 @@ public interface StrangeEonsEditor extends Commandable {
      * interface. Possible example uses include the following: the document tab,
      * the editor's item in the Window menu, and the frame icon of the editor's
      * detached window. Note, however, that there is no guarantee that the icon
-     * will be used, or how. Furthermore, the icon may be used in modified form.
+     * will be used, or how.
      *
      * @param icon the preferred icon for the editor window
      * @see #getFrameIcon()
      */
     public void setFrameIcon(Icon icon);
-
+    
     /**
      * Returns the editor window icon.
      *
      * @return the icon for the editor, or {@code null} if no icon is set
+     * @see #setFrameIcon()
      */
     public Icon getFrameIcon();
+   
 
     /**
      * Sets the tool tip text to display for the editor's tab.

@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.deck;
 import ca.cgjennings.apps.arkham.Length;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
+import ca.cgjennings.apps.arkham.ToolWindow;
 import ca.cgjennings.apps.arkham.deck.item.PageItem;
 import ca.cgjennings.apps.arkham.deck.item.SizablePageItem;
 import ca.cgjennings.ui.JUtilities;
@@ -27,7 +28,7 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public final class PropertyPalette extends javax.swing.JDialog {
+public final class PropertyPalette extends ToolWindow {
 
     private Deck deck;
     private DeckEditor ed;
@@ -40,8 +41,8 @@ public final class PropertyPalette extends javax.swing.JDialog {
      */
     private PropertyPalette() {
         super(StrangeEons.getWindow(), false);
-        JUtilities.makeUtilityWindow(this);
         initComponents();
+        setBody(propertyPanel);
 
         DeckEditor.localizeComboBoxLabels(unitCombo, null);
         unitCombo.setSelectedIndex(Length.getDefaultUnit());
@@ -64,6 +65,8 @@ public final class PropertyPalette extends javax.swing.JDialog {
         if (ed != null) {
             editorListener.editorSelected(ed);
         }
+        
+        pack();
     }
 
     /**
@@ -205,10 +208,6 @@ public final class PropertyPalette extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle(string("de-opal-title")); // NOI18N
-        setResizable(false);
-
         propertyPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
         xLabel.setText("x");
@@ -345,7 +344,9 @@ public final class PropertyPalette extends javax.swing.JDialog {
         StyleUtilities.sizeTree( propertyPanel, StyleUtilities.SMALL );
         selFields = new JTextField[] { xField, yField, widthField, heightField };
 
-        getContentPane().add(propertyPanel, java.awt.BorderLayout.CENTER);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle(string("de-opal-title")); // NOI18N
+        setResizable(false);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

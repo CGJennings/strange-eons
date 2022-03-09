@@ -11,7 +11,6 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,12 +57,11 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * @return a list of frame icons at various sizes
      */
     public static List<Image> getApplicationFrameIcons() {
-//		boolean isTestMode = BundleInstaller.getTestBundle() != null;
         if (frameIcons == null) {
-            frameIcons = new ArrayList<>(4);
-            for (int size = 256; size >= 16; size >>= 1) {
-                BufferedImage image = ResourceKit.getThemedImage("icons/application/" + size + ".png");
-                frameIcons.add(image);
+            frameIcons = new ArrayList<>(5);
+            frameIcons.add(ResourceKit.getThemedImage("icons/application/app.png"));
+            for(int x = 2; x <= 16; x *= 2) {
+                frameIcons.add(ResourceKit.getThemedImage("icons/application/app@" + x + "x.png"));
             }
             frameIcons = Collections.unmodifiableList(frameIcons);
         }
@@ -203,7 +201,7 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * @param restart restart after exit
      * @since 2.1a8
      */
-    public abstract void exitApplication(boolean restart);
+    public abstract boolean exitApplication(boolean restart);
 
     /**
      * Displays a message to inform the user that the application should be

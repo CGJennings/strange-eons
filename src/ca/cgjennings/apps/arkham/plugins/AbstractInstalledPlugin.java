@@ -2,13 +2,13 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
-import ca.cgjennings.graphics.ImageUtilities;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.IOException;
 import java.util.logging.Level;
 import javax.swing.Icon;
 import static resources.Language.string;
+import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -32,7 +32,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     private String name;
     private String desc;
     private float version;
-    private BufferedImage image;
     private Icon icon;
     private int type;
     private String prefix;
@@ -65,23 +64,23 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      * @return an icon for the plug-in
      */
     @Override
-    public Icon getIcon() {
-        synchronized (this) {
-            if (icon == null) {
-                BufferedImage bi = getRepresentativeImage();
-                if (bi == null) {
-                    File f = null;
-                    PluginBundle bundle = getBundle();
-                    if (bundle != null) {
-                        f = bundle.getFile();
-                    }
-                    icon = PluginBundle.getIcon(f, true);
-                } else {
-                    icon = ImageUtilities.createIconForSize(bi, 18);
+    public ThemedIcon getIcon() {
+        collectPluginInfo();
+        ThemedIcon icon = plugin.getPluginIcon();
+        if (icon == null) {
+            PluginBundle bundle = getBundle();
+            if (bundle != null) {
+                icon = PluginBundle.getIcon(bundle.getFile(), true);
+                if (icon instanceof ThemedGlyphIcon) {
+                    icon = ((ThemedGlyphIcon) icon).derive(getName());
                 }
             }
         }
-        return icon;
+        // can't find bundle? shouldn't happen
+        if (icon == null) {
+            icon = ResourceKit.getIcon("plugin");
+        }
+        return icon.small();
     }
 
     /**
@@ -126,20 +125,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     public int getPluginType() {
         collectPluginInfo();
         return type;
-    }
-
-    /**
-     * Returns the representative image of the plug-in. If necessary, a new
-     * instance of the plug-in will be created temporarily in order to get this
-     * information.
-     *
-     * @return the representative name reported by the plug-in (may be
-     * {@code null})
-     */
-    @Override
-    public BufferedImage getRepresentativeImage() {
-        collectPluginInfo();
-        return image;
     }
 
     /**
@@ -285,7 +270,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
             desc = p.getPluginDescription();
             version = p.getPluginVersion();
             type = p.getPluginType();
-            image = p.getRepresentativeImage();
 
             collectPluginInfo(p);
 

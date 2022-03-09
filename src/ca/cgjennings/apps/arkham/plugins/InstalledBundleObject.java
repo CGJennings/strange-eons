@@ -2,12 +2,13 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
+import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
-import javax.swing.Icon;
 import resources.Language;
 
 /**
@@ -115,17 +116,22 @@ public abstract class InstalledBundleObject implements IconProvider, Comparable<
      * @return an icon for the plug-in
      */
     @Override
-    public abstract Icon getIcon();
+    public abstract ThemedIcon getIcon();
 
     /**
      * Returns the representative image of the plug-in. If necessary, a new
      * instance of the plug-in will be created temporarily in order to get this
      * information.
+     * 
+     * @deprecated Use {@link #getIcon()}.
      *
      * @return the representative name reported by the plug-in (may be
      * {@code null})
      */
-    public abstract BufferedImage getRepresentativeImage();
+    @Deprecated
+    public final BufferedImage getRepresentativeImage() {
+        return ImageUtilities.iconToImage(getIcon().mediumSmall());
+    }
 
     /**
      * Returns {@code true} if there is an update pending for this plug-in. A

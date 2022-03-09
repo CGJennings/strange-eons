@@ -229,8 +229,8 @@
         </Component>
         <Component class="javax.swing.JLabel" name="warningIcon">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/resources/icons/application/warning.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="ResourceKit.getIcon(&quot;application/warning.png&quot;).medium()" type="code"/>
             </Property>
           </Properties>
         </Component>

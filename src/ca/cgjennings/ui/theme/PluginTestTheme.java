@@ -1,14 +1,10 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.graphics.filters.AbstractImageFilter;
+import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GammaCorrectionFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKGROUND_PAINTER;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_ERROR;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_OUTPUT;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_BACKGROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_FOREGROUND;
+import static ca.cgjennings.ui.theme.Theme.*;
+import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.UIDefaults;
@@ -39,25 +35,29 @@ public class PluginTestTheme extends Theme {
         // is actually loaded
         greyFilt = new GreyscaleFilter();
         sepiaFilt = new GammaCorrectionFilter(2d, 1.32d, 0.8d);
+        
+        // apply theme to standard palette
+        BufferedImage im = Palette.get.toImage();
+        Palette.get = Palette.fromImage(applyThemeToImage(im));
 
-        Color base = new Color(0x87_6e2f);
+        Color base = new Color(0x876e2f);
         defaults.put("nimbusBase", base);
         defaults.put("nimbusSelectionBackground", base.darker());
-        defaults.put("control", new Color(0xd9_c89e));
-        defaults.put("nimbusFocus", new Color(0xbf_6204));
+        defaults.put("control", new Color(0xd9c89e));
+        defaults.put("nimbusFocus", new Color(0xbf6204));
 
         // these keys are defined by Strange Eons rather than the look and feel
-        defaults.put(Theme.EDITOR_TAB_BACKGROUND, new ColorUIResource(0x56_4723));
+        defaults.put(Theme.EDITOR_TAB_BACKGROUND, new ColorUIResource(0x564723));
     }
 
     @Override
     public void modifyLookAndFeelDefaults(UIDefaults defaults) {
-        defaults.put(CONSOLE_BACKROUND, new Color(0x4b_3d28));
-        defaults.put(CONSOLE_OUTPUT, new Color(0xe1_f393));
-        defaults.put(CONSOLE_ERROR, new Color(0x9d_f939));
-        defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xe1_f393));
-        defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x4b_3d28));
-        defaults.put(CONSOLE_BACKGROUND_PAINTER, new DefaultConsolePainter());
+        defaults.put(CONSOLE_BACKROUND, new Color(0x4b3d28));
+        defaults.put(CONSOLE_OUTPUT, new Color(0xe1f393));
+        defaults.put(CONSOLE_ERROR, new Color(0x9df939));
+        defaults.put(CONSOLE_SELECTION_BACKGROUND, new Color(0xe1f393));
+        defaults.put(CONSOLE_SELECTION_FOREGROUND, new Color(0x4b3d28));
+        defaults.put(CONSOLE_BACKGROUND_PAINTER, new HydraTheme.HydraConsolePainter());
     }
 
     @Override
@@ -74,7 +74,12 @@ public class PluginTestTheme extends Theme {
         sepiaFilt.filter(bi, bi);
         return bi;
     }
+    
+    @Override
+    public Colour applyThemeToColor(Color c) {
+        return new Colour(sepiaFilt.filterPixel(greyFilt.filterPixel(c.getRGB())), true);
+    }
 
-    private AbstractImageFilter greyFilt;
-    private AbstractImageFilter sepiaFilt;
+    private AbstractPixelwiseFilter greyFilt;
+    private AbstractPixelwiseFilter sepiaFilt;
 }

@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.JIconList;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -86,7 +87,7 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
         jLabel1 = new javax.swing.JLabel();
         nameField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         extLabel = new javax.swing.JLabel();
@@ -110,8 +111,8 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
 
         jLabel2.setText(string( "prj-doc-type" )); // NOI18N
 
-        jLabel3.setForeground(java.awt.Color.red);
-        jLabel3.setText(" ");
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
+        errorLabel.setText(" ");
 
         cancelBtn.setText(string( "cancel" )); // NOI18N
 
@@ -126,7 +127,7 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -165,7 +166,7 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(errorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelBtn)
@@ -191,10 +192,10 @@ public final class NewDocumentDialog extends javax.swing.JDialog implements Agno
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelBtn;
+    private javax.swing.JLabel errorLabel;
     private javax.swing.JLabel extLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField nameField;
     private javax.swing.JButton okBtn;

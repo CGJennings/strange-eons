@@ -48,7 +48,7 @@ class SortDialog extends javax.swing.JDialog implements AgnosticDialog {
         try {
             DefaultComboBoxModel<Object> m = new DefaultComboBoxModel<>();
             for (Locale loc : Language.getLocales()) {
-                m.addElement(new LanguageCodeDescriptor(loc, false, true));
+                m.addElement(new LanguageCodeDescriptor(loc));
             }
             customLocaleCombo.setModel(m);
             customLocaleCombo.setSelectedIndex(0);

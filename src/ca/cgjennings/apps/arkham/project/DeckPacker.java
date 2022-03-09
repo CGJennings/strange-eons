@@ -618,7 +618,7 @@ public class DeckPacker {
             try {
                 g.setColor(Color.WHITE);
                 g.fillRect(0, 0, image.getWidth(), image.getHeight());
-                g.setColor(new Color(0x77_aaff));
+                g.setColor(new Color(0x77aaff));
                 g.fill(a);
                 g.setColor(Color.PINK);
                 g.fill(item.getRectangle());

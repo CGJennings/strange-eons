@@ -313,6 +313,7 @@ public class PlatformSupport {
     /**
      * @deprecated Alias for {@link #PLATFORM_IS_MAC}.
      */
+    @Deprecated
     public static final boolean PLATFORM_IS_OSX;
     /**
      * True if the JVM is running on a Windows operating system.

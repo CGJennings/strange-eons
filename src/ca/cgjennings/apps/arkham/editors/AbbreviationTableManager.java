@@ -1,8 +1,8 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
-import ca.cgjennings.ui.textedit.completion.AbbreviationTable;
+import ca.cgjennings.ui.textedit.CodeType;
+import ca.cgjennings.ui.textedit.AbbreviationTable;
 import gamedata.Game;
 import java.io.File;
 import java.io.IOException;
@@ -122,7 +122,7 @@ public class AbbreviationTableManager {
     }
 
     /**
-     * Loads and returns an abbreviation table suitable for the given code type,
+     * Loads and returns an abbreviation table suitable for the given type,
      * or returns {@code null}.
      *
      * @param type the code type to load a table for
@@ -130,7 +130,7 @@ public class AbbreviationTableManager {
      */
     private static LanguageAwareAbbreviationTable loadAbbreviationTable(String fileName) {
         LanguageAwareAbbreviationTable at = null;
-
+        
         if (fileName != null) {
             // try loading user table
             File f = StrangeEons.getUserStorageFile("abbrev/" + fileName + ".settings");

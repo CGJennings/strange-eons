@@ -58,7 +58,7 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     @Override
     public Icon getThumbnailIcon() {
         if (sharedIcon == null) {
-            sharedIcon = ResourceKit.getIcon("ui/deck/tile.png");
+            sharedIcon = ResourceKit.getIcon("deck/tile.png");
         }
         return sharedIcon;
     }

@@ -132,7 +132,7 @@ public class MetadataSource {
             }
             type = TYPE_DESCS.get(extension);
             if (type == null) {
-                type = fsv.getSystemTypeDescription(m.getFile());
+                type = FileSystemView.getFileSystemView().getSystemTypeDescription(m.getFile());
             }
             if (type == null) {
                 type = extension;
@@ -200,28 +200,28 @@ public class MetadataSource {
      * @param m the member to locate an icon for
      * @return an icon appropriate for {@code m}
      */
-    public Icon getIcon(Member m) {
+    public ThemedIcon getIcon(Member m) {
         if (!m.getFile().exists()) {
-            return ICON_FILE;
+            return (ThemedIcon) ICON_FILE;
         }
         if (m.isFolder()) {
             if (m instanceof Task) {
                 if (m instanceof Project) {
-                    return ICON_PROJECT;
+                    return (ThemedIcon) ICON_PROJECT;
                 }
                 Settings s = ((Task) m).getSettings();
                 return getDefaultTaskIcon(s.get(Task.KEY_TYPE), s.get(Task.KEY_ICON));
             }
-            return ICON_FOLDER;
+            return (ThemedIcon) ICON_FOLDER;
         }
         String extension = m.getExtension();
         if (extension.length() == 0 && m.getFile().getName().equals("eons-plugin")) {
-            return ICON_PLUGIN_ROOT;
+            return (ThemedIcon) ICON_PLUGIN_ROOT;
         }
         if (DEFAULT_ICONS.isEmpty()) {
             initDefaultIcons();
         }
-        Icon i = DEFAULT_ICONS.get(extension);
+        ThemedIcon i = DEFAULT_ICONS.get(extension);
         if (i != null) {
             return i;
         }
@@ -530,11 +530,11 @@ public class MetadataSource {
     private static String[] defaultIconExtensions;
     private static Icon[] defaultIcons;
 
-    private static final HashMap<String, Icon> DEFAULT_ICONS = new HashMap<>();
+    private static final HashMap<String, ThemedIcon> DEFAULT_ICONS = new HashMap<>();
 
     private static void addIcons(Object... icons) {
         for (int i = 0; i < icons.length; i += 2) {
-            DEFAULT_ICONS.put((String) icons[i], (Icon) icons[i + 1]);
+            DEFAULT_ICONS.put((String) icons[i], (ThemedIcon) icons[i + 1]);
         }
     }
 
@@ -549,6 +549,7 @@ public class MetadataSource {
                 "csv", ICON_TABLE,
                 "htm", ICON_HTML,
                 "html", ICON_HTML,
+                "md", ICON_MARKDOWN,
                 "java", ICON_JAVA,
                 "jp2", ICON_IMAGE,
                 "jpg", ICON_IMAGE,
@@ -589,20 +590,11 @@ public class MetadataSource {
         );
     }
 
-    private Icon getSystemIcon(Member m) {
-        Icon i = fsv.getSystemIcon(m.getFile());
-
-        if (i == null) {
-            i = ICON_FILE;
-        } else if (i.getIconWidth() > ICON_SIZE || i.getIconHeight() > ICON_SIZE) {
-            i = ImageUtilities.createIconForSize(ImageUtilities.iconToImage(i), ICON_SIZE);
-        }
-
+    private ThemedIcon getSystemIcon(Member m) {
+        ThemedIcon i = ThemedIcon.create(m.getFile()).derive(ICON_SIZE);
         DEFAULT_ICONS.put(m.getExtension(), i);
-
         return i;
     }
-    private static final FileSystemView fsv = FileSystemView.getFileSystemView();
 
     /**
      * Preferred width and height of project member icons, in pixels. Note that
@@ -610,59 +602,55 @@ public class MetadataSource {
      */
     static final int ICON_SIZE = 18;
 
-    public static final Icon ICON_PROJECT = getIcon("project/project.png");
-    public static final Icon ICON_FOLDER = getIcon("project/folder.png");
-    public static final Icon ICON_FILE = getIcon("project/file.png");
-    public static final Icon ICON_IMAGE = getIcon("project/image.png");
-    public static final Icon ICON_VECTOR_IMAGE = getIcon("project/vector-image.png");
-    public static final Icon ICON_JAVA = getIcon("project/java.png");
-    public static final Icon ICON_SCRIPT = getIcon("project/script.png");
-    public static final Icon ICON_AUTOMATION_SCRIPT = getIcon("project/auto.png");
-    public static final Icon ICON_TYPESCRIPT = getIcon("project/typescript.png");
-    public static final Icon ICON_SETTINGS = getIcon("project/settings.png");
-    public static final Icon ICON_PROPERTIES = getIcon("project/properties.png");
-    public static final Icon ICON_COLLECTION = getIcon("project/collection.png");
-    public static final Icon ICON_TABLE = getIcon("project/table.png");
-    public static final Icon ICON_HTML = getIcon("project/html.png");
-    public static final Icon ICON_STYLE_SHEET = getIcon("project/css.png");
-    public static final Icon ICON_PLUGIN_ROOT = getIcon("project/root.png");
-    public static final Icon ICON_CLASS = getIcon("project/class.png");
+    public static final Icon ICON_PROJECT = getIcon("project");
+    public static final Icon ICON_FOLDER = getIcon("folder");
+    public static final Icon ICON_FILE = getIcon("file");
+    public static final Icon ICON_IMAGE = getIcon("image");
+    public static final Icon ICON_VECTOR_IMAGE = getIcon("vector-image");
+    public static final Icon ICON_JAVA = getIcon("java");
+    public static final Icon ICON_SCRIPT = getIcon("script");
+    public static final Icon ICON_AUTOMATION_SCRIPT = getIcon("auto");
+    public static final Icon ICON_TYPESCRIPT = getIcon("typescript");
+    public static final Icon ICON_SETTINGS = getIcon("settings");
+    public static final Icon ICON_PROPERTIES = getIcon("properties");
+    public static final Icon ICON_COLLECTION = getIcon("collection");
+    public static final Icon ICON_TABLE = getIcon("table");
+    public static final Icon ICON_HTML = getIcon("html");
+    public static final Icon ICON_MARKDOWN = getIcon("markdown");
+    public static final Icon ICON_STYLE_SHEET = getIcon("css");
+    public static final Icon ICON_PLUGIN_ROOT = getIcon("root");
+    public static final Icon ICON_CLASS = getIcon("class-file");
     public static final Icon ICON_BLANK = new BlankIcon(ICON_SIZE);
-    public static final Icon ICON_COPIES_LIST = getIcon("project/copies.png");
-    public static final Icon ICON_DOCUMENT = getIcon("project/doc.png");
-    public static final Icon ICON_FONT = getIcon("project/font.png");
-    public static final Icon ICON_EON_DEFAULT = getIcon("project/eon-default.png");
-    public static final Icon ICON_EON_PLUGIN = getIcon("project/plugin.png");
-    public static final Icon ICON_EON_EXTENSION = getIcon("project/extension.png");
-    public static final Icon ICON_EON_THEME = getIcon("project/theme.png");
-    public static final Icon ICON_EON_LIBRARY = getIcon("project/library.png");
-    public static final Icon ICON_PACKED_BUNDLE = getIcon("project/packed-bundle.png");
-    public static final Icon ICON_CLASS_MAP = getIcon("project/classmap.png");
-    public static final Icon ICON_CONVERSION_MAP = getIcon("project/conversionmap.png");
-    public static final Icon ICON_SILHOUETTES = getIcon("project/sil.png");
-    public static final Icon ICON_TILE_SET = getIcon("project/tiles.png");
-    public static final Icon ICON_CARD_LAYOUT = getIcon("project/card-layout.png");
+    public static final Icon ICON_COPIES_LIST = getIcon("copies");
+    public static final Icon ICON_DOCUMENT = getIcon("doc");
+    public static final Icon ICON_FONT = getIcon("font-file");
+    public static final Icon ICON_EON_DEFAULT = getIcon("eon");
+    public static final Icon ICON_EON_PLUGIN = getIcon("plugin");
+    public static final Icon ICON_EON_EXTENSION = getIcon("extension");
+    public static final Icon ICON_EON_THEME = getIcon("theme");
+    public static final Icon ICON_EON_LIBRARY = getIcon("library");
+    public static final Icon ICON_PACKED_BUNDLE = getIcon("packed-bundle");
+    public static final Icon ICON_CLASS_MAP = getIcon("classmap");
+    public static final Icon ICON_CONVERSION_MAP = getIcon("conversionmap");
+    public static final Icon ICON_SILHOUETTES = getIcon("sil");
+    public static final Icon ICON_TILE_SET = getIcon("tiles");
+    public static final Icon ICON_CARD_LAYOUT = getIcon("card-layout");
 
-    public static final Icon ICON_DICT_CPL = getIcon("project/dict-cpl.png");
-    public static final Icon ICON_DICT_TST = getIcon("project/dict-3tree.png");
-    public static final Icon ICON_TEXT_INDEX = getIcon("project/idx.png");
+    public static final Icon ICON_DICT_CPL = getIcon("dict-cpl");
+    public static final Icon ICON_DICT_TST = getIcon("dict-3tree");
+    public static final Icon ICON_TEXT_INDEX = getIcon("idx");
 
-    public static final Icon ICON_TASK = getIcon("project/task.png");
-    public static final Icon ICON_TASK_PLUGIN = getIcon("project/plugin-task.png");
-    public static final Icon ICON_TASK_FACTORY = getIcon("project/factory-task.png");
-    public static final Icon ICON_TASK_EXPBOARD = getIcon("project/ahboard-task.png");
-    public static final Icon ICON_TASK_CASEBOOK = getIcon("project/case-task.png");
-    public static final Icon ICON_TASK_DECK = getIcon("project/deck-task.png");
-    public static final Icon ICON_TASK_DOCUMENTATION = getIcon("project/doc-task.png");
-    public static final Icon ICON_TASK_GROUP = getIcon("project/task-group.png");
+    public static final Icon ICON_TASK = getIcon("task");
+    public static final Icon ICON_TASK_PLUGIN = getIcon("plugin-task");
+    public static final Icon ICON_TASK_FACTORY = getIcon("factory-task");
+    public static final Icon ICON_TASK_EXPBOARD = getIcon("expboard-task");
+    public static final Icon ICON_TASK_CASEBOOK = getIcon("case-task");
+    public static final Icon ICON_TASK_DECK = getIcon("deck-task");
+    public static final Icon ICON_TASK_DOCUMENTATION = getIcon("doc-task");
+    public static final Icon ICON_TASK_GROUP = getIcon("task-group");
 
-    // mimics behaviour of ResourceKit.getIcon but defers loading the icon until needed
-    // this greatly reduces the time needed to load the class
-    private static Icon getIcon(String resource) {
-        if (resource.charAt(0) != '/') {
-            resource = "icons/" + resource;
-        }
-        return new ThemedIcon(resource, true);
+    private static ThemedIcon getIcon(String resource) {
+        return ResourceKit.getIcon(resource);
     }
 
     /**
@@ -676,7 +664,7 @@ public class MetadataSource {
      * {@link Task#KEY_ICON} setting key
      * @return the standard icon for a task matching the given parameters
      */
-    static Icon getDefaultTaskIcon(String type, String iconName) {
+    static ThemedIcon getDefaultTaskIcon(String type, String iconName) {
         Icon icon = null;
 
         if (iconName == null) {
@@ -710,33 +698,24 @@ public class MetadataSource {
                 }
             }
         } else {
-            if (iconName.startsWith("res://")) {
-                iconName = iconName.substring("res://".length());
-            }
             icon = TASK_ICON_CACHE.get(iconName);
 
             if (icon == null) {
-                // allow theming of custom icons
-                BufferedImage bi = new ThemedIcon(iconName).getImage();
-                if (bi != null) {
-                    if (bi.getWidth() > ICON_SIZE || bi.getHeight() > ICON_SIZE) {
-                        float scale = ImageUtilities.idealCoveringScaleForImage(ICON_SIZE, ICON_SIZE, bi.getWidth(), bi.getHeight());
-                        bi = ImageUtilities.resample(bi, scale);
-                    } else if (bi.getWidth() < ICON_SIZE && bi.getHeight() < ICON_SIZE) {
-                        ImageUtilities.center(bi, ICON_SIZE, ICON_SIZE);
-                    }
-                    icon = new ImageIcon(bi);
-                    TASK_ICON_CACHE.put(iconName, icon);
+                ThemedIcon customIcon = ResourceKit.getIcon(iconName);
+                if (customIcon.getIconWidth() != ICON_SIZE || customIcon.getIconHeight() != ICON_SIZE) {
+                    customIcon = customIcon.derive(ICON_SIZE, ICON_SIZE);
                 }
+                icon = customIcon;
+                TASK_ICON_CACHE.put(iconName, (ThemedIcon) icon);
             }
         }
 
         if (icon == null) {
             icon = MetadataSource.ICON_TASK;
         }
-        return icon;
+        return (ThemedIcon) icon;
     }
-    private static final HashMap<String, Icon> TASK_ICON_CACHE = new HashMap<>();
+    private static final HashMap<String, ThemedIcon> TASK_ICON_CACHE = new HashMap<>();
 
     /**
      * Property file metadata.
@@ -762,8 +741,8 @@ public class MetadataSource {
         }
 
         @Override
-        public Icon getIcon(Member m) {
-            return ICON_PROPERTIES;
+        public ThemedIcon getIcon(Member m) {
+            return (ThemedIcon) ICON_PROPERTIES;
         }
     }
 
@@ -813,8 +792,8 @@ public class MetadataSource {
         }
 
         @Override
-        public Icon getIcon(Member m) {
-            return ICON_COPIES_LIST;
+        public ThemedIcon getIcon(Member m) {
+            return (ThemedIcon) ICON_COPIES_LIST;
         }
     }
 
@@ -846,7 +825,7 @@ public class MetadataSource {
                         return;
                     }
 
-                    if (ProjectUtilities.matchExtension(m, View.vectorImageTypes)) {
+                    if (ProjectUtilities.matchExtension(m, View.vectorImageSubtypes)) {
                         data = new Object[]{thumbnail(image)};
                     } else {
                         data = new Object[]{
@@ -861,7 +840,7 @@ public class MetadataSource {
                     return;
                 }
 
-                if (ProjectUtilities.matchExtension(m, View.vectorImageTypes)) {
+                if (ProjectUtilities.matchExtension(m, View.vectorImageSubtypes)) {
                     add(pc, m, "prj-prop-thumb", (Icon) data[0]);
                 } else {
                     add(pc, m, "prj-prop-dim", (String) data[0]);
@@ -903,14 +882,14 @@ public class MetadataSource {
         }
 
         @Override
-        public Icon getIcon(Member m) {
+        public ThemedIcon getIcon(Member m) {
             Icon i = ICON_SETTINGS;
             if (isDocType(m)) {
                 i = ICON_DOCUMENT;
             } else if (ProjectUtilities.matchExtension(m, "collection")) {
                 i = ICON_COLLECTION;
             }
-            return i;
+            return (ThemedIcon) i;
         }
 
         static boolean isDocType(Member m) {
@@ -918,19 +897,13 @@ public class MetadataSource {
                 return false;
             }
 
-            if (ProjectUtilities.matchExtension(m, "text")) {
+            if (ProjectUtilities.matchExtension(m, "text", "txt", "utf8")) {
                 return true;
             }
             if (ProjectUtilities.matchExtension(m, "settings", "collection")) {
                 return false;
             }
 
-            if (ProjectUtilities.matchExtension(m, "txt")) {
-                Task t = m.getTask();
-                if (t != null && NewTaskType.PLUGIN_TYPE.equals(t.getSettings().get(Task.KEY_TYPE))) {
-                    return false;
-                }
-            }
             return true;
         }
     }
@@ -953,8 +926,8 @@ public class MetadataSource {
         private static final String DESCRIPTION = string("prj-prop-doc", "HTML");
 
         @Override
-        public Icon getIcon(Member m) {
-            return ICON_HTML;
+        public ThemedIcon getIcon(Member m) {
+            return (ThemedIcon) ICON_HTML;
         }
 
         @Override
@@ -1096,8 +1069,8 @@ public class MetadataSource {
         }
 
         @Override
-        public Icon getIcon(Member m) {
-            return ICON_EON_DEFAULT;
+        public ThemedIcon getIcon(Member m) {
+            return (ThemedIcon) ICON_EON_DEFAULT;
         }
 
         @Override

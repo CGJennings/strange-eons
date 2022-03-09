@@ -18,8 +18,6 @@ import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.IconBorder;
 import ca.cgjennings.ui.dnd.ScrapBook;
-import ca.cgjennings.ui.textedit.tokenizers.HTMLTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
 import gamedata.Game;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -165,7 +163,6 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
 
         pluginRoot = new PluginRoot(file);
         originalText = pluginRoot.toString();
-        editor.setTokenizer(new PropertyTokenizer(true));
         MarkupTargetFactory.enableTargeting(editor, false);
         editor.setText(originalText);
         editor.select(0, 0);
@@ -301,7 +298,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         fillingInView = true;
         for (String s : locales) {
             languageModel.addElement(
-                    new LanguageCodeDescriptor(Language.parseLocaleDescription(s), false, true)
+                    new LanguageCodeDescriptor(Language.parseLocaleDescription(s))
             );
         }
         languageCombo.setModel(languageModel);
@@ -588,7 +585,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         catHomeField = new javax.swing.JTextField();
         javax.swing.JLabel jLabel9 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        catDescField = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
+        catDescField = new ca.cgjennings.ui.textedit.CodeEditorBase();
         libraryDescPanel = new javax.swing.JPanel();
         javax.swing.JLabel jLabel8 = new javax.swing.JLabel();
         catLibNameField = new javax.swing.JTextField();
@@ -596,7 +593,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         libIconCombo = new ca.cgjennings.apps.arkham.project.ImageResourceCombo();
-        catLibDescField = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
+        catLibDescField = new ca.cgjennings.ui.textedit.CodeEditorBase();
         javax.swing.JPanel referencedBundlePanel = new javax.swing.JPanel();
         javax.swing.JLabel jLabel11 = new javax.swing.JLabel();
         jTip3 = new ca.cgjennings.ui.JTip();
@@ -631,7 +628,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         jLabel20 = new javax.swing.JLabel();
         tagsField = new javax.swing.JTextField();
         advanced = new javax.swing.JPanel();
-        editor = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
+        editor = new ca.cgjennings.ui.textedit.CodeEditorBase();
         cancelBtn = new javax.swing.JButton();
         okBtn = new javax.swing.JButton();
         switchBtn = new javax.swing.JButton();
@@ -823,9 +820,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         jLabel15.setFont(jLabel15.getFont().deriveFont(jLabel15.getFont().getSize()-1f));
         jLabel15.setText(string("prj-re-ci-cat-info")); // NOI18N
 
-        catDescField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(128, 128, 128)));
-        catDescField.setPreferredSize(new java.awt.Dimension(100, 32));
-        catDescField.setTokenizer( new HTMLTokenizer(false) );
+        catDescField.setCodeType(ca.cgjennings.ui.textedit.CodeType.HTML);
 
         javax.swing.GroupLayout catalogDescPanelLayout = new javax.swing.GroupLayout(catalogDescPanel);
         catalogDescPanel.setLayout(catalogDescPanelLayout);
@@ -848,15 +843,14 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
                                     .addComponent(catNameField)))
                             .addGroup(catalogDescPanelLayout.createSequentialGroup()
                                 .addComponent(jLabel9)
-                                .addGap(0, 515, Short.MAX_VALUE))))
+                                .addGap(0, 515, Short.MAX_VALUE))
+                            .addGroup(catalogDescPanelLayout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(0, 250, Short.MAX_VALUE))))
                     .addGroup(catalogDescPanelLayout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(catDescField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(catalogDescPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel15)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         catalogDescPanelLayout.setVerticalGroup(
             catalogDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -909,33 +903,33 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
             }
         });
 
-        catLibDescField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(128, 128, 128)));
-        catLibDescField.setPreferredSize(new java.awt.Dimension(100, 32));
-        catLibDescField.setTokenizer( new HTMLTokenizer(false) );
+        catLibDescField.setCodeType(ca.cgjennings.ui.textedit.CodeType.HTML);
 
         javax.swing.GroupLayout libraryDescPanelLayout = new javax.swing.GroupLayout(libraryDescPanel);
         libraryDescPanel.setLayout(libraryDescPanelLayout);
         libraryDescPanelLayout.setHorizontalGroup(
             libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(libraryDescPanelLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(libraryDescPanelLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel16))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(libIconCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(catLibNameField)))
+                            .addGroup(libraryDescPanelLayout.createSequentialGroup()
+                                .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel16))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(libIconCombo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(catLibNameField, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)))
+                            .addGroup(libraryDescPanelLayout.createSequentialGroup()
+                                .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel14))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(libraryDescPanelLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(catLibDescField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(libraryDescPanelLayout.createSequentialGroup()
-                        .addGroup(libraryDescPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel13)
-                            .addComponent(jLabel14))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(20, 20, 20)
+                        .addComponent(catLibDescField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         libraryDescPanelLayout.setVerticalGroup(
@@ -1280,17 +1274,10 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         cardPanel.add(simple, "s");
 
         advanced.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 16, 0), javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(128, 128, 128))));
+        advanced.setLayout(new java.awt.BorderLayout());
 
-        javax.swing.GroupLayout advancedLayout = new javax.swing.GroupLayout(advanced);
-        advanced.setLayout(advancedLayout);
-        advancedLayout.setHorizontalGroup(
-            advancedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(editor, javax.swing.GroupLayout.DEFAULT_SIZE, 602, Short.MAX_VALUE)
-        );
-        advancedLayout.setVerticalGroup(
-            advancedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(editor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
-        );
+        editor.setCodeType(ca.cgjennings.ui.textedit.CodeType.SETTINGS);
+        advanced.add(editor, java.awt.BorderLayout.CENTER);
 
         cardPanel.add(advanced, "a");
 
@@ -1568,11 +1555,11 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
     private javax.swing.JButton cancelBtn;
     private javax.swing.JPanel cardPanel;
     private javax.swing.JTextField catCreditsField;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor catDescField;
+    private ca.cgjennings.ui.textedit.CodeEditorBase catDescField;
     private javax.swing.JComboBox<String> catHiddenCombo;
     private javax.swing.JTextField catHomeField;
     private ca.cgjennings.ui.JHelpButton catIDhelp;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor catLibDescField;
+    private ca.cgjennings.ui.textedit.CodeEditorBase catLibDescField;
     private javax.swing.JTextField catLibNameField;
     private javax.swing.JTextField catNameField;
     private ca.cgjennings.apps.arkham.plugins.catalog.CatalogIDListPanel catReplacesTable;
@@ -1580,7 +1567,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
     private javax.swing.JPanel catalogDescPanel;
     private javax.swing.JButton copyIDBtn;
     private javax.swing.JTextField coreField;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor editor;
+    private ca.cgjennings.ui.textedit.CodeEditorBase editor;
     private ca.cgjennings.ui.JGameCombo gameCombo;
     private javax.swing.JTextField gameField;
     private javax.swing.JTextField gameLangField;

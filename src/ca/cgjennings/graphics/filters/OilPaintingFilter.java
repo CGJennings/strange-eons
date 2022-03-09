@@ -153,7 +153,7 @@ public class OilPaintingFilter extends AbstractImagewiseFilter {
                 g = gSum[g] / gHist[g];
                 b = bSum[b] / bHist[b];
 
-                dstPixels[index] = (srcPixels[index] & 0xff00_0000) | (r << 16) | (g << 8) | b;
+                dstPixels[index] = (srcPixels[index] & 0xff000000) | (r << 16) | (g << 8) | b;
                 index++;
             }
         }

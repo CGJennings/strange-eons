@@ -25,7 +25,6 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JList;
@@ -281,7 +280,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
         dstScroll.setViewportView(dstList);
 
         bin.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        bin.setIcon( ResourceKit.getIcon( "ui/button/delete.png" ) );
+        bin.setIcon(ResourceKit.getIcon("delete"));
         bin.setText(string("remove")); // NOI18N
 
         removeAllBtn.setFont(removeAllBtn.getFont().deriveFont(removeAllBtn.getFont().getSize()-1f));
@@ -383,7 +382,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     @Override
     public Icon getIcon() {
         if (icon == null) {
-            icon = ResourceKit.getIcon("application/prefs-contextbar.png");
+            icon = ResourceKit.getIcon("prefs/contextbar.png");
         }
         return icon;
     }
@@ -467,7 +466,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     }
 
     private Button fakeSeparatorButton = new Button() {
-        private final Icon icon = new ImageIcon(getClass().getResource("/resources/icons/toolbar/separator.png"));
+        private final Icon icon = ResourceKit.getIcon("separator");
 
         @Override
         public String getName() {

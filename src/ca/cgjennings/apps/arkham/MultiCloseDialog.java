@@ -117,7 +117,6 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
             }
         }
         fileList.setModel(model);
-        warningIcon.setIcon(ResourceKit.getIcon("application/warning.png"));
     }
 
     public boolean showDialog() {
@@ -227,7 +226,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         jLabel1.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         jLabel1.setText(string("app-l-multiclose-1")); // NOI18N
 
-        warningIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/warning.png"))); // NOI18N
+        warningIcon.setIcon(ResourceKit.getIcon("application/warning.png").medium());
 
         javax.swing.GroupLayout headBannerPanelLayout = new javax.swing.GroupLayout(headBannerPanel);
         headBannerPanel.setLayout(headBannerPanelLayout);

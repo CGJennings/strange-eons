@@ -19,8 +19,8 @@ public class InversionFilter extends AbstractPixelwiseFilter {
     public void filterPixels(int[] argb, int start, int end) {
         for (int x = start; x < end; ++x) {
             int pixel = argb[x];
-            argb[x] = (pixel & 0xff00_0000)
-                    | ((0xff_0000 - (pixel & 0xff_0000)) & 0xff_0000)
+            argb[x] = (pixel & 0xff000000)
+                    | ((0xff0000 - (pixel & 0xff0000)) & 0xff0000)
                     | ((0xff00 - (pixel & 0xff00)) & 0xff00)
                     | ((0xff - (pixel & 0xff)) & 0xff);
         }

@@ -43,7 +43,7 @@ import java.awt.image.BufferedImage;
  */
 public final class TrimFilter extends AbstractImageFilter {
 
-    private int mask = 0xff00_0000;
+    private int mask = 0xff000000;
     private int condition;
 
     /**
@@ -81,7 +81,7 @@ public final class TrimFilter extends AbstractImageFilter {
     public BufferedImage filter(BufferedImage sourceImage, BufferedImage ignoredDestination) {
         // Special case: if the test requires an image with transparency,
         // check if the image is opaque, and if so return it immediately.
-        if ((mask & 0xff00_0000) != (condition & 0xff00_0000)) {
+        if ((mask & 0xff000000) != (condition & 0xff000000)) {
             if (sourceImage.getTransparency() == BufferedImage.OPAQUE) {
                 return sourceImage;
             }

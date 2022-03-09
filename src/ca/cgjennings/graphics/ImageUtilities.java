@@ -1,13 +1,16 @@
 package ca.cgjennings.graphics;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.graphics.filters.AbstractImageFilter;
-import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.CheckeredScreenFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import ca.cgjennings.graphics.filters.InversionFilter;
 import ca.cgjennings.graphics.filters.TrimFilter;
 import ca.cgjennings.graphics.filters.TurnAndFlipFilter;
+import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -18,7 +21,10 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.MultiResolutionImage;
 import java.awt.image.PixelGrabber;
+import java.util.Objects;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -90,10 +96,23 @@ public final class ImageUtilities {
      * equivalent image in an integer RGB format. If <tt>im</tt> is already in
      * an integer RGB format, returns the original image.
      *
-     * @param im the image to be provided in integer RGB format
+     * @param im the non-null image to be provided in integer RGB format
      * @return the original image, or a copy converted to a suitable format
      */
-    public static BufferedImage ensureIntRGBFormat(BufferedImage im) {
+    public static BufferedImage ensureIntRGBFormat(Image image) {
+        if (!(Objects.requireNonNull(image, "image") instanceof BufferedImage)) {
+            waitForImage(image);
+            BufferedImage im = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = im.createGraphics();
+            try {
+                g.drawImage(image, 0, 0, null);
+            } finally {
+                g.dispose();
+            }
+            return im;
+        }
+        
+        BufferedImage im = (BufferedImage) image;
         final int type = im.getType();
         if (type != BufferedImage.TYPE_INT_RGB && type != BufferedImage.TYPE_INT_ARGB && type != BufferedImage.TYPE_INT_ARGB_PRE) {
             BufferedImage dest = createCompatibleIntRGBFormat(im);
@@ -119,14 +138,7 @@ public final class ImageUtilities {
     public static BufferedImage ensureImageHasAlphaChannel(BufferedImage im) {
         int type = im.getType();
         if (type != BufferedImage.TYPE_INT_ARGB && type != BufferedImage.TYPE_INT_ARGB_PRE) {
-            BufferedImage dest = new BufferedImage(im.getWidth(), im.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = dest.createGraphics();
-            try {
-                g.drawImage(im, 0, 0, null);
-            } finally {
-                g.dispose();
-            }
-            im = dest;
+            im = ensureImageHasType(im, BufferedImage.TYPE_INT_ARGB);
         }
         return im;
     }
@@ -164,17 +176,10 @@ public final class ImageUtilities {
      * premultiplied alpha if appropriate
      */
     public static BufferedImage ensurePremultipliedFormat(BufferedImage im) {
-        if (!im.isAlphaPremultiplied() && im.getTransparency() != Transparency.OPAQUE) {
-            BufferedImage dest = new BufferedImage(im.getWidth(), im.getHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
-            Graphics2D g = dest.createGraphics();
-            try {
-                g.drawImage(im, 0, 0, null);
-            } finally {
-                g.dispose();
-            }
-            im = dest;
+        if (im.getTransparency() != Transparency.OPAQUE) {
+            im = ensureImageHasType(im, BufferedImage.TYPE_INT_ARGB_PRE);
         } else {
-            im = ensureIntRGBFormat(im);
+            im = ensureImageHasType(im, BufferedImage.TYPE_INT_RGB);
         }
         return im;
     }
@@ -182,6 +187,8 @@ public final class ImageUtilities {
     /**
      * Defines a new custom cursor for use with the default {@link Toolkit},
      * based on the specified image.
+     * 
+     * @deprecated Use {@link resources.ResourceKit#createCustomCursor(java.lang.String, java.awt.Point, java.lang.String, java.awt.Cursor)}.
      *
      * @param image the image to use for the cursor
      * @param hotspotX the x-coordinate of the cursor's hotspot (the image
@@ -191,14 +198,16 @@ public final class ImageUtilities {
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
      */
+    @Deprecated
     public static Cursor createCustomCursor(BufferedImage image, int hotspotX, int hotspotY) {
         return createCustomCursor(null, image, hotspotX, hotspotY, null);
     }
-    private static int customIndex;
 
     /**
      * Defines a new custom cursor for use with a {@link Toolkit}, based on the
      * specified image.
+     * 
+     * @deprecated Use {@link resources.ResourceKit#createCustomCursor(java.lang.String, java.awt.Point, java.lang.String, java.awt.Cursor)}.
      *
      * @param toolkit the toolkit on which to define the cursor ({@code null}
      * for default)
@@ -212,14 +221,14 @@ public final class ImageUtilities {
      * toolkit; if the toolkit does not support custom cursors, the default
      * cursor is returned
      */
+    @Deprecated
     public static Cursor createCustomCursor(Toolkit toolkit, BufferedImage image, int hotspotX, int hotspotY, String name) {
         if (toolkit == null) {
             toolkit = Toolkit.getDefaultToolkit();
         }
-        synchronized (toolkit) {
-            if (name == null) {
-                name = "Custom Cursor Number " + customIndex++;
-            }
+        if (name == null) {
+            name = "";
+            StrangeEons.log.warning("cursor has no name for accessibility tools");
         }
         Dimension d = toolkit.getBestCursorSize(image.getWidth(), image.getHeight());
 
@@ -258,75 +267,70 @@ public final class ImageUtilities {
      * created and the contents of the image copied into it. If necessary, the
      * method will wait until the image has finished downloading.
      *
-     * @param image the image to convert
+     * @param image the non-null image to convert
      * @return the original image, converted into a {@code BufferedImage} if it
      * is not already of that type
      */
     public static BufferedImage imageToBufferedImage(Image image) {
-        if (image == null) {
-            throw new NullPointerException("image");
-        }
-
-        if (image instanceof BufferedImage) {
+        if (Objects.requireNonNull(image, "image") instanceof BufferedImage) {
             return (BufferedImage) image;
         }
-
-        // wait for image to load
-        int w, h;
-        while (((w = image.getWidth(null)) == -1) || ((h = image.getHeight(null)) == -1)) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-            }
-        }
-
-        // ensure that all pixels are available
-        PixelGrabber grabber = new PixelGrabber(image, 0, 0, w, h, false);
+        
+        waitForImage(image);
+        
+        // default to ARGB, but try to detect RGB
+        int type = BufferedImage.TYPE_INT_ARGB;
+        final int w = image.getWidth(null);
+        final int h = image.getHeight(null);
         try {
+            PixelGrabber grabber = new PixelGrabber(image, w-1, h-1, 1, 1, false);
             grabber.grabPixels();
-        } catch (InterruptedException e) {
-            throw new AssertionError();
+            if (!grabber.getColorModel().hasAlpha()) {
+                type = BufferedImage.TYPE_INT_RGB;
+            }
+        } catch (InterruptedException | RuntimeException ex) {
+            // stick with default type, which is safe to use
         }
 
-        // draw to a buffered image
-        BufferedImage bi = new BufferedImage(w, h, grabber.getColorModel().hasAlpha()
-                ? BufferedImage.TYPE_INT_ARGB
-                : BufferedImage.TYPE_INT_RGB
-        );
-        Graphics2D g = bi.createGraphics();
+        // convert image
+        final BufferedImage im = new BufferedImage(w, h, type);
+        Graphics2D g = im.createGraphics();
         try {
-            g.drawImage(image, 0, 0, w, h, null);
+            g.drawImage(image, 0, 0, null);
         } finally {
             g.dispose();
         }
 
-        return bi;
+        return im;
     }
 
     /**
      * Creates an icon from {@code image} that is constrained to {@code size} by
      * {@code size} pixels.
+     * 
+     * <p>
+     * The returned icon is guaranteed to be a {@link ThemedIcon}.
      *
      * @param image the image to create an icon from
      * @param size the maximum width and height of the icon
      * @return an icon created from {@code image}
      */
     public static Icon createIconForSize(BufferedImage image, int size) {
-        if (image.getWidth() > size || image.getHeight() > size) {
-            double scale = ImageUtilities.idealCoveringScaleForImage(size, size, image.getWidth(), image.getHeight());
-            image = ImageUtilities.resample(image, (float) scale);
+        // if the image isn't square, first square it off
+        if (image.getWidth() != image.getHeight()) {
+            int maxDimen = Math.max(image.getWidth(), image.getHeight());
+            image = center(image, maxDimen, maxDimen);
         }
-        if (image.getWidth() < size || image.getHeight() < size) {
-            image = center(image, size, size);
-        }
-        return new ImageIcon(image);
+        return new ThemedSingleImageIcon(image, size, size);
     }
 
     /**
      * Ensures that the supplied icon has the specified size. If the source icon
      * is {@code null}, {@code null} is returned. Otherwise, if the icon has the
-     * correct dimensions it is returned. If not, a new icon is created as if by
-     * calling {@link #createIconForSize} on an image of the icon.
+     * correct dimensions it is returned. If not, but the icon is a
+     * {@link ThemedIcon}, then a new icon is derived from it. Finally, if
+     * no other case applies, an image of the icon will be converted into an
+     * icon of the requested size.
      *
      * @param icon the image to create an icon from
      * @param size the desired width and height of the icon
@@ -337,7 +341,11 @@ public final class ImageUtilities {
             return null;
         }
         if (icon.getIconWidth() != size || icon.getIconHeight() != size) {
-            icon = createIconForSize(iconToImage(icon), size);
+            if (icon instanceof ThemedIcon) {
+                icon = ((ThemedIcon) icon).derive(size);
+            } else {            
+                icon = createIconForSize(iconToImage(icon), size);
+            }
         }
         return icon;
     }
@@ -345,7 +353,7 @@ public final class ImageUtilities {
     /**
      * Returns the visual content of an icon as an image. If possible, the image
      * will be obtained directly from the icon instance without creating a new
-     * image.
+     * image. Note that the size of the image may not match the size of the icon.
      *
      * @param i the icon
      * @return the content of the icon, as an image
@@ -354,8 +362,9 @@ public final class ImageUtilities {
         if (i == null) {
             return null;
         }
-        if (i instanceof ThemedIcon) {
-            return ((ThemedIcon) i).getImage();
+        if (i instanceof ThemedImageIcon) {
+            MultiResolutionImage mri = ((ThemedImageIcon) i).getMultiResolutionImage();
+            return (BufferedImage) mri.getResolutionVariant(i.getIconWidth(), i.getIconHeight());
         }
         if (i instanceof ImageIcon) {
             Image ii = ((ImageIcon) i).getImage();
@@ -379,15 +388,18 @@ public final class ImageUtilities {
      * @param src the icon to convert
      * @return a version of the icon with a suitable "disabled" effect applied
      */
-    public static ImageIcon createDisabledIcon(Icon src) {
+    public static Icon createDisabledIcon(Icon src) {
         if (src == null) {
             return null;
         }
-        return new ImageIcon(createDisabledImage(iconToImage(src)));
+        if (src instanceof ThemedIcon) {
+            return ((ThemedIcon) src).disabled();
+        }
+        return Theme.getDisabledIcon(null, src);
     }
 
     /**
-     * Returns a "disabled" version of an image.
+     * Returns a disabled version of an image.
      *
      * @param src the image to convert
      * @return a version of the image with a suitable default "disabled" effect
@@ -397,58 +409,37 @@ public final class ImageUtilities {
         if (src == null) {
             return null;
         }
-
-        if (disFilter == null) {
-            synchronized (ImageUtilities.class) {
-                if (disFilter == null) {
-                    disFilter = new AbstractPixelwiseFilter() {
-                        @Override
-                        public void filterPixels(int[] pixels, int start, int end) {
-                            for (int i = 0; i < pixels.length; ++i) {
-                                int argb = pixels[i];
-                                int gray = ((77 * ((argb >> 16) & 0xff))
-                                        + (150 * ((argb >> 8) & 0xff))
-                                        + (28 * (argb & 0xff))) / 255;
-
-                                gray = (255 - ((255 - gray) / 2));
-                                if (gray < 0) {
-                                    gray = 0;
-                                }
-                                if (gray > 255) {
-                                    gray = 255;
-                                }
-                                pixels[i] = (argb & 0xff000000) | (gray << 16) | (gray << 8) | (gray);
-                            }
-                        }
-                    };
-                }
-            }
+        
+        // match the same effect as that of Theme.getDisabledIcon
+        BufferedImage di = new BufferedImage(src.getWidth(), src.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = di.createGraphics();
+        try {
+            g.setComposite(AlphaComposite.SrcOver.derive(0.4f));
+            g.drawImage(src, 0, 0, null);
+        } finally {
+            g.dispose();
         }
 
-        return disFilter.filter(src, null);
+        return di;
     }
-    private static AbstractPixelwiseFilter disFilter;
 
     /**
-     * Returns a ghosted version of an icon. Ghosted icons are equivalent to the
+     * Returns a ghosted version of an icon. Ghosted icons are similar to the
      * original icon, but with every other pixel made transparent in a
      * checkerboard pattern.
      *
      * @param src the icon to convert
      * @return a version of the icon with a ghosting effect applied
      */
-    public static ImageIcon createGhostedIcon(Icon src) {
+    public static Icon createGhostedIcon(Icon src) {
         if (src == null) {
             return null;
         }
-        synchronized (ImageUtilities.class) {
-            if (csFilter == null) {
-                csFilter = new CheckeredScreenFilter();
-            }
-        }
-        return new ImageIcon(csFilter.filter(desaturate(iconToImage(src)), null));
+        
+        BufferedImage image = resample(iconToImage(src), src.getIconWidth(), src.getIconHeight());        
+        BufferedImage ghost = new CheckeredScreenFilter().filter(image, null);
+        return new ThemedSingleImageIcon(ghost, src.getIconWidth(), src.getIconHeight());
     }
-    private static CheckeredScreenFilter csFilter;
 
     /**
      * Returns a greyscale version of an icon.
@@ -456,11 +447,11 @@ public final class ImageUtilities {
      * @param src the icon to convert
      * @return a greyscale version of the icon
      */
-    public static ImageIcon createDesaturatedIcon(Icon src) {
+    public static Icon createDesaturatedIcon(Icon src) {
         if (src == null) {
             return null;
         }
-        return new ImageIcon(desaturate(iconToImage(src)));
+        return new ThemedSingleImageIcon(desaturate(iconToImage(src)), src.getIconWidth(), src.getIconHeight());
     }
 
     /**
@@ -471,14 +462,8 @@ public final class ImageUtilities {
      * @see GreyscaleFilter
      */
     public static BufferedImage desaturate(BufferedImage src) {
-        synchronized (ImageUtilities.class) {
-            if (gsFilter == null) {
-                gsFilter = new GreyscaleFilter();
-            }
-        }
-        return gsFilter.filter(src, null);
+        return new GreyscaleFilter().filter(src, null);
     }
-    private static GreyscaleFilter gsFilter;
 
     /**
      * Returns a copy of the source image with the colour values inverted.
@@ -488,14 +473,8 @@ public final class ImageUtilities {
      * @return the inverted image
      */
     public static BufferedImage invert(BufferedImage source) {
-        synchronized (ImageUtilities.class) {
-            if (invFilter == null) {
-                invFilter = new InversionFilter();
-            }
-        }
-        return invFilter.filter(source, null);
+        return new InversionFilter().filter(source, null);
     }
-    private static InversionFilter invFilter;
 
     /**
      * Resample an image by a scaling factor, at a high level of quality.
@@ -1039,11 +1018,75 @@ public final class ImageUtilities {
         for (int y = 0; y < height; ++y) {
             AbstractImageFilter.getARGB(bi, 0, y, width, 1, row);
             for (int x = 0; x < width; ++x) {
-                if ((row[x] & 0xff00_0000) != 0xff00_0000) {
+                if ((row[x] & 0xff000000) != 0xff000000) {
                     return false;
                 }
             }
         }
         return true;
+    }
+    
+    /**
+     * Waits for an image to load.
+     * Generic {@code Image} instances, such as those obtained from the
+     * {@code Toolkit} are designed to load in
+     * the background. As a result, certain methods may return wrong or
+     * temporary values. This method ensures that a target image is fully
+     * loaded (or failed to load) before returning.
+     * Note that {@code BufferedImage}s never load in the background.
+     * If passed a {@code BufferedImage} this method returns immediately.
+     * 
+     * @param im the image to wait for
+     * @return the image that was passed in
+     */
+    public static Image waitForImage(Image im) {
+        // common case, and always "loaded"
+        if (im instanceof BufferedImage) {
+            return im;
+        }
+        
+        // needed to get a graphics context
+        final BufferedImage dest = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        
+        // create an image observer to notify us when the image has loaded
+        final Object synchObject = new Object();
+        final ImageObserver obs = (Image img, int stateFlags, int x, int y, int width, int height) -> {
+            if (stateFlags < ImageObserver.ALLBITS) {
+                // not done; wait for more status updates
+                return true;
+            }
+            
+            // done, wake up the calling thread
+            synchronized (synchObject) {
+                synchObject.notify();
+            }
+            return false;
+        };
+        
+        synchronized (synchObject) {
+            Graphics2D g = dest.createGraphics();
+            try {
+                // ensure image starts loading, and check if it has finished
+                boolean hasLoaded = g.drawImage(im, 0, 0, obs);
+
+                // if it hasn't finished, sleep until it finishes, at which point
+                // the observer we created and passed to drawImage will notify us
+                if (!hasLoaded) {
+                    for (;;) {
+                        try {
+                            // release monitor and wait for observer
+                            synchObject.wait(0);
+                            break;
+                        } catch (InterruptedException iex) {
+                            // keep waiting
+                        }
+                    }
+                }
+            } finally {
+                g.dispose();
+            }
+        }
+        
+        return im;
     }
 }

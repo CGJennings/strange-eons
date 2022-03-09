@@ -1,5 +1,6 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,6 +22,8 @@ import javax.swing.text.html.CSS;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.HTMLEditorKit.HTMLFactory;
+import javax.swing.text.html.StyleSheet;
+import resources.ResourceKit;
 
 /**
  * A drop-in replacement for {@link JEditorPane} with somewhat improved painting
@@ -84,8 +87,6 @@ public class EditorPane extends JEditorPane {
     @Override
     public void addNotify() {
         super.addNotify();
-
-        // Java 6: use getParent()
         Container c = SwingUtilities.getUnwrappedParent(this);
         while (c != null && (c instanceof JViewport)) {
             c = SwingUtilities.getUnwrappedParent(c);
@@ -99,11 +100,23 @@ public class EditorPane extends JEditorPane {
     protected void paintComponent(Graphics g1) {
         Graphics2D g = (Graphics2D) g1;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         super.paintComponent(g);
     }
 
     private static class HTMLKit extends HTMLEditorKit {
-
+        public HTMLKit() {
+            StyleSheet sheet = getStyleSheet();
+            sheet.addRule("h1 { margin: 0 0 0 0; padding: 0 }");
+            sheet.addRule("h2 { margin: 20px 0 0 0 }");
+            sheet.addRule("h3 { margin: 16px 0 0 0 }");
+            sheet.addRule("h4, h5, h6 { margin: 12px 0 0 0 }");
+            sheet.addRule("pre, p, blockquote, table { margin: 6px 0 6px 0; padding: 0 }");
+            sheet.addRule("pre, code { font-size: 100%; font-family: \"" + ResourceKit.getEditorFont().getFamily() + "\" }");
+            sheet.addRule("a { color: #" + Palette.get.foreground.opaque.blue + " }");
+        }
+        
+        
         @Override
         public HTMLFactory getViewFactory() {
             return factory;

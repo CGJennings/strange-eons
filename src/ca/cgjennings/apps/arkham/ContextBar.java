@@ -7,9 +7,7 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.deck.PageView;
-import ca.cgjennings.apps.arkham.editors.CodeEditor;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
-import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.math.Interpolation;
 import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.IconProvider;
@@ -17,15 +15,9 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.anim.AnimationUtilities;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.Tokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.CSSTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.HTMLTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.JavaTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PlainTextTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import gamedata.Game;
 import java.awt.Color;
 import java.awt.Component;
@@ -47,7 +39,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.EventObject;
@@ -348,7 +339,7 @@ public final class ContextBar {
                 //    if the parent is an editor, clear the target if it is not
                 //    the selected editor
                 Container parent = newTarget.getParent();
-                while (newTarget != null && parent != null) {
+                while (parent != null) {
                     if (parent instanceof StrangeEonsEditor) {
                         if (parent != StrangeEons.getWindow().getActiveEditor()) {
                             newTarget = null;
@@ -938,11 +929,12 @@ public final class ContextBar {
     private static Icon coerceIconSize(Icon i) {
         final int ICON_SIZE = getPreferredContextBarIconSize();
         if (i != null) {
-            if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
-                BufferedImage bi = ImageUtilities.iconToImage(i);
-                bi = ImageUtilities.trim(bi);
-                i = ImageUtilities.createIconForSize(bi, ICON_SIZE);
-            }
+            i = ThemedIcon.create(i).derive(ICON_SIZE);
+//            if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
+//                BufferedImage bi = ImageUtilities.iconToImage(i);
+//                bi = ImageUtilities.trim(bi);
+//                i = ImageUtilities.createIconForSize(bi, ICON_SIZE);
+//            }
         } else {
             StrangeEons.log.log(Level.WARNING, "using blank icon for null context bar button icon");
             i = new BlankIcon(ICON_SIZE, ICON_SIZE);
@@ -1507,7 +1499,7 @@ public final class ContextBar {
 
         @Override
         public void paintIcon(Component comp, Graphics g, int x, int y) {
-            if (c.isSelected()) {
+            if (c.isSelected() && c instanceof Button) {
                 g.setColor(BUTTON_SELECTED_BACKGROUND);
                 g.fillRect(x, y, i.getIconWidth(), i.getIconHeight());
             }
@@ -1622,42 +1614,8 @@ public final class ContextBar {
          * ({@code CodeType.JAVASCRIPT}) is assumed
          */
         public CodeType getCodeType() {
-            if (markup && (target instanceof JSourceCodeEditor)) {
-                StrangeEonsEditor ed = getEditor();
-                if (ed instanceof CodeEditor && ((CodeEditor) ed).getEditor() == target) {
-                    return ((CodeEditor) ed).getCodeType();
-                }
-
-                // if this is a standalone editor component,
-                // try to infer an appropriate code type
-                Tokenizer tz = ((JSourceCodeEditor) target).getTokenizer();
-                if (tz == null) {
-                    return CodeType.PLAIN;
-                }
-                Class t = tz.getClass();
-
-                if (t == JavaScriptTokenizer.class) {
-                    return CodeType.JAVASCRIPT;
-                }
-                if (t == JavaTokenizer.class) {
-                    return CodeType.JAVA;
-                }
-                if (t == PropertyTokenizer.class) {
-                    return CodeType.SETTINGS;
-                }
-                if (t == HTMLTokenizer.class) {
-                    return CodeType.HTML;
-                }
-                if (t == CSSTokenizer.class) {
-                    return CodeType.CSS;
-                }
-                if (t == PlainTextTokenizer.class) {
-                    return CodeType.PLAIN;
-                }
-
-                // give up
-                StrangeEons.log.log(Level.WARNING, "don''t know CodeType to infer for tokenizer: {0}", t);
-                return CodeType.PLAIN;
+            if (markup && (target instanceof CodeEditorBase)) {
+                return ((CodeEditorBase) target).getCodeType();
             }
             return null;
         }
@@ -1954,9 +1912,9 @@ public final class ContextBar {
         registerButton(new MarkupCommandButton(Commands.MARKUP_INSERT_IMAGE).multilineOnly());
         registerButton(new MarkupCommandButton(Commands.MARKUP_INSERT_CHARACTERS).multilineOnly());
 
-        registerButton(new ParagraphButton("LEFT", string("para-b-left"), "al-text-left.png", 0, -1, -1));
-        registerButton(new ParagraphButton("CENTRE", string("para-b-centre"), "al-text-centre.png", 1, -1, -1));
-        registerButton(new ParagraphButton("RIGHT", string("para-b-right"), "al-text-right.png", 2, -1, -1));
+        registerButton(new ParagraphButton("LEFT", string("para-b-left"), "al-text-left", 0, -1, -1));
+        registerButton(new ParagraphButton("CENTRE", string("para-b-centre"), "al-text-centre", 1, -1, -1));
+        registerButton(new ParagraphButton("RIGHT", string("para-b-right"), "al-text-right", 2, -1, -1));
         registerButton(new MarkupCommandButton(Commands.MARKUP_ALIGNMENT).multilineOnly());
 
         registerButton(new DeckCommandButton(Commands.TO_FRONT));
@@ -1984,7 +1942,6 @@ public final class ContextBar {
 
         registerButton(new CommandButton(Commands.RUN_FILE).hideIfDisabled());
         registerButton(new CommandButton(Commands.COMMENT_OUT).hideIfDisabled());
-        registerButton(new CommandButton(Commands.UNCOMMENT).hideIfDisabled());
         registerButton(new CommandButton(Commands.REMOVE_TRAILING_SPACES).hideIfDisabled());
         registerButton(new CommandButton(Commands.SORT).hideIfDisabled());
     }

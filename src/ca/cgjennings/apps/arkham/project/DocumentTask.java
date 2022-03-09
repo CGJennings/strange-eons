@@ -67,10 +67,11 @@ public class DocumentTask extends NewTaskType {
     }
 
     static {
+        registerDocumentType(new New.NewAction(string("pa-new-html") + "...", string("pa-new-doc-name"), "html", "projects/doc-template.html", MetadataSource.ICON_HTML));
+        registerDocumentType(new New.NewAction(string("pa-new-markdown") + "...", string("pa-new-doc-name"), "md", "projects/doc-template.md", MetadataSource.ICON_MARKDOWN));
+        registerDocumentType(new DocumentType(string("pa-new-text"), "txt", "projects/doc-template.txt", MetadataSource.ICON_DOCUMENT));
         registerDocumentType(new DocumentType(string("pa-new-rtf") + "...", "rtf", "projects/doc-template.rtf", MetadataSource.ICON_DOCUMENT));
         registerDocumentType(new DocumentType(string("pa-new-odt") + "...", "odt", "projects/doc-template.odt", MetadataSource.ICON_DOCUMENT));
-        registerDocumentType(new New.NewAction(string("pa-new-html") + "...", string("pa-new-doc-name"), "html", "projects/doc-template.html", MetadataSource.ICON_HTML));
-        registerDocumentType(new DocumentType(string("pa-new-text"), "txt", "projects/doc-template.txt", MetadataSource.ICON_DOCUMENT));
     }
 
     /**

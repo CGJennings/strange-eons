@@ -17,6 +17,11 @@ final class HDocPageCommand extends AbstractCommand {
         super(nameKey);
         page = pageName;
     }
+    
+    public HDocPageCommand(final String nameKey, final String pageName, String iconResource) {
+        super(nameKey, iconResource);
+        page = pageName;
+    }    
 
     @Override
     public void actionPerformed(ActionEvent event) {

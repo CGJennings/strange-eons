@@ -118,7 +118,7 @@ class OldDropShadow {
         int yStart = left;
         int yStop = dstHeight - right;
 
-        int shadowRgb = shadowColor.getRGB() & 0x00FF_FFFF;
+        int shadowRgb = shadowColor.getRGB() & 0x00FFFFFF;
 
         int[] aHistory = new int[shadowSize];
         int historyIdx = 0;

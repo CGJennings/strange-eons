@@ -14,20 +14,20 @@ import ca.cgjennings.apps.arkham.plugins.PluginRoot;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.platform.DesktopIntegration;
+import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.JKeyStrokeField;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.anim.AnimationUtilities;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.datatransfer.StringSelection;
 import java.awt.font.TextAttribute;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +63,8 @@ public class PluginManager extends javax.swing.JDialog {
     public PluginManager() {
         this(StrangeEons.getWindow());
         getRootPane().setDefaultButton(cancelBtn);
+        openPluginFolderBtn.putClientProperty("JButton.buttonType", "square");
+        downloadBtn.putClientProperty("JButton.buttonType", "square");
     }
 
     /**
@@ -210,9 +212,9 @@ public class PluginManager extends javax.swing.JDialog {
         pluginTitle.setLayout(new java.awt.GridBagLayout());
 
         pluginIcon.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pluginIcon.setIcon( ResourceKit.getIcon( "ui/wrench.png" ) );
+        pluginIcon.setIcon(ResourceKit.getIcon("plugin-manager").medium());
         pluginIcon.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        pluginIcon.setPreferredSize(new java.awt.Dimension(24, 24));
+        pluginIcon.setPreferredSize(new java.awt.Dimension(32, 32));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -346,9 +348,9 @@ public class PluginManager extends javax.swing.JDialog {
         bottom.setLayout(new java.awt.GridBagLayout());
 
         downloadBtn.setFont(downloadBtn.getFont().deriveFont(downloadBtn.getFont().getSize()-1f));
-        downloadBtn.setIcon( ResourceKit.getIcon( "catalog/update-available.png" ) );
+        downloadBtn.setIcon( ResourceKit.getIcon("catalog"));
         downloadBtn.setText(string( "plug-l-download" )); // NOI18N
-        downloadBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        downloadBtn.setMargin(new java.awt.Insets(2, 4, 2, 4));
         downloadBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 downloadBtnActionPerformed(evt);
@@ -356,10 +358,10 @@ public class PluginManager extends javax.swing.JDialog {
         });
 
         openPluginFolderBtn.setFont(openPluginFolderBtn.getFont().deriveFont(openPluginFolderBtn.getFont().getSize()-1f));
-        openPluginFolderBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/project/folder.png"))); // NOI18N
+        openPluginFolderBtn.setIcon(ResourceKit.getIcon("folder"));
         openPluginFolderBtn.setText(string( "plug-l-open-folder" )); // NOI18N
         openPluginFolderBtn.setEnabled(  DesktopIntegration.SHOW_IN_SHELL_SUPPORTED );
-        openPluginFolderBtn.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        openPluginFolderBtn.setMargin(new java.awt.Insets(2, 4, 2, 4));
         openPluginFolderBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openPluginFolderBtnActionPerformed(evt);
@@ -822,31 +824,19 @@ public class PluginManager extends javax.swing.JDialog {
             BorderFactory.createEmptyBorder(1, 1, 1, 1)
     );
 
-    private static final int ICON_SIZE = 24;
-
-    private static Icon fixIcon(Icon i) {
-        if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
-            i = fixIcon(ImageUtilities.iconToImage(i));
-        }
-        return i;
-    }
-
-    private static Icon fixIcon(BufferedImage bi) {
-        return ImageUtilities.createIconForSize(bi, ICON_SIZE);
-    }
-
     private final class Entry {
 
         InstalledBundleObject iplugin;
-        Icon icon;
-        Icon mainIcon;
+        ThemedIcon icon;
+        ThemedIcon mainIcon;
         String name, desc;
         boolean update;
         boolean uninstalled;
 
         public Entry(String categoryName, String desc, String ext) {
             name = categoryName;
-            mainIcon = fixIcon(PluginBundle.getIcon(ext, false));
+            mainIcon = PluginBundle.getIcon(ext, false).medium();
+            icon = new BlankIcon(BlankIcon.SMALL, 1);
             this.desc = desc;
         }
 
@@ -854,12 +844,8 @@ public class PluginManager extends javax.swing.JDialog {
             iplugin = obj;
             name = obj.getName();
             desc = obj.getDescription();
-            icon = obj.getIcon();
-            if (obj.getRepresentativeImage() == null) {
-                mainIcon = fixIcon(PluginBundle.getIcon(obj.getBundle().getFile(), false));
-            } else {
-                mainIcon = fixIcon(obj.getRepresentativeImage());
-            }
+            icon = obj.getIcon().small();
+            mainIcon = icon.medium();
             updateInstallStatus();
         }
 

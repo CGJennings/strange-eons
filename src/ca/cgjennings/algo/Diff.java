@@ -143,11 +143,4 @@ public class Diff<E> {
     public boolean equal(E a, E b, int originalIndex, int changedIndex) {
         return a == null ? b == null : a.equals(b);
     }
-
-//	public static void main( String[] args ) {
-//		Integer[] a = new Integer[] { 0, 1, 2, 2, 4, 5, 6, 8, 10 };
-//		Integer[] b = new Integer[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//		Diff<Integer> d = new Diff<Integer>();
-//		d.findChanges( a, b );
-//	}
 }

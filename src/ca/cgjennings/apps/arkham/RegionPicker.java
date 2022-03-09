@@ -4,7 +4,7 @@ import ca.cgjennings.apps.arkham.editors.CodeEditor;
 import ca.cgjennings.layout.PageShape;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.dnd.ScrapBook;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -176,7 +176,7 @@ public class RegionPicker extends javax.swing.JDialog {
         }
 
         HashSet<Rectangle> set = new HashSet<>();
-        JSourceCodeEditor ced = ((CodeEditor) ed).getEditor();
+        CodeEditorBase ced = ((CodeEditor) ed).getEditor();
 
         String text = ced.getText();
         addHighlightsFromPattern(set, PAT_DQUOTE.matcher(text));
@@ -204,7 +204,7 @@ public class RegionPicker extends javax.swing.JDialog {
     private Rectangle getRegionFromEditor() {
         StrangeEonsEditor ed = StrangeEons.getWindow().getActiveEditor();
         if (ed != null && ed instanceof CodeEditor) {
-            JSourceCodeEditor ced = ((CodeEditor) ed).getEditor();
+            CodeEditorBase ced = ((CodeEditor) ed).getEditor();
             String sel = ced.getSelectedText();
             boolean bump = false;
             if ((sel.startsWith("\"") && sel.endsWith("\""))
@@ -228,13 +228,13 @@ public class RegionPicker extends javax.swing.JDialog {
         if (ed != null && ed instanceof CodeEditor && getRegionFromEditor() != null) {
             CodeEditor ced = (CodeEditor) ed;
             int start = Math.min(ced.getEditor().getSelectionStart(), ced.getEditor().getSelectionStart());
-            ced.getEditor().getDocument().beginCompoundEdit();
+            ced.getEditor().beginCompoundEdit();
             try {
                 String text = regionToString(r);
                 ced.getEditor().setSelectedText(text);
                 ced.getEditor().select(start, start + text.length());
             } finally {
-                ced.getEditor().getDocument().endCompoundEdit();
+                ced.getEditor().endCompoundEdit();
             }
         }
     }
@@ -395,7 +395,7 @@ public class RegionPicker extends javax.swing.JDialog {
         mousePosLabel.setText("1000|1000 32x");
         mousePosLabel.setBorder(javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 1, 0, java.awt.Color.gray), javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
-        copyBtn.setIcon( ResourceKit.getIcon( "ui/button/copy.png" ) );
+        copyBtn.setIcon( ResourceKit.getIcon("copy").medium());
         copyBtn.setToolTipText(string( "copy" )); // NOI18N
         copyBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

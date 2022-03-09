@@ -1,159 +1,107 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.algo.SplitJoin;
-import ca.cgjennings.graphics.ImageUtilities;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageOp;
+import java.io.File;
 import javax.swing.Icon;
-import javax.swing.UIManager;
-import resources.ResourceKit;
 
 /**
- * An icon that whose image can change according to the installed {@link Theme}.
+ * Interface implemented by all Strange Eons icons.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
- * @since 3.0
  */
-public class ThemedIcon implements Icon {
-
-    private String resource;
+public interface ThemedIcon extends Icon {
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then it will not
-     * be loaded until the first time it is needed. Otherwise, the image will be
-     * loaded immediately.
+     * Returns a new icon that renders the same image as this icon, but at a
+     * different size.
      *
-     * @param resource the resource identifier for the icon
-     * @see Theme#applyThemeToImage(java.lang.String)
+     * @param newWidth the new width ≥ 1
+     * @param newHeight the new height ≥ 1
+     * @return an icon with the revised dimensions
      */
-    public ThemedIcon(String resource) {
-        this(resource, false);
-    }
+    ThemedIcon derive(int newWidth, int newHeight);
 
     /**
-     * Creates a new themed icon. The icon's image will normally be obtained as
-     * if loading an image with the {@link ResourceKit}, but if a theme is
-     * installed then the theme will be given a chance to switch the image for a
-     * themed version. If {@code deferLoading} is {@code true}, then it will not
-     * be loaded until the first time it is needed. Otherwise, the image will
-     * start loading immediately.
+     * Returns a new icon that renders the same image as this icon, but at a
+     * different size.
      *
-     * @param resource the resource identifier for the icon
-     * @param deferLoading if {@code true}, the image is loaded lazily
-     * @see Theme#applyThemeToImage(java.lang.String)
+     * @param newSize the new width and height ≥ 1
+     * @return an icon with the revised dimensions
      */
-    public ThemedIcon(String resource, boolean deferLoading) {
-        if (resource == null) {
-            throw new NullPointerException("resource");
-        }
-        this.resource = resource;
-
-        if (!deferLoading) {
-            if (Runtime.getRuntime().availableProcessors() > 1) {
-                SplitJoin.getInstance().execute(this::getImage);
-            } else {
-                getImage();
-            }
-        }
+    default ThemedIcon derive(int newSize) {
+        return derive(newSize, newSize);
     }
 
     /**
-     * Returns the resource identifier for this icon.
+     * Returns a new icon that renders the same image as this icon, but as if
+     * for a permanently disabled component.
      *
-     * @return the image resource
+     * @return a disabled verison of the icon
      */
-    public String getResource() {
-        return resource;
+    ThemedIcon disabled();
+
+    /**
+     * Creates a themed icon from any arbitrary icon. If passed a themed icon,
+     * returns it unchanged. If passed null, returns null. If passed some other
+     * type of icon, it is converted to an equivalent themed icon.
+     *
+     * @param icon the icon to create a themed version for
+     * @return a themed icon that renders the same graphic as the specified icon
+     */
+    public static ThemedIcon create(Icon icon) {
+        if (icon == null) {
+            return null;
+        }
+        return (icon instanceof ThemedIcon) ? (ThemedIcon) icon : new ForeignIcon(icon);
     }
 
     /**
-     * Returns the (possibly themed) image that will be used by the icon.
+     * Creates a themed icon based on the platform desktop icon for the
+     * specified icon.
      *
-     * @return the image drawn by the icon
+     * @param file the non-null file to create an icon for
      */
-    public final BufferedImage getImage() {
-        BufferedImage im = this.im;
-        if (im == null) {
-            synchronized (this) {
-                im = this.im;
-                if (im == null) {
-                    Theme th = ThemeInstaller.getInstalledTheme();
-                    if (th == null) {
-                        this.im = im = ResourceKit.getImageQuietly(getResource());
-                    } else {
-                        this.im = im = th.applyThemeToImage(getResource());
-                    }
-                }
-            }
-        }
-        return im;
+    public static ThemedIcon create(File platformFile) {
+        return new ForeignIcon(platformFile);
     }
-    private volatile BufferedImage im;
-
-    private BufferedImage getDisabledImage() {
-        if (dim != null) {
-            return dim;
-        }
-
-        BufferedImage im = getImage();
-        BufferedImageOp op = (BufferedImageOp) UIManager.get(Theme.DISABLED_ICON_FILTER);
-        if (op == null) {
-            dim = ImageUtilities.createDisabledImage(im);
-        } else {
-            dim = op.filter(im, null);
-        }
-        return dim;
+    
+    default ThemedIcon tiny() {
+        return derive(TINY, TINY);
     }
-    private BufferedImage dim;
-
-    @Override
-    public int getIconWidth() {
-        BufferedImage bi = getImage();
-        if (bi == null) {
-            return 16;
-        }
-        return bi.getWidth();
+    
+    default ThemedIcon small() {
+        return derive(SMALL, SMALL);
     }
 
-    @Override
-    public int getIconHeight() {
-        BufferedImage bi = getImage();
-        if (bi == null) {
-            return 16;
-        }
-        return bi.getHeight();
+    default ThemedIcon mediumSmall() {
+        return derive(MEDIUM_SMALL, MEDIUM_SMALL);
     }
-
-    @Override
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        BufferedImage bi = getImage();
-
-        if (c != null && !c.isEnabled()) {
-            final BufferedImage dbi = getDisabledImage();
-            if (dbi != null) {
-                g.drawImage(dbi, x, y, null);
-                return;
-            }
-        }
-
-        if (bi != null) {
-            g.drawImage(bi, x, y, null);
-        } else {
-            // draw placeholder icon
-            Color p = g.getColor();
-            g.setColor(Color.GRAY);
-            int w = getIconWidth(), h = getIconHeight();
-            int x2 = w * 2;
-            for (int x1 = -w; x1 < x2; x1 += 2) {
-                g.drawLine(x1, 0, x1 + w, h);
-            }
-            g.setColor(p);
-        }
+    
+    default ThemedIcon medium() {
+        return derive(MEDIUM, MEDIUM);
     }
+    
+    default ThemedIcon mediumLarge() {
+        return derive(MEDIUM_LARGE, MEDIUM_LARGE);
+    }
+    
+    default ThemedIcon large() {
+        return derive(LARGE, LARGE);
+    }
+    
+    default ThemedIcon veryLarge() {
+        return derive(VERY_LARGE, VERY_LARGE);
+    }    
+    
+    default ThemedIcon gigantic() {
+        return derive(GIGANTIC, GIGANTIC);
+    }
+    
+    public static final int TINY = 12;
+    public static final int SMALL = 18;
+    public static final int MEDIUM_SMALL = 24;
+    public static final int MEDIUM = 32;
+    public static final int MEDIUM_LARGE = 48;
+    public static final int LARGE = 64;
+    public static final int VERY_LARGE = 96;
+    public static final int GIGANTIC = 256;
 }

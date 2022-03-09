@@ -27,6 +27,7 @@ import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Game;
 import java.awt.*;
+import java.awt.desktop.QuitStrategy;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.io.File;
@@ -69,7 +70,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         localizeTitle();
 
         if (PlatformSupport.PLATFORM_IS_MAC) {
-            OSXIntegration.install(exitSeparator, exitItem, aboutSeparator, aboutItem, preferencesSeparator, preferencesItem);
+            installMacOsDesktopHandlers();
         }
 
         setIconImages(getApplicationFrameIcons());
@@ -333,7 +334,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             message = string(message);
             int choice = JOptionPane.showConfirmDialog(
                     AppFrame.this, message, string("cat-new-version-title"), JOptionPane.YES_NO_OPTION, 0,
-                    ResourceKit.getIcon("application/128.png")
+                    ResourceKit.getIcon("application/app.png").derive(128, 128)
             );
             if (choice == JOptionPane.YES_OPTION) {
                 // load a fresh (non-cached) copy of the default catalog
@@ -892,13 +893,8 @@ final class AppFrame extends StrangeEonsAppWindow {
         javax.swing.JMenuItem srcShiftUpItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem srcShiftDownItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem commentItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem uncommentItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator15 = new javax.swing.JPopupMenu.Separator();
         sortSourceItem = new javax.swing.JMenuItem();
-        javax.swing.JPopupMenu.Separator jSeparator8 = new javax.swing.JPopupMenu.Separator();
-        javax.swing.JMenuItem playMacroItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem recordMacroItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem stopMacroItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator3 = new javax.swing.JPopupMenu.Separator();
         sortSourceItem1 = new javax.swing.JMenuItem();
         javax.swing.JMenuItem abbreviationsItem = new javax.swing.JMenuItem();
@@ -910,8 +906,8 @@ final class AppFrame extends StrangeEonsAppWindow {
         windowMenu =  new WindowMenu() ;
         helpMenu = new javax.swing.JMenu();
         javax.swing.JMenuItem helpItem = new javax.swing.JMenuItem();
-        javax.swing.JMenuItem userManualItem = new javax.swing.JMenuItem();
         jSeparator11 = new javax.swing.JPopupMenu.Separator();
+        javax.swing.JMenuItem userManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem translatorManualItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem devJavaApiItem = new javax.swing.JMenuItem();
@@ -1207,7 +1203,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         markupMenu.setText(string("app-markup")); // NOI18N
         markupMenu.setName("markupMenu"); // NOI18N
 
-        alignmentItem.setAction( Commands.MARKUP_ALIGNMENT );
+        alignmentItem.setAction(Commands.MARKUP_ALIGNMENT);
         alignmentItem.setName("alignmentItem"); // NOI18N
         markupMenu.add(alignmentItem);
 
@@ -1467,29 +1463,12 @@ final class AppFrame extends StrangeEonsAppWindow {
         commentItem.setName("commentItem"); // NOI18N
         sourceMenu.add(commentItem);
 
-        uncommentItem.setAction( Commands.UNCOMMENT );
-        uncommentItem.setName("uncommentItem"); // NOI18N
-        sourceMenu.add(uncommentItem);
-
         jSeparator15.setName("jSeparator15"); // NOI18N
         sourceMenu.add(jSeparator15);
 
         sortSourceItem.setAction( Commands.SORT );
         sortSourceItem.setName("sortSourceItem"); // NOI18N
         sourceMenu.add(sortSourceItem);
-        sourceMenu.add(jSeparator8);
-
-        playMacroItem.setAction( Commands.PLAY_MACRO );
-        playMacroItem.setName("playMacroItem"); // NOI18N
-        sourceMenu.add(playMacroItem);
-
-        recordMacroItem.setAction( Commands.START_RECORDING_MACRO );
-        recordMacroItem.setName("recordMacroItem"); // NOI18N
-        sourceMenu.add(recordMacroItem);
-
-        stopMacroItem.setAction( Commands.STOP_RECORDING_MACRO );
-        stopMacroItem.setName("stopMacroItem"); // NOI18N
-        sourceMenu.add(stopMacroItem);
 
         jSeparator3.setName("jSeparator3"); // NOI18N
         sourceMenu.add(jSeparator3);
@@ -1537,12 +1516,12 @@ final class AppFrame extends StrangeEonsAppWindow {
         helpItem.setName("helpItem"); // NOI18N
         helpMenu.add(helpItem);
 
+        jSeparator11.setName("jSeparator11"); // NOI18N
+        helpMenu.add(jSeparator11);
+
         userManualItem.setAction( Commands.HELP_USER_MANUAL );
         userManualItem.setName("userManualItem"); // NOI18N
         helpMenu.add(userManualItem);
-
-        jSeparator11.setName("jSeparator11"); // NOI18N
-        helpMenu.add(jSeparator11);
 
         devManualItem.setAction( Commands.HELP_DEV_MANUAL );
         devManualItem.setName("devManualItem"); // NOI18N
@@ -1631,26 +1610,8 @@ final class AppFrame extends StrangeEonsAppWindow {
         }
     }
 
-    /**
-     * @deprecated This is a cover method for {@code exitApplication( false )}.
-     * It is retained for backwards compatibility.
-     */
-    @Deprecated
-    public void exitApplication() {
-        //
-        // THIS EXACT SIGNATURE IS REQUIRED BY OS X ADAPTER
-        //
-        // NOTE WELL:
-        // This method cannot be removed. It is required for backwards
-        // compatibility to avoid breaking the interface presented to
-        // older plug-ins. It is also required in order to implement
-        // the OSXAdapter so that the Application/Quit menu works
-        // correctly.
-        exitApplication(false);
-    }
-
     @Override
-    public void exitApplication(final boolean restart) {
+    public boolean exitApplication(final boolean restart) {
         if ((getExtendedState() & ICONIFIED) != 0) {
             setExtendedState(getExtendedState() & ~ICONIFIED);
         }
@@ -1694,7 +1655,9 @@ final class AppFrame extends StrangeEonsAppWindow {
                     }
                 });
             }
+            return true;
         }
+        return false;
     }
 
     /**
@@ -2613,5 +2576,35 @@ final class AppFrame extends StrangeEonsAppWindow {
      */
     private static JSeparator sep() {
         return new JPopupMenu.Separator();
+    }
+
+    /**
+     * Re-arranges menus and installs OS-specific handling for MacOS.
+     */
+    private void installMacOsDesktopHandlers() {
+        Desktop desktop = Desktop.getDesktop();
+        desktop.setDefaultMenuBar(menuBar);
+        desktop.setAboutHandler(ev -> this.showAboutDialog());
+        desktop.setOpenFileHandler(ev -> ev.getFiles().forEach(this::openFile));
+        desktop.setPreferencesHandler(ev -> this.showPreferencesDialog(this, null));
+        desktop.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
+        desktop.setQuitHandler((ev, response) -> {
+            try {
+                if(!exitApplication(false)) {
+                    response.cancelQuit();
+                    return;
+                }
+            } catch(Exception ex) {
+                // user still chose to quit
+            }
+            response.performQuit();
+        });
+
+        exitSeparator.setVisible(false);
+        exitItem.setVisible(false);
+        aboutSeparator.setVisible(false);
+        aboutItem.setVisible(false);
+        preferencesSeparator.setVisible(false);
+        preferencesItem.setVisible(false);
     }
 }

@@ -10,12 +10,11 @@ import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.MnemonicInstaller;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Objects;
 import java.util.logging.Level;
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.LookAndFeel;
@@ -38,39 +37,6 @@ import resources.Settings;
  * @since 3.0
  */
 public class ThemeInstaller {
-
-    /**
-     * Class name of the built-in "Dagon" theme.
-     */
-    public static final String THEME_DAGON_CLASS = "ca.cgjennings.ui.theme.DagonTheme";
-    /**
-     * Class name of the built-in "Hydra" theme.
-     */
-    public static final String THEME_HYDRA_CLASS = "ca.cgjennings.ui.theme.HydraTheme";
-    /**
-     * Class name of the built-in "Yuggoth" theme.
-     */
-    public static final String THEME_YUGGOTH_CLASS = "ca.cgjennings.ui.theme.YuggothTheme";
-    /**
-     * Class name of the built-in "Ulthar" theme.
-     */
-    public static final String THEME_ULTHAR_CLASS = "ca.cgjennings.ui.theme.UltharTheme";
-    /**
-     * Class name of the built-in "Dreamlands" theme.
-     */
-    public static final String THEME_DREAMLANDS_CLASS = "ca.cgjennings.ui.theme.DreamlandsTheme";
-
-    /**
-     * Class name of the built-in "Tcho Tcho" theme, which is based on the
-     * system look and feel.
-     */
-    public static final String THEME_TCHO_TCHO_CLASS = "ca.cgjennings.ui.theme.TchoTchoTheme";
-    /**
-     * Class name of the theme applied during plug-in testing.
-     */
-    public static final String THEME_PLUGIN_TEST_THEME = "ca.cgjennings.ui.theme.PluginTestTheme";
-
-    private static final String FALLBACK_THEME_CLASS = THEME_DAGON_CLASS;
     private static final String KEY_THEME_CLASS = "theme";
     private static final String KEY_DARK_THEME_CLASS = "dark-theme";
     private static final String KEY_AUTO_DARK = "auto-select-dark-theme";
@@ -193,7 +159,7 @@ public class ThemeInstaller {
             }
         }
         if (themeClass == null || themeClass.length() == 0) {
-            themeClass = FALLBACK_THEME_CLASS;
+            themeClass = HydraTheme.class.getName();
         }
 
         // if testing a plug-in, override default with special testing theme
@@ -217,7 +183,7 @@ public class ThemeInstaller {
             }
             // no test bundle was a theme, use the special test theme
             if (!foundTheme && Settings.getShared().getYesNo(KEY_USE_TEST_THEME)) {
-                themeClass = THEME_PLUGIN_TEST_THEME;
+                themeClass = PluginTestTheme.class.getName();
             }
         }
 
@@ -234,16 +200,16 @@ public class ThemeInstaller {
     private static void installImpl(Theme theme) throws Exception {
         installStrangeEonsUIDefaults(theme);
         theme.modifyManagerDefaults(UIManager.getDefaults());
-        LookAndFeel laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
+        
+        // create laf
+        LookAndFeel laf;
+        if (theme.getLookAndFeelClassName() != null) {
+            laf = (LookAndFeel) Class.forName(theme.getLookAndFeelClassName()).getConstructor().newInstance();
+        } else {
+            laf = Objects.requireNonNull(theme.createLookAndFeelInstance(), "theme returned null look and feel instance");
+        }
 
         UIDefaults lafDefs = laf.getDefaults();
-
-        if (UIManager.getBoolean(Theme.OVERRIDE_LAF_MESSAGE_ICONS)) {
-            lafDefs.put("OptionPane.errorIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/error.png")));
-            lafDefs.put("OptionPane.warningIcon", new ImageIcon(ResourceKit.class.getResource("icons/application/warning.png")));
-            lafDefs.put("OptionPane.questionIcon", null);
-            lafDefs.put("OptionPane.informationIcon", null);
-        }
 
         // put in the theme's L&F defaults
         theme.modifyLookAndFeelDefaults(lafDefs);
@@ -277,19 +243,19 @@ public class ThemeInstaller {
         UIManager.put(Theme.PLUGIN_README_FOREGROUND, UIManager.getColor(Theme.PREFS_FOREGROUND));
 
         UIDefaults ui = UIManager.getDefaults();
-        ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x73_96ab));
+        ui.put(Theme.EDITOR_TAB_BACKGROUND, new Color(0x7396ab));
         ui.put(Theme.SIDEPANEL_TITLE_BACKGROUND, Color.BLACK);
         ui.put(Theme.SIDEPANEL_TITLE_FOREGROUND, Color.WHITE);
 
         ui.put(Theme.CONTEXT_BAR_BACKGROUND, Color.WHITE);
         ui.put(Theme.CONTEXT_BAR_FOREGROUND, Color.BLACK);
         ui.put(Theme.CONTEXT_BAR_BUTTON_BACKGROUND, Color.WHITE);
-        Color rollover = new Color(0xff_cb41);
+        Color rollover = new Color(0xffcb41);
         ui.put(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_BACKGROUND, rollover);
         ui.put(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND, rollover.darker());
-        ui.put(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND, new Color(0x40_b3ff).darker());
+        ui.put(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND, new Color(0x40b3ff).darker());
 
-        ui.put(Theme.CONSOLE_FONT, new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        ui.put(Theme.CONSOLE_FONT, ResourceKit.getEditorFont());
     }
 
     private static void installStrangeEonsUIFallbackDefaults(Theme theme) {

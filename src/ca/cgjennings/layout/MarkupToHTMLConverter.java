@@ -219,7 +219,7 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
                 if (c == null) {
                     return null;
                 }
-                int rgb = c.getRGB() & 0x00ff_ffff;
+                int rgb = c.getRGB() & 0x00ffffff;
                 tag = String.format("<span style='%scolor: #%06x'>", bg, rgb);
                 break;
             case "/family":
@@ -341,7 +341,7 @@ public class MarkupToHTMLConverter extends MarkupRenderer {
             "yellow", TextStyle.COLOR_YELLOW
         };
         for (int i = 0; i < colours.length; i += 2) {
-            String hexColour = Integer.toHexString(((Color) ((TextStyle) colours[i + 1]).get(TextAttribute.FOREGROUND)).getRGB() & 0xff_ffff);
+            String hexColour = Integer.toHexString(((Color) ((TextStyle) colours[i + 1]).get(TextAttribute.FOREGROUND)).getRGB() & 0xffffff);
             setReplacementForTag((String) colours[i], "<color " + hexColour + ">");
             setReplacementForTag("/" + colours[i], "</color>");
         }

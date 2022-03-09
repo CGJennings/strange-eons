@@ -3,11 +3,9 @@ package ca.cgjennings.apps.arkham.plugins;
 import ca.cgjennings.apps.arkham.HSBPanel;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Tintable;
-import ca.cgjennings.ui.ThemedMatteBorder;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
+import ca.cgjennings.apps.arkham.commands.Commands;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.textedit.CodeType;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -19,8 +17,11 @@ import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.basic.BasicOptionPaneUI;
 import resources.Language;
@@ -157,28 +158,86 @@ public final class UILibraryHelper {
     }
 
     @SuppressWarnings("serial")
-    private static class CodeArea extends JSourceCodeEditor {
+    public static class CodeArea extends CodeEditorBase {
 
         CodeArea() {
-            setBorder(new ThemedMatteBorder());
+            setCodeType(CodeType.JAVASCRIPT);
+            setContentFeedbackVisible(false);
 
-            InputHandler ih = getInputHandler();
-            ActionListener li = (ActionEvent e) -> {
-                execute();
+            final ActionListener runAction = (ev) -> {
+                if (isExecutable()) {
+                    execute();
+                }
             };
-            getDocument().setTokenizer(new JavaScriptTokenizer());
-            ih.addKeyBinding("A+R", li);
-            ih.addKeyBinding("F5", li);
 
-            ih.addKeyBinding("S+DELETE", EditorCommands.CUT);
-            ih.addKeyBinding("C+INSERT", EditorCommands.COPY);
-            ih.addKeyBinding("S+INSERT", EditorCommands.PASTE);
+            addKeyBinding("A+R", runAction);
+            addKeyBinding("F5", runAction);
+
+            setPopupMenuBuilder(new PopupMenuBuilder() {
+                @Override
+                public JPopupMenu buildMenu(CodeEditorBase editor, JPopupMenu menu) {
+                    if (isExecutable()) {
+                        JMenuItem item = new JMenuItem(Commands.RUN_FILE.getName(), Commands.RUN_FILE.getIcon());
+                        item.addActionListener(runAction);
+                        menu.insert(item, 0);
+                        menu.insert(new JSeparator(), 1);
+                    }
+                    return menu;
+                }
+            });
         }
 
+        private boolean executable = true;
+
+        /**
+         * Returns whether the editor will support running its contents when the
+         * code type is {@code JAVASCRIPT}.
+         *
+         * @return if true, users can run code directly from the control; always
+         * returns false if code type is not {@code JAVASCRIPT}
+         * @see #setCodeType(ca.cgjennings.ui.textedit.CodeType)
+         * @see #execute
+         */
+        public boolean isExecutable() {
+            return executable && getCodeType() == CodeType.JAVASCRIPT;
+        }
+
+        /**
+         * Sets whether the editor will support running its contents when the
+         * code type is {@code JAVASCRIPT}.
+         *
+         * @return if true, users can run code directly from the control
+         */
+        public void setExecutable(boolean executable) {
+            this.executable = executable;
+        }
+
+        /**
+         * Runs the code in the editor. Does nothing if the control is
+         * {@linkplain #isExecutable() not executable}.
+         *
+         * @return the result of evaluating the code
+         * @throws IllegalState
+         */
         public Object execute() {
+            if (!isExecutable()) {
+                String why;
+                if (getCodeType() != CodeType.JAVASCRIPT) {
+                    why = "code type is " + getCodeType();
+                } else {
+                    why = "executable property is false";
+                }
+                throw new IllegalStateException(why);
+            }
             return execute(getText());
         }
 
+        /**
+         * Runs arbitrary script code.
+         *
+         * @param code the code to run
+         * @return returns the result of evaluating the code
+         */
         public static Object execute(String code) {
             Object result = null;
             StrangeEons.setWaitCursor(true);

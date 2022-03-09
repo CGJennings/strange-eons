@@ -84,7 +84,7 @@ public class StencilFilter extends AbstractRowwiseFilter {
         stHeight = stencil.getHeight();
         stencilAlpha = getARGB(stencil, null);
         for (int i = 0; i < stencilAlpha.length; ++i) {
-            stencilAlpha[i] &= 0xff00_0000;
+            stencilAlpha[i] &= 0xff000000;
         }
     }
 

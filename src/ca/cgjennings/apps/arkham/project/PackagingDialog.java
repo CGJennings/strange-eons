@@ -4,6 +4,8 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.Palette;
+import resources.ResourceKit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -71,7 +73,7 @@ class PackagingDialog extends javax.swing.JDialog implements AgnosticDialog {
         jPanel1.setBackground(java.awt.Color.white);
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/prefs-project.png"))); // NOI18N
+        jLabel1.setIcon(ResourceKit.getIcon("prefs/project.png"));
 
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getStyle() | java.awt.Font.BOLD, jLabel2.getFont().getSize()+1));
         jLabel2.setText(string( "pa-l-packaging-info" )); // NOI18N
@@ -117,7 +119,7 @@ class PackagingDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         okBtn.setText(string( "pa-l-packaging-ok" )); // NOI18N
 
-        errLabel.setForeground(java.awt.Color.red);
+        errLabel.setForeground(Palette.get.foreground.opaque.red);
         errLabel.setText(" ");
 
         outLabel.setFont(outLabel.getFont().deriveFont(outLabel.getFont().getSize()-1f));

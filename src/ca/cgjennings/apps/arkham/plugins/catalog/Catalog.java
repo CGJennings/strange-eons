@@ -1138,7 +1138,7 @@ public class Catalog {
      */
     public static class CatalogIsLockedException extends IOException {
 
-        private static final long serialVersionUID = 0x1fa_11ca_ba51L;
+        private static final long serialVersionUID = 0x1fa11ca_ba51L;
 
         public CatalogIsLockedException() {
             super("The catalogue is being updated; try again later.");

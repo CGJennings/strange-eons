@@ -7,15 +7,20 @@ import ca.cgjennings.apps.arkham.diy.SBIntSpinner;
 import ca.cgjennings.apps.arkham.diy.SBTextField;
 import ca.cgjennings.apps.arkham.diy.SettingBackedControl;
 import ca.cgjennings.apps.arkham.plugins.PluginContext;
+import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.BlankIcon;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JLinkLabel;
 import ca.cgjennings.ui.JTip;
 import ca.cgjennings.ui.theme.Theme;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -27,7 +32,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import resources.ResourceKit;
@@ -45,7 +49,7 @@ import se.datadosen.component.RiverLayout;
 public class FillInPreferenceCategory implements PreferenceCategory {
 
     private String title;
-    private Icon icon;
+    private ThemedIcon icon;
 
     private Settings settings;
     private JPanel panel;
@@ -69,11 +73,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @see ResourceKit#getThemedImage(java.lang.String)
      */
     public FillInPreferenceCategory(String title, BufferedImage iconImage) {
-        if (title == null) {
-            throw new NullPointerException("title");
-        }
-        settings = Settings.getUser();
-        init(title, iconImage);
+        this(null, title, iconImage);
     }
 
     /**
@@ -84,15 +84,18 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @param iconResource a resource file that represents the icon
      */
     public FillInPreferenceCategory(String title, String iconResource) {
-        if (title == null) {
-            throw new NullPointerException("title");
-        }
-        settings = Settings.getUser();
-        if (iconResource == null || iconResource.isEmpty()) {
-            init(title, null);
-        } else {
-            init(title, ResourceKit.getThemedImage(iconResource));
-        }
+        this(null, title, iconResource);
+    }
+
+    /**
+     * Create a new preferences category that will use plain settings keys (that
+     * is, the exact keys that are specified).
+     *
+     * @param title the localized name of the category
+     * @param icon the category icon
+     */
+    public FillInPreferenceCategory(String title, Icon icon) {
+        this(null, title, icon);
     }
 
     /**
@@ -106,8 +109,11 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @see ResourceKit#getThemedImage(java.lang.String)
      */
     public FillInPreferenceCategory(PluginContext context, String title, BufferedImage iconImage) {
-        settings = context.getSettings();
-        init(title, iconImage);
+        this(null, title, imageToIcon(iconImage));
+    }
+
+    private static ThemedIcon imageToIcon(BufferedImage im) {
+        return (ThemedIcon) ImageUtilities.createIconForSize(im, ICON_SIZE);
     }
 
     /**
@@ -120,17 +126,27 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @param iconResource a resource file that represents the icon
      */
     public FillInPreferenceCategory(PluginContext context, String title, String iconResource) {
-        settings = context.getSettings();
-        init(title, ResourceKit.getThemedImage(iconResource));
+        this(context, title, (iconResource == null || iconResource.isEmpty()) ? null : new ThemedImageIcon(iconResource));
     }
 
-    private void init(String title, BufferedImage iconImage) {
+    /**
+     * Create a new preferences panel that will use decorated settings keys that
+     * are unique to a given plug-in.
+     *
+     * @param context a plug-in context for the plug-in for which decorated
+     * settings keys should be used
+     * @param title the localized name of the category
+     * @param icon the category icon
+     */
+    public FillInPreferenceCategory(PluginContext context, String title, Icon icon) {
+        this.title = Objects.requireNonNull(title, "title");
+        settings = context == null ? Settings.getUser() : context.getSettings();
+        this.icon = icon == null ? new BlankIcon(ICON_SIZE) : ThemedIcon.create(icon).derive(ICON_SIZE);
+
         panel = new JPanel();
         RiverLayout layout = new RiverLayout();
         indentHgapOffset = layout.getHgap();
         panel.setLayout(layout);
-        this.title = title;
-        icon = ca.cgjennings.graphics.ImageUtilities.createIconForSize(iconImage, ICON_SIZE);
     }
 
     @Override
@@ -146,7 +162,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
     /**
      * Apply theme colours to preference controls.
      *
-     * @param c
+     * @param c the component to style
      */
     static void style(JComponent c) {
         c.setOpaque(true);
@@ -160,8 +176,6 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             if (label.getFont() != null && label.getFont().getSize2D() > defaultLabelFontSize) {
                 label.setForeground(UIManager.getColor(Theme.PREFS_HEADING));
             }
-        } else if (c instanceof JTable) {
-            JTable table = (JTable) c;
         } else if (c instanceof JScrollPane) {
             c.setOpaque(true);
         }
@@ -173,6 +187,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
             }
         }
     }
+
     private static final float defaultLabelFontSize;
 
     static {

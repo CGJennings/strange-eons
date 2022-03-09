@@ -17,6 +17,7 @@ import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.JFileField.FileType;
 import ca.cgjennings.ui.JIconDrop;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import gamedata.Expansion;
 import gamedata.ExpansionSymbolTemplate;
@@ -43,7 +44,6 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.ZipEntry;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -68,9 +68,6 @@ public class EndUserExpansion extends javax.swing.JDialog {
     public EndUserExpansion(java.awt.Frame parent) {
         super(parent, true);
         initComponents();
-        banner.setIcon(new ImageIcon(
-                ResourceKit.createBleedBanner(ImageUtilities.iconToImage(banner.getIcon()))
-        ));
         backBtn.setIcon(ResourceKit.getIcon("ui/go-back.png"));
         nextBtn.setIcon(ResourceKit.getIcon("ui/continue.png"));
 
@@ -161,7 +158,8 @@ public class EndUserExpansion extends javax.swing.JDialog {
         setTitle(string( "eue-l-title" )); // NOI18N
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-expansion.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("new-expansion.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setOpaque(true);
@@ -188,7 +186,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jLabel1))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
         headerPanelLayout.setVerticalGroup(
             headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,7 +234,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                             .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)
                             .addComponent(gameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         page1Layout.setVerticalGroup(
             page1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -251,7 +249,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(gameCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(185, Short.MAX_VALUE))
+                .addContainerGap(181, Short.MAX_VALUE))
         );
 
         cardPanel.add(page1, "p1");
@@ -353,7 +351,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                     .addGroup(page3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(page3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(saveField, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                            .addComponent(saveField, javax.swing.GroupLayout.DEFAULT_SIZE, 541, Short.MAX_VALUE)
                             .addComponent(jLabel9))))
                 .addContainerGap())
         );
@@ -370,7 +368,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel7)
-                .addContainerGap(134, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         cardPanel.add(page3, "p3");
@@ -413,7 +411,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
             }
         });
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         javax.swing.GroupLayout backNextPanelLayout = new javax.swing.GroupLayout(backNextPanel);
@@ -424,7 +422,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(backNextPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(backNextPanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
                         .addComponent(cancelBtn2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(backBtn)
@@ -577,7 +575,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         int[] rgbPix = getARGB(template, 0, 0, w, h, null);
         int[] alphaPix = getARGB(alphaSource, 0, 0, w, h, null);
         for (int i = 0; i < rgbPix.length; ++i) {
-            rgbPix[i] = (rgbPix[i] & 0xff_ffff) | (alphaPix[i] & 0xff00_0000);
+            rgbPix[i] = (rgbPix[i] & 0xffffff) | (alphaPix[i] & 0xff000000);
         }
 
         BufferedImage icon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
@@ -618,7 +616,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
             // image size (+1) and the glow image has a 1 pixel margin (+1)
             g.drawImage(icon, 2, 2, null);
             g.setComposite(AlphaComposite.SrcIn);
-            g.setColor(new Color(0xff_ffbe));
+            g.setColor(new Color(0xffffbe));
             g.fillRect(2, 2, ICON_WIDTH - 2, ICON_HEIGHT - 2);
         } finally {
             g.dispose();
@@ -720,7 +718,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         drops = new SymbolPanel[t.getVariantCount() + 1];
         drops[0] = new SymbolPanel(string("expsym-desc-icon"), null);
         drops[0].drop.setImage(ResourceKit.getImage("icons/un-expansion-icon.png"));
-        drops[0].drop.setBackgroundPaint(new Color(0x8a_8a8a));
+        drops[0].drop.setBackgroundPaint(new Color(0x8a8a8a));
 
         for (int i = 1; i < drops.length; ++i) {
             drops[i] = new SymbolPanel(t.getVariantName(i - 1), t.getVariantIcon(i - 1));
@@ -759,6 +757,7 @@ public class EndUserExpansion extends javax.swing.JDialog {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void installExpansion(Game g, String code, String name, BufferedImage[] images) {
         Expansion.register(g, code, name, name, images[0], Arrays.copyOfRange(images, 1, images.length - 1));
     }

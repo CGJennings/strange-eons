@@ -59,7 +59,7 @@ class UpdateMessage {
      */
     public UpdateMessage(boolean applicationUpdate, boolean pluginUpdate, boolean newPlugins) {
         JLinkLabel appLink = createUpdateLink(
-                "application/16.png",
+                "application/app.png",
                 string("core-l-app-update"), string("core-l-app-update-false"),
                 getDownloadURI(), applicationUpdate
         );

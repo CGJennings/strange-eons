@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.graphics.paints.CheckeredPaint;
-import gamedata.SymbolVariantUtilities;
+import ca.cgjennings.ui.theme.PaintSampleIcon;
 import java.awt.Component;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;
@@ -20,7 +20,7 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-class PreviewBackgroundMenu extends JMenu {
+final class PreviewBackgroundMenu extends JMenu {
 
     public PreviewBackgroundMenu() {
         String[] labels = {"dark", "light", "check"};
@@ -36,7 +36,7 @@ class PreviewBackgroundMenu extends JMenu {
             }
             JRadioButtonMenuItem item = new JRadioButtonMenuItem(
                     string("app-backdrop-" + labels[i]),
-                    SymbolVariantUtilities.createDefaultVariantIcon(p)
+                    new PaintSampleIcon(p)
             );
             group.add(item);
             add(item);

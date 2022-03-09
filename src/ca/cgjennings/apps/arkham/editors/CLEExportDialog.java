@@ -1,7 +1,5 @@
 package ca.cgjennings.apps.arkham.editors;
 
-import ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer;
-import ca.cgjennings.ui.textedit.tokenizers.PropertyTokenizer;
 import static resources.Language.string;
 import resources.Settings;
 
@@ -22,8 +20,6 @@ class CLEExportDialog extends javax.swing.JDialog {
         super(parent, true);
         this.ed = ed;
         initComponents();
-        paintCode.setTokenizer(new JavaScriptTokenizer());
-        settingsCode.setTokenizer(new PropertyTokenizer());
         Settings.getUser().getYesNo("card-layout-export-back");
         frontBtn.setSelected(true);
         updateCode(true);
@@ -44,8 +40,8 @@ class CLEExportDialog extends javax.swing.JDialog {
         frontBtn = new javax.swing.JRadioButton();
         backBtn = new javax.swing.JRadioButton();
         tab = new javax.swing.JTabbedPane();
-        paintCode = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
-        settingsCode = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
+        paintCode = new ca.cgjennings.ui.textedit.CodeEditorBase();
+        settingsCode = new ca.cgjennings.ui.textedit.CodeEditorBase();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string( "cle-export-title" )); // NOI18N
@@ -77,11 +73,13 @@ class CLEExportDialog extends javax.swing.JDialog {
 
         tab.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
+        paintCode.setCodeType(ca.cgjennings.ui.textedit.CodeType.JAVASCRIPT);
         paintCode.setEditable(false);
-        tab.addTab(string( "cle-export-paint-code" ), paintCode); // NOI18N
+        tab.addTab(string("cle-export-paint-code"), paintCode); // NOI18N
 
+        settingsCode.setCodeType(ca.cgjennings.ui.textedit.CodeType.SETTINGS);
         settingsCode.setEditable(false);
-        tab.addTab(string( "cle-export-settings" ), settingsCode); // NOI18N
+        tab.addTab(string("cle-export-settings"), settingsCode); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -119,8 +117,8 @@ class CLEExportDialog extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds((screenSize.width-636)/2, (screenSize.height-538)/2, 636, 538);
+        setSize(new java.awt.Dimension(636, 538));
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
 	private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed
@@ -136,10 +134,8 @@ class CLEExportDialog extends javax.swing.JDialog {
 	}//GEN-LAST:event_backBtnActionPerformed
 
     private void updateCode(boolean front) {
-        paintCode.setText(ed.createExportText(CardLayoutEditor.ExportType.PAINTING_CODE, front, false));
-        paintCode.select(0, 0);
-        settingsCode.setText(ed.createExportText(CardLayoutEditor.ExportType.SETTINGS, front, false));
-        settingsCode.select(0, 0);
+        paintCode.setInitialText(ed.createExportText(CardLayoutEditor.ExportType.PAINTING_CODE, front, false));
+        settingsCode.setInitialText(ed.createExportText(CardLayoutEditor.ExportType.SETTINGS, front, false));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -148,8 +144,8 @@ class CLEExportDialog extends javax.swing.JDialog {
     private javax.swing.ButtonGroup faceGroup;
     private javax.swing.JRadioButton frontBtn;
     private javax.swing.JLabel jLabel2;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor paintCode;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor settingsCode;
+    private ca.cgjennings.ui.textedit.CodeEditorBase paintCode;
+    private ca.cgjennings.ui.textedit.CodeEditorBase settingsCode;
     private javax.swing.JTabbedPane tab;
     // End of variables declaration//GEN-END:variables
 

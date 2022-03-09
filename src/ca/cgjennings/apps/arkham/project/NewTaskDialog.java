@@ -7,6 +7,7 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.FilteredDocument;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
@@ -14,12 +15,10 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
-import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -41,8 +40,6 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         initComponents();
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
-        bannerIcon.setImage(ResourceKit.createBleedBanner(bannerIcon.getImage()));
         getRootPane().setDefaultButton(okBtn);
         name.selectAll();
         name.requestFocusInWindow();
@@ -135,11 +132,11 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         descPane.setEditable(false);
         descPane.setContentType("text/html"); // NOI18N
-        descPane.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        descPane.setFont(descPane.getFont().deriveFont(descPane.getFont().getSize()+2f));
         descPane.setText("<html>\r");
         jScrollPane2.setViewportView(descPane);
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         helpBtn.setHelpPage("proj-intro#adding-tasks");
@@ -158,20 +155,20 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 403, Short.MAX_VALUE))
+                        .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 263, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 369, Short.MAX_VALUE)
                         .addComponent(okBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelBtn))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
-                    .addComponent(errorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 273, Short.MAX_VALUE))
+                    .addComponent(errorLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(startLabel1)
@@ -215,7 +212,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-task.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("new-task.jpg"));
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setOpaque(true);

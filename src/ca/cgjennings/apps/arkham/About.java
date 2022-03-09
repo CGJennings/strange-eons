@@ -120,7 +120,7 @@ final class About extends javax.swing.JDialog {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                AnimationUtilities.animateIconTransition(secretBtn, ResourceKit.getIcon("project/mt127.png"));
+                AnimationUtilities.animateIconTransition(secretBtn, ResourceKit.getIcon("mt127"));
             }
 
             @Override

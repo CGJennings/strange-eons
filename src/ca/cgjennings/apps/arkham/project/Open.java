@@ -8,6 +8,7 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.TextIndexViewer;
 import ca.cgjennings.apps.arkham.editors.CardLayoutEditor;
 import ca.cgjennings.apps.arkham.editors.CodeEditor;
+import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.platform.DesktopIntegration;
 import java.io.File;
 import java.io.IOException;
@@ -153,7 +154,7 @@ public class Open extends TaskAction {
         }
 
         if (DeckTask.isCopiesList(member)) {
-            CodeEditor ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeEditor.CodeType.SETTINGS);
+            CodeEditor ed = new CodeEditor(f, ProjectUtilities.ENC_SETTINGS, CodeType.SETTINGS);
             ed.setFileDropListener(new DeckTask.CopiesFileDropListener(ed));
             StrangeEons.getWindow().addEditor(ed);
             return true;
@@ -188,20 +189,19 @@ public class Open extends TaskAction {
         }
 
         CodeEditor ed = null;
-        // backwards compatibility: very old parsed resources used ".txt"
-        // extension, but in a plug-in task context
-        if ("txt".equals(ext)) {
-            if (!MetadataSource.TextMetadata.isDocType(member)) {
-                ed = new CodeEditor(f, CodeEditor.CodeType.SETTINGS);
-            }
-        }
         // check extension against known code types
         if (ed == null) {
-            for (CodeEditor.CodeType type : CodeEditor.CodeType.values()) {
+            for (CodeType type : CodeType.values()) {
                 if (!type.getExtension().equals(ext)) {
                     continue;
                 }
                 ed = new CodeEditor(f, type);
+            }
+        }
+        // check some fallback types
+        if (ed == null) {
+            if (MetadataSource.TextMetadata.isDocType(member)) {
+                ed = new CodeEditor(f, CodeType.PLAIN);
             }
         }
         if (ed != null) {

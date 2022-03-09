@@ -31,9 +31,8 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.ui.JHelpButton;
 import ca.cgjennings.ui.JUtilities;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
-import ca.cgjennings.ui.textedit.Tokenizer;
+import ca.cgjennings.ui.textedit.EditorAction;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.MouseInfo;
@@ -177,7 +176,7 @@ public class Commands {
     /**
      * Exports content from editors that support this command.
      */
-    public static final DelegatedCommand EXPORT = new DelegatedCommand("app-export");
+    public static final DelegatedCommand EXPORT = new DelegatedCommand("app-export", "export");
     /**
      * Prints content from editors that support this command.
      */
@@ -199,7 +198,7 @@ public class Commands {
     /**
      * Adds a clone of the current document to the application.
      */
-    public static final DelegatedCommand SPIN_OFF = new DelegatedCommand("app-clone");
+    public static final DelegatedCommand SPIN_OFF = new DelegatedCommand("app-clone", "spin-off");
     /**
      * Clears all content from editors that support this command.
      */
@@ -233,7 +232,7 @@ public class Commands {
     /**
      * Activates a search tool in an editor that supports this command.
      */
-    public static final DelegatedCommand FIND = new DelegatedCommand("app-find");
+    public static final DelegatedCommand FIND = new DelegatedCommand("app-find", "find");
     /**
      * Activates the find in project field, making it visible if necessary.
      */
@@ -258,7 +257,7 @@ public class Commands {
      *
      * @see StrangeEonsAppWindow#showPreferencesDialog
      */
-    public static final AbstractCommand PREFERENCES = new AbstractCommand("app-settings") {
+    public static final AbstractCommand PREFERENCES = new AbstractCommand("app-settings", "preferences") {
         @Override
         public void actionPerformed(ActionEvent e) {
             StrangeEons.getWindow().showPreferencesDialog(null, null);
@@ -296,7 +295,7 @@ public class Commands {
     /**
      * Toggles visibility of the context bar.
      */
-    public static final AbstractToggleCommand VIEW_CONTEXT_BAR = new AbstractToggleCommand("app-context-bar", "ui/view/contextbar.png") {
+    public static final AbstractToggleCommand VIEW_CONTEXT_BAR = new AbstractToggleCommand("app-context-bar", "context-bar") {
         {
             setSelected(Settings.getShared().getYesNo("show-context-bar"));
         }
@@ -323,7 +322,7 @@ public class Commands {
     /**
      * Toggles visibility of the source code navigator.
      */
-    public static final AbstractToggleCommand VIEW_SOURCE_NAVIGATOR = new AbstractToggleCommand("app-source-nav") {
+    public static final AbstractToggleCommand VIEW_SOURCE_NAVIGATOR = new AbstractToggleCommand("app-source-nav", "view-navigator") {
         {
             setSelected(CodeEditor.isNavigatorVisible());
         }
@@ -493,9 +492,9 @@ public class Commands {
                 if (c.getAlpha() < 255) {
                     hex = String.format("%08x", c.getRGB());
                 } else {
-                    hex = String.format("%06x", c.getRGB() & 0x00ff_ffff);
+                    hex = String.format("%06x", c.getRGB() & 0x00ffffff);
                 }
-                String colour = (Locale.getDefault().getCountry().equals(Locale.US)) ? "color" : "colour";
+                String colour = Locale.getDefault().getCountry().equals("US") ? "color" : "colour";
                 mt.tagSelectedText("<" + colour + " #" + hex + ">", "</" + colour + ">", false);
             }
         }
@@ -568,8 +567,8 @@ public class Commands {
         private InsertImageDialog insertImageDlg;
     };
     /**
-     * Opens a dialog that allows the user to select an image, a tag for which
-     * will be inserted into the markup target.
+     * Opens a dialog that allows the user to select an symbol or character
+     * to be inserted into the markup target.
      */
     public static final DelegatedCommand MARKUP_INSERT_CHARACTERS = new HMarkupCommand("app-insert-chars", "toolbar/symbol.png") {
         @Override
@@ -580,7 +579,7 @@ public class Commands {
 
             String text = d.getSelectedText();
             if (text != null) {
-                if (!(mt.getTarget() instanceof JSourceCodeEditor) && (text.indexOf('>') >= 0 || text.indexOf('<') >= 0)) {
+                if (!(mt.getTarget() instanceof CodeEditorBase) && (text.indexOf('>') >= 0 || text.indexOf('<') >= 0)) {
                     StringBuilder b = new StringBuilder(text.length() + 16);
                     for (int i = 0; i < text.length(); ++i) {
                         char ch = text.charAt(i);
@@ -932,7 +931,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (!i.isSelectionLocked()) {
                         return true;
@@ -945,7 +943,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(true);
                 }
@@ -960,7 +957,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (i.isSelectionLocked()) {
                         return true;
@@ -973,7 +969,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(false);
                 }
@@ -988,7 +983,6 @@ public class Commands {
         @Override
         public boolean isDefaultActionApplicable() {
             if (super.isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     if (i.isSelectionLocked()) {
                         return true;
@@ -1001,7 +995,6 @@ public class Commands {
         @Override
         public void performDefaultAction(ActionEvent e) {
             if (isDefaultActionApplicable()) {
-                PageItem[] sel = getSelection();
                 for (PageItem i : getSelection()) {
                     i.setSelectionLocked(false);
                 }
@@ -1165,20 +1158,15 @@ public class Commands {
     /**
      * Moves the selected lines up in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(EditorCommands.MOVE_SELECTION_UP).key("move-selection-up");
+    public static final DelegatedCommand MOVE_LINES_UP = new HSourceCommand("app-shift-up").forAction(EditorAction.moveUp).key("move-selection-up");
     /**
      * Moves the selected lines down in a code editor.
      */
-    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(EditorCommands.MOVE_SELECTION_DOWN).key("move-selection-down");
+    public static final DelegatedCommand MOVE_LINES_DOWN = new HSourceCommand("app-shift-down").forAction(EditorAction.moveDown).key("move-selection-down");
     /**
      * Comments out the selected lines in a code editor.
      */
-    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(EditorCommands.COMMENT_SELECTION).key("comment-selection");
-    /**
-     * Uncomments the selected lines in a code editor, reversing a previously
-     * performed {@link #COMMENT_OUT} command.
-     */
-    public static final DelegatedCommand UNCOMMENT = new HSourceCommand("app-uncomment", "toolbar/uncomment.png").forComments().forAction(EditorCommands.UNCOMMENT_SELECTION).key("uncomment-selection");
+    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(EditorAction.toggleComment).key("comment-selection");
 
     /**
      * Removes trailing spaces from the ends of source lines.
@@ -1186,21 +1174,20 @@ public class Commands {
     public static final DelegatedCommand REMOVE_TRAILING_SPACES = new HSourceCommand("app-trim-right", "toolbar/trim-right.png") {
         @Override
         public void performDefaultAction(ActionEvent e) {
-            final JSourceCodeEditor ed = getEditor();
+            final CodeEditorBase ed = getEditor();
             if (ed == null) {
                 return;
             }
             try {
-                ed.getDocument().beginCompoundEdit();
+                ed.beginCompoundEdit();
                 int caretPos = ed.getCaretPosition();
                 int caretLine = ed.getLineOfOffset(caretPos);
                 int caretOffset = caretPos - ed.getLineStartOffset(caretLine);
-                int topLine = ed.getFirstDisplayedLine();
 
-                if (caretPos == ed.getMarkPosition()) {
+                if (!ed.hasSelection()) {
                     ed.selectAll();
                 }
-                String[] lines = EditorCommands.getSelectedLineText(ed, true);
+                String[] lines = ed.getSelectedLineText(true);
                 for (int i = 0; i < lines.length; ++i) {
                     String line = lines[i];
                     int len = line.length();
@@ -1209,14 +1196,13 @@ public class Commands {
                     }
                     lines[i] = line.substring(0, len);
                 }
-                EditorCommands.setSelectedLineText(ed, lines, lines.length);
+                ed.setSelectedLineText(lines);
 
                 // replace caret as close as possible to previous position
                 caretOffset = Math.min(caretOffset, ed.getLineLength(caretLine));
                 ed.setCaretPosition(ed.getLineStartOffset(caretLine) + caretOffset);
-                ed.setFirstDisplayedLine(topLine);
             } finally {
-                ed.getDocument().endCompoundEdit();
+                ed.endCompoundEdit();
             }
         }
     };
@@ -1234,39 +1220,15 @@ public class Commands {
     }.forCodeEditor();
 
     /**
-     * Plays the macro that was most recently recorded in a code editor.
-     */
-    public static final DelegatedCommand PLAY_MACRO = new HSourceCommand("app-play-macro", "toolbar/play-macro.png").forPlaying().forAction(EditorCommands.PLAY_LAST_MACRO).key("play-last-macro");
-    /**
-     * Starts recording a macro in the code editor.
-     */
-    public static final DelegatedCommand START_RECORDING_MACRO = new HSourceCommand("app-record-macro").forAction(EditorCommands.BEGIN_MACRO).key("begin-macro");
-    /**
-     * Stops recording a macro in the code editor.
-     */
-    public static final DelegatedCommand STOP_RECORDING_MACRO = new HSourceCommand("app-stop-macro").forRecording().forAction(EditorCommands.END_MACRO).key("end-macro");
-    /**
      * Opens the code completion popup in the current code editor, if available.
      */
-    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, EditorCommands.COMPLETE_CODE) {
-        @Override
-        public boolean isDefaultActionApplicable() {
-            if (super.isDefaultActionApplicable()) {
-                JSourceCodeEditor ed = getEditor();
-                Tokenizer t = ed.getTokenizer();
-                if (t != null && t.getCodeCompleter() != null) {
-                    return true;
-                }
-            }
-            return false;
-        }
-    }.key("complete-code");
+    public static final DelegatedCommand COMPLETE_CODE = new HSourceCommand("app-code-complete", null, EditorAction.completeCode);
 
     /**
      * Formats (pretty prints) the current editor content, if a suitable
      * formatter is available.
      */
-    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", null, "format-code");
+    public static final DelegatedCommand FORMAT_CODE = new DelegatedCommand("app-code-format", "format-code", "format-code");
 
     /**
      * Displays the source code abbreviation table editor.
@@ -1290,7 +1252,7 @@ public class Commands {
     /**
      * Opens the plug-in catalog.
      */
-    public static final AbstractCommand PLUGIN_CATALOG = new AbstractCommand("app-catalog") {
+    public static final AbstractCommand PLUGIN_CATALOG = new AbstractCommand("app-catalog", "catalog") {
         @Override
         public void actionPerformed(ActionEvent e) {
             CatalogDialog d = new CatalogDialog(StrangeEons.getWindow());
@@ -1301,7 +1263,7 @@ public class Commands {
     /**
      * Opens the plug-in manager.
      */
-    public static final AbstractCommand PLUGIN_MANAGER = new AbstractCommand("app-toolbox-manage") {
+    public static final AbstractCommand PLUGIN_MANAGER = new AbstractCommand("app-toolbox-manage", "plugin-manager") {
         @Override
         public void actionPerformed(ActionEvent e) {
             PluginManager d = new PluginManager();
@@ -1341,27 +1303,27 @@ public class Commands {
     /**
      * Opens the User Manual for browsing.
      */
-    public static final AbstractCommand HELP_USER_MANUAL = new HDocPageCommand("app-user-manual", "um-index");
+    public static final AbstractCommand HELP_USER_MANUAL = new HDocPageCommand("app-user-manual", "um-index", "user-manual");
 
     /**
      * Opens the Developer Manual for browsing.
      */
-    public static final AbstractCommand HELP_DEV_MANUAL = new HDocPageCommand("app-dev-manual", "dm-index");
+    public static final AbstractCommand HELP_DEV_MANUAL = new HDocPageCommand("app-dev-manual", "dm-index", "dev-manual");
 
     /**
      * Opens the Translation Manual for browsing.
      */
-    public static final AbstractCommand HELP_TRANSLATOR_MANUAL = new HDocPageCommand("app-translator-manual", "tm-index");
+    public static final AbstractCommand HELP_TRANSLATOR_MANUAL = new HDocPageCommand("app-translator-manual", "tm-index", "translation-manual");
 
     /**
      * Opens the JS API documentation for browsing.
      */
-    public static final AbstractCommand HELP_DEV_JS_API = new HDocPageCommand("app-dev-jsapi", "https://cgjennings.github.io/se3docs/assets/jsdoc/");
+    public static final AbstractCommand HELP_DEV_JS_API = new HDocPageCommand("app-dev-jsapi", "https://cgjennings.github.io/se3docs/assets/jsdoc/", "help-js-api");
 
     /**
      * Opens the Java API documentation for browsing.
      */
-    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/");
+    public static final AbstractCommand HELP_DEV_JAVA_API = new HDocPageCommand("app-dev-javaapi", "https://cgjennings.github.io/se3docs/assets/javadoc/", "help-java-api");
 
     /**
      * Files a bug report with no specific message or exception information.
@@ -1375,7 +1337,7 @@ public class Commands {
      *
      * @see StrangeEonsAppWindow#showAboutDialog()
      */
-    public static final AbstractCommand ABOUT = new AbstractCommand("app-about", "application/16.png") {
+    public static final AbstractCommand ABOUT = new AbstractCommand("app-about", "application/app.png") {
         @Override
         public void actionPerformed(ActionEvent e) {
             StrangeEons.getWindow().showAboutDialog();

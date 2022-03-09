@@ -48,7 +48,7 @@ public abstract class AbstractPixelwiseFilter extends AbstractImageFilter {
             if (type == BufferedImage.TYPE_INT_RGB) {
                 sourceRaster.getDataElements(0, y, width, 1, pixelRow);
                 for (int i = 0; i < width; ++i) {
-                    pixelRow[i] |= 0xff00_0000;
+                    pixelRow[i] |= 0xff000000;
                 }
                 filterPixels(pixelRow, 0, pixelRow.length);
                 destRaster.setDataElements(0, y, width, 1, pixelRow);

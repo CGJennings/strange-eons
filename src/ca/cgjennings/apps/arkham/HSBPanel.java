@@ -853,7 +853,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         BField.setText(formatter.format(b * 100) + "%");
 
         if (!doNotUpdateWebColour) {
-            int rgb32 = rgb.getRGB() & 0xff_ffff;
+            int rgb32 = rgb.getRGB() & 0xffffff;
             webColourField.setText(String.format("%06x", rgb32));
         }
 

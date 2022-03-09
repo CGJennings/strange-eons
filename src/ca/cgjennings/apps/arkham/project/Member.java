@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.ui.IconProvider;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.io.File;
@@ -21,7 +22,6 @@ import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.regex.Pattern;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import resources.Settings;
@@ -240,7 +240,7 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      * @return an icon for this member
      */
     @Override
-    public Icon getIcon() {
+    public ThemedIcon getIcon() {
         return getMetadataSource().getIcon(this);
     }
 

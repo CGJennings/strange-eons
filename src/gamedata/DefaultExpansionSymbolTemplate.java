@@ -62,9 +62,9 @@ class DefaultExpansionSymbolTemplate extends AbstractExpansionSymbolTemplate {
     @Override
     public Paint getDesignBackdropForVariant(int variant) {
         if (variant == 0) {
-            return new Color(0xee_eeee);
+            return new Color(0xeeeeee);
         } else if (variant == 1) {
-            return new Color(0x11_1111);
+            return new Color(0x111111);
         }
         return null;
     }

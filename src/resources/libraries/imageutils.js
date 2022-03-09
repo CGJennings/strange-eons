@@ -64,20 +64,23 @@ const ImageUtils = (function () {
         }
         return im;
     };
+    
+    ImageUtils.getMultiRes = function getMultiRes(resPath) {
+        return new ca.cgjennings.graphics.MultiResolutionImageResource(resPath);
+    };
 
     ImageUtils.getIcon = function getIcon(resPath, unthemed) {
         if (unthemed) {
-            let im = resources.ResourceKit.getImageQuietly(resPath);
-            return im === null ? null : new swing.ImageIcon(im);
+            return new swing.ImageIcon(ImageUtils.getMultiRes(resPath));
         } else {
-            let icon = new ca.cgjennings.ui.theme.ThemedIcon(resPath);
+            let icon = new ca.cgjennings.ui.theme.ThemedImageIcon(resPath);
             return icon.image === null ? null : icon;
         }
     };
 
     ImageUtils.createIcon = function createIcon(image, size) {
-        if (isNaN(size))
-            size = 16;
+        if (isNaN(size) || size < 1)
+            size = 18;
         return ca.cgjennings.graphics.ImageUtilities.createIconForSize(valImage(image), size);
     };
 

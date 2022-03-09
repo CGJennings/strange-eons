@@ -6,6 +6,10 @@ import java.awt.Color;
  * A basic, general purpose card tinting filter. It shifts hue, and scales
  * saturation and brightness of the pixels in the source image.
  *
+ * <p>
+ * <b>In-place filtering:</b> This class supports in-place filtering (the source
+ * and destination image may be the same).
+ * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class TintFilter extends TintOverlayFilter {
@@ -37,12 +41,12 @@ public class TintFilter extends TintOverlayFilter {
 
     public int adjustColor(int argb) {
         int newrgb = argb;
-        int alpha = newrgb & 0xff00_0000;
+        int alpha = newrgb & 0xff000000;
         float[] newHsb = new float[3];
 
         if (alpha != 0) {
             Color.RGBtoHSB(
-                    (newrgb & 0xff_0000) >> 16,
+                    (newrgb & 0xff0000) >> 16,
                     (newrgb & 0xff00) >> 8,
                     (newrgb & 0xff),
                     newHsb);
@@ -57,7 +61,7 @@ public class TintFilter extends TintOverlayFilter {
             }
 
             newrgb = Color.HSBtoRGB(newHsb[0], newHsb[1], newHsb[2]);
-            argb = (newrgb & 0xff_ffff) | alpha;
+            argb = (newrgb & 0xffffff) | alpha;
         }
         return argb;
     }
@@ -68,11 +72,11 @@ public class TintFilter extends TintOverlayFilter {
 
         for (int p = start; p < end; ++p) {
             int newrgb = argb[p];
-            int alpha = newrgb & 0xff00_0000;
+            int alpha = newrgb & 0xff000000;
 
             if (alpha != 0) {
                 Color.RGBtoHSB(
-                        (newrgb & 0xff_0000) >> 16,
+                        (newrgb & 0xff0000) >> 16,
                         (newrgb & 0xff00) >> 8,
                         (newrgb & 0xff),
                         newHsb);
@@ -87,7 +91,7 @@ public class TintFilter extends TintOverlayFilter {
                 }
 
                 newrgb = Color.HSBtoRGB(newHsb[0], newHsb[1], newHsb[2]);
-                argb[p] = (newrgb & 0xff_ffff) | alpha;
+                argb[p] = (newrgb & 0xffffff) | alpha;
             }
         }
     }
@@ -143,11 +147,11 @@ public class TintFilter extends TintOverlayFilter {
 
             for (int p = 0; p < argb.length; ++p) {
                 int newrgb = argb[p];
-                int alpha = newrgb & 0xff00_0000;
+                int alpha = newrgb & 0xff000000;
 
                 if (alpha != 0) {
                     Color.RGBtoHSB(
-                            (newrgb & 0xff_0000) >> 16,
+                            (newrgb & 0xff0000) >> 16,
                             (newrgb & 0xff00) >> 8,
                             (newrgb & 0xff),
                             newHsb);
@@ -162,7 +166,7 @@ public class TintFilter extends TintOverlayFilter {
                     }
 
                     newrgb = Color.HSBtoRGB(newHsb[0], newHsb[1], newHsb[2]);
-                    argb[p] = (newrgb & 0xff_ffff) | alpha;
+                    argb[p] = (newrgb & 0xffffff) | alpha;
                 }
             }
         }

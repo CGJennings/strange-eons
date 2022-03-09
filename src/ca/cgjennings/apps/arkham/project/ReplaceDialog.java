@@ -3,14 +3,17 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.event.ActionEvent;
+import java.awt.Color;
 import java.io.File;
 import java.text.DateFormat;
 import java.util.Date;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
- * Dialog to prompt user before repalcing files during a copy operation.
+ * Dialog to prompt user before replacing files during a copy operation.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -203,7 +206,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        titlePanel.setBackground(java.awt.Color.white);
+        titlePanel.setBackground(ThemeInstaller.isDark() ? Color.BLACK : Color.WHITE);
         titlePanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
 
         infoLabel.setFont(infoLabel.getFont().deriveFont(infoLabel.getFont().getStyle() | java.awt.Font.BOLD));
@@ -211,7 +214,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
 
         jLabel2.setText(string( "proj-l-replace-file2" )); // NOI18N
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/64.png"))); // NOI18N
+        jLabel1.setIcon(ResourceKit.getIcon("application/app.png").derive(64, 64));
 
         javax.swing.GroupLayout titlePanelLayout = new javax.swing.GroupLayout(titlePanel);
         titlePanel.setLayout(titlePanelLayout);
@@ -222,7 +225,7 @@ class ReplaceDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(titlePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 428, Short.MAX_VALUE)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
                     .addComponent(jLabel2))
                 .addContainerGap())
         );

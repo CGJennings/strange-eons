@@ -10,7 +10,15 @@ nbdist/
 
 **/node_modules/
 
-**/Thumbs.db
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
 
 # Log files
 *.log
@@ -18,3 +26,6 @@ nbdist/
 # Virtual machine crash logs
 hs_err_pid*
 nbproject/genfiles.properties
+*.db
+*.db
+.vscode/settings.json

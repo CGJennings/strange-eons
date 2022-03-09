@@ -276,7 +276,7 @@ public class CatLanguage extends javax.swing.JPanel implements PreferenceCategor
     @Override
     public Icon getIcon() {
         if (icon == null) {
-            icon = ResourceKit.getIcon("application/prefs-language.png");
+            icon = ResourceKit.getIcon("prefs/l10n.png");
         }
         return icon;
     }

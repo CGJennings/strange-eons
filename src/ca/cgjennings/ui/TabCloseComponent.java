@@ -1,6 +1,5 @@
 package ca.cgjennings.ui;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -13,15 +12,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
 import resources.ResourceKit;
@@ -202,19 +198,17 @@ public class TabCloseComponent extends JPanel {
         return pane.getToolTipTextAt(i);
     }
 
-    private static final int ICON_COUNT = 6;
-    private static final Icon[] buttonIcons = new Icon[ICON_COUNT];
+    private static final Icon[] buttonIcons;
 
     static {
-        final boolean dm = UIManager.getBoolean("useDarkTheme");
-        for (int i = 0; i < ICON_COUNT; ++i) {
-            BufferedImage im = ResourceKit.getImage("icons/ui/controls/close" + i + ".png");
-            if (dm) {
-                im = ImageUtilities.invert(im);
-            }
-            buttonIcons[i] = new ImageIcon(im);
+        String[] icons = new String[] {
+          "tab-close", "tab-close-hi", "tab-close-press",
+          "tab-close-dirty", "tab-close-hi-dirty", "tab-close-press-dirty",
+        };
+        buttonIcons = new Icon[icons.length];
+        for (int i=0; i<icons.length; ++i) {
+            buttonIcons[i] = ResourceKit.getIcon(icons[i]);
         }
-
     }
 
     class TabButton extends JButton implements ActionListener {

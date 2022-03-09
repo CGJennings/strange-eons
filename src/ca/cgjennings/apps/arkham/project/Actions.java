@@ -404,6 +404,7 @@ public final class Actions {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private static String createToolTip(TaskAction action) {
         KeyStroke hint = acceleratorHints.get(action);
         String desc = action.getDescription();

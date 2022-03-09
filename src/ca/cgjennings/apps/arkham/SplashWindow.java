@@ -1,7 +1,6 @@
 package ca.cgjennings.apps.arkham;
 
-import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.graphics.filters.BlurFilter;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.anim.Animation;
 import java.awt.Color;
@@ -13,14 +12,13 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
-import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JRootPane;
@@ -35,11 +33,11 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 class SplashWindow extends JFrame {
 
-    private BufferedImage splashImage;
-    private Color textColor = new Color(0x56_3e11);
-    private Color versionColor = new Color(0x56_3e11);
-    private Color gradient1 = new Color(0xaa24_c9ae, true);
-    private Color gradient2 = new Color(0xaaad_edff, true);
+    private Image splashImage;
+    private Color textColor = new Color(0x563e11);
+    private Color versionColor = new Color(0x563e11);
+    private Color gradient1 = new Color(0xaa24c9ae, true);
+    private Color gradient2 = new Color(0xaaadedff, true);
     private Font textFont = ResourceKit.enableKerningAndLigatures(
             new Font("SansSerif", Font.PLAIN, 10).deriveFont(
                     AffineTransform.getScaleInstance(1.2d, 1d)
@@ -71,16 +69,13 @@ class SplashWindow extends JFrame {
         } catch (Exception e) {
             StrangeEons.log.log(Level.WARNING, "unable to load icon for splash window", e);
         }
-        // this line causes paintImmediately not to work under Java 7
-//		setBackground( new Color(0,true) );
         setAlwaysOnTop(true);
         setFocusable(true);
-
         loadSplashImage();
         painter = new SplashPainter();
         add(painter);
         if (splashImage != null) {
-            setSize(splashImage.getWidth(), splashImage.getHeight());
+            setSize(splashImage.getWidth(null), splashImage.getHeight(null));
         } else {
             setSize(200, 200);
         }
@@ -100,13 +95,11 @@ class SplashWindow extends JFrame {
             setVisible(true);
         }
 
-        blurFilt.setPremultiplied(false);
         new Animation(ANIMATION_TIME_MS / 1000f) {
             @Override
             public void composeFrame(float position) {
                 if (position == 1f) {
                     animationDone = true;
-                    blurFilt = null;
                     updateSplash();
                     // tell StrangeEons.init() to continue starting the app
                     StrangeEons app = StrangeEons.getApplication();
@@ -114,15 +107,6 @@ class SplashWindow extends JFrame {
                         synchronized (app) {
                             app.notify();
                         }
-                    }
-                } else {
-
-                    // no need to repaint when just the opacity changes
-                    int radius = (int) (MAX_BLUR - position * MAX_BLUR + 0.5f);
-                    if (radius != lastRadius) {
-                        lastRadius = radius;
-                        blurFilt.setRadius(radius);
-                        updateSplash();
                     }
                 }
                 final float alpha = Math.min(1f, position / ALPHA_CHOKE);
@@ -135,17 +119,10 @@ class SplashWindow extends JFrame {
      * The minimum amount of time that StrangeEons.init() should wait for the
      * opening animation to complete.
      */
-    static final int ANIMATION_TIME_MS = 400;
-
+    static final int ANIMATION_TIME_MS = 300;
     private static final float ALPHA_CHOKE = 0.8f;
-    private static final int MAX_BLUR = 40;
 
-    private int lastRadius = 0;
-    private BlurFilter blurFilt = new BlurFilter(MAX_BLUR, 3);
-
-    ;
-
-	synchronized public void setActivity(String activity) {
+    synchronized public void setActivity(String activity) {
         if (activity == null) {
             throw new NullPointerException("activity");
         }
@@ -180,8 +157,8 @@ class SplashWindow extends JFrame {
 
         public SplashPainter() {
             if (splashImage != null) {
-                final int w = splashImage.getWidth();
-                final int h = splashImage.getHeight();
+                final int w = splashImage.getWidth(null);
+                final int h = splashImage.getHeight(null);
                 Dimension d = new Dimension(w, h);
                 setPreferredSize(d);
                 setSize(w, h);
@@ -220,28 +197,7 @@ class SplashWindow extends JFrame {
         if (splashImage == null) {
             return;
         }
-        if (backBuffer == null) {
-            backBuffer = new BufferedImage(splashImage.getWidth(), splashImage.getHeight(), BufferedImage.TYPE_INT_RGB);
-        }
-        Graphics2D gBuff = backBuffer.createGraphics();
-        try {
-            paintBuffer(gBuff);
-        } finally {
-            gBuff.dispose();
-        }
-
-        if (blurFilt != null) {
-            blurFilt.filter(backBuffer, backBuffer);
-        }
-
-        g.drawImage(backBuffer, 0, 0, null);
-    }
-    private BufferedImage backBuffer;
-
-    private void paintBuffer(Graphics2D g) {
-        if (splashImage != null) {
-            g.drawImage(splashImage, 0, 0, null);
-        }
+        g.drawImage(splashImage, 0, 0, null);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setFont(textFont);
         FontMetrics fm = g.getFontMetrics();
@@ -277,35 +233,9 @@ class SplashWindow extends JFrame {
         }
 
         try {
-            splashImage = ImageIO.read(ResourceKit.class.getResource("icons/application/" + resource + ".png"));
-            splashImage = ImageUtilities.ensureIntRGBFormat(splashImage);
+            splashImage = new MultiResolutionImageResource("icons/splash/" + resource + ".png");
         } catch (Exception e) {
             StrangeEons.log.log(Level.SEVERE, "INIT: unable to load splash image {0}", resource);
         }
-    }
-
-    @Override
-    public void dispose() {
-        setAlwaysOnTop(false);
-        new Animation(0.5f) {
-            @Override
-            public void composeFrame(float position) {
-                StyleUtilities.setWindowOpacity(SplashWindow.this, 1f - position);
-                if (position == 1f) {
-                    SplashWindow.super.dispose();
-                    splashImage = null;
-                    backBuffer = null;
-                    barGradient = null;
-                    painter = null;
-                    EventQueue.invokeLater(() -> {
-                        StrangeEonsAppWindow w = StrangeEons.getWindow();
-                        if (w != null) {
-                            w.toFront();
-                            w.requestFocus();
-                        }
-                    });
-                }
-            }
-        }.play();
     }
 }

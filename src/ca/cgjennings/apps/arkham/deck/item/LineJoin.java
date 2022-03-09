@@ -90,8 +90,6 @@ public enum LineJoin implements IconProvider {
         public void paintIcon(Component c, Graphics g1, int x, int y) {
             Graphics2D g = (Graphics2D) g1;
 
-//			g.setColor( Color.RED );
-//			g.drawRect( x, y, IWIDTH, IHEIGHT );
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             BasicStroke s = new BasicStroke(
                     7f, BasicStroke.CAP_BUTT, join

@@ -27,13 +27,13 @@ public class TintOverlayFilter extends AbstractTintingFilter {
             b = 1f;
         }
         super.setFactors(h, s, b);
-        newrgb = Color.HSBtoRGB(hFactor, sFactor, bFactor) & 0xff_ffff;
+        newrgb = Color.HSBtoRGB(hFactor, sFactor, bFactor) & 0xffffff;
     }
 
     @Override
     public void filterPixels(int[] argb, int start, int end) {
         for (int p = start; p < end; ++p) {
-            argb[p] = newrgb | (argb[p] & 0xff00_0000);
+            argb[p] = newrgb | (argb[p] & 0xff000000);
         }
     }
 

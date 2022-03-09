@@ -7,12 +7,12 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.FilteredDocument;
 import ca.cgjennings.ui.JFileField.FileType;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
-import javax.swing.ImageIcon;
 import javax.swing.event.DocumentEvent;
 import javax.swing.filechooser.FileSystemView;
 import javax.swing.text.BadLocationException;
@@ -38,8 +38,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         super(parent, true);
         initComponents();
         AbstractGameComponentEditor.localizeComboBoxLabels(formatCombo, null);
-        ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
-        bannerIcon.setImage(ResourceKit.createBleedBanner(bannerIcon.getImage()));
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
@@ -122,7 +120,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getSize()-1f));
         jLabel1.setText(string("prj-l-folder")); // NOI18N
 
-        errorLabel.setForeground(java.awt.Color.red);
+        errorLabel.setForeground(Palette.get.foreground.opaque.red);
         errorLabel.setText(" ");
 
         cancelBtn.setText(string("cancel")); // NOI18N
@@ -138,7 +136,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         projLocationField.setEditable(false);
         projLocationField.setFont(new java.awt.Font("Monospaced", 0, 10)); // NOI18N
         projLocationField.setText("/example");
-        projLocationField.setDisabledTextColor(java.awt.Color.black);
+        projLocationField.setDisabledTextColor(Palette.get.foreground.opaque.text);
         projLocationField.setEnabled(false);
         projLocationField.setMargin(new java.awt.Insets(1, 1, 1, 1));
 
@@ -199,11 +197,11 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
                         .addGroup(contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
                                 .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 353, Short.MAX_VALUE)
                                 .addComponent(okBtn)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(cancelBtn))
-                            .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 469, Short.MAX_VALUE))))
+                            .addComponent(errorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 574, Short.MAX_VALUE))))
                 .addContainerGap())
             .addGroup(contentPanelLayout.createSequentialGroup()
                 .addContainerGap()
@@ -213,7 +211,7 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, contentPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
-                        .addComponent(projLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
+                        .addComponent(projLocationField, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
                         .addGap(10, 10, 10))
                     .addGroup(contentPanelLayout.createSequentialGroup()
                         .addComponent(jLabel1)
@@ -267,7 +265,8 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
         getContentPane().add(contentPanel, java.awt.BorderLayout.CENTER);
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/new-proj.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("new-proj.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setOpaque(true);
@@ -294,23 +293,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
             updateProjectFolder();
 }//GEN-LAST:event_fieldKeyReleased
 
-//	private static JFileChooser dirChooser;
-//	private static void createDirChooser() {
-//		dirChooser = new JFileChooser();
-//		dirChooser.setMultiSelectionEnabled( false );
-//		dirChooser.setFileSelectionMode( JFileChooser.DIRECTORIES_ONLY );
-//		dirChooser.setAcceptAllFileFilterUsed( false );
-//		dirChooser.addChoosableFileFilter( new FileFilter() {
-//			@Override
-//			public boolean accept( File f ) {
-//				return f.isDirectory() && !Task.isTaskFolder( f );
-//			}
-//			@Override
-//			public String getDescription() {
-//				return string("prj-l-new-folder-filter");
-//			}
-//		} );
-//	}
 	private void formatComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_formatComboActionPerformed
             updateProjectFolder();
 	}//GEN-LAST:event_formatComboActionPerformed
@@ -345,8 +327,6 @@ public class NewProjectDialog extends javax.swing.JDialog implements AgnosticDia
             }
         }
 
-//		if( resIdField.getText().length() == 0 )
-//			msg = string( "prj-err-resid" );
         errorLabel.setText(msg);
         PlatformSupport.getAgnosticOK(true, okBtn, cancelBtn).setEnabled(" ".equals(msg));
     }

@@ -1,7 +1,14 @@
 package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.ui.textedit.tokenizers.DiffTokenizer;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.Collection;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import static resources.Language.string;
 
 /**
@@ -16,15 +23,33 @@ class DiffDialog extends javax.swing.JDialog {
     /**
      * Creates new form DiffDialog
      */
-    public DiffDialog(String f1Name, String f2Name, String f1Diff, String f2Diff) {
+    public DiffDialog(String f1Name, String f2Name, Collection<CompareFiles.DiffLine> diff) {
         super(StrangeEons.getWindow(), false);
         initComponents();
         lhsLabel.setText(f1Name);
         rhsLabel.setText(f2Name);
-        editor.setText(f1Diff);
-        editor.setTokenizer(new DiffTokenizer());
-        otherDiff = f2Diff;
-        editor.select(0, 0);
+        
+        diffPanel.setLayout(new GridLayout(diff.size(), 1));
+        
+        Font f = new CodeEditorBase().getFont();
+        Border b = new EmptyBorder(0,4,1,4);
+        Color deleted = new Color(0xb71c1c);
+        Color inserted = new Color(0x33691e);
+        
+        for (CompareFiles.DiffLine li : diff) {
+            JLabel line = new JLabel(li.text);
+            line.setFont(f);
+            line.setBorder(b);
+            line.setForeground(Color.WHITE);
+            if (li.state < 0) {
+                line.setBackground(deleted);
+                line.setOpaque(true);
+            } else if (li.state > 0) {
+                line.setBackground(inserted);
+                line.setOpaque(true);
+            }
+            diffPanel.add(line);
+        }
     }
 
     private String otherDiff;
@@ -39,20 +64,17 @@ class DiffDialog extends javax.swing.JDialog {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        editor = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
         jPanel1 = new javax.swing.JPanel();
         closeBtn = new javax.swing.JButton();
-        swapBtn = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lhsLabel = new javax.swing.JLabel();
         rhsLabel = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        diffPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string( "pa-diff" )); // NOI18N
-
-        editor.setEditable(false);
-        getContentPane().add(editor, java.awt.BorderLayout.CENTER);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 0, 0, java.awt.Color.gray));
 
@@ -63,21 +85,12 @@ class DiffDialog extends javax.swing.JDialog {
             }
         });
 
-        swapBtn.setText(string( "pa-diff-swap" )); // NOI18N
-        swapBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                swapBtnActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(swapBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 438, Short.MAX_VALUE)
+                .addContainerGap(531, Short.MAX_VALUE)
                 .addComponent(closeBtn)
                 .addContainerGap())
         );
@@ -85,9 +98,7 @@ class DiffDialog extends javax.swing.JDialog {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(closeBtn)
-                    .addComponent(swapBtn))
+                .addComponent(closeBtn)
                 .addContainerGap())
         );
 
@@ -120,6 +131,21 @@ class DiffDialog extends javax.swing.JDialog {
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        javax.swing.GroupLayout diffPanelLayout = new javax.swing.GroupLayout(diffPanel);
+        diffPanel.setLayout(diffPanelLayout);
+        diffPanelLayout.setHorizontalGroup(
+            diffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 598, Short.MAX_VALUE)
+        );
+        diffPanelLayout.setVerticalGroup(
+            diffPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 429, Short.MAX_VALUE)
+        );
+
+        jScrollPane1.setViewportView(diffPanel);
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -127,33 +153,14 @@ class DiffDialog extends javax.swing.JDialog {
             dispose();
 	}//GEN-LAST:event_closeBtnActionPerformed
 
-	private void swapBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_swapBtnActionPerformed
-            String t = lhsLabel.getText();
-            lhsLabel.setText(rhsLabel.getText());
-            rhsLabel.setText(t);
-
-            t = editor.getText();
-            int line = editor.getCaretLine();
-            int top = editor.getFirstDisplayedLine();
-            editor.setText(otherDiff);
-            int offset = editor.getLineStartOffset(line);
-            if (offset < 0) {
-                offset = editor.getDocumentLength();
-            }
-            editor.select(offset, offset);
-            editor.setFirstDisplayedLine(top);
-            otherDiff = t;
-	}//GEN-LAST:event_swapBtnActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeBtn;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor editor;
+    private javax.swing.JPanel diffPanel;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lhsLabel;
     private javax.swing.JLabel rhsLabel;
-    private javax.swing.JButton swapBtn;
     // End of variables declaration//GEN-END:variables
-
 }

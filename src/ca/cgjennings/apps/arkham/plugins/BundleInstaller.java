@@ -9,7 +9,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
-import ca.cgjennings.ui.theme.ThemeInstaller;
 import ca.cgjennings.jvm.JarLoader;
 import java.awt.EventQueue;
 import java.io.File;
@@ -395,17 +394,16 @@ public class BundleInstaller {
 
             // Only add built-in themes on the first scan
             try {
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_HYDRA_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DAGON_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_YUGGOTH_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_ULTHAR_CLASS));
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_DREAMLANDS_CLASS));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.HydraTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.DagonTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.UltharTheme.class.getName()));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.DreamlandsTheme.class.getName()));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "standard themes not available", e);
             }
             //  - add system L&F theme
             try {
-                installedThemes.add(new InstalledTheme(null, ThemeInstaller.THEME_TCHO_TCHO_CLASS));
+                installedThemes.add(new InstalledTheme(null, ca.cgjennings.ui.theme.TchoTchoTheme.class.getName()));
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "native theme not available", e);
             }
@@ -1202,16 +1200,19 @@ public class BundleInstaller {
 
             int names = 0;
             Locale loc = Language.getInterfaceLocale();
-            String[] matches = new String[5];
+            String[] matches = new String[10];
             for (int j = 0; j < 2; ++j) {
                 if (!loc.getLanguage().isEmpty()) {
                     if (!loc.getCountry().isEmpty()) {
+                        matches[names++] = "install_" + loc.getLanguage() + '_' + loc.getCountry() + ".md";
                         matches[names++] = "install_" + loc.getLanguage() + '_' + loc.getCountry() + ".html";
                     }
+                    matches[names++] = "install_" + loc.getLanguage() + ".md";
                     matches[names++] = "install_" + loc.getLanguage() + ".html";
                 }
                 loc = Language.getGameLocale();
             }
+            matches[names++] = "install.md";
             matches[names++] = "install.html";
 
             int bestMatchIndex = names;
@@ -1573,6 +1574,7 @@ public class BundleInstaller {
      * @return {@code true} if the JavaFX runtime is available
      * @deprecated This method returns {@code false}.
      */
+    @Deprecated
     public static boolean isFXRuntimeAvailable() {
         return false;
     }

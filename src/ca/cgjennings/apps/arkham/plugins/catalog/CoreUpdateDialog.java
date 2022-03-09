@@ -3,10 +3,9 @@ package ca.cgjennings.apps.arkham.plugins.catalog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
 import static resources.Language.string;
-import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -22,9 +21,6 @@ public class CoreUpdateDialog extends javax.swing.JDialog implements AgnosticDia
     public CoreUpdateDialog(boolean restartRequired) {
         super(StrangeEons.getWindow(), ModalityType.TOOLKIT_MODAL);
         initComponents();
-        banner.setIcon(new ImageIcon(
-                ResourceKit.createBleedBanner(((ImageIcon) banner.getIcon()).getImage())
-        ));
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
         setLocationRelativeTo(getParent());
@@ -62,7 +58,7 @@ public class CoreUpdateDialog extends javax.swing.JDialog implements AgnosticDia
         setResizable(false);
 
         banner.setBackground(java.awt.Color.gray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/plugin-banner.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("plugin-banner.jpg"));
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setIconTextGap(0);
@@ -92,7 +88,7 @@ public class CoreUpdateDialog extends javax.swing.JDialog implements AgnosticDia
 
         helpBtn.setHelpPage("plugins-intro#core-components");
 
-        restartLabel.setForeground(java.awt.Color.red);
+        restartLabel.setForeground(Palette.get.foreground.opaque.red);
         restartLabel.setText(string( "core-restart-required" )); // NOI18N
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -106,12 +102,12 @@ public class CoreUpdateDialog extends javax.swing.JDialog implements AgnosticDia
                         .addGap(21, 21, 21)
                         .addComponent(restartLabel))
                     .addComponent(doNotShowCheck)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                         .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 302, Short.MAX_VALUE)
                         .addComponent(okBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cancelBtn)))

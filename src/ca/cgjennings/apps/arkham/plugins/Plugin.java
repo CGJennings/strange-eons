@@ -1,6 +1,8 @@
 package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
+import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.image.BufferedImage;
 
 /**
@@ -52,7 +54,7 @@ public interface Plugin {
      * @return {@code true} if the plug-in was initialized; {@code false} if
      * initialization failed
      */
-    public boolean initializePlugin(PluginContext context);
+    boolean initializePlugin(PluginContext context);
 
     /**
      * This method is called when the plug-in is about to be unloaded to give
@@ -73,7 +75,7 @@ public interface Plugin {
      * the plug-in) before this method is called.
      * </ol>
      */
-    public void unloadPlugin();
+    void unloadPlugin();
 
     /**
      * Returns the name that should be shown to the user for this plug-in,
@@ -87,7 +89,7 @@ public interface Plugin {
      *
      * @return a string that identifies this plug-in for end users
      */
-    public String getPluginName();
+    String getPluginName();
 
     /**
      * Returns a description that can be shown to the user for this plug-in. The
@@ -97,7 +99,7 @@ public interface Plugin {
      *
      * @return a string that describes the purpose of this plug-in for end users
      */
-    public String getPluginDescription();
+    String getPluginDescription();
 
     /**
      * Returns a number representing the version or release number of the
@@ -107,7 +109,7 @@ public interface Plugin {
      * @return a number that corresponds to the plug-in's internal version
      * number
      */
-    public float getPluginVersion();
+    float getPluginVersion();
 
     /**
      * Returns the type identifier of the plug-in. This must be one of
@@ -116,7 +118,7 @@ public interface Plugin {
      * @return a plug-in type that describes how the plug-in should be
      * integrated with Strange Eons
      */
-    public int getPluginType();
+    int getPluginType();
 
     /**
      * Show (activate) or hide (deactivate) the plug-in. This method is most
@@ -142,7 +144,7 @@ public interface Plugin {
      * hide/cancel it
      * @see #isPluginShowing()
      */
-    public void showPlugin(PluginContext context, boolean show);
+    void showPlugin(PluginContext context, boolean show);
 
     /**
      * Returns {@code true} if this plug-in's interface is currently showing,
@@ -156,7 +158,7 @@ public interface Plugin {
      *
      * @return {@code true} to indicate that the plug-in is "active"
      */
-    public boolean isPluginShowing();
+    boolean isPluginShowing();
 
     /**
      * Returns {@code true} if it is currently valid to activate this plug-in by
@@ -177,18 +179,32 @@ public interface Plugin {
      * @return {@code true} if the plug-in can be successfully and meaningfully
      * activated
      */
-    public boolean isPluginUsable();
+    boolean isPluginUsable();
 
     /**
-     * Returns an image that may be used to represent the plug-in on a menu or
-     * toolbar. Strange Eons may resize the image to fit available space, and
-     * may modify it to suit the context of use. Return <tt>null</tt> to
-     * indicate that the plug-in does not have a representative image.
+     * Returns an image that may be used to represent the plug-in.
      *
+     * @deprecated Prefer {@link #getPluginIcon()}.
+     * 
      * @return an image that can be used as a menu item icon
      */
-    public BufferedImage getRepresentativeImage();
+    @Deprecated
+    default BufferedImage getRepresentativeImage() {
+        ThemedIcon icon = getPluginIcon();
+        if (icon == null) return null;
+        return ImageUtilities.iconToImage(icon.mediumSmall());
+    }
 
+    /**
+     * Returns an icon that may be used to represent the plug-in on a menu or
+     * toolbar. Strange Eons may {@linkplain ThemedIcon#derive(int) derive
+     * different sizes} from this icon to fit the context where it is being
+     * displayed.
+     * 
+     * @return an icon that can be used to represent this plug-in
+     */
+    public ThemedIcon getPluginIcon();
+    
     /**
      * Return a string that describes the key stroke that is the preferred
      * default accelerator key for this plug-in. In most cases, you should

@@ -36,17 +36,17 @@ public class ReplaceHueSaturationFilter extends AbstractTintingFilter {
     public void filterPixels(int[] argb, int start, int end) {
         for (int p = start; p < end; ++p) {
             int newrgb = argb[p];
-            int alpha = newrgb & 0xff00_0000;
+            int alpha = newrgb & 0xff000000;
 
             if (alpha != 0) {
-                int bInt = (((newrgb & 0xff_0000) >> 16) + ((newrgb & 0xff00) >> 8) + (newrgb & 0xff)) / 3;
+                int bInt = (((newrgb & 0xff0000) >> 16) + ((newrgb & 0xff00) >> 8) + (newrgb & 0xff)) / 3;
 
                 float b = (bInt / 255f) * bFactor;
                 if (b > 1f) {
                     b = 1f;
                 }
                 newrgb = Color.HSBtoRGB(hFactor, sFactor, b);
-                argb[p] = (newrgb & 0xff_ffff) | alpha;
+                argb[p] = (newrgb & 0xffffff) | alpha;
             }
         }
     }

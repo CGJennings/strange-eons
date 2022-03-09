@@ -2,19 +2,21 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
+import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
+import ca.cgjennings.ui.theme.ThemedSingleImageIcon;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
-import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
  * The standard implementation of {@link ScriptedPlugin} that executes
@@ -283,62 +285,63 @@ public class DefaultScriptedPlugin implements Plugin, ScriptedPlugin {
     public Object call(String name, Object[] args) {
         return monkey.call(name, args);
     }
-
+    
     /**
-     * <p>
-     * <b>Scripted Plug-in Notes:</b> The default implementation will look for
-     * an image file with the same name (and in the same folder) as the plug-in
-     * script, but with a <tt>.png</tt> or <tt>.jp2</tt> extension instead of a
-     * <tt>.js</tt> extension. If no image file is found with one of these
-     * names, or if the image file cannot be read, {@code null} is returned.
-     * <p>
      * {@inheritDoc}
-     */
+     * 
+     * <p>
+     * <b>Scripted Plug-in Notes:</b> The default implementation will query
+     * the script, and if it gets no result, will look for an image file with
+     * the same name (and in the same folder) as the plug-in
+     * script. If no image file is found with one of these
+     * names, or if the image file cannot be read, a default icon is returned.
+     */    
     @Override
-    public BufferedImage getRepresentativeImage() {
-        // Stage 1: look to see if the script contains this method
-        if (scriptEvalsOK) {
-            Object retval = monkey.ambivalentCall("getRepresentativeImage");
-            if (retval != null && retval instanceof BufferedImage) {
-                ScriptMonkey.getSharedConsole().flush();
-                return (BufferedImage) retval;
+    public ThemedIcon getPluginIcon() {
+        if (pluginIcon == null) {
+            // Look to see if the script contains this method
+            if (scriptEvalsOK) {
+                Object retval = monkey.ambivalentCall("getPluginIcon");
+                if (retval != null && retval instanceof ThemedIcon) {
+                    ScriptMonkey.getSharedConsole().flush();
+                    return (ThemedIcon) retval;
+                }
+                retval = monkey.ambivalentCall("getRepresentativeImage");
+                if (retval != null && retval instanceof BufferedImage) {
+                    ScriptMonkey.getSharedConsole().flush();
+                    return new ThemedSingleImageIcon((BufferedImage) retval);
+                }
             }
-        }
-        // Stage 2: look for a file with the same name as the script but a.png
-        //          file extension
-        if (scriptFile.length() < 3 || !scriptFile.substring(scriptFile.length() - 3).equalsIgnoreCase(".js")) {
-            return null;
-        }
-        String imageFile = scriptFile.substring(0, scriptFile.length() - 2) + "png";
-
-        BufferedImage im = null;
-        for (int ext = 0; ext < 2; ++ext) {
-            URL imageURL = null;
-            try {
-                if (ScriptMonkey.isLibraryNameAURL(imageFile)) {
-                    imageURL = new URL(imageFile);
+            
+            if (ResourceKit.composeResourceURL(scriptFile) != null) {
+                int dot = scriptFile.lastIndexOf('.');
+                if (dot < scriptFile.lastIndexOf('/')) dot = -1;
+                String baseName = dot >= 0 ? scriptFile.substring(0, dot) : scriptFile;
+                String ext = ".png";
+                for (int i=0; i<2; ++i) {
+                    if (ResourceKit.composeResourceURL(baseName + ext) != null) {
+                        pluginIcon = new ThemedImageIcon(baseName + ext);
+                        break;
+                    }
+                    ext = ".jp2";
+                }
+                
+            }
+            if (pluginIcon == null) {
+                if (getPluginType() == EXTENSION) {
+                    pluginIcon = ResourceKit.getIcon("extension");
                 } else {
-                    imageURL = new File(imageFile).toURI().toURL();
+                    pluginIcon = ResourceKit.getIcon("plugin");
                 }
-            } catch (MalformedURLException malformedURLException) {
-            }
-
-            if (imageURL != null) {
-                try {
-                    im = ImageIO.read(imageURL);
-                } catch (IOException ex) {
+                if (pluginIcon instanceof ThemedGlyphIcon) {
+                    pluginIcon = ((ThemedGlyphIcon) pluginIcon).derive(getPluginName());
                 }
             }
-
-            if (im == null && ext == 0) {
-                imageFile = scriptFile.substring(0, scriptFile.length() - 2) + "jp2";
-            } else {
-                break;
-            }
+            pluginIcon = pluginIcon.small();
         }
-
-        return im;
+        return pluginIcon;
     }
+    private ThemedIcon pluginIcon;
 
     /**
      * <p>

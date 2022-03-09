@@ -158,7 +158,7 @@ public final class CheckeredScreenFilter extends AbstractRowwiseFilter {
             for (int i = 0; i < argb.length; ++i) {
                 int alpha = (argb[i] >>> 24);
                 alpha = ((i & 1) == parity) ? even[alpha] : odd[alpha];
-                argb[i] = (argb[i] & 0x00ff_ffff) | (alpha << 24);
+                argb[i] = (argb[i] & 0x00ffffff) | (alpha << 24);
             }
         } else {
             int parity = (y / size) & 1;
@@ -166,7 +166,7 @@ public final class CheckeredScreenFilter extends AbstractRowwiseFilter {
             for (int i = 0; i < argb.length; ++i) {
                 int alpha = (argb[i] >>> 24);
                 alpha = (parity == 0) ? even[alpha] : odd[alpha];
-                argb[i] = (argb[i] & 0x00ff_ffff) | (alpha << 24);
+                argb[i] = (argb[i] & 0x00ffffff) | (alpha << 24);
                 if (++c == size) {
                     c = 0;
                     parity = 1 - parity;

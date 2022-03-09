@@ -1,7 +1,8 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.ui.JUtilities;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
 import java.util.Locale;
@@ -26,8 +27,8 @@ public class MarkupTargetFactory {
     /**
      * Returns {@code true} if a markup target can be created for an object. To
      * be valid, the potential target must be non-{@code null}, and must be a
-     * supported type of interface component. If {@code strict} is {@code true},
-     * then the potential target must also be showing, enabled, and editable.
+     * supported type of UI component. If {@code strict} is {@code true}, then
+     * the potential target must also be showing, enabled, and editable.
      * Currently supported component types include text fields (any subclass of
      * {@code JTextComponent}) and code editor controls. Other types might be
      * supported in future versions.
@@ -41,7 +42,7 @@ public class MarkupTargetFactory {
      * {@code MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY} to either
      * {@code Boolean.TRUE} (accept if possible) or {@code Boolean.FALSE}
      * (always reject). To be accepted, the component must still be of a
-     * supported type and (if {@code strict}) be showing, enabled, and editable.
+     * supported type.
      *
      * @param potentialTarget the potential markup target to check
      * @param strict if {@code true}, the target must be showing, enabled, and
@@ -54,17 +55,9 @@ public class MarkupTargetFactory {
             if (strict && !jc.isEnabled()) {
                 return false;
             }
-            final Object explicit = jc.getClientProperty(MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY);
 
-            // always accept a code editor (if editable and showing) unless explicitly told not to
-            if (jc instanceof JSourceCodeEditor) {
-                if (strict && !(((JSourceCodeEditor) jc).isEditable() && jc.isShowing())) {
-                    return false;
-                }
-                return !Boolean.FALSE.equals(explicit);
-            }
+            Object explicit = jc.getClientProperty(MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY);
 
-            // the other controls we know how to deal with are text fields
             if (potentialTarget instanceof JTextComponent) {
                 final JTextComponent jt = (JTextComponent) potentialTarget;
 
@@ -72,19 +65,22 @@ public class MarkupTargetFactory {
                     return false;
                 }
 
+                // If the editor is actually a code editor, it is always allowed
+                // unless explicitly disabled, but the property is set on
+                // the parent component
+                CodeEditorBase ed = findCodeEditingParent(jt);
+                if (ed != null) {
+                    explicit = ed.getClientProperty(MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY);
+                    if (!Boolean.FALSE.equals(explicit)) {
+                        return true;
+                    }
+                }
+
                 // If the client property is forcing a decision, make it now. After
                 // this, we can simply return the default decision to use when no
                 // property is set. (Note that null is not an instanceof anything.)
                 if (explicit instanceof Boolean) {
-                    return ((Boolean) explicit);
-                }
-
-                // This is a hack that excludes the field for entering line numbers
-                // in JCodeEditors. Since they come from another library, we
-                // have to check for them another way than looking for the explicit
-                // property.
-                if ("JCodeEditorLineNumber".equals(jt.getName())) {
-                    return false;
+                    return (Boolean) explicit;
                 }
 
                 // By default we don't allow the field if it is not in the current
@@ -127,6 +123,10 @@ public class MarkupTargetFactory {
     public static MarkupTarget createMarkupTarget(Object potentialTarget, boolean strict) {
         JUtilities.threadAssert(); // ensure synched to EDT
 
+        if (potentialTarget == null) {
+            return null;
+        }
+
         if (potentialTarget == cachedComponent) {
             if (isValidTarget(potentialTarget, strict)) {
                 return cachedTarget;
@@ -136,12 +136,7 @@ public class MarkupTargetFactory {
         }
 
         if (isValidTarget(potentialTarget, strict)) {
-            MarkupTarget t;
-            if (potentialTarget instanceof JSourceCodeEditor) {
-                t = createCodeEditorInstance((JSourceCodeEditor) potentialTarget);
-            } else {
-                t = createTextComponentInstance((JTextComponent) potentialTarget);
-            }
+            MarkupTarget t = createInstance(potentialTarget);
             cachedComponent = potentialTarget;
             cachedTarget = t;
             return t;
@@ -153,11 +148,37 @@ public class MarkupTargetFactory {
     private static Object cachedComponent;
     private static MarkupTarget cachedTarget;
 
+    private static CodeEditorBase findCodeEditingParent(JTextComponent c) {
+        Component parent = c.getParent();
+        for (int i = 0; i < 4 && parent != null; ++i) {
+            if (parent instanceof CodeEditorBase) {
+                return (CodeEditorBase) parent;
+            }
+            parent = parent.getParent();
+        }
+        return null;
+    }
+
+    private static MarkupTarget createInstance(Object validTarget) {
+        if (validTarget instanceof JTextComponent) {
+            final JTextComponent tc = (JTextComponent) validTarget;
+            final CodeEditorBase ed = findCodeEditingParent(tc);
+            if (ed == null) {
+                return new TextComponentTarget(tc);
+            } else {
+                return new CodeEditorTarget(tc, ed);
+            }
+        }
+        throw new AssertionError("unknown target type");
+    }
+
     private static MarkupTarget createTextComponentInstance(final JTextComponent c) {
+        final CodeEditorBase codeEditor = findCodeEditingParent(c);
+
         return new AbstractMarkupTarget() {
             @Override
             public Object getTarget() {
-                return c;
+                return codeEditor == null ? c : codeEditor;
             }
 
             @Override
@@ -238,87 +259,10 @@ public class MarkupTargetFactory {
             public void paste() {
                 c.paste();
             }
-        };
-    }
-
-    private static MarkupTarget createCodeEditorInstance(final JSourceCodeEditor c) {
-        return new AbstractMarkupTarget() {
-            @Override
-            public Object getTarget() {
-                return c;
-            }
 
             @Override
-            protected String getTextImpl(int start, int length) {
-                String s = c.getText(start, length);
-                return s == null ? "" : s;
-            }
-
-            @Override
-            public String getSelectedText() {
-                return c.getSelectedText();
-            }
-
-            @Override
-            public int getSelectionEnd() {
-                return c.getSelectionEnd();
-            }
-
-            @Override
-            public int getSelectionStart() {
-                return c.getSelectionStart();
-            }
-
-            @Override
-            public String getText() {
-                return c.getText();
-            }
-
-            @Override
-            public int length() {
-                return c.getDocumentLength();
-            }
-
-            @Override
-            public int setSelectedText(String text) {
-                String t = MarkupTargetFactory.escapeUndisplayableChars(c.getFont(), text, false);
-                c.setSelectedText(t);
-                return t.length();
-            }
-
-            @Override
-            public void setSelectionEnd(int end) {
-                c.setSelectionEnd(clamp(end));
-            }
-
-            @Override
-            public void setSelectionStart(int start) {
-                c.setSelectionStart(clamp(start));
-            }
-
-            @Override
-            public void select(int start, int end) {
-                c.select(clamp(start), clamp(end));
-            }
-
-            @Override
-            public void selectNone() {
-                c.selectNone();
-            }
-
-            @Override
-            public void copy() {
-                c.copy();
-            }
-
-            @Override
-            public void cut() {
-                c.cut();
-            }
-
-            @Override
-            public void paste() {
-                c.paste();
+            public boolean isCodeEditor() {
+                return codeEditor != null;
             }
         };
     }
@@ -452,6 +396,129 @@ public class MarkupTargetFactory {
         @Override
         public void requestFocus() {
             ((JComponent) getTarget()).requestFocus();
+        }
+        
+        @Override
+        public CodeEditorBase getCodeEditor() {
+            return null;
+        }
+        
+        @Override
+        public boolean isCodeEditor() {
+            return false;
+        }        
+    }
+
+    private static class TextComponentTarget extends AbstractMarkupTarget {
+
+        private JTextComponent c;
+
+        public TextComponentTarget(JTextComponent c) {
+            this.c = c;
+        }
+
+        @Override
+        public Object getTarget() {
+            return c;
+        }
+
+        @Override
+        public String getText() {
+            return c.getText();
+        }
+
+        @Override
+        public int length() {
+            return c.getDocument().getLength();
+        }
+
+        @Override
+        public String getSelectedText() {
+            String s = c.getSelectedText();
+            return s == null ? "" : s;
+        }
+
+        @Override
+        protected String getTextImpl(int start, int length) {
+            try {
+                return c.getText(start, length);
+            } catch (BadLocationException ex) {
+                throw new AssertionError();
+            }
+        }
+
+        @Override
+        public int getSelectionEnd() {
+            return c.getSelectionEnd();
+        }
+
+        @Override
+        public int getSelectionStart() {
+            return c.getSelectionStart();
+        }
+
+        @Override
+        public int setSelectedText(String text) {
+            String t = MarkupTargetFactory.escapeUndisplayableChars(c.getFont(), text, true);
+            c.replaceSelection(t);
+            return t.length();
+        }
+
+        @Override
+        public void setSelectionEnd(int end) {
+            c.setSelectionEnd(clamp(end));
+        }
+
+        @Override
+        public void setSelectionStart(int start) {
+            c.setSelectionStart(clamp(start));
+        }
+
+        @Override
+        public void select(int start, int end) {
+            c.setCaretPosition(clamp(start));
+            c.moveCaretPosition(clamp(end));
+        }
+
+        @Override
+        public void selectNone() {
+            int p = c.getCaretPosition();
+            c.select(p, p);
+        }
+
+        @Override
+        public void copy() {
+            c.copy();
+        }
+
+        @Override
+        public void cut() {
+            c.cut();
+        }
+
+        @Override
+        public void paste() {
+            c.paste();
+        }
+
+    };
+
+    private static class CodeEditorTarget extends TextComponentTarget {
+
+        private CodeEditorBase editor;
+
+        public CodeEditorTarget(JTextComponent c, CodeEditorBase editor) {
+            super(c);
+            this.editor = editor;
+        }
+
+        public CodeEditorBase getCodeEditor() {
+            return editor;
+        }
+        
+        @Override
+        public boolean isCodeEditor() {
+            return true;
         }
     }
 

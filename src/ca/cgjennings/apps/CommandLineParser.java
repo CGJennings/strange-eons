@@ -168,13 +168,14 @@ public class CommandLineParser {
     /**
      * Returns {@code true} if and only if the supplied argument should be
      * interpreted as a request for help. The base class returns {@code true}
-     * for any of: "--help", "--h", "-?", or "/?".
+     * for any of: "--help", "-help", "--h", "-?", or "/?".
      *
      * @param argument the argument to test
      * @return {@code true} if help should be displayed
      */
     protected boolean isHelpOption(String argument) {
         return argument.equalsIgnoreCase("--help")
+                || argument.equalsIgnoreCase("-help")
                 || argument.equalsIgnoreCase("--h")
                 || argument.equals("-?")
                 || argument.equals("/?");

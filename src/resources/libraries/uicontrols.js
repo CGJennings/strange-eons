@@ -48,14 +48,12 @@ function codeArea(text, preferredWidth, preferredHeight) {
     useLibrary.__threadassert();
     text = text ? text : "";
     var field = arkham.plugins.UILibraryHelper.createCodeArea();
-    field.setText(text);
-    field.select(0, 0);
+    field.setInitialText(text);
     if (!preferredWidth || preferredWidth < 1)
         preferredWidth = 400;
     if (!preferredHeight || preferredHeight < 1)
         preferredHeight = 300;
     field.setPreferredSize(new java.awt.Dimension(preferredWidth, preferredHeight));
-    field.setBorder(swing.BorderFactory.createLineBorder(java.awt.Color.BLACK, 1));
     return field;
 }
 

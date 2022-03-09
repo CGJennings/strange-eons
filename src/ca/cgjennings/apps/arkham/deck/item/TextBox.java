@@ -113,7 +113,7 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     @Override
     public Icon getThumbnailIcon() {
         if (sharedIcon == null) {
-            sharedIcon = ResourceKit.getIcon("ui/deck/textbox.png");
+            sharedIcon = ResourceKit.getIcon("deck/textbox.png");
         }
         return sharedIcon;
     }

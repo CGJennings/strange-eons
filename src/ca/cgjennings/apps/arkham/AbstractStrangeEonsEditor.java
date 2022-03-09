@@ -56,7 +56,7 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
     static {
         Icon i;
         try {
-            i = ResourceKit.getIcon("/resources/editors/blank-editor-icon.png");
+            i = ResourceKit.getIcon("res://editors/blank-editor-icon.png");
         } catch (Throwable t) {
             i = new BlankIcon(18, 18);
             StrangeEons.log.log(Level.WARNING, null, t);

@@ -29,8 +29,8 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="80" green="80" id="gray" palette="1" red="80" type="palette"/>
         </Property>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/resources/icons/application/plugin-banner.jpg"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="resources.ResourceKit.createBleedBanner(&quot;plugin-banner.jpg&quot;)" type="code"/>
         </Property>
         <Property name="verticalAlignment" type="int" value="1"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -67,12 +67,12 @@
                           <Component id="restartLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Component id="doNotShowCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel3" alignment="0" pref="420" max="32767" attributes="1"/>
-                      <Component id="jLabel1" alignment="0" pref="420" max="32767" attributes="0"/>
-                      <Component id="jLabel2" alignment="0" pref="420" max="32767" attributes="1"/>
+                      <Component id="jLabel3" alignment="0" pref="533" max="32767" attributes="1"/>
+                      <Component id="jLabel1" alignment="0" pref="533" max="32767" attributes="0"/>
+                      <Component id="jLabel2" alignment="0" pref="533" max="32767" attributes="1"/>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="helpBtn" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="198" max="32767" attributes="0"/>
+                          <EmptySpace pref="302" max="32767" attributes="0"/>
                           <Component id="okBtn" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cancelBtn" min="-2" max="-2" attributes="0"/>
@@ -179,8 +179,8 @@
         </Component>
         <Component class="javax.swing.JLabel" name="restartLabel">
           <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" id="red" palette="1" red="ff" type="palette"/>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="Palette.get.foreground.opaque.red" type="code"/>
             </Property>
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="resources/text/interface/eons-text.properties" key="core-restart-required" replaceFormat="string( &quot;{key}&quot; )"/>

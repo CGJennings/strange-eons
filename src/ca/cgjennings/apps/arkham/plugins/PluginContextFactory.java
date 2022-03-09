@@ -1,10 +1,5 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import java.awt.Toolkit;
-import java.awt.event.InputEvent;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 /**
  * A factory for {@link PluginContext} instances.
  *
@@ -174,33 +169,4 @@ public final class PluginContextFactory {
 
     @SuppressWarnings("deprecation")
     private static PluginContextImpl dummy;
-
-    /**
-     * Once JDK10+ only, the interface can define this directly.
-     */
-    static int getMenuShortcutKeyMask() {
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        int maskEx = 0;
-        try {
-            // JDK 10+
-            Method mGetMenuShortcutKeyMaskEx = Toolkit.class.getMethod("getMenuShortcutKeyMaskEx");
-            maskEx = (int) mGetMenuShortcutKeyMaskEx.invoke(tk);
-        } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException | InvocationTargetException ex) {
-            // JDK <10
-            final int mask = tk.getMenuShortcutKeyMask();
-            if ((mask & InputEvent.META_MASK) == InputEvent.META_MASK) {
-                maskEx |= InputEvent.META_DOWN_MASK;
-            }
-            if ((mask & InputEvent.CTRL_MASK) == InputEvent.CTRL_MASK) {
-                maskEx |= InputEvent.CTRL_DOWN_MASK;
-            }
-            if ((mask & InputEvent.SHIFT_MASK) == InputEvent.SHIFT_MASK) {
-                maskEx |= InputEvent.SHIFT_DOWN_MASK;
-            }
-            if ((mask & InputEvent.ALT_MASK) == InputEvent.ALT_MASK) {
-                maskEx |= InputEvent.ALT_DOWN_MASK;
-            }
-        }
-        return maskEx;
-    }
 }

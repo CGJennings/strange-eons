@@ -3,7 +3,7 @@ package ca.cgjennings.apps.arkham.dialog;
 import ca.cgjennings.algo.TextIndex;
 import ca.cgjennings.algo.TextIndex.Query;
 import ca.cgjennings.ui.IconBorder;
-import java.awt.Color;
+import ca.cgjennings.ui.theme.Palette;
 import java.io.File;
 import java.io.IOException;
 import java.util.Set;
@@ -134,9 +134,9 @@ public class TextIndexViewer extends javax.swing.JDialog {
                 }
                 Query q = parser.parse(queryField.getText());
                 loadDocsFromQuery(q);
-                queryField.setForeground(Color.BLACK);
+                queryField.setForeground(Palette.get.foreground.opaque.text);
             } catch (IllegalArgumentException e) {
-                queryField.setForeground(Color.RED);
+                queryField.setForeground(Palette.get.foreground.opaque.red);
             }
 	}//GEN-LAST:event_queryFieldActionPerformed
 

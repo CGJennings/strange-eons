@@ -375,7 +375,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
         int width = (int) Math.round(getPageWidth() / 72d * ppi);
         int height = (int) Math.round(getPageHeight() / 72d * ppi);
         BufferedImage i = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        new ClearFilter(0xffff_ffff).filter(i, i);
+        new ClearFilter(0xffffffff).filter(i, i);
         return i;
     }
 
@@ -488,7 +488,7 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
                 }
                 int xo = (18 - w) / 2;
                 int yo = (18 - h) / 2;
-                g.setPaint(new Color(0x88DD_DDDD, true));
+                g.setPaint(new Color(0x88DDDDDD, true));
                 g.fillRect(xo, yo, w, h);
                 g.setPaint(Color.GRAY);
                 g.drawRect(xo, yo, w, h);

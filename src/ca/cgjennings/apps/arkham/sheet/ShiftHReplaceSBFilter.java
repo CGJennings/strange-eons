@@ -63,7 +63,7 @@ public class ShiftHReplaceSBFilter extends TintFilter {
                     newHsb[2] = 1f;
                 }
                 newrgb = Color.HSBtoRGB(newHsb[0], newHsb[1], newHsb[2]);
-                argb[p] = (newrgb & 0xff_ffff) | (alpha << 24);
+                argb[p] = (newrgb & 0xffffff) | (alpha << 24);
             }
         }
     }

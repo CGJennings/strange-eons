@@ -1,15 +1,15 @@
 package ca.cgjennings.ui;
 
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.Component;
 import java.awt.Graphics;
-import javax.swing.Icon;
 
 /**
  * An icon that takes up space but paints nothing.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public class BlankIcon implements Icon {
+public class BlankIcon implements ThemedIcon {
 
     private int width, height;
 
@@ -52,5 +52,21 @@ public class BlankIcon implements Icon {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
+    }
+
+    @Override
+    public ThemedIcon derive(int newWidth, int newHeight) {
+        if (newWidth < 0 || newHeight < 0) {
+            throw new IllegalArgumentException("invalid size " + newWidth + 'x' + newHeight);
+        }
+        if (width == newWidth && height == newHeight) {
+            return this;
+        }
+        return new BlankIcon(newWidth, newHeight);
+    }
+
+    @Override
+    public ThemedIcon disabled() {
+        return this;
     }
 }

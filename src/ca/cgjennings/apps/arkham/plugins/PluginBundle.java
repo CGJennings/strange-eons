@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
 import ca.cgjennings.io.InvalidFileFormatException;
 import ca.cgjennings.io.StreamPump;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,7 +18,6 @@ import java.util.jar.JarOutputStream;
 import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-import javax.swing.Icon;
 import static resources.Language.string;
 import resources.ResourceKit;
 
@@ -526,7 +526,7 @@ public class PluginBundle {
      * @return an icon that represents the type of the bundle implied by
      * {@code file}
      */
-    public static Icon getIcon(Object file, boolean smallIcon) {
+    public static ThemedIcon getIcon(Object file, boolean smallIcon) {
         String image = "plugin";
         if (file != null) {
             switch (getBundleType(file)) {
@@ -541,11 +541,13 @@ public class PluginBundle {
                     break;
             }
         }
+        ThemedIcon icon = ResourceKit.getIcon(image);
         if (smallIcon) {
-            return ResourceKit.getIcon("project/" + image + ".png");
+            icon = icon.small();
         } else {
-            return ResourceKit.getIcon("application/" + image + ".png");
+            icon = icon.medium();
         }
+        return icon;
     }
 
     /**

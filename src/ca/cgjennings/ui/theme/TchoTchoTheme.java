@@ -1,8 +1,6 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.platform.PlatformSupport;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import resources.Language;
@@ -23,20 +21,6 @@ public class TchoTchoTheme extends Theme {
     @Override
     public String getThemeName() {
         return Language.string("sd-theme-tcho-tcho-name");
-    }
-
-    @Override
-    public BufferedImage getThemeRepresentativeImage() {
-        try {
-            if (PlatformSupport.PLATFORM_IS_WINDOWS) {
-                return ImageIO.read(getClass().getResource("TchoTchoWindows.png"));
-            } else if (PlatformSupport.PLATFORM_IS_MAC) {
-                return ImageIO.read(getClass().getResource("TchoTchoOSX.png"));
-            }
-        } catch (Throwable t) {
-        }
-
-        return super.getThemeRepresentativeImage();
     }
 
     /**
@@ -94,4 +78,9 @@ public class TchoTchoTheme extends Theme {
     }
 
     private String replacementClass;
+    
+    @Override
+    public String getThemeGroup() {
+        return "\udbff\udfff_zz";
+    }        
 }

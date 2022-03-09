@@ -92,7 +92,7 @@ public class ColourDialog extends javax.swing.JDialog implements AgnosticDialog,
                     s = "ffffffff".substring(s.length()) + s;
                 }
                 try {
-                    rgb = (int) (Long.parseLong(s, 16) & 0xffff_ffffL);
+                    rgb = (int) (Long.parseLong(s, 16) & 0xffffffffL);
                     ok = true;
                 } catch (NumberFormatException e) {
                 }

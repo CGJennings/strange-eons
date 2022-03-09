@@ -16,7 +16,6 @@ import ca.cgjennings.ui.FilteredListModel.ListFilter;
 import ca.cgjennings.ui.IconProvider;
 import ca.cgjennings.ui.JIconList;
 import ca.cgjennings.ui.anim.AnimationUtilities;
-import ca.cgjennings.ui.theme.ThemedIcon;
 import gamedata.ClassMap;
 import gamedata.Game;
 import java.awt.Component;
@@ -38,7 +37,6 @@ import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
@@ -81,8 +79,6 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         initComponents();
         categoryList.requestFocusInWindow();
 
-        ImageIcon bannerIcon = (ImageIcon) banner.getIcon();
-        bannerIcon.setImage(ResourceKit.createBleedBanner(bannerIcon.getImage()));
         getRootPane().setDefaultButton(okBtn);
 
         DefaultListCellRenderer renderer = new JIconList.IconRenderer();
@@ -244,8 +240,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         }
         if (defaultIcons == null) {
             defaultIcons = new Icon[]{
-                new ThemedIcon("editors/blank-editor-icon.png", false),
-                new ThemedIcon("editors/app-new-deck.png", false)
+                ResourceKit.getIcon("res://editors/blank-editor-icon.png"),
+                ResourceKit.getIcon("res://editors/blank-editor-icon.png")
             };
         }
         if (gc instanceof Deck) {
@@ -441,7 +437,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         });
 
         banner.setBackground(java.awt.Color.darkGray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/editors/default-category.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("default-category.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setName("banner"); // NOI18N
@@ -522,7 +519,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
                         .addComponent(gameFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(catScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+                            .addComponent(catScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -531,7 +528,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(componentLabel, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(componentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
+                            .addComponent(componentScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(100, 100, 100)
                                 .addComponent(okBtn)

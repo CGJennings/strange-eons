@@ -3,6 +3,7 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.EventQueue;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,7 +20,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
 import java.util.logging.Level;
-import javax.swing.Icon;
 import javax.swing.tree.DefaultTreeModel;
 import static resources.Language.string;
 
@@ -268,8 +268,8 @@ public class Project extends TaskGroup {
      * @return an icon for this member
      */
     @Override
-    public Icon getIcon() {
-        return MetadataSource.ICON_PROJECT;
+    public ThemedIcon getIcon() {
+        return (ThemedIcon) MetadataSource.ICON_PROJECT;
     }
 
     public void synchronizeAll() {

@@ -38,7 +38,7 @@ import javax.swing.border.LineBorder;
 public class ToolWindow extends javax.swing.JDialog {
 
     private static final float NO_FOCUS_OPACITY = 0.667f;
-    private static final float FOCUS_OPACITY = 0.9f;
+    private static final float FOCUS_OPACITY = 1f;
     private static final float ANIM_TIME = 0.33f;
 
     /**

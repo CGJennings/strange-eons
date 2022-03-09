@@ -1,27 +1,21 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
 import ca.cgjennings.apps.arkham.ContextBar;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import ca.cgjennings.apps.arkham.editors.AbbreviationTableManager;
-import ca.cgjennings.apps.arkham.editors.CodeEditor.CodeType;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.StyleUtilities;
-import ca.cgjennings.ui.textedit.EditorCommands;
-import ca.cgjennings.ui.textedit.InputHandler;
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.dnd.FileDrop;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.beans.PropertyChangeEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,12 +24,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
 import java.util.logging.Level;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.Timer;
+import javax.swing.JSeparator;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
 import resources.Settings;
@@ -76,80 +68,49 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             setBounds(r);
         }
 
-        ActionListener runAction = (ActionEvent e) -> {
-            runBtnActionPerformed(null);
-        };
+        final ActionListener runAction = this::runBtnActionPerformed;
+        final ActionListener debugAction = this::debugBtnActionPerformed;
 
-        ActionListener debugAction = (ActionEvent e) -> {
-            debugBtnActionPerformed(null);
-        };
+        editor.addKeyBinding("P+R", runAction);
+        editor.addKeyBinding("C+R", runAction);
+        editor.addKeyBinding("A+R", runAction);
+        editor.addKeyBinding("F5", runAction);
 
-        InputHandler ih = new InputHandler();
-        ih.addDefaultKeyBindings();
-        ih.addKeyBinding("P+R", runAction);
-        ih.addKeyBinding("C+R", runAction);
-        ih.addKeyBinding("A+R", runAction);
-        ih.addKeyBinding("F5", runAction);
+        editor.addKeyBinding("P+D", debugAction);
+        editor.addKeyBinding("C+D", debugAction);
+        editor.addKeyBinding("A+D", debugAction);
+        editor.addKeyBinding("F3", debugAction);
 
-        ih.addKeyBinding("P+D", debugAction);
-        ih.addKeyBinding("C+D", debugAction);
-        ih.addKeyBinding("A+D", debugAction);
-        ih.addKeyBinding("F3", debugAction);
+        editor.addKeyBinding("ESCAPE", this::dispose);
 
-        ih.addKeyBinding("S+DELETE", EditorCommands.CUT);
-        ih.addKeyBinding("C+INSERT", EditorCommands.COPY);
-        ih.addKeyBinding("S+INSERT", EditorCommands.PASTE);
-
-        ih.addKeyBinding("ESCAPE", (ActionEvent e) -> {
-            dispose();
+        editor.setPopupMenuBuilder((ed, menu) -> {
+            JMenuItem item = new JMenuItem(Commands.RUN_FILE.getName(), Commands.RUN_FILE.getIcon());
+            item.addActionListener(runAction);
+            menu.insert(item, 0);
+            menu.insert(new JSeparator(), 1);
+            if (ScriptDebugging.isInstalled()) {
+                item = new JMenuItem(Commands.DEBUG_FILE.getName(), Commands.DEBUG_FILE.getIcon());
+                item.addActionListener(debugAction);
+                menu.insert(item, 1);
+            }
+            return menu;
         });
-        editor.setInputHandler(ih);
-
-        JPopupMenu popup = new JPopupMenu();
-        JMenuItem item = new JMenuItem(Commands.RUN_FILE.getName(), Commands.RUN_FILE.getIcon());
-        item.addActionListener(runAction);
-        popup.add(item);
-        if (ScriptDebugging.isInstalled()) {
-            item = new JMenuItem(Commands.DEBUG_FILE.getName(), Commands.DEBUG_FILE.getIcon());
-            item.addActionListener(debugAction);
-            popup.add(item);
-        }
-        popup.addSeparator();
-        popup.add(Commands.CUT);
-        popup.add(Commands.COPY);
-        popup.add(Commands.PASTE);
-        popup.addSeparator();
-        popup.add(Commands.SELECT_ALL);
-        editor.setComponentPopupMenu(popup);
-
-        editor.setAbbreviationTable(AbbreviationTableManager.getTable(CodeType.JAVASCRIPT));
 
         clearCheck.setSelected(Settings.getUser().getYesNo(ScriptMonkey.CLEAR_CONSOLE_ON_RUN_KEY));
 
         String recoveredCode = getRecoveredCode();
         if (recoveredCode != null) {
             StrangeEons.log.info("recovered script");
-            editor.setText(recoveredCode);
-            editor.select(0, 0);
+            editor.setInitialText(recoveredCode);
         }
-
-        editor.addPropertyChangeListener(JSourceCodeEditor.FILE_DROP_PROPERTY, (PropertyChangeEvent evt) -> {
-            List files = (List) evt.getNewValue();
-            if (files.isEmpty()) {
-                return;
-            }
-            File f = (File) files.get(0);
-            if (JOptionPane.YES_OPTION
-                    == JOptionPane.showConfirmDialog(StrangeEons.getWindow(), string("fd-confirm", ""), "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)) {
-                try {
-                    String code = readScriptFile(f);
-                    editor.setText(code);
-                    editor.select(0, 0);
-                } catch (IOException e) {
-                    ErrorDialog.displayError(string("app-err-open", f.getName()), e);
-                }
-            }
-        });
+        
+        new FileDrop(
+                getRootPane(),
+                getRootPane().getContentPane(),
+                clearCheck,
+                debugBtn,
+                runBtn
+        ).setListener(this::filesDropped);
 
         editor.addFocusListener(new FocusAdapter() {
             @Override
@@ -160,59 +121,9 @@ final class QuickscriptDialog extends javax.swing.JDialog {
 
         editor.putClientProperty(ContextBar.BAR_LEADING_SIDE_PROPERTY, Boolean.TRUE);
         editor.putClientProperty(ContextBar.BAR_OFFSET_PROPERTY, new Point(20, 0));
-
-        initSyntaxChecker();
     }
 
-    private void initSyntaxChecker() {
-        editor.addHighlighter(errorHighlighter);
-        editor.getDocument().addDocumentListener(new DocumentEventAdapter() {
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                isEditing = true;
-            }
-        });
-    }
-
-    private void startSyntaxChecking() {
-        if (syntaxCheckTimer == null) {
-            syntaxCheckTimer = new Timer(500, (ActionEvent e) -> {
-                checkSyntax();
-            });
-            syntaxCheckTimer.start();
-        }
-    }
-
-    private void stopSyntaxChecking() {
-        if (syntaxCheckTimer != null) {
-            syntaxCheckTimer.stop();
-            syntaxCheckTimer = null;
-        }
-    }
-
-    private Timer syntaxCheckTimer;
-    SyntaxChecker checker = new SyntaxChecker();
-    SyntaxChecker.Highlighter errorHighlighter = new SyntaxChecker.Highlighter();
-
-    private boolean isEditing;
     private boolean isModified;
-
-    private void checkSyntax() {
-        // as long as the user is typing, don't change the error state
-        if (isEditing) {
-            isEditing = false;
-            return;
-        }
-        if (!isModified) {
-            return;
-        }
-        isModified = false;
-
-        String scriptToCheck = editor.getText();
-        checker.parse(scriptToCheck);
-        final SyntaxChecker.SyntaxError[] errors = checker.getErrors();
-        errorHighlighter.update(editor, errors);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -232,11 +143,11 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         javax.swing.JMenuItem selectAll = new javax.swing.JMenuItem();
         runBtn = new javax.swing.JButton();
         StyleUtilities.small( runBtn );
-        editor = new ca.cgjennings.ui.textedit.JSourceCodeEditor();
         clearCheck = new javax.swing.JCheckBox();
         StyleUtilities.small( clearCheck );
         debugBtn = new javax.swing.JButton();
         StyleUtilities.small( debugBtn );
+        editor = new ca.cgjennings.ui.textedit.CodeEditorBase();
 
         runItem.setAction( Commands.RUN_FILE );
         editorPopup.add(runItem);
@@ -265,12 +176,6 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             }
         });
 
-        editor.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
-        editor.setComponentPopupMenu( editorPopup );
-        editor.setText("println(\"Hello, Other World!\");");
-        editor.selectAll();
-        editor.setTokenizer( new ca.cgjennings.ui.textedit.tokenizers.JavaScriptTokenizer() );
-
         clearCheck.setFont(clearCheck.getFont());
         clearCheck.setText(string("qs-clear-on-run")); // NOI18N
         clearCheck.addActionListener(new java.awt.event.ActionListener() {
@@ -287,19 +192,21 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             }
         });
 
+        editor.setCodeType(ca.cgjennings.ui.textedit.CodeType.JAVASCRIPT);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(editor, javax.swing.GroupLayout.DEFAULT_SIZE, 468, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(clearCheck)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addComponent(debugBtn)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(runBtn)
                 .addContainerGap())
+            .addComponent(editor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {debugBtn, runBtn});
@@ -307,8 +214,8 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(editor, javax.swing.GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(editor, javax.swing.GroupLayout.DEFAULT_SIZE, 374, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(runBtn)
                     .addComponent(debugBtn)
@@ -323,6 +230,35 @@ final class QuickscriptDialog extends javax.swing.JDialog {
 
     private static final File RECOVERY_FILE = StrangeEons.getUserStorageFile("quickscript");
 
+    public void filesDropped(File[] files) {
+        if (files == null || files.length == 0) {
+            return;
+        }
+
+        File f = files[0];
+        final int choice = JOptionPane.showConfirmDialog(
+                StrangeEons.getWindow(),
+                string("fd-confirm", ""),
+                "",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (choice == JOptionPane.YES_OPTION) {
+            try {
+                String code = readScriptFile(f);
+                editor.beginCompoundEdit();
+                try {
+                    editor.setText(code);
+                    editor.select(0, 0);
+                } finally {
+                    editor.endCompoundEdit();
+                }
+            } catch (IOException e) {
+                ErrorDialog.displayError(string("app-err-open", f.getName()), e);
+            }
+        }
+    }
+
     public void run(boolean debug) {
         if (debug) {
             debugBtnActionPerformed(null);
@@ -331,7 +267,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         }
     }
 
-    public JSourceCodeEditor getEditor() {
+    public CodeEditorBase getEditor() {
         return editor;
     }
 
@@ -487,21 +423,18 @@ private void debugBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     @Override
     public void setVisible(boolean visible) {
         super.setVisible(visible);
-        if (visible) {
-            startSyntaxChecking();
-        } else {
+        if (!visible) {
             Settings.getUser().storeWindowSettings("quickscript", this);
             if (Settings.getShared().getYesNo(KEEP_RECOVERY_FILE)) {
                 writeRecoveryFile(editor.getText());
             }
-            stopSyntaxChecking();
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox clearCheck;
     private javax.swing.JButton debugBtn;
-    private ca.cgjennings.ui.textedit.JSourceCodeEditor editor;
+    private ca.cgjennings.ui.textedit.CodeEditorBase editor;
     private javax.swing.JPopupMenu editorPopup;
     private javax.swing.JButton runBtn;
     // End of variables declaration//GEN-END:variables

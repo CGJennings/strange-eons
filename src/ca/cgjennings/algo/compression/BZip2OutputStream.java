@@ -312,12 +312,12 @@ class BZip2OutputStream extends OutputStream
 
                 final int weight_n1 = weight[n1];
                 final int weight_n2 = weight[n2];
-                weight[nNodes] = (((weight_n1 & 0xffff_ff00)
-                        + (weight_n2 & 0xffff_ff00))
-                        | (1 + (((weight_n1 & 0x0000_00ff)
-                        > (weight_n2 & 0x0000_00ff))
-                                ? (weight_n1 & 0x0000_00ff)
-                                : (weight_n2 & 0x0000_00ff))));
+                weight[nNodes] = (((weight_n1 & 0xffffff00)
+                        + (weight_n2 & 0xffffff00))
+                        | (1 + (((weight_n1 & 0x000000ff)
+                        > (weight_n2 & 0x000000ff))
+                                ? (weight_n1 & 0x000000ff)
+                                : (weight_n2 & 0x000000ff))));
 
                 parent[nNodes] = -1;
                 nHeap++;
@@ -464,12 +464,12 @@ class BZip2OutputStream extends OutputStream
 
                 final int weight_n1 = weight[n1];
                 final int weight_n2 = weight[n2];
-                weight[nNodes] = ((weight_n1 & 0xffff_ff00)
-                        + (weight_n2 & 0xffff_ff00))
-                        | (1 + (((weight_n1 & 0x0000_00ff)
-                        > (weight_n2 & 0x0000_00ff))
-                                ? (weight_n1 & 0x0000_00ff)
-                                : (weight_n2 & 0x0000_00ff)));
+                weight[nNodes] = ((weight_n1 & 0xffffff00)
+                        + (weight_n2 & 0xffffff00))
+                        | (1 + (((weight_n1 & 0x000000ff)
+                        > (weight_n2 & 0x000000ff))
+                                ? (weight_n1 & 0x000000ff)
+                                : (weight_n2 & 0x000000ff)));
 
                 parent[nNodes] = -1;
                 nHeap++;

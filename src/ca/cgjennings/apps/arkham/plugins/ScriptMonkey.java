@@ -28,6 +28,9 @@ import javax.script.Invocable;
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ErrorReporter;
+import org.mozilla.javascript.EvaluatorException;
 import resources.Language;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -830,4 +833,44 @@ public final class ScriptMonkey {
         }
         return b.toString();
     }
+    
+    /**
+     * Returns a string describing the current file and line of the script
+     * running on the current thread.
+     * 
+     * @return the location of the currently running script, or null
+     */
+    public static String getCurrentScriptLocation() {
+        Context cx = Context.getCurrentContext();
+        if (cx == null) {
+            return null;
+        }
+        
+        ErrorReporter oldReporter = cx.getErrorReporter();
+        cx.setErrorReporter(locationReporter);
+        Context.reportWarning("");
+        cx.setErrorReporter(oldReporter);
+        String location = reportedLocation.get();
+        reportedLocation.set(null);
+        return location;
+    }
+    
+    private static ThreadLocal<String> reportedLocation = new ThreadLocal<>();
+    
+    /** Captures current script location for {@link #getScriptLocation()} */
+    private static final ErrorReporter locationReporter = new ErrorReporter() {
+        @Override
+        public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            reportedLocation.set(sourceName + ':' + line);
+        }
+
+        @Override
+        public void error(String message, String sourceName, int line, String lineSource, int lineOffset) {
+        }
+
+        @Override
+        public EvaluatorException runtimeError(String message, String sourceName, int line, String lineSource, int lineOffset) {
+            return null;
+        }
+    };
 }

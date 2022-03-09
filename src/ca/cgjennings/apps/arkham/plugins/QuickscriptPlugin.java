@@ -1,9 +1,10 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.ui.textedit.JSourceCodeEditor;
+import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import java.awt.Window;
-import java.awt.image.BufferedImage;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
  * A plug-in that allows editing and running small scripts from within Strange
@@ -43,7 +44,7 @@ public final class QuickscriptPlugin implements Plugin {
      * @return the source code editor
      * @since 3.0
      */
-    public JSourceCodeEditor getEditor() {
+    public CodeEditorBase getEditor() {
         initDialog();
         return dialog.getEditor();
     }
@@ -112,11 +113,15 @@ public final class QuickscriptPlugin implements Plugin {
     public int getPluginType() {
         return ACTIVATED;
     }
-
+    
     @Override
-    public BufferedImage getRepresentativeImage() {
-        return resources.ResourceKit.getThemedImage("/ca/cgjennings/apps/arkham/plugins/quickscript.png");
+    public ThemedIcon getPluginIcon() {
+       if (pluginIcon == null) {
+           pluginIcon = ResourceKit.getIcon("quickscript");
+       }
+       return pluginIcon;
     }
+    private ThemedIcon pluginIcon;
 
     @Override
     public boolean isPluginUsable() {

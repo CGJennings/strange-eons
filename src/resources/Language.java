@@ -2,22 +2,11 @@ package resources;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.i18n.IntegerPluralizer;
-import ca.cgjennings.ui.BlankIcon;
-import ca.cgjennings.ui.theme.ThemeInstaller;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
+import ca.cgjennings.ui.theme.LocaleIcon;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.SoftReference;
 import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -26,15 +15,14 @@ import java.util.Formatter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 
 /**
  * A language object manages language-related resources for a particular locale.
@@ -408,6 +396,9 @@ public class Language implements Iterable<String> {
      * @return the UI language instance
      */
     public synchronized static Language getInterface() {
+        if (uiLang == null) {
+            setInterfaceLocale(null);
+        }
         return uiLang;
     }
 
@@ -417,6 +408,9 @@ public class Language implements Iterable<String> {
      * @return the game language instance
      */
     public synchronized static Language getGame() {
+        if (gameLang == null) {
+            setGameLocale(null);
+        }
         return gameLang;
     }
 
@@ -485,7 +479,6 @@ public class Language implements Iterable<String> {
      * @return the localized string, or [MISSING: key]
      */
     public static String string(String key) {
-        GUIBuilderCheck();
         return getInterface().get(key);
     }
 
@@ -499,19 +492,7 @@ public class Language implements Iterable<String> {
      * @return the localized, formatted string or [MISSING: key]
      */
     public static String string(String key, Object... args) {
-        GUIBuilderCheck();
         return getInterface().get(key, args);
-    }
-
-    /**
-     * {@link #string} must call this to ensure some language is installed so
-     * that calls from components in the GUI builder will work; otherwise
-     * editors with components like PortraitPanel can't be loaded.
-     */
-    private static void GUIBuilderCheck() {
-        if (uiLang == null) {
-            setInterfaceLocale(null);
-        }
     }
 
     /**
@@ -703,15 +684,7 @@ public class Language implements Iterable<String> {
      * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static synchronized Icon getIconForCountry(Locale loc) {
-        if (loc == null) {
-            throw new NullPointerException("loc");
-        }
-
-        final String country = loc.getCountry();
-        if (!country.isEmpty()) {
-            return new FlagIcon(country);
-        }
-        return getBlankIcon();
+        return new LocaleIcon("", Objects.requireNonNull(loc, "loc").getCountry());
     }
 
     /**
@@ -727,41 +700,7 @@ public class Language implements Iterable<String> {
      * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static synchronized Icon getIconForLanguage(Locale loc) {
-        if (loc == null) {
-            throw new NullPointerException("loc");
-        }
-
-        Icon icon = null;
-
-        final String langauge = "_" + loc.getLanguage();
-        if (langauge.length() > 1) {
-            SoftReference<Icon> iconRef = flagMap.get(langauge);
-            if (iconRef != null) {
-                icon = iconRef.get();
-            }
-            if (icon == null) {
-                String text = loc.getLanguage().toUpperCase(Locale.CANADA);
-                Font sans = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
-                BufferedImage langImage = makeIconText(text, sans);
-                if (langImage.getWidth() > FLAG_SIZE || langImage.getHeight() > FLAG_SIZE) {
-                    float ideal = ImageUtilities.idealCoveringScaleForImage(FLAG_SIZE, FLAG_SIZE, langImage.getWidth(), langImage.getHeight());
-                    langImage = ImageUtilities.resample(langImage, ideal);
-                }
-                langImage = ImageUtilities.center(langImage, FLAG_SIZE, FLAG_SIZE);
-                icon = new ImageIcon(langImage);
-                flagMap.put(langauge, new SoftReference<>(icon));
-            }
-        }
-
-        if (icon == null) {
-            icon = getBlankIcon();
-            if (langauge.length() > 1) {
-                // missing flag for this country: avoid repeated searches
-                flagMap.put(langauge, new SoftReference<>(icon));
-            }
-        }
-
-        return icon;
+        return new LocaleIcon(Objects.requireNonNull(loc, "loc").getLanguage(), "");
     }
 
     /**
@@ -775,87 +714,8 @@ public class Language implements Iterable<String> {
      * @throws NullPointerException if {@code loc} is {@code null}
      */
     public static Icon getIconForLocale(Locale loc) {
-        if (loc == null) {
-            throw new NullPointerException("loc");
-        }
-        if (loc.getCountry().isEmpty()) {
-            return getIconForLanguage(loc);
-        }
-        if (loc.getLanguage().isEmpty()) {
-            return getIconForCountry(loc);
-        }
-
-        Icon icon = null;
-
-        final String locale = "@" + loc.getLanguage() + "@" + loc.getCountry();
-        if (locale.length() > 2) {
-            SoftReference<Icon> iconRef = flagMap.get(locale);
-            if (iconRef != null) {
-                icon = iconRef.get();
-            }
-            if (icon == null) {
-                String text = loc.getLanguage().toUpperCase(Locale.CANADA);
-                BufferedImage langImage = makeIconText(text, ResourceKit.getTinyFont());
-                BufferedImage iconImage = new BufferedImage(FLAG_SIZE, FLAG_SIZE, BufferedImage.TYPE_INT_ARGB);
-                Graphics2D g = iconImage.createGraphics();
-                try {
-                    Icon ci = getIconForCountry(loc);
-                    ci.paintIcon(null, g, 0, -FlagIcon.VERTICAL_OFFSET);
-                    g.setComposite(AlphaComposite.DstOut);
-                    g.drawImage(langImage, FLAG_SIZE - langImage.getWidth() - 1, FLAG_SIZE - langImage.getHeight() - 1, null);
-                    g.setComposite(AlphaComposite.SrcOver);
-                    g.drawImage(langImage, FLAG_SIZE - langImage.getWidth(), FLAG_SIZE - langImage.getHeight(), null);
-                } finally {
-                    g.dispose();
-                }
-                icon = new ImageIcon(iconImage);
-                flagMap.put(locale, new SoftReference<>(icon));
-            }
-        }
-
-        if (icon == null) {
-            icon = getBlankIcon();
-            if (locale.length() > 2) {
-                // missing flag for this country: avoid repeated searches
-                flagMap.put(locale, new SoftReference<>(icon));
-            }
-        }
-
-        return icon;
+        return new LocaleIcon(Objects.requireNonNull(loc, "loc"));
     }
-
-    private static BufferedImage makeIconText(String text, Font f) {
-        final boolean isDark = ThemeInstaller.isDark();
-        BufferedImage bi = new BufferedImage(FLAG_SIZE * 2, FLAG_SIZE * 2, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = bi.createGraphics();
-        try {
-            g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            g.setFont(f);
-            FontMetrics fm = g.getFontMetrics();
-            Rectangle2D bounds = fm.getStringBounds(text, g);
-            int w = (int) (bounds.getWidth() + 0.5d);
-            int h = (int) (bounds.getHeight() + 0.5d);
-            g.setColor(isDark ? Color.LIGHT_GRAY : new Color(0x1a2933));
-            g.drawString(text, (FLAG_SIZE * 2 - w) / 2, (FLAG_SIZE * 2 - h) / 2);
-        } finally {
-            g.dispose();
-        }
-        return ImageUtilities.trim(bi);
-    }
-
-    /**
-     * Only call from synchronized static methods, or synch on class.
-     */
-    private static Icon getBlankIcon() {
-        if (blankFlag == null) {
-            blankFlag = new BlankIcon(FLAG_SIZE, FLAG_SIZE);
-        }
-        return blankFlag;
-    }
-
-    private static HashMap<String, SoftReference<Icon>> flagMap = new LinkedHashMap<>();
-    private static Icon blankFlag;
-    private static final int FLAG_SIZE = 16;
 
     /**
      * Marks the locale {@code loc} as a "preferred locale" for interface
@@ -908,8 +768,8 @@ public class Language implements Iterable<String> {
         }
     }
 
-    private static final Set<Locale> prefUILocs = Collections.synchronizedSet(new HashSet<Locale>());
-    private static final Set<Locale> prefGameLocs = Collections.synchronizedSet(new HashSet<Locale>());
+    private static final Set<Locale> prefUILocs = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<Locale> prefGameLocs = Collections.synchronizedSet(new HashSet<>());
 
     /**
      * Checks that the locale is not {@code null}, has a language, and does not
@@ -974,7 +834,7 @@ public class Language implements Iterable<String> {
             if (!loc.getLanguage().isEmpty() && loc.getVariant().isEmpty()) {
                 add(set, loc);
             } else {
-                StrangeEons.log.fine("ignoring locale " + loc);
+                StrangeEons.log.log(Level.FINE, "ignoring locale {0}", loc);
             }
         }
     }

@@ -27,29 +27,42 @@ import ca.cgjennings.graphics.shapes.AbstractVectorImage;
 import ca.cgjennings.graphics.shapes.SVGVectorImage;
 import ca.cgjennings.graphics.shapes.VectorIcon;
 import ca.cgjennings.graphics.shapes.VectorImage;
+import ca.cgjennings.io.EscapedLineReader;
 import ca.cgjennings.io.InvalidFileFormatException;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
 import ca.cgjennings.layout.TextStyle;
+import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
+import ca.cgjennings.graphics.FilteredMultiResolutionImage;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
+import ca.cgjennings.ui.theme.Palette;
+import ca.cgjennings.ui.theme.TaskIcon;
+import ca.cgjennings.ui.theme.ThemedGlyphIcon;
+import ca.cgjennings.ui.theme.ThemedIcon;
 import ca.cgjennings.ui.theme.Theme;
 import ca.cgjennings.ui.theme.ThemeInstaller;
-import ca.cgjennings.ui.theme.ThemedIcon;
+import ca.cgjennings.ui.theme.ThemedImageIcon;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Paint;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Ellipse2D;
@@ -89,6 +102,7 @@ import javax.swing.JOptionPane;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.text.StyleContext;
 import static resources.Language.string;
 
 /**
@@ -124,7 +138,7 @@ import static resources.Language.string;
  * <p>
  * Alternatively, you can create a URL object for a resource using the special
  * protocol {@code res:}, for example:<br>
- * {@code URL u = new URL( "res://icons/application/256.png" );}
+ * {@code URL u = new URL( "res://icons/application/app.png" );}
  *
  * <p>
  * Note that the URLs produced with these two different methods are <b>not</b>
@@ -164,6 +178,15 @@ public class ResourceKit {
      * This class cannot be instantiated.
      */
     private ResourceKit() {
+    }
+    
+    /**
+     * Returns an estimate of the desktop scaling factor of the primary display.
+     * @return the scaling factor, or 1 if no scaling appears to be applied
+     */
+    public static double estimateDesktopScalingFactor() {
+        int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
+        return dpi > 96 ? (double) dpi / 96d : 1d;
     }
 
     /**
@@ -308,6 +331,19 @@ public class ResourceKit {
         StrangeEons app = StrangeEons.getApplication();
         userResourceFolder = app == null ? null : app.getCommandLineArguments().resfolder;
     }
+    
+    /**
+     * Returns a resource path for a resource that is relative
+     * to the specified class.
+     * 
+     * @param base the class that the resource is stored relative to
+     * @param relativePathToResource the path to the resource relative to the class
+     * @return the resource path of the resource (whether or not it exists)
+     */
+    public static String getIdentifier(Class<?> base, String relativePathToResource) {
+        String path = "/" + base.getPackageName().replace('.', '/') + '/' + relativePathToResource;
+        return normalizeResourceIdentifier(path);
+    }
 
     /**
      * Returns a normalized version of the identifier. Because
@@ -440,10 +476,10 @@ public class ResourceKit {
      * load the icon from the resource "foo/icon.png", you could use either
      * "res://foo/icon.png" or "/resources/foo/icon.png".
      * <p>
-     * The returned icon is a {@link ThemedIcon} instance. This means that the
-     * currently installed {@link Theme} will be given an opportunity to modify
-     * the resource location, modify the returned image before it is converted
-     * into an icon, or both.
+     * The returned icon is a {@link ThemedImageIcon} instance. This means that
+     * the currently installed {@link Theme} will be given an opportunity to
+     * modify the resource location, modify the returned image before it is
+     * converted into an icon, or both.
      *
      * @param iconResource the resource identifier for the icon
      * @return an icon consisting of the requested image or a theme-dependent
@@ -452,41 +488,101 @@ public class ResourceKit {
      * @see Theme#applyThemeToImage
      */
     public static ThemedIcon getIcon(String iconResource) {
-        // this implementation is now almost trivial after adding ThemedIcons
-        if (iconResource == null) {
-            throw new NullPointerException("name");
-        }
-        if (!iconResource.isEmpty()) {
-            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
-                iconResource = "icons/" + iconResource;
+        ThemedIcon icon;
+        
+        // see if this resource has been mapped to a new location or type
+        iconResource = getIconMapping(iconResource);
+        
+        // see if this resource ends in a query parameter and if so extract it
+        String query = null;
+        {
+            int question = iconResource.lastIndexOf('?');
+            if (question >= 0) {
+                query = iconResource.substring(question + 1);
+                iconResource = iconResource.substring(0, question);
             }
         }
-        iconResource = normalizeResourceIdentifier(iconResource);
-        ThemedIcon icon;
-        synchronized (thIconCache) {
-            icon = new ThemedIcon(iconResource);
-            thIconCache.put(iconResource, icon);
+        
+        // check for a glyph-based icon descriptor
+        if (iconResource.startsWith(ThemedGlyphIcon.GLYPH_RESOURCE_PREFIX)) {
+            icon = new ThemedGlyphIcon(iconResource);
+        } else {
+            // relative to icons directory by default
+            if (iconResource.charAt(0) != '/' && iconResource.indexOf(':') < 0) {
+                if (!iconResource.startsWith("icons/")) {
+                   iconResource = "icons/" + iconResource;
+                }
+            }
+            icon = new ThemedImageIcon(iconResource);
+        }
+        return applyIconQuery(icon, query);
+    }
+    
+    private static ThemedIcon applyIconQuery(ThemedIcon icon, String query) {
+        if (query != null) {
+            switch (query) {
+                case "task":
+                    icon = new TaskIcon(icon);
+                    break;
+                default:
+                    StrangeEons.log.warning("unknown icon query ?" + query);
+            }
         }
         return icon;
     }
 
-    private static final HashMap<String, ThemedIcon> thIconCache = new HashMap<>();
+    private static String getIconMapping(String iconResource) {
+        String normalized = iconResource;
+        // toolbar/h1.png -> toolbar/h1
+        if (normalized.endsWith(".png") || normalized.endsWith(".jpg")) {
+            normalized = normalized.substring(0, normalized.length() - 4);
+        }
+        // icons/toolbar/h1 -> toolbar/h1
+        if (normalized.startsWith("icons/")) {
+            normalized = normalized.substring(6);
+        } else if (normalized.startsWith("res://icons/")) {
+            normalized = normalized.substring(12);
+        } else if (normalized.startsWith("/resources/icons/")) {
+            normalized = normalized.substring(17);
+        }
+        String mapping = iconMap.get(normalized);
+        if (mapping == null && !normalized.startsWith("/")) {
+            int justTheFileName = normalized.lastIndexOf('/');
+            if (justTheFileName >= 0) {
+                mapping = iconMap.get(normalized.substring(justTheFileName + 1));
+            }
+        }
+        return mapping == null ? iconResource : mapping;
+    }
+
+    private static Map<String, String> iconMap;
+
+    static {
+        iconMap = new HashMap<>();
+        try (InputStream in = ResourceKit.class.getResourceAsStream("icons/map.properties")) {
+            EscapedLineReader elr = new EscapedLineReader(in);
+            String[] pair;
+            while ((pair = elr.readProperty()) != null) {
+                iconMap.put(pair[0], pair[1]);
+            }
+        } catch (IOException | RuntimeException ioe) {
+            StrangeEons.log.log(Level.SEVERE, "unable to load icon map", ioe);
+        }
+    }
 
     /**
      * Returns an image after allowing the installed theme an opportunity to
-     * modify it; use this for user interface code when an image is required
-     * rather than an icon.
+     * modify it to match the interface theme. This should not be used
+     * on images that will be drawn on game components!
      *
      * @param resource the image resource to theme
      * @return the themed version of the image
      */
     public static BufferedImage getThemedImage(String resource) {
+        BufferedImage bi = getImage(resource);
         Theme t = ThemeInstaller.getInstalledTheme();
-        BufferedImage bi;
         if (t != null) {
-            bi = t.applyThemeToImage(resource);
-        } else {
-            bi = getImage(resource);
+            bi = t.applyThemeToImage(bi);
         }
         return bi;
     }
@@ -562,7 +658,13 @@ public class ResourceKit {
         }
         if (bi == null) {
             bi = getMissingImage();
-            StrangeEons.log.warning("image resource not found: " + resource);
+            
+            Throwable ex = null;
+            if (StrangeEons.getReleaseType() == StrangeEons.ReleaseType.DEVELOPMENT) {
+                ex = new FileNotFoundException(resource).fillInStackTrace();
+            }
+
+            StrangeEons.log.log(Level.WARNING, "image resource not found: " + resource, ex);
         }
         return bi;
     }
@@ -909,11 +1011,11 @@ public class ResourceKit {
                     Paint op = g.getPaint();
                     BasicStroke s = new BasicStroke(2f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
                     g.setStroke(s);
-                    g.setPaint(Color.PINK);
+                    g.setPaint(Palette.get.pastel.opaque.pink);
                     g.fillRect(0, 0, 15, 15);
                     g.setPaint(Color.BLACK);
                     g.drawRect(0, 0, 15, 15);
-                    g.setPaint(Color.RED);
+                    g.setPaint(Palette.get.dark.opaque.red);
                     g.drawLine(3, 3, 12, 12);
                     g.drawLine(3, 12, 12, 3);
                     g.setPaint(op);
@@ -1069,25 +1171,45 @@ public class ResourceKit {
      */
     public synchronized static Font getEditorFont() {
         if (editorFont == null) {
+            Font baseFont;
             String family = RawSettings.getSetting("edit-font-family");
-            if (family == null || family.equalsIgnoreCase("default")) {
-                if (Locale.getDefault().getLanguage().equals("en")) {
-                    family = "Consolas,Inconsolata,Monospaced";
+            family = family == null ? "" : family.trim();
+            if (family.isEmpty() || family.equalsIgnoreCase("default")) {
+                if (PlatformSupport.PLATFORM_IS_MAC) {
+                    baseFont = locateAvailableFont("Menlo", "Monaco", "Consolas", Font.MONOSPACED);
                 } else {
-                    family = "Monospaced";
+                    baseFont = locateAvailableFont("Consolas", Font.MONOSPACED);
                 }
+            } else {
+                baseFont = locateAvailableFont(family, Font.MONOSPACED);
             }
-            Font baseFont = new Font(ResourceKit.findAvailableFontFamily(family, "Monospaced"), Font.PLAIN, 12);
             Settings rk = Settings.getShared();
             editorFont = baseFont.deriveFont(
                     (rk.getYesNo("edit-font-bold") ? Font.BOLD : 0)
                     | (rk.getYesNo("edit-font-italic") ? Font.ITALIC : 0),
-                    rk.getPointSize("edit-font"));
-            editorFont = enableKerningAndLigatures(editorFont);
+                    rk.getPointSize("edit-font", 12f));
         }
         return editorFont;
     }
     private static Font editorFont;
+
+    private static Font locateAvailableFont(String... families) {
+        StyleContext sc = StyleContext.getDefaultStyleContext();
+        if (families == null | families.length == 0) {
+            throw new IllegalArgumentException("missing families");
+        }
+        Font font = null;
+        for (int i = 0; i < families.length; ++i) {
+            font = sc.getFont(families[i], Font.PLAIN, 13);
+            if (families[i].equals(font.getFamily())) {
+                break;
+            }
+        }
+        if (font == null) {
+            font = new Font(Font.MONOSPACED, Font.PLAIN, 13);
+        }
+        return font;
+    }
 
     /**
      * Returns a font that is optimized for displaying characters at very small
@@ -2169,6 +2291,7 @@ public class ResourceKit {
         // create folder with saved folder, or default folder if there is no setting
         JFileChooser fc = null;
         try {
+            StrangeEons.log.log(Level.INFO, "creating file chooser {0} (path: \"{1}\")", new Object[]{key, f});
             fc = new JFileChooser(f);
         } catch (RuntimeException e) {
             // sometimes first attempt to create chooser fails with NPE,
@@ -2487,24 +2610,47 @@ public class ResourceKit {
     }
 
     /**
-     * Returns a new image equivalent to the original but with an alpha gradient
-     * applied to the bottom edge. This method is used to create the bleed
-     * effect that is seen in the banner image found in the left margin of some
-     * dialogs, such as the dialog for creating new game component editors.
-     * Applying the alpha gradient as a separate step allows the images used for
-     * this purpose to be saved without an alpha channel, significantly reducing
-     * file size. It also ensures consistency even when the banner image may be
-     * supplied by a plug-in.
-     *
-     * @param source the source banner image
-     * @return an image with a transparent lower edge
-     * @throws NullPointerException if the source image is {@code null}
+     * Creates a custom cursor using an image resource, which may be a
+     * multiresolution image resource.
+     * 
+     * @param cursorImage the base image resource to use for the cursor
+     * @param hotspot the location of the hotspot on the base image
+     * @param cursorName the cursor name, for accessibility
+     * @param fallback the cursor to return if your cursor cannot be supported
+     * @return the custom cursor, or the fallback
      */
+    public static Cursor createCustomCursor(String cursorImage, Point hotspot, String cursorName, Cursor fallback) {
+        try {
+            MultiResolutionImageResource mri = new MultiResolutionImageResource(cursorImage);
+            Dimension d = Toolkit.getDefaultToolkit().getBestCursorSize(1, 1);
+            if (d.width > 0 && d.height > 0) {
+                BufferedImage base = mri.getBaseImage();
+                BufferedImage scaled = mri.getResolutionVariant(d.width, d.height);
+                if (scaled.getWidth() != d.width || scaled.getHeight() != d.height) {
+                    scaled = ImageUtilities.resample(scaled, d.width, d.height);
+                }
+
+                double hx = (double) hotspot.x * (double) scaled.getWidth() / (double) base.getWidth();
+                double hy = (double) hotspot.y * (double) scaled.getHeight() / (double) base.getHeight();
+                Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(
+                        scaled,
+                        new Point((int) (hx+0.5d), (int) (hy+0.5d)),
+                        cursorName
+                );
+                return custom;
+            }
+        } catch (HeadlessException hex) {
+            // use fallback
+        }
+        return fallback;
+    }
+
+    @Deprecated
     public static BufferedImage createBleedBanner(Image source) {
         if (source == null) {
             throw new NullPointerException("source");
         }
-        BufferedImage grad = getImage("icons/application/gradient.png");
+        BufferedImage grad = getImage("icons/banner/gradient.png");
         BufferedImage dest = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = dest.createGraphics();
         try {
@@ -2516,6 +2662,71 @@ public class ResourceKit {
         }
         return dest;
     }
+
+    /**
+     * Returns a bleed banner icon. This is an icon based on a variation of
+     * a standard image, {@code icons/banner/banner.jpg}, with a specific
+     * alpha gradient effect applied to the bottom edge. (An example use
+     * is the new game component dialog.)
+     *
+     * @param source the source banner image; if does not specify a directory,
+     * the default is {@code icons/banner}.
+     * @return an image with a transparent lower edge
+     * @throws NullPointerException if the source image is {@code null}
+     */
+    public static ThemedIcon createBleedBanner(String resource) {
+        if (resource.indexOf('/') < 0) {
+            resource = "icons/banner/" + resource;
+        }
+        return bannerCache.get(resource);
+    }
+    private static ThemedIcon createBleedBannerImpl(String resource) {
+        MultiResolutionImageResource mim = new MultiResolutionImageResource(resource);
+        BufferedImage bleedGradient = getImage("icons/banner/gradient.png");
+        FilteredMultiResolutionImage filtered = new FilteredMultiResolutionImage(mim) {
+            @Override
+            public Image applyFilter(Image source) {
+                BufferedImage im = new BufferedImage(source.getWidth(null), source.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                Graphics2D g = im.createGraphics();
+                try {
+                    g.drawImage(source, 0, 0, null);
+
+                    g.setComposite(AlphaComposite.DstOut);
+                    if (im.getWidth() == BANNER_WIDTH && im.getHeight() == BANNER_HEIGHT) {
+                        g.drawImage(bleedGradient, 0, BANNER_HEIGHT - bleedGradient.getHeight(), null);
+                    } else {
+                        g.scale((double) im.getWidth() / (double) BANNER_WIDTH, (double) im.getHeight() / (double) BANNER_HEIGHT);
+                        g.drawImage(bleedGradient, 0, BANNER_HEIGHT - bleedGradient.getHeight(), BANNER_WIDTH, bleedGradient.getHeight(), null);
+                    }
+                } finally {
+                    g.dispose();
+                }
+                return im;
+            }
+        };
+        return new ThemedImageIcon(filtered, BANNER_WIDTH, BANNER_HEIGHT);
+    }
+    private static final int BANNER_WIDTH = 117, BANNER_HEIGHT = 362;
+    
+    private static final AbstractResourceCache<String,ThemedIcon> bannerCache = new AbstractResourceCache<>(ThemedIcon.class, "Banners") {
+        @Override
+        protected ThemedIcon loadResource(String canonicalIdentifier) {
+            return createBleedBannerImpl(canonicalIdentifier);
+        }
+        @Override
+        protected long estimateResourceMemoryUse(ThemedIcon resource) {
+            double scale = estimateDesktopScalingFactor();
+            if (scale > 1d) {
+                // total memory required is typically 1 base image + 1 scaled image
+                double base = (BANNER_WIDTH * BANNER_HEIGHT) * 4d;
+                base += base * scale * scale;
+                return (long) base;
+            } else {
+                return (long) (BANNER_WIDTH * BANNER_HEIGHT * 4);
+            }
+        }
+    };
+    
 
     /**
      * Creates a new wait icon (an animated icon that indicates a lengthy
@@ -2531,7 +2742,7 @@ public class ResourceKit {
             int[] coords = new int[]{
                 15, 4, 23, 7, 26, 15, 23, 23, 15, 27, 7, 23, 4, 15, 7, 7
             };
-            Color interior = new Color(0x69_a9c9);
+            Color interior = new Color(0x69a9c9);
             Ellipse2D.Float shape = new Ellipse2D.Float();
             for (int frame = 0; frame < 8; ++frame) {
                 int pos = frame;

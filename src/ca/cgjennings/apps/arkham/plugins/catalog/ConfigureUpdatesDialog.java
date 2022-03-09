@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.plugins.catalog;
 import ca.cgjennings.apps.arkham.AbstractGameComponentEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import java.awt.Cursor;
-import javax.swing.ImageIcon;
 import static resources.Language.string;
 import resources.ResourceKit;
 import resources.Settings;
@@ -25,9 +24,6 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
         initComponents();
         AbstractGameComponentEditor.localizeComboBoxLabels(frequencyCombo, null);
         AbstractGameComponentEditor.localizeComboBoxLabels(actionCombo, null);
-        banner.setIcon(new ImageIcon(
-                ResourceKit.createBleedBanner(((ImageIcon) banner.getIcon()).getImage())
-        ));
         setLocationRelativeTo(getParent());
 
         Settings s = Settings.getUser();
@@ -72,7 +68,8 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
         setResizable(false);
 
         banner.setBackground(java.awt.Color.gray);
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/app-banner.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("app-banner.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 0, 1, java.awt.Color.gray));
         banner.setIconTextGap(0);
@@ -140,7 +137,7 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(actionCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(frequencyCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(193, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -180,10 +177,10 @@ public class ConfigureUpdatesDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 445, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
                     .addGroup(mainPanelLayout.createSequentialGroup()
                         .addComponent(helpBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 366, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 467, Short.MAX_VALUE)
                         .addComponent(cancelBtn))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, mainPanelLayout.createSequentialGroup()
                         .addGap(10, 10, 10)

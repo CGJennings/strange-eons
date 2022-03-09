@@ -113,16 +113,6 @@ public class JCloseableTabbedPane extends JReorderableTabbedPane {
         }
     }
 
-    @Override
-    public void setIconAt(int index, Icon icon) {
-        super.setIconAt(index, icon);
-    }
-
-    @Override
-    public void setTitleAt(int index, String title) {
-        super.setTitleAt(index, title);
-    }
-
     public void addTabClosingListener(TabClosingListener li) {
         listenerList.add(TabClosingListener.class, li);
     }

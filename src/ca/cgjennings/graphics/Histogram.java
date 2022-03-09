@@ -21,7 +21,7 @@ public class Histogram {
     private int area = 0;
     private final int count[] = new int[256];
     private boolean ignoreZeroAlpha = true;
-    private int channelMask = 0xff_ffff;
+    private int channelMask = 0xffffff;
 
     /**
      * A mask value to include the blue channel in the histogram.
@@ -34,11 +34,11 @@ public class Histogram {
     /**
      * A mask value to include the red channel in the histogram.
      */
-    public static final int RED = 0xff_0000;
+    public static final int RED = 0xff0000;
     /**
      * A mask value to include the alpha channel in the histogram.
      */
-    public static final int ALPHA = 0xff00_0000;
+    public static final int ALPHA = 0xff000000;
 
     /**
      * Creates a new, empty histogram. The histogram will not be valid unit it
@@ -136,7 +136,7 @@ public class Histogram {
         int channels = Integer.bitCount(channelMask);
         channels /= 8;
         for (int i = 0; i < image.length; ++i) {
-            if (ignoreZeroAlpha && (image[i] & 0xff00_0000) == 0) {
+            if (ignoreZeroAlpha && (image[i] & 0xff000000) == 0) {
                 --area;
                 continue;
             }
@@ -297,7 +297,7 @@ public class Histogram {
                 if (h == 0) {
                     g.setColor(new Color(0x7700));
                 } else {
-                    g.setColor(new Color(0x77_0000));
+                    g.setColor(new Color(0x770000));
                 }
             }
         } finally {

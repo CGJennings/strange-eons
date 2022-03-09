@@ -973,6 +973,7 @@ public final class ProjectView extends javax.swing.JPanel {
         projTree.setDragEnabled(true);
         projTree.setDropMode(javax.swing.DropMode.ON);
         projTree.setName("projTree"); // NOI18N
+        projTree.setRowHeight(22);
         projTree.setShowsRootHandles( false );
         projTree.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1319,7 +1320,7 @@ public final class ProjectView extends javax.swing.JPanel {
     }
 
     private Object errorHighlight;
-    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc_5600));
+    private static HighlightPainter ORANGE_SQUIGGLE = new ErrorSquigglePainter(new Color(0xcc5600));
 
     @SuppressWarnings("unchecked")
 	private void closeFindBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeFindBtnActionPerformed

@@ -7,14 +7,12 @@ import ca.cgjennings.graphics.filters.ColorOverlayFilter;
 import ca.cgjennings.graphics.filters.GlowFilter;
 import ca.cgjennings.graphics.filters.StrokeFilter;
 import ca.cgjennings.math.Interpolation;
+import ca.cgjennings.ui.theme.PaintSampleIcon;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import resources.ResourceKit;
 
 /**
  * This class provides some static utility methods that can aid plug-in
@@ -98,7 +96,7 @@ public final class SymbolVariantUtilities {
             // clear alpha if below threshold
             int argb = pixels[i];
             if ((argb >>> 24) < 8) {
-                pixels[i] = argb & 0xff_ffff;
+                pixels[i] = argb & 0xffffff;
             }
         }
 
@@ -119,7 +117,7 @@ public final class SymbolVariantUtilities {
 
     private static void extractTransparent(int[] pixels, int min, int max) {
         for (int i = 0; i < pixels.length; ++i) {
-            pixels[i] &= 0xff00_0000;
+            pixels[i] &= 0xff000000;
         }
     }
 
@@ -386,9 +384,9 @@ public final class SymbolVariantUtilities {
      */
     public static boolean isMonochrome(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
-        int exemplar = pixels[0] & 0xff_ffff;
+        int exemplar = pixels[0] & 0xffffff;
         for (int i = 1; i < pixels.length; ++i) {
-            if (exemplar != (pixels[i] & 0xff_ffff)) {
+            if (exemplar != (pixels[i] & 0xffffff)) {
                 return false;
             }
         }
@@ -405,7 +403,7 @@ public final class SymbolVariantUtilities {
     public static boolean isGreyscale(BufferedImage source) {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
         for (int i = 0; i < pixels.length; ++i) {
-            final int rgb = pixels[i] & 0xff_ffff;
+            final int rgb = pixels[i] & 0xffffff;
             final int r = rgb >> 16 & 0xff;
             final int g = rgb >> 8 & 0xff;
             final int b = rgb & 0xff;
@@ -459,7 +457,7 @@ public final class SymbolVariantUtilities {
         );
 
         for (int i = 0; i < pixels.length; ++i) {
-            final int alpha = pixels[i] & 0xff00_0000;
+            final int alpha = pixels[i] & 0xff000000;
             if (alpha != 0) {
                 final int bri = pixels[i] & 0xff;
                 final float scale = (float) splineFunction.f(bri);
@@ -508,48 +506,6 @@ public final class SymbolVariantUtilities {
         return ImageUtilities.copy(source);
     }
 
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame();
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.setSize( 640, 800 );
-//				final JLabel i = new JLabel();
-//				i.setOpaque( true );
-//				i.setBackground( Color.CYAN );
-//				f.add( i );
-//				new FileDrop(  i, new FileDrop.Listener() {
-//					@Override
-//					public void filesDropped( File[] files ) {
-//						try {
-//							BufferedImage bi = ImageIO.read( files[0] );
-//							if( bi == null ) return;
-//							bi = extractSymbol( bi );
-//							bi = standardizeSize( bi, 78 );
-////							bi = outline( bi, 0xffaa7744, 4 );
-//							bi = shadow( bi, 0, 0, 0xff000000, 4, 2 );
-////							bi = recolor( bi, 0xff0000, 0x00ff00 );
-//
-//							bi =ImageUtilities.resample( bi, 8f );
-//							Graphics2D g = bi.createGraphics();
-//							try {
-//								g.setColor( Color.MAGENTA );
-//								g.drawRect( 0, 0, bi.getWidth()-1, bi.getHeight()-1 );
-//							} finally {
-//								g.dispose();
-//							}
-//							i.setIcon( new ImageIcon( bi ) );
-//						} catch( Exception e ) {
-//							e.printStackTrace();
-//						}
-//					}
-//				});
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
     /**
      * Creates an icon that can be returned from
      * {@link ExpansionSymbolTemplate#getVariantIcon(int)}. The icon uses a
@@ -560,18 +516,7 @@ public final class SymbolVariantUtilities {
      * @return an icon that can be used to represent the variant visually
      */
     public static Icon createDefaultVariantIcon(Paint characteristicPaint) {
-        BufferedImage circle = ResourceKit.getImage("expansiontokens/default-variant-base.png");
-        BufferedImage icon = new BufferedImage(circle.getWidth(), circle.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g = icon.createGraphics();
-        try {
-            g.setPaint(characteristicPaint);
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.fillOval(1, 1, 14, 14);
-            g.drawImage(circle, 0, 0, null);
-        } finally {
-            g.dispose();
-        }
-        return new ImageIcon(icon);
+        return new PaintSampleIcon(characteristicPaint);
     }
 
     /**

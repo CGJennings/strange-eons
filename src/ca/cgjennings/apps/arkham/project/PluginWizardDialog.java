@@ -21,7 +21,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import resources.Language;
 import static resources.Language.string;
@@ -54,9 +53,6 @@ public class PluginWizardDialog extends javax.swing.JDialog {
     public PluginWizardDialog(Frame owner, Task task) {
         super(owner, true);
         initComponents();
-        banner.setIcon(new ImageIcon(
-                ResourceKit.createBleedBanner(((ImageIcon) banner.getIcon()).getImage())
-        ));
         this.task = task;
 
         backBtn.setIcon(ResourceKit.getIcon("ui/go-back.png"));
@@ -198,7 +194,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
             .addGroup(rhsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(rhsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pages, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                    .addComponent(pages, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, rhsPanelLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(cancelBtn2)
@@ -237,7 +233,8 @@ public class PluginWizardDialog extends javax.swing.JDialog {
 
         getContentPane().add(rhsPanel, java.awt.BorderLayout.CENTER);
 
-        banner.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/banner.jpg"))); // NOI18N
+        banner.setIcon(resources.ResourceKit.createBleedBanner("banner.jpg")
+        );
         banner.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         banner.setIconTextGap(0);
         getContentPane().add(banner, java.awt.BorderLayout.WEST);

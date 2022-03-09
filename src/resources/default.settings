@@ -304,14 +304,14 @@ use-generic-serif-body-for-languages = ru
 
 # Specify the interface theme to install, assuming it is available.
 # Some of the built-in themes:
-#     ca.cgjennings.ui.theme.DagonTheme       [green Nimbus variant]
-#     ca.cgjennings.ui.theme.HydraTheme       [blue Nimbus variant]
+#     ca.cgjennings.ui.theme.HydraTheme       [default theme]
+#     ca.cgjennings.ui.theme.DagonTheme       [dark version of default theme]
 #     ca.cgjennings.ui.theme.TchoTchoTheme    [emulate native platform look and feel]
 #     ca.cgjennings.ui.theme.PluginTestTheme  [used when running in bundle test mode]
 #
 theme = ca.cgjennings.ui.theme.HydraTheme
+dark-theme = ca.cgjennings.ui.theme.DagonTheme
 auto-select-dark-theme = yes
-dark-theme = ca.cgjennings.ui.theme.YuggothTheme
 
 # Specify the default look-and-feel to use if nothing is specified on
 # the command line. The "auto" value will use the Nimbus cross-platform
@@ -352,12 +352,10 @@ invert-wheel-zoom = no
 enable-experimental-features = no
 
 # This describes the font to be used in the text entry components of the
-# component editors. If commented out or the family is "default", the standard
-# text control font is used.
+# component editors. If commented out or the family is "default", a standard
+# monospaced font is used.
 edit-font-family = default
-#edit-font-family = Monospaced
-#edit-font-family = Consolas,Inconsolata,Bitstream Vera Sans Mono,Lucida Sans Typewriter,Monospaced
-edit-font-pointsize = 12
+edit-font-pointsize = 13
 edit-font-bold = no
 edit-font-italic = no
 
@@ -395,8 +393,8 @@ deck-pack-layout-quality = 2
 play-factory-audio = no
 
 # Default settings for Find/Replace
-find-incremental = yes
 find-case-sensitive = no
+find-whole-word = no
 find-regular-expression = no
 
 # Default compression options for image conversion

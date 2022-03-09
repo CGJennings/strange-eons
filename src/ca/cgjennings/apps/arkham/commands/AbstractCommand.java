@@ -1,10 +1,8 @@
 package ca.cgjennings.apps.arkham.commands;
 
 import ca.cgjennings.apps.arkham.ContextBar;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.platform.PlatformSupport;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.util.Locale;
 import javax.swing.AbstractAction;
 import static javax.swing.Action.ACTION_COMMAND_KEY;
@@ -218,16 +216,8 @@ public abstract class AbstractCommand extends AbstractAction {
             return;
         }
 
-        Icon icon = null;
-        if (iconResource.indexOf(':') < 0 && !iconResource.startsWith("/")) {
-            iconResource = "icons/" + iconResource;
-        }
-        BufferedImage bi = ResourceKit.getThemedImage(iconResource);
-        if (bi != null) {
-            icon = ImageUtilities.createIconForSize(bi, 18);
-        }
 
-        setIcon(icon);
+        setIcon(ResourceKit.getIcon(iconResource));
     }
 
     /**

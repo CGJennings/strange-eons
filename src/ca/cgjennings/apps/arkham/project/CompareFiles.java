@@ -8,14 +8,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.LinkedList;
 import static resources.Language.string;
 
 /**
  * Task action that displays the difference (diff) between two text files. This
- * implementation uses a simple built-in diff viewer, although the plug-in
- * authoring kit includes an example that specializes this action to use KDiff3
- * (this could be altered to use another tool if desired).
+ * implementation uses a simple built-in diff viewer.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -33,10 +32,12 @@ public class CompareFiles extends TaskAction {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean performOnSelection(Member[] members) {
         if (!appliesToSelection(members)) {
             return false;
         }
+        
         String[] li1 = fetch(members[0]);
         if (li1 == null) {
             return false;
@@ -45,80 +46,42 @@ public class CompareFiles extends TaskAction {
         if (li2 == null) {
             return false;
         }
-
-        final StringBuilder buff = new StringBuilder(8_192);
-
-        ReversibleDiff diff = new ReversibleDiff(li1, li2, new DiffListener<String>() {
+        
+        final Collection<DiffLine> diff = new LinkedList<>();
+        new Diff(new DiffListener<String>() {
             @Override
-            public void unchanged(Object original, Object changed, int originalIndex, String entry) {
-                if (buff.length() > 0) {
-                    buff.append('\n');
-                }
-                buff.append("  ").append(entry);
+            public void unchanged(Object original, Object changed, int originalIndex, String element) {
+                diff.add(new DiffLine(0, element));
             }
 
             @Override
-            public void inserted(Object original, Object changed, int originalIndex, String entry) {
-                if (buff.length() > 0) {
-                    buff.append('\n');
-                }
-                buff.append("+ ").append(entry);
+            public void inserted(Object original, Object changed, int originalIndex, String insertedelement) {
+                diff.add(new DiffLine(1, insertedelement));
             }
 
             @Override
-            public void removed(Object original, Object changed, int originalIndex, String entry) {
-                if (buff.length() > 0) {
-                    buff.append('\n');
-                }
-                buff.append("- ").append(entry);
+            public void removed(Object original, Object changed, int originalIndex, String removedelement) {
+                diff.add(new DiffLine(-1, removedelement));
             }
-        });
-
-        diff.findChanges(li1, li2);
-        String d12 = buff.toString();
-
-        buff.delete(0, buff.length());
-        diff.reverse();
-        diff.findChanges(li2, li1);
-        String d21 = buff.toString();
-
-        DiffDialog d = new DiffDialog(members[0].getFile().getName(), members[1].getFile().getName(), d12, d21);
+        }).findChanges(li1, li2);
+        
+        DiffDialog d = new DiffDialog(members[0].getFile().getName(), members[1].getFile().getName(), diff);
         members[0].getProject().getView().moveToLocusOfAttention(d);
         d.setVisible(true);
 
         return true;
     }
-
-    private static class ReversibleDiff extends Diff<String> {
-
-        public ReversibleDiff(String[] original, String[] changed, DiffListener<String> listener) {
-            super(listener);
-            // we compare the trimmed versions of both documents to
-            // ignore simple changes in spacing; eq1 and eq2 hold trimmed
-            // copies so we don't create a string for each comaparison
-            eq1 = createComparisonArray(original);
-            eq2 = createComparisonArray(changed);
+    
+    class DiffLine {
+        public DiffLine(int state, String text) {
+            this.state = state;
+            this.text = text;
         }
 
-        @Override
-        public boolean equal(String a, String b, int originalIndex, int changedIndex) {
-            return eq1[originalIndex].equals(eq2[changedIndex]);
-        }
-
-        public void reverse() {
-            String[] t = eq1;
-            eq1 = eq2;
-            eq2 = t;
-        }
-        private String[] eq1, eq2;
-
-        private String[] createComparisonArray(String[] source) {
-            String[] c = new String[source.length];
-            for (int i = 0; i < source.length; ++i) {
-                c[i] = source[i].trim().replaceAll("\\s\\s+", " ");
-            }
-            return c;
-        }
+        /** Deleted if &lt; 0, unchanged if 0, inserted if &gt; 0. */
+        public final int state;
+        /** Line text. */
+        public final String text;
     }
 
     @Override
