@@ -10,6 +10,7 @@ import ca.cgjennings.apps.arkham.plugins.PluginBundle;
 import ca.cgjennings.apps.arkham.plugins.PluginContext;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.PluginException;
+import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.StrangeEonsEvaluatorFactory;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog.VersioningState;
@@ -167,6 +168,13 @@ public final class StrangeEons {
             public synchronized void publish(LogRecord record) {
                 if (!isLoggable(record)) {
                     return;
+                }
+                if (
+                        "invoke".equals(record.getSourceMethodName())
+                        && "org.mozilla.javascript.MemberBox".equals(record.getSourceClassName())
+                ) {
+                    record.setSourceClassName("script");
+                    record.setSourceMethodName(ScriptMonkey.getCurrentScriptLocation());
                 }
                 String msg;
                 try {
