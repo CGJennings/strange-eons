@@ -1,12 +1,15 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 /**
  * Encapsulates a collection of script files that should be compiled together as
@@ -16,8 +19,8 @@ import java.util.function.Consumer;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class CompilationRoot {
-    private TSLanguageServices ts;
-    private Map<String,SourceUnit> map = Collections.synchronizedMap(new HashMap<>());
+    private final TSLanguageServices ts;
+    private final Map<String,SourceUnit> map = Collections.synchronizedMap(new HashMap<>());
     private Object langService;
     
     /**
@@ -44,12 +47,14 @@ public class CompilationRoot {
      * @param source the source file to add
      */
     public void add(SourceUnit source) {
-        map.put(source.getIdentifier(), source);
+        map.put(source.getPath(), source);
     }
     
     /**
      * A convenience method that adds or updates a source file directly from
-     * an identifier and script text.
+     * an identifier and script text. If a source unit exists for the identifier,
+     * it will be updated. Otherwise a source unit will be created for the
+     * identifier using the specified text.
      * 
      * @param identifier the identifier, such as a path, that uniquely identifies
      * the script
@@ -72,7 +77,7 @@ public class CompilationRoot {
      * @param source the unit to remove
      */
     public void remove(SourceUnit source) {
-        map.remove(source.getIdentifier());
+        map.remove(source.getPath());
     }
     
     /**
@@ -83,7 +88,11 @@ public class CompilationRoot {
      * @return the source unit for the identifier
      */
     public SourceUnit get(String fileName) {
-        return map.get(fileName);
+        SourceUnit found = map.get(fileName);
+        if (found == null && exists(fileName)) {
+            found = map.get(fileName);
+        }
+        return found;
     }
     
     /**
@@ -241,9 +250,6 @@ public class CompilationRoot {
         return unit.snapshot;
     }
     
-    public void dispose() {
-    }
-    
     private File rootFile;
     
     /**
@@ -254,7 +260,10 @@ public class CompilationRoot {
      * @param file the root file for composing identifiers, or null
      */
     public void setRootFile(File file) {
-        rootFile = file;
+        if (!Objects.equals(rootFile, file)) {
+            rootFile = file;
+            log.log(Level.INFO, "set compilation root file \"{0}\"", rootFile);
+        }
     }
     
     /**
@@ -279,6 +288,58 @@ public class CompilationRoot {
         if (id.startsWith("./")) {
             id = id.substring(2);
         }
+        
+        log.log(Level.FINE, "assigning identifer \"{0}\" to \"{1}\"", new Object[]{id, file});
+        
         return id;
     }
+    
+    /**
+     * Returns true if the specified identifier exists. If the identifier
+     * is not already added to this root but a foot file has been set,
+     * the base class will test if the identifier exists relative to the
+     * root file. If the file exists, it will be added as as a new source
+     * unit if {@link #fileCanBeAddedAutomatically(java.io.File) allowed}.
+     * 
+     * @param identifer the identifer, typically a path relative to this root
+     * @return true if the file exists
+     */
+    public boolean exists(String identifer) {
+        synchronized (map) {
+            if (map.containsKey(identifer)) {
+                return true;
+            }
+            SourceUnit found = createSourceUnitForReferencedFile(identifer);
+            if (found != null) {
+                add(found);
+            }
+            return found != null;
+        }
+    }
+    
+    /**
+     * Gives the compilation root the opportunity to create a source unit for
+     * a referenced file that is not already in the root. May return a suitable
+     * source unit for the file, or null to indicate no source is available.
+     * 
+     * <p>
+     * The base class will check if a root file has been set, in which case it
+     * will return an {@link EditableSourceUnit} for the path if such a file
+     * exists relative to the root.
+     * 
+     * @param file the file to create a source unit for
+     * @return the source unit, or null
+     */
+    protected SourceUnit createSourceUnitForReferencedFile(String path) {
+        if (rootFile != null) {
+            File file = new File(rootFile, path);
+            log.log(Level.INFO, "checking if referenced exists \"{0}\"", file);
+            if (file.exists()) {
+                return new EditableSourceUnit(path, file);
+            }
+        }
+        return null;
+    }
+    
+    private static final java.util.logging.Logger log = StrangeEons.log;
 }

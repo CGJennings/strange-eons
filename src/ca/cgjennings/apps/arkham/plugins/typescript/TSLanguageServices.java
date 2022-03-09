@@ -64,6 +64,7 @@ public final class TSLanguageServices {
                 cx.setGeneratingSource(false);
                 cx.setGeneratingDebug(debuggable);
                 cx.setMaximumInterpreterStackDepth(Integer.MAX_VALUE);
+                engine.put("DEBUG", debuggable);
                 // This file is stored in lib/typescript-services.jar to
                 // reduce build times and prevent IDEs from trying to
                 // process it for errors, code completions, etc.
@@ -396,7 +397,7 @@ public final class TSLanguageServices {
                     ((Request<String>)r).send(services.getVersion());
                     break;
                 case GET_LIB:
-                    ((Request<Object>)r).send(services.getLib());
+                    ((Request<Object>)r).send(services.getServicesLib());
                     break;
                 case TRANSPILE_SIMPLE:
                     ((Request<String>)r).send(services.transpile((String)r.args[0], (String)r.args[1]));
@@ -546,7 +547,6 @@ public final class TSLanguageServices {
         public String toString() {
             String s = "Request{type=" + Math.abs(type)
                     + ", synch=" + (type < 0)
-                    + ", cb=" + callback
             ;
             if (args != null) {
                 s += ", args=[";
@@ -567,7 +567,7 @@ public final class TSLanguageServices {
      */
     static interface ServiceInterface {
         /** Returns the raw TS lib object for development/debugging. */
-        Object getLib();
+        Object getServicesLib();
         
         /** Returns the version of TypeScript services. */
         String getVersion();
@@ -578,11 +578,11 @@ public final class TSLanguageServices {
         /** Creates a script snapshot from the text of a script. */
         Object createSnapshot(String text);
         
-        /** Creates a language service host that delegates to the specified root. */
-        Object createLanguageServiceHost(CompilationRoot root);
-        
         /** Creates a language service from the specified language service host. */
         Object createLanguageService(Object host);
+        
+        /** Creates a language service host that delegates to the specified root. */
+        Object createLanguageServiceHost(CompilationRoot root);
         
         /** Compiles a source file. */
         CompiledSource compile(Object languageService, String fileName);

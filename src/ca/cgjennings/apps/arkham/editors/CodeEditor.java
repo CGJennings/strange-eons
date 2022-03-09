@@ -863,6 +863,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
     @Override
     public void setFile(File f) {
         super.setFile(f);
+        editor.setFile(f);
         boolean editable = false;
         if (f != null && type.getDeterminativeFile(f) == null && (!f.exists() || f.canWrite())) {
             editable = true;

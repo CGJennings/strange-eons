@@ -1,16 +1,19 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
-import ca.cgjennings.apps.arkham.StrangeEons;
 import java.util.Objects;
 
 /**
  * Encapsulates the contents of a source file that may vary over time.
+ * The actual content may come from anywhere, such as memory,
+ * the file system, a network connection, etc. Source units are identified
+ * by a path. Relative paths will be considered to be relative to the
+ * {@link CompilationRoot} that contains them.
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class SourceUnit {
-   private final String identifier;
-   private long version = 0L;
+   private final String path;
+   private int version = 0;
    private String versionKey;
    private String text;
    Object snapshot;
@@ -18,19 +21,19 @@ public class SourceUnit {
    /**
     * Creates a new, empty source unit.
     * 
-    * @param identifier the identifier, such as file path, that identifies
-    * this source unit
+    * @param path the identifier, such as file path, that identifies
+    * the (real or virtual) location of this source unit
     */
-   public SourceUnit(String identifier) {
-       this.identifier = Objects.requireNonNull(identifier, "identifier");
+   public SourceUnit(String path) {
+       this.path = Objects.requireNonNull(path, "path");
    }
    
    /**
     * Creates a new source unit and updates it with the specified initial text.
     * 
-    * @param identifier the identifier, such as file path, that identifies
-    * this source unit
-    * @param initialText the initial file source text
+    * @param path the identifier, such as file path, that identifies
+    * the (real or virtual) location of this source unit
+    * @param initialText the initial source text
     */
    public SourceUnit(String identifier, String initialText) {
        this(identifier);
@@ -41,66 +44,80 @@ public class SourceUnit {
     * Returns the unique identifier associated with this source unit.
     * @return an identifier, such as a file path
     */
-   public String getIdentifier() {
-       return identifier;
-   }
-
-   /**
-    * Called when the text is requested and no update has been performed,
-    * so no text has ever been set.
-    * Subclasses can override this to implement source units that are
-    * loaded on demand by calling {@link #update}.
-    */
-   protected void performInitialUpdate() {
+   public final String getPath() {
+       return path;
    }
    
    /**
     * Returns the current text of the document.
+    * This is the text of the most recent
+    * {@linkplain #update(java.lang.String) update}.
     * 
-    * @return the document text
+    * @return the document text; may return null if the text is unavailable
     */
-   public String getText() {
-       synchronized (this) {
-        if (text == null) {
-            performInitialUpdate();
-            if (text == null) {
-                StrangeEons.log.warning("document requested but never updated: " + identifier);
-                text = "";
-            }
+    public final String getText() {
+        synchronized (this) {
+            updateFromSource(text);
+            return text;
         }
-        return text;
-       }
-   }
+    }
    
    /**
     * Updates the text of the document.
-    * @param currentText the new file content
+    * 
+    * @param currentText the new file content; may be null if no text is
+    * available (for example, if the source was deleted)
     */
-   public void update(String currentText) {
+   public final void update(String currentText) {
        synchronized (this) {
-           if (text == null || !text.equals(currentText)) {
-                text = Objects.requireNonNull(currentText, "currentText");
+           if (!Objects.equals(text, currentText)) {
+                text = currentText;
                 snapshot = null;
-                long timestamp = System.nanoTime();
-                if (timestamp <= version) {
-                    timestamp = version + 1L;
-                }
-                version = timestamp;
+                ++version;
                 versionKey = null;
            }
        }
    }
    
+
+   /**
+    * This method is called whenever the source's version or text is requested,
+    * <em>before</em> a result is returned. If the source unit subclass knows that
+    * a more up-to-date result is available than the one currently stored
+    * in the source unit, it can immediately update the source unit to the
+    * latest version.
+    * 
+    * <p>
+    * This can be used to implement features such as lazily-loaded static files
+    * or source units tied to files in the file system that update when the
+    * file changes. The base class does meaning, which means that the text of
+    * the source unit can only change if explicitly updated.
+    * 
+    * <p>Subclasses which override this method should ensure that it returns
+    * as quickly as possible if the source has not changed.
+    * 
+    * @param possiblyStaleVersion the current, possibly out of date, source
+    * unit text; may be null
+    */
+   protected void updateFromSource(String possiblyStaleVersion) {
+   }   
+   
    /**
     * Returns a string that uniquely identifies the current version.
     * After each change to the text this will return a different string.
     */
-   public String getVersion() {
+   public final String getVersion() {
        synchronized (this) {
+           updateFromSource(text);
            if (versionKey == null) {
-               versionKey = Long.toHexString(version);
+               versionKey = Integer.toHexString(version);
            }
            return versionKey;
        }
+   }
+   
+   @Override
+   public String toString() {
+       return getClass().getSimpleName() + '{' + path + " / v" + getVersion() + '}';
    }
 }

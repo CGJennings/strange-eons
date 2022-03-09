@@ -7,8 +7,10 @@ import ca.cgjennings.apps.arkham.plugins.typescript.CompilationFactory;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationRoot;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompletionInfo;
 import ca.cgjennings.apps.arkham.plugins.typescript.Diagnostic;
+import ca.cgjennings.apps.arkham.plugins.typescript.EditableSourceUnit;
 import ca.cgjennings.apps.arkham.plugins.typescript.FileTextChanges;
 import ca.cgjennings.apps.arkham.plugins.typescript.NavigationTree;
+import ca.cgjennings.apps.arkham.plugins.typescript.SourceUnit;
 import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.text.MarkdownTransformer;
@@ -56,22 +58,23 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         // if the TS engine is not already running, start it up now
         // in a background thread since it is likely to be used soon
         TSLanguageServices.getShared();
+        
+        ac = new AutoCompletion(new TSCompletionProvider());
+        ac.setListCellRenderer(new CompletionRenderer(editor));
+        ac.setShowDescWindow(true);
+        ac.setAutoCompleteEnabled(true);
+        ac.setAutoActivationEnabled(true);
+        ac.setAutoActivationDelay(800);
+        ac.setAutoCompleteSingleChoices(true);
+        ac.install(editor.getTextArea());
+        
+        
         EventQueue.invokeLater(() -> {
             // don't immediately create a root, delay a moment in case a file
             // is set just after; this prevents superfluous creation of
             // a potentially expensive compilation root
             if (root == null) {
                 fileChanged(file);
-                if (root != null) {
-                    ac = new AutoCompletion(new TSCompletionProvider());
-                    ac.setListCellRenderer(new CompletionRenderer(editor));
-                    ac.setShowDescWindow(true);
-                    ac.setAutoCompleteEnabled(true);
-                    ac.setAutoActivationEnabled(true);
-                    ac.setAutoActivationDelay(800);
-                    ac.setAutoCompleteSingleChoices(true);
-                    ac.install(editor.getTextArea());
-                }
             }
         });
         editor.getTextArea().addParser(new TSParser(editor));
@@ -95,8 +98,10 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
     public void fileChanged(File file) {
         this.file = file;
         root = CompilationFactory.forFile(file);
-        // TODO set identifier for root
-        identifier = "index.ts";
+        identifier = root.getSuggestedIdentifier(file);
+        if (root != null && root.get(identifier) == null) {
+            root.add(new EditableSourceUnit(identifier, file));
+        }
     }
 
     private CodeEditorBase editor;
@@ -109,50 +114,14 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         private final CodeEditorBase editor;
         private final DefaultParseResult result = new DefaultParseResult(this);
-
-        /**
-         * Most of the checking actually happens in another script. Once the
-         * latest result is returned to us, we will request a reparse to update
-         * the editor with the results.
-         */
-        private List<Diagnostic> latestDiagnostics;
-        /**
-         * Tracks how many times we have asked for results, so we don't
-         * accidentally return a stale result.
-         */
-        private int requestNumber = 0;
-
-        /**
-         * The first time a parse is requested, it will be performed in the
-         * background to allow time for TS services to start up. Once the
-         * initial result is available, the parser will request a reparse and
-         * handle the result.
-         */
+        
         public TSParser(CodeEditorBase editor) {
             this.editor = editor;
         }
 
         @Override
         public ParseResult parse(RSyntaxDocument rsd, String string) {
-            // no results are pending, start background request
-            if (latestDiagnostics == null) {
-                if (root != null) {
-                    try {
-                        root.add(identifier, rsd.getText(0, rsd.getLength()));
-                    } catch (BadLocationException ble) {
-                        // should be impossible
-                        StrangeEons.log.severe("impossible exception");
-                    }
-                    final int expectedRequestNumber = ++requestNumber;
-                    root.getDiagnostics(identifier, true, true, (results) -> {
-                        // if these are the most recently requested results,
-                        // keep a reference and request reparse
-                        if (expectedRequestNumber == requestNumber) {
-                            latestDiagnostics = results;
-                            editor.getTextArea().forceReparsing(this);
-                        }
-                    });
-                }
+            if (root == null) {
                 return result;
             }
 
@@ -165,27 +134,24 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 Gutter gutter = editor.getScrollPane().getGutter();
                 gutter.removeAllTrackingIcons();
 
-                if (root != null) {
-                    for (Diagnostic d : latestDiagnostics) {
-                        if (d.hasLocation()) {
-                            DefaultParserNotice notice = new DefaultParserNotice(
-                                    this, d.message, d.line, d.offset, d.length
-                            );
-                            notice.setLevel(d.isWarning ? ParserNotice.Level.WARNING : ParserNotice.Level.ERROR);
-                            gutter.addLineTrackingIcon(d.line, d.isWarning ? CodeEditorBase.ICON_WARNING : CodeEditorBase.ICON_ERROR, d.message);
-                            result.addNotice(notice);
-                        }
+                List<Diagnostic> diagnostics = root.getDiagnostics(identifier, true, true);
+                for (Diagnostic d : diagnostics) {
+                    if (d.hasLocation()) {
+                        DefaultParserNotice notice = new DefaultParserNotice(
+                                this, d.message, d.line, d.offset, d.length
+                        );
+                        notice.setLevel(d.isWarning ? ParserNotice.Level.WARNING : ParserNotice.Level.ERROR);
+                        gutter.addLineTrackingIcon(d.line, d.isWarning ? CodeEditorBase.ICON_WARNING : CodeEditorBase.ICON_ERROR, d.message);
+                        result.addNotice(notice);
                     }
                 }
                 result.setParseTime(System.currentTimeMillis() - start);
             } catch (BadLocationException ble) {
                 StrangeEons.log.log(Level.WARNING, ble, null);
                 result.setError(ble);
-            } finally {
-                latestDiagnostics = null;
             }
             return result;
-        }
+        }        
     }
 
     private class TSCompletionProvider extends CompletionProviderBase {
@@ -204,11 +170,16 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             if (root == null || identifier == null) {
                 return Collections.emptyList();
             }
-            root.add(identifier, editor.getText());
 
+            String text = jtc.getText();
+            SourceUnit source = root.get(identifier);
+            if (source != null) {
+                source.update(text);
+            }
+            
             final String prefix = getAlreadyEnteredText(jtc);
-
             final int caret = jtc.getCaretPosition();
+            
             CompletionInfo info = root.getCodeCompletions(identifier, caret);
             if (info == null) {
                 return Collections.emptyList();
@@ -425,12 +396,12 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                     if (root != null) {
                         final int expectedRequest = ++requestNumber;
                         root.add(identifier, sourceText);
-                        root.getNavigationTree(identifier, (tree) -> {
+                            root.getNavigationTree(identifier, (tree) -> {
                             if (expectedRequest == requestNumber) {
                                 latestRequest = tree;
                                 host.refreshNavigator();
                             }
-                        });
+                            });
                     } else {
                         // compilation root does not exist yet, check again later
                         Timer retryLater = new Timer(6000, (ev) -> {
