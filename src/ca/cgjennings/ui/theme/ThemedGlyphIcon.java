@@ -982,10 +982,12 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
                         label.setEnabled(!label.isEnabled());
                     } // middle button to save as a PNG
                     else if (e.getButton() == MouseEvent.BUTTON2) {
-                        BufferedImage im = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
+                        ThemedIcon icon = (ThemedGlyphIcon) label.getIcon();
+                        final int W = icon.getIconWidth();
+                        final int H = icon.getIconHeight();
+                        BufferedImage im = new BufferedImage(W, H, BufferedImage.TYPE_INT_ARGB);
                         Graphics2D g = im.createGraphics();
                         try {
-                            ThemedIcon icon = ((ThemedGlyphIcon) label.getIcon()).derive(128);
                             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                             icon.paintIcon(null, g, 0, 0);
                         } finally {

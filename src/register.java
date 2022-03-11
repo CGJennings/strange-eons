@@ -119,13 +119,13 @@ public final class register extends CommandLineParser {
      */
     public boolean desktop;
 
-    private static final String JVM_ARGS = "-Xmx2048m";
+    private static final String JVM_ARGS = "-Xmx2048m ";
     private static final String DEBUG_JVM = "-Xmx128m";
 
     /**
      * Version number for minimum Java version we need to locate.
      */
-    private static final String MIN_JAVA_VERSION = "8+"; // e.g. 8.0_56+
+    private static final String MIN_JAVA_VERSION = "11+"; // e.g. 8.0_56+
 
     @Override
     protected void displayUsageText(Object target) {
@@ -254,6 +254,10 @@ public final class register extends CommandLineParser {
         if (bi == null) {
             throw new AssertionError("unable to read image " + source);
         }
+        extractIcon(bi, destFile, size);
+    }
+    
+    private void extractIcon(BufferedImage bi, String destFile, int size) throws IOException {
         bi = ImageUtilities.ensureIntRGBFormat(bi);
         if (bi.getWidth() != bi.getHeight()) {
             int paddedSize = Math.max(bi.getWidth(), bi.getHeight());
@@ -264,36 +268,48 @@ public final class register extends CommandLineParser {
             bi = ImageUtilities.resample(bi, factor, true, RenderingHints.VALUE_INTERPOLATION_BICUBIC, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
         }
         ImageIO.write(bi, "png", file(destFile));
-    }
+    }    
 
     private void extractIcons() throws IOException {
-        extractIcon("128", "app", 96);
-        extractIcon("64", "app", 48);
-        extractIcon("32", "app", 24);
-        extractIcon("16", "app", 16);
+        extractIcon("app@8x", "app", 96);
+        extractIcon("app@4x", "app", 48);
+        extractIcon("app@2x", "app", 24);
+        extractIcon("app", "app", 16);
 
         extractIcon("db@8x", "debugger", 96);
         extractIcon("db@4x", "debugger", 48);
         extractIcon("db@2x", "debugger", 24);
         extractIcon("db", "debugger", 16);
+        
+        extractIcon("doc@8x", "eon", 96);
+        extractIcon("doc@4x", "eon", 48);
+        extractIcon("doc@2x", "eon", 24);
+        extractIcon("doc", "eon", 16);        
 
-        extractIcon("document", "eon", 96);
-        extractIcon("document", "eon", 48);
-
-        extractIcon("plugin", "seplugin", 96);
-        extractIcon("plugin", "seplugin", 48);
-
-        extractIcon("extension", "seext", 96);
-        extractIcon("extension", "seext", 48);
-
-        extractIcon("theme", "setheme", 96);
-        extractIcon("theme", "setheme", 48);
-
-        extractIcon("library", "selibrary", 96);
-        extractIcon("library", "selibrary", 48);
-
-        extractIcon("project", "seproject", 96);
-        extractIcon("project", "seproject", 48);
+        extractIcon("plugin-generic@8x", "seplugin", 96);
+        extractIcon("plugin-generic@4x", "seplugin", 48);
+        extractIcon("plugin-generic@2x", "seplugin", 24);
+        extractIcon("plugin-generic", "seplugin", 16);
+        
+        extractIcon("plugin-generic@8x", "seext", 96);
+        extractIcon("plugin-generic@4x", "seext", 48);
+        extractIcon("plugin-generic@2x", "seext", 24);
+        extractIcon("plugin-generic", "seext", 16);
+        
+        extractIcon("plugin-generic@8x", "setheme", 96);
+        extractIcon("plugin-generic@4x", "setheme", 48);
+        extractIcon("plugin-generic@2x", "setheme", 24);
+        extractIcon("plugin-generic", "setheme", 16);
+        
+        extractIcon("plugin-generic@8x", "selibrary", 96);
+        extractIcon("plugin-generic@4x", "selibrary", 48);
+        extractIcon("plugin-generic@2x", "selibrary", 24);
+        extractIcon("plugin-generic", "selibrary", 16);
+        
+        extractIcon("project@8x", "seproject", 96);
+        extractIcon("project@4x", "seproject", 48);
+        extractIcon("project@2x", "seproject", 24);
+        extractIcon("project", "seproject", 16);
     }
 
     private void registerIcon(String iconName, String mimeType) throws IOException {
