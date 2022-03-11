@@ -117,7 +117,7 @@ public class ZIPExportContainer implements ExportContainer {
             zip.write(out.toByteArray());
             out.reset();
         } else if (isStartingNewEntry) {
-            out = new ByteArrayOutputStream(1_024 * 128);
+            out = new ByteArrayOutputStream(1024 * 128);
         }
     }
 

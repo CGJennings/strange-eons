@@ -212,9 +212,9 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
     private void buildCommentTable(File propFile) throws IOException {
         int lastCommentStart = 0;
         int state = 0; // 0 = NOT IN COMMENT, 1 = IN COMMENT, 2 = LAST LINE WAS KEY WITH CONTINUATION
-        StringBuilder b = new StringBuilder(16_384);
+        StringBuilder b = new StringBuilder(16384);
         try (InputStream in = new FileInputStream(createFileName(propFile, 0))) {
-            BufferedReader r = new BufferedReader(new InputStreamReader(in), 32 * 1_024);
+            BufferedReader r = new BufferedReader(new InputStreamReader(in), 32 * 1024);
             String line;
             while ((line = r.readLine()) != null) {
                 if (b.length() > 0) {
@@ -262,7 +262,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         commentBlockField.setText(b.toString());
         commentBlockField.select(0, 0);
     }
-    private HashMap<String, Integer> keyToCommentLine = new HashMap<>(2_000);
+    private HashMap<String, Integer> keyToCommentLine = new HashMap<>(2000);
 
     private static int keySplit(String s) {
         boolean escape = false;

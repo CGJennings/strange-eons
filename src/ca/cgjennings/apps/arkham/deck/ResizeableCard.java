@@ -23,7 +23,7 @@ import java.io.Serializable;
 @SuppressWarnings("deprecation")
 class ResizeableCard extends Card implements Serializable, Cloneable {
 
-    static final long serialVersionUID = 2_827_360_448_649_571_724L;
+    static final long serialVersionUID = 2827360448649571724L;
     private String text;
     private Color background;
     private double margin = 4;

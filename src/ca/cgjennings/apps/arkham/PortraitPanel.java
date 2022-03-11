@@ -56,7 +56,7 @@ import resources.StrangeImage;
  */
 public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.ActionListener, java.awt.event.FocusListener, FileChangeListener, MouseListener {
 
-    private static final long serialVersionUID = -7_566_862_039_613_697_337L;
+    private static final long serialVersionUID = -7566862039613697337L;
     private final NumberFormat formatter;
     private Color TAB_BACKGROUND;
 

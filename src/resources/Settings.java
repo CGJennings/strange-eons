@@ -115,7 +115,7 @@ import static resources.Language.string;
  */
 public class Settings implements Serializable, Iterable<String> {
 
-    private static final long serialVersionUID = 35_461_387_643_185L;
+    private static final long serialVersionUID = 35461387643185L;
     private HashMap<String, String> p;
     private Settings parent;
 
@@ -2785,7 +2785,7 @@ public class Settings implements Serializable, Iterable<String> {
      */
     public static class Region extends Rectangle {
 
-        private static final long serialVersionUID = 5_735_765_786_377_364_767L;
+        private static final long serialVersionUID = 5735765786377364767L;
 
         /**
          * Creates a new region from a string using the same format as a region
@@ -2887,7 +2887,7 @@ public class Settings implements Serializable, Iterable<String> {
      */
     public static class Region2D extends Rectangle2D.Double {
 
-        private static final long serialVersionUID = 87_868_654_635_425_654L;
+        private static final long serialVersionUID = 87868654635425654L;
 
         /**
          * Creates a new region from a string using the same format as a region
@@ -2960,7 +2960,7 @@ public class Settings implements Serializable, Iterable<String> {
      */
     public static class Colour extends Color {
 
-        private static final long serialVersionUID = 4_578_357_746_764_736L;
+        private static final long serialVersionUID = 4578357746764736L;
 
         /**
          * Creates a colour from a setting value.
@@ -3422,7 +3422,7 @@ public class Settings implements Serializable, Iterable<String> {
 
     private static class PropertySettings extends Settings {
 
-        private static final long serialVersionUID = -1_111_158_290_458_777_391L;
+        private static final long serialVersionUID = -1111158290458777391L;
         private Properties p;
         private String name;
 
@@ -3503,7 +3503,7 @@ public class Settings implements Serializable, Iterable<String> {
      */
     public static class ParseError extends RuntimeException {
 
-        private static final long serialVersionUID = -1_034_856_754_864_576_514L;
+        private static final long serialVersionUID = -1034856754864576514L;
 
         ParseError(String missingKey) {
             super(string("rk-err-missing-key", missingKey));

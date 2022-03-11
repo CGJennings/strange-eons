@@ -703,7 +703,7 @@ public final class DefaultScriptDebugger {
                 return reply.toString();
 
             case INFOTABLE:
-                reply = new StringBuilder(2_048);
+                reply = new StringBuilder(2048);
                 InfoTable it = null;
                 try {
                     it = Tables.generate(args[0]);

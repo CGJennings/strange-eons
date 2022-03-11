@@ -1866,9 +1866,9 @@ public final class ProjectView extends javax.swing.JPanel {
                             if ($firstFile == null) {
                                 $firstFile = outFile;
                             }
-                            byte[] buffer = new byte[64 * 1_024];
+                            byte[] buffer = new byte[64 * 1024];
                             try {
-                                out = new BufferedOutputStream(new FileOutputStream(outFile), 64 * 1_024);
+                                out = new BufferedOutputStream(new FileOutputStream(outFile), 64 * 1024);
                                 URLConnection connection = url.openConnection();
                                 ConnectionSupport.enableCompression(connection);
                                 int downloadSize = connection.getContentLength();

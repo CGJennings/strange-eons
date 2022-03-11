@@ -1028,5 +1028,5 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         readImpl(in);
     }
 
-    private static final long serialVersionUID = 924_237_498_132_749_834L;
+    private static final long serialVersionUID = 924237498132749834L;
 }

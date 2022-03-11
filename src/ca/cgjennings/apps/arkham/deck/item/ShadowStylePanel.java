@@ -77,6 +77,6 @@ class ShadowStylePanel extends AbstractStylePanel<ShadowStyle> implements Shadow
 
     @Override
     public int getPanelGroup() {
-        return 1_000;
+        return 1000;
     }
 }

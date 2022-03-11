@@ -25,7 +25,7 @@ import resources.Settings;
  */
 public final class Marker extends AbstractGameComponent {
 
-    static final long serialVersionUID = 543_985_398_354_983_546L;
+    static final long serialVersionUID = 543985398354983546L;
 
     private String stencilKey;
     private transient BufferedImage stencil;

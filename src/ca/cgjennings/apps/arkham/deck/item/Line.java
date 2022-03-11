@@ -437,5 +437,5 @@ public class Line extends AbstractItem implements SizablePageItem, LineStyle, Sh
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         readImpl(in);
     }
-    private static final long serialVersionUID = -2_897_559_979_679_067_492L;
+    private static final long serialVersionUID = -2897559979679067492L;
 }

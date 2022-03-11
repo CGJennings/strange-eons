@@ -173,7 +173,7 @@ public class Searcher {
             if (cs != null) {
                 final boolean isBinaryType = member.getMetadataSource().getDefaultCharset(member) == null;
                 in = new FileInputStream(f);
-                r = new BufferedReader(new InputStreamReader(in, cs), 16 * 1_024);
+                r = new BufferedReader(new InputStreamReader(in, cs), 16 * 1024);
                 scanReader(member, r, isBinaryType);
             }
         } catch (IOException e) {

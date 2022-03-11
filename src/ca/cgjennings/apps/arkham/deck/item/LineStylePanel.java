@@ -273,6 +273,6 @@ class LineStylePanel extends AbstractStylePanel<LineStyle> implements LineStyle 
 
     @Override
     public int getPanelGroup() {
-        return 1_200;
+        return 1200;
     }
 }

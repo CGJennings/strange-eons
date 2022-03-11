@@ -17,7 +17,7 @@ import java.io.ObjectOutputStream;
  */
 public class RotatableTile extends Tile {
 
-    static final long serialVersionUID = 8_293_922_190_302_899_303L;
+    static final long serialVersionUID = 8293922190302899303L;
     private double angle = 0;
 
     public RotatableTile(String name, String identifier, double dpi) {

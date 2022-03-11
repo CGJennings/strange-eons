@@ -53,7 +53,7 @@ import resources.Settings;
 public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.ChangeListener, java.awt.event.ActionListener, java.awt.event.FocusListener, PopupMenuListener {
     // needed for form serialization
 
-    private static final long serialVersionUID = -3_518_230_129_696_936_527L;
+    private static final long serialVersionUID = -3518230129696936527L;
     private final NumberFormat formatter;
 
     /**
@@ -845,9 +845,9 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         cs = s;
         cb = b;
 
-        HSlider.setValue(Math.round(h * 3_600));
-        SSlider.setValue(Math.round(s * 1_000));
-        BSlider.setValue(Math.round(b * 1_000));
+        HSlider.setValue(Math.round(h * 3600));
+        SSlider.setValue(Math.round(s * 1000));
+        BSlider.setValue(Math.round(b * 1000));
         HField.setText(formatter.format(h * 360) + "\u00b0");
         SField.setText(formatter.format(s * 100) + "%");
         BField.setText(formatter.format(b * 100) + "%");

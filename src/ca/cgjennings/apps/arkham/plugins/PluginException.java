@@ -9,7 +9,7 @@ package ca.cgjennings.apps.arkham.plugins;
  */
 public class PluginException extends Exception {
 
-    private static final long serialVersionUID = 6_465_456_564_565L;
+    private static final long serialVersionUID = 6465456564565L;
 
     public PluginException(Throwable cause) {
         super(cause);

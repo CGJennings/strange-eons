@@ -248,7 +248,7 @@ public class DeckTask extends NewTaskType {
                         lines.add(shortName + " = 2");
                     }
                 }
-                StringBuilder b = new StringBuilder(2_048);
+                StringBuilder b = new StringBuilder(2048);
                 for (int i = 0; i < lines.size(); ++i) {
                     if (i > 0) {
                         b.append('\n');

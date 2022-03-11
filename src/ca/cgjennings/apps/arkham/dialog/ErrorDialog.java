@@ -233,7 +233,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
             if (maxmem == Long.MAX_VALUE) {
                 message = string("app-err-outofmem") + string("app-err-outofmem-nomax");
             } else {
-                message = string("app-err-outofmem") + String.format(string("app-err-outofmem-hasmax"), maxmem / (1_024L * 1_024L), "(translation out of date)");
+                message = string("app-err-outofmem") + String.format(string("app-err-outofmem-hasmax"), maxmem / (1024L * 1024L), "(translation out of date)");
             }
             ErrorDialog.displayError(message, null);
         } catch (OutOfMemoryError e) {

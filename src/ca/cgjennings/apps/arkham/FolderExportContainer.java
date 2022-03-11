@@ -88,7 +88,7 @@ public class FolderExportContainer implements ExportContainer {
         File f = new File(parent, name);
         fout = new FileOutputStream(f);
         written.add(f);
-        return new BufferedOutputStream(fout, 64 * 1_024);
+        return new BufferedOutputStream(fout, 64 * 1024);
     }
 
     @Override

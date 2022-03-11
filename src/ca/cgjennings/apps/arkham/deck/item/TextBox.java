@@ -550,7 +550,7 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         readImpl(in);
     }
-    private static final long serialVersionUID = -7_618_946_764_647_050_749L;
+    private static final long serialVersionUID = -7618946764647050749L;
 
     public boolean isTextJustified() {
         return justifyText;

@@ -24,7 +24,7 @@ import java.io.Serializable;
 @SuppressWarnings("deprecation")
 class Card implements Cloneable, Serializable {
 
-    static final long serialVersionUID = 2_827_360_448_649_571_724L;
+    static final long serialVersionUID = 2827360448649571724L;
 
     protected final void obsolete() {
         throw new UnsupportedOperationException("obsolete class " + getClass().getSimpleName() + " can only be converted to PageItem");

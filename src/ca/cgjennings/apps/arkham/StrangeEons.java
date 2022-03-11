@@ -145,7 +145,7 @@ public final class StrangeEons {
      */
     public static final Logger log;
     // the field name "logBuffer" is looked up via reflection by dev tools plug-in
-    private static final StringBuffer logBuffer = new StringBuffer(16 * 1_024);
+    private static final StringBuffer logBuffer = new StringBuffer(16 * 1024);
 
     private static ScriptRunnerModeHelper scriptRunnerMode;
 
@@ -2140,7 +2140,7 @@ public final class StrangeEons {
         // The minumum total memory we will accept; we set this to a high percentage
         // of the actual desired number of bytes, because some of the memory set
         // with -Xmx is not accounted for in heap + nonheap.
-        final long MIN_MEM_IN_BYTES = RECOMMENDED_MEMORY_IN_MB * (1_024L * 1_024L) * (95L / 100L);
+        final long MIN_MEM_IN_BYTES = RECOMMENDED_MEMORY_IN_MB * (1024L * 1024L) * (95L / 100L);
 
         // The memory values are allowed to be -1 if undefined; in which case we
         // have to assume that we have whatever we need.

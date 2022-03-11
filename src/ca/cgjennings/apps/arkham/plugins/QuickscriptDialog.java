@@ -277,7 +277,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             in = new BufferedReader(new InputStreamReader(new FileInputStream(f), TextEncoding.SCRIPT_CODE_CS));
             int buff = (int) f.length();
             if (buff <= 0) {
-                buff = 2_048;
+                buff = 2048;
             }
             StringBuilder b = new StringBuilder(buff);
             String line;

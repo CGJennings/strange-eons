@@ -52,7 +52,7 @@ import resources.Settings;
  */
 public class Deck implements Serializable, GameComponent, BleedMarginStyle, Cloneable {
 
-    static final long serialVersionUID = 4_560_886_736_606_557_242L;
+    static final long serialVersionUID = 4560886736606557242L;
 
     /**
      * Creates a new, empty deck using the default paper size.

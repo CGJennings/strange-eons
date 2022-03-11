@@ -204,8 +204,8 @@ public final class MD5Checksum {
         InputStream in = null;
         try {
             in = new FileInputStream(f);
-            in = new BufferedInputStream(in, 64 * 1_024);
-            byte[] buff = new byte[64 * 1_024];
+            in = new BufferedInputStream(in, 64 * 1024);
+            byte[] buff = new byte[64 * 1024];
             int read;
             while ((read = in.read(buff)) > 0) {
                 md5.update(buff, 0, read);

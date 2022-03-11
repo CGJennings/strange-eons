@@ -18,7 +18,7 @@ import java.util.logging.Level;
  */
 public class SimpleGroup implements Group {
 
-    private static final long serialVersionUID = 2_452_391_439_644_716_752L;
+    private static final long serialVersionUID = 2452391439644716752L;
     private LinkedHashSet<PageItem> members;
     private transient boolean isBeingAdded = false;
 //	private transient Rectangle2D.Double rect = null;

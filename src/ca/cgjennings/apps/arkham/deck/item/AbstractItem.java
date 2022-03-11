@@ -377,5 +377,5 @@ public abstract class AbstractItem implements PageItem {
             clientProperties = null;
         }
     }
-    private static final long serialVersionUID = 8_936_744_391_094_878_580L;
+    private static final long serialVersionUID = 8936744391094878580L;
 }

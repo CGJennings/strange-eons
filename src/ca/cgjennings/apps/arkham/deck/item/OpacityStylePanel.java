@@ -156,8 +156,8 @@ class OpacityStylePanel extends AbstractStylePanel<OpacityStylePanel> implements
         if (op < 0) {
             op = 0;
         }
-        if (op > 1_000) {
-            op = 1_000;
+        if (op > 1000) {
+            op = 1000;
         }
 
         // this will set "opacity" and update the swatch and field

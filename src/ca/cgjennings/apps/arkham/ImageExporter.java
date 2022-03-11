@@ -93,7 +93,7 @@ public class ImageExporter {
     private ExportContainer exporter;
     private SimpleImageWriter imageWriter;
     private int state = NOINIT;
-    private static final int NOINIT = 0, INIT = 1, WROTEIMAGE = 2, ERROR = 1_000;
+    private static final int NOINIT = 0, INIT = 1, WROTEIMAGE = 2, ERROR = 1000;
 
     private void handleWrappedException(Throwable t) throws IOException {
         if (t instanceof WrappedException) {

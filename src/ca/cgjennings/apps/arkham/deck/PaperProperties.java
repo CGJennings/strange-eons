@@ -27,7 +27,7 @@ import static resources.Language.string;
  */
 public final class PaperProperties implements Comparable<PaperProperties>, IconProvider, Serializable {
 
-    static final long serialVersionUID = 5_085_508_097_117_626_622L;
+    static final long serialVersionUID = 5085508097117626622L;
 
     private static final double DEF_GRID = 72d * 0.393701d;
     private static final double DEF_HEIGHT = 11d * 72d;

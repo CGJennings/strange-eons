@@ -41,7 +41,7 @@ import javax.swing.ImageIcon;
  */
 public abstract class AbstractRenderedItem extends AbstractFlippableItem {
 
-    private static final long serialVersionUID = 6_385_369_211_586_957_987L;
+    private static final long serialVersionUID = 6385369211586957987L;
     protected transient BufferedImage render;
 
     /**

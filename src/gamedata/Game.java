@@ -568,7 +568,7 @@ public final class Game implements Comparable<Game>, IconProvider {
      */
     private static final class GameSettings extends Settings {
 
-        private static final long serialVersionUID = 2_348_987_646_598_866_534L;
+        private static final long serialVersionUID = 2348987646598866534L;
 
         private GameSettings(Game g) {
             super.set(GAME_SETTING_KEY, g.code);

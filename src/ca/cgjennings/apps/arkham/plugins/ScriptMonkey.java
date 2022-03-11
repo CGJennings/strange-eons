@@ -551,7 +551,7 @@ public final class ScriptMonkey {
     private Object evaluate(Reader in) throws ScriptException {
         try {
             StringBuilder b = new StringBuilder();
-            final int BUFFSIZE = 8_192;
+            final int BUFFSIZE = 8192;
             char[] buff = new char[BUFFSIZE];
             int read;
             while ((read = in.read(buff)) != -1) {
@@ -818,7 +818,7 @@ public final class ScriptMonkey {
         try {
             r = new InputStreamReader(in, SCRIPT_FILE_ENCODING);
             int charsRead;
-            char[] buffer = new char[8_192];
+            char[] buffer = new char[8192];
             while ((charsRead = r.read(buffer)) > 0) {
                 b.append(buffer, 0, charsRead);
             }

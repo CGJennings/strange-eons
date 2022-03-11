@@ -463,5 +463,5 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         readImpl(in);
     }
-    private static final long serialVersionUID = 4_720_203_795_348_654_470L;
+    private static final long serialVersionUID = 4720203795348654470L;
 }

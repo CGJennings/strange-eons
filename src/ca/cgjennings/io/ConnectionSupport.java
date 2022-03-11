@@ -54,7 +54,7 @@ public final class ConnectionSupport {
         String encoding = c.getContentEncoding();
 
         if (bufferSizeHint < 1) {
-            bufferSizeHint = 64 * 1_024; // default 64k buffer size
+            bufferSizeHint = 64 * 1024; // default 64k buffer size
         }
 
         InputStream in = c.getInputStream();

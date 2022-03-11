@@ -557,10 +557,10 @@ public class ProjectUtilities {
 
     private static long crc32(File f) throws IOException {
         CRC32 crc = new CRC32();
-        byte[] buff = new byte[32_768];
+        byte[] buff = new byte[32768];
         BufferedInputStream in = null;
         try {
-            in = new BufferedInputStream(new FileInputStream(f), 32_768);
+            in = new BufferedInputStream(new FileInputStream(f), 32768);
             int bytes = 0;
             while ((bytes = in.read(buff)) != -1) {
                 crc.update(buff, 0, bytes);
@@ -924,7 +924,7 @@ public class ProjectUtilities {
      * @throws IOException if an I/O errors while reading the file
      */
     public static String getFileAsString(File f, String enc) throws IOException {
-        StringWriter sw = new StringWriter(2_048);
+        StringWriter sw = new StringWriter(2048);
         try (Reader in = new InputStreamReader(new FileInputStream(f), enc)) {
             copyReader(in, sw);
         }

@@ -37,7 +37,7 @@ import resources.Settings;
  */
 public class DefaultPortrait extends AbstractPortrait implements Serializable {
 
-    private static final long serialVersionUID = 1_974_043_020_090_328L;
+    private static final long serialVersionUID = 1974043020090328L;
     private EnumSet<Feature> features;
     private String key;
     private double x, y, scale, angle;

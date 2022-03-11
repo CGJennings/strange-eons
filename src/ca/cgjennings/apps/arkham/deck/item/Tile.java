@@ -266,5 +266,5 @@ public class Tile extends AbstractRenderedItem {
             StrangeEons.log.warning("null tile identifier");
         }
     }
-    private static final long serialVersionUID = 8_472_020_379_348_654_470L;
+    private static final long serialVersionUID = 8472020379348654470L;
 }

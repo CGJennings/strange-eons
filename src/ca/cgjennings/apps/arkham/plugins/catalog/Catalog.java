@@ -795,9 +795,9 @@ public class Catalog {
                 BusyDialog.maximumProgress(-1);
             }
 
-            in = new BufferedInputStream(conn.getInputStream(), 128 * 1_024);
+            in = new BufferedInputStream(conn.getInputStream(), 128 * 1024);
 
-            byte[] buff = new byte[64 * 1_024];
+            byte[] buff = new byte[64 * 1024];
 
             long total = 0;
             int read;

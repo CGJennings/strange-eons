@@ -1583,7 +1583,7 @@ public class ResourceKit {
                 @Override
                 public String status() {
                     return String.format(
-                            "%,d images (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1_024L
+                            "%,d images (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1024L
                     );
                 }
             });
@@ -1634,7 +1634,7 @@ public class ResourceKit {
                 @Override
                 public String status() {
                     return String.format(
-                            "%,d fonts (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1_024L
+                            "%,d fonts (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1024L
                     );
                 }
             });

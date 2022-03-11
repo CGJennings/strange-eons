@@ -102,7 +102,7 @@ class CatPlugins extends FillInPreferenceCategory {
         indent();
         note(string("sd-l-js-debugger-note"));
         addCheckBox("enable-remote-debugging", string("sd-l-debug-remote"), false);
-        addRange("script-debug-port", string("sd-l-debug-port"), 1_024, 65_535, 1);
+        addRange("script-debug-port", string("sd-l-debug-port"), 1024, 65535, 1);
 
         // !!! See DEBUGGER_KEYS when adding new server keys
         subheading(string("sd-l-debug-client"));

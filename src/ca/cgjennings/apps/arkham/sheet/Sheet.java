@@ -2276,7 +2276,7 @@ public abstract class Sheet<G extends GameComponent> {
             @Override
             public String status() {
                 return String.format(
-                        "%,d images (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1_024L
+                        "%,d images (%,d KiB)", getItemCount(), (getByteSize() + 512L) / 1024L
                 );
             }
         });

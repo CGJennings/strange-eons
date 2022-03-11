@@ -131,6 +131,6 @@ class UserBleedMarginStylePanel extends AbstractStylePanel<UserBleedMarginStyle>
 
     @Override
     public int getPanelGroup() {
-        return 1_200;
+        return 1200;
     }
 }

@@ -81,7 +81,7 @@ public class SheetViewer extends AbstractViewer {
             );
             final long time = System.nanoTime() - start;
             if (ViewQuality.isManagedAutomatically()) {
-                stats.updateStats((int) (time / 1_000_000L), hadChanges);
+                stats.updateStats((int) (time / 1000000L), hadChanges);
             }
             return image;
         } catch (Exception e) {
@@ -115,7 +115,7 @@ public class SheetViewer extends AbstractViewer {
                 int mean = sums[i] / renders[i];
                 if (mean > 500) {
                     next = bump(next, false);
-                    if (mean > 2_000) {
+                    if (mean > 2000) {
                         // very slow draws can degrade the default for future
                         // components, but can never degrade to LOW
                         // (bump() will never return LOW)

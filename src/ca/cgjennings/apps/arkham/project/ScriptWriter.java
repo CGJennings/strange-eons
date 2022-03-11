@@ -222,6 +222,6 @@ class ScriptWriter {
      */
     public void clear() {
         libs = new StringBuilder(256);
-        body = new StringBuilder(1_024);
+        body = new StringBuilder(1024);
     }
 }

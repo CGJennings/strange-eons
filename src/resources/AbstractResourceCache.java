@@ -337,7 +337,7 @@ public abstract class AbstractResourceCache<I, R> {
                 } else {
                     return String.format(
                             "%s (%d %s items, %d kiB)",
-                            name, size(), type.getSimpleName(), size / 1_024
+                            name, size(), type.getSimpleName(), size / 1024
                     );
                 }
             }

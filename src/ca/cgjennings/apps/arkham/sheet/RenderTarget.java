@@ -51,7 +51,7 @@ public enum RenderTarget {
             if (height < 1) {
                 height = 1;
             }
-            final boolean shrinkSmallImage = ((source.getWidth() * source.getHeight()) <= 4_096) && (width < source.getWidth()) && (height < source.getHeight());
+            final boolean shrinkSmallImage = ((source.getWidth() * source.getHeight()) <= 4096) && (width < source.getWidth()) && (height < source.getHeight());
 
             final Object hint1 = shrinkSmallImage ? RenderingHints.VALUE_INTERPOLATION_BILINEAR : RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR;
             final Object hint2 = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
@@ -83,7 +83,7 @@ public enum RenderTarget {
             if (height < 1) {
                 height = 1;
             }
-            final boolean shrinkSmallImage = ((source.getWidth() * source.getHeight()) <= 4_096) && (width < source.getWidth()) && (height < source.getHeight());
+            final boolean shrinkSmallImage = ((source.getWidth() * source.getHeight()) <= 4096) && (width < source.getWidth()) && (height < source.getHeight());
             final Object hint1 = shrinkSmallImage ? RenderingHints.VALUE_INTERPOLATION_BICUBIC : RenderingHints.VALUE_INTERPOLATION_BILINEAR;
             final Object hint2 = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
             return ImageUtilities.resample(source, width, height, true, hint1, hint2);

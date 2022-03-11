@@ -241,5 +241,5 @@ public class Curve extends Line {
         readImpl(in);
     }
 
-    private static final long serialVersionUID = 8_903_653_963_560_359_856L;
+    private static final long serialVersionUID = 8903653963560359856L;
 }

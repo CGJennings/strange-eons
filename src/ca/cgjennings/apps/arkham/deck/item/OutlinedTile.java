@@ -190,5 +190,5 @@ public class OutlinedTile extends Tile {
         borderCap = (LineCap) in.readObject();
     }
 
-    private static final long serialVersionUID = 8_720_203_321_123_654_132L;
+    private static final long serialVersionUID = 8720203321123654132L;
 }

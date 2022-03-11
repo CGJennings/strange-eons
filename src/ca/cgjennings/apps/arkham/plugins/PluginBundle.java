@@ -361,7 +361,7 @@ public class PluginBundle {
         // unwrapped, but zip is probably compressed
         File uncompressed = File.createTempFile("se-flat-", ".tmp");
         uncompressed.deleteOnExit();
-        byte[] bbuff = new byte[1_024 * 32];
+        byte[] bbuff = new byte[1024 * 32];
         JarOutputStream zipOut = null;
         JarFile zipIn = null;
         try {

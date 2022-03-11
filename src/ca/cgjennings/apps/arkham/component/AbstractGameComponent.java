@@ -20,7 +20,7 @@ import resources.StrangeImage;
  */
 public abstract class AbstractGameComponent implements Serializable, Cloneable, GameComponent {
 
-    static final long serialVersionUID = -6_569_298_078_755_650_503L;
+    static final long serialVersionUID = -6569298078755650503L;
 
     private String name;
     protected String comments;

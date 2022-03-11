@@ -280,6 +280,6 @@ class OutlineStylePanel extends AbstractStylePanel<OutlineStyle> implements Outl
 
     @Override
     public int getPanelGroup() {
-        return 1_100;
+        return 1100;
     }
 }

@@ -231,8 +231,8 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
     }
 
     public static void setPort(int port) {
-        if (port < 0 || port > 65_535) {
-            port = 8_080;
+        if (port < 0 || port > 65535) {
+            port = 8080;
         }
         RawSettings.setUserSetting(PORT, String.valueOf(port));
     }
@@ -243,7 +243,7 @@ public class NetworkProxy extends javax.swing.JDialog implements AgnosticDialog 
             s = "8080";
         }
         try {
-            return Math.max(0, Math.min(65_535, Integer.valueOf(s)));
+            return Math.max(0, Math.min(65535, Integer.valueOf(s)));
         } catch (NumberFormatException e) {
         }
         return 80;

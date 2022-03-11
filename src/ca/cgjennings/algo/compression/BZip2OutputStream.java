@@ -203,7 +203,7 @@ class BZip2OutputStream extends OutputStream
      * Possibly because the number of elems to sort is usually small, typically
      * &lt;= 20.
      */
-    private static final int[] INCS = {1, 4, 13, 40, 121, 364, 1_093, 3_280, 9_841, 29_524, 88_573, 265_720, 797_161, 2_391_484};
+    private static final int[] INCS = {1, 4, 13, 40, 121, 364, 1093, 3280, 9841, 29524, 88573, 265720, 797161, 2391484};
 
     /**
      * This method is accessible by subclasses for historical purposes. If you
@@ -1728,7 +1728,7 @@ class BZip2OutputStream extends OutputStream
         final boolean firstAttemptShadow = this.firstAttempt;
 
         // Set up the 2-byte frequency table
-        for (int i = 65_537; --i >= 0;) {
+        for (int i = 65537; --i >= 0;) {
             ftab[i] = 0;
         }
 
@@ -1753,7 +1753,7 @@ class BZip2OutputStream extends OutputStream
             c1 = c2;
         }
 
-        for (int i = 1; i <= 65_536; i++) {
+        for (int i = 1; i <= 65536; i++) {
             ftab[i] += ftab[i - 1];
         }
 
@@ -1862,7 +1862,7 @@ class BZip2OutputStream extends OutputStream
                 final int bbSize = (ftab[(ss + 1) << 8] & CLEARMASK) - bbStart;
                 int shifts = 0;
 
-                while ((bbSize >> shifts) > 65_534) {
+                while ((bbSize >> shifts) > 65534) {
                     shifts++;
                 }
 
@@ -2044,7 +2044,7 @@ class BZip2OutputStream extends OutputStream
         final int[] weight = new int[MAX_ALPHA_SIZE * 2]; // 2064 byte
         final int[] parent = new int[MAX_ALPHA_SIZE * 2]; // 2064 byte
 
-        final int[] ftab = new int[65_537]; // 262148 byte
+        final int[] ftab = new int[65537]; // 262148 byte
         // ------------
         // 333408 byte
 

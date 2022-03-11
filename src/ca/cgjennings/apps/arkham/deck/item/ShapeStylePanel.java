@@ -104,6 +104,6 @@ class ShapeStylePanel extends AbstractStylePanel<ShapeStyle> implements ShapeSty
 
     @Override
     public int getPanelGroup() {
-        return 1_000;
+        return 1000;
     }
 }

@@ -396,7 +396,7 @@ public class PageShape {
         private int numSlices;
         private double sliceRoundingFactor;
 
-        private static final int MAX_SLICES = 11 * 1_200; // based on 11" paper * 1200DPI
+        private static final int MAX_SLICES = 11 * 1200; // based on 11" paper * 1200DPI
 
         public GeometricShape(Shape s, Rectangle2D r) {
             this(s, r, -1);

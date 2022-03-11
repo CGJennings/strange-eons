@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public final class Page implements Serializable, Cloneable {
 
-    static final long serialVersionUID = 7_253_298_809_588_649_754L;
+    static final long serialVersionUID = 7253298809588649754L;
 
     private Page() {
     }

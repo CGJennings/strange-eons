@@ -835,7 +835,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
             unwrittenKeys = Collections.emptySet();
         }
 
-        StringWriter sw = new StringWriter(1_024);
+        StringWriter sw = new StringWriter(1024);
         EscapedLineWriter lw = new EscapedLineWriter(sw);
         lw.setUnicodeEscaped(false);
 

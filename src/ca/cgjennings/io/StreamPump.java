@@ -186,7 +186,7 @@ public class StreamPump {
     private static final LinkedList<SoftReference<ByteBuffer>> byteBuffers = new LinkedList<>();
     private static final LinkedList<SoftReference<char[]>> charBuffers = new LinkedList<>();
 
-    private static int BUFFER_SIZE = 128 * 1_024;
+    private static int BUFFER_SIZE = 128 * 1024;
 
     /**
      * Sets the buffer size, in bytes, used for copy operations. Any copy

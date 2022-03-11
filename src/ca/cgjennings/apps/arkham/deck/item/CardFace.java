@@ -350,5 +350,5 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
             throw new AssertionError("sheet was not set during readObject");
         }
     }
-    private static final long serialVersionUID = 3_636_183_606_243_789_529L;
+    private static final long serialVersionUID = 3636183606243789529L;
 }

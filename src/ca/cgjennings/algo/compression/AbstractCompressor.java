@@ -136,7 +136,7 @@ public abstract class AbstractCompressor implements Compressor {
         if (allowNIO) {
             ca.cgjennings.io.StreamPump.copy(in, out);
         } else {
-            int bufferSize = (1 << Math.max(4, Math.min(8, getCompressionLevel()))) * 1_024;
+            int bufferSize = (1 << Math.max(4, Math.min(8, getCompressionLevel()))) * 1024;
             int read;
             byte[] buff = new byte[bufferSize];
             while ((read = in.read(buff)) != -1) {
@@ -172,7 +172,7 @@ public abstract class AbstractCompressor implements Compressor {
         return src;
     }
 
-    private static final int BUFF_SIZE = 128 * 1_024;
+    private static final int BUFF_SIZE = 128 * 1024;
 
 //	public static void main( String[] args ) {
 //		try {

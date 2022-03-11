@@ -643,7 +643,7 @@ public final class Listing implements Comparable<Listing> {
 
         int wrap = firstWrap;
         StringBuilder b = new StringBuilder();
-        int line = 0, maxLines = 1_024;
+        int line = 0, maxLines = 1024;
 
         while (s.length() > (wrap + tolerance) && line++ < maxLines) {
             // find acceptable wrap position:

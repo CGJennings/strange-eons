@@ -2590,7 +2590,7 @@ public class DIY extends AbstractGameComponent implements Handler {
     }
 
     private static final int CURRENT_VERSION = 9;
-    private static final long serialVersionUID = 6_385_243_435_343_478_156L;
+    private static final long serialVersionUID = 6385243435343478156L;
 
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(CURRENT_VERSION);
