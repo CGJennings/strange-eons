@@ -1759,6 +1759,7 @@ public class SEJavaScriptTokenMaker extends AbstractJFlexCTokenMaker {
   }/**
    * Closes the input stream.
    */
+  @Override
   public final void yyclose() throws java.io.IOException {
     zzAtEOF = true;            /* indicate end of file */
     zzEndRead = zzStartRead;  /* invalidate buffer    */
@@ -1778,6 +1779,7 @@ public class SEJavaScriptTokenMaker extends AbstractJFlexCTokenMaker {
    *
    * @param newState the new lexical state
    */
+  @Override
   public final void yybegin(int newState) {
     zzLexicalState = newState;
   }

@@ -171,7 +171,7 @@ public class Task extends Member {
      * @return an array of registered custom icon resource paths
      */
     public static String[] getCustomIcons() {
-        return customIcons.toArray(new String[0]);
+        return customIcons.toArray(String[]::new);
     }
 
     private static final LinkedHashSet<String> customIcons = new LinkedHashSet<>();

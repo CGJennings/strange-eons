@@ -121,7 +121,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
                 }
 
                 ArrayList alist = getTransferData(data);
-                if (alist.size() > 0 && alist.get(0) != fakeSeparatorButton) {
+                if (!alist.isEmpty() && alist.get(0) != fakeSeparatorButton) {
                     action = TransferHandler.MOVE;
                 } else {
                     action = TransferHandler.COPY;

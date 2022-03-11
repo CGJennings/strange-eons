@@ -133,6 +133,7 @@ public abstract class AbstractPlugin implements Plugin {
      * 
      * @return an icon representing the plugin
      */
+    @Override
     public ThemedIcon getPluginIcon() {
         if (pluginIcon == null) {
             String base = getPluginIconBaseName();

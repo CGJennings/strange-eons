@@ -153,10 +153,12 @@ public class CodeEditorBase extends JPanel {
         textArea.removeFocusListener(listener);
     }
     
+    @Override
     public Font getFont() {
         return ready ? textArea.getFont() : super.getFont();
     }
     
+    @Override
     public void setFont(Font font) {
         if (ready) textArea.setFont(font);
     }

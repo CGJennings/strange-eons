@@ -137,7 +137,7 @@ public class Tables {
         }
     }
 
-    private static final Map<String, TableGenerator> toGen = Collections.synchronizedMap(new HashMap<String, TableGenerator>());
+    private static final Map<String, TableGenerator> toGen = Collections.synchronizedMap(new HashMap<>());
 
     private static void stdcols(InfoTable t) {
         t.setColumns("Property", "Value");

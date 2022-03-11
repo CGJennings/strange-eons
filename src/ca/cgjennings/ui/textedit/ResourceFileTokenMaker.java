@@ -293,6 +293,7 @@ public class ResourceFileTokenMaker extends AbstractJFlexTokenMaker {
 	 * @return The first <code>Token</code> in a linked list representing
 	 *         the syntax highlighted text.
 	 */
+  @Override
 	public Token getTokenList(Segment text, int initialTokenType, int startOffset) {
 
 		resetTokenList();
@@ -405,6 +406,7 @@ public class ResourceFileTokenMaker extends AbstractJFlexTokenMaker {
   }/**
    * Closes the input stream.
    */
+  @Override
   public final void yyclose() throws java.io.IOException {
     zzAtEOF = true;            /* indicate end of file */
     zzEndRead = zzStartRead;  /* invalidate buffer    */
@@ -424,6 +426,7 @@ public class ResourceFileTokenMaker extends AbstractJFlexTokenMaker {
    *
    * @param newState the new lexical state
    */
+  @Override
   public final void yybegin(int newState) {
     zzLexicalState = newState;
   }

@@ -2067,7 +2067,7 @@ public class MarkupRenderer {
             params.add(token.toString());
         }
 
-        return params.toArray(new String[0]);
+        return params.toArray(String[]::new);
     }
 
     /**
@@ -2248,7 +2248,7 @@ public class MarkupRenderer {
         if (line.length() > 0) {
             paras.add(line.toString());
         }
-        return paras.toArray(new String[0]);
+        return paras.toArray(String[]::new);
     }
 
     /**

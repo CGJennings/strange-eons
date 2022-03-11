@@ -1444,6 +1444,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
      *
      * @return the current navigator
      */
+    @Override
     public final Navigator getNavigator() {
         return navigator;
     }
@@ -1504,10 +1505,10 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         public void setList(List<NavigationPoint> newList) {
             List<NavigationPoint> oldList = points;
             points = newList;
-            if (oldList != null && oldList.size() > 0) {
+            if (oldList != null && !oldList.isEmpty()) {
                 fireIntervalRemoved(this, 0, oldList.size() - 1);
             }
-            if (newList != null && newList.size() > 0) {
+            if (newList != null && !newList.isEmpty()) {
                 fireContentsChanged(this, 0, newList.size() - 1);
             }
         }

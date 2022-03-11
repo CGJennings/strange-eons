@@ -253,7 +253,7 @@ public final class ContextBar {
                 }
             }
         }
-        return parsed.toArray(new Button[0]);
+        return parsed.toArray(Button[]::new);
     }
 
     /**

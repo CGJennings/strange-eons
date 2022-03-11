@@ -232,7 +232,7 @@ public abstract class NewTaskType {
      * @return an array of the registered new task types
      */
     public static NewTaskType[] getNewTaskTypes() {
-        NewTaskType[] ntts = types.toArray(new NewTaskType[0]);
+        NewTaskType[] ntts = types.toArray(NewTaskType[]::new);
         Arrays.sort(ntts, TYPE_ORDER);
         return ntts;
     }

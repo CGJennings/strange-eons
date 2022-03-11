@@ -62,7 +62,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
     public VirtualDeckDialog(java.awt.Frame parent, List<Member> cards, CopiesList copies) {
         super(parent, false);
         for (int i = 0; i < playStacks.length; ++i) {
-            playStacks[i] = new DefaultListModel<Card>();
+            playStacks[i] = new DefaultListModel<>();
         }
         play = playStacks[0];
 
@@ -1188,7 +1188,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
                 r.y += sp.y + r.getHeight() / 2;
 
                 List<Card> cardList = sourceList.getSelectedValuesList();
-                Card[] cards = cardList.toArray(new Card[0]);
+                Card[] cards = cardList.toArray(Card[]::new);
                 if (ownerPicker.setOwner(cards, r.x, r.y)) {
                     int newOwner = cards[0].owner;
                     // "Other" uses same list as "Nobody"
@@ -1536,7 +1536,7 @@ class VirtualDeckDialog extends javax.swing.JDialog {
         public CardTransferData(VirtualDeckDialog instance, DefaultListModel<Card> source, List<Card> cards) {
             this.instance = instance;
             this.source = source;
-            this.cards = cards.toArray(new Card[0]);
+            this.cards = cards.toArray(Card[]::new);
         }
     };
 

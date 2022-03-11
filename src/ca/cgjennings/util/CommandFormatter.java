@@ -204,6 +204,6 @@ public class CommandFormatter {
         if (token.length() > 0) {
             tokens.add(token.toString());
         }
-        return tokens.toArray(new String[0]);
+        return tokens.toArray(String[]::new);
     }
 }

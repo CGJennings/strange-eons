@@ -2111,7 +2111,7 @@ final class AppFrame extends StrangeEonsAppWindow {
 
         StrangeEonsEditor[] editors = getEditors();
 
-        while (fileOpenQueue.size() > 0) {
+        while (!fileOpenQueue.isEmpty()) {
             String fileSpec = null;
             try {
                 fileSpec = fileOpenQueue.take();

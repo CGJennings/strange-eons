@@ -33,7 +33,7 @@ final class Globals {
                 names.add(m.getName());
             }
         }
-        NAMES = names.toArray(new String[0]);
+        NAMES = names.toArray(String[]::new);
     }
 
     private static void defineConst(ScriptableObject global, String name, Scriptable value) {

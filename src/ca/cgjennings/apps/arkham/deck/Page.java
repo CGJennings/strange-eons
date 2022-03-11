@@ -126,7 +126,7 @@ public final class Page implements Serializable, Cloneable {
      * page, and then applies the translation to each card.
      */
     public void centerContent() {
-        if (cards.size() > 0) {
+        if (!cards.isEmpty()) {
             // find the bounding box of all cards on the page
             Rectangle2D bounds = cards.get(0).getRectangle();
             for (int i = 1; i < cards.size(); ++i) {
@@ -351,7 +351,7 @@ public final class Page implements Serializable, Cloneable {
     }
 
     public PageItem[] getCards() {
-        return cards.toArray(new PageItem[0]);
+        return cards.toArray(PageItem[]::new);
     }
 
     public int getCardCount() {
@@ -380,7 +380,7 @@ public final class Page implements Serializable, Cloneable {
                 list.add(cards.get(i));
             }
         }
-        return list.toArray(new PageItem[0]);
+        return list.toArray(PageItem[]::new);
     }
 
     /**

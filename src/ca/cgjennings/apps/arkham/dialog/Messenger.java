@@ -192,7 +192,7 @@ public class Messenger {
         for (String s : message.split("\n|(<br>)")) {
             lines.add("<html>" + wr.wrap(s));
         }
-        return lines.toArray(new String[0]);
+        return lines.toArray(String[]::new);
     }
 
     private static void show(final Message m) {

@@ -156,7 +156,7 @@ final class Restarter {
             StrangeEons.log.info(b.toString());
         }
 
-        Runtime.getRuntime().exec(command.toArray(new String[0]));
+        Runtime.getRuntime().exec(command.toArray(String[]::new));
 
         // the actual System.exit() will happen in the caller (AppFrame)
     }

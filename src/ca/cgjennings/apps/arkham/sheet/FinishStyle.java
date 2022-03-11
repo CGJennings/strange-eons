@@ -138,6 +138,7 @@ public enum FinishStyle implements IconProvider {
      *
      * @return a UI icon for the style
      */
+    @Override
     public Icon getIcon() {
         return ResourceKit.getIcon("ui/view/finish-" + toSetting() + ".png");
     }

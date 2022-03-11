@@ -363,7 +363,7 @@ public class PluginWizardDialog extends javax.swing.JDialog {
      * Fills in the list of plug-in types using the registered kits.
      */
     private void populateKitList() {
-        WizardKit[] sorted = kits.toArray(new WizardKit[0]);
+        WizardKit[] sorted = kits.toArray(WizardKit[]::new);
         Arrays.sort(sorted, sorter);
 
         DefaultListModel<KitListItem> m = new DefaultListModel<>();

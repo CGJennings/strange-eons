@@ -135,7 +135,7 @@ public class FileDrop {
             this.listener = new DropListener() {
                 @Override
                 public void filesDropped(DropEvent dropEvent) {
-                    simpleListener.filesDropped(dropEvent.files.toArray(new File[0]));
+                    simpleListener.filesDropped(dropEvent.files.toArray(File[]::new));
                 }
             };
         }

@@ -961,7 +961,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
         ArrayList<InternalImage> images = new ArrayList<>();
         createImageListImpl(images, resourceFolder, "", foldersOnly);
 
-        InternalImage[] list = images.toArray(new InternalImage[0]);
+        InternalImage[] list = images.toArray(InternalImage[]::new);
         java.util.Arrays.sort(list);
         return list;
     }
@@ -1675,7 +1675,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
 
     @Override
     protected void clearImpl() {
-        layers = new DefaultListModel<Layer>();
+        layers = new DefaultListModel<>();
         Layer layer = new Layer();
         layers.addElement(layer);
         layerList.setModel(layers);

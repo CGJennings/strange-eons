@@ -512,6 +512,7 @@ public class MarkupTargetFactory {
             this.editor = editor;
         }
 
+        @Override
         public CodeEditorBase getCodeEditor() {
             return editor;
         }

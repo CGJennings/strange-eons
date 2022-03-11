@@ -1192,7 +1192,7 @@ public final class ProjectView extends javax.swing.JPanel {
             TaskAction ta = null;
             for (int i = Actions.PRIORITY_MAX; i >= 0 && ta == null; --i) {
                 List<TaskAction> tas = Actions.getActionsForPriority(i);
-                if (tas.size() > 0) {
+                if (!tas.isEmpty()) {
                     for (TaskAction candidate : tas) {
                         if (candidate.appliesToSelection(members)) {
                             ta = candidate;
@@ -1219,7 +1219,7 @@ public final class ProjectView extends javax.swing.JPanel {
                         filtered.add(members[i]);
                     }
                 }
-                members = filtered.toArray(new Member[0]);
+                members = filtered.toArray(Member[]::new);
             }
 
             if (ta.appliesToSelection(members)) {
@@ -1470,7 +1470,7 @@ public final class ProjectView extends javax.swing.JPanel {
                     }
                 }
             }
-            tp = list.toArray(new TreePath[0]);
+            tp = list.toArray(TreePath[]::new);
         }
         if (tp == null) {
             tp = new TreePath[0];
@@ -1493,7 +1493,7 @@ public final class ProjectView extends javax.swing.JPanel {
                 op.add(projTree.getPathForRow(r));
             }
         }
-        project.getSettings().set(PROJECT_OPEN_FOLDER_LIST, treePathsToPropertyValue(op.toArray(new TreePath[0])));
+        project.getSettings().set(PROJECT_OPEN_FOLDER_LIST, treePathsToPropertyValue(op.toArray(TreePath[]::new)));
 
         Point topmostPoint = ((JViewport) projTree.getParent()).getViewPosition();
         int row = projTree.getClosestRowForLocation(0, topmostPoint.y);
@@ -1777,7 +1777,7 @@ public final class ProjectView extends javax.swing.JPanel {
             try {
                 @SuppressWarnings("unchecked")
                 List<File> list = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                return list.toArray(new File[0]);
+                return list.toArray(File[]::new);
             } catch (InvalidDnDOperationException e) {
                 // Can't get transfer data during a drag from
                 // Windows into the app---see "Workaround", above.

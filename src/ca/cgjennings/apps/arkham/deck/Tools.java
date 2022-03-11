@@ -54,7 +54,7 @@ public class Tools {
      * @return an array of currently registered tools
      */
     public static synchronized PageItem[] getRegisteredTools() {
-        return tools.toArray(new PageItem[0]);
+        return tools.toArray(PageItem[]::new);
     }
 
     private static final Set<PageItem> tools = new LinkedHashSet<>();

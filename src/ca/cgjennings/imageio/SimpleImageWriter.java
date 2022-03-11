@@ -820,10 +820,10 @@ public class SimpleImageWriter {
      * @return a new array of the supported image formats
      */
     public static WritableImageFormat[] getImageFormats() {
-        return formats.toArray(new WritableImageFormat[0]);
+        return formats.toArray(WritableImageFormat[]::new);
     }
 
-    private static Set<WritableImageFormat> formats = Collections.synchronizedSet(new LinkedHashSet<WritableImageFormat>());
+    private static Set<WritableImageFormat> formats = Collections.synchronizedSet(new LinkedHashSet<>());
 
     static {
         HashSet<String> types = new HashSet<>();

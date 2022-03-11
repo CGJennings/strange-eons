@@ -37,6 +37,7 @@ public class MarkdownTransformer {
                 .percentEncodeUrls(true)
                 .urlSanitizer(new DefaultUrlSanitizer(List.of("http", "https", "mailto", "res", "project", "res")))
                 .nodeRendererFactory(new HtmlNodeRendererFactory() {
+                    @Override
                     public NodeRenderer create(HtmlNodeRendererContext context) {
                         return new CodeBlockRenderer(context);
                     }

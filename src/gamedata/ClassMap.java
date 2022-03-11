@@ -168,7 +168,7 @@ public class ClassMap implements Iterable<Entry> {
      * maps
      */
     public static String[] getClassMapFiles() {
-        return classMapFiles.toArray(new String[0]);
+        return classMapFiles.toArray(String[]::new);
     }
 
     private static final LinkedHashSet<String> classMapFiles = new LinkedHashSet<>();

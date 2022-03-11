@@ -1958,7 +1958,7 @@ public final class Client extends javax.swing.JFrame {
             wrapped.add(li);
         }
 
-        return wrapped.toArray(new String[0]);
+        return wrapped.toArray(String[]::new);
     }
 
     private static final int MAX_POPUP_EXPRESSION_LINES = 20;
@@ -2436,7 +2436,7 @@ public final class Client extends javax.swing.JFrame {
 
             // if raw mode return immediately with the unprocessed results
             if (raw) {
-                return results.toArray(new String[0]);
+                return results.toArray(String[]::new);
             }
 
             if (results.isEmpty() || !results.get(0).equals("SEDP3 OK")) {
@@ -2447,7 +2447,7 @@ public final class Client extends javax.swing.JFrame {
                 return null;
             }
             results.remove(0);
-            String[] lines = results.toArray(new String[0]);
+            String[] lines = results.toArray(String[]::new);
 
             // if we got results from a PROBE command, check the cookie
             if (lines.length == 1 && name.equals(Command.PROBE.name())) {

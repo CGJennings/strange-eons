@@ -344,8 +344,7 @@ public class BundleInstaller {
      * {@link Plugin#ACTIVATED} and {@link Plugin#INJECTED} plug-ins
      */
     public synchronized static InstalledPlugin[] getInstalledPlugins() {
-        InstalledPlugin[] plugins = installedPlugins.toArray(new InstalledPlugin[0]
-        );
+        InstalledPlugin[] plugins = installedPlugins.toArray(InstalledPlugin[]::new);
         Arrays.sort(plugins);
         return plugins;
     }
@@ -374,7 +373,7 @@ public class BundleInstaller {
      * @return an array of discovered libraries, sorted by name
      */
     public synchronized static InstalledLibrary[] getInstalledLibraries() {
-        InstalledLibrary[] libs = installedLibraries.toArray(new InstalledLibrary[0]);
+        InstalledLibrary[] libs = installedLibraries.toArray(InstalledLibrary[]::new);
         Arrays.sort(libs);
         return libs;
     }
@@ -429,7 +428,7 @@ public class BundleInstaller {
         if (installedThemes == null) {
             throw new IllegalStateException("themes have not been installed yet");
         }
-        InstalledTheme[] themes = installedThemes.toArray(new InstalledTheme[0]);
+        InstalledTheme[] themes = installedThemes.toArray(InstalledTheme[]::new);
         Arrays.sort(themes);
         return themes;
     }
@@ -567,7 +566,7 @@ public class BundleInstaller {
      * @return an array of the installed extension plug-ins
      */
     public synchronized static InstalledExtension[] getInstalledExtensions() {
-        InstalledExtension[] exts = installedExtensions.toArray(new InstalledExtension[0]);
+        InstalledExtension[] exts = installedExtensions.toArray(InstalledExtension[]::new);
         Arrays.sort(exts);
         return exts;
     }
@@ -644,7 +643,7 @@ public class BundleInstaller {
             default:
                 throw new AssertionError("unknown bundle type " + file);
         }
-        InstalledBundleObject[] retval = objs.toArray(new InstalledBundleObject[0]);
+        InstalledBundleObject[] retval = objs.toArray(InstalledBundleObject[]::new);
         Arrays.sort(retval);
         return retval;
     }
@@ -1012,7 +1011,7 @@ public class BundleInstaller {
      */
     public static String[] getUncataloguedBundleNames() {
         // (this method provided for debugging purposes)
-        return missingCatalogID.toArray(new String[0]);
+        return missingCatalogID.toArray(String[]::new);
     }
 
     /**
@@ -1120,7 +1119,7 @@ public class BundleInstaller {
     public static File[] getDiscoveredBundleFiles() {
         synchronized (discoveredBundles) {
             Set<File> keys = discoveredBundles.keySet();
-            return keys.toArray(new File[0]);
+            return keys.toArray(File[]::new);
         }
     }
     private static final HashMap<File, PluginBundle> discoveredBundles = new HashMap<>();

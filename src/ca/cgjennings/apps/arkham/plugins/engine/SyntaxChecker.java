@@ -72,7 +72,7 @@ public class SyntaxChecker extends AbstractUtilityParser {
      * @return a (possibly empty) array of errors
      */
     public SyntaxError[] getErrors() {
-        return errors.toArray(new SyntaxError[0]);
+        return errors.toArray(SyntaxError[]::new);
     }
 
     /**

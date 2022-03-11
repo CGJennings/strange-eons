@@ -65,6 +65,7 @@ public class CompletionRenderer extends DefaultListCellRenderer {
         }
     }
     
+    @Override
     public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
         Dimension d2 = rhsRenderer.getPreferredSize();

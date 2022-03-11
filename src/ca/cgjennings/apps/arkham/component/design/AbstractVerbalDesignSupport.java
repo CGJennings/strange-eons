@@ -181,6 +181,7 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
             setContent("");
         }
         
+        @Override
         public void setBackground(Color c) {
             bg = Colour.from(c).derive(1f);
             if (getEditorKit() instanceof HTMLEditorKit) {

@@ -417,6 +417,6 @@ public final class LibImpl {
             }
         }
 
-        return stack.toArray(new ScriptTraceElement[0]);
+        return stack.toArray(ScriptTraceElement[]::new);
     }
 }

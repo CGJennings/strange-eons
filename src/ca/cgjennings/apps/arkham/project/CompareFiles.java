@@ -130,6 +130,6 @@ public class CompareFiles extends TaskAction {
                 }
             }
         }
-        return lines.toArray(new String[0]);
+        return lines.toArray(String[]::new);
     }
 }

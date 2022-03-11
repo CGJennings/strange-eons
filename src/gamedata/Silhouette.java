@@ -243,7 +243,7 @@ public class Silhouette implements IconProvider {
         Silhouette[] registered;
         synchronized (sils) {
             Collection<Silhouette> s = sils.values();
-            registered = s.toArray(new Silhouette[0]);
+            registered = s.toArray(Silhouette[]::new);
             if (sorter == null) {
                 sorter = (Silhouette lhs, Silhouette rhs) -> Language.getInterface().getCollator().compare(lhs.getLabel(), rhs.getLabel());
             }

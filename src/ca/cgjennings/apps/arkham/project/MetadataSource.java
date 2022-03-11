@@ -539,7 +539,7 @@ public class MetadataSource {
     }
 
     private static void initDefaultIcons() {
-        if (DEFAULT_ICONS.size() > 0) {
+        if (!DEFAULT_ICONS.isEmpty()) {
             return;
         }
 

@@ -92,7 +92,7 @@ public class LibraryRegistry {
      */
     public static String[] getLibraries() {
         init();
-        return libs.toArray(new String[0]);
+        return libs.toArray(String[]::new);
     }
 
     /**

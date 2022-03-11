@@ -96,7 +96,7 @@ public class FolderExportContainer implements ExportContainer {
         checkOpen();
         if (display) {
             File f = parent;
-            if (written.size() > 0) {
+            if (!written.isEmpty()) {
                 f = written.getFirst();
             }
             DesktopIntegration.showInShell(f);

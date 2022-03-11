@@ -917,7 +917,7 @@ public class ResourceKit {
     private static final boolean PREMULTIPLY = Settings.getShared().getYesNo("premultiply-image-alpha");
 
     private static final Map<String, SoftReference<BufferedImage>> imageCache = Collections.synchronizedMap(
-            new HashMap<String, SoftReference<BufferedImage>>(299)
+            new HashMap<>(299)
     );
 
     /**
@@ -1516,7 +1516,7 @@ public class ResourceKit {
     public static CacheMetrics[] getRegisteredCacheMetrics() {
         CacheMetrics[] cm;
         synchronized (metricRegistry) {
-            cm = metricRegistry.toArray(new CacheMetrics[0]);
+            cm = metricRegistry.toArray(CacheMetrics[]::new);
         }
         final Collator coll = Language.getInterface().getCollator();
         Arrays.sort(cm, (CacheMetrics o1, CacheMetrics o2) -> coll.compare(o1.toString(), o2.toString()));

@@ -302,7 +302,7 @@ public final class Actions {
         for (int p = PRIORITY_MAX; p >= PRIORITY_MIN; --p) {
             list.addAll(getActionsForPriority(p));
         }
-        return list.toArray(new TaskAction[0]);
+        return list.toArray(TaskAction[]::new);
     }
 
     /**
@@ -317,7 +317,7 @@ public final class Actions {
         JPopupMenu menu = new JPopupMenu();
         for (int p = PRIORITY_MAX; p >= PRIORITY_MIN; --p) {
             List<TaskAction> actions = actionMap.get(p);
-            if (actions != null && actions.size() > 0) {
+            if (actions != null && !actions.isEmpty()) {
                 boolean addSeparator = menu.getComponentCount() > 0;
                 for (TaskAction action : actions) {
                     if (!action.appliesToSelection(targets)) {

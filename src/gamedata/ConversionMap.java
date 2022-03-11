@@ -52,7 +52,7 @@ public class ConversionMap {
     private final Map<String, Map<Group, Set<Conversion>>> cachedGroupConversions = new HashMap<>();
 
     private ConversionMap() throws IOException {
-        this(conversionMapFiles.toArray(new String[0]));
+        this(conversionMapFiles.toArray(String[]::new));
     }
 
     /**

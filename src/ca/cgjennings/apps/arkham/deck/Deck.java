@@ -512,7 +512,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * @return the selected items
      */
     public PageItem[] getSelection() {
-        return selection.toArray(new PageItem[0]);
+        return selection.toArray(PageItem[]::new);
     }
 
     /**
@@ -822,7 +822,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
                 groups.add(i.getGroup());
             }
         }
-        if (groups.size() > 0) {
+        if (!groups.isEmpty()) {
             for (Group g : groups) {
                 g.clear();
             }

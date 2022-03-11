@@ -773,7 +773,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
                 if (indexList.getModel() == emptyModel) {
                     beginOperation();
                     List<String> wordList = wl.getWords();
-                    String[] words = wordList.toArray(new String[0]);
+                    String[] words = wordList.toArray(String[]::new);
                     Arrays.sort(words);
                     DefaultListModel<String> index = new DefaultListModel<>();
 

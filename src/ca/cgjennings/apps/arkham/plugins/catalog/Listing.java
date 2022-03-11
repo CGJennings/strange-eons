@@ -589,7 +589,7 @@ public final class Listing implements Comparable<Listing> {
         while (names.hasMoreElements()) {
             keyList.add(names.nextElement().toString());
         }
-        String[] keys = keyList.toArray(new String[0]);
+        String[] keys = keyList.toArray(String[]::new);
         java.util.Arrays.sort(keys);
 
         // write standard keys

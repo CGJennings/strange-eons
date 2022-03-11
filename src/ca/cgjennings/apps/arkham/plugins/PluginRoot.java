@@ -511,7 +511,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return an array of the stored plug-in identifiers
      */
     public String[] getPluginIdentifiers() {
-        return pluginIDs.toArray(new String[0]);
+        return pluginIDs.toArray(String[]::new);
     }
 
     /**
@@ -701,7 +701,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
      * @return a (possibly empty) array of error messages
      */
     public String[] getErrors() {
-        return errors.toArray(new String[0]);
+        return errors.toArray(String[]::new);
     }
 
     /**
@@ -993,7 +993,7 @@ public class PluginRoot implements Comparable<PluginRoot> {
     }
 
     private void appendLeftovers(Set<String> unwrittenKeys, List<String> keys, EscapedLineWriter lw, boolean appendNewline) {
-        if (keys != null && keys.size() > 0) {
+        if (keys != null && !keys.isEmpty()) {
             for (String key : keys) {
                 appendClientKey(unwrittenKeys, key, lw);
             }

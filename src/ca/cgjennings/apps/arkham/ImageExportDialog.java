@@ -74,7 +74,7 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
         formatCombo.setModel(fm);
 
         // init container list
-        DefaultComboBoxModel<ExportContainer> ecm = new DefaultComboBoxModel<ExportContainer>(StrangeEons.getRegisteredExportContainers());
+        DefaultComboBoxModel<ExportContainer> ecm = new DefaultComboBoxModel<>(StrangeEons.getRegisteredExportContainers());
         destinationCombo.setModel(ecm);
         if (ecm.getSize() < 2) {
             destinationLabel.setEnabled(false);
