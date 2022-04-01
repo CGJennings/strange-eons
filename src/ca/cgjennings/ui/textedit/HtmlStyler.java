@@ -1,5 +1,6 @@
 package ca.cgjennings.ui.textedit;
 
+import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +28,7 @@ public class HtmlStyler implements Iterable<String> {
      * @param type the type of code to highlight
      */
     public HtmlStyler(CodeType type) {
-        this(type, true, false);
+        this(type, true, false, false);
     }
 
     /**
@@ -37,11 +38,17 @@ public class HtmlStyler implements Iterable<String> {
      * @param type the type of code to highlight
      * @param noBackgroundColor if true, the background color is not styled
      * @param noFontStyles if true, font style changes are ignored
+     * @param matchTheme if true, the syntax styling will match the current theme
      */    
-    public HtmlStyler(CodeType type, boolean noBackgroundColor, boolean noFontStyles) {
+    public HtmlStyler(CodeType type, boolean noBackgroundColor, boolean noFontStyles, boolean matchTheme) {
         ta = new SyntaxTextArea();
         // create a simplfied theme
-        try (InputStream in = SyntaxTextArea.class.getResourceAsStream("light.xml")) {
+        String themeName = "light.xml";
+        if (matchTheme && ThemeInstaller.isDark()) {
+            themeName = "dark.xml";
+        }
+
+        try (InputStream in = SyntaxTextArea.class.getResourceAsStream(themeName)) {
             Theme th;
             if (noFontStyles) {
                 th = Theme.load(in, new Font(Font.MONOSPACED, Font.PLAIN, 12));

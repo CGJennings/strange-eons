@@ -272,7 +272,7 @@ function getCodeCompletions(service, fileName, position) {
         javaEntry.isSnippet = !!entry.isSnippet;
         javaEntry.insertText = entry.insertText == null ? null : entry.insertText;
         javaEntry.hasAction = !!entry.hasAction;
-        javaEntry.sourceDisplay = mergeSymbolDisplayParts(entry.sourceDisplay);
+        javaEntry.sourceDisplay = mergeDocParts(entry.sourceDisplay);
 
         let span = defaultReplacementSpan;
         if (entry.replacementSpan) {
@@ -285,7 +285,7 @@ function getCodeCompletions(service, fileName, position) {
     return javaComplInfo;
 }
 
-function mergeSymbolDisplayParts(parts) {
+function mergeDocParts(parts) {
     let s = "";
     if (parts != null) {
         for (let i = 0; i < parts.length; ++i) {
@@ -310,9 +310,9 @@ function getCodeCompletionDetails(service, fileName, position, javaEntry) {
     if (details == null)
         return null;
     let javaDetails = new TS_PACKAGE.CompletionInfo.EntryDetails();
-    javaDetails.display = mergeSymbolDisplayParts(details.displayParts);
-    javaDetails.documentation = mergeSymbolDisplayParts(details.documentation);
-    javaDetails.source = mergeSymbolDisplayParts(details.sourceDisplay);
+    javaDetails.display = mergeDocParts(details.displayParts);
+    javaDetails.documentation = mergeDocParts(details.documentation);
+    javaDetails.source = mergeDocParts(details.sourceDisplay);
 
     if (details.codeActions) {
         let actions = new ArrayList(details.codeActions.length);
@@ -396,4 +396,46 @@ function convertNavigationTree(root) {
         }
     }
     return jsRoot;
+}
+
+/**
+ * Returns an overview ("quick info") for a file position.
+ * Service interface implementation.
+ * @param {ts.LanguageService} service
+ * @param {string} fileName
+ * @param {number} position file offset
+ * @returns {Overview} overview of the node at the position
+ */
+function getOverview(service, fileName, position) {
+    let quick = service.getQuickInfoAtPosition(fileName, position);
+    if (quick == null) return null;
+    
+    let overview = new TS_PACKAGE.Overview();
+    overview.kind = quick.kind;
+    overview.kindModifiers = quick.kindModifiers;
+    overview.display = mergeDocParts(quick.display);
+    overview.documentation = mergeDocParts(quick.documentation);
+    if (quick.tags) {
+        overview.tags = new ArrayList(quick.tags.length);
+        for (let i=0; i<quick.tags.length; ++i) {
+            let tag = quick.tags[i];
+            overview.tags.add(convertDocTag(tag));
+        }
+    }
+    return overview;
+}
+
+function convertDocTag(tag) {
+    let type = tag.name;
+    let parts = ["", ""];
+    if (tag.text) {
+        for (let i=0, p=0; i<tag.text.length; ++i) {
+            let chunk = tag.text[i];
+            if (chunk.kind === "space" || chunk.kind === "text") {
+                p = 1;
+            }
+            parts[p] += chunk.text;
+        }
+    }
+    return new TS_PACKAGE.DocTag(type, parts[0], parts[1]);
 }

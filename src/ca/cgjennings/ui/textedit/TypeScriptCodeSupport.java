@@ -10,20 +10,26 @@ import ca.cgjennings.apps.arkham.plugins.typescript.Diagnostic;
 import ca.cgjennings.apps.arkham.plugins.typescript.EditableSourceUnit;
 import ca.cgjennings.apps.arkham.plugins.typescript.FileTextChanges;
 import ca.cgjennings.apps.arkham.plugins.typescript.NavigationTree;
+import ca.cgjennings.apps.arkham.plugins.typescript.Overview;
 import ca.cgjennings.apps.arkham.plugins.typescript.SourceUnit;
 import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.IconProvider;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.Timer;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
@@ -41,6 +47,8 @@ import org.fife.ui.rsyntaxtextarea.parser.DefaultParserNotice;
 import org.fife.ui.rsyntaxtextarea.parser.ParseResult;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 import org.fife.ui.rtextarea.Gutter;
+import org.fife.ui.rtextarea.RTextArea;
+import org.fife.ui.rtextarea.ToolTipSupplier;
 
 /**
  * Code support for the TypeScript language.
@@ -50,6 +58,22 @@ import org.fife.ui.rtextarea.Gutter;
  */
 public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
+    private String createStyleTag(Font codeFont) {
+        String family = "font-family: \"" + codeFont.getFamily().replace("\"", "\\\"") + "\";";
+        String size = "font-size: " + codeFont.getSize2D() + "pt;";
+        String bold = "font-weight: bold;";
+        String blue = "color: #" + Palette.get.foreground.opaque.blue + ';';
+        String green = "color: #" + Palette.get.foreground.opaque.green + ';';
+        String margin0 = "margin: 0;";
+        
+        String style =  "<html><style>" +
+                "pre, code {" + family + size + '}' +
+                ".head {" + margin0 + bold + blue + '}' +
+                ".param {" + bold + green + '}' +
+                "</style>";
+        return style;
+    }
+    
     @Override
     public void install(CodeEditorBase editor) {
         super.install(editor);
@@ -58,6 +82,11 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         // if the TS engine is not already running, start it up now
         // in a background thread since it is likely to be used soon
         TSLanguageServices.getShared();
+        
+        markdown = new MarkdownTransformer();
+        markdown.setDefaultCodeBlockLanguage("ts");
+        
+        styleTag = createStyleTag(editor.getTextArea().getFont());
         
         ac = new AutoCompletion(new TSCompletionProvider());
         ac.setListCellRenderer(new CompletionRenderer(editor));
@@ -68,6 +97,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         ac.setAutoCompleteSingleChoices(true);
         ac.install(editor.getTextArea());
         
+        editor.getTextArea().setToolTipSupplier(new TSToolTips());
         
         EventQueue.invokeLater(() -> {
             // don't immediately create a root, delay a moment in case a file
@@ -87,6 +117,8 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             ac.uninstall();
             ac = null;
         }
+        
+        editor.getTextArea().setToolTipSupplier(null);
     }
 
     @Override
@@ -98,18 +130,33 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
     public void fileChanged(File file) {
         this.file = file;
         root = CompilationFactory.forFile(file);
-        identifier = root.getSuggestedIdentifier(file);
-        if (root != null && root.get(identifier) == null) {
-            root.add(new EditableSourceUnit(identifier, file));
+        fileName = root.getSuggestedIdentifier(file);
+        if (root != null && root.get(fileName) == null) {
+            root.add(new EditableSourceUnit(fileName, file));
         }
     }
 
     private CodeEditorBase editor;
     private File file;
-    private String identifier;
+    private String fileName;
     private CompilationRoot root;
     private AutoCompletion ac;
 
+    private class TSToolTips implements ToolTipSupplier {
+        @Override
+        public String getToolTipText(RTextArea textArea, MouseEvent mouseEvent) {
+            int offset = textArea.viewToModel2D(mouseEvent.getPoint());
+            String tip = null;
+            if (root != null) {
+                Overview ov = root.getOverview(fileName, offset);
+                if (ov != null) {
+                    tip = ov.toMarkup(markdown, styleTag);
+                }
+            }
+            return tip;
+        }
+    };
+    
     private class TSParser extends AbstractParser {
 
         private final CodeEditorBase editor;
@@ -134,7 +181,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 Gutter gutter = editor.getScrollPane().getGutter();
                 gutter.removeAllTrackingIcons();
 
-                List<Diagnostic> diagnostics = root.getDiagnostics(identifier, true, true);
+                List<Diagnostic> diagnostics = root.getDiagnostics(fileName, true, true);
                 for (Diagnostic d : diagnostics) {
                     if (d.hasLocation()) {
                         DefaultParserNotice notice = new DefaultParserNotice(
@@ -151,7 +198,9 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 result.setError(ble);
             }
             return result;
-        }        
+        }
+        
+        
     }
 
     private class TSCompletionProvider extends CompletionProviderBase {
@@ -167,27 +216,27 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         @Override
         protected List<Completion> getCompletionsImpl(JTextComponent jtc) {
-            if (root == null || identifier == null) {
+            if (root == null || fileName == null) {
                 return Collections.emptyList();
             }
 
             String text = jtc.getText();
-            SourceUnit source = root.get(identifier);
-            if (source != null) {
-                source.update(text);
-            }
+            SourceUnit source = root.get(fileName);
+//            if (source != null) {
+//                source.update(text);
+//            }
             
             final String prefix = getAlreadyEnteredText(jtc);
             final int caret = jtc.getCaretPosition();
             
-            CompletionInfo info = root.getCodeCompletions(identifier, caret);
+            CompletionInfo info = root.getCodeCompletions(fileName, caret);
             if (info == null) {
                 return Collections.emptyList();
             }
             List<Completion> results = new ArrayList<>(info.entries.size());
             for (CompletionInfo.Entry entry : info.entries) {
                 if (entry.getTextToInsert().startsWith(prefix)) {
-                    TSCompletion tc = createTSCompletion(entry, this, identifier, caret, prefix);
+                    TSCompletion tc = createTSCompletion(entry, this, fileName, caret, prefix);
                     if (tc != null) {
                         results.add(tc);
                     }
@@ -332,27 +381,12 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                             }
                         }
                     }
-
-                    if (markdown == null) {
-                        markdown = new MarkdownTransformer();
-                    }
-
-                    return preOpenTag
-                            + details.display.replace("&", "&amp;").replace("<", "&lt;")
-                            + preCloseTag
-                            + markdown.render(details.documentation);
+                    
+                    return details.toMarkup(markdown, styleTag);
                 }
             }
             return null;
         }
-
-        private final String preOpenTag
-                = "<style>pre, code { font-family: \""
-                + editor.getTextArea().getFont().getFamily()
-                + "\" }</style><pre style='margin: 0; font-weight: bold; color:#"
-                + Palette.get.foreground.opaque.blue
-                + "'><hr>";
-        private final String preCloseTag = "</pre>";
 
         @Override
         public String getToolTipText() {
@@ -381,8 +415,6 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
         }
     }
 
-    private MarkdownTransformer markdown;
-
     @Override
     public Navigator createNavigator(NavigationHost host) {
         return new Navigator() {
@@ -395,8 +427,8 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 if (latestRequest == null || root == null) {
                     if (root != null) {
                         final int expectedRequest = ++requestNumber;
-                        root.add(identifier, sourceText);
-                            root.getNavigationTree(identifier, (tree) -> {
+                        root.add(fileName, sourceText);
+                            root.getNavigationTree(fileName, (tree) -> {
                             if (expectedRequest == requestNumber) {
                                 latestRequest = tree;
                                 host.refreshNavigator();
@@ -528,5 +560,44 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                 break;
         }
         return icon;
+    }
+    
+    private String styleTag;
+    private MarkdownTransformer markdown;
+    
+    
+    public static void main(String[] args) {
+        EventQueue.invokeLater(()->{
+            javax.swing.JFrame f = new javax.swing.JFrame();
+            f.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+            javax.swing.JEditorPane ed = new javax.swing.JEditorPane("text/html", "");
+            javax.swing.JTextArea ta = new javax.swing.JTextArea();
+            ta.getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    EventQueue.invokeLater(this::update);
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    EventQueue.invokeLater(this::update);
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    EventQueue.invokeLater(this::update);
+                }
+                
+                public void update() {
+                    ed.setText(ta.getText());
+                }
+            });
+            f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.LINE_AXIS));
+            f.getContentPane().add(ta);
+            f.getContentPane().add(ed);
+            f.setSize(800,800);
+            f.pack();
+            f.setVisible(true);
+        });
     }
 }

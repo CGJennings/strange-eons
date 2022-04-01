@@ -378,6 +378,19 @@ public final class TSLanguageServices {
     }
 
     private static final int GET_NAVIGATION_TREE = 11;
+    
+    /**
+     * Returns a tool tip information about the specified position.
+     * 
+     * @param languageService the language service that manages the file
+     * @param fileName the file name to get diagnostics for
+     * @param position the offset into the source file
+     */
+    public Overview getOverview(Object languageService, String fileName, int position) {
+        return goSync(GET_OVERVIEW, languageService, fileName, position);
+    }
+    
+    private static final int GET_OVERVIEW = 12;
             
             
     /**
@@ -430,6 +443,9 @@ public final class TSLanguageServices {
                     break;
                 case GET_NAVIGATION_TREE:
                     ((Request<NavigationTree>)r).send(services.getNavigationTree(r.args[0], (String) r.args[1]));
+                    break;
+                case GET_OVERVIEW:
+                    ((Request<Overview>) r).send(services.getOverview(r.args[0], (String) r.args[1], (Integer) r.args[2]));
                     break;
                 default:
                     throw new AssertionError("unknown request type");
@@ -598,5 +614,8 @@ public final class TSLanguageServices {
         
         /** Returns an outline of the file. */
         NavigationTree getNavigationTree(Object languageService, String fileName);
+        
+        /** Returns a quick overview of the node at the specified position. */
+        Overview getOverview(Object languageService, String fileName, int position);
     }
 }

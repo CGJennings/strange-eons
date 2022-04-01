@@ -2682,7 +2682,7 @@ public final class Client extends javax.swing.JFrame {
     private class SourceFile extends AbstractTableModel {
         private String file;
         private SourceLine[] lines = EMPTY_TABLE;
-        private final HtmlStyler styler = new HtmlStyler(CodeType.JAVASCRIPT, true, true);
+        private final HtmlStyler styler = new HtmlStyler(CodeType.JAVASCRIPT, true, true, false);
         private ExpressionDetector detector = new ExpressionDetector("");
 
         /**

@@ -63,14 +63,10 @@ public class CompletionInfo {
         }
     }
     
-    public static class EntryDetails {
+    public static class EntryDetails extends DocCommentable {
         public EntryDetails() {
         }
         
-        public String display;
-        public String documentation;
-        public String source;
-
         public List<CodeAction> actions;
 
         @Override

@@ -183,7 +183,10 @@ public class CompilationRoot {
      * @return additional details
      */
     public CompletionInfo.EntryDetails getCodeCompletionDetails(String fileName, int position, CompletionInfo.Entry completion) {
-        return ts.getCodeCompletionDetails(langService(), fileName, position, completion);
+        CompletionInfo.EntryDetails details = ts.getCodeCompletionDetails(langService(), fileName, position, completion);
+        details.kind = completion.kind;
+        details.kindModifiers = completion.kindModifiers;
+        return details;
     }
     
     /**
@@ -206,7 +209,18 @@ public class CompilationRoot {
      */
     public void getNavigationTree(String fileName, Consumer<NavigationTree> callback) {
         ts.getNavigationTree(langService(), fileName, callback);
-    }      
+    }
+    
+    /**
+     * Returns a quick overview at the node at the current position, or null.
+     * 
+     * @param fileName the file name that the completion was generated for
+     * @param position the position that the completion was generated for
+     * @return information about the node at the position, or null
+     */
+    public Overview getOverview(String fileName, int position) {
+        return ts.getOverview(langService(), fileName, position);
+    }
     
     /**
      * Returns the language service instance for this root, creating it
