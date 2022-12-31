@@ -96,7 +96,6 @@ import resources.Settings;
  * @since 3.0
  */
 public final class StrangeEons {
-
     private static final int VER_MAJOR = 3;
     private static final int VER_MINOR = 3;
     /**
@@ -112,6 +111,16 @@ public final class StrangeEons {
      * app.
      */
     static final int INTERNAL_BUILD_NUMBER = 99_999;
+    
+    /**
+     * Minimum JRE version to enforce during startup.
+     */
+    private static final int JAVA_VERSION_MIN = 11;
+    /**
+     * Maximum JRE version to enforce during startup.
+     * May be the same as {@link #JAVA_VERSION_MIN}.
+     */
+    private static final int JAVA_VERSION_MAX = 11;    
 
     static {
         // Autodetect version details from file generated during app packaging
@@ -1865,9 +1874,7 @@ public final class StrangeEons {
         initLanguage();
 
         // check Java version and display localized message if not new enough
-        if (!commandLineArguments.xDisableJreCheck) {
-            initCheckJREVersion();
-        }
+        initCheckJREVersion(!commandLineArguments.xDisableJreCheck);
 
         // Load default global settings:
         // deferred until just after Language is set up since
@@ -2150,34 +2157,44 @@ public final class StrangeEons {
             log.log(Level.WARNING, "the maximum memory setting is less than the recommended value (-Xmx{0}m)", RECOMMENDED_MEMORY_IN_MB);
         }
     }
-
+    
     /**
      * Checks that installed version of Java is compatible. If it isn't,
      * displays a dialog and exits. This is separate from the rest of
      * {@link #initCheckSystemConfig()} so that it can display a localized
      * dialog box.
      */
-    private void initCheckJREVersion() {
+    private void initCheckJREVersion(boolean fatalIfNotSupported) {
         int[] ver = getJavaVersion();
-        final boolean isJava8 = ver[0] == 1 && ver[1] == 8;
-        final boolean isJava9to11 = ver[0] >= 9 && ver[0] <= 11;
-        if (!(isJava8 || isJava9to11)) {
-            try {
-                EventQueue.invokeAndWait(() -> {
-                    // no L&F installed yet
-                    try {
-                        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException t) {
-                        // ignore, use whatever L&F is available
-                    }
-                    JOptionPane.showMessageDialog(getSafeStartupParentWindow(),
-                            string("rk-err-java-version", "8"), "Strange Eons",
-                            JOptionPane.ERROR_MESSAGE
-                    );
-                    System.exit(20);
-                });
-            } catch (InterruptedException | InvocationTargetException e) {
-                log.log(Level.SEVERE, "version check failed", e);
+        final boolean isSupportedVersion = (ver[0] >= JAVA_VERSION_MIN) && (ver[0] <= JAVA_VERSION_MAX);
+        if (!isSupportedVersion) {
+            if (fatalIfNotSupported) {
+                try {
+                    EventQueue.invokeAndWait(() -> {
+                        // no L&F installed yet
+                        try {
+                            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+                        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException t) {
+                            // ignore, use whatever L&F is available
+                        }
+                        final String errorMessage;
+                        if (JAVA_VERSION_MIN == JAVA_VERSION_MAX) {
+                            errorMessage = string("rk-err-java-version", Integer.toString(JAVA_VERSION_MIN));
+                        } else {
+                            errorMessage = string("rk-err-java-version-range", Integer.toString(JAVA_VERSION_MIN), Integer.toString(JAVA_VERSION_MAX));
+                        }
+                        JOptionPane.showMessageDialog(
+                                getSafeStartupParentWindow(),
+                                errorMessage, "Strange Eons",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+                        System.exit(20);
+                    });
+                } catch (InterruptedException | InvocationTargetException e) {
+                    log.log(Level.SEVERE, "JRE version check failed", e);
+                }
+            } else {
+                log.log(Level.WARNING, "running on unsupported JRE version {0}", ver[0]);
             }
         }
     }
@@ -2190,7 +2207,7 @@ public final class StrangeEons {
     private void initAcquireRestartLock(File lockFile) {
         log.info("restarted instance is running, trying to acquire lock");
 
-        // try waiting up to N seconds for the last instance to terminate
+        // try waiting up to N*DELAY ms for the last instance to terminate
         final int N = 30;
 
         boolean gotLock = false;
@@ -2203,6 +2220,7 @@ public final class StrangeEons {
                 break;
             }
             try {
+                // dirty but I'm open to reliable replacements
                 Thread.sleep(DELAY);
             } catch (InterruptedException e) {
             }
