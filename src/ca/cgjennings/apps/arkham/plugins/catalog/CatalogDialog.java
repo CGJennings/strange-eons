@@ -923,10 +923,10 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         creditsLabel = new javax.swing.JLabel();
         coreLabel = new javax.swing.JLabel();
         errorPanel = new javax.swing.JPanel();
-        javax.swing.JLabel jLabel7 = new javax.swing.JLabel();
+        javax.swing.JLabel downloadErrorHead = new javax.swing.JLabel();
         downloadErrorLabel = new javax.swing.JLabel();
         retryBtn1 = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
+        errorIcon = new javax.swing.JLabel();
         lockedPanel = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         retryBtn = new javax.swing.JButton();
@@ -1220,14 +1220,14 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         errorPanel.setLayout(new java.awt.GridBagLayout());
 
-        jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getStyle() | java.awt.Font.BOLD, jLabel7.getFont().getSize()+2));
-        jLabel7.setText(string( "cat-err" )); // NOI18N
+        downloadErrorHead.setFont(downloadErrorHead.getFont().deriveFont(downloadErrorHead.getFont().getStyle() | java.awt.Font.BOLD, downloadErrorHead.getFont().getSize()+2));
+        downloadErrorHead.setText(string( "cat-err" )); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.FIRST_LINE_START;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 4, 16);
-        errorPanel.add(jLabel7, gridBagConstraints);
+        errorPanel.add(downloadErrorHead, gridBagConstraints);
 
         downloadErrorLabel.setFont(downloadErrorLabel.getFont().deriveFont(downloadErrorLabel.getFont().getSize()-1f));
         downloadErrorLabel.setText(" ");
@@ -1252,14 +1252,13 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 16);
         errorPanel.add(retryBtn1, gridBagConstraints);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/error.png"))); // NOI18N
+        errorIcon.setIcon(ResourceKit.getIcon("error").large());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.PAGE_START;
         gridBagConstraints.insets = new java.awt.Insets(0, 16, 16, 12);
-        errorPanel.add(jLabel5, gridBagConstraints);
+        errorPanel.add(errorIcon, gridBagConstraints);
 
         cardPanel.add(errorPanel, "error");
 
@@ -1551,6 +1550,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private javax.swing.JProgressBar dlProgress;
     private javax.swing.JLabel downloadErrorLabel;
     private javax.swing.JPanel downloadPanel;
+    private javax.swing.JLabel errorIcon;
     private javax.swing.JPanel errorPanel;
     private javax.swing.JMenuItem filterDeckItem;
     private javax.swing.JMenuItem filterExpItem;
@@ -1572,7 +1572,6 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPopupMenu.Separator jSeparator1;
