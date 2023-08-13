@@ -118,7 +118,8 @@ public class Settings implements Serializable, Iterable<String> {
     private static final long serialVersionUID = 35461387643185L;
     private HashMap<String, String> p;
     private Settings parent;
-
+    private static ScriptMonkey scriptMonkey = null;
+    
     /**
      * Creates a new, empty {@code Settings} scope whose parent is the shared
      * global scope.
@@ -2099,15 +2100,18 @@ public class Settings implements Serializable, Iterable<String> {
                     case '{':
                         isLiteral = true;
                         valueText = valueText.substring(1, valueText.length() - (end == '}' ? 1 : 0));
-                        ScriptMonkey sm = new ScriptMonkey("style setting literal");
-                        sm.eval(
+                        if (scriptMonkey == null)
+                        {
+                            scriptMonkey = new ScriptMonkey("style setting literal");
+                            scriptMonkey.eval(
                                 "importPackage(gamedata);"
                                 + "importPackage(resources);"
                                 + "importClass(java.awt.font.TextAttribute);"
                                 + "importClass(java.awt.font.TransformAttribute);"
                                 + "importClass(java.awt.geom.AffineTransform);"
-                        );
-                        value = sm.eval(valueText);
+                            );
+                        }
+                        value = scriptMonkey.eval(valueText);
                         break;
                     case '\'':
                     case '"':
