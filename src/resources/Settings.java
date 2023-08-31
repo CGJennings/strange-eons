@@ -118,7 +118,6 @@ public class Settings implements Serializable, Iterable<String> {
     private static final long serialVersionUID = 35461387643185L;
     private HashMap<String, String> p;
     private Settings parent;
-    private static ScriptMonkey scriptMonkey = null;
     
     /**
      * Creates a new, empty {@code Settings} scope whose parent is the shared
@@ -2100,18 +2099,19 @@ public class Settings implements Serializable, Iterable<String> {
                     case '{':
                         isLiteral = true;
                         valueText = valueText.substring(1, valueText.length() - (end == '}' ? 1 : 0));
-                        if (scriptMonkey == null)
-                        {
-                            scriptMonkey = new ScriptMonkey("style setting literal");
-                            scriptMonkey.eval(
+                        ScriptMonkey evaluator = tlStyleEvaluator.get();
+                        if (evaluator == null) {
+                            evaluator = new ScriptMonkey("style setting literal");
+                            evaluator.eval(
                                 "importPackage(gamedata);"
                                 + "importPackage(resources);"
                                 + "importClass(java.awt.font.TextAttribute);"
                                 + "importClass(java.awt.font.TransformAttribute);"
                                 + "importClass(java.awt.geom.AffineTransform);"
                             );
+                            tlStyleEvaluator.set(evaluator);
                         }
-                        value = scriptMonkey.eval(valueText);
+                        value = evaluator.eval(valueText);
                         break;
                     case '\'':
                     case '"':
@@ -2147,6 +2147,8 @@ public class Settings implements Serializable, Iterable<String> {
         }
         return styleDesc.length();
     }
+    private static ThreadLocal<ScriptMonkey> tlStyleEvaluator = new ThreadLocal<>();
+    
 
     @SuppressWarnings("empty-statement")
     private static int findValueEnd(String styleDesc, int start) {
