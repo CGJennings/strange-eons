@@ -16,6 +16,10 @@ Contributions (pull requests) are welcome. By making a pull request or otherwise
 
 For non-trivial changes consider using the free [Apache NetBeans IDE](https://netbeans.apache.org/). Several interface elements (dialog boxes, etc.) use the NetBeans interface design tools, which insert (clearly marked) generated code into the class source files. Generated code **must not** be modified by hand, as any changes are overwritten automatically when the file is next opened in the design tool.
 
+Of course if you would rather use a different IDE, you are free to do so. The project can be built using `ant`.
+Should you want to use VS Code (a popular free modern IDE), you will need to install extensions for Java and Ant support,
+such as the *Extension Pack for Java* and *Ant Target Runner*.
+
 ### There be dragons
 
 I don't want to deter anyone from contributing, but I do want to give fair warning on a few points before you dive in:
