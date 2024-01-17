@@ -2,6 +2,8 @@ package ca.cgjennings.apps.arkham.plugins.typescript;
 
 /**
  * Encapsulates a span of text, with a start offset and length.
+ * 
+ * @author Christopher G. Jennings (cjennings@acm.org)
  */
 public class TextSpan {
     /** The start offset from the beginning of the text. */
