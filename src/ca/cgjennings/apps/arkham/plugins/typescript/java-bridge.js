@@ -24,6 +24,7 @@ const COMPILER_OPTIONS = {
     sourceMap: true,
     target: ts.ScriptTarget.ES5,
     module: ts.ModuleKind.CommonJS,
+    isolatedModules: true,
 };
 
 /* Logging functions used by TS LS host. */
