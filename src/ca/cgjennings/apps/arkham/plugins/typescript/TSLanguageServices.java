@@ -29,7 +29,7 @@ import org.mozilla.javascript.Context;
  * <p>For most purposes, it is easier and more convenient to use a
  * {@link CompilationRoot} to access these services.
  * 
- * @author chris
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class TSLanguageServices {
     private static TSLanguageServices shared = new TSLanguageServices();
@@ -44,6 +44,17 @@ public final class TSLanguageServices {
      */
     public static TSLanguageServices getShared() {
         return shared;
+    }
+
+    private static void loadServiceLib(SEScriptEngine engine, String libName) throws ScriptException {
+        try (Reader r = new InputStreamReader(
+                TSLanguageServices.class.getResourceAsStream(libName),
+                TextEncoding.SOURCE_CODE
+        )) {
+            engine.eval(r);
+        } catch (IOException ex) {
+            throw new AssertionError("unable to load " + libName, ex);
+        }
     }
     
     /**
@@ -65,22 +76,14 @@ public final class TSLanguageServices {
                 cx.setGeneratingDebug(debuggable);
                 cx.setMaximumInterpreterStackDepth(Integer.MAX_VALUE);
                 engine.put("DEBUG", debuggable);
-                // This file is stored in lib/typescript-services.jar to
-                // reduce build times and prevent IDEs from trying to
-                // process it for errors, code completions, etc.
-                // It can be updated via a script in build-tools.
-                String lib = "typescriptServices.js";
-                for (int i=0; i<2; ++i) {
-                    try (Reader r = new InputStreamReader(
-                            TSLanguageServices.class.getResourceAsStream(lib),
-                            TextEncoding.SOURCE_CODE
-                    )) {
-                        engine.eval(r);
-                    } catch (IOException ex) {
-                        throw new AssertionError("unable to load " + lib, ex);
-                    }
-                    lib = "java-bridge.js";
-                }
+
+                // stored in lib/typescript-services.jar; a script in build-tools updates it
+                loadServiceLib(engine, "typescriptServices.js");
+                // fake some CommonJS globals so the transpiled bridge code runs unchanged
+                engine.eval("var exports = {}; var require = function (p) { return ts; }");
+                loadServiceLib(engine, "java-bridge.js");
+                engine.eval("delete exports; delete require");
+
                 services = engine.getInterface(ServiceInterface.class);
             } catch (ScriptException ex) {
                 throw new AssertionError("failed to parse library", ex);
@@ -202,7 +205,7 @@ public final class TSLanguageServices {
      */    
     public Object getServicesLib() {
         return goSync(GET_LIB);
-    }    
+    }
 
     private static final int GET_LIB = 2;
 
@@ -380,7 +383,7 @@ public final class TSLanguageServices {
     private static final int GET_NAVIGATION_TREE = 11;
     
     /**
-     * Returns a tool tip information about the specified position.
+     * Returns a tool tip of information about the specified position.
      * 
      * @param languageService the language service that manages the file
      * @param fileName the file name to get diagnostics for
@@ -480,8 +483,7 @@ public final class TSLanguageServices {
      * @return the return value of the request, or null
      */    
     private <T> T goSync(int type, Object... args) {
-        @SuppressWarnings("unchecked")
-        Request<T> r = new Request(-type, null, args);
+        Request<T> r = new Request<>(-type, null, args);
         // if we are called from the worker thread, handle the request
         // directly without putting it on the queue; this allows
         // the TS library to invoke methods on passed-in Java objects
@@ -508,7 +510,7 @@ public final class TSLanguageServices {
     }
     
     private static Thread workerThread;
-    private static BlockingQueue<Request> queue = new LinkedBlockingQueue<>();
+    private static BlockingQueue<Request<?>> queue = new LinkedBlockingQueue<>();
     private SEScriptEngine engine;
     private ServiceInterface services;
     

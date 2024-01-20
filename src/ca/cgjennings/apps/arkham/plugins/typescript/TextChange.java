@@ -6,7 +6,7 @@ import ca.cgjennings.ui.textedit.CodeEditorBase;
  * Describes a single contiguous text edit as a range and replacement string.
  * This is used to describe the changes that should be made to a source file.
  * 
- * @author Christopher G. Jennings (cjennings@acm.org)
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class TextChange extends TextSpan {
     /** The text to replace the text span with. */

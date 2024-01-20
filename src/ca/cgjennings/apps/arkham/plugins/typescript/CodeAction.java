@@ -9,7 +9,7 @@ import java.util.List;
 public class CodeAction {
     public String description;
     public List<FileTextChanges> changes;
-    private Object data;
+    private Object jsActionInfo;
     
     /**
      * Creates a code action with the specified description and changes, as well
@@ -25,6 +25,6 @@ public class CodeAction {
     public CodeAction(String description, List<FileTextChanges> changes, Object data) {
         this.description = description;
         this.changes = changes;
-        this.data = data;
+        this.jsActionInfo = data;
     }
 }
