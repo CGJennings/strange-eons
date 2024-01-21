@@ -24,7 +24,6 @@ import static resources.Language.string;
  */
 @SuppressWarnings("serial")
 final class BusyDialogImpl extends javax.swing.JDialog {
-
     private final Runnable operation;
     private ActionListener cancelAction;
     private final AtomicInteger maximum = new AtomicInteger(0);
@@ -70,7 +69,6 @@ final class BusyDialogImpl extends javax.swing.JDialog {
         this.owner = owner;
         owner.setImplementation(this);
 
-//		localizeForPlatform();
         setLocationRelativeTo(parent);
         busyLabel.setText(title);
         this.operation = operation;
@@ -444,6 +442,7 @@ final class BusyDialogImpl extends javax.swing.JDialog {
             SwingUtilities.invokeLater(() -> {
                 StrangeEons.setWaitCursor(false);
                 dispose();
+                owner.setImplementation(null);
             });
         }
     }
