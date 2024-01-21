@@ -433,11 +433,11 @@ final class BusyDialogImpl extends javax.swing.JDialog {
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, "BusyDialog operation threw uncaught exception", e);
             }
+        } finally {
             synchronized (stack) {
                 stack.remove(this);
                 threadMap.remove(Thread.currentThread());
-            }
-        } finally {
+            }            
             Context.exit();
             SwingUtilities.invokeLater(() -> {
                 StrangeEons.setWaitCursor(false);
