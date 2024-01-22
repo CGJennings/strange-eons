@@ -34,12 +34,14 @@ public class MakeDeck extends TaskAction {
 
     @Override
     public boolean perform(final Project project, final Task task, final Member member) {
-        final MakeDeckDialog d = new MakeDeckDialog(StrangeEons.getWindow(), true);
+        MakeDeckDialog d = new MakeDeckDialog(StrangeEons.getWindow(), true);
         project.getView().moveToLocusOfAttention(d);
         final DeckPacker packer = d.showDialog();
         if (packer == null) {
             return false;
         }
+        final String deckFileName = d.getSelectedFileName();
+        d = null; // allow GC during build
 
         new BusyDialog(StrangeEons.getWindow(), string("pa-makedeck-busy"), () -> {
             try {
@@ -50,7 +52,7 @@ public class MakeDeck extends TaskAction {
                     copies = new CopiesList();
                     StrangeEons.log.log(Level.WARNING, "unable to read copies list, using card count of 1 for all files", e);
                 }
-                File deckFile = new File(task.getFile(), d.getSelectedFileName());
+                File deckFile = new File(task.getFile(), deckFileName);
                 List<Member> list = ProjectUtilities.listMatchingMembers(task, true, "eon");
                 for (Member m : list) {
                     if (m == null) {
@@ -75,6 +77,8 @@ public class MakeDeck extends TaskAction {
                 }
             } catch (CancellationException cancel) {
                 // user cancelled the operation
+            } finally {
+                packer.clear();
             }
         }, (ActionEvent e) -> {
             packer.cancel();

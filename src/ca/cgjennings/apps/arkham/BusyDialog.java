@@ -26,7 +26,7 @@ import javax.swing.JFrame;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public final class BusyDialog extends javax.swing.JDialog {
+public final class BusyDialog {
 
     private BusyDialogImpl impl;
 

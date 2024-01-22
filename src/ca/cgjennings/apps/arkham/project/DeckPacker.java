@@ -165,6 +165,11 @@ public class DeckPacker {
             addCard(new Card(f, index, klass, front, back));
         }
     }
+    
+    /** Removes all previously added games components. */
+    public void clear() {
+        cardList.clear();
+    }
 
     /**
      * Adds a card to the internal list of cards to include in the layout. Can
@@ -273,17 +278,21 @@ public class DeckPacker {
      * @return a new deck object containing the laid out cards
      */
     public Deck createLayout() {
-        cancelled = false;
-        Deck deck = new Deck();
-        if (addBleedMargin) {
-            final FinishStyle finishStyle = addBleedMargin ? FinishStyle.MARGIN : FinishStyle.SQUARE;
-            final double bleedMargin = addBleedMargin ? 9d : 0d;
-            deck.setFinishStyle(finishStyle);
-            deck.setBleedMarginWidth(bleedMargin);
+        try {
+            cancelled = false;
+            Deck deck = new Deck();
+            if (addBleedMargin) {
+                final FinishStyle finishStyle = addBleedMargin ? FinishStyle.MARGIN : FinishStyle.SQUARE;
+                final double bleedMargin = addBleedMargin ? 9d : 0d;
+                deck.setFinishStyle(finishStyle);
+                deck.setBleedMarginWidth(bleedMargin);
+            }
+            deck.setPaperProperties(paper);
+            layout(deck);
+            return deck;
+        } finally {
+            areas = null;
         }
-        deck.setPaperProperties(paper);
-        layout(deck);
-        return deck;
     }
 
     /**
@@ -294,11 +303,15 @@ public class DeckPacker {
      * @param deckEditor the deck that will contain the laid out cards
      */
     public void createLayout(DeckEditor deckEditor) {
-        cancelled = false;
-        usingEditor = deckEditor;
-        Deck deck = deckEditor.getDeck();
-        deck.setPaperProperties(paper);
-        layout(deck);
+        try {
+            cancelled = false;
+            usingEditor = deckEditor;
+            Deck deck = deckEditor.getDeck();
+            deck.setPaperProperties(paper);
+            layout(deck);
+        } finally {
+            areas = null;
+        }
     }
     private DeckEditor usingEditor;
 
