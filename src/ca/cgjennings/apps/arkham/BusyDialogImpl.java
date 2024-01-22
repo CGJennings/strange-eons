@@ -24,7 +24,7 @@ import static resources.Language.string;
  */
 @SuppressWarnings("serial")
 final class BusyDialogImpl extends javax.swing.JDialog {
-    private final Runnable operation;
+    private Runnable operation;
     private ActionListener cancelAction;
     private final AtomicInteger maximum = new AtomicInteger(0);
     private final AtomicInteger current = new AtomicInteger(0);
@@ -89,12 +89,13 @@ final class BusyDialogImpl extends javax.swing.JDialog {
         synchronized (stack) {
             stack.push(this);
         }
-        Thread t = new Thread() {
+        Thread t = new Thread("Busy task") {
             @Override
             public void run() {
                 BusyDialogImpl.this.run();
             }
         };
+        t.setDaemon(true);
         t.start();
         setVisible(true);
     }
@@ -443,6 +444,8 @@ final class BusyDialogImpl extends javax.swing.JDialog {
                 StrangeEons.setWaitCursor(false);
                 dispose();
                 owner.setImplementation(null);
+                cancelAction = null;
+                operation = null;
             });
         }
     }
