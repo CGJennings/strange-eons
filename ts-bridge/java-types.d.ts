@@ -58,6 +58,7 @@ declare global {
         getSnapshot(fileName: string | JavaString): ts.IScriptSnapshot;
         list(): JavaString[];
         exists(fileName: string | JavaString): boolean;
+        directoryExists(directoryName: string | JavaString): boolean;
     }
 
     class CompiledSource {
@@ -157,5 +158,9 @@ declare global {
 
     class Overview extends DocCommentable {
         constructor();
+    }
+
+    class JavaTypes {
+        static getTypeScriptTypeInfo(type: string): JavaString;
     }
 }

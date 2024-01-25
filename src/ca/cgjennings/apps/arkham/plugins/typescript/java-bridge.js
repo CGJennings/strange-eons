@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getOverview = exports.getNavigationTree = exports.getCodeCompletionDetails = exports.getCodeCompletions = exports.getDiagnostics = exports.compile = exports.createLanguageServiceHost = exports.createLanguageService = exports.createSnapshot = exports.transpile = exports.getServicesLib = exports.getVersion = void 0;
 var ts = require("typescript");
 var arkham = Packages.ca.cgjennings.apps.arkham;
 importClass(arkham.project.ProjectUtilities);
@@ -14,13 +15,8 @@ importClass(arkham.plugins.typescript.CodeAction);
 importClass(arkham.plugins.typescript.FileTextChanges);
 importClass(arkham.plugins.typescript.NavigationTree);
 importClass(arkham.plugins.typescript.Overview);
+importClass(arkham.plugins.typescript.JavaTypes);
 importClass(java.util.ArrayList);
-var TYPE_LIB_FILENAME = "lib.d.ts";
-var TYPE_LIB_SNAPSHOT = (function () {
-    var lib = ProjectUtilities.getResourceText("/ca/cgjennings/apps/arkham/plugins/typescript/" + TYPE_LIB_FILENAME);
-    return ts.ScriptSnapshot.fromString(String(lib));
-})();
-var SHARED_DOCUMENT_REGISTRY = ts.createDocumentRegistry();
 var COMPILER_OPTIONS = {
     checkJs: true,
     sourceMap: true,
@@ -29,6 +25,22 @@ var COMPILER_OPTIONS = {
     isolatedModules: true,
     forceConsistentCasingInFileNames: true
 };
+var SharedDocuments = {
+    registry: ts.createDocumentRegistry(),
+    map: {},
+    add: function (resourcePath) {
+        var fileName = resourcePath.substring(resourcePath.lastIndexOf("/") + 1);
+        var source = ProjectUtilities.getResourceText(resourcePath);
+        if (source == null)
+            throw new Error("missing resource: " + resourcePath);
+        var snapshot = ts.ScriptSnapshot.fromString(String(source));
+        SharedDocuments.map[fileName] = snapshot;
+        SharedDocuments.registry.acquireDocument(fileName, COMPILER_OPTIONS, snapshot, ts.version);
+        return fileName;
+    }
+};
+var StdLibFileName = SharedDocuments.add("/ca/cgjennings/apps/arkham/plugins/typescript/lib.d.ts");
+var CommonLibFileName = SharedDocuments.add("libraries/common.d.ts");
 var log, trace;
 var error = function (s) { return Eons.log.severe("TSLS: " + s); };
 if (DEBUG) {
@@ -41,18 +53,23 @@ else {
 function getVersion() {
     return ts.version;
 }
+exports.getVersion = getVersion;
 function getServicesLib() {
     return ts;
 }
+exports.getServicesLib = getServicesLib;
 function transpile(fileName, text) {
     return ts.transpile(String(text), COMPILER_OPTIONS, String(fileName));
 }
+exports.transpile = transpile;
 function createSnapshot(text) {
     return ts.ScriptSnapshot.fromString(String(text));
 }
+exports.createSnapshot = createSnapshot;
 function createLanguageService(host) {
-    return ts.createLanguageService(host, SHARED_DOCUMENT_REGISTRY);
+    return ts.createLanguageService(host, SharedDocuments.registry);
 }
+exports.createLanguageService = createLanguageService;
 function createLanguageServiceHost(compileRoot) {
     return {
         log: log,
@@ -65,40 +82,48 @@ function createLanguageServiceHost(compileRoot) {
             return "";
         },
         getDefaultLibFileName: function () {
-            return "lib.d.ts";
+            return StdLibFileName;
         },
         getScriptVersion: function (fileName) {
-            if (fileName == TYPE_LIB_FILENAME) {
-                return "";
+            trace("getScriptVersion " + fileName);
+            if (SharedDocuments.map[fileName]) {
+                return "1";
             }
             return String(compileRoot.getVersion(fileName));
         },
         getScriptSnapshot: function (fileName) {
-            if (fileName == TYPE_LIB_FILENAME) {
-                return TYPE_LIB_SNAPSHOT;
-            }
             trace("getScriptSnapshot " + fileName);
-            return compileRoot.getSnapshot(fileName);
+            var snapshot = SharedDocuments.map[fileName];
+            if (snapshot == null) {
+                snapshot = compileRoot.getSnapshot(fileName);
+            }
+            return snapshot;
         },
         getScriptFileNames: function () {
             trace("getScriptFileNames");
             var files = compileRoot.list();
-            var out = new Array(files.length + 1);
+            var out = new Array(files.length + 2);
             for (var i = 0; i < files.length; ++i) {
                 out[i] = String(files[i]);
             }
-            out[out.length - 1] = TYPE_LIB_FILENAME;
+            out[out.length - 2] = StdLibFileName;
+            out[out.length - 1] = CommonLibFileName;
             return out;
         },
         fileExists: function (fileName) {
-            trace("fileExists" + fileName);
+            trace("fileExists " + fileName);
             return compileRoot.exists(fileName);
+        },
+        directoryExists: function (directoryName) {
+            trace("directoryExists " + directoryName);
+            return compileRoot.directoryExists(directoryName);
         },
         getNewLine: function () {
             return "\n";
         },
     };
 }
+exports.createLanguageServiceHost = createLanguageServiceHost;
 function compile(service, fileName) {
     fileName = String(fileName);
     var emit = service.getEmitOutput(fileName);
@@ -118,6 +143,7 @@ function compile(service, fileName) {
     trace(result);
     return result;
 }
+exports.compile = compile;
 function getDiagnostics(service, fileName, syntactic, semantic) {
     var list = null;
     fileName = String(fileName);
@@ -129,8 +155,9 @@ function getDiagnostics(service, fileName, syntactic, semantic) {
     }
     return list;
 }
+exports.getDiagnostics = getDiagnostics;
 function appendDiagnostics(service, fileName, list, diagnostics) {
-    if (diagnostics) {
+    if ((diagnostics === null || diagnostics === void 0 ? void 0 : diagnostics.length) > 0) {
         if (list == null) {
             list = new ArrayList(Math.max(32, diagnostics.length));
         }
@@ -188,6 +215,7 @@ function getCodeCompletions(service, fileName, position) {
     javaComplInfo.entries = entries;
     return javaComplInfo;
 }
+exports.getCodeCompletions = getCodeCompletions;
 function mergeDocParts(parts) {
     var s = "";
     if (parts != null) {
@@ -216,6 +244,7 @@ function getCodeCompletionDetails(service, fileName, position, javaEntry) {
     log(javaDetails);
     return javaDetails;
 }
+exports.getCodeCompletionDetails = getCodeCompletionDetails;
 function convertCodeAction(service, codeAction) {
     var changes = new ArrayList(codeAction.changes.length);
     for (var i = 0; i < codeAction.changes.length; ++i) {
@@ -245,6 +274,7 @@ function convertTextChanges(changes) {
 function getNavigationTree(service, fileName) {
     return convertNavigationTree(service.getNavigationTree(String(fileName)));
 }
+exports.getNavigationTree = getNavigationTree;
 function convertNavigationTree(root) {
     var jsRoot = new NavigationTree(root.text, root.kind, root.kindModifiers, convertSpan(root.nameSpan || root.spans[0]));
     if (root.childItems) {
@@ -273,6 +303,7 @@ function getOverview(service, fileName, position) {
     }
     return overview;
 }
+exports.getOverview = getOverview;
 function convertDocTag(tag) {
     var type = tag.name;
     var parts = ["", ""];

@@ -17,17 +17,8 @@ importClass(arkham.plugins.typescript.CodeAction);
 importClass(arkham.plugins.typescript.FileTextChanges);
 importClass(arkham.plugins.typescript.NavigationTree);
 importClass(arkham.plugins.typescript.Overview);
+importClass(arkham.plugins.typescript.JavaTypes);
 importClass(java.util.ArrayList);
-
-/** Name of the library of standard JS type defs. */
-const TYPE_LIB_FILENAME = "lib.d.ts";
-/** Script snapshot of the library of standard JS type defs. */
-const TYPE_LIB_SNAPSHOT = (function () {
-    let lib = ProjectUtilities.getResourceText("/ca/cgjennings/apps/arkham/plugins/typescript/" + TYPE_LIB_FILENAME);
-    return ts.ScriptSnapshot.fromString(String(lib));
-})();
-
-const SHARED_DOCUMENT_REGISTRY = ts.createDocumentRegistry();
 
 const COMPILER_OPTIONS = {
     // allowJs: true,
@@ -38,6 +29,27 @@ const COMPILER_OPTIONS = {
     isolatedModules: true,
     forceConsistentCasingInFileNames: true
 };
+
+const SharedDocuments = {
+    registry: ts.createDocumentRegistry(),
+    map: {} as { [key: string]: ts.IScriptSnapshot },
+    add(resourcePath: string) {
+        const fileName = resourcePath.substring(resourcePath.lastIndexOf("/") + 1);
+        const source = ProjectUtilities.getResourceText(resourcePath);
+        if (source == null) throw new Error("missing resource: " + resourcePath);
+        const snapshot = ts.ScriptSnapshot.fromString(String(source));
+        SharedDocuments.map[fileName] = snapshot;
+        SharedDocuments.registry.acquireDocument(
+            fileName,
+            COMPILER_OPTIONS,
+            snapshot,
+            ts.version
+        );
+        return fileName;
+    }
+};
+const StdLibFileName = SharedDocuments.add("/ca/cgjennings/apps/arkham/plugins/typescript/lib.d.ts");
+const CommonLibFileName = SharedDocuments.add("libraries/common.d.ts");
 
 /** Logging functions for TS langauge service to use. */
 var log, trace;
@@ -50,34 +62,33 @@ if (DEBUG) {
     log = trace = (s) => undefined;
 }
 
-
-/** **SERVICE** Returns the version of the TypeScript library. */
-function getVersion() {
+/** Returns the version of the TypeScript library. */
+export function getVersion() {
     return ts.version;
 }
 
-/** **SERVICE** Returns the raw TS lib object for development/debugging. */
-function getServicesLib() {
+/** Returns the raw TS lib object for development/debugging. */
+export function getServicesLib() {
     return ts;
 }
 
-/** **SERVICE** Returns the transpilation of a single source file with no error checking. */
-function transpile(fileName: JavaString, text: JavaString) {
+/** Returns the transpilation of a single source file with no error checking. */
+export function transpile(fileName: JavaString, text: JavaString) {
     return ts.transpile(String(text), COMPILER_OPTIONS, String(fileName));
 }
 
-/** **SERVICE** Creates a script snapshot from the text of a script. */
-function createSnapshot(text: JavaString) {
+/** Creates a script snapshot from the text of a script. */
+export function createSnapshot(text: JavaString) {
     return ts.ScriptSnapshot.fromString(String(text));
 }
 
-/** **SERVICE** Creates a language service from the specified language service host. */
-function createLanguageService(host: ts.LanguageServiceHost) {
-    return ts.createLanguageService(host, SHARED_DOCUMENT_REGISTRY);
+/** Creates a language service from the specified language service host. */
+export function createLanguageService(host: ts.LanguageServiceHost) {
+    return ts.createLanguageService(host, SharedDocuments.registry);
 }
 
-/** **SERVICE** Creates a language service host that delegates to a Java `CompilationRoot`. */
-function createLanguageServiceHost(compileRoot: CompilationRoot): Partial<ts.LanguageServiceHost> {
+/** Creates a language service host that delegates to a Java `CompilationRoot`. */
+export function createLanguageServiceHost(compileRoot: CompilationRoot): Partial<ts.LanguageServiceHost> {
     return {
         log: log,
         trace: trace,
@@ -90,44 +101,83 @@ function createLanguageServiceHost(compileRoot: CompilationRoot): Partial<ts.Lan
             return "";
         },
         getDefaultLibFileName() {
-            return "lib.d.ts";
+            return StdLibFileName;
         },
         getScriptVersion(fileName) {
-            if (fileName == TYPE_LIB_FILENAME) {
-                return "";
+            trace("getScriptVersion " + fileName);
+            if (SharedDocuments.map[fileName]) {
+                return "1";
             }
             return String(compileRoot.getVersion(fileName));
         },
         getScriptSnapshot(fileName) {
-            if (fileName == TYPE_LIB_FILENAME) {
-                return TYPE_LIB_SNAPSHOT;
-            }
-
             trace("getScriptSnapshot " + fileName);
-            return compileRoot.getSnapshot(fileName);
+
+            let snapshot = SharedDocuments.map[fileName];
+            // if (!fileName.includes("/") && fileName.endsWith(".d.ts")) {
+            //     const baseName = fileName.substring(0, fileName.length - 5);
+            //     if (baseName.includes(".")) {
+            //         let javaClass = JavaTypes.getTypeScriptTypeInfo(baseName);
+            //         if (javaClass != null) {
+            //             snapshot = ts.ScriptSnapshot.fromString(String(javaClass));
+            //         }
+            //     } else {                
+            //         snapshot = SharedDocuments.map[fileName];
+            //         if (snapshot == null) {
+            //             let lib = ProjectUtilities.getResourceText("libraries/" + fileName);
+            //             if (lib != null) {
+            //                 snapshot = ts.ScriptSnapshot.fromString(String(lib));
+            //             }
+            //         }
+            //     }
+            // }
+            if (snapshot == null) {
+                snapshot = compileRoot.getSnapshot(fileName);
+            }
+            return snapshot;
         },
         getScriptFileNames() {
             trace("getScriptFileNames");
             let files = compileRoot.list();
-            let out = new Array(files.length + 1);
+            let out = new Array(files.length + 2);
             for (let i = 0; i < files.length; ++i) {
                 out[i] = String(files[i]);
             }
-            out[out.length - 1] = TYPE_LIB_FILENAME;
+            out[out.length - 2] = StdLibFileName;
+            out[out.length - 1] = CommonLibFileName;
             return out;
         },
         fileExists(fileName) {
-            trace("fileExists" + fileName);
+            trace("fileExists " + fileName);
             return compileRoot.exists(fileName);
+        },
+        directoryExists(directoryName) {
+            trace("directoryExists " + directoryName);
+            return compileRoot.directoryExists(directoryName);
         },
         getNewLine() {
             return "\n";
         },
+        // resolveModuleNames(moduleNames: string[], containingFile: string) {
+        //     if (DEBUG) trace("resolveModuleNames " + moduleNames.join(", ") + " from " + containingFile);
+        //     return moduleNames.map(name => {
+        //         // if no path or ext, should be an import ("java.io.File") or lib ("diy")
+        //         if (!name.includes("/") && !name.endsWith(".ts")) {
+        //             return {
+        //                 resolvedFileName: name + ts.Extension.Dts,
+        //                 isExternalLibraryImport: false,
+        //                 extension: ts.Extension.Dts,
+        //             };
+        //         }
+        //         return ts.resolveModuleName(name, containingFile, COMPILER_OPTIONS, ts.sys)
+        //             .resolvedModule;
+        //     });
+        // }
     };
 }
 
-/** **SERVICE** Compiles a source file into a Java CompiledSource. */
-function compile(service: ts.LanguageService, fileName: string | JavaString) {
+/** Compiles a source file into a Java CompiledSource. */
+export function compile(service: ts.LanguageService, fileName: string | JavaString) {
     fileName = String(fileName);
     let emit = service.getEmitOutput(fileName);
     let result = new CompiledSource();
@@ -148,8 +198,8 @@ function compile(service: ts.LanguageService, fileName: string | JavaString) {
     return result;
 }
 
-/** **SERVICE** Returns a list of diagnostic messages for a file. */
-function getDiagnostics(service: ts.LanguageService, fileName: string | JavaString, syntactic: boolean, semantic: boolean) {
+/** Returns a list of diagnostic messages for a file. */
+export function getDiagnostics(service: ts.LanguageService, fileName: string | JavaString, syntactic: boolean, semantic: boolean) {
     let list = null;
     fileName = String(fileName);
     if (syntactic) {
@@ -163,7 +213,7 @@ function getDiagnostics(service: ts.LanguageService, fileName: string | JavaStri
 
 /** Convert and accumulate TS diagnostics into an ArrayList. */
 function appendDiagnostics(service: ts.LanguageService, fileName: string | JavaString, list: ArrayList<Diagnostic>, diagnostics: ts.Diagnostic[]) {
-    if (diagnostics) {
+    if (diagnostics?.length > 0) {
         if (list == null) {
             list = new ArrayList<Diagnostic>(Math.max(32, diagnostics.length));
         }
@@ -190,8 +240,8 @@ function appendDiagnostics(service: ts.LanguageService, fileName: string | JavaS
     return list;
 }
 
-/** **SERVICE** Returns a list of code completions or null. */
-function getCodeCompletions(service: ts.LanguageService, fileName: string | JavaString, position: number) {
+/** Returns a list of code completions or null. */
+export function getCodeCompletions(service: ts.LanguageService, fileName: string | JavaString, position: number) {
     let complInfo: ts.CompletionInfo = service.getCompletionsAtPosition(String(fileName), position, undefined/* options*/);
     if (complInfo == null) {
         return null;
@@ -244,8 +294,8 @@ function mergeDocParts(parts) {
     return s;
 }
 
-/** **SERVICE** Returns additional information about a code completion. */
-function getCodeCompletionDetails(service: ts.LanguageService, fileName: string | JavaString, position: number, javaEntry: CompletionInfo.Entry) {
+/** Returns additional information about a code completion. */
+export function getCodeCompletionDetails(service: ts.LanguageService, fileName: string | JavaString, position: number, javaEntry: CompletionInfo.Entry) {
     let entry = javaEntry.js;
     let details = service.getCompletionEntryDetails(String(fileName), position, entry.name, undefined, entry.source, undefined, entry.data);
     if (details == null)
@@ -315,8 +365,8 @@ function convertTextChanges(changes) {
 //     jai.service.applyAction(jai.action);
 // }
 
-/** **SERVICE** Returns an outline of the file. */
-function getNavigationTree(service: ts.LanguageService, fileName: string | JavaString) {
+/** Returns an outline of the file. */
+export function getNavigationTree(service: ts.LanguageService, fileName: string | JavaString) {
     return convertNavigationTree(service.getNavigationTree(String(fileName)));
 }
 
@@ -333,8 +383,8 @@ function convertNavigationTree(root: ts.NavigationTree) {
     return jsRoot;
 }
 
-/** **SERVICE** Returns an overview ("quick info") for a file position. */
-function getOverview(service: ts.LanguageService, fileName: string | JavaString, position: number) {
+/** Returns an overview ("quick info") for a file position. */
+export function getOverview(service: ts.LanguageService, fileName: string | JavaString, position: number) {
     let quick = service.getQuickInfoAtPosition(String(fileName), position);
     if (quick == null) return null;
 
