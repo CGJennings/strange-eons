@@ -301,14 +301,15 @@ public final class LibImpl {
     /**
      * Implements CommonJS require() support.
      *
-     * @param source the sourcefile
+     * @param requireSourcePath the path to the script that is calling require,
+     *     to resolve against a relative module path
      * @param modulePath the relative module path to load
      * @param module the module object to pass to the module
      * @param exports the module.exports object to pass to the module
      * @returns an object containing the module exports
      */
-    public static Object require(String source, String modulePath, Scriptable module, Scriptable exports, Scriptable cache) throws IOException {
-        ResPath parentPath = new ResPath(source).getParent();
+    public static Object require(String requireSourcePath, String modulePath, Scriptable module, Scriptable exports, Scriptable cache) throws IOException {
+        ResPath parentPath = new ResPath(requireSourcePath).getParent();
         ResPath path = parentPath.resolve(modulePath);
         modulePath = path.toString();
 
@@ -316,28 +317,84 @@ public final class LibImpl {
             return cache.get(modulePath, cache);
         }
 
-        String src = ProjectUtilities.getResourceText(modulePath);
-        if (src == null) {
+        final ModuleText source = findModuleText(modulePath);
+        if (source == null) {
             throw new IOException("file not found: " + modulePath);
         }
 
         Object exported;
         ScriptMonkey m = new ScriptMonkey(modulePath);
         if (modulePath.endsWith(".json")) {
-            m.bind("jsonData", src);
+            m.bind("jsonData", source.text);
             exported = m.eval("JSON.parse(jsonData)");
         } else {
             m.bind("__filename", path.getName());
-            m.bind("__dirname", parentPath.toString());
+            m.bind("__dirname", path.getParent().toString());
             m.bind("module", module);
             m.bind("exports", exports);
             m.bind("modCache", cache);
             m.eval("require.cache=modCache;delete modCache;");
-            m.eval(src);
+            m.eval(source.text);
             exported = module.get("exports", module);
         }
+
+        // add to module cache under both the original and modified paths
         cache.put(modulePath, cache, exported);
+        if (!source.path.equals(modulePath)) {
+            cache.put(source.path, cache, exported);
+        }
+
         return exported;
+    }
+    
+    private static final class ModuleText {
+        public ModuleText(String path, String text) {
+            this.path = path;
+            this.text = text;
+        }       
+        String path;
+        String text;
+    }
+    
+    /**
+     * Given the path of a {@code require}d file, possibly without an extension,
+     * locate and return the actual source text and location.
+     * 
+     * @param modulePath an absolute path to a module name
+     * @return an object describing the true location and full text, or null if not found
+     * @throws IOException if the module file exists but cannot be read
+     */
+    private static ModuleText findModuleText(String modulePath) throws IOException {
+        final int dot = modulePath.indexOf('.');
+        final String suffix = dot < 0 ? "" : modulePath.substring(dot);
+        
+        String path = modulePath, text = null;
+        
+        // can't require .ts directly, look for matching transpiled .ts.js
+        if (suffix.equals(".ts")) {
+            path += ".js";
+        }
+        
+        // no suffix specifed, look for .ts.js or .js (in that order)
+        if (suffix.isEmpty()) {
+            text = ProjectUtilities.getResourceText(modulePath + ".ts.js");
+            if (text != null) {
+                path += ".ts.js";
+            } else {
+                text = ProjectUtilities.getResourceText(modulePath + ".js");
+                if (text != null) {
+                    path += ".js";
+                }
+            }
+        }
+        
+        // if there was an extension, or no generated extension matched,
+        // try loading the path exactly as specified
+        if (text == null) {
+            text = ProjectUtilities.getResourceText(modulePath);
+        }
+        
+        return text == null ? null : new ModuleText(path, text);
     }
 
     /**
@@ -409,9 +466,9 @@ public final class LibImpl {
                         if (line < 0) {
                             line = 0;
                         }
-                        stack.add(new ScriptTraceElement(file, line));
                     } catch (NumberFormatException e) {
                     }
+                    stack.add(new ScriptTraceElement(file, line));
                 }
                 open = close = colon = -1;
             }
