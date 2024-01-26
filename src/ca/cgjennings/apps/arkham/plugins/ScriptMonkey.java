@@ -12,6 +12,7 @@ import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.RhinoException;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -79,8 +80,8 @@ public final class ScriptMonkey {
      */
     public ScriptMonkey(String scriptFileName) {
         engine = createScriptEngine();
-        engine.put(ScriptEngine.FILENAME, scriptFileName);
         engine.put(VAR_FILE, scriptFileName);
+        setInternalFileName(scriptFileName);
 
         ScriptContext context = engine.getContext();
         context.setWriter(console.getWriter());
@@ -106,6 +107,17 @@ public final class ScriptMonkey {
      */
     public void setInternalFileName(String name) {
         engine.put(ScriptEngine.FILENAME, name);
+        
+        // for CommonJS compatibility, define __dirname and __filename;
+        // we don't know if this is a system file path or URL-style path,
+        // so to determine the directory we first assume '/' and if that
+        // doesn't work, try the file system separator instead
+        int parentSlash = name.lastIndexOf('/');
+        if (parentSlash < 0 && File.separatorChar != '/') {
+            parentSlash = name.lastIndexOf(File.separatorChar);
+        }
+        engine.put("__dirname", parentSlash > 0 ? name.substring(0, parentSlash) : "");
+        engine.put("__filename", name);
     }
 
     private static void updateScriptEngineOpimizationSettings() {
