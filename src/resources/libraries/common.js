@@ -405,13 +405,13 @@ Function.abstractMethod = function () {
 function require(modulePath) {
     if (!modulePath.includes("/")) {
         useLibrary(modulePath);
-        return globalThis;
+        return global;
     }
     if (require.cache == null) {
         require.cache = {};
     }
     let module = {exports: {}};
-    return arkham.plugins.LibImpl.require(globalThis["javax.script.filename"], modulePath, module, module.exports, require.cache);
+    return arkham.plugins.LibImpl.require(global["javax.script.filename"], modulePath, module, module.exports, require.cache);
 }
 require.cache = null;
 
