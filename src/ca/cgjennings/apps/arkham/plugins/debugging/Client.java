@@ -1907,7 +1907,7 @@ public final class Client extends javax.swing.JFrame {
                 .append(id).append("</b>:");
 
         if (interrupted) {
-            String[] result = performQuietly(Command.EVAL, String.valueOf(stackIndex(-1)), "''+" + id + ';');
+            String[] result = performQuietly(Command.EVAL, String.valueOf(stackIndex(-1)), id);
             if (result == null) {
                 b.append("<font color='red'>&nbsp;&nbsp;<tt>").append(escapeHTML(string("watch-cant-eval")));
             } else if (result.length == 1 && result[0].startsWith("ReferenceError: ")) {
@@ -3106,7 +3106,7 @@ public final class Client extends javax.swing.JFrame {
             } else {
                 frame = stackIndex(frame);
 
-                String[] reply = performQuietly(Command.EVAL, String.valueOf(frame), expr.get(row));
+                String[] reply = performQuietly(Command.EVAL_DETAILED, String.valueOf(frame), expr.get(row));
                 if (reply == null) {
                     reply = DUMMY_EVALUATION;
                 }
