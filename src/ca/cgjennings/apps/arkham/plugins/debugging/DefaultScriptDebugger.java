@@ -520,7 +520,7 @@ public final class DefaultScriptDebugger {
                 dc.stepOut();
                 return "";
 
-            case FILELIST:
+            case FILELIST: {
                 int listed = 0;
                 String[] names = dc.getTopLevelScriptURLs();
                 reply = new StringBuilder(names.length * 20);
@@ -534,15 +534,17 @@ public final class DefaultScriptDebugger {
                     reply.append(names[i]);
                 }
                 return reply.toString();
+            }
 
-            case SOURCE:
+            case SOURCE: {
                 info = getSourceInfo(errorWriter, args[0]);
                 if (info == null) {
                     return null;
                 }
                 return info.source();
+            }
 
-            case BREAKPOINTS:
+            case BREAKPOINTS: {
                 info = getSourceInfo(errorWriter, args[0]);
                 if (info == null) {
                     return null;
@@ -555,8 +557,8 @@ public final class DefaultScriptDebugger {
                     }
                 }
 
+                int listed = 0;
                 reply = new StringBuilder(lines * 2);
-                listed = 0;
                 for (int i = 0; i < lines; ++i) {
                     if (info.breakableLine(i + 1)) {
                         if (listed++ > 0) {
@@ -571,8 +573,9 @@ public final class DefaultScriptDebugger {
                     }
                 }
                 return reply.toString();
+            }
 
-            case TOGGLEBREAK:
+            case TOGGLEBREAK: {
                 info = getSourceInfo(errorWriter, args[0]);
                 if (info == null) {
                     return null;
@@ -591,14 +594,16 @@ public final class DefaultScriptDebugger {
                 boolean val = info.breakpoint(lineNum);
                 info.breakpoint(lineNum, !val);
                 return "";
+            }
 
-            case CLEARBREAKPOINTS:
+            case CLEARBREAKPOINTS: {
                 info = getSourceInfo(errorWriter, args[0]);
                 if (info == null) {
                     return null;
                 }
                 info.removeAllBreakpoints();
                 return "";
+            }
 
             case BREAKSTATUS:
                 return (dc.getBreakOnEnter() ? "1" : "0")
@@ -622,7 +627,7 @@ public final class DefaultScriptDebugger {
                 dc.setBreakOnStatement(parseBool(args[0]));
                 return "";
 
-            case CALLSTACK:
+            case CALLSTACK: {
                 StackFrame[] stack = dc.getStack();
                 reply = new StringBuilder(stack.length * 26);
                 for (int i = 0; i < stack.length; ++i) {
@@ -634,22 +639,14 @@ public final class DefaultScriptDebugger {
                             .append(stack[i].getLineNumber());
                 }
                 return reply.toString();
+            }
 
             case EVAL:
-                int frame = Integer.parseInt(args[0]);
-                String eval;
-                if (frame < 1) {
-                    eval = dc.eval(args[1], dc.getStackFrame());
-                } else {
-                    stack = dc.getStack();
-                    if (frame >= stack.length) {
-                        frame = stack.length - 1;
-                    }
-                    eval = dc.eval(args[1], stack[frame]);
-                }
-                return eval;
+                return evalImpl(args[0], args[1], false);
+            case EVAL_DETAILED:
+                return evalImpl(args[0], args[1], true);
 
-            case SCOPE:
+            case SCOPE: {
                 StackFrame sf = parseStackFrame(args[0]);
                 if (sf != null) {
                     reply = new StringBuilder(128);
@@ -682,17 +679,19 @@ public final class DefaultScriptDebugger {
                     return reply.toString();
                 }
                 return null;
+            }
 
-            case SCOPEEVAL:
-                sf = parseStackFrame(args[0]);
+            case SCOPEEVAL: {
+                StackFrame sf = parseStackFrame(args[0]);
                 if (sf != null) {
                     Object scopeObj = getScopeObject(sf, args[1]);
                     return objectToString(scopeObj);
                 }
                 return null;
+            }
 
-            case INFOTABLELIST:
-                names = Tables.getTableNames();
+            case INFOTABLELIST: {
+                String[] names = Tables.getTableNames();
                 reply = new StringBuilder(names.length * 20);
                 for (int i = 0; i < names.length; ++i) {
                     if (i > 0) {
@@ -701,8 +700,9 @@ public final class DefaultScriptDebugger {
                     reply.append(names[i]);
                 }
                 return reply.toString();
+            }
 
-            case INFOTABLE:
+            case INFOTABLE: {
                 reply = new StringBuilder(2048);
                 InfoTable it = null;
                 try {
@@ -718,8 +718,9 @@ public final class DefaultScriptDebugger {
                 }
                 it.serialize(reply);
                 return reply.toString();
+            }
 
-            case CACHEMETRICS:
+            case CACHEMETRICS: {
                 int toClear = Integer.parseInt(args[0]);
                 CacheMetrics[] cm = ResourceKit.getRegisteredCacheMetrics();
                 if (toClear >= 0 && toClear < cm.length) {
@@ -739,6 +740,7 @@ public final class DefaultScriptDebugger {
                             .append(m.isClearSupported() ? 'Y' : 'N');
                 }
                 return reply.toString();
+            }
 
             default:
                 errorReply(errorWriter, "command not implemented: " + command);
@@ -748,6 +750,22 @@ public final class DefaultScriptDebugger {
 
     private static final int TIMEOUT = 10 * 1_000;
 
+    private String evalImpl(String frameIndex, String expr, boolean detailed) {
+        String eval;
+        int frame = Integer.parseInt(frameIndex);
+        if (detailed) expr = composeWatchEval(expr);
+        if (frame < 1) {
+            eval = dc.eval(expr, dc.getStackFrame());
+        } else {
+            StackFrame[] stack = dc.getStack();
+            if (frame >= stack.length) {
+                frame = stack.length - 1;
+            }
+            eval = dc.eval(expr, stack[frame]);
+        }
+        return eval;        
+    }
+    
     /**
      * A thread used to execute commands that might deadlock or contain infinite
      * loops.
@@ -889,4 +907,51 @@ public final class DefaultScriptDebugger {
             return "?";
         }
     }
+    
+    private static String toJavaScriptStringLiteral(String s) {
+        StringBuilder sb = new StringBuilder();
+        sb.append('"');
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '"':
+                case '\\':
+                    sb.append('\\');
+                    sb.append(c);
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        sb.append('"');
+        return sb.toString();
+    }
+    
+    private static synchronized String composeWatchEval(String watchExpression) {
+        if (watchTemplate == null) {
+            try {
+                watchTemplate = ProjectUtilities.getResourceText("/ca/cgjennings/apps/arkham/plugins/debugging/watch-expr-template.js");
+            } catch (IOException ex) {
+                StrangeEons.log.log(Level.SEVERE, "can't find watch template");
+                watchTemplate = "watchExpr";
+            }
+        }
+        return watchTemplate.replace("watchExpr", watchExpression);
+    }
+    private static String watchTemplate = null;
 }

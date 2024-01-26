@@ -102,11 +102,21 @@ public enum Command {
      */
     CALLSTACK(0),
     /**
-     * Evaluates an expression in the context of a stack frame. The first
-     * argument is an index indicating the stack frame (0 is the top). The
-     * second argument is the expression to evaluate.
+     * Evaluates an expression in the context of a stack frame, returning 
+     * the string value of the result.
+     * Can be any string that can be interpreted with {@code eval()}.
+     * The first argument is an index indicating the stack frame (0 is the top).
+     * The second argument is the expression to evaluate.
      */
     EVAL(2),
+    /**
+     * Evaluates an expression in the context of a stack frame, returning a
+     * more detailed description than {@code EVAL}.
+     * Can be any expression.
+     * The first argument is an index indicating the stack frame (0 is the top).
+     * The second argument is the expression to evaluate.
+     */    
+    EVAL_DETAILED(2),
     /**
      * Obtain a list of the immediate child properties of an object in scope.
      * The first argument is an index indicating the stack frame (0 is the top).
@@ -114,7 +124,6 @@ public enum Command {
      * is a chain of null-character separated symbols, starting with either
      * {@code &lt;scope&gt;} or {@code &lt;this&gt;} to begin from the local
      * scope or the current {@code this} object (respectively).
-     *
      */
     SCOPE(2),
     /**
