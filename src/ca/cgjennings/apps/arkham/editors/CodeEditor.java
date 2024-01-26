@@ -1696,17 +1696,18 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
                 pendingActionAfterCodeGeneration = debugIfAvailable ? POST_GEN_DEBUG : POST_GEN_RUN;
                 return;
             }
-            if (type.getDependentFile(f) != null) {
-                f = type.getDependentFile(f);
-            }
             if (p != null) {
                 m = p.findMember(f);
                 if (m != null) {
                     t = m.getTask();
                 }
             }
+            
+            File transpiled = type.getDependentFile(f);
+            if (transpiled == null) transpiled = f;
+            
             try {
-                ProjectUtilities.runScript(f, p, t, m, debugIfAvailable);
+                ProjectUtilities.runScript(transpiled, p, t, m, debugIfAvailable);
             } catch (IOException e) {
                 ErrorDialog.displayError(title, e);
             }
