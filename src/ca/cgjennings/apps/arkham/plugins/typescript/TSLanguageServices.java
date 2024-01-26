@@ -5,9 +5,11 @@ import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -82,8 +84,7 @@ public final class TSLanguageServices {
                 // fake some CommonJS globals so the transpiled bridge code runs unchanged
                 engine.eval("var exports = {}; var require = function (p) { return ts; }");
                 loadServiceLib(engine, "java-bridge.js");
-                engine.eval("delete exports; delete require");
-
+                if (!debuggable) engine.eval("delete exports; delete require");
                 services = engine.getInterface(ServiceInterface.class);
             } catch (ScriptException ex) {
                 throw new AssertionError("failed to parse library", ex);
@@ -100,6 +101,7 @@ public final class TSLanguageServices {
                     for (Runnable task : tasksToRunWhenLoaded) {
                         EventQueue.invokeLater(task);
                     }
+                    tasksToRunWhenLoaded = null;
                 }
             }
             
@@ -208,6 +210,28 @@ public final class TSLanguageServices {
     }
 
     private static final int GET_LIB = 2;
+    
+    public static void debugRestart() {
+        var openTsFiles = new ArrayList<File>();
+        for (var ed : StrangeEons.getWindow().getEditors()) {
+            if (ed.getFile() != null && "ts".equals(ed.getFileNameExtension())) {
+                openTsFiles.add(ed.getFile());
+                if (ed.hasUnsavedChanges()) {
+                    ed.save();
+                }
+                ed.close();
+            }
+        }        
+        var replace = new TSLanguageServices();
+        // wait for replacement to load then re-open .ts files with new 
+        replace.getVersion((s) -> {
+            shared = replace;
+            CompilationFactory.debugClearRoots();
+            for (var f : openTsFiles) {
+                StrangeEons.getWindow().openFile(f);
+            }            
+        });
+    }
 
     /**
      * Performs a simple transpilation of a single file to JavaScript code.
@@ -454,7 +478,7 @@ public final class TSLanguageServices {
                     throw new AssertionError("unknown request type");
             }
         } catch (Throwable t) {
-            StrangeEons.log.log(Level.SEVERE, "exception while handling request" + r, t);
+            StrangeEons.log.log(Level.SEVERE, "exception while handling " + r, t);
             if (r.type < 0 || r.callback != null) {
                 r.send(null);
             }
@@ -563,7 +587,7 @@ public final class TSLanguageServices {
         
         @Override
         public String toString() {
-            String s = "Request{type=" + Math.abs(type)
+            String s = "Request{type=" + nameOfRequestType(type)
                     + ", synch=" + (type < 0)
             ;
             if (args != null) {
@@ -574,10 +598,22 @@ public final class TSLanguageServices {
                 }
                 s += ']';
             }
-                    
             return s + '}';
         }
     }
+    
+    private static String nameOfRequestType(int type) {
+        try {
+            type = Math.abs(type);
+            for (var f : TSLanguageServices.class.getDeclaredFields()) {
+                final int mod = f.getModifiers();
+                if (f.getType() == int.class && Modifier.isStatic(mod) && Modifier.isFinal(mod)) {
+                    if (type == f.getInt(null)) return f.getName();
+                }                
+            }
+        } catch (Exception rex) {}
+        return "<Unknown>";
+    }    
     
     /**
      * Interfaces that bridges access from the Java wrapper for TypeScript

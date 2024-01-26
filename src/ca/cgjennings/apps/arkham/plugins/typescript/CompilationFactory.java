@@ -95,4 +95,8 @@ public final class CompilationFactory {
             }
         });
     }
+    
+    static void debugClearRoots() {
+        projectRoots.clear();
+    }
 }
