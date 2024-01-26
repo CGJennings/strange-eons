@@ -423,7 +423,7 @@ const require = (modulePath) => {
         } else {
             useLibrary(modulePath);
         }
-        return globalThis;
+        return global;
     }
     if (require.cache == null) {
         require.cache = {};
