@@ -212,21 +212,17 @@ public class ToolWindow extends javax.swing.JDialog {
 
 	private void titleLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleLabelMouseDragged
             if (SwingUtilities.isLeftMouseButton(evt) && titleDrag) {
-                int newX = evt.getXOnScreen();
+                int newX = evt.getXOnScreen();                
                 int newY = evt.getYOnScreen();
-                int dx = newX - dragSX;
-                int dy = newY - dragSY;
-                setLocation(getX() + dx, getY() + dy);
-                dragSX = newX;
-                dragSY = newY;
+                setLocation(newX - dragStartXInWindow, newY - dragStartYInWindow);
             }
 	}//GEN-LAST:event_titleLabelMouseDragged
 
 	private void titleLabelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleLabelMousePressed
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 titleDrag = true;
-                dragSX = evt.getXOnScreen();
-                dragSY = evt.getYOnScreen();
+                dragStartXInWindow = evt.getX();
+                dragStartYInWindow = evt.getY();
                 titleLabel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
             }
 	}//GEN-LAST:event_titleLabelMousePressed
@@ -241,8 +237,8 @@ public class ToolWindow extends javax.swing.JDialog {
 	private void decorationPanelMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decorationPanelMousePressed
             if (SwingUtilities.isLeftMouseButton(evt)) {
                 resizeCorner = getResizeCorner(evt.getX(), evt.getY());
-                dragSX = evt.getXOnScreen();
-                dragSY = evt.getYOnScreen();
+                dragStartXInWindow = evt.getXOnScreen();
+                dragStartYInWindow = evt.getYOnScreen();
             }
 	}//GEN-LAST:event_decorationPanelMousePressed
 
@@ -266,8 +262,8 @@ public class ToolWindow extends javax.swing.JDialog {
                 // determine how cursor has been dragged
                 int newX = evt.getXOnScreen();
                 int newY = evt.getYOnScreen();
-                int dx = newX - dragSX;
-                int dy = newY - dragSY;
+                int dx = newX - dragStartXInWindow;
+                int dy = newY - dragStartYInWindow;
 
                 if ((resizeCorner & RC_N) != 0) {
                     dx = 0;
@@ -282,26 +278,26 @@ public class ToolWindow extends javax.swing.JDialog {
                         dx = MINIMUM_SIZE - (x2 - x1);
                     }
                     x2 += dx;
-                    dragSX += (x2 - x1) - oldWidth;
+                    dragStartXInWindow += (x2 - x1) - oldWidth;
                 } else {
                     if ((x2 - x1) - dx < MINIMUM_SIZE) {
                         dx = (x2 - x1) - MINIMUM_SIZE;
                     }
                     x1 += dx;
-                    dragSX += oldWidth - (x2 - x1);
+                    dragStartXInWindow += oldWidth - (x2 - x1);
                 }
                 if ((resizeCorner & 2) == 0) {
                     if ((y2 - y1) + dy < MINIMUM_SIZE) {
                         dy = MINIMUM_SIZE - (y2 - y1);
                     }
                     y2 += dy;
-                    dragSY += (y2 - y1) - oldHeight;
+                    dragStartYInWindow += (y2 - y1) - oldHeight;
                 } else {
                     if ((y2 - y1) - dy < MINIMUM_SIZE) {
                         dy = (y2 - y1) - MINIMUM_SIZE;
                     }
                     y1 += dy;
-                    dragSY += oldHeight - (y2 - y1);
+                    dragStartYInWindow += oldHeight - (y2 - y1);
                 }
 
                 setBounds(x1, y1, x2 - x1, y2 - y1);
@@ -400,7 +396,7 @@ public class ToolWindow extends javax.swing.JDialog {
 
     private static final int RESIZE_CORNER_SIZE = 12;
 
-    private int dragSX, dragSY;
+    private int dragStartXInWindow, dragStartYInWindow;
     private boolean titleDrag;
     private int resizeCorner = -1;
 
