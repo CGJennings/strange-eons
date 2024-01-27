@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
+import ca.cgjennings.algo.StaggeredDelay;
 import ca.cgjennings.ui.textedit.CodeType;
 import ca.cgjennings.ui.textedit.Navigator;
 import ca.cgjennings.ui.textedit.NavigationHost;
@@ -70,6 +71,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -1474,7 +1476,11 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         if (navigator == null || text == null) {
             refreshNavigator((List<NavigationPoint>) null);
         } else {
-            refreshNavigator(navigator.getNavigationPoints(text));
+            List<NavigationPoint> navPoints = navigator.getNavigationPoints(text);            
+            refreshNavigator(navPoints);
+            if (navPoints == Navigator.ASYNC_RETRY) {
+                StaggeredDelay.then(this::refreshNavigator);
+            }
         }
     }
 

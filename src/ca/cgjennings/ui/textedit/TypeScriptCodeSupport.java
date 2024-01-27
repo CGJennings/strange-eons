@@ -1,5 +1,6 @@
 package ca.cgjennings.ui.textedit;
 
+import ca.cgjennings.algo.StaggeredDelay;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import static ca.cgjennings.ui.textedit.NavigationPoint.*;
 import ca.cgjennings.apps.arkham.plugins.typescript.CodeAction;
@@ -168,7 +169,10 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
         @Override
         public ParseResult parse(RSyntaxDocument rsd, String string) {
-            if (root == null) {
+            if (root == null || !TSLanguageServices.getShared().isLoaded()) {
+                // services not loaded or root not available yet;
+                // retry parsing later rather than blocking UI
+                StaggeredDelay.then(4000, ()->editor.getTextArea().forceReparsing(this));
                 return result;
             }
 
@@ -199,8 +203,6 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
             }
             return result;
         }
-        
-        
     }
 
     private class TSCompletionProvider extends CompletionProviderBase {
@@ -424,6 +426,10 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
 
             @Override
             public List<NavigationPoint> getNavigationPoints(String sourceText) {
+                if (!TSLanguageServices.getShared().isLoaded()) {
+                    return ASYNC_RETRY;
+                }
+                
                 if (latestRequest == null || root == null) {
                     if (root != null) {
                         final int expectedRequest = ++requestNumber;
@@ -436,11 +442,7 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
                             });
                     } else {
                         // compilation root does not exist yet, check again later
-                        Timer retryLater = new Timer(6000, (ev) -> {
-                            host.refreshNavigator();
-                        });
-                        retryLater.setRepeats(false);
-                        retryLater.start();
+                        return ASYNC_RETRY;
                     }
                     return points;
                 }
