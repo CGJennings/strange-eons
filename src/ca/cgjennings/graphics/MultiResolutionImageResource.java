@@ -1,7 +1,6 @@
 package ca.cgjennings.graphics;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.PixelArtUpscalingFilter;
 import java.awt.Color;
 import java.awt.Font;

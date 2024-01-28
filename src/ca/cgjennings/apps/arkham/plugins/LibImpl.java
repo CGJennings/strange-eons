@@ -5,8 +5,6 @@ import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.CharArrayWriter;
 import java.io.FileNotFoundException;
-
-import org.mozilla.javascript.Scriptable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +12,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Formatter;
 import java.util.LinkedList;
@@ -24,7 +21,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.mozilla.javascript.Context;
-import resources.ResPath;
+import org.mozilla.javascript.Scriptable;
 import resources.ResourceKit;
 
 /**

@@ -1,10 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
 import ca.cgjennings.algo.StaggeredDelay;
-import ca.cgjennings.ui.textedit.CodeType;
-import ca.cgjennings.ui.textedit.Navigator;
-import ca.cgjennings.ui.textedit.NavigationHost;
-import ca.cgjennings.ui.textedit.NavigationPoint;
 import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.ContextBar;
@@ -31,9 +27,13 @@ import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.textedit.CodeType;
 import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
 import ca.cgjennings.ui.textedit.Formatter;
 import ca.cgjennings.ui.textedit.HtmlStyler;
+import ca.cgjennings.ui.textedit.NavigationHost;
+import ca.cgjennings.ui.textedit.NavigationPoint;
+import ca.cgjennings.ui.textedit.Navigator;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;

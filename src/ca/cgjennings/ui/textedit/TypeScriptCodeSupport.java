@@ -2,8 +2,6 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.algo.StaggeredDelay;
 import ca.cgjennings.apps.arkham.StrangeEons;
-
-import static ca.cgjennings.ui.textedit.NavigationPoint.*;
 import ca.cgjennings.apps.arkham.plugins.typescript.CodeAction;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationFactory;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationRoot;
@@ -15,9 +13,10 @@ import ca.cgjennings.apps.arkham.plugins.typescript.NavigationTree;
 import ca.cgjennings.apps.arkham.plugins.typescript.Overview;
 import ca.cgjennings.apps.arkham.plugins.typescript.SourceUnit;
 import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
-import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.text.MarkdownTransformer;
 import ca.cgjennings.ui.IconProvider;
+import static ca.cgjennings.ui.textedit.NavigationPoint.*;
+import ca.cgjennings.ui.theme.Palette;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Point;

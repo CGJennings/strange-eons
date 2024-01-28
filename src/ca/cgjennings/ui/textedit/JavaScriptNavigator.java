@@ -2,6 +2,9 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.engine.SyntaxChecker;
+import java.util.LinkedList;
+import java.util.List;
+import javax.swing.Icon;
 import org.mozilla.javascript.Node;
 import org.mozilla.javascript.Token;
 import org.mozilla.javascript.ast.ArrayLiteral;
@@ -17,9 +20,6 @@ import org.mozilla.javascript.ast.RegExpLiteral;
 import org.mozilla.javascript.ast.StringLiteral;
 import org.mozilla.javascript.ast.VariableDeclaration;
 import org.mozilla.javascript.ast.VariableInitializer;
-import java.util.LinkedList;
-import java.util.List;
-import javax.swing.Icon;
 
 /**
  * A {@link Navigator} for JavaScript source files.

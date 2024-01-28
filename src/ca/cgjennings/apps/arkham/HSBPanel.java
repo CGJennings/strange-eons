@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham;
 import static ca.cgjennings.apps.arkham.MarkupTargetFactory.enableTargeting;
 import ca.cgjennings.graphics.paints.CheckeredPaint;
 import ca.cgjennings.platform.PlatformSupport;
-import org.mozilla.javascript.NativeArray;
 import ca.cgjennings.ui.EyeDropper;
 import ca.cgjennings.ui.FilteredDocument;
 import ca.cgjennings.ui.OpacityLabel;
@@ -42,6 +41,7 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.PopupMenuListener;
+import org.mozilla.javascript.NativeArray;
 import static resources.Language.string;
 import resources.Settings;
 

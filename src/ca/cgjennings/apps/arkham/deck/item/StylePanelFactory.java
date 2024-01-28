@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham.deck.item;
 
-import java.util.HashMap;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 /**
  * A factory for creating the panels that are used to edit page item

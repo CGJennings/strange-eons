@@ -1,8 +1,8 @@
 package ca.cgjennings.apps.arkham.dialog;
 
-import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.PluginRoot;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;

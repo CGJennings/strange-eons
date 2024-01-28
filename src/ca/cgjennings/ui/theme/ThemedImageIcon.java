@@ -1,9 +1,9 @@
 package ca.cgjennings.ui.theme;
 
-import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.algo.SplitJoin;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.FilteredMultiResolutionImage;
+import ca.cgjennings.graphics.ImageUtilities;
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.Image;

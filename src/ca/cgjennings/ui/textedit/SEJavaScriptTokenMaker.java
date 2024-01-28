@@ -14,9 +14,8 @@
 package ca.cgjennings.ui.textedit;
 
 import java.io.*;
-import javax.swing.text.Segment;
 import java.util.Stack;
-
+import javax.swing.text.Segment;
 import org.fife.ui.rsyntaxtextarea.*;
 
 

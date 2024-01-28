@@ -1,10 +1,10 @@
 package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.BusyDialog;
-import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.Subprocess;
+import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.plugins.PluginContextFactory;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;

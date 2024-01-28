@@ -1,6 +1,5 @@
 package ca.cgjennings.apps.arkham;
 
-import org.mozilla.javascript.Context;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Cursor;
 import java.awt.event.ActionListener;
@@ -14,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import org.mozilla.javascript.Context;
 import static resources.Language.string;
 
 /**

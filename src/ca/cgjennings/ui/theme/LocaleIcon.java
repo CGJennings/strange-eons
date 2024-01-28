@@ -1,8 +1,6 @@
 package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import resources.Language;
-import resources.ResourceKit;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Graphics;
@@ -17,6 +15,8 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import resources.Language;
+import resources.ResourceKit;
 
 /**
  * An icon that represents a locale, language, or region.

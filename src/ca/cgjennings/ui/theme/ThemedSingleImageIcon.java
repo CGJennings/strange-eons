@@ -2,12 +2,12 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.PixelArtUpscalingFilter;
-import resources.ResourceKit;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
 import java.util.Objects;
+import resources.ResourceKit;
 
 /**
  * An image icon that scales the source image appropriately for high DPI

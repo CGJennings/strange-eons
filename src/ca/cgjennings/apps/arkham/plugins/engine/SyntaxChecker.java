@@ -1,9 +1,9 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
+import java.util.LinkedList;
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.IdeErrorReporter;
-import java.util.LinkedList;
 
 /**
  * Determines the compile-time errors and warnings in a script without executing

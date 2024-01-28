@@ -2,9 +2,9 @@ package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole.ConsolePrintWriter;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
+import java.util.ResourceBundle;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
-import java.util.ResourceBundle;
 import resources.Settings;
 
 /**

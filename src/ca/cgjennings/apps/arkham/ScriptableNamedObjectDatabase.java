@@ -1,7 +1,7 @@
 package ca.cgjennings.apps.arkham;
 
-import org.mozilla.javascript.Scriptable;
 import java.util.HashMap;
+import org.mozilla.javascript.Scriptable;
 
 /**
  * Represents a database of named objects, basically a thread-safe mapping from
