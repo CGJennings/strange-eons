@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngine;
 import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import java.awt.EventQueue;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Modifier;
@@ -34,11 +33,13 @@ import org.mozilla.javascript.Context;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public final class TSLanguageServices {
-    private static TSLanguageServices shared = new TSLanguageServices();
+    private static volatile TSLanguageServices shared = new TSLanguageServices();
     private final boolean debuggable = StrangeEons.getReleaseType() == StrangeEons.ReleaseType.DEVELOPMENT;
-
     private volatile boolean hasLoaded;
-    private List<Runnable> tasksToRunWhenLoaded;
+    private Thread workerThread;
+    private BlockingQueue<Request<?>> queue = new LinkedBlockingQueue<>();
+    private SEScriptEngine engine;
+    private ServiceInterface services;    
 
     /**
      * Returns the shared default instance.
@@ -54,7 +55,7 @@ public final class TSLanguageServices {
                 TextEncoding.SOURCE_CODE
         )) {
             engine.eval(r);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             throw new AssertionError("unable to load " + libName, ex);
         }
     }
@@ -75,15 +76,18 @@ public final class TSLanguageServices {
                 engine = SEScriptEngineFactory.getDefaultScriptEngine();
                 cx.setOptimizationLevel(-1);
                 cx.setGeneratingSource(false);
-                cx.setGeneratingDebug(debuggable);
                 cx.setMaximumInterpreterStackDepth(Integer.MAX_VALUE);
+                cx.setGeneratingDebug(debuggable);
                 engine.put("DEBUG", debuggable);
+                engine.put("javax.script.filename", "ts-services");
 
                 // stored in lib/typescript-services.jar; a script in build-tools updates it
                 loadServiceLib(engine, "typescriptServices.js");
                 // fake some CommonJS globals so the transpiled bridge code runs unchanged
                 engine.eval("var exports = {}; var require = function (p) { return ts; }");
                 loadServiceLib(engine, "java-bridge.js");
+                // delete the faked module globals, but only if we are not debugging
+                // since otherwise this script fragment will represent the lib in the debugger
                 if (!debuggable) engine.eval("delete exports; delete require");
                 services = engine.getInterface(ServiceInterface.class);
             } catch (ScriptException ex) {
@@ -92,18 +96,9 @@ public final class TSLanguageServices {
                 if (cx != null) {
                     Context.exit();
                 }
-            }        
-            StrangeEons.log.log(Level.INFO, "services ready, started in {0}ms", System.currentTimeMillis() - start);
-
-            synchronized (TSLanguageServices.this) {
-                hasLoaded = true;
-                if (tasksToRunWhenLoaded != null) {
-                    for (Runnable task : tasksToRunWhenLoaded) {
-                        EventQueue.invokeLater(task);
-                    }
-                    tasksToRunWhenLoaded = null;
-                }
             }
+            hasLoaded = true;
+            StrangeEons.log.log(Level.INFO, "services ready, started in {0}ms", System.currentTimeMillis() - start);
             
             for (;;) {
                 try {
@@ -126,26 +121,6 @@ public final class TSLanguageServices {
      */
     public boolean isLoaded() {
         return hasLoaded;
-    }
-    
-    /**
-     * Queues a task to run once the services have finished loading. If the
-     * services have already loaded, the task runs immediately. This method
-     * expects to be called from, and will run tasks on, the event dispatch thread.
-     * 
-     * @param task the task to run
-     */
-    public void runWhenLoaded(Runnable task) {
-        synchronized (this) {
-            if (hasLoaded) {
-                task.run();
-            } else {
-                if (tasksToRunWhenLoaded == null) {
-                    tasksToRunWhenLoaded = new ArrayList<>();
-                }
-                tasksToRunWhenLoaded.add(task);
-            }
-        }
     }
     
     /**
@@ -221,7 +196,8 @@ public final class TSLanguageServices {
                 }
                 ed.close();
             }
-        }        
+        }
+        if (shared != null) shared.dispose();
         var replace = new TSLanguageServices();
         // wait for replacement to load then re-open .ts files with new 
         replace.getVersion((s) -> {
@@ -532,11 +508,6 @@ public final class TSLanguageServices {
         }
         return r.retval;
     }
-    
-    private static Thread workerThread;
-    private static BlockingQueue<Request<?>> queue = new LinkedBlockingQueue<>();
-    private SEScriptEngine engine;
-    private ServiceInterface services;
     
     /**
      * Encapsulates a request to be sent to the worker thread.
