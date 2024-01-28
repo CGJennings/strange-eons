@@ -1,20 +1,28 @@
 package ca.cgjennings.apps.arkham.plugins;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.typescript.TSLanguageServices;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import java.io.CharArrayWriter;
-import org.mozilla.javascript.Scriptable;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.mozilla.javascript.Context;
-import resources.ResPath;
+import org.mozilla.javascript.Scriptable;
+import resources.ResourceKit;
 
 /**
  * Helper methods that support the implementation of the script library.
@@ -301,43 +309,191 @@ public final class LibImpl {
     /**
      * Implements CommonJS require() support.
      *
-     * @param source the sourcefile
+     * @param requireSourcePath the path to the script that is calling require,
+     *     to resolve against a relative module path
      * @param modulePath the relative module path to load
      * @param module the module object to pass to the module
      * @param exports the module.exports object to pass to the module
      * @returns an object containing the module exports
      */
-    public static Object require(String source, String modulePath, Scriptable module, Scriptable exports, Scriptable cache) throws IOException {
-        ResPath parentPath = new ResPath(source).getParent();
-        ResPath path = parentPath.resolve(modulePath);
-        modulePath = path.toString();
-
+    public static Object require(String requireSourcePath, String modulePath, Scriptable module, Scriptable exports, Scriptable cache) throws IOException {
+        modulePath = joinModulePath(requireSourcePath, modulePath);
         if (cache.has(modulePath, cache)) {
             return cache.get(modulePath, cache);
         }
 
-        String src = ProjectUtilities.getResourceText(modulePath);
-        if (src == null) {
-            throw new IOException("file not found: " + modulePath);
+        final ModuleText source = findModuleText(modulePath);
+        if (source == null) {
+            throw new FileNotFoundException("module not found: " + modulePath);
         }
 
+        // execute the module in a separate scope
         Object exported;
-        ScriptMonkey m = new ScriptMonkey(modulePath);
-        if (modulePath.endsWith(".json")) {
-            m.bind("jsonData", src);
+        ScriptMonkey m = new ScriptMonkey(source.path);
+        if (source.path.endsWith(".json")) {
+            m.bind("jsonData", source.text);
             exported = m.eval("JSON.parse(jsonData)");
         } else {
-            m.bind("__filename", path.getName());
-            m.bind("__dirname", parentPath.toString());
+            // found a .ts module but no precompiled .ts.js file
+            if (source.path.endsWith(".ts")) {
+                StrangeEons.log.log(Level.INFO, "transpiling \"{0}\" on demand", source.path);
+                source.text = TSLanguageServices.getShared().transpile(source.path, source.text);
+            }
             m.bind("module", module);
             m.bind("exports", exports);
             m.bind("modCache", cache);
-            m.eval("require.cache=modCache;delete modCache;");
-            m.eval(src);
+            m.eval("require.cache=modCache;delete modCache;");    
+            m.eval(source.text);
             exported = module.get("exports", module);
         }
+
+        // add to module cache under both the original and modified paths
         cache.put(modulePath, cache, exported);
+        if (!source.path.equals(modulePath)) {
+            cache.put(source.path, cache, exported);
+        }
+
         return exported;
+    }
+
+    /**
+     * Given a path and a child path, return the child path resolved against the
+     * parent path. The child path may be absolute, in which case it is
+     * returned unchanged. If the child path is relative, it is resolved against
+     * the parent path.
+     * 
+     * @param path the parent path
+     * @param child the child path
+     * @return the combined path
+     */
+    public static String joinModulePath(String path, String child) {
+        if (path == null) {
+            throw new NullPointerException("path");
+        }
+        if (child == null || child.isEmpty()) {
+            return path;
+        }
+
+        // normalize path separators
+        path = path.replace('\\', '/');
+        child = child.replace('\\', '/');
+        if (child.endsWith("/")) {
+            child = child.substring(0, child.length() - 1);
+        }
+
+        // if the child is absolute, return it
+        if (child.startsWith("/")) {
+            return child;
+        }
+        Matcher m = PAT_PROTOCOL.matcher(child);
+        if (m.find()) {
+            return child;
+        }
+
+        // if the path starts with a protocol, snip it off and save it for later, including the //
+        String proto = "";
+        m = PAT_PROTOCOL.matcher(path);
+        if (m.find()) {
+            proto = m.group(1);
+            path = path.substring(proto.length());
+        }
+
+        if (path.endsWith("/")) {
+            path = path.substring(0, path.length() - 1);
+        }
+
+        // resolve the child path against the parent path
+        String[] parentParts = path.split("/");
+        String[] childParts = child.split("/");
+        String[] resolved = new String[parentParts.length + childParts.length];
+
+        int next = 0;
+        String[] source = parentParts;
+        for (int s=0; s<2; ++s) {
+            for (int i=0; i<source.length; ++i) {
+                if (source[i].equals("..")) {
+                    if (next > 0) {
+                        --next;
+                    }
+                } else if (!source[i].equals(".")) {
+                    resolved[next++] = source[i];
+                }
+            }
+            source = childParts;
+        }
+
+        StringBuilder b = new StringBuilder(path.length() + child.length());
+        b.append(proto);
+        for (int i=0; i<next; ++i) {
+            b.append(resolved[i]).append('/');
+        }
+        if (b.length() > 0) {
+            b.setLength(b.length() - 1);
+        }
+        return b.toString();
+    }
+    private static final Pattern PAT_PROTOCOL = Pattern.compile("^(\\w+:/+)");
+    
+    private static final class ModuleText {
+        public ModuleText(String path, String text) {
+            this.path = path;
+            this.text = text;
+        }
+        String path;
+        String text;
+    }
+    
+    /**
+     * Given the path of a {@code require}d file, possibly without an extension,
+     * locate and return the actual source text and location.
+     * 
+     * @param modulePath an absolute path to a module name
+     * @return an object describing the true location and full text, or null if not found
+     * @throws IOException if the module file exists but cannot be read
+     */
+    private static ModuleText findModuleText(String modulePath) throws IOException {
+        // if modulePath includes an extension, look for the file as specified
+        final int dot = modulePath.lastIndexOf('.');
+        final int slash = modulePath.lastIndexOf('/');
+        if (dot > 0 && dot > slash) {
+            String text = readModuleText(modulePath);
+            return text == null ? null : new ModuleText(modulePath, text);
+        }
+
+        // otherwise, try standard extensions in preferred order
+        for (int i=0; i<MODULE_EXTENSIONS.length; ++i) {
+            final String pathToTry = modulePath + MODULE_EXTENSIONS[i];
+            String text = readModuleText(pathToTry);
+            if (text != null) {
+                return new ModuleText(pathToTry, text);
+            }
+        }
+
+        return null;
+    }
+    /** Extensions to check when a module is required with no explicit extension, in preferred order. */
+    private static final String[] MODULE_EXTENSIONS = new String[] {
+        ".ts.js", ".js", "/index.ts.js", "/index.js"
+    };
+    
+    private static String readModuleText(String path) throws IOException {
+        URL url;
+
+        // check if this is a complete, non-res:// URL
+        if (path.contains(":/") && !path.startsWith("res:")) {
+            url = new URL(path);
+        } else {
+            url = ResourceKit.composeResourceURL(path);
+            if (url == null) return null;
+        }
+
+        try (InputStream in = url.openStream()) {
+            StringWriter sw = new StringWriter(512);
+            ProjectUtilities.copyReader(new InputStreamReader(in, ProjectUtilities.ENC_UTF8), sw);
+            return sw.toString();
+        } catch (FileNotFoundException ex) {
+            return null; // other I/O errors throw normally
+        }
     }
 
     /**
@@ -409,9 +565,9 @@ public final class LibImpl {
                         if (line < 0) {
                             line = 0;
                         }
-                        stack.add(new ScriptTraceElement(file, line));
                     } catch (NumberFormatException e) {
                     }
+                    stack.add(new ScriptTraceElement(file, line));
                 }
                 open = close = colon = -1;
             }

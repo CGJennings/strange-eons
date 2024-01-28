@@ -1,7 +1,6 @@
 package ca.cgjennings.graphics;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.PixelArtUpscalingFilter;
 import java.awt.Color;
 import java.awt.Font;
@@ -26,7 +25,7 @@ import resources.ResourceKit;
  * The following "@Nx" values are currently supported: "@1.25x", "@1.5x",
  * "@1.75x", "@2x", "@2.25x", "@2.5x", "@3x", "@3.5x", "@4x", "@8x", "@16x"
  *
- * @author Christopher G. Jennings (cjennings@acm.org)
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
 public class MultiResolutionImageResource extends AbstractMultiResolutionImage {

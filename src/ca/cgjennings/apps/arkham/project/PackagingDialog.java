@@ -5,12 +5,12 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.theme.Palette;
-import resources.ResourceKit;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.JButton;
 import static resources.Language.string;
+import resources.ResourceKit;
 
 /**
  * Dialog for the project packaging task action.

@@ -1,17 +1,17 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
+import java.util.*;
+import javax.script.*;
 import org.mozilla.javascript.ConstProperties;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeJavaClass;
 import org.mozilla.javascript.Scriptable;
-import org.mozilla.javascript.ScriptableObject;
-import org.mozilla.javascript.Undefined;
-import org.mozilla.javascript.Wrapper;
-import java.util.*;
-import javax.script.*;
 import static org.mozilla.javascript.Scriptable.NOT_FOUND;
+import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Symbol;
 import org.mozilla.javascript.SymbolScriptable;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.Wrapper;
 
 /**
  * A JS engine scriptable object that consults the bindings of a

@@ -399,11 +399,17 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
         if (pathname.isHidden()) {
             return false;
         }
-        String name1 = pathname.getName();
-        if (name1.isEmpty() || name1.charAt(0) == '.' || name1.equals(Task.TASK_SETTINGS)) {
+        String name = pathname.getName();
+        // hidden from view, but not excluded from the project
+        if (
+                name.isEmpty()
+                || name.charAt(0) == '.'
+                || name.equals(Task.TASK_SETTINGS)
+                || name.endsWith(".ts.js")
+        ) {
             return false;
         }
-        return !isFileExcluded(name1);
+        return !isFileExcluded(name);
     };
     private static String[] excludePatterns;
     private static Pattern[] excludePatternsRegex;

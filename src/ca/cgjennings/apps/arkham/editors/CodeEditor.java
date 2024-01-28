@@ -1,9 +1,6 @@
 package ca.cgjennings.apps.arkham.editors;
 
-import ca.cgjennings.ui.textedit.CodeType;
-import ca.cgjennings.ui.textedit.Navigator;
-import ca.cgjennings.ui.textedit.NavigationHost;
-import ca.cgjennings.ui.textedit.NavigationPoint;
+import ca.cgjennings.algo.StaggeredDelay;
 import ca.cgjennings.apps.arkham.AbstractSupportEditor;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.ContextBar;
@@ -30,9 +27,13 @@ import ca.cgjennings.ui.anim.Animation;
 import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.textedit.CodeType;
 import static ca.cgjennings.ui.textedit.CodeType.TYPESCRIPT;
 import ca.cgjennings.ui.textedit.Formatter;
 import ca.cgjennings.ui.textedit.HtmlStyler;
+import ca.cgjennings.ui.textedit.NavigationHost;
+import ca.cgjennings.ui.textedit.NavigationPoint;
+import ca.cgjennings.ui.textedit.Navigator;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
@@ -1409,20 +1410,16 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         if (navigator == nav) {
             return;
         }
-
         navigator = nav;
         if (navigator != null) {
             refreshNavigator();
         }
-
-        // if the nav isn't visible, the code below will think it is being
-        // uninstalled, which will ensure that it remains hidden but up-to-date
-        // in case it becomes visible later
-        if (!navIsVisible) {
-            nav = null;
-        }
-
-        if (nav == null) {
+        updateNavigatorVisibility();
+    }
+    private static final int NAV_DIV_SIZE = 8;
+    
+    private void updateNavigatorVisibility() {
+        if (navigator == null || !navIsVisible) {
             sideBarPanel.setVisible(false);
             navPanel.setVisible(false);
             sideBarSplitter.setEnabled(false); // must come before resize
@@ -1436,7 +1433,6 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
             sideBarSplitter.setDividerLocation(navSplitSize);
         }
     }
-    private static final int NAV_DIV_SIZE = 8;
 
     /**
      * Returns the current navigator for this editor, or {@code null} if none is
@@ -1467,6 +1463,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
      */
     @Override
     public void refreshNavigator() {
+        if (!navIsVisible) return;
         refreshNavigator(getEditor().getText());
     }
 
@@ -1474,7 +1471,11 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         if (navigator == null || text == null) {
             refreshNavigator((List<NavigationPoint>) null);
         } else {
-            refreshNavigator(navigator.getNavigationPoints(text));
+            List<NavigationPoint> navPoints = navigator.getNavigationPoints(text);            
+            refreshNavigator(navPoints);
+            if (navPoints == Navigator.ASYNC_RETRY) {
+                StaggeredDelay.then(this::refreshNavigator);
+            }
         }
     }
 
@@ -1555,7 +1556,10 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
                     continue;
                 }
                 CodeEditor ced = (CodeEditor) eds[i];
-                ced.setNavigator(ced.getNavigator());
+                ced.updateNavigatorVisibility();
+                if (navIsVisible && ced.getNavigator() != null) {
+                    StaggeredDelay.then(ced::refreshNavigator);
+                }
             }
             Settings.getUser().set(KEY_SHOW_NAVIGATOR, navIsVisible ? "yes" : "no");
         }
@@ -1696,17 +1700,18 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
                 pendingActionAfterCodeGeneration = debugIfAvailable ? POST_GEN_DEBUG : POST_GEN_RUN;
                 return;
             }
-            if (type.getDependentFile(f) != null) {
-                f = type.getDependentFile(f);
-            }
             if (p != null) {
                 m = p.findMember(f);
                 if (m != null) {
                     t = m.getTask();
                 }
             }
+            
+            File transpiled = type.getDependentFile(f);
+            if (transpiled == null) transpiled = f;
+            
             try {
-                ProjectUtilities.runScript(f, p, t, m, debugIfAvailable);
+                ProjectUtilities.runScript(transpiled, p, t, m, debugIfAvailable);
             } catch (IOException e) {
                 ErrorDialog.displayError(title, e);
             }

@@ -1,5 +1,5 @@
 /*
- common.js - version 27
+ common.js - version 28
  Core functionality included in every script.
  */
 
@@ -394,7 +394,7 @@ String.prototype.replaceAll = function replaceAll(pattern, replacement) {
     return this.replace(
             new RegExp(RegExp.quote(pattern), 'g'),
             RegExp.quoteReplacement(replacement)
-            );
+    );
 };
 String.prototype.dontEnum('replaceAll');
 
@@ -402,16 +402,34 @@ Function.abstractMethod = function () {
     Error.warn('call to abstract method: this method needs to be overridden in the subclass', -2);
 };
 
-function require(modulePath) {
+const require = (modulePath) => {
     if (!modulePath.includes("/")) {
-        useLibrary(modulePath);
+        if (modulePath.includes(".")) {
+            try {
+                const chunks = modulePath.split(".");
+                let i = 1;
+                let classRef = this[chunks[0]];
+                if (classRef == null || Object.prototype.toString.call(classRef) !== "[object JavaPackage]") {
+                    i = 0;
+                    classRef = Packages;
+                }
+                for (; i < chunks.length; ++i) {
+                    classRef = classRef[chunks[i]];
+                }
+                importClass(classRef);
+            } catch (ex) {
+                throw new ReferenceError("no such class: " + modulePath);
+            }
+        } else {
+            useLibrary(modulePath);
+        }
         return global;
     }
     if (require.cache == null) {
         require.cache = {};
     }
     let module = {exports: {}};
-    return arkham.plugins.LibImpl.require(global["javax.script.filename"], modulePath, module, module.exports, require.cache);
+    return arkham.plugins.LibImpl.require(__dirname, modulePath, module, module.exports, require.cache);
 }
 require.cache = null;
 

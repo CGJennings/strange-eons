@@ -1,15 +1,13 @@
 package ca.cgjennings.apps.arkham.plugins;
 
-import ca.cgjennings.apps.arkham.plugins.engine.SettingBindings;
-import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.prefs.Preferences;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import org.mozilla.javascript.JavaScriptException;
-import org.mozilla.javascript.RhinoException;
+import ca.cgjennings.apps.arkham.plugins.engine.SEScriptEngineFactory;
+import ca.cgjennings.apps.arkham.plugins.engine.SettingBindings;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -31,6 +29,8 @@ import javax.script.ScriptException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.RhinoException;
 import resources.Language;
 import static resources.Language.string;
 import resources.ResourceKit;
@@ -79,8 +79,8 @@ public final class ScriptMonkey {
      */
     public ScriptMonkey(String scriptFileName) {
         engine = createScriptEngine();
-        engine.put(ScriptEngine.FILENAME, scriptFileName);
         engine.put(VAR_FILE, scriptFileName);
+        setInternalFileName(scriptFileName);
 
         ScriptContext context = engine.getContext();
         context.setWriter(console.getWriter());
@@ -106,6 +106,22 @@ public final class ScriptMonkey {
      */
     public void setInternalFileName(String name) {
         engine.put(ScriptEngine.FILENAME, name);
+        
+        // for CommonJS compatibility, define __dirname and __filename;
+        // we don't know if this is a system file path or URL-style path,
+        // so to determine the directory we first assume '/' and if that
+        // doesn't work, try the file system separator instead
+        String __dirname, __filename;
+        final int slash = name.lastIndexOf('/');        
+        if (slash < 0) {
+            __dirname = "";
+            __filename = name;
+        } else {
+            __dirname = name.substring(0, slash);
+            __filename = name.substring(slash + 1);
+        }        
+        engine.put("__dirname", __dirname);
+        engine.put("__filename", __filename);
     }
 
     private static void updateScriptEngineOpimizationSettings() {

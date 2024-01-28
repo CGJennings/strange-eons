@@ -2,8 +2,8 @@ package ca.cgjennings.apps.arkham.plugins;
 
 import ca.cgjennings.algo.SplitJoin;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import org.mozilla.javascript.Context;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.mozilla.javascript.Context;
 
 /**
  * A {@code Runnable} that can execute script code in another thread. This can

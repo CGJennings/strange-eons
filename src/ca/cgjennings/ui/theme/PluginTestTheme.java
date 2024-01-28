@@ -4,11 +4,11 @@ import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GammaCorrectionFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import static ca.cgjennings.ui.theme.Theme.*;
-import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.UIDefaults;
 import javax.swing.plaf.ColorUIResource;
+import resources.Settings.Colour;
 
 /**
  * The plug-in test theme is a special built-in theme. It is selected

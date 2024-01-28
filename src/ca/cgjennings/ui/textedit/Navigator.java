@@ -1,6 +1,8 @@
 package ca.cgjennings.ui.textedit;
 
+import java.util.Collections;
 import java.util.List;
+import resources.Language;
 
 /**
  * Navigators build a list of {@link NavigationPoint}s that allow quick
@@ -21,4 +23,13 @@ public interface Navigator {
      * @return a (possibly empty) list of the extracted points
      */
     List<NavigationPoint> getNavigationPoints(String sourceText);
+
+    /**
+     * A navigator can return this constant to indicate that the generation of
+     * navigation points is in progress. The caller should request the list
+     * again later using the same source text.
+     */
+    public static final List<NavigationPoint> ASYNC_RETRY = Collections.unmodifiableList(
+        Collections.singletonList(new NavigationPoint(Language.string("busy-script"),0))
+    );
 }

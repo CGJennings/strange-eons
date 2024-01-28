@@ -1,12 +1,12 @@
 package ca.cgjennings.ui.theme;
 
-import resources.Settings.Colour;
 import java.awt.Component;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 import javax.swing.JMenuItem;
+import resources.Settings.Colour;
 
 /**
  * A theme-aware palette of standard colours. The same standard set of

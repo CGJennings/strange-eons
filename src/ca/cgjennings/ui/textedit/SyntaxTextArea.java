@@ -4,9 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.commands.AbstractCommand;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.platform.DesktopIntegration;
-import java.awt.Point;
 import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -88,10 +86,11 @@ final class SyntaxTextArea extends RSyntaxTextArea {
             if (seTheme != null) {
                 themeUrl = seTheme.getSyntaxThemeUrl();
             }
-                    
-            final boolean dark = ca.cgjennings.ui.theme.ThemeInstaller.isDark();
-            final URL url = SyntaxTextArea.class.getResource(dark ? "dark.xml" : "light.xml");
-            loadTheme(url);
+            if (themeUrl == null) {
+                final boolean dark = ca.cgjennings.ui.theme.ThemeInstaller.isDark();
+                themeUrl = SyntaxTextArea.class.getResource(dark ? "dark.xml" : "light.xml");
+            }
+            loadTheme(themeUrl);
         }
     }
     private static Theme defaultTheme;

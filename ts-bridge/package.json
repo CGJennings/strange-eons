@@ -1,0 +1,12 @@
+{
+  "name": "ts-bridge",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc",
+    "watch": "npx tsc -w"
+  },
+  "dependencies": {
+    "typescript": "^5.3.3"
+  }
+}

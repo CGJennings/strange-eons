@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import static ca.cgjennings.apps.arkham.plugins.debugging.Command.escapeHTML;
-import resources.ResourceKit;
 import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.CompoundPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
@@ -65,6 +64,7 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
@@ -76,6 +76,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.FocusManager;
+import javax.swing.Icon;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -114,9 +115,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
+import resources.ResourceKit;
 import resources.Settings;
-import java.util.logging.Logger;
-import javax.swing.Icon;
 
 /**
  * The script debugger client application. This client-side application allows

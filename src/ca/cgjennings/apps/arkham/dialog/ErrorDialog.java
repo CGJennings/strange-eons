@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.plugins.catalog.AutomaticUpdater;
 import ca.cgjennings.platform.PlatformSupport;
-import org.mozilla.javascript.RhinoException;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.ThemeInstaller;
 import java.awt.EventQueue;
@@ -18,6 +17,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+import org.mozilla.javascript.RhinoException;
 import resources.ResourceKit;
 
 /**

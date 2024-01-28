@@ -195,7 +195,7 @@ public enum CodeType {
         if (source == null || this != TYPESCRIPT) {
             return null;
         }
-        return ProjectUtilities.changeExtension(source, "js");
+        return new File(source.getParentFile(), source.getName() + ".js");
     }
 
     /**

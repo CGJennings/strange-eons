@@ -3,7 +3,7 @@
 [Strange Eons](https://strangeeons.cgjennings.ca) is a popular tool for creating and customizing components for paper-based games.
 
 If you are running the latest release, and the Windows, macOS or Linux `.deb` installation package is used, a suitable private Java JRE is included.
-Otherwise, although the current release of Strange Eons runs under Java 8, the code in the main branch of this repository is currently based on Java 11.
+Otherwise, although the current release of Strange Eons runs under Java 8, the code in the main branch of this repository is currently based on **Java 11**.
 [Information on running Strange Eons under different Java versions.](http://se3docs.cgjennings.ca/um-install-other.html)
 
 User documentation is managed in a [separate repository](https://github.com/CGJennings/se3docs).

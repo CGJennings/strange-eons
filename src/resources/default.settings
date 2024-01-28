@@ -9,6 +9,14 @@
 # the user preferences file.
 #
 
+# Temporary development setting: if true, do not promote TypeScript support
+# by listing it as a New File option in projects; you can still create a .ts
+# file by, for example, renaming an empty file.
+#
+# This will remain until either TS is not broken or the experiment ends with
+# TypeScript support being removed.
+hide-typescript-support = yes
+
 
 ###########################################################
 ##

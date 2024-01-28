@@ -2,7 +2,6 @@ package ca.cgjennings.apps.arkham.plugins.typescript;
 
 import ca.cgjennings.text.EscapeUtil;
 import ca.cgjennings.text.MarkdownTransformer;
-import ca.cgjennings.ui.textedit.TypeScriptCodeSupport;
 import java.util.List;
 
 /**

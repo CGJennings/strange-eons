@@ -1,6 +1,5 @@
 package ca.cgjennings.ui.textedit;
 
-import ca.cgjennings.ui.textedit.CodeEditorBase;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

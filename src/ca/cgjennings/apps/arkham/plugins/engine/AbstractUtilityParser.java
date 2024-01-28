@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins.engine;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import java.util.logging.Level;
 import org.mozilla.javascript.CompilerEnvirons;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ContextFactory;
@@ -8,7 +9,6 @@ import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.Parser;
 import org.mozilla.javascript.ast.AstRoot;
 import org.mozilla.javascript.ast.ErrorCollector;
-import java.util.logging.Level;
 
 /**
  * This abstract base class is used to build tools that aid script code

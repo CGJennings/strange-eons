@@ -5,13 +5,13 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.ui.EditorPane;
 import ca.cgjennings.ui.theme.Palette;
 import java.awt.Color;
-import resources.Settings.Colour;
 import java.awt.Component;
 import java.io.StringReader;
 import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
+import resources.Settings.Colour;
 
 /**
  * An abstract base class for design supports that create verbal reports to

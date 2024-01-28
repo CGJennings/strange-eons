@@ -39,7 +39,7 @@ public class FileSourceUnit extends SourceUnit {
     @Override
     protected void updateFromSource(String possiblyStaleVersion) {
         final long modTime = file.lastModified();
-        if (modTime != lastModified) {
+        if (possiblyStaleVersion == null || modTime != lastModified || modTime == 0L) {
             String updatedText = null;
             try {
                 updatedText = ProjectUtilities.getFileText(file, TextEncoding.SOURCE_CODE);

@@ -1,9 +1,8 @@
 package ca.cgjennings.ui.theme;
 
+import ca.cgjennings.graphics.MultiResolutionImageResource;
 import ca.cgjennings.ui.JHeading;
 import ca.cgjennings.ui.JLinkLabel;
-import ca.cgjennings.graphics.MultiResolutionImageResource;
-import resources.Settings.Colour;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Composite;
@@ -19,6 +18,7 @@ import javax.swing.JComponent;
 import javax.swing.LookAndFeel;
 import javax.swing.UIDefaults;
 import resources.Language;
+import resources.Settings.Colour;
 
 /**
  * A {@code Theme} encapsulates a UI design theme. Themes are applied while
