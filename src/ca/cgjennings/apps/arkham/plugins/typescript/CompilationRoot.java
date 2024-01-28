@@ -395,7 +395,7 @@ public class CompilationRoot {
      * will return an {@link EditableSourceUnit} for the path if such a file
      * exists relative to the root.
      * 
-     * @param file the file to create a source unit for
+     * @param path the compilation root path (path realative to root file)
      * @return the source unit, or null
      */
     protected SourceUnit createSourceUnitForReferencedFile(String path) {
