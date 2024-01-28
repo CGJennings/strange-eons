@@ -71,7 +71,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
@@ -1411,20 +1410,16 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         if (navigator == nav) {
             return;
         }
-
         navigator = nav;
         if (navigator != null) {
             refreshNavigator();
         }
-
-        // if the nav isn't visible, the code below will think it is being
-        // uninstalled, which will ensure that it remains hidden but up-to-date
-        // in case it becomes visible later
-        if (!navIsVisible) {
-            nav = null;
-        }
-
-        if (nav == null) {
+        updateNavigatorVisibility();
+    }
+    private static final int NAV_DIV_SIZE = 8;
+    
+    private void updateNavigatorVisibility() {
+        if (navigator == null || !navIsVisible) {
             sideBarPanel.setVisible(false);
             navPanel.setVisible(false);
             sideBarSplitter.setEnabled(false); // must come before resize
@@ -1438,7 +1433,6 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
             sideBarSplitter.setDividerLocation(navSplitSize);
         }
     }
-    private static final int NAV_DIV_SIZE = 8;
 
     /**
      * Returns the current navigator for this editor, or {@code null} if none is
@@ -1469,6 +1463,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
      */
     @Override
     public void refreshNavigator() {
+        if (!navIsVisible) return;
         refreshNavigator(getEditor().getText());
     }
 
@@ -1561,7 +1556,10 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
                     continue;
                 }
                 CodeEditor ced = (CodeEditor) eds[i];
-                ced.setNavigator(ced.getNavigator());
+                ced.updateNavigatorVisibility();
+                if (navIsVisible && ced.getNavigator() != null) {
+                    StaggeredDelay.then(ced::refreshNavigator);
+                }
             }
             Settings.getUser().set(KEY_SHOW_NAVIGATOR, navIsVisible ? "yes" : "no");
         }
