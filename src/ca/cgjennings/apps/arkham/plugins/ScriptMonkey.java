@@ -112,12 +112,17 @@ public final class ScriptMonkey {
         // we don't know if this is a system file path or URL-style path,
         // so to determine the directory we first assume '/' and if that
         // doesn't work, try the file system separator instead
-        int parentSlash = name.lastIndexOf('/');
-        if (parentSlash < 0 && File.separatorChar != '/') {
-            parentSlash = name.lastIndexOf(File.separatorChar);
-        }
-        engine.put("__dirname", parentSlash > 0 ? name.substring(0, parentSlash) : "");
-        engine.put("__filename", name);
+        String __dirname, __filename;
+        final int slash = name.lastIndexOf('/');        
+        if (slash < 0) {
+            __dirname = "";
+            __filename = name;
+        } else {
+            __dirname = name.substring(0, slash);
+            __filename = name.substring(slash + 1);
+        }        
+        engine.put("__dirname", __dirname);
+        engine.put("__filename", __filename);
     }
 
     private static void updateScriptEngineOpimizationSettings() {
