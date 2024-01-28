@@ -2,6 +2,7 @@ package ca.cgjennings.ui.textedit;
 
 import ca.cgjennings.algo.StaggeredDelay;
 import ca.cgjennings.apps.arkham.StrangeEons;
+
 import static ca.cgjennings.ui.textedit.NavigationPoint.*;
 import ca.cgjennings.apps.arkham.plugins.typescript.CodeAction;
 import ca.cgjennings.apps.arkham.plugins.typescript.CompilationFactory;
@@ -26,11 +27,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.Timer;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Element;
@@ -58,7 +55,6 @@ import org.fife.ui.rtextarea.ToolTipSupplier;
  * @since 3.4
  */
 public class TypeScriptCodeSupport extends DefaultCodeSupport {
-
     private String createStyleTag(Font codeFont) {
         String family = "font-family: \"" + codeFont.getFamily().replace("\"", "\\\"") + "\";";
         String size = "font-size: " + codeFont.getSize2D() + "pt;";
@@ -566,40 +562,4 @@ public class TypeScriptCodeSupport extends DefaultCodeSupport {
     
     private String styleTag;
     private MarkdownTransformer markdown;
-    
-    
-    public static void main(String[] args) {
-        EventQueue.invokeLater(()->{
-            javax.swing.JFrame f = new javax.swing.JFrame();
-            f.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
-            javax.swing.JEditorPane ed = new javax.swing.JEditorPane("text/html", "");
-            javax.swing.JTextArea ta = new javax.swing.JTextArea();
-            ta.getDocument().addDocumentListener(new DocumentListener() {
-                @Override
-                public void insertUpdate(DocumentEvent e) {
-                    EventQueue.invokeLater(this::update);
-                }
-
-                @Override
-                public void removeUpdate(DocumentEvent e) {
-                    EventQueue.invokeLater(this::update);
-                }
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    EventQueue.invokeLater(this::update);
-                }
-                
-                public void update() {
-                    ed.setText(ta.getText());
-                }
-            });
-            f.setLayout(new BoxLayout(f.getContentPane(), BoxLayout.LINE_AXIS));
-            f.getContentPane().add(ta);
-            f.getContentPane().add(ed);
-            f.setSize(800,800);
-            f.pack();
-            f.setVisible(true);
-        });
-    }
 }
