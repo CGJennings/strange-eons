@@ -394,7 +394,7 @@ String.prototype.replaceAll = function replaceAll(pattern, replacement) {
     return this.replace(
             new RegExp(RegExp.quote(pattern), 'g'),
             RegExp.quoteReplacement(replacement)
-            );
+    );
 };
 String.prototype.dontEnum('replaceAll');
 
@@ -429,7 +429,7 @@ const require = (modulePath) => {
         require.cache = {};
     }
     let module = {exports: {}};
-    return arkham.plugins.LibImpl.require(global["javax.script.filename"], modulePath, module, module.exports, require.cache);
+    return arkham.plugins.LibImpl.require(__dirname, modulePath, module, module.exports, require.cache);
 }
 require.cache = null;
 
