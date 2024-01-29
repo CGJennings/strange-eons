@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "StrangeEons",
+            "request": "launch",
+            "mainClass": "ca.cgjennings.apps.arkham.StrangeEons",
+            "projectName": "strange-eons",
+            "vmArgs": "-Xmx4g -Xms1g -Xss1m -javaagent:lib/local/jar-loader/1.0/jar-loader-1.0.jar"
+        },
+        {
+            "type": "java",
+            "name": "Script debugger",
+            "request": "launch",
+            "mainClass": "ca.cgjennings.apps.arkham.plugins.debugging.Client",
+            "projectName": "strange-eons"
+        },
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        }        
+    ]
+}
