@@ -1,4 +1,3 @@
-const { get } = require("https");
 const fs = require("fs");
 const path = require("path");
 const uglify = require("uglify-js");
@@ -7,41 +6,33 @@ const JSZip = require("jszip");
 // if true, uses dummy library instead of downloading
 const DEBUG = false;
 
-const SOURCE = "https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js";
+// was https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js
+// see https://github.com/microsoft/TypeScript/issues/50758
+const SOURCE = "https://unpkg.com/typescript/lib/typescript.js";
 const JAR_PATH = "ca/cgjennings/apps/arkham/plugins/typescript/typescriptServices.js";
-const LIB_NAME = "typescript-services.jar";
-const LIB_PATH = path.join("..", "..", "lib", LIB_NAME);
+const LIB_NAME = "typescript-services";
+const LIB_VERSION = "1.0"; // if version changes you must update the .pom files
+const LIB_PATH = path.join(__dirname, "..", "..", "lib", "local", LIB_NAME, LIB_VERSION, `${LIB_NAME}-${LIB_VERSION}.jar`);
 
-function downloadLib(url) {
+async function downloadLib(url) {
     if (DEBUG) {
-        return Promise.resolve(`
+        return `
             (function ts() {
                 let ts;
                 ts.versionMajorMinor = "0.0";
                 ts.version = ts.versionMajorMinor + ".0";
                 console.log("🙂");
             })();
-        `);
-    }   
+        `;
+    }
 
-    return new Promise((resolve, reject) => {
-        get(url, (response) => {
-            let body = "";
-            response.on("data", (chunk) => {
-                body += chunk;
-            });
-            response.on("end", () => {
-                resolve(body);
-            });
-        }).on("error", (err) => {
-            reject(err.message);
-        });
-    });
+    const response = await fetch(url);
+    return await response.text();
 }
 
-function doOrDie(task, f) {
+async function doOrDie(task, f) {
     try {
-        return f();
+        return await f();
     } catch (ex) {
         console.error(`failed to ${task}`);
         console.error(ex.message || ex);
@@ -57,12 +48,18 @@ function doOrDie(task, f) {
     await doOrDie("download library", async () => {
         let version;
         lib = await downloadLib(SOURCE);
-        version = lib.match(/ts\.versionMajorMinor = "([^"]+)/)[1];
-        version += lib.match(/ts\.version = ts\.versionMajorMinor \+ "([^"]+)/)[1];
+        try {
+            version = lib.match(/version = "(\d\.\d\.\d)"/)[1];
+        } catch (ex) {
+            console.log("could not extract version number from library, possible incompatibility");
+            fs.writeFileSync(path.join(__dirname, "..", "..", "typescriptServices.js"), lib);
+            console.log("wrote lib to project root as typescriptServices.js for examination");  
+            exit(20);          
+        }
         console.log(`downloaded library v${version}`);
     });
 
-    doOrDie("minify library", () => {
+    await doOrDie("minify library", () => {
         const originalSize = Math.round(lib.length / 1024);
         lib = uglify.minify(lib).code;
         const minifiedSize = Math.round(lib.length / 1024);
