@@ -434,6 +434,7 @@ public class ResourceFileTokenMaker extends AbstractJFlexTokenMaker {
   /**
    * Returns the text matched by the current regular expression.
    */
+  @Override
   public final String yytext() {
     return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
   }
