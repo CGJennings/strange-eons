@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const exec = require("child_process").execSync;
 
+process.chdir(__dirname);
+
 const DIR_PROJECT = path.join(__dirname, "..");
 const DIR_SRC = path.join(__dirname, "..", "src");
 const DIR_ASSETS = path.join(__dirname, "assets");
@@ -37,7 +39,7 @@ let THIS_REV = 3784 + Math.floor((Date.now() - new Date("Mar 5 2017").getTime())
 if (THIS_REV <= LAST_REV) THIS_REV = LAST_REV + 1;
 console.log(`preparing to release build ${THIS_REV}`);
 
-if (process.argv.includes("--clean")) {
+if (!process.argv.includes("--noclean")) {
     console.log(`cleaning dist folder`);
     cleanDist(true);
 }
@@ -48,7 +50,7 @@ fs.writeFileSync(FILE_REV, `${THIS_REV}`);
 fs.writeFileSync(FILE_LAST_REV, `${THIS_REV}`);
 
 console.log(`assembling project`);
-exec(`mvn clean package -f "${DIR_PROJECT}/pom.xml"`);
+exec(`mvn clean package -Pdeploy -f "${DIR_PROJECT}/pom.xml"`);
 // remove the build number from the source tree so it doesn't get committed
 try { fs.unlinkSync(FILE_REV); }
 catch (ex) { console.warn("could not remove build number from source tree", ex); }
@@ -64,7 +66,9 @@ console.log("compiling installers");
 exec(`${INSTALL4J} --release=${THIS_REV} build-installers.install4j`);
 cleanDist(false);
 
-console.log("done");
+console.log(`done, deployment artifacts can be found in:\n  ${DIR_DIST}`);
+
+
 
 
 
