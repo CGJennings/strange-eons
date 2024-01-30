@@ -246,7 +246,8 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
         removeAllBtn = new javax.swing.JButton();
 
         fauxCollapseBtn.setBackground( BAR_BACKGROUND );
-        fauxCollapseBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/toolbar/hide.png"))); // NOI18N
+        fauxCollapseBtn.setIcon(ResourceKit.getIcon("toolbar/hide.png")
+        );
         fauxCollapseBtn.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 1, 2, 4));
         fauxCollapseBtn.setOpaque(true);
 
