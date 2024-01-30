@@ -51,7 +51,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
-import javax.swing.RowFilter.Entry;
 import javax.swing.RowSorter.SortKey;
 import javax.swing.SortOrder;
 import javax.swing.UIManager;
@@ -1288,7 +1287,7 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 16, 16);
         lockedPanel.add(retryBtn, gridBagConstraints);
 
-        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/application/information.png"))); // NOI18N
+        jLabel8.setIcon(ResourceKit.getIcon("application/information.png"));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
