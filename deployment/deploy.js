@@ -41,7 +41,7 @@ console.log(`preparing to release build ${THIS_REV}`);
 
 if (!process.argv.includes("--noclean")) {
     console.log(`cleaning dist folder`);
-    cleanDist(true);
+    clean(true);
 }
 
 // write the build number into the source tree for packaging
@@ -50,6 +50,7 @@ fs.writeFileSync(FILE_REV, `${THIS_REV}`);
 fs.writeFileSync(FILE_LAST_REV, `${THIS_REV}`);
 
 console.log(`assembling project`);
+clean(true, DIR_ASSEMBLED);
 exec(`mvn clean package -Pdeploy -f "${DIR_PROJECT}/pom.xml"`);
 // remove the build number from the source tree so it doesn't get committed
 try { fs.unlinkSync(FILE_REV); }
@@ -64,7 +65,7 @@ try {
 
 console.log("compiling installers");
 exec(`${INSTALL4J} --release=${THIS_REV} build-installers.install4j`);
-cleanDist(false);
+clean(false);
 
 console.log(`done, deployment artifacts can be found in:\n  ${DIR_DIST}`);
 
@@ -72,10 +73,10 @@ console.log(`done, deployment artifacts can be found in:\n  ${DIR_DIST}`);
 
 
 
-function cleanDist(allFiles) {
-    fs.readdirSync(DIR_DIST).forEach(file => {
+function clean(allFiles, dir = DIR_DIST) {
+    fs.readdirSync(dir).forEach(file => {
         if (allFiles || !file.startsWith("strange-eons-")) {
-            fs.unlinkSync(path.join(DIR_DIST, file));
+            fs.unlinkSync(path.join(dir, file));
         }
     });
 }

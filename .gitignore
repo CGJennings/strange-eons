@@ -122,3 +122,6 @@ Temporary Items
 .directory
 .Trash-*
 .nfs*
+
+### personal space
+local-private/

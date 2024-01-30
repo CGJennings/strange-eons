@@ -4,7 +4,7 @@
     <groupId>ca.cgjennings</groupId>
     <artifactId>strange-eons</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>jar</packaging>    
+    <packaging>jar</packaging>
     <repositories>
         <repository>
             <id>lib-folder</id>
@@ -18,7 +18,7 @@
           <artifactId>flatlaf</artifactId>
           <version>3.3</version>
         </dependency>
-        
+
         <!-- Syntax editing -->
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -41,7 +41,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!-- Markdown -->
         <dependency>
             <groupId>org.commonmark</groupId>
@@ -63,7 +63,7 @@
             <artifactId>commonmark-ext-image-attributes</artifactId>
             <version>0.21.0</version>
         </dependency>
-        
+
         <!-- Local "proprietary" libs -->
         <dependency>
             <!-- Agent to enable adding plug-ins to classpath -->
@@ -76,7 +76,7 @@
             <groupId>local</groupId>
             <artifactId>j2k</artifactId>
             <version>1.0</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <!-- Old mig layout compatible with script libs -->
             <groupId>local</groupId>
@@ -106,8 +106,8 @@
             <groupId>local</groupId>
             <artifactId>typescript-services</artifactId>
             <version>1.0</version>
-        </dependency>        
-        
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -171,30 +171,42 @@
             <build>
                 <plugins>
                     <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <configuration>
-                            <archive>
-                                <manifest>
-                                    <mainClass>ca.cgjennings.apps.arkham.StrangeEons</mainClass>
-                                </manifest>
-                                <manifestEntries>
-                                    <PreMain-Class>ca.cgjennings.jvm.JarLoader</PreMain-Class>
-                                    <Agent-Class>ca.cgjennings.jvm.JarLoader</Agent-Class>
-                                </manifestEntries>
-                            </archive>
-                            <descriptors>
-                                <descriptor>deployment/assembly.xml</descriptor>
-                            </descriptors>
-                            <finalName>strange</finalName>
-                            <outputDirectory>${project.basedir}/deployment/assembled</outputDirectory>
-                        </configuration>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
                         <executions>
                             <execution>
-                                <id>make-assembly</id>
                                 <phase>package</phase>
                                 <goals>
-                                    <goal>single</goal>
+                                    <goal>shade</goal>
                                 </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>ca.cgjennings.apps.arkham.StrangeEons</mainClass>
+                                            <manifestEntries>
+                                                <PreMain-Class>ca.cgjennings.jvm.JarLoader</PreMain-Class>
+                                                <Agent-Class>ca.cgjennings.jvm.JarLoader</Agent-Class>
+                                            </manifestEntries>
+                                        </transformer>
+                                    </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <!-- exclude some files that are superfluous or whose content is duplicated -->
+                                            <excludes>
+                                                <exclude>**/license-metadata/**</exclude>
+                                                <exclude>**/META-INF/LICENSE</exclude>
+                                                <exclude>**/META-INF/LICENSE.txt</exclude>
+                                                <exclude>**/META-INF/maven/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <finalName>strange-eons</finalName>
+                                    <outputDirectory>${project.basedir}/deployment/assembled</outputDirectory>
+                                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
