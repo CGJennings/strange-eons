@@ -54,7 +54,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
             public void run() {
                 boolean update = false;
                 try {
-                    updateLink.setURI(new URI("http://cgjennings.ca/eons/download/update.html"));
+                    updateLink.setURI(new URI("https://strangeeons.cgjennings.ca/"));
                     update = AutomaticUpdater.isApplicationUpdateAvailable();
                 } catch (Throwable t) {
                     StrangeEons.log.log(Level.SEVERE, null, t);
