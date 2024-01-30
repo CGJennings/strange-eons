@@ -71,7 +71,7 @@ import resources.ResourceKit;
  * <dt><code>%</code><dd>If present after a code point, the glyph is mirrored
  * from top-to-bottom.
  * <dt><code>*</code><dd>If present after a code point, the glyph is rotated 45
- * degrees clockwise. (Any rotation that is a multiple of 45 degrees can be
+ * degrees clockwise. (Any rotation that is a multiple of 90 degrees can be
  * produced using a combination of <code>!</code>, <code>%</code>, and
  * <code>*</code>.)
  * <dt><code>,FG</code><dd>The foreground (glyph) colour, see below (optional).
@@ -116,7 +116,7 @@ import resources.ResourceKit;
  * so. To explicitly forbid modifying a colour, append a <code>!</code>. For
  * example, the following would produce pure red that cannot be modified:
  * <code>#f00!</code>, as would <code>ff0000!</code>. A <code>!</code> can be
- * added to a palette colour, but it had no effect as palette colours are always
+ * added to a palette colour, but it has no effect as palette colours are always
  * determined by the theme.
  *
  * <p>
@@ -322,7 +322,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         int tagLetter = -1;
         String[] words = label.split("(\\s|'|_)+");
         for (String w : words) {
-            if (w.isEmpty() || STOP_WORDS.contains(w)) {
+            if (w.isEmpty() || SKIP_WORDS.contains(w)) {
                 continue;
             }
             int codepoint = w.codePointAt(0);
@@ -363,7 +363,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     /**
      * List of articles to ignore when choosing a word as the basis for a tag.
      */
-    private static String STOP_WORDS
+    private static String SKIP_WORDS
             = // Note that any word only needs to appear once, even
             // if it occurs in more than one language.
             //

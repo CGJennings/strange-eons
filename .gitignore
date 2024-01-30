@@ -1,3 +1,7 @@
+### Deployment temporary files
+deployment/dist
+deployment/assembled
+
 ### Maven
 target/
 pom.xml.tag
@@ -118,3 +122,6 @@ Temporary Items
 .directory
 .Trash-*
 .nfs*
+
+### personal space
+local-private/

@@ -21,6 +21,6 @@ install the needed dependencies. Then you can build the bridge script by running
 ## Type definitions
 
 The SE classes, interfaces, and other type information that the bridge script uses
-are given minimal definitions in `java-types.d.ts`. These definitions only 
+are given minimal definitions in `java-types.d.ts`. These definitions only
 reflect the subset of the SE API actually needed by the bridge script.
 *These definitions must be kept in sync with the Java source code.*

@@ -18,7 +18,7 @@
           <artifactId>flatlaf</artifactId>
           <version>3.3</version>
         </dependency>
-        
+
         <!-- Syntax editing -->
         <dependency>
             <groupId>com.fifesoft</groupId>
@@ -41,7 +41,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!-- Markdown -->
         <dependency>
             <groupId>org.commonmark</groupId>
@@ -63,7 +63,7 @@
             <artifactId>commonmark-ext-image-attributes</artifactId>
             <version>0.21.0</version>
         </dependency>
-        
+
         <!-- Local "proprietary" libs -->
         <dependency>
             <!-- Agent to enable adding plug-ins to classpath -->
@@ -76,7 +76,7 @@
             <groupId>local</groupId>
             <artifactId>j2k</artifactId>
             <version>1.0</version>
-        </dependency>        
+        </dependency>
         <dependency>
             <!-- Old mig layout compatible with script libs -->
             <groupId>local</groupId>
@@ -106,9 +106,115 @@
             <groupId>local</groupId>
             <artifactId>typescript-services</artifactId>
             <version>1.0</version>
-        </dependency>        
-        
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- mvn exec:exec to run the main app -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <executable>java</executable>
+                    <arguments>
+                        <argument>-Xmx4g</argument>
+                        <argument>-Xms1g</argument>
+                        <argument>-Xss1m</argument>
+                        <argument>-javaagent:lib/local/jar-loader/1.0/jar-loader-1.0.jar</argument>
+                        <argument>-classpath</argument>
+                        <classpath/>
+                        <argument>ca.cgjennings.apps.arkham.StrangeEons</argument>
+                        <argument>--xDisableJreCheck</argument>
+                    </arguments>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <!-- mvn exec:exec -Pdebugger to start the script debug client -->
+            <id>debugger</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>ca.cgjennings.apps.arkham.plugins.debugging.Client</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <!--
+                When packaging, using the deploy profile (mvn package -Pdeploy) will
+                create a single JAR file that contains all of the dependencies
+                under deployment/assembled. This JAR can then be used to create
+                installers or other deployment packages. Creating such packages
+                is not part of the standard build process since it relies on a
+                third-party tool (install4j) that contributors may not have
+                available. To build the app and create deployment packages, run:
+
+                node deployment/deploy.js
+             -->
+            <id>deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.2.4</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>ca.cgjennings.apps.arkham.StrangeEons</mainClass>
+                                            <manifestEntries>
+                                                <PreMain-Class>ca.cgjennings.jvm.JarLoader</PreMain-Class>
+                                                <Agent-Class>ca.cgjennings.jvm.JarLoader</Agent-Class>
+                                            </manifestEntries>
+                                        </transformer>
+                                    </transformers>
+                                    <filters>
+                                        <filter>
+                                            <artifact>*:*</artifact>
+                                            <!-- exclude some files that are superfluous or whose content is duplicated -->
+                                            <excludes>
+                                                <exclude>**/license-metadata/**</exclude>
+                                                <exclude>**/META-INF/LICENSE</exclude>
+                                                <exclude>**/META-INF/LICENSE.txt</exclude>
+                                                <exclude>**/META-INF/maven/**</exclude>
+                                            </excludes>
+                                        </filter>
+                                    </filters>
+                                    <finalName>strange-eons</finalName>
+                                    <outputDirectory>${project.basedir}/deployment/assembled</outputDirectory>
+                                    <shadedArtifactAttached>false</shadedArtifactAttached>
+                                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
