@@ -182,12 +182,6 @@ public final class ErrorDialog extends javax.swing.JDialog {
     public static void displayFatalError(final String message, final Throwable cause) {
         StrangeEons.log.log(Level.SEVERE, message, cause);
 
-        try {
-            ThemeInstaller.ensureBaselineLookAndFeelInstalled();
-        } catch (Throwable t) {
-            StrangeEons.log.log(Level.SEVERE, null, t);
-        }
-
         // create a stack trace
         try {
             StringBuilder b = new StringBuilder();
@@ -199,16 +193,22 @@ public final class ErrorDialog extends javax.swing.JDialog {
                 appendTrace(b, cause, 0);
             }
             final String stackTrace = b.toString();
+            final Runnable showDialog = () -> {
+                try {
+                    ThemeInstaller.ensureBaselineLookAndFeelInstalled();
+                } catch (Throwable t) {
+                    StrangeEons.log.log(Level.SEVERE, null, t);
+                }
+                try {
+                    display(message, stackTrace, true, cause);
+                } catch (Throwable t) {
+                    StrangeEons.log.log(Level.SEVERE, null, t);
+                }
+            };
             if (EventQueue.isDispatchThread()) {
-                display(message, stackTrace, true, cause);
+                showDialog.run();
             } else {
-                EventQueue.invokeLater(() -> {
-                    try {
-                        display(message, stackTrace, true, cause);
-                    } catch (Throwable t) {
-                        StrangeEons.log.log(Level.SEVERE, null, t);
-                    }
-                });
+                EventQueue.invokeAndWait(showDialog);
             }
         } catch (Throwable t) {
             StrangeEons.log.log(Level.SEVERE, null, t);
@@ -288,10 +288,12 @@ public final class ErrorDialog extends javax.swing.JDialog {
             ed.trace.select(0, 0);
         }
 
-        // fill in message info
-        ed.messageCopy = message; // keep a plain copy for bug report
+        // create a plain version of the message for logging
+        // and sending bug reports
+        ed.plainErrorMessage = plainMessage(message);
+        
+        // fill in message label with wrapped message text
         String msg = "<html><b>" + message + "</b>";
-
         if (isFatal) {
             msg += "<br>" + string("rk-err-fatal");
         } else {
@@ -306,9 +308,9 @@ public final class ErrorDialog extends javax.swing.JDialog {
 
         // include error in log
         if (t != null) {
-            StrangeEons.log.log(Level.SEVERE, message, t);
+            StrangeEons.log.log(Level.SEVERE, ed.plainErrorMessage, t);
         } else {
-            StrangeEons.log.severe(message);
+            StrangeEons.log.severe(ed.plainErrorMessage);
         }
 
         ed.pack();
@@ -326,6 +328,29 @@ public final class ErrorDialog extends javax.swing.JDialog {
         } else {
             ed.dispose();
         }
+    }
+
+    /**
+     * Given a message that may contain basic HTML markup and escapes,
+     * return a plain text version. Break tags are converted to spaces,
+     * other tags erased, and a few common HTML escapes are converted.
+     * The result is only meant for logging and bug reporting, it is
+     * not secure or complete.
+     * 
+     * @param message the message to convert
+     * @return a plain text version of the message
+     */
+    private static String plainMessage(String message) {
+        if (message == null) {
+            return "";
+        }
+        message = message.replaceAll("<br\\s*/?>", " ")
+                .replaceAll("<[^>]+>", "")
+                .replace("&lt;", "<")
+                .replace("&gt;", ">")
+                .replace("&amp;", "&")
+                .replace("&nbsp;", " ");
+                return message;
     }
 
     /**
@@ -357,7 +382,7 @@ public final class ErrorDialog extends javax.swing.JDialog {
 
         heading.setText(string("rk-err-fatal-title")); // NOI18N
 
-        reportBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/icons/ui/bug-report.png"))); // NOI18N
+        reportBtn.setIcon(ResourceKit.getIcon("bug-report"));
         reportBtn.setText(string("app-report-bug")); // NOI18N
         reportBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -458,11 +483,11 @@ public final class ErrorDialog extends javax.swing.JDialog {
             reportBtn.setEnabled(false);
             JUtilities.showWaitCursor(this);
             StrangeEons.getApplication().fileBugReport(
-                    "Message: " + messageCopy + "\n" + trace.getText(), null
+                    "Message: " + plainErrorMessage + "\n" + trace.getText(), null
             );
             JUtilities.hideWaitCursor(this);
 	}//GEN-LAST:event_reportBtnActionPerformed
-    private String messageCopy;
+    private String plainErrorMessage;
 
 	private void closeBtnActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_closeBtnActionPerformed
             dispose();

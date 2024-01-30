@@ -113,8 +113,8 @@
     </Component>
     <Component class="javax.swing.JButton" name="reportBtn">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/resources/icons/ui/bug-report.png"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+          <Connection code="ResourceKit.getIcon(&quot;bug-report&quot;)" type="code"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-report-bug" replaceFormat="string(&quot;{key}&quot;)"/>

@@ -1159,13 +1159,13 @@ public class BundleInstaller {
 
     private static void init() {
         if (!JarLoader.isSupported()) {
-            throw new AssertionError(
-                    "unable to load plugins, try adding -javaagent:<path to strange-eons.jar> to the command line"
+            ErrorDialog.displayFatalError(
+                    "Unable to link to plug-in bundles; add <tt>-javaagent:strange-eons.jar</tt> to the command line",
+                    null
             );
         }
 
-        StrangeEons.log.info("loading dynamic bundles via " + JarLoader.getStrategy());
-
+        StrangeEons.log.log(Level.INFO, "loading dynamic bundles via {0}", JarLoader.getStrategy());
         deprecatedBundles = null;
         String ignoreValue = Settings.getShared().get("deprecated-bundles");
         if (ignoreValue != null) {
