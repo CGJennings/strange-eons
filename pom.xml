@@ -110,30 +110,40 @@
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <!-- mvn exec:exec to run the main app -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <executable>java</executable>
-                    <arguments>
-                        <argument>-Xmx4g</argument>
-                        <argument>-Xms1g</argument>
-                        <argument>-Xss1m</argument>
-                        <argument>-javaagent:lib/local/jar-loader/1.0/jar-loader-1.0.jar</argument>
-                        <argument>-classpath</argument>
-                        <classpath/>
-                        <argument>ca.cgjennings.apps.arkham.StrangeEons</argument>
-                        <argument>--xDisableJreCheck</argument>
-                    </arguments>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <profiles>
+        <profile>
+            <!--
+                Note: this is in a profile so that certain IDEs (e.g., NetBeans)
+                will not use this profile when running the app from the IDE.
+                This allows the IDE to choose the correct JRE to run the app,
+                whereas this requires that the "java" command point to the
+                correct version.
+            -->
+            <!-- mvn exec:exec -Papp to run the main app -->
+            <id>app</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <configuration>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Xmx4g</argument>
+                                <argument>-Xms1g</argument>
+                                <argument>-Xss1m</argument>
+                                <argument>-javaagent:lib/local/jar-loader/1.0/jar-loader-1.0.jar</argument>
+                                <argument>-classpath</argument>
+                                <classpath/>
+                                <argument>ca.cgjennings.apps.arkham.StrangeEons</argument>
+                                <argument>--xDisableJreCheck</argument>
+                            </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <!-- mvn exec:exec -Pdebugger to start the script debug client -->
             <id>debugger</id>
