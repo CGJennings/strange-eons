@@ -72,7 +72,7 @@ mvn compile
 
 Start the main application:
 ```bash
-mvn exec:exec
+mvn exec:exec -Papp
 ```
 
 > This will run the application with an argument that causes it to
