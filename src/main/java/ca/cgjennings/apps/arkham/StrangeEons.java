@@ -2562,6 +2562,7 @@ public final class StrangeEons {
         } else {
             log.info("starting background initialization");
             backgroundInitThread = new Thread(backgroundInit, "Background init thread");
+            backgroundInitThread.setDaemon(true);
             backgroundInitThread.start();
         }
     }
