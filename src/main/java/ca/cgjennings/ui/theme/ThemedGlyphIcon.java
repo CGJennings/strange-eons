@@ -71,7 +71,7 @@ import resources.ResourceKit;
  * <dt><code>%</code><dd>If present after a code point, the glyph is mirrored
  * from top-to-bottom.
  * <dt><code>*</code><dd>If present after a code point, the glyph is rotated 45
- * degrees clockwise. (Any rotation that is a multiple of 45 degrees can be
+ * degrees clockwise. (Any rotation that is a multiple of 90 degrees can be
  * produced using a combination of <code>!</code>, <code>%</code>, and
  * <code>*</code>.)
  * <dt><code>,FG</code><dd>The foreground (glyph) colour, see below (optional).
