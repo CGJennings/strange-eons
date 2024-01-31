@@ -40,7 +40,6 @@ public final class DIYSheet extends Sheet<DIY> {
      * @see DIY#paintFront
      * @see DIY#paintBack
      */
-    @SuppressWarnings("deprecation")
     public DIYSheet(DIY diy, String templateKey, int index) {
         super(diy, templateKey);
         this.diy = diy;

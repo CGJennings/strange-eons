@@ -99,8 +99,6 @@ public final class PageView extends JComponent {
     // turning off anti-aliasing will slow things down if using quartz renderer
     private final boolean alwaysAntiAliasView = Settings.getShared().getYesNo("always-anti-alias-page-views") || PlatformSupport.PLATFORM_IS_MAC;
 
-    private static final String[] DROPPABLE_IMAGE_TYPES = new String[]{"jpg", "jpeg", "png", "jp2"};
-
     /**
      *
      */
@@ -108,7 +106,6 @@ public final class PageView extends JComponent {
         setAutoscrolls(true);
         setBackground(BORDER);
         setDoubleBuffered(true);
-//		setTransferHandler( itemDropHandler );
 
         putClientProperty(ContextBar.BAR_LEADING_SIDE_PROPERTY, true);
         putClientProperty(ContextBar.BAR_CUSTOM_LOCATION_PROPERTY, BAR_LOCATOR);
@@ -638,8 +635,6 @@ public final class PageView extends JComponent {
                 g.setColor(SELECTION);
                 g.setStroke(SELECTION_STROKE);
                 g.draw(c.getOutline());
-//				r.setFrame(pos.getX(), pos.getY(), c.getWidth(), c.getHeight());
-//				g.draw(r);
             }
         }
     }
@@ -693,7 +688,7 @@ public final class PageView extends JComponent {
     private final static Stroke SELECTION_STROKE = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 0f);
     private final static Stroke HANDLE_STROKE = GRID_OUTLINE_STROKE;
     private Page page;
-    private double tx = 0d, ty = 0d, scale = 1d, cx, cy;
+    private double tx = 0d, ty = 0d, scale = 1d;
 
     /**
      * Adjusts the zoom level of the view by a number of "ticks", as if the user
@@ -738,18 +733,6 @@ public final class PageView extends JComponent {
     // these zoom steps have been selected to optimize performance with
     // components that have template images that are a multiple of 150
     private static final StepSelector scaleSelector = new StepSelector(STANDARD_ZOOM_LEVELS);
-    private static final StepSelector gestureScaleSelector;
-
-    static {
-        double[] levels = new double[(STANDARD_ZOOM_LEVELS.length - 1) * 3 + 1];
-        levels[0] = STANDARD_ZOOM_LEVELS[0];
-        for (int i = 1, j = 1; i < STANDARD_ZOOM_LEVELS.length; ++i) {
-            levels[j++] = Interpolation.lerp(0.333d, STANDARD_ZOOM_LEVELS[i - 1], STANDARD_ZOOM_LEVELS[i]);
-            levels[j++] = Interpolation.lerp(0.667d, STANDARD_ZOOM_LEVELS[i - 1], STANDARD_ZOOM_LEVELS[i]);
-            levels[j++] = STANDARD_ZOOM_LEVELS[i];
-        }
-        gestureScaleSelector = new StepSelector(levels);
-    }
 
     private void changeScale(final double newScale, boolean animate) {
         if (scale == newScale) {
@@ -824,7 +807,6 @@ public final class PageView extends JComponent {
 
     public void setPage(Page page) {
         this.page = page;
-        PaperProperties pp = page.getDeck().getPaperProperties();
         tx = 8;
         ty = 8;
 
@@ -1038,8 +1020,6 @@ public final class PageView extends JComponent {
 
     private void mouseReleased(MouseEvent e) {
         boolean command = e.isControlDown() || e.isMetaDown();
-        boolean alt = e.isAltDown() || e.isAltGraphDown();
-        boolean shift = e.isShiftDown();
 
         // if dragging a group of cards, we can now "forget" their starting points
         // as it is too late for the user to cancel now
@@ -1088,7 +1068,6 @@ public final class PageView extends JComponent {
 
     private void mouseClicked(MouseEvent e) {
         boolean command = e.isControlDown() || e.isMetaDown();
-        boolean alt = e.isAltDown() || e.isAltGraphDown();
         boolean shift = e.isShiftDown();
 
         if (e.getButton() == MouseEvent.BUTTON1 && editable) {
@@ -1102,7 +1081,6 @@ public final class PageView extends JComponent {
 
     private void mousePressed(MouseEvent e) {
         boolean command = e.isControlDown() || e.isMetaDown();
-        boolean alt = e.isAltDown() || e.isAltGraphDown();
         boolean shift = e.isShiftDown();
 
         TextBox.cancelActiveEditor();
@@ -1317,8 +1295,6 @@ public final class PageView extends JComponent {
     }
     private static Icon selectionItemLock;
 
-    // stores the new width and height a card will have if the user stops resizing it now
-    private double resizeWidth, resizeHeight;
     // stores the handle currently being dragged
     private DragHandle dragHandle = null;
     private boolean selectDrag = false;
@@ -1760,7 +1736,6 @@ public final class PageView extends JComponent {
         Deck deck = page.getDeck();
         Point2D p = viewToDocument(dropLoc.x, dropLoc.y);
 
-        double cx = p.getX(), cy = p.getY();
         getPage().getDeck().clearSelection();
 
         PageItem c = droppablePageItem.clone();

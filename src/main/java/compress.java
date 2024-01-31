@@ -65,8 +65,6 @@ public final class compress {
         Compressor comp = pargs.a.getCompressor();
         comp.setCompressionLevel(Math.max(1, Math.min(pargs.m, 9)));
 
-        InputStream in = null;
-        OutputStream out = null;
         try {
             ProgressListener li = (Object source, float progress) -> {
                 System.out.printf("%.0f%%\r", progress * 100f);

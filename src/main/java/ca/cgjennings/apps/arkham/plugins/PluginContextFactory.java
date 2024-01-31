@@ -23,7 +23,6 @@ public final class PluginContextFactory {
      * @throws PluginException if an exception occurs while accessing the
      * plug-in
      */
-    @SuppressWarnings("deprecation")
     public static PluginContext createContext(AbstractInstalledPlugin ip, int modifiers) throws PluginException {
         if (ip == null) {
             throw new NullPointerException("ip");
@@ -43,7 +42,6 @@ public final class PluginContextFactory {
      * @throws PluginException if an exception occurs while accessing the
      * plug-in
      */
-    @SuppressWarnings("deprecation")
     static PluginContext createDualContext(AbstractInstalledPlugin ip, Plugin p) throws PluginException {
         if (ip == null) {
             throw new NullPointerException("ip");
@@ -65,7 +63,6 @@ public final class PluginContextFactory {
      * @throws PluginException if an exception occurs while accessing the
      * plug-in
      */
-    @SuppressWarnings("deprecation")
     public static PluginContext createProbeContext(AbstractInstalledPlugin ip, Plugin p) throws PluginException {
         if (ip == null) {
             throw new NullPointerException("ip");
@@ -151,7 +148,6 @@ public final class PluginContextFactory {
      * report as being held down at activation
      * @return a dummy plug-in context
      */
-    @SuppressWarnings("deprecation")
     public synchronized static PluginContext createDummyContext(int modifiers) {
         try {
             if (modifiers == 0) {
@@ -167,6 +163,5 @@ public final class PluginContextFactory {
         }
     }
 
-    @SuppressWarnings("deprecation")
     private static PluginContextImpl dummy;
 }

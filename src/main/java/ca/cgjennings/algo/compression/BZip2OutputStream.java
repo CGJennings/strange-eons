@@ -759,7 +759,7 @@ class BZip2OutputStream extends OutputStream
         }
 
         /* 20 is just a paranoia constant */
-        this.allowableBlockSize = (this.blockSize100k * BZip2Constants.baseBlockSize) - 20;
+        this.allowableBlockSize = (this.blockSize100k * BZip2Constants.BASE_BLOCK_SIZE) - 20;
     }
 
     private void endBlock() throws IOException {
@@ -2064,7 +2064,7 @@ class BZip2OutputStream extends OutputStream
         Data(int blockSize100k) {
             super();
 
-            final int n = blockSize100k * BZip2Constants.baseBlockSize;
+            final int n = blockSize100k * BZip2Constants.BASE_BLOCK_SIZE;
             this.block = new byte[(n + 1 + NUM_OVERSHOOT_BYTES)];
             this.fmap = new int[n];
             this.sfmap = new char[2 * n];

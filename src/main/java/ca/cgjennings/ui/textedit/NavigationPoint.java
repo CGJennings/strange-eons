@@ -238,7 +238,6 @@ public class NavigationPoint implements Comparable<NavigationPoint> {
      *
      * @param points the points to sort
      */
-    @SuppressWarnings(value = "unchecked")
     public static void sortByName(List<NavigationPoint> points) {
         Collections.sort(points, NAME_ORDER);
     }

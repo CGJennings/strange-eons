@@ -452,8 +452,6 @@ public class TextIndex implements Iterable<String> {
                 }
                 return q;
             } catch (IllegalArgumentException e) {
-                String m = e.getMessage();
-
                 // the error happened when there were tokens.size() tokens left to parse
                 int badIndex = tokens.size();
                 tokens = tokenize(qs);

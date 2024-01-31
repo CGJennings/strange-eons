@@ -21,7 +21,6 @@ import java.io.Serializable;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @Deprecated
-@SuppressWarnings("deprecation")
 class Card implements Cloneable, Serializable {
 
     static final long serialVersionUID = 2827360448649571724L;

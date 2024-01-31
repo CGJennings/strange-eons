@@ -39,7 +39,7 @@ package ca.cgjennings.algo.compression;
  */
 interface BZip2Constants {
 
-    int baseBlockSize = 100_000;
+    int BASE_BLOCK_SIZE = 100_000;
     int MAX_ALPHA_SIZE = 258;
     int MAX_CODE_LEN = 23;
     int RUNA = 0;

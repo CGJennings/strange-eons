@@ -221,32 +221,6 @@ public final class register extends CommandLineParser {
         return new File(sh.directory(), destName);
     }
 
-    private void extract(String resource, String destFile) throws IOException {
-        item(resource);
-        InputStream in = null;
-        FileOutputStream out = null;
-        try {
-            in = resources.CacheMetrics.class.getResourceAsStream(resource);
-            out = new FileOutputStream(file(destFile));
-            StreamPump.copy(in, out);
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (Exception e) {
-                    warn(null, e);
-                }
-            }
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (Exception e) {
-                    warn(null, e);
-                }
-            }
-        }
-    }
-
     private void extractIcon(String source, String destFile, int size) throws IOException {
         item(destFile + " icon " + size + " x " + size);
         destFile += size + ".png";
@@ -613,14 +587,6 @@ public final class register extends CommandLineParser {
      * Execute an xdg-utils command, prepending command name with the specified
      * xdg path, if any.
      */
-    private int xdg(List<String> tokens) throws IOException {
-        return xdg(tokens.toArray(String[]::new));
-    }
-
-    /**
-     * Execute an xdg-utils command, prepending command name with the specified
-     * xdg path, if any.
-     */
     private int xdg(String... tokens) throws IOException {
         if (xdg != null) {
             tokens[0] = xdg + File.separatorChar + tokens[0];
@@ -738,7 +704,7 @@ public final class register extends CommandLineParser {
             code = 2;
         } else {
             System.err.println("Error: an unexpected error prevented registration");
-            t.printStackTrace(System.err);
+            if (t != null) t.printStackTrace(System.err);
         }
 
         System.err.flush();

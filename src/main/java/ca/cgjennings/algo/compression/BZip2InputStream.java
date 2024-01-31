@@ -963,7 +963,7 @@ class BZip2InputStream extends InputStream implements BZip2Constants {
         Data(int blockSize100k) {
             super();
 
-            this.ll8 = new byte[blockSize100k * BZip2Constants.baseBlockSize];
+            this.ll8 = new byte[blockSize100k * BZip2Constants.BASE_BLOCK_SIZE];
         }
 
         /**

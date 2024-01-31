@@ -152,8 +152,6 @@ import static resources.Language.string;
  * @since 1.0
  */
 public class ResourceKit {
-
-    private static final String KEY_EXPERIMENTAL_FEATURES = "enable-experimental-features";
     private static final String KEY_USE_ALL_PRINT_SERVICES = "print-enable-all-print-services";
 
     /**
@@ -1458,21 +1456,20 @@ public class ResourceKit {
      * kerning and ligatures when possible
      * @throws NullPointerException if the font is {@code null}
      */
-    @SuppressWarnings("unchecked")
     public static Font enableKerningAndLigatures(Font font) {
         if (font == null) {
             throw new NullPointerException("font");
         }
-        Map attrMap = font.getAttributes();
+        Map<TextAttribute, ?> attrMap = font.getAttributes();
         if (attrMap.get(TextAttribute.KERNING) == TextAttribute.KERNING_ON
                 && attrMap.get(TextAttribute.LIGATURES) == TextAttribute.LIGATURES_ON) {
             return font;
         }
 
-        attrMap = new HashMap();
-        attrMap.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
-        attrMap.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
-        return font.deriveFont(attrMap);
+        Map<TextAttribute, Object> newAttrMap = new HashMap<>();
+        newAttrMap.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
+        newAttrMap.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
+        return font.deriveFont(newAttrMap);
     }
 
     ////////////////////////
@@ -1566,7 +1563,7 @@ public class ResourceKit {
                 }
 
                 @Override
-                public Class getContentType() {
+                public Class<?> getContentType() {
                     return BufferedImage.class;
                 }
 
@@ -1617,7 +1614,7 @@ public class ResourceKit {
                 }
 
                 @Override
-                public Class getContentType() {
+                public Class<?> getContentType() {
                     return Font.class;
                 }
 
@@ -1647,7 +1644,6 @@ public class ResourceKit {
     // Error Handling
     //
     public static void missingKeyError(String key) {
-        IllegalArgumentException e = new IllegalArgumentException(key);
         StrangeEons.log.log(Level.WARNING, string("rk-err-missing-key", key));
         displayError(string("rk-err-missing-key", key), null);
     }
@@ -2356,25 +2352,6 @@ public class ResourceKit {
     }
 
     /**
-     * Gets the default folder from settings and applies it to the chooser. The
-     * setting key is selected based on the chooser passed in.
-     *
-     * @param d chooser to set the directory on
-     */
-    private static void applyDefaultFolder(JFileChooser d) {
-        d.setCurrentDirectory(null);
-
-        String f = RawSettings.getUserSetting(getFolderKey(d));
-        if (f != null) {
-            try {
-                d.setCurrentDirectory(new File(f));
-            } catch (Throwable t) {
-                displayError("Unable to set default folder directory.", t);
-            }
-        }
-    }
-
-    /**
      * Strips illegal characters out of a potential file name. If no characters
      * are stripped, {@code name} is returned unchanged.
      *
@@ -2541,7 +2518,6 @@ public class ResourceKit {
      * {@code null}
      * @see SEObjectInputStream
      */
-    @SuppressWarnings("deprecation")
     public static GameComponent getGameComponentFromStream(InputStream in, String sourceDescription, boolean reportError) {
         GameComponent gc = null;
         SEObjectInputStream oi = null;

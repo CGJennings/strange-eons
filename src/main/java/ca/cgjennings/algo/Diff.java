@@ -22,7 +22,7 @@ package ca.cgjennings.algo;
  */
 public class Diff<E> {
 
-    private DiffListener<E> li;
+    private final DiffListener<E> li;
 
     /**
      * Create a new {@code Diff} instance that uses a default listener that is

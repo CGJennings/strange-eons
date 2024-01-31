@@ -20,7 +20,6 @@ import java.io.Serializable;
  * of {@link ca.cgjennings.apps.arkham.deck.item.PageItem}.
  */
 @Deprecated
-@SuppressWarnings("deprecation")
 class ResizeableCard extends Card implements Serializable, Cloneable {
 
     static final long serialVersionUID = 2827360448649571724L;

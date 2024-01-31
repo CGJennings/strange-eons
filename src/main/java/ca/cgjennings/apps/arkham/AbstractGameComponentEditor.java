@@ -991,7 +991,6 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param prefix a prefix string that will identify labels that are string
      * table keys
      */
-    @SuppressWarnings("unchecked")
     public static void localizeComboBoxLabels(Language lang, JComboBox<String> box, String prefix) {
         if (lang == null) {
             lang = Language.getInterface();

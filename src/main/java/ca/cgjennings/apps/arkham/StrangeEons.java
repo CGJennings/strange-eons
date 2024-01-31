@@ -578,7 +578,6 @@ public final class StrangeEons {
      *
      * @return the main application window
      */
-    @SuppressWarnings("deprecation")
     public static StrangeEonsAppWindow getWindow() {
         return AppFrame.getApp();
     }
@@ -1663,7 +1662,6 @@ public final class StrangeEons {
      * @param appIsBusy {@code true} to set the wait cursor, {@code false} to
      * unset it
      */
-    @SuppressWarnings("deprecation")
     public static void setWaitCursor(boolean appIsBusy) {
         AppFrame af = AppFrame.getApp();
         if (af != null) {
@@ -1733,7 +1731,6 @@ public final class StrangeEons {
      * @see ErrorDialog#displayError(java.lang.String, java.lang.Throwable)
      * @throws AssertionError if called from outside the Event Dispatch Thead
      */
-    @SuppressWarnings("deprecation")
     public static Window getSafeStartupParentWindow() {
         JUtilities.threadAssert();
         AppFrame af = AppFrame.getApp();
@@ -2237,7 +2234,6 @@ public final class StrangeEons {
      * find the already running instance and pass our file arguments to it
      * before exiting.
      */
-    @SuppressWarnings("deprecation")
     private void initApplySingleInstanceLimit() {
         String limit = RawSettings.getUserSetting("limit-to-single-instance");
         if (limit == null) {

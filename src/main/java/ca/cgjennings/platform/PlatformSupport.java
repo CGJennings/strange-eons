@@ -265,7 +265,6 @@ public class PlatformSupport {
      * @param stroke a string formatted as above
      * @return a {@code KeyStroke} object representing the specified key event
      */
-    @SuppressWarnings("deprecation")
     public static KeyStroke getKeyStroke(String stroke) {
         if (stroke == null) {
             return null;

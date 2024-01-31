@@ -40,7 +40,6 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
 
     private static final String SYSTEM_LAF_VALUE = "Tcho-Tcho";
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 

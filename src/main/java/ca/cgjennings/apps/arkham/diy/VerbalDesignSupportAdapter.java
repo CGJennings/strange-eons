@@ -43,7 +43,6 @@ public class VerbalDesignSupportAdapter extends AbstractVerbalDesignSupport<Game
      * @param gc the component to analyze
      * @param scriptFunction the script function that will handle the analysis
      */
-    @SuppressWarnings("unchecked")
     public VerbalDesignSupportAdapter(GameComponent gc, DesignAnalyzer scriptFunction) {
         super(gc);
         if (scriptFunction == null) {
