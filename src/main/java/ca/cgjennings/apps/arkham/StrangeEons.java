@@ -133,7 +133,7 @@ public final class StrangeEons {
                 ver_build = Integer.parseInt(br.readLine().trim());
                 if (ver_build != INTERNAL_BUILD_NUMBER) {
                     ver_type = ReleaseType.GENERAL;
-                    String type = br.readLine();
+                    String type = br.readLine().trim();
                     if (type != null) {
                         ver_type = ReleaseType.valueOf(type.trim().toUpperCase(Locale.ROOT));
                     }
