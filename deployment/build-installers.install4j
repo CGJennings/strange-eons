@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<install4j version="9.0.7" transformSequenceNumber="9">
+<install4j version="10.0.7" transformSequenceNumber="10">
   <directoryPresets config="./temp/strange-eons.jar" />
   <application name="Strange Eons" applicationId="0581-5195-2362-0248" mediaDir="./dist" mediaFilePattern="strange-eons-${compiler:sys.platform}-b${compiler:sys.version}" compression="9" lzmaCompression="true" shortName="StrangeEons" publisher="Christopher G. Jennings" publisherWeb="https://cgjennings.ca/" version="1111" allPathsRelative="true" macVolumeId="e8c65a753c3b99ca" javaMinVersion="11" javaMaxVersion="11" allowBetaVM="true" jdkMode="jdk" jdkName="JDK 1.8">
     <languages skipLanguageSelection="true">
@@ -17,7 +17,7 @@
     </languages>
     <jreBundles jdkProviderId="JBR" release="11/11.0.16-b2043.64" />
   </application>
-  <files missingFilesStrategy="error" launcherOverwriteMode="1" preserveSymlinks="false">
+  <files missingFilesStrategy="error" launcherOverwriteMode="1">
     <mountPoints>
       <mountPoint id="28" location="bin" />
     </mountPoints>
@@ -26,7 +26,7 @@
     </entries>
   </files>
   <launchers>
-    <launcher name="StrangeEons" id="29" menuName="Strange Eons" icnsFile="./assets/icons/app/application.icns" macStaticAssociationsForInstallers="true">
+    <launcher name="StrangeEons" id="29" menuName="Strange Eons" icnsFile="./assets/icons/app/application.icns">
       <executable name="strangeeons" iconSet="true" iconFile="./assets/icons/app/application.ico" executableDir="bin" redirectStderr="false" stderrFile="strangeeons.log" stdoutFile="strangeeons.log" failOnStderrOutput="false" executableMode="gui" changeWorkingDirectory="false" checkConsoleParameter="true">
         <versionInfo include="true" fileVersion="3.0.${compiler:sys.version}.0" fileDescription="Strange Eons" legalCopyright="Copyright © 2006-2021 by Christopher G. Jennings" internalName="Strange Eons" productName="Strange Eons" />
       </executable>
@@ -60,8 +60,16 @@
         <file path="./assets/icons/app/32.png" />
         <file path="./assets/icons/app/48.png" />
       </iconImageFiles>
+      <macStaticAssociations>
+        <fileAssociation extension="eon" description="Strange Eons Game Component" iconFile="./assets/icons/eon/document.icns" role="editor" />
+        <fileAssociation extension="seplugin" description="Strange Eons Plug-in (Standard)" iconFile="./assets/icons/seplugin/seplugin.icns" role="editor" />
+        <fileAssociation extension="seext" description="Strange Eons Plug-in (Extension)" iconFile="./assets/icons/seext/seext.icns" role="editor" />
+        <fileAssociation extension="setheme" description="Strange Eons Plug-in (Theme)" iconFile="./assets/icons/setheme/setheme.icns" role="editor" />
+        <fileAssociation extension="selibrary" description="Strange Eons Plug-in (Library)" iconFile="./assets/icons/selibrary/selibrary.icns" role="editor" />
+        <fileAssociation extension="seproject" description="Strange Eons Packaged Project" iconFile="./assets/icons/seproject/seproject.icns" role="editor" />
+      </macStaticAssociations>
     </launcher>
-    <launcher name="Script Debugger" id="142" menuName="Script Debugger" icnsFile="./assets/icons/debugger/debugger.icns" macStaticAssociationsForInstallers="true">
+    <launcher name="Script Debugger" id="142" menuName="Script Debugger" icnsFile="./assets/icons/debugger/debugger.icns">
       <executable name="sedebug" iconSet="true" iconFile="./assets/icons/debugger/debugger.ico" executableDir="bin" redirectStderr="false" stderrFile="strangeeons.log" executableMode="gui" changeWorkingDirectory="false" singleInstance="true" checkConsoleParameter="true" dpiAware="false">
         <versionInfo include="true" fileVersion="3.0.${compiler:sys.version}.0" fileDescription="Strange Eons Script Debugger" legalCopyright="Copyright © 2010-2021 by Christopher G. Jennings" internalName="Debugger" productName="Strange Eons Script Debugger" />
       </executable>
@@ -73,7 +81,6 @@
           <options version="9-" line="--illegal-access=permit" />
         </vmOptions>
       </java>
-      <macStaticAssociationActions mode="selected" />
       <vmOptionsFile mode="none">
         <content>#
 # To modify the default VM options, enter one VM parameter
@@ -109,7 +116,6 @@
           <options version="9-" line="--illegal-access=permit" />
         </vmOptions>
       </java>
-      <macStaticAssociationActions mode="selected" />
       <vmOptionsFile mode="content" overwriteMode="1">
         <content>#
 # To modify the default VM options, enter one VM parameter
@@ -370,8 +376,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Game Component</property>
                       <property name="extension" type="string">eon</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/eon/document.ico</string>
@@ -384,8 +388,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Standard)</property>
                       <property name="extension" type="string">seplugin</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/seplugin/seplugin.ico</string>
@@ -398,8 +400,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Extension)</property>
                       <property name="extension" type="string">seext</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/seext/seext.ico</string>
@@ -412,8 +412,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Theme)</property>
                       <property name="extension" type="string">setheme</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/setheme/setheme.ico</string>
@@ -426,8 +424,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Library)</property>
                       <property name="extension" type="string">selibrary</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/selibrary/selibrary.ico</string>
@@ -440,8 +436,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Packaged Project</property>
                       <property name="extension" type="string">seproject</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="mac" type="boolean" value="false" />
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windowsIconFile">
                         <object class="com.install4j.api.beans.ExternalFile">
                           <string>./assets/icons/seproject/seproject.ico</string>
@@ -458,12 +452,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Game Component</property>
                       <property name="extension" type="string">eon</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/eon/document.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -472,12 +460,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Standard)</property>
                       <property name="extension" type="string">seplugin</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/seplugin/seplugin.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -486,12 +468,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Extension)</property>
                       <property name="extension" type="string">seext</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/seext/seext.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -500,12 +476,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Theme)</property>
                       <property name="extension" type="string">setheme</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/setheme/setheme.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -514,12 +484,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Plug-in (Library)</property>
                       <property name="extension" type="string">selibrary</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/selibrary/selibrary.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -528,12 +492,6 @@ return false;</condition>
                       <property name="description" type="string">Strange Eons Packaged Project</property>
                       <property name="extension" type="string">seproject</property>
                       <property name="launcherId" type="string">29</property>
-                      <property name="macIconFile">
-                        <object class="com.install4j.api.beans.ExternalFile">
-                          <string>./assets/icons/seproject/seproject.icns</string>
-                        </object>
-                      </property>
-                      <property name="macRole" type="enum" class="com.install4j.runtime.beans.actions.desktop.MacAssociationRole" value="EDITOR" />
                       <property name="windows" type="boolean" value="false" />
                     </serializedBean>
                   </action>
@@ -1081,7 +1039,7 @@ return true;</property>
     </styles>
   </installerGui>
   <mediaSets>
-    <windows name="Windows (x64)" id="226" installDir="StrangeEons">
+    <windows name="Windows (x64)" id="226" installDir="StrangeEons" architecture="64">
       <jreBundle includedJre="windows-amd64-1.8.0_202" bundleUrl="http://cgjennings.ca/eons/download/jre/windows-amd64-1.8.0_112.tar.gz" directDownload="true" />
     </windows>
     <macosArchive name="macOS Single Bundle Archive" id="380" architecture="universal" launcherId="29" />

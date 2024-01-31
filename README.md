@@ -107,6 +107,14 @@ To build installers for deployment to Windows, macOS, and Linux, you can use:
 node deployment/deploy.js
 ```
 
+The script supports the following arguments:
+
+- `--noclean`: don't delete previous deployment artifacts
+- `--nosign`: don't try to sign any installers
+- `--beta`: mark the build as a beta release
+- `--alpha`: mark the build as an alpha release
+- `--dev`: mark the build as a development release
+
 This relies on a commercial third-party tool,
 [Install4J](https://www.ej-technologies.com/products/install4j/overview.html).
 The script will guess at the location of Install4J, but if that fails
