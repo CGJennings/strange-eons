@@ -19,7 +19,3 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn package --file pom.xml
-
-    # Upload dependency graph for Dependabot alerts
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@v4
