@@ -139,7 +139,7 @@ public class RawSettings {
 
         CommandLineArguments args = StrangeEons.getApplication().getCommandLineArguments();
         // set the migration hint to a default value from the command line
-        performMigrationHint = args.migrateprefs;
+        performMigrationHint = args.xMigratePrefs;
         // if the command line --resetprefs flag is set, we are done
         if (args.resetprefs) {
             return;
