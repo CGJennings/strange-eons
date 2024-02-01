@@ -2513,7 +2513,7 @@ public final class StrangeEons {
      * started after libraries are loaded and must be completed before
      * extensions are loaded. These tasks may not actually run in the
      * background, if disabled by the
-     * {@linkplain CommandLineArguments#xDisableBackgroundInit command line arguments}.
+     * {@linkplain CommandLineArguments#xDisableStartupThreads command line arguments}.
      *
      * @see #waitForBackgroundInit()
      */
@@ -2552,7 +2552,7 @@ public final class StrangeEons {
             }
         };
 
-        if (commandLineArguments.xDisableBackgroundInit) {
+        if (commandLineArguments.xDisableStartupThreads) {
             log.info("performing \"background\" initialization in main thread");
             backgroundInit.run();
         } else {

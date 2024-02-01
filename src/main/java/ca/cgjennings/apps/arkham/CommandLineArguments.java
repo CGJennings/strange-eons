@@ -52,14 +52,6 @@ public class CommandLineArguments implements Cloneable {
     public boolean resetprefs = false;
 
     /**
-     * When present, this option forces an attempt to migrate settings from an
-     * older Strange Eons 1 or 2 installation, if one exists on this system.
-     * Normally, preference migration is only attempted when the (SE3) user
-     * preference file does not exist.
-     */
-    public boolean migrateprefs = false;
-
-    /**
      * This option runs the application in plug-in test mode, testing the
      * specified bundle.
      */
@@ -157,6 +149,8 @@ public class CommandLineArguments implements Cloneable {
      * performed in the main startup thread. Try setting this option if you
      * encounter unexplained problems while starting the application.
      */
+    public boolean xDisableStartupThreads = false;
+    /** Alias of {@link #xDisableStartupThreads}. */
     public boolean xDisableBackgroundInit = false;
 
     /**
@@ -179,7 +173,7 @@ public class CommandLineArguments implements Cloneable {
     /**
      * Non-standard debugging option.
      * <p>
-     * This option disables use of the system menu bar on OS X. It has no effect
+     * This option disables use of the system menu bar on macOS. It has no effect
      * on other platforms.
      */
     public boolean xDisableSystemMenu = false;
@@ -203,6 +197,8 @@ public class CommandLineArguments implements Cloneable {
      * Setting this option will enable it, which means enabling 
      * Direct3D acceleration unless the {@link #xOpenGL} option is also set.
      */
+    public boolean xEnableAcceleration = false;
+    /** Alias of {@link #xEnableAcceleration}. */
     public boolean xEnableWindowsAcceleration = false;
     
     /**
@@ -223,6 +219,16 @@ public class CommandLineArguments implements Cloneable {
      * can fail, in which case software rendering is used.
      */
     public boolean xOpenGL = false;
+
+    /**
+     * When present, this option forces an attempt to migrate settings from an
+     * older Strange Eons 1 or 2 installation, if one exists on this system.
+     * Normally, preference migration is only attempted when the (SE3) user
+     * preference file does not exist.
+     */
+    public boolean xMigratePrefs = false;
+    /** Alias of {@link #xMigratePrefs}. */
+    public boolean migratePrefs = false;       
 
     /**
      * Internal use option.
@@ -273,42 +279,53 @@ public class CommandLineArguments implements Cloneable {
                 + "Use: [options...] [files...] where:\n"
                 + "[files...] is a list of zero or more files to open and\n"
                 + "[options...] may be one or more of:\n"
-                + "  --version             Prints the build number and exits.\n"
-                + "  --glang ll_RR         Sets preferred locale for game components. See (1).\n"
-                + "  --ulang ll_RR         Sets preferred locale for the user interface.\n"
-                + "  --logLevel level      Sets minimum severity of log messages. See (2).\n"
-                + "  --resFolder           Names a folder with additional application resources.\n"
-                + "  --pluginTest file(s)  Runs in test mode with this plug-in bundle; use " + File.pathSeparator + "\n"
-                + "                        to list multiple bundles.\n"
-                + "  --resetPrefs          Resets all preferences to their default values.\n"
-                + "  --migratePrefs        Forces preference migration from an earlier version.\n"
-                + "  --run file            Run the script file non-interactively.\n"
-                + "  --x                   Displays help for non-standard options and exits.\n"
+                + "  --version             prints the build number and exits\n"
+                + "  --glang ll_RR         sets preferred locale for game components [see (1)]\n"
+                + "  --ulang ll_RR         sets preferred locale for the user interface\n"
+                + "  --logLevel level      sets minimum severity of log messages [see (2)]\n"
+                + "  --resetPrefs          resets all preferences to their default values\n"
+                + "  --run file            run the script file non-interactively\n"
+                + "  --resFolder           names a folder with additional application resources\n"
+                + "  --pluginTest file(s)  runs in test mode with this plug-in bundle;\n"
+                + "                        use " + File.pathSeparator + " to list multiple bundles\n"
+                + "  --x                   displays help for non-standard options and exits\n"
                 + "\nNotes:\n"
                 + "  (1) Locales are defined using a two-letter ISO-639 language code, optionally\n"
                 + "      followed by an underscore and a two-letter ISO-3166 region code.\n"
-                + "  (2) Level is one of: off, severe, warning, info, config, all. The default\n"
+                + "  (2) Level is one of: off|severe|warning|info|config|all. The default\n"
                 + "      level is warning.\n"
                 + "\nOption names are not case sensitive."
         );
         p.parse(cla, args);
 
+        // normalized aliased options
+        cla.xDisableStartupThreads |= cla.xDisableBackgroundInit;
+        cla.xEnableAcceleration |= cla.xEnableWindowsAcceleration;
+        cla.xMigratePrefs |= cla.migratePrefs;
+
         if (cla.x) {
             System.out.println(
                     "Non-standard options:\n"
-                    + "  --xAAText                 Force method of antialiasing onscreen text:\n"
+                    + "  Startup options:\n"
+                    + "  --xDisableProjectRestore  do not re-open the last project\n"
+                    + "  --xDisableFileRestore     do not re-open the last session's files\n"
+                    + "  --xDisablePluginLoading   do not load plug-ins (except test bundles)\n"
+                    + "  --xDisableJreCheck        do not check/enforce JRE version at startup\n"
+                    + "\n"
+                    + "  Graphics options:\n"
+                    + "  --xAAText                 force method of antialiasing onscreen text:\n"
                     + "                              auto|off|on|gasp|lcd|lcd_hbgr|lcd_vrgb|lcd_vbgr\n"
-                    + "  --xDisableProjectRestore  Do not re-open the project in use at the last exit\n"
-                    + "  --xDisableFileRestore     Do not re-open files in use at the last exit\n"
-                    + "  --xDisablePluginLoading   Do not load plug-ins (except test bundles)\n"
-                    + "  --xDisableStartupThreads  Do not use threads to speed application startup\n"
-                    + "  --xDisableFilterThreads   Do not use threads to accelerate image filters\n"
-                    + "  --xDisableAnimation       Do not use animation effects\n"
-                    + "  --xDisableAcceleration    Do not use hardware accelerated graphics\n"
-                    + "  --xOpenGL                 If possible use OpenGL instead of default renderer\n"
-                    + "  --xEnableWindowsAcceleration\n"
-                    + "                            Enable acceleration on Windows\n"
-                    + "  --xDebugException         Throws a test exception during startup\n"
+                    + "  --xDisableAnimation       do not use animation effects\n"
+                    + "  --xDisableAcceleration    do not use hardware accelerated graphics\n"
+                    + "  --xEnableAcceleration     enable hardware acceleration (on Windows)\n"
+                    + "  --xOpenGL                 prefer OpenGL to OS framework for acceleration\n"
+                    + "\n"
+                    + "  Development/debugging options:\n"
+                    + "  --xDisableStartupThreads  do not use threads to speed application startup\n"
+                    + "  --xDisableFilterThreads   do not use threads to accelerate image filters\n"
+                    + "  --xDisableSystemMenu      do not use the system menu bar on macOS\n"
+                    + "  --xMigratePrefs           force preference migration from 2.x\n"
+                    + "  --xDebugException         throws a test exception during startup\n"
             );
             System.exit(0);
         }

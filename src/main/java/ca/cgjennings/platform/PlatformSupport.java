@@ -240,7 +240,6 @@ public class PlatformSupport {
         }
     }
 
-    // TODO: centralize control variant client properties for different L&Fs
     /**
      * Parse a string to create a {@code KeyStroke} appropriate as an
      * accelerator for the native OS. The string must have the following syntax:
