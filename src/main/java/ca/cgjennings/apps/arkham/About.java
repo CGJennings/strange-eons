@@ -221,6 +221,7 @@ final class About extends javax.swing.JDialog {
                 + "Charles Robb, "
                 + "Paul Sacco, "
                 + "Sergio Garcia Sanchez, "
+                + "Isaac Juan Tomas, "
                 + "Tobias Walter, "
                 + "Mateusz Wasilewski, "
         );
