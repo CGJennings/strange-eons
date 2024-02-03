@@ -198,7 +198,7 @@ final class About extends javax.swing.JDialog {
         tp.set("fg", String.format(Locale.ROOT, "#%06X", aboutText.getForeground().getRGB() & 0xffffff));
         tp.set("inv", UIManager.getBoolean("useDarkTheme") ? "-inv" : "");
 
-        // updated Mar 07 17 2022
+        // updated Feb 02 2024
         final int ANONYMOUS_COUNT = 13;
         tp.set("supporter-list",
                 "Audrey Latimer (Arkham Horror Queen Anne), "
