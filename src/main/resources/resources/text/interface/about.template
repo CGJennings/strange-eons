@@ -52,10 +52,42 @@ for helping to test the earliest versions of Strange Eons 3.
 
 <p>Strange Eons makes use of code from the following libraries, or of code
 	derived from them:</p>
-<p>JavaScript interpretation is performed using the
+
+<p>Script code interpretation is performed using a modified version of the
 	<a href="http://developer.mozilla.org/En/Rhino">Mozilla Rhino</a>
-	interpreter under the <a href="http://www.mozilla.org/MPL/2.0/">MPL</a>.
-	The bridge to the Java scripting API is copyright © 2006, Sun Microsystems,
+	interpreter under the <a href="http://www.mozilla.org/MPL/2.0/">MPL</a>.</p>
+
+<p>Portions of the floating-point conversion code come from the Google V8
+	 JavaScript engine and are subject to the following:</p>
+
+<p><tt>Copyright 2010-2015 the V8 project authors. All rights reserved.
+	Redistribution and use in source and binary forms, with or without
+	modification, are permitted provided that the following conditions are
+	met:</tt></p>
+<ul>
+	<li><tt>Redistributions of source code must retain the above copyright
+		notice, this list of conditions and the following disclaimer.</tt></li>
+	<li><tt>Redistributions in binary form must reproduce the above
+		copyright notice, this list of conditions and the following
+		disclaimer in the documentation and/or other materials provided
+		with the distribution.</tt></li>
+	<li><tt>Neither the name of Google Inc. nor the names of its
+		contributors may be used to endorse or promote products derived
+		from this software without specific prior written permission.</tt></li>
+</ul>
+<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+	"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+	LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+	A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+	OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+	SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+	LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+	THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+	OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</tt></p>
+
+<p>The bridge to the Java scripting API is copyright © 2006, Sun Microsystems,
 	Inc. and is released under a BSD license: </p>
 <p><tt>Copyright (C) 2006 Sun Microsystems, Inc. All rights
 	reserved. Use is subject to license terms. </tt></p>
@@ -69,7 +101,7 @@ for helping to test the earliest versions of Strange Eons 3.
 	the Sun Microsystems nor the names of is contributors may be used to endorse
 	or promote products derived from this software without specific prior
 	written permission. </tt></p>
-	<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
+<p><tt>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS
 	AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
 	BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
 	FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
@@ -81,17 +113,17 @@ for helping to test the earliest versions of Strange Eons 3.
 	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </tt></p>
 
-      <p>Support for reading the JPEG2000 image format is provided using code
-	  from the <a href="https://jai-imageio.dev.java.net/">Java Advanced Imaging
-	  Image I/O</a> project, which in turn uses the
-	  <a href="http://jj2000.epfl.ch/jj_download/index.html">JJ2000 library</a>
-	  by Raphaël Grosbois and Diego Santa Cruz (Swiss Federal Institute of
-	  Technology-EPFL); Joel Askelöf (Ericsson Radio Systems AB); and Bertrand
-	  Berthelot, David Bouchard, Félix Henry, Gerard Mozelle and Patrice Onno
-	  (Canon Research Centre France S.A). The JAI I/O library is released under
-	  a BSD license: </p>
-	<p><tt>Copyright © 2005 Sun Microsystems, Inc. All Rights
-	Reserved. </tt></p>
+<p>Support for reading the JPEG2000 image format is provided using code
+	from the <a href="https://jai-imageio.dev.java.net/">Java Advanced Imaging
+	Image I/O</a> project, which in turn uses the
+	<a href="http://jj2000.epfl.ch/jj_download/index.html">JJ2000 library</a>
+	by Raphaël Grosbois and Diego Santa Cruz (Swiss Federal Institute of
+	Technology-EPFL); Joel Askelöf (Ericsson Radio Systems AB); and Bertrand
+	Berthelot, David Bouchard, Félix Henry, Gerard Mozelle and Patrice Onno
+	(Canon Research Centre France S.A). The JAI I/O library is released under
+	a BSD license: </p>
+
+<p><tt>Copyright © 2005 Sun Microsystems, Inc. All Rights Reserved. </tt></p>
 	<p><tt>Redistribution and use in source and binary forms,
 	with or without modification, are permitted provided that the following
 	conditions are met: </tt></p>
@@ -122,10 +154,10 @@ for helping to test the earliest versions of Strange Eons 3.
 	or intended for use in the design, construction, operation or maintenance of
 	any nuclear facility. </tt></p>
 
-      <p>Some plug-ins use the <a href="http://www.miglayout.com/">MiG Layout</a>
+<p>Some plug-ins use the <a href="http://www.miglayout.com/">MiG Layout</a>
 	  library . For convenience, it has been included with the main application.
 	  The MiG Layout library is released under a BSD license: </p>
-	<p><tt>Copyright © 2004, Mikael Grev, MiG InfoCom AB. (miglayout
+	<p><tt>Copyright © 2023, Mikael Grev, MiG InfoCom AB. (miglayout
 	(at) miginfocom (dot) com) All rights reserved. </tt></p>
 	<p><tt>Redistribution and use in source and binary forms,
 	with or without modification, are permitted provided that the following
@@ -149,13 +181,13 @@ for helping to test the earliest versions of Strange Eons 3.
 	OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 	ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. </tt></p>
 
-      <p>Some plug-ins use the <a href="http://www.datadosen.se/riverlayout/">
+<p>Some plug-ins use the <a href="http://www.datadosen.se/riverlayout/">
 	  River Layout</a> library by David Ekholm. For convenience, it has been
 	  included with the main application. The River Layout library is released
 	  under an <a href="http://www.gnu.org/licenses/lgpl.html">LGPL license</a>.
 	</p>
 
-	<p><tt>Ant BZip2 library is licensed under the Apache
+<p><tt>Ant BZip2 library is licensed under the Apache
 	License, version 1.1<br>
 	Version 1.1<br>
 	</tt></p>
@@ -234,20 +266,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.</tt></p>
 
-<p>Some icons in Strange Eons are taken or adapted from the
-<i><a href="http://www.famfamfam.com/lab/icons/silk/">Silk</a></i>
-icon set designed by
-Mark James
-and released under a
-<a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
-</p>
-
-
-<p>Some icons in Strange Eons are taken or adapted from the
-<i><a href="http://p.yusukekamiyamane.com/">Fugue</a></i>
-icon set designed by Yusuke Kamiyamane and released under a
-<a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons
-Attribution 3.0 License</a>.
+<p>TypeScript language services use Microsoft's TypeScript library, which is
+	licensed under the
+	<a href="https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt">Apache License, version 2.0</a>.
+	Some parts of TypeScript may use third party libraries, the licenses for which are listed in the
+	<a href="https://github.com/microsoft/TypeScript/blob/main/ThirdPartyNoticeText.txt">TypeScript source code</a>.</p>
 </p>
 
 <h1>{@ab-acknowledge}</h1>
