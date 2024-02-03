@@ -64,45 +64,46 @@
             <version>0.21.0</version>
         </dependency>
 
-        <!-- Local "proprietary" libs -->
+        <!-- Layout tools used to implement script libraries -->
         <dependency>
-            <!-- Agent to enable adding plug-ins to classpath -->
+            <groupId>com.miglayout</groupId>
+            <artifactId>miglayout-swing</artifactId>
+            <version>11.3</version>
+        </dependency>        
+
+        <!-- Local "proprietary" libs -->
+        <!-- Agent to enable adding plug-ins to classpath -->
+        <dependency>
             <groupId>local</groupId>
             <artifactId>jar-loader</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- Patched ImageIO j2k support -->
         <dependency>
-            <!-- Patched ImageIO j2k support -->
             <groupId>local</groupId>
             <artifactId>j2k</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- Old "river layout" used with script libs -->
         <dependency>
-            <!-- Old mig layout compatible with script libs -->
-            <groupId>local</groupId>
-            <artifactId>layout-mig</artifactId>
-            <version>1.0</version>
-        </dependency>
-        <dependency>
-            <!-- Old "river layout" used with script libs -->
             <groupId>local</groupId>
             <artifactId>layout-river</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- ca.cgjennings spelling support  -->
         <dependency>
-            <!-- ca.cgjennings spelling support  -->
             <groupId>local</groupId>
             <artifactId>spelling</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- customized Rhino script engine -->
         <dependency>
-            <!-- customized Rhino script engine -->
             <groupId>local</groupId>
             <artifactId>strange-rhino</artifactId>
             <version>1.0</version>
         </dependency>
+        <!-- TS services lib (blob of JS code) -->
         <dependency>
-            <!-- TS services lib (blob of JS code) -->
             <groupId>local</groupId>
             <artifactId>typescript-services</artifactId>
             <version>1.0</version>
