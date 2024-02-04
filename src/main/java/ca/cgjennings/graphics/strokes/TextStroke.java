@@ -231,12 +231,11 @@ public class TextStroke implements Stroke {
         double points[] = new double[6];
         double moveX = 0, moveY = 0;
         double lastX = 0, lastY = 0;
-        double thisX = 0, thisY = 0;
+        double thisX, thisY;
         double next = 0;
 
         int currentChar = flipped ? numGlyphs - 1 : 0;
 
-//		double beginOffset = 0d;
         double nextAdvance = 0;
         double advanceScale = 1d;
 
@@ -274,11 +273,6 @@ public class TextStroke implements Stroke {
                     double dy = thisY - lastY;
                     double distance = Math.sqrt(dx * dx + dy * dy);
 
-//				if( beginOffset > 0d ) {
-//					beginOffset -= distance;
-//					if( beginOffset < 0d )
-//						distance += -beginOffset;
-//				} else {
                     if (distance >= next) {
                         double r = 1.0f / distance;
                         double angle = Math.atan2(dy, dx);
@@ -318,8 +312,6 @@ public class TextStroke implements Stroke {
                         }
                     }
                     next -= distance;
-//					first = false;
-//				}
                     lastX = thisX;
                     lastY = thisY;
                     break;

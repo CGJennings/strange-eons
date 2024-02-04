@@ -348,57 +348,6 @@ public final class NewEditorDialog extends javax.swing.JDialog {
             ErrorDialog.displayError(string("rk-err-classmap", resource), ioe);
             return;
         }
-
-//		String line;
-//		int category = -1;
-//		EscapedLineReader reader = null;
-//		try {
-//			URL url = ResourceKit.composeResourceURL( resource );
-//			if( url == null ) {
-//				ErrorDialog.displayError( string( "rk-err-classmap", resource ), null );
-//				return;
-//			}
-//			reader = new EscapedLineReader( url.openStream() );
-//			while( (line = reader.readNonemptyLine()) != null ) {
-//				String[] tokens = line.split( "=" );
-//				if( tokens.length < 1 ) {
-//					ErrorDialog.displayError( string( "rk-err-parse-classmap", resource, line ), null );
-//				}
-//				tokens[0] = tokens[0].trim();
-//				if( tokens.length == 1 ) {
-//					ComponentListItem newCategory = new ComponentListItem( tokens[0], null );
-//					category = -1;
-//					for( int i=0; i < categories.size(); ++i ) {
-//						if( categories.get( i ).entry.equals( newCategory.entry ) ) {
-//							category = i;
-//							break;
-//						}
-//					}
-//					// category doesn't already exist: create it
-//					if( category < 0 ) {
-//						category = categories.size();
-//						categories.add( newCategory );
-//						componentLists.add( new FilteredListModel() );
-//					}
-//				} else {
-//					if( category < 0 || tokens.length != 2 ) {
-//						ErrorDialog.displayError( string( "rk-err-parse-classmap", resource, line ), null );
-//					}
-//					ComponentListItem item = new ComponentListItem( tokens[0], tokens[1].trim() );
-//					componentLists.get( category ).add( item );
-//					classMap.put( tokens[0], item );
-//				}
-//			}
-//		} catch( IOException e ) {
-//			ErrorDialog.displayError( string( "rk-err-classmap", resource ), e );
-//		} finally {
-//			if( reader != null ) {
-//				try {
-//					reader.close();
-//				} catch( IOException e ) {
-//				}
-//			}
-//		}
     }
 
     /**
