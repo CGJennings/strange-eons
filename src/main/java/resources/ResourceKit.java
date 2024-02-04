@@ -56,7 +56,6 @@ import java.awt.FontFormatException;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Paint;
 import java.awt.Point;
@@ -68,12 +67,14 @@ import java.awt.font.TextAttribute;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PrinterJob;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StreamCorruptedException;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
@@ -2586,6 +2587,62 @@ public class ResourceKit {
     }
 
     /**
+     * Creates a custom cursor from a base resource name.
+     * If the resource does not include a slash, then the path
+     * {@code icons/cursors/} will be used.
+     * The suffix {@code .png} will be appended to locate a set
+     * of multiresolution images, and the suffix {@code .cursor}
+     * will be appended to locate a simple UTF-8 text file containing
+     * the following metadata, one item per line:
+     * the accessible cursor name; the constant name of one a built-in
+     * cursor to use as a fallback; the x; and the y coordinates of the
+     * hotspot in the base cursor image.
+     * 
+     * If the accessible cursor name starts with {@code @}, then the
+     * remainder of the line is treated as an interface string key.
+     * If the cursor cannot be created, and the specified fallback
+     * cannot be decoded, the default cursor is returned.
+     * 
+     * @param resourceName the base name of a collection of files that
+     * together define the cursor
+     * @return the custom cursor, or a fallback
+     * @since 3.4
+     */
+    public static Cursor createCustomCursor(String resourceName) {
+        Cursor cached = customCursors.get(resourceName);
+        if (cached != null) return cached;
+        try {
+            if (!resourceName.contains("/")) {
+                resourceName = "/resources/icons/cursors/" + resourceName;
+            }
+            URL url = ResourceKit.composeResourceURL(resourceName + ".cursor");
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"))) {
+                String cursorName = in.readLine().trim();
+                String fallbackName  = in.readLine().trim();
+                int hx = Integer.parseInt(in.readLine().trim());
+                int hy = Integer.parseInt(in.readLine().trim());
+                Cursor fallbackCursor = Cursor.getDefaultCursor();
+                try {
+                    int constant = Cursor.class.getField(fallbackName).getInt(null);
+                    fallbackCursor = Cursor.getPredefinedCursor(constant);
+                } catch (Exception e) {
+                    StrangeEons.log.log(Level.WARNING, "could not find fallback cursor " + fallbackName, e);
+                }
+                if (cursorName.startsWith("@")) {
+                    cursorName = string(cursorName.substring(1));
+                }
+                cached = createCustomCursor(resourceName + ".png", new Point(hx, hy), cursorName, fallbackCursor);
+                customCursors.put(resourceName, cached);
+                return cached;
+            }
+        } catch (Exception e) {
+            StrangeEons.log.log(Level.SEVERE, "could not create custom cursor " + resourceName, e);
+            return Cursor.getDefaultCursor();
+        }
+    }
+    private static Map<String,Cursor> customCursors = new HashMap<>();
+
+    /**
      * Creates a custom cursor using an image resource, which may be a
      * multiresolution image resource.
      * 
@@ -2596,29 +2653,69 @@ public class ResourceKit {
      * @return the custom cursor, or the fallback
      */
     public static Cursor createCustomCursor(String cursorImage, Point hotspot, String cursorName, Cursor fallback) {
+        // Note: Toolkit may scale the cursor image, but it does not scale the hotspot.
+        // Therefore we must determine the size it will choose and scale it ourselves.
+        // See <https://github.com/openjdk/jdk/blob/master/src/java.desktop/share/classes/sun/awt/CustomCursor.java>
         try {
+            // Step 1: check if any MRIR variant exactly matches a "best size"
             MultiResolutionImageResource mri = new MultiResolutionImageResource(cursorImage);
-            Dimension d = Toolkit.getDefaultToolkit().getBestCursorSize(1, 1);
-            if (d.width > 0 && d.height > 0) {
-                BufferedImage base = mri.getBaseImage();
-                BufferedImage scaled = mri.getResolutionVariant(d.width, d.height);
-                if (scaled.getWidth() != d.width || scaled.getHeight() != d.height) {
-                    scaled = ImageUtilities.resample(scaled, d.width, d.height);
+            int tkWidth = 0;
+            int tkHeight = 0;
+            BufferedImage best = null;
+            for (Image im : mri.getResolutionVariants()) {
+                int imWidth = im.getWidth(null);
+                int imHeight = im.getHeight(null);
+                Dimension bestSize = Toolkit.getDefaultToolkit().getBestCursorSize(imWidth, imHeight);
+                tkWidth = bestSize.width;
+                tkHeight = bestSize.height;
+                // custom cursor not supported at all
+                if (tkWidth == 0) return fallback;
+                if (tkWidth == imWidth && tkHeight == imHeight) {
+                    best = (BufferedImage) im;
+                    break;
                 }
-
-                double hx = (double) hotspot.x * (double) scaled.getWidth() / (double) base.getWidth();
-                double hy = (double) hotspot.y * (double) scaled.getHeight() / (double) base.getHeight();
-                Cursor custom = Toolkit.getDefaultToolkit().createCustomCursor(
-                        scaled,
-                        new Point((int) (hx+0.5d), (int) (hy+0.5d)),
-                        cursorName
-                );
-                return custom;
             }
-        } catch (HeadlessException hex) {
-            // use fallback
+            
+            // Step 2: if no exact match, create a scaled variant
+            if (best == null) {
+                best = mri.getBaseImage();
+                if (best == null) return fallback;
+                Dimension bestSize = Toolkit.getDefaultToolkit().getBestCursorSize(best.getWidth(), best.getHeight());
+                tkWidth = bestSize.width;
+                tkHeight = bestSize.height;
+                best = mri.getResolutionVariant(tkWidth, tkHeight);
+            }
+                
+            // Step 3: calculate the scale factor
+            int imWidth = best.getWidth();
+            int imHeight = best.getHeight();
+            double scale = (double) tkWidth / (double) imWidth;
+            // if the aspect ratio is not preserved, the cursor will look distorted
+            if (Math.abs(scale - ((double) tkHeight / (double) imHeight)) > 0.001) {
+                return fallback;
+            }
+            
+            // Step 4: scale and create the cursor
+            if (tkWidth != imWidth || tkHeight != imHeight) {
+                best = ImageUtilities.resample(best, tkWidth, tkHeight);                    
+            }
+            int hx = Math.round((float) hotspot.x / (float) mri.getBaseImage().getWidth() * (float) tkWidth);
+            int hy = Math.round((float) hotspot.y / (float) mri.getBaseImage().getHeight() * (float) tkHeight);
+            Point scaledHotspot = new Point(
+                Math.max(0, Math.min(hx, tkWidth - 1)),
+                Math.max(0, Math.min(hy, tkHeight - 1))
+            );
+
+            int hotX = hotspot.x, hotY = hotspot.y;
+            hotX = Math.max(0, Math.min((int) (hotX * scale), tkWidth - 1));
+            hotY = Math.max(0, Math.min((int) (hotY * scale), tkHeight - 1));
+            return Toolkit.getDefaultToolkit().createCustomCursor(best, scaledHotspot, cursorName);            
+        } catch (Exception ex) {
+            // this should only fail if headless, but in the event of a bug
+            // it will be better to log and return the fallback than crash
+            StrangeEons.log.log(Level.SEVERE, "could not create custom cursor " + cursorName, ex);
+            return fallback;
         }
-        return fallback;
     }
 
     @Deprecated
