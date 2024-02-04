@@ -199,14 +199,9 @@ public class EyeDropper extends JLabel {
         regularIcon = ResourceKit.getIcon("eyedropper");
         dragIcon = new BlankIcon(regularIcon.getIconWidth(), regularIcon.getIconHeight());
         
-        // fallback cursor if we can't set our custom one
+        // create custom dropper cursor with crosshairs as fallback
         regularCursor = Cursor.getDefaultCursor();
-        dragCursor = ResourceKit.createCustomCursor(
-                "res:icons/cursors/dropper-cursor.png",
-                new Point(1, 30),
-                "Eye Dropper",
-                Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR)
-        );
+        dragCursor = ResourceKit.createCustomCursor("dropper");
         isInitialized = true;
     }
     private static boolean isInitialized = false;

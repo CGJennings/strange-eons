@@ -227,7 +227,7 @@ public final class ImageUtilities {
             toolkit = Toolkit.getDefaultToolkit();
         }
         if (name == null) {
-            name = "";
+            name = "cursor";
             StrangeEons.log.warning("cursor has no name for accessibility tools");
         }
         Dimension d = toolkit.getBestCursorSize(image.getWidth(), image.getHeight());
@@ -257,7 +257,11 @@ public final class ImageUtilities {
             image = temp;
         }
 
-        return toolkit.createCustomCursor(image, new Point(hotspotX, hotspotY), name);
+        try {
+            return toolkit.createCustomCursor(image, new Point(hotspotX, hotspotY), name);
+        } catch (Exception e) {
+            return Cursor.getDefaultCursor();
+        }
     }
 
     /**
