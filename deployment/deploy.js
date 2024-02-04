@@ -82,7 +82,11 @@ if (!process.argv.includes("--nosign")) {
     if (fs.existsSync(path.join(DIR_PROJECT, "local-private", "sign.js"))) {
         const signingFns = require(path.join(DIR_PROJECT, "local-private", "sign.js"));
         for (let platform of ["windows", "mac", "linux", "other"]) {
-            signingFns[platform]?.(DIR_DIST, THIS_REV);
+            try {
+                signingFns[platform]?.(DIR_DIST, THIS_REV);
+            } catch (ex) {
+                console.error(`error signing ${platform} build`, ex);
+            }
         }
     } else {
         console.warn("no signing script found, skipping signing");
