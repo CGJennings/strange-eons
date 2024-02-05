@@ -79,10 +79,11 @@ exec(`${INSTALL4J} --release=${THIS_REV}${RELEASE_TYPE_SHORT} build-installers.i
 clean(false);
 
 if (!process.argv.includes("--nosign")) {
-    if (fs.existsSync(path.join(DIR_PROJECT, "local-private", "sign.js"))) {
+    if (fs.existsSync(path.join(DIR_PROJECT, "local-private", "sign.js"))) {        
         const signingFns = require(path.join(DIR_PROJECT, "local-private", "sign.js"));
         for (let platform of ["windows", "mac", "linux", "other"]) {
             try {
+                console.log(`signing ${platform} build`);
                 signingFns[platform]?.(DIR_DIST, THIS_REV);
             } catch (ex) {
                 console.error(`error signing ${platform} build`, ex);
@@ -91,6 +92,16 @@ if (!process.argv.includes("--nosign")) {
     } else {
         console.warn("no signing script found, skipping signing");
         console.warn("run with --nosign to suppress this warning");
+    }
+}
+
+if (fs.existsSync(path.join(DIR_PROJECT, "local-private", "post-deploy.js"))) {
+    console.log("running post-deploy script");
+    const postDeploy = require(path.join(DIR_PROJECT, "local-private", "post-deploy.js"));
+    try {
+        postDeploy(DIR_DIST, THIS_REV, RELEASE_TYPE.trim().toLowerCase());
+    } catch (ex) {
+        console.error("error running post-deploy script", ex);
     }
 }
 
