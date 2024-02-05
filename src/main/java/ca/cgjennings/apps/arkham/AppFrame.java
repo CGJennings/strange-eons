@@ -613,15 +613,6 @@ final class AppFrame extends StrangeEonsAppWindow {
         if (topToolBar == null) {
             topToolBar = createToolBar();
         }
-//		if( comp instanceof JComponent ) {
-//			JComponent jComp = (JComponent) comp;
-//			Border spacer = BorderFactory.createEmptyBorder( 0, 0, 0, 4 );
-//			if( jComp.getBorder() != null ) {
-//				jComp.setBorder( BorderFactory.createCompoundBorder( spacer, jComp.getBorder() ) );
-//			} else {
-//				jComp.setBorder( spacer );
-//			}
-//		}
         topToolBar.add(comp, index);
         topToolBar.validate();
     }

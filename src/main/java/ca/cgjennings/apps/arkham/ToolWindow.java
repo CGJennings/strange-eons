@@ -419,21 +419,6 @@ public class ToolWindow extends javax.swing.JDialog {
         super.setVisible(visible);
     }
 
-//    /**
-//    * @param args the command line arguments
-//    */
-//    public static void main(String args[]) {
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//			@Override
-//            public void run() {
-//                ToolWindow twin = new ToolWindow();
-//				twin.setSize( 200, 200 );
-////				twin.addTitleButton( createTitleButton( "X", null, null, null) );
-//				twin.setVisible(true);
-//				twin.setLocationRelativeTo(null);
-//            }
-//        });
-//    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bodyContainer;
     private ca.cgjennings.apps.arkham.ToolCloseButton closeBtn;

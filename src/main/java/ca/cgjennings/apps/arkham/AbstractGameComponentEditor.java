@@ -269,20 +269,15 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @param c the root of the container tree to alter opacity of
      */
     private static void localizeComponentForOSX(JComponent c) {
-//	if( c instanceof JTextComponent ) {
-//	    c.setOpaque( false );
-//	}
-
         if (OSXSmallFont == null) {
             OSXSmallFont = new Font("Lucida Grande", Font.PLAIN, 11);
         }
         if (c instanceof JComboBox) {
-            JComboBox b = (JComboBox) c;
+            JComboBox<?> b = (JComboBox<?>) c;
             if (!b.isEditable()) {
                 b.setFont(OSXSmallFont);
             }
         } else if (c instanceof JTabbedPane) {
-//	    c.putClientProperty( "Quaqua.TabbedPane.shortenTabs", Boolean.FALSE );
             c.setFont(OSXSmallFont);
         } else if (c instanceof JButton) {
             JButton b = (JButton) c;
@@ -295,7 +290,6 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     private static void localizeComponentGeneric(JComponent c) {
         if (c instanceof JTabbedPane) {
-
             // *** TODO: workaround until Nimbus handles small Tabs properly
             // StyleUtilities.small( c );
             Font f = c.getFont();

@@ -192,15 +192,8 @@ public class TextIndexer implements MonitoredAlgorithm {
             wordIndex.put(words[i], i);
         }
 
-//		BitSet[] maps = new BitSet[ words.length ];
-//		HashMap<String,BitSet> wordMap = new HashMap<String,BitSet>( words.length );
-//		for( int i=0; i<maps.length; ++i ) {
-//			maps[i] = new BitSet();
-//			wordMap.put( words[i], maps[i] );
-//		}
         // fill in the bitmaps with the words found in each source
         fillMap(bitmap, wordIndex, sourceIDs);
-//		wordMap = null;
 
         // map the source IDs to index IDs
         int i = 0;
@@ -215,11 +208,9 @@ public class TextIndexer implements MonitoredAlgorithm {
         // create a sorted array of the stop words
         String[] stopWords = stops.toArray(String[]::new);
         Arrays.sort(stopWords);
-//		TextIndex ti = new TextIndex( stopWords, words, ids, maps );
 
         ObjectOutputStream out = null;
         DeflaterOutputStream deflater = new DeflaterOutputStream(stream);
-//		try {
         out = new ObjectOutputStream(deflater);
         out.writeObject(TextIndex.HEADER);
         out.writeObject(stopWords);
@@ -229,13 +220,6 @@ public class TextIndexer implements MonitoredAlgorithm {
         out.flush();
         deflater.finish();
         deflater.flush();
-//		} finally {
-//			if( out != null ) {
-//				out.close();
-//			} else if( fout != null ) {
-//				fout.close();
-//			}
-//		}
     }
 
     private String[] createWordList(Set<String> stopList, Collection<String> sourceIDs) throws IOException {

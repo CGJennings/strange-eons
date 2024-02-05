@@ -236,53 +236,7 @@ public class TopologicalSorter<T extends DependencyRelation> {
 
         return sorted;
     }
-
-//	private static class Test implements DependencyRelation<Test>, Comparable<Test> {
-//		public Test( String name ) {
-//			this.name=name;
-//		}
-//		String name;
-//		HashSet<Test> reqs = new HashSet<Test>();
-//		public void req( Test... t ) {
-//			for( Test x : t ) reqs.add( x );
-//		}
-//		@Override
-//		public Set<Test> getDependants() {
-//			return reqs;
-//		}
-//		@Override
-//		public String toString() {
-//			return name;
-//		}
-//
-//		@Override
-//		public int compareTo( Test o ) {
-//			return this.name.compareTo( o.name );
-//		}
-//		
-//	}
-//	
-//	public static void main( String[] args ) {
-//		Test A = new Test("A");
-//		Test B = new Test("B");
-//		Test C = new Test("C");
-//		Test D = new Test("D");
-//		Test E = new Test("E");
-//		Test F = new Test("F");
-//		Test G = new Test("G");
-//		
-//		A.req(B,C,D);
-//		B.req(E,F,G);
-//		C.req(D);
-//		D.req(F);
-//		F.req(G);
-//
-//		TopologicalSorter<Test> s = new TopologicalSorter<TopologicalSorter.Test>();
-//		s.setLexicographicallySorted( true );
-//		List<Test> o = s.topSort(Arrays.asList( D,A,E,F,B,C,G ) );
-//		System.err.println( o );
-//		System.err.println( getAllDependants( C ) );
-//	}
+    
     /**
      * Returns a set of the direct and indirect objects required by an object.
      *

@@ -891,9 +891,6 @@ public class ColourDialog extends javax.swing.JDialog implements AgnosticDialog,
 private void recentColourActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recentColourActionPerformed
     Color c = ((JButton) evt.getSource()).getBackground();
     setSelectedColor(c);
-//	float[] hsb = Color.RGBtoHSB( c.getRed(), c.getGreen(), c.getBlue(), null );
-//	hsbPanel.setHSB( hsb );
-//	opacitySlider.setValue( Math.round( ((float) c.getAlpha()) / 255f * 1000f ) );
 }//GEN-LAST:event_recentColourActionPerformed
     private boolean opacityUpdate;
 

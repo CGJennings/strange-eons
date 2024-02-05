@@ -353,10 +353,6 @@ public class TextIndex implements Iterable<String> {
                     result.add(ti.ids[i]);
                 }
             }
-//			BitSet map = ti.maps[ index ];
-//			for( int i = map.nextSetBit( 0 ); i >= 0; i = map.nextSetBit( i+1 ) ) {
-//				result.add( ti.ids[i] );
-//			}
             return ti.simplify(result);
         }
 
@@ -386,11 +382,6 @@ public class TextIndex implements Iterable<String> {
                     result.add(ti.ids[i]);
                 }
             }
-//			HashSet<String> result = new HashSet<String>();
-//			BitSet map = ti.maps[ index ];
-//			for( int i = map.nextClearBit( 0 ); i < ti.ids.length; i = map.nextClearBit( i+1 ) ) {
-//				result.add( ti.ids[i] );
-//			}
             return ti.simplify(result);
         }
 

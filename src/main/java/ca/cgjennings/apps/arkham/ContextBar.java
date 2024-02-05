@@ -930,11 +930,6 @@ public final class ContextBar {
         final int ICON_SIZE = getPreferredContextBarIconSize();
         if (i != null) {
             i = ThemedIcon.create(i).derive(ICON_SIZE);
-//            if (i.getIconWidth() != ICON_SIZE || i.getIconHeight() != ICON_SIZE) {
-//                BufferedImage bi = ImageUtilities.iconToImage(i);
-//                bi = ImageUtilities.trim(bi);
-//                i = ImageUtilities.createIconForSize(bi, ICON_SIZE);
-//            }
         } else {
             StrangeEons.log.log(Level.WARNING, "using blank icon for null context bar button icon");
             i = new BlankIcon(ICON_SIZE, ICON_SIZE);

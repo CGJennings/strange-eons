@@ -173,22 +173,4 @@ public abstract class AbstractCompressor implements Compressor {
     }
 
     private static final int BUFF_SIZE = 128 * 1024;
-
-//	public static void main( String[] args ) {
-//		try {
-//			File in = new File("d:\\testdata");
-//			System.err.printf( "%10d %s\n", in.length(), "uncompressed" );
-//			//test( in, DeflateCompressor.class );
-//			//test( in, BZip2Compressor.class );
-//			test( in, LZMACompressor.class );
-//		} catch( Exception e ) {
-//			e.printStackTrace();
-//		}
-//	}
-//	private static void test( File in, Class<? extends AbstractCompressor> c ) throws Exception {
-//		File out = new File( in + "." + c.getSimpleName() );
-//		AbstractCompressor ac = c.newInstance();
-//		ac.compress( in, out );
-//		System.err.printf( "%10d %s\n", out.length(), c.getSimpleName() );
-//	}
 }
