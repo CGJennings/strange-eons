@@ -2,13 +2,6 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.filters.BlurFilter;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKGROUND_PAINTER;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_BACKROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_ERROR;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_OUTPUT;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_BACKGROUND;
-import static ca.cgjennings.ui.theme.Theme.CONSOLE_SELECTION_FOREGROUND;
-import static ca.cgjennings.ui.theme.Theme.EDITOR_TAB_BACKGROUND;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;

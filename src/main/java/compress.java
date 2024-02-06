@@ -5,8 +5,6 @@ import ca.cgjennings.algo.compression.CompressorFactory;
 import ca.cgjennings.apps.CommandLineParser;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  * A command line utility that (de)compresses files using a compression method
@@ -80,8 +78,4 @@ public final class compress {
             System.err.println(e);
         }
     }
-
-//	public static void main( String[] args ) {
-//		_main( new String[] {"--c", "bzip2", "d:\\test", "d:\\out"} );
-//	}
 }

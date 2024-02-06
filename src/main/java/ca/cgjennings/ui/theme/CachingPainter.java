@@ -92,7 +92,7 @@ public class CachingPainter<T> implements Painter<T> {
      *
      * @return the wrapped painter
      */
-    public Painter getWrappedPainter() {
+    public Painter<T> getWrappedPainter() {
         return painter;
     }
 }
