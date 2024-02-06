@@ -14,7 +14,6 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
@@ -874,7 +873,7 @@ public class BundleInstaller {
                             // for libs, pluginSet should be null
                             throw new IllegalArgumentException();
                     }
-                    ((Set) pluginSet).add(ibo); // correct type always passed in
+                    ((Set<InstalledBundleObject>) pluginSet).add(ibo); // correct type always passed in
                 }
             } else {
                 installedLibraries.add(new InstalledLibrary(pluginBundle));
@@ -1136,25 +1135,6 @@ public class BundleInstaller {
      */
     public static ClassLoader getPluginClassLoader() {
         return ClassLoader.getSystemClassLoader();
-    }
-
-    /**
-     * Find the addURL method of a class loader, walking the inheritance tree as
-     * needed.
-     *
-     * @return the {@code addURL( URL url )} method, or {@code null} if there is
-     * no such method in the class or its superclasses
-     */
-    @SuppressWarnings("unchecked")
-    private static Method searchForMethod(Class c) {
-        if (c == null) {
-            return null;
-        }
-        try {
-            return c.getDeclaredMethod("addURL", URL.class);
-        } catch (NoSuchMethodException e) {
-            return searchForMethod(c.getSuperclass());
-        }
     }
 
     private static void init() {

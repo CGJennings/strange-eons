@@ -97,10 +97,6 @@ public final class InstallationNotesViewer extends javax.swing.JDialog {
             ErrorDialog.displayError("", ex);
         }
     }
-    
-    private static String fromMarkdown(String content) {
-        return new MarkdownTransformer().toHtmlDocument(content);
-    }
 
     /**
      * This method is called from within the constructor to initialize the form.

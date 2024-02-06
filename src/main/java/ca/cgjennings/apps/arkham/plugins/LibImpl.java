@@ -108,117 +108,121 @@ public final class LibImpl {
          */
         StringBuilder b = new StringBuilder(format.length() + 16);
         Formatter fmt = new Formatter(b, loc);
-        Matcher m = formatSpecPattern.matcher(format);
-        // For args with no $ or <
-        int independentIndex = 0;
-        int lastIndex = -1;
-        int lastMatchEndedAt = 0;
-        while (m.find()) {
-            // is there plain text to insert before the next specifier?
-            if (m.start() > lastMatchEndedAt) {
-                // we format this with no arguments because it could have an
-                // invalid specifier which should throw an exception; trying
-                // to format it detects this
-                fmt.format(format.substring(lastMatchEndedAt, m.start()));
-            }
+        try {
+            Matcher m = formatSpecPattern.matcher(format);
+            // For args with no $ or <
+            int independentIndex = 0;
+            int lastIndex = -1;
+            int lastMatchEndedAt = 0;
+            while (m.find()) {
+                // is there plain text to insert before the next specifier?
+                if (m.start() > lastMatchEndedAt) {
+                    // we format this with no arguments because it could have an
+                    // invalid specifier which should throw an exception; trying
+                    // to format it detects this
+                    fmt.format(format.substring(lastMatchEndedAt, m.start()));
+                }
 
-            boolean rewriteFormatSpec = false;
-            int inputIndex = -1;
+                boolean rewriteFormatSpec = false;
+                int inputIndex = -1;
 
-            // determine which input argument to use
-            //
-            // an undocumented behaviour of Formatter is that format specs
-            // with both an absolute and relative index (%3$<s) use relative
-            if (m.group(GR_FLAGS) != null && m.group(GR_FLAGS).indexOf('<') >= 0) {
-                // relative index %<d:
-                // if there is no lastIndex, we do not rewrite the spec, so it
-                // still has the < in it, and thus we get the right exception
-                if (lastIndex >= 0) {
-                    inputIndex = lastIndex;
-                    rewriteFormatSpec = true;
+                // determine which input argument to use
+                //
+                // an undocumented behaviour of Formatter is that format specs
+                // with both an absolute and relative index (%3$<s) use relative
+                if (m.group(GR_FLAGS) != null && m.group(GR_FLAGS).indexOf('<') >= 0) {
+                    // relative index %<d:
+                    // if there is no lastIndex, we do not rewrite the spec, so it
+                    // still has the < in it, and thus we get the right exception
+                    if (lastIndex >= 0) {
+                        inputIndex = lastIndex;
+                        rewriteFormatSpec = true;
+                    } else {
+                        inputIndex = 0;
+                    }
+                } else if (m.group(GR_INDEX) != null) {
+                    // absolute index %n$d
+                    final String indexText = m.group(GR_INDEX);
+                    inputIndex = Integer.parseInt(indexText.substring(0, indexText.length() - 1)) - 1;
+                    rewriteFormatSpec = true; // rewrite to remove n$ part
+                }
+                // no index was specified, use the next available
+                if (inputIndex == -1) {
+                    inputIndex = independentIndex++;
+                }
+                lastIndex = inputIndex; // ready for < in next format spec
+
+                Object argument;
+                if (inputIndex < args.length) {
+                    argument = args[inputIndex];
                 } else {
-                    inputIndex = 0;
+                    // if the argument doesn't exist, we carry on but at format
+                    // time we will pass zero arguments to get the right exception
+                    argument = null;
+                    inputIndex = -1;
                 }
-            } else if (m.group(GR_INDEX) != null) {
-                // absolute index %n$d
-                final String indexText = m.group(GR_INDEX);
-                inputIndex = Integer.parseInt(indexText.substring(0, indexText.length() - 1)) - 1;
-                rewriteFormatSpec = true; // rewrite to remove n$ part
-            }
-            // no index was specified, use the next available
-            if (inputIndex == -1) {
-                inputIndex = independentIndex++;
-            }
-            lastIndex = inputIndex; // ready for < in next format spec
 
-            Object argument;
-            if (inputIndex < args.length) {
-                argument = args[inputIndex];
-            } else {
-                // if the argument doesn't exist, we carry on but at format
-                // time we will pass zero arguments to get the right exception
-                argument = null;
-                inputIndex = -1;
-            }
-
-            // coerce numeric types to their conversion type
-            char conversion = m.group(GR_CONV).charAt(0);
-            if (m.group(GR_TIME) != null) {
-                argument = coerceToDate(argument);
-            } else {
-                // allow %i like C sprintf
-                if (conversion == 'i') {
-                    conversion = 'd';
-                    rewriteFormatSpec = true;
+                // coerce numeric types to their conversion type
+                char conversion = m.group(GR_CONV).charAt(0);
+                if (m.group(GR_TIME) != null) {
+                    argument = coerceToDate(argument);
+                } else {
+                    // allow %i like C sprintf
+                    if (conversion == 'i') {
+                        conversion = 'd';
+                        rewriteFormatSpec = true;
+                    }
+                    switch (conversion) {
+                        // integer conversions
+                        case 'd':
+                        case 'o':
+                        case 'x':
+                        case 'X':
+                            argument = coerceToInteger(argument);
+                            break;
+                        // floating point conversions
+                        case 'e':
+                        case 'E':
+                        case 'f':
+                        case 'g':
+                        case 'G':
+                        case 'a':
+                        case 'A':
+                            argument = coerceToFloatingPoint(argument);
+                            break;
+                        // character conversions
+                        case 'c':
+                        case 'C':
+                            argument = coerceToCharacter(argument);
+                            break;
+                    }
                 }
-                switch (conversion) {
-                    // integer conversions
-                    case 'd':
-                    case 'o':
-                    case 'x':
-                    case 'X':
-                        argument = coerceToInteger(argument);
-                        break;
-                    // floating point conversions
-                    case 'e':
-                    case 'E':
-                    case 'f':
-                    case 'g':
-                    case 'G':
-                    case 'a':
-                    case 'A':
-                        argument = coerceToFloatingPoint(argument);
-                        break;
-                    // character conversions
-                    case 'c':
-                    case 'C':
-                        argument = coerceToCharacter(argument);
-                        break;
+
+                String formatSpec;
+                if (rewriteFormatSpec) {
+                    formatSpec = "%"
+                            + groupOrEmpty(m, GR_FLAGS).replace("<", "")
+                            + groupOrEmpty(m, GR_WIDTH)
+                            + groupOrEmpty(m, GR_PREC)
+                            + groupOrEmpty(m, GR_TIME)
+                            + conversion;
+                } else {
+                    formatSpec = m.group();
                 }
-            }
 
-            String formatSpec;
-            if (rewriteFormatSpec) {
-                formatSpec = "%"
-                        + groupOrEmpty(m, GR_FLAGS).replace("<", "")
-                        + groupOrEmpty(m, GR_WIDTH)
-                        + groupOrEmpty(m, GR_PREC)
-                        + groupOrEmpty(m, GR_TIME)
-                        + conversion;
-            } else {
-                formatSpec = m.group();
+                if (inputIndex >= 0) {
+                    fmt.format(formatSpec, argument);
+                } else {
+                    fmt.format(formatSpec); // throws
+                }
+                lastMatchEndedAt = m.end();
             }
-
-            if (inputIndex >= 0) {
-                fmt.format(formatSpec, argument);
-            } else {
-                fmt.format(formatSpec); // throws
+            // append any final plain text
+            if (lastMatchEndedAt < format.length()) {
+                fmt.format(format.substring(lastMatchEndedAt, format.length()));
             }
-            lastMatchEndedAt = m.end();
-        }
-        // append any final plain text
-        if (lastMatchEndedAt < format.length()) {
-            fmt.format(format.substring(lastMatchEndedAt, format.length()));
+        } finally {
+            fmt.close();
         }
 
         return b.toString();

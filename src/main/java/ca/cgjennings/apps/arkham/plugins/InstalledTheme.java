@@ -21,10 +21,7 @@ import resources.Language;
  * @since 3.0
  */
 public final class InstalledTheme extends InstalledBundleObject {
-    private static final int ICON_SIZE_LARGE = ThemedIcon.MEDIUM_LARGE;
-    private static final int ICON_SIZE_SMALL = ThemedIcon.SMALL;
-    private String id;
-
+    private String className;
     private String name, desc, group;
     private ThemedIcon icon, largeIcon;
     private boolean dark;
@@ -46,7 +43,7 @@ public final class InstalledTheme extends InstalledBundleObject {
             throw new NullPointerException("className");
         }
 
-        this.id = className;
+        this.className = className;
         collectPluginInfo();
     }
 
@@ -57,7 +54,7 @@ public final class InstalledTheme extends InstalledBundleObject {
      * @return the name of the Theme subclass
      */
     public String getThemeClass() {
-        return id;
+        return className;
     }
 
     /**
@@ -102,7 +99,7 @@ public final class InstalledTheme extends InstalledBundleObject {
      */    
     public URL getScreenshotUrl() {
         try {
-            Class cl = Class.forName(id);            
+            Class<?> cl = Class.forName(className);            
             URL url = cl.getResource(cl.getSimpleName() + "_screenshot.png");
             return url;
         } catch (ClassNotFoundException ex) { 
@@ -131,10 +128,10 @@ public final class InstalledTheme extends InstalledBundleObject {
 
     private void collectPluginInfo() throws PluginException {
         try {
-            Theme theme = (Theme) Class.forName(id).getConstructor().newInstance();
+            Theme theme = (Theme) Class.forName(className).getConstructor().newInstance();
             name = theme.getThemeName();
             if (name == null) {
-                name = id;
+                name = className;
             }
             // make sure that the L&F class needed by the theme exists
             // (this will eliminate themes based on Nimbus when Java 6u10 is not installed)

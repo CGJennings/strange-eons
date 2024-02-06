@@ -399,7 +399,6 @@ public final class ConsoleErrorLocation {
         if (--line < 0) {
             return; // lines in editor start from 0, but incoming param starts at 1
         }
-        int offset = ed.getLineStartOffset(line);
         ed.setCaretLine(line);
         ed.scrollToLine(line);
         JUtilities.findWindow(ed).requestFocus();
