@@ -84,6 +84,7 @@ public class Rename extends TaskAction {
             StrangeEons.getWindow().closeProject();
         }
 
+        final Member parent = member instanceof Project ? null : member.getParent();
         File oldFile = member.getFile();
         boolean isDir = oldFile.isDirectory();
 
@@ -141,8 +142,9 @@ public class Rename extends TaskAction {
                 }
             }
 
-            if (!(member instanceof Project)) {
-                member.getParent().synchronize();
+            // refresh view with updated name immediately
+            if (parent != null) {
+                parent.synchronize();
             }
         } catch (IOException ioe) {
             // FAILED TO RENAME
