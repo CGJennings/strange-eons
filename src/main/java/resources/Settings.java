@@ -852,15 +852,18 @@ public class Settings implements Serializable, Iterable<String> {
             value = value.trim();
             return Integer.decode(value);
         } catch (Throwable t) {
-            int decimal = value.indexOf('.');
-            if (decimal >= 0) {
-                if (decimal == 0) {
-                    return 0;
-                }
-                try {
-                    return Integer.decode(value.substring(0, decimal));
-                } catch (Throwable t2) {
-                    /* will throw below */ }
+            if (value != null) {
+                int decimal = value.indexOf('.');
+                if (decimal >= 0) {
+                    if (decimal == 0) {
+                        return 0;
+                    }
+                    try {
+                        return Integer.decode(value.substring(0, decimal));
+                    } catch (Throwable t2) {
+                        /* will throw below */
+                    }
+                }    
             }
             throw new ParseError("rk-err-int", key, value, t);
         }
