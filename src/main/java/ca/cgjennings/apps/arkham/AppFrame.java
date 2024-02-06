@@ -614,7 +614,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             topToolBar = createToolBar();
         }
         topToolBar.add(comp, index);
-        topToolBar.validate();
+        getRootPane().revalidate();
     }
 
     /**
@@ -626,12 +626,8 @@ final class AppFrame extends StrangeEonsAppWindow {
      */
     @Override
     public Component addCustomComponentSeparator() {
-        if (topToolBar == null) {
-            topToolBar = createToolBar();
-        }
-        JComponent sep = new JToolBar.Separator();
-        topToolBar.add(sep);
-        topToolBar.validate();
+        final Component sep = new JToolBar.Separator();
+        addCustomComponent(sep, -1);
         return sep;
     }
 
@@ -682,7 +678,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         if (topToolBar.getComponentCount() == 0) {
             topToolBar.getParent().remove(topToolBar);
             topToolBar = null;
-            validate();
+            getRootPane().revalidate();
         }
     }
 

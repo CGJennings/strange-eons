@@ -1,7 +1,6 @@
 
 import ca.cgjennings.apps.CommandLineParser;
 import ca.cgjennings.graphics.ImageUtilities;
-import ca.cgjennings.io.StreamPump;
 import ca.cgjennings.platform.Shell;
 import ca.cgjennings.platform.Shell.Result;
 import java.awt.RenderingHints;
@@ -11,12 +10,10 @@ import java.io.Console;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.util.List;
 import javax.imageio.ImageIO;
 
 /**
