@@ -528,7 +528,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             } else if (obj instanceof Collection) {
                 super.print('[');
                 int count = 0;
-                for (Object item : (Collection) obj) {
+                for (Object item : (Collection<?>) obj) {
                     if (count++ > 0) {
                         super.print(", ");
                     }
@@ -675,7 +675,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             }
 
             g.setTransform(at);
-            Map rh = (Map) getToolkit().getDesktopProperty("awt.font.desktophints");
+            Map<?,?> rh = (Map<?,?>) getToolkit().getDesktopProperty("awt.font.desktophints");
             g.addRenderingHints(rh);
             super.paintComponent(g);
         }
@@ -751,12 +751,6 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         private int b;
         private Object buff;
         private int off, len;
-
-        public StreamFragment(boolean isErr, byte b) {
-            this.isErr = isErr;
-            type = FragType.BYTE;
-            this.b = b;
-        }
 
         public StreamFragment(boolean isErr, char ch) {
             this.isErr = isErr;

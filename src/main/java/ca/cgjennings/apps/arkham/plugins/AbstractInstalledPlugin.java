@@ -6,7 +6,6 @@ import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.IOException;
 import java.util.logging.Level;
-import javax.swing.Icon;
 import static resources.Language.string;
 import resources.ResourceKit;
 import resources.Settings;
@@ -32,7 +31,6 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     private String name;
     private String desc;
     private float version;
-    private Icon icon;
     private int type;
     private String prefix;
 

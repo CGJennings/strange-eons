@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.commands.Commands;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
-import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.dnd.FileDrop;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
@@ -28,7 +27,6 @@ import java.util.logging.Level;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
-import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
 import resources.Settings;
 
@@ -51,13 +49,6 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             debugBtn.setEnabled(false);
             debugBtn.setVisible(false);
         }
-
-        editor.getDocument().addDocumentListener(new DocumentEventAdapter() {
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                isModified = true;
-            }
-        });
 
         if (!Settings.getUser().applyWindowSettings("quickscript", this)) {
             Rectangle r = getParent().getBounds();
@@ -122,8 +113,6 @@ final class QuickscriptDialog extends javax.swing.JDialog {
         editor.putClientProperty(ContextBar.BAR_LEADING_SIDE_PROPERTY, Boolean.TRUE);
         editor.putClientProperty(ContextBar.BAR_OFFSET_PROPERTY, new Point(20, 0));
     }
-
-    private boolean isModified;
 
     /**
      * This method is called from within the constructor to initialize the form.
