@@ -307,6 +307,20 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         return console.getText();
     }
 
+    /** Moves the scrollbar to the first line. */
+    public void scrollToTop() {
+        EventQueue.invokeLater(() -> {
+            scrollPane.getVerticalScrollBar().setValue(0);
+        });
+    }
+
+    /** Moves the scrollbar to the last line. */
+    public void scrollToBottom() {
+        EventQueue.invokeLater(() -> {
+            scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum());
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
