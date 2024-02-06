@@ -189,6 +189,12 @@ const Console = {
     clear() {
         arkham.plugins.ScriptMonkey.sharedConsole.clear();
     },
+    scrollToTop() {
+        arkham.plugins.ScriptMonkey.sharedConsole.scrollToTop();
+    },
+    scrollToBottom() {
+        arkham.plugins.ScriptMonkey.sharedConsole.scrollToBottom();
+    },
     history() {
         return arkham.plugins.ScriptMonkey.sharedConsole.getHistoryText();
     },
