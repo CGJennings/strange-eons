@@ -73,8 +73,7 @@ const ImageUtils = (function () {
         if (unthemed) {
             return new swing.ImageIcon(ImageUtils.getMultiRes(resPath));
         } else {
-            let icon = new ca.cgjennings.ui.theme.ThemedImageIcon(resPath);
-            return icon.image === null ? null : icon;
+            return new ca.cgjennings.ui.theme.ThemedImageIcon(resPath);
         }
     };
 

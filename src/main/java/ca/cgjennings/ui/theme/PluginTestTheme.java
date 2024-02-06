@@ -3,7 +3,6 @@ package ca.cgjennings.ui.theme;
 import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
 import ca.cgjennings.graphics.filters.GammaCorrectionFilter;
 import ca.cgjennings.graphics.filters.GreyscaleFilter;
-import static ca.cgjennings.ui.theme.Theme.*;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import javax.swing.UIDefaults;

@@ -11,7 +11,7 @@ import javax.swing.Painter;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-public class SolidPainter implements Painter {
+public class SolidPainter implements Painter<Object> {
 
     private Paint p;
 
