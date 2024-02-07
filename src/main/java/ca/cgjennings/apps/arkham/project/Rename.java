@@ -1,5 +1,6 @@
 package ca.cgjennings.apps.arkham.project;
 
+import ca.cgjennings.apps.arkham.AbstractStrangeEonsEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import java.awt.Toolkit;
@@ -62,6 +63,14 @@ public class Rename extends TaskAction {
         }
     }
 
+    private static void updateFileWithoutMakingDirty(StrangeEonsEditor editor, File newFile) {
+        boolean hadChanges = editor.hasUnsavedChanges();
+        editor.setFile(newFile);
+        if (editor instanceof AbstractStrangeEonsEditor) {
+            ((AbstractStrangeEonsEditor) editor).setUnsavedChanges(hadChanges);
+        }
+    }
+
     /**
      * Rename a file in the project as if using this action, but without
      * displaying a dialog. This is the recommended way to rename a project
@@ -102,7 +111,7 @@ public class Rename extends TaskAction {
             if (!isDir) {
                 StrangeEonsEditor[] savedAs = StrangeEons.getWindow().getEditorsShowingFile(oldFile);
                 for (int i = 0; i < savedAs.length; ++i) {
-                    savedAs[i].setFile(newFile);
+                    updateFileWithoutMakingDirty(savedAs[i], newFile);
                 }
             } else {
                 for (StrangeEonsEditor editor : StrangeEons.getWindow().getEditors()) {
@@ -124,7 +133,7 @@ public class Rename extends TaskAction {
                         while (!elements.isEmpty()) {
                             f = new File(f, elements.pop());
                         }
-                        editor.setFile(f);
+                        updateFileWithoutMakingDirty(editor, f);
                         elements.clear();
                     }
                 }
