@@ -8,24 +8,24 @@ import ca.cgjennings.ui.theme.Theme;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.LinkedList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.UIManager;
 import static resources.Language.string;
 import resources.ResourceKit;
-import resources.Settings;
 
 /**
- * This dialog is used when there are files with unsaved changes during
+ * This dialog is typically used when there are files with unsaved changes during
  * application exit. Instead of saving the files one at a time, it displays a
  * list of all such files in a single dialog so that they can be dealt with as a
  * unit.
  *
  * <p>
  * This is a single use object: create it, then call {@link #showDialog()}. If
- * it returns {@code false}, the exit was cancelled. Otherwise, the user wishes
- * to proceed with the exit. If the exit is cancelled, a new dialog must be
- * created on the next exit attempt. Note that it is always safe to create this
+ * it returns {@code false}, the operation was cancelled. Otherwise, the user wishes
+ * to proceed with the operation. If the operation is cancelled, a new dialog must be
+ * created on the next operation attempt. Note that it is always safe to create this
  * dialog; if there are no unsaved files, {@link #showDialog()} will return
  * {@code true} without displaying anything.
  *
@@ -68,13 +68,13 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
                 AbstractSupportEditor ase = (AbstractSupportEditor) editor;
                 ase.setUnsavedChanges(false);
             } else if (editor instanceof AbstractGameComponentEditor) {
-                AbstractGameComponentEditor agc = (AbstractGameComponentEditor) editor;
+                AbstractGameComponentEditor<?> agc = (AbstractGameComponentEditor<?>) editor;
                 agc.setUnsavedChanges(false);
             }
-
             // If an unknown type of StrangeEonsEditor subclass, we don't know
             // how to clear the unsaved change flag, so this might pop up an
             // extra dialog later.
+            editor.close();
         }
 
         public boolean save() {
@@ -95,8 +95,8 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     }
 
     private boolean cancel;
-    private final TabInfo[] listOfAllOpenTabs;
     private final DefaultListModel<TabInfo> model;
+    private List<StrangeEonsEditor> ignoreList;
 
     /**
      * Creates new form MultiCloseDialog
@@ -107,40 +107,45 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         getRootPane().setDefaultButton(saveAllBtn);
         PlatformSupport.makeAgnosticDialog(this, saveAllBtn, cancelBtn);
 
-        StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditors();
-        listOfAllOpenTabs = new TabInfo[eds.length];
         model = new DefaultListModel<>();
-        for (int i = 0; i < eds.length; ++i) {
-            listOfAllOpenTabs[i] = new TabInfo(i, eds[i]);
-            if (eds[i].hasUnsavedChanges()) {
-                model.addElement(listOfAllOpenTabs[i]);
-            }
-        }
         fileList.setModel(model);
     }
+    
+    private void createTabModel() {
+        model.removeAllElements();
+        StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditors();
+        for (int i = 0; i < eds.length; ++i) {
+            if (ignoreList != null && ignoreList.contains(eds[i])) {
+                continue;
+            }
+            if (eds[i].hasUnsavedChanges()) {
+                model.addElement(new TabInfo(i, eds[i]));
+            }
+        }        
+    }
+    
+    public MultiCloseDialog setIgnoreList(List<StrangeEonsEditor> toIgnore) {
+        ignoreList = toIgnore;
+        return this;
+    }
+    
+    public List<StrangeEonsEditor> getIgnoreList() {
+        return ignoreList;
+    }
 
+    /**
+     * Displays the dialog and waits for the user to handle files
+     * with unsaved changes by either closing them or saving and closing them.
+     * @return true if all of the files were eventually closed
+     */
     public boolean showDialog() {
+        createTabModel();
         if (!model.isEmpty()) {
             cancel = true;
             pack();
             setLocationRelativeTo(getParent());
             setVisible(true);
         }
-        // write list of tabs to open next time
-        StringBuilder v = new StringBuilder(256);
-        for (TabInfo ti : listOfAllOpenTabs) {
-            String token = null;
-            if (ti.file != null) {
-                token = "F " + ti.file.getAbsolutePath();
-            }
-            if (token != null) {
-                if (v.length() > 0) {
-                    v.append('\0');
-                }
-                v.append(token);
-            }
-        }
-        Settings.getUser().set("tab-list", v.toString());
         return !cancel;
     }
 
@@ -168,7 +173,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         saveAllBtn = new javax.swing.JButton();
         discardAllBtn = new javax.swing.JButton();
         fileScroll = new javax.swing.JScrollPane();
-        fileList = new JIconList();
+        fileList = new JIconList<>();
         jSeparator1 = new javax.swing.JSeparator();
         saveSelBtn = new javax.swing.JButton();
         discardSelBtn = new javax.swing.JButton();
@@ -179,18 +184,25 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle(string("app-l-multiclose-title")); // NOI18N
+        setName("Form"); // NOI18N
 
         cancelBtn.setText(string("cancel")); // NOI18N
+        cancelBtn.setName("cancelBtn"); // NOI18N
 
         saveAllBtn.setText(string("app-b-save-all")); // NOI18N
+        saveAllBtn.setName("saveAllBtn"); // NOI18N
 
         discardAllBtn.setText(string("app-b-discard-all")); // NOI18N
+        discardAllBtn.setName("discardAllBtn"); // NOI18N
         discardAllBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discardAllBtnActionPerformed(evt);
             }
         });
 
+        fileScroll.setName("fileScroll"); // NOI18N
+
+        fileList.setName("fileList"); // NOI18N
         fileList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 fileListValueChanged(evt);
@@ -198,8 +210,11 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
         });
         fileScroll.setViewportView(fileList);
 
+        jSeparator1.setName("jSeparator1"); // NOI18N
+
         saveSelBtn.setFont(saveSelBtn.getFont().deriveFont(saveSelBtn.getFont().getSize()-1f));
         saveSelBtn.setText(string("app-b-save-sel")); // NOI18N
+        saveSelBtn.setName("saveSelBtn"); // NOI18N
         saveSelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 saveSelBtnActionPerformed(evt);
@@ -208,6 +223,7 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
 
         discardSelBtn.setFont(discardSelBtn.getFont().deriveFont(discardSelBtn.getFont().getSize()-1f));
         discardSelBtn.setText(string("app-b-discard-sel")); // NOI18N
+        discardSelBtn.setName("discardSelBtn"); // NOI18N
         discardSelBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 discardSelBtnActionPerformed(evt);
@@ -216,17 +232,21 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
 
         headBannerPanel.setBackground(UIManager.getColor(Theme.HEAD_BANNER_BACKGROUND));
         headBannerPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, java.awt.Color.gray));
+        headBannerPanel.setName("headBannerPanel"); // NOI18N
 
         jLabel2.setFont(jLabel2.getFont().deriveFont(jLabel2.getFont().getSize()-1f));
         jLabel2.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         jLabel2.setText(string("app-l-multiclose-2")); // NOI18N
         jLabel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 6, 0));
+        jLabel2.setName("jLabel2"); // NOI18N
 
         jLabel1.setFont(jLabel1.getFont().deriveFont(jLabel1.getFont().getStyle() | java.awt.Font.BOLD));
         jLabel1.setForeground(UIManager.getColor(Theme.HEAD_BANNER_FOREGROUND));
         jLabel1.setText(string("app-l-multiclose-1")); // NOI18N
+        jLabel1.setName("jLabel1"); // NOI18N
 
         warningIcon.setIcon(ResourceKit.getIcon("application/warning.png").medium());
+        warningIcon.setName("warningIcon"); // NOI18N
 
         javax.swing.GroupLayout headBannerPanelLayout = new javax.swing.GroupLayout(headBannerPanel);
         headBannerPanel.setLayout(headBannerPanelLayout);
@@ -326,33 +346,26 @@ final class MultiCloseDialog extends javax.swing.JDialog implements AgnosticDial
     }//GEN-LAST:event_discardAllBtnActionPerformed
 
     private void processSelected(boolean applyToAll, boolean discard) {
-        int[] sel;
+        List<TabInfo> selected;
         if (applyToAll) {
-            sel = new int[model.getSize()];
-            for (int i = 0; i < sel.length; ++i) {
-                sel[i] = i;
+            selected = new LinkedList<>();
+            final int size = model.getSize();
+            for (int i=0; i<size; ++i) {
+                selected.add(model.getElementAt(i));
             }
         } else {
-            sel = fileList.getSelectedIndices();
+            selected = fileList.getSelectedValuesList();
         }
-        // Track entries to remove without removing them yet,
-        // so we can process them in increasing order
-        LinkedList<Integer> toRemove = new LinkedList<>();
-        for (int i = sel.length - 1; i >= 0; --i) {
-            if (discard) {
-                model.get(i).discard();
-            } else {
-                if (!model.get(i).save()) {
-                    break;
-                }
+        
+        for (TabInfo tab : selected) {
+            if (!discard && !tab.save()) {
+                break;                
             }
-            toRemove.add(i);
+            tab.discard();
         }
-        // Now remove any marked entries, and if this removes everything
-        // we can close the dialog and continue, as all files have been handled.
-        for (int i : toRemove) {
-            model.removeElementAt(i);
-        }
+        
+        createTabModel();
+        
         if (model.isEmpty()) {
             cancel = false;
             dispose();

@@ -105,6 +105,14 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
     public abstract StrangeEonsEditor[] getEditors();
 
     /**
+     * Returns the number of editor windows that are currently open.
+     * 
+     * @return the number of open editors
+     * @since 3.4
+     */
+    public abstract int getEditorCount();
+
+    /**
      * Returns an array of all currently open editor windows that are editing a
      * certain file. If no editors currently have the file set as their save
      * file, returns an empty array.
@@ -357,6 +365,15 @@ public abstract class StrangeEonsAppWindow extends JFrame implements Commandable
      * @since 2.1a12
      */
     public abstract void removeEditorListener(EditorListener el);
+
+    /**
+     * Closes all open editor windows. If any editor has unsaved changes, the
+     * user will be prompted to save them.
+     * 
+     * @return true if all editors were close, or false if the user cancelled
+     * the operation
+     */
+    public abstract boolean closeAllEditors();
 
     /**
      * Returns the current open {@link Project}, or {@code null} if no project
