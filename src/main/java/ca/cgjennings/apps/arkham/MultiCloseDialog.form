@@ -6,6 +6,7 @@
     <Property name="title" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
       <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-l-multiclose-title" replaceFormat="string(&quot;{key}&quot;)"/>
     </Property>
+    <Property name="name" type="java.lang.String" value="Form" noResource="true"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -13,7 +14,7 @@
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
-    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
     <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
@@ -79,6 +80,7 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="cancel" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="cancelBtn" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="saveAllBtn">
@@ -86,6 +88,7 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-b-save-all" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="saveAllBtn" noResource="true"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="discardAllBtn">
@@ -93,27 +96,37 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-b-discard-all" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="discardAllBtn" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="discardAllBtnActionPerformed"/>
       </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="fileScroll">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="fileScroll" noResource="true"/>
+      </Properties>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
         <Component class="javax.swing.JList" name="fileList">
+          <Properties>
+            <Property name="name" type="java.lang.String" value="fileList" noResource="true"/>
+          </Properties>
           <Events>
             <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="fileListValueChanged"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconList()"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconList&lt;&gt;()"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;TabInfo&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JSeparator" name="jSeparator1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="jSeparator1" noResource="true"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="saveSelBtn">
       <Properties>
@@ -125,6 +138,7 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-b-save-sel" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="saveSelBtn" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saveSelBtnActionPerformed"/>
@@ -140,6 +154,7 @@
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-b-discard-sel" replaceFormat="string(&quot;{key}&quot;)"/>
         </Property>
+        <Property name="name" type="java.lang.String" value="discardSelBtn" noResource="true"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="discardSelBtnActionPerformed"/>
@@ -157,6 +172,7 @@
             </MatteColorBorder>
           </Border>
         </Property>
+        <Property name="name" type="java.lang.String" value="headBannerPanel" noResource="true"/>
       </Properties>
 
       <Layout>
@@ -210,6 +226,7 @@
                 <EmptyBorder bottom="6" left="0" right="0" top="0"/>
               </Border>
             </Property>
+            <Property name="name" type="java.lang.String" value="jLabel2" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -225,6 +242,7 @@
             <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
               <ResourceString bundle="resources/text/interface/eons-text.properties" key="app-l-multiclose-1" replaceFormat="string(&quot;{key}&quot;)"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="jLabel1" noResource="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="warningIcon">
@@ -232,6 +250,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="ResourceKit.getIcon(&quot;application/warning.png&quot;).medium()" type="code"/>
             </Property>
+            <Property name="name" type="java.lang.String" value="warningIcon" noResource="true"/>
           </Properties>
         </Component>
       </SubComponents>

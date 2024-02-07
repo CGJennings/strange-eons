@@ -755,6 +755,7 @@ final class AppFrame extends StrangeEonsAppWindow {
         openRecentMenu = new RecentFiles.RecentFileMenu( fileMenu );
         javax.swing.JPopupMenu.Separator jSeparator6 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem closeItem = new javax.swing.JMenuItem();
+        javax.swing.JMenuItem closeAllItem = new javax.swing.JMenuItem();
         javax.swing.JMenuItem closeProjectItem = new javax.swing.JMenuItem();
         javax.swing.JPopupMenu.Separator jSeparator7 = new javax.swing.JPopupMenu.Separator();
         javax.swing.JMenuItem saveItem = new javax.swing.JMenuItem();
@@ -977,6 +978,10 @@ final class AppFrame extends StrangeEonsAppWindow {
         closeItem.setAction( Commands.CLOSE );
         closeItem.setName("closeItem"); // NOI18N
         fileMenu.add(closeItem);
+
+        closeAllItem.setAction( Commands.CLOSE_ALL );
+        closeAllItem.setName("closeAllItem"); // NOI18N
+        fileMenu.add(closeAllItem);
 
         closeProjectItem.setAction( Commands.CLOSE_PROJECT );
         closeProjectItem.setName("closeProjectItem"); // NOI18N
@@ -1596,13 +1601,32 @@ final class AppFrame extends StrangeEonsAppWindow {
             setDefaultCursor();
         }
     }
+    
+    private void updateListOfEditorsToRestore() {
+        StringBuilder b = new StringBuilder(256);
+        for (var editor : getEditors()) {
+            String token = null;
+            if (editor.getFile() != null) {
+                token = "F " + editor.getFile().getAbsolutePath();
+            }
+            if (token != null) {
+                if (b.length() > 0) {
+                    b.append('\0');
+                }
+                b.append(token);
+            }            
+        }
+        Settings.getUser().set("tab-list", b.toString());
+    }    
 
     @Override
     public boolean exitApplication(final boolean restart) {
         if ((getExtendedState() & ICONIFIED) != 0) {
             setExtendedState(getExtendedState() & ~ICONIFIED);
         }
-
+        
+        updateListOfEditorsToRestore();
+        
         final MultiCloseDialog mcd = new MultiCloseDialog(this);
         if (mcd.showDialog()) {
             Settings.getUser().storeWindowSettings("appframe", this);
@@ -1705,6 +1729,11 @@ final class AppFrame extends StrangeEonsAppWindow {
     }
 
     @Override
+    public int getEditorCount() {
+        return editorTab.getTabCount();
+    }
+
+    @Override
     public void redrawPreviews() {
         for (StrangeEonsEditor ed : getEditors()) {
             if (ed instanceof AbstractGameComponentEditor) {
@@ -1763,6 +1792,16 @@ final class AppFrame extends StrangeEonsAppWindow {
             setDefaultCursor();
         }
     }
+
+    @Override
+    public boolean closeAllEditors() {
+        for (StrangeEonsEditor ed : getEditors()) {
+            if (!ed.hasUnsavedChanges()) {
+                ed.close();
+            }
+        }
+        return new MultiCloseDialog(this).showDialog();
+    }    
 
     private void installTextEditorFont(JComponent parent) {
         if (parent instanceof PortraitPanel) {

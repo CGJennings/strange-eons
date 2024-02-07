@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import javax.print.PrintException;
@@ -303,12 +304,19 @@ public abstract class AbstractStrangeEonsEditor extends TAttachedEditor implemen
         item = new JMenuItem(string("app-pu-close-other"));
         item.addActionListener((ActionEvent e) -> {
             for (StrangeEonsEditor ed : AppFrame.getApp().getEditors()) {
-                if (ed != AbstractStrangeEonsEditor.this) {
+                if (ed != AbstractStrangeEonsEditor.this && !ed.hasUnsavedChanges()) {
                     ed.close();
                 }
             }
+            if (AppFrame.getApp().getEditorCount() > 1) {
+                new MultiCloseDialog(AppFrame.getApp())
+                        .setIgnoreList(List.of(this))
+                        .showDialog();
+            }
         });
         menu.add(item);
+
+        menu.add(new JMenuItem(Commands.CLOSE_ALL));
 
         if (isAttached()) {
             item = new JMenuItem(string("app-pu-detach"));

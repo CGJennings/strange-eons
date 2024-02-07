@@ -9,7 +9,6 @@ import ca.cgjennings.apps.arkham.ParagraphDialog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.StrangeEonsAppWindow;
 import ca.cgjennings.apps.arkham.StrangeEonsEditor;
-import static ca.cgjennings.apps.arkham.commands.HDeckCommand.getDeckEditor;
 import ca.cgjennings.apps.arkham.deck.Deck;
 import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.deck.Page;
@@ -122,7 +121,24 @@ public class Commands {
             setEnabled(StrangeEons.getActiveEditor() != null);
         }
     };
+
     /**
+     * Closes all open editors. If any editor has unsaved changes, the user will
+     * be given the option to save the file or cancel the command.
+     */
+    public static final AbstractCommand CLOSE_ALL = new AbstractCommand("app-close-all") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            StrangeEons.getWindow().closeAllEditors();
+        }
+
+        @Override
+        public void update() {
+            setEnabled(StrangeEons.getActiveEditor() != null);
+        }
+    };
+
+    /**         
      * Closes the open project, if any.
      */
     public static final AbstractCommand CLOSE_PROJECT = new AbstractCommand("app-close-project") {
