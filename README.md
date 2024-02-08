@@ -52,9 +52,9 @@ These are the tools you'll need to build Strange Eons from this repository:
 1. **Git** (to clone the repository). If you are new to Git,
 you may find the [GitHub Desktop](https://desktop.github.com/) client
 easier to use than the command line.
-(Your IDE might also have built-in support for Git.)
+(Your IDE might also have support for Git, either built in or as an extension/plug-in.)
 
-2. **Java 11 JDK**. The main branch is currently based on Java 11.
+2. **JDK 11**. The main branch is currently based on Java 11.
 You can download a suitable JDK from
 [Adoptium](https://adoptium.net/temurin/releases/?version=11).
 
@@ -67,7 +67,7 @@ following commands:
 
 Build the project:
 ```bash
-mvn compile
+mvn package
 ```
 
 Start the main application:
@@ -84,6 +84,11 @@ Start the script debugging client:
 ```bash
 mvn exec:exec -Pdebugger
 ```
+
+> **Note:** The script debugging client is used to debug script code
+> in Strange Eons, typically plug-in code. This does not start a Java
+> debugging session to debug the main application. Do that
+> as you normally would with your IDE. 
 
 To work with the project in an IDE, you will likely need to configure
 "launch options" to run the project. In particular, you will need to
@@ -118,7 +123,7 @@ The script supports the following arguments:
 This relies on a commercial third-party tool,
 [Install4J](https://www.ej-technologies.com/products/install4j/overview.html).
 The script will guess at the location of Install4J, but if that fails
-you can set the `INSTALL4J` environment variablet to the path to `install4jc`.
+you can set the `INSTALL4J` environment variable to the path to `install4jc`.
 
 ### Additional tools
 
