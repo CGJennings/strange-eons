@@ -13,6 +13,10 @@ if (install4jBin) {
     }
 }
 
+const MT_WIN = "--media-types=windows";
+const MT_MAC = "--media-types=macos,macosFolder,macosArchive,macosFolderArchive";
+const MT_LINUX = "--media-types=linuxRPM,linuxDeb";
+
 export function compileInstallers(deployDir, buildTag, platform) {
     if (platform === "other") return;
     if (platform == null ) {
@@ -20,9 +24,11 @@ export function compileInstallers(deployDir, buildTag, platform) {
     } else {
         platform = {
             "": "",
-            "windows": "--media-types=windows",
-            "macos": "--media-types=macos,macosFolder,macosArchive,macosFolderArchive",
-            "linux": "--media-types=linuxRPM,linuxDeb"
+            "win": MT_WIN,
+            "windows": MT_WIN,
+            "mac": MT_MAC,
+            "macos": MT_MAC,
+            "linux": MT_LINUX
         }[platform];
         if (platform == null) {
             warn(`unknown platform ${platform}`);
