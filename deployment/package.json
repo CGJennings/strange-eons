@@ -1,0 +1,8 @@
+{
+    "name": "strange-eons-app-deployment",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "start": "node deploy.js"
+    }
+}

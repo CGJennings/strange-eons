@@ -1,0 +1,23 @@
+deploy
+-v --v --version versionTag
+    Set the version presented to the user: 3.1a2 => "3.1 alpha 2"
+    Example version tags: 3.1 3.4a 3.4a2 3.4alpha2 3.4b
+--forcebuild buildNum
+    Override the computed build number with the specified value
+-p --platform windows|macos|linux|other
+    Build artifacts only for the specified platform (default: all)
+-s --simulate
+    Simulate the process, logging the steps that would be taken
+    but not actually performing any destructive actions
+-q --quiet
+    Suppress output except errors
+-V --verbose
+    Print more detailed output
+--noclean
+    Do not clean the assembly or dist directories
+--nosign
+    Do not attempt to run the local signing functions
+--nopost
+    Do not attempt to run the local post-deploy function
+--install4j
+    Specify location of Install4J bin directory
