@@ -1042,7 +1042,7 @@ return true;</property>
     <windows name="Windows (x64)" id="226" installDir="StrangeEons" architecture="64">
       <jreBundle includedJre="windows-amd64-1.8.0_202" bundleUrl="http://cgjennings.ca/eons/download/jre/windows-amd64-1.8.0_112.tar.gz" directDownload="true" />
     </windows>
-    <macosArchive name="macOS Single Bundle Archive" id="380" architecture="universal" launcherId="29" />
+    <macosArchive name="macOS Single Bundle Archive" id="380" archiveType="tgz" architecture="universal" launcherId="29" />
     <linuxDeb name="Linux Deb Archive (amd64)" id="385" mediaFileName="strange-eons-linux-amd64-b${compiler:sys.version}" bzip="true" description="Strange Eons: the design tool for tabletop gaming" architectureSet="true" architecture="amd64">
       <excludedLaunchers>
         <launcher id="389" />

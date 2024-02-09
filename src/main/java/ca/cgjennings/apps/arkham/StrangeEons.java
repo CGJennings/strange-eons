@@ -96,8 +96,9 @@ import resources.Settings;
  * @since 3.0
  */
 public final class StrangeEons {
-    private static final int VER_MAJOR = 3;
-    private static final int VER_MINOR = 3;
+    private static final int VER_MAJOR;
+    private static final int VER_MINOR;
+    private static final int VER_PATCH;
     /**
      * The build number, which increases monotonically on each release.
      */
@@ -123,29 +124,40 @@ public final class StrangeEons {
     private static final int JAVA_VERSION_MAX = 11;    
 
     static {
-        // Autodetect version details from file generated during app packaging
-        ReleaseType ver_type = ReleaseType.DEVELOPMENT;
+        // Detect version details that were generated during app packaging;
+        // otherwise fall back to development build settings
         int ver_build = INTERNAL_BUILD_NUMBER;
+        int ver_major = 3;
+        int ver_minor = 4;
+        int ver_patch = 0;
+        ReleaseType ver_type = ReleaseType.DEVELOPMENT;
 
         InputStream releaseInfoIn = StrangeEons.class.getResourceAsStream("rev");
         if (releaseInfoIn != null) {
             try (BufferedReader br = new BufferedReader(new InputStreamReader(releaseInfoIn, StandardCharsets.UTF_8))) {
                 ver_build = Integer.parseInt(br.readLine().trim());
-                if (ver_build != INTERNAL_BUILD_NUMBER) {
+                ver_major = Integer.parseInt(br.readLine().trim());
+                ver_minor = Integer.parseInt(br.readLine().trim());
+                ver_patch = Integer.parseInt(br.readLine().trim());
+                String type = br.readLine();
+                if (type == null || type.isEmpty()) {
                     ver_type = ReleaseType.GENERAL;
-                    String type = br.readLine().trim();
-                    if (type != null) {
-                        ver_type = ReleaseType.valueOf(type.trim().toUpperCase(Locale.ROOT));
-                    }
+                } else {
+                    ver_type = ReleaseType.valueOf(type.trim().toUpperCase(Locale.ROOT));
                 }
             } catch (IllegalArgumentException | NullPointerException syntaxEx) {
-                throw new AssertionError("invalid revision syntax");
+                // logger not initialized yet, print to stderr
+                System.err.println("invalid revision syntax");
+                syntaxEx.printStackTrace();
             } catch (IOException e) {
-                // if missing or unreadable fall back to dev build
+                // if missing or unreadable fall back to dev build defaults
             }
         }
 
+        VER_MAJOR = ver_major;
+        VER_MINOR = ver_minor;
         VER_BUILD = ver_build;
+        VER_PATCH = ver_patch;
         VER_TYPE = ver_type;
     }
 
@@ -234,12 +246,18 @@ public final class StrangeEons {
         if (VER_MINOR != 0) {
             b.append('.').append(VER_MINOR);
         }
-        if (VER_BUILD == 99_999) {
+        if (VER_BUILD == 99_999 || VER_TYPE == ReleaseType.DEVELOPMENT) {
             b.append(" (development build)");
         } else if (VER_TYPE == ReleaseType.GENERAL) {
-            b.append('.').append(VER_BUILD);
+            if (VER_PATCH != 0) {
+                b.append('.').append(VER_PATCH);
+            }
         } else {
-            b.append(" (").append(VER_BUILD).append(VER_TYPE.suffix).append(')');
+            b.append(VER_TYPE.suffix);
+            if (VER_PATCH != 0) {
+                b.append(VER_PATCH);
+            }
+            b.append(" (").append(VER_BUILD).append(')');
         }
         return b.toString();
     }
