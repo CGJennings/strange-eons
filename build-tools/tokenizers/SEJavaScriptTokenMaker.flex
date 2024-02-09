@@ -321,7 +321,7 @@ LetterOrDigit					= ({Letter}|{Digit})
 EscapedSourceCharacter				= ("u"{HexDigit}{HexDigit}{HexDigit}{HexDigit})
 NonSeparator						= ([^\t\f\r\n\ \(\)\{\}\[\]\;\,\.\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%\"\'\`]|"#"|"\\")
 IdentifierStart					= ({Letter}|"_")
-IdentifierPart						= ({IdentifierStart}|{Digit}|("\\"{EscapedSourceCharacter}))
+IdentifierPart						= ({IdentifierStart}|{Digit}|("\\"{EscapedSourceCharacter})|"$")
 KeyIdentifierStart              = ("$"|"@"|"#")
 KeyIdentifierPart                   = ({IdentifierPart}|{KeyIdentifierStart}|"-")
 JS_MLCBegin				= "/*"
