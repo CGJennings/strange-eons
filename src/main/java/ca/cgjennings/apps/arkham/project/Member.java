@@ -277,12 +277,6 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
      */
     public boolean hasChildren() {
         if (children == null) {
-            // speculate that there are files
-//				File[] files = file.listFiles( FILE_FILTER );
-//				if( files != null ) {
-//					return files.length > 0;
-//				}
-
             return file.isDirectory();
         } else {
             return getChildCount() > 0;

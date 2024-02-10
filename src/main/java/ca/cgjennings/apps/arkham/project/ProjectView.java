@@ -22,6 +22,7 @@ import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.TreeLabelExposer;
 import ca.cgjennings.ui.anim.AnimationUtilities;
 import ca.cgjennings.ui.text.ErrorSquigglePainter;
+import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
 import java.awt.Component;
@@ -1608,7 +1609,7 @@ public final class ProjectView extends javax.swing.JPanel {
             cutAttributes.put(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON);
             cutAttributes.put(TextAttribute.FOREGROUND, Color.GRAY);
         }
-        private final Map<TextAttribute, ? extends Object> unsavedAttributes = Collections.singletonMap(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+        private final Map<TextAttribute, ? extends Object> unsavedAttributes = Collections.singletonMap(TextAttribute.FOREGROUND, Palette.get.foreground.translucent.yellow);
         private Icon blank;
     }
 
