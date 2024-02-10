@@ -4,41 +4,23 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.ScriptConsole;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.io.EscapedLineReader;
-import ca.cgjennings.ui.DocumentEventAdapter;
 import java.awt.AlphaComposite;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
-import javax.swing.JComponent;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.DocumentEvent;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import resources.ResourceKit;
 
 /**
@@ -46,14 +28,13 @@ import resources.ResourceKit;
  * a font. A glyph icon can be created from a specific font, code point, and
  * colour description, but more commonly it is created either from a label or
  * descriptor. A label-based icon displays a letter chosen from automatically
- * from a label string, optionally with a solid circular background.
- * A descriptor is a compact string that describes how to compose the icon
- * design. A descriptor can be as simple as the single code
- * point of the symbol you want to display, or it can compose multiple glyphs
- * using a combination of sizes, positions, orientations, and colours.
- * Descriptors have the following syntax:
+ * from a label string, optionally with a solid circular background. A
+ * descriptor is a compact string that describes how to compose the icon design.
+ * A descriptor can be as simple as the single code point of the symbol you want
+ * to display, or it can compose multiple glyphs using a combination of sizes,
+ * positions, orientations, and colours. Descriptors have the following syntax:
  *
- * <pre>[gly:]CP[!][%][,FG[,BG]][@[Z][,+|-ADJ[,DX[,DY]]]][;...]</pre>
+ * <pre>[gly:]CP[!][%][*][,FG[,BG]][@[Z][,+|-ADJ[,DX[,DY]]]][;...]</pre>
  *
  * <dl>
  * <dt><code>gly:</code><dd>This character sequence is used to distinguish a
@@ -172,26 +153,26 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
     }
 
     /**
-     * Creates a new glyph icon that displays a letter selected from a
-     * specified string. For example, given the string {@code "The monkey is
+     * Creates a new glyph icon that displays a letter selected from a specified
+     * string. For example, given the string {@code "The monkey is
      * happy."}, the icon might display the letter M (from monkey).
-     * 
+     *
      * <p>
      * <strong>Note:</strong> Tag strings and descriptors, while both strings,
      * are interpreted completely differently.
-     * 
-     * @param label a string containing text from which a letter should be chosen
-     * for the icon to display
+     *
+     * @param label a string containing text from which a letter should be
+     * chosen for the icon to display
      * @param fg an optional foreground colour, if null a default is selected
      * @param bg an optional background colour, if null then no background is
      * included
      * @see #derive(java.lang.String)
-     * @see #ThemedGlyphIcon(java.lang.String) 
+     * @see #ThemedGlyphIcon(java.lang.String)
      */
     public ThemedGlyphIcon(String label, Color fg, Color bg) {
         if (fg == null) {
             fg = bg == null ? Palette.get.foreground.opaque.text
-                    : Palette.get.foreground.translucent.white;            
+                    : Palette.get.foreground.translucent.white;
         }
         Layer layer = createTagLayer(label, fg, bg);
         if (layer == BROKEN_LAYER) {
@@ -281,7 +262,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
             // no suitable tag letter
             return this;
         }
-        
+
         if (descriptor != null) {
             parseDescriptor();
         }
@@ -312,13 +293,18 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         return gi;
     }
 
+    @Override
+    public String toString() {
+        return descriptor;
+    }
+
     private static Layer createTagLayer(String label, Color fg, Color bg) {
         if (label == null || label.isEmpty()) {
             return BROKEN_LAYER;
         }
 
         label = label.toUpperCase();
-        
+
         int tagLetter = -1;
         String[] words = label.split("(\\s|'|_)+");
         for (String w : words) {
@@ -498,7 +484,7 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         return height;
     }
 
-    private static Font getDefaultFont() {
+    static Font getDefaultFont() {
         if (defaultFont == null) {
             try (InputStream in = ThemedGlyphIcon.class.getResourceAsStream("/resources/icons/icons.bin")) {
                 defaultFont = Font.createFont(Font.TRUETYPE_FONT, in).deriveFont(F_SIZE);
@@ -919,94 +905,5 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         } catch (IOException | RuntimeException ioe) {
             StrangeEons.log.log(Level.SEVERE, "unable to load icon map", ioe);
         }
-    }
-
-    /**
-     * Starts a simple tool to help construct built-in glyph icons
-     * interactively.
-     */
-    public static void main(String[] argv) {
-        EventQueue.invokeLater(() -> {
-            try {
-                UIManager.setLookAndFeel(new NimbusLookAndFeel() {
-                    @Override
-                    public Icon getDisabledIcon(JComponent c, Icon i) {
-                        return i;
-                    }
-                });
-            } catch (UnsupportedLookAndFeelException ulaf) {
-            }
-            JFrame f = new JFrame();
-            final JLabel label = new JLabel(new ThemedGlyphIcon("gly:F0198"));
-            JTextField tf = new JTextField("gly:F0198");
-            tf.setDragEnabled(true);
-            tf.getDocument().addDocumentListener(new DocumentEventAdapter() {
-                private int last, lastHandled;
-
-                @Override
-                public void changedUpdate(DocumentEvent e) {
-                    ++last;
-                    SwingUtilities.invokeLater(() -> {
-                        if (lastHandled != last) {
-                            lastHandled = last;
-                            try {
-                                String desc = tf.getText().trim();
-                                System.out.println(desc);
-                                if (!desc.isEmpty()) {
-                                    label.setIcon(new ThemedGlyphIcon(desc));
-                                }
-                            } catch (Exception ex) {
-                                StrangeEons.log.log(Level.SEVERE, "uncaught exception during parse", ex);
-                            }
-                        }
-                    });
-                }
-            });
-
-            Color dark = new Color(0x323232);
-            Color light = new Color(0xe0e0e0);
-
-            final JComponent cp = (JComponent) f.getContentPane();
-            label.setBackground(light);
-            label.setOpaque(true);
-            cp.add(label);
-            cp.add(tf, BorderLayout.NORTH);
-            cp.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    // left click to toggle light/dark
-                    if (e.getButton() == MouseEvent.BUTTON1) {
-                        label.setBackground(label.getBackground() == light ? dark : light);
-                    } // right click to toggle enabled/disabled
-                    else if (e.getButton() == MouseEvent.BUTTON3) {
-                        label.setEnabled(!label.isEnabled());
-                    } // middle button to save as a PNG
-                    else if (e.getButton() == MouseEvent.BUTTON2) {
-                        ThemedIcon icon = (ThemedGlyphIcon) label.getIcon();
-                        final int W = icon.getIconWidth();
-                        final int H = icon.getIconHeight();
-                        BufferedImage im = new BufferedImage(W, H, BufferedImage.TYPE_INT_ARGB);
-                        Graphics2D g = im.createGraphics();
-                        try {
-                            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                            icon.paintIcon(null, g, 0, 0);
-                        } finally {
-                            g.dispose();
-                        }
-                        try {
-                            File output = File.createTempFile("glyph-icon-", ".png");
-                            ImageIO.write(im, "png", output);
-                            System.out.println(output.getAbsolutePath());
-                        } catch (IOException ex) {
-                            ex.printStackTrace(System.out);
-                        }
-                    }
-                }
-            });
-            f.setSize(200, 200);
-            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            f.setLocationByPlatform(true);
-            f.setVisible(true);
-        });
     }
 }

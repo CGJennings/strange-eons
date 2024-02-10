@@ -90,6 +90,8 @@ mvn exec:exec -Pdebugger
 > debugging session to debug the main application. Do that
 > as you normally would with your IDE. 
 
+See `pom.xml` for additional `-P` profiles for other tools.
+
 To work with the project in an IDE, you will likely need to configure
 "launch options" to run the project. In particular, you will need to
 add a VM argument to enable a "Java agent". Refer to `.vscode/launch.json`
