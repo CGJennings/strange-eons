@@ -25,9 +25,18 @@ public interface CloudFontConnector {
 
     /**
      * Returns a URL for font property metadata that describes the available fonts.
+     * 
      * @return a URL for the font metadata
      */
     public URL getUrlForMetadata();
+
+    /**
+     * Returns a URL that returns a version code for the font property metadata.
+     * When the version code changes, any cached metadata should be considered stale.
+     * 
+     * @return a URL for the font metadata version
+     */
+    public URL getUrlForMetadataVersion();    
 
     /**
      * Returns the root directory of the local cache. This directory
@@ -42,5 +51,5 @@ public interface CloudFontConnector {
      * Creates a collection that will use this connector's
      * connection details.
      */
-    public CloudFontCollection create();
+    public CloudFontCollection createFontCollection();
 }

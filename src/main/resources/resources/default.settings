@@ -529,6 +529,20 @@ debug = no
 
 ###########################################################
 ##
+## Cloud Font Data
+##
+
+# The URLs needed to access cloud font data. These settings 
+# only need to be set in the event that the default locations
+# become inaccessible.
+
+#cloudfont-fontbase-url = https://github.com/google/fonts/raw/main/
+#cloudfont-metadata-url = https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties
+
+
+
+###########################################################
+##
 ## Plug-ins and Scripting Support
 ##
 

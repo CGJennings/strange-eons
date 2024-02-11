@@ -14,7 +14,7 @@ public final class CloudFonts {
     public static CloudFontCollection getDefaultCollection() {
         synchronized (CloudFonts.class) {
             if (defaultCollection == null) {
-                defaultCollection = new DefaultCloudFontConnector().create();
+                defaultCollection = new DefaultCloudFontConnector().createFontCollection();
             }
             return defaultCollection;
         }

@@ -1,6 +1,8 @@
 package ca.cgjennings.graphics.cloudfonts;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import resources.Settings;
+
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,11 +14,23 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
 
     private final URL fontBaseUrl;
     private final URL metadataUrl;
+    private final URL versionUrl;
+    private final File cacheRoot;
 
     public DefaultCloudFontConnector() {
+        this(
+            "cloud-font-cache",
+            Settings.getShared().get("cloudfont-fontbase-url", "https://github.com/google/fonts/raw/main/"),
+            Settings.getShared().get("cloudfont-metadata-url", "https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties")
+        );
+    }
+
+    public DefaultCloudFontConnector(String cacheName, String fontBaseUrl, String metadataUrl) {
         try {
-            fontBaseUrl = new URL("https://github.com/google/fonts/raw/main/");
-            metadataUrl = new URL("https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties");
+            this.cacheRoot = StrangeEons.getUserStorageFile(cacheName + "/");
+            this.fontBaseUrl = new URL(fontBaseUrl);
+            this.metadataUrl = new URL(metadataUrl);
+            versionUrl = new URL(this.metadataUrl, "version");
         } catch (MalformedURLException e) {
             throw new AssertionError("invalid font cache URL", e);
         }
@@ -37,14 +51,17 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
     }
 
     @Override
+    public URL getUrlForMetadataVersion() {
+        return versionUrl;
+    }    
+
+    @Override
     public File getLocalCacheRoot() {
-        File root = StrangeEons.getUserStorageFile("google-font-cache");
-        root.mkdirs();
-        return root;
+        return cacheRoot;
     }
 
     @Override
-    public final CloudFontCollection create() {
-        return new GoogleFonts(this);
+    public final CloudFontCollection createFontCollection() {
+        return new GFStyleCloudCollection(this);
     }
 }
