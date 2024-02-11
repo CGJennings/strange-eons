@@ -2852,7 +2852,7 @@ public class ResourceKit {
         private Font f;
         private boolean ok;
 
-        private FontRegistrationResult(Font font, boolean registered) {
+        public FontRegistrationResult(Font font, boolean registered) {
             if (font == null) {
                 throw new NullPointerException();
             }
