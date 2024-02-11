@@ -1,7 +1,6 @@
 package ca.cgjennings.graphics.cloudfonts;
 
 import java.awt.Font;
-import java.awt.font.TextAttribute;
 import java.io.IOException;
 import resources.ResourceKit;
 

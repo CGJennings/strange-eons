@@ -4,11 +4,9 @@ import java.io.File;
 import java.net.URL;
 
 /**
- * A connector describes the specific location of a
- * cloud collection. By returning different URLs,
- * a connector can access a collection that uses the
- * same structure or API, but which is hosted at a
- * different location.
+ * A connector provides the connection details needed
+ * to connect to a cloud font collection, and a location
+ * where the collection can be cached locally.
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -24,15 +22,15 @@ public interface CloudFontConnector {
     public URL getUrlForFontPath(String fontPath);
 
     /**
-     * Returns a URL for font property metadata that describes the available fonts.
+     * Returns a URL for metadata that describes the available fonts.
      * 
      * @return a URL for the font metadata
      */
     public URL getUrlForMetadata();
 
     /**
-     * Returns a URL that returns a version code for the font property metadata.
-     * When the version code changes, any cached metadata should be considered stale.
+     * Returns a URL that returns a version code for the font metadata.
+     * When this version code changes, any cached metadata should be considered stale.
      * 
      * @return a URL for the font metadata version
      */
