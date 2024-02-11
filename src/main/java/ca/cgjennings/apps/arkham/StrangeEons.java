@@ -1097,7 +1097,7 @@ public final class StrangeEons {
     }
 
     /**
-     * Returns a file that can be used to store user data.For example, a plug-in
+     * Returns a file that can be used to store user data. For example, a plug-in
      * might use this to create a folder for storing cached data. All of the
      * files returned by this method will be located in a special
      * system-dependent storage folder. If {@code child} is {@code null}, then
@@ -1114,6 +1114,11 @@ public final class StrangeEons {
      * {@code "myplugin/cachefile"} would refer to the file
      * <i>cachefile</i> in the <i>myplugin</i> subfolder of the user storage
      * folder.
+     * 
+     * <p>An effort will be made to create any needed folders between the
+     * storage folder and the requested file, if they do not already exist.
+     * If {@code child} ends with {@code /}, then the last path entry in
+     * {@code child} is also treated as a folder name and created if mising.
      *
      * @param child
      * @return the folder in which per-user files are stored, or the
@@ -1125,9 +1130,21 @@ public final class StrangeEons {
     public static File getUserStorageFile(String child) {
         File f = USER_STORAGE_FOLDER;
         if (child != null) {
+            boolean folderRequest = child.endsWith("/");
+            if (folderRequest) {
+                child = child.substring(0, child.length() - 1);
+            }
+
             f = new File(f, child.replace('/', File.separatorChar));
+            
             if (!isInUserStorage(f)) {
                 throw new IllegalArgumentException("file is not in storage folder: " + f);
+            }
+
+            if (folderRequest) {
+                f.mkdirs();
+            } else if (child.contains("/")) {
+                f.getParentFile().mkdirs();
             }
         }
         return f;

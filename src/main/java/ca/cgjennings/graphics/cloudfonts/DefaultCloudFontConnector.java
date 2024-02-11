@@ -6,12 +6,13 @@ import resources.Settings;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * The connector used to implement {@link CloudFonts#getDefaultCollection()}.
  */
 public class DefaultCloudFontConnector implements CloudFontConnector {
-
+    private final String identifier;
     private final URL fontBaseUrl;
     private final URL metadataUrl;
     private final URL versionUrl;
@@ -19,14 +20,16 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
 
     public DefaultCloudFontConnector() {
         this(
+            "default",
             "cloud-font-cache",
             Settings.getShared().get("cloudfont-fontbase-url", "https://github.com/google/fonts/raw/main/"),
             Settings.getShared().get("cloudfont-metadata-url", "https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties")
         );
     }
 
-    public DefaultCloudFontConnector(String cacheName, String fontBaseUrl, String metadataUrl) {
+    public DefaultCloudFontConnector(String identifier, String cacheName, String fontBaseUrl, String metadataUrl) {
         try {
+            this.identifier = Objects.requireNonNull(identifier);
             this.cacheRoot = StrangeEons.getUserStorageFile(cacheName + "/");
             this.fontBaseUrl = new URL(fontBaseUrl);
             this.metadataUrl = new URL(metadataUrl);
@@ -34,6 +37,11 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
         } catch (MalformedURLException e) {
             throw new AssertionError("invalid font cache URL", e);
         }
+    }
+
+    @Override
+    public String getIdentifier() {
+        return identifier;
     }
 
     @Override

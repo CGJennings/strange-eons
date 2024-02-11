@@ -12,6 +12,15 @@ import java.net.URL;
  */
 public interface CloudFontConnector {
     /**
+     * Returns a unique identifier for the connector.
+     * This can be used to distinguish data from different connectors,
+     * for example, when storing settings.
+     * 
+     * @return a unique identifier for the connector
+     */
+    public String getIdentifier();
+
+    /**
      * Given a path to a font resource relative to the cloud file system
      * root, returns a URL that can be used to download the resource.
      *
