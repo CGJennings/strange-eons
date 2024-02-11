@@ -54,8 +54,7 @@ public interface CloudFontFamily {
     
     /**
      * Registers this font family. Registered font families can be located
-     * by their family name. (For example, when setting {@link TextAttribute#FAMILY}
-     * on a markup box.
+     * by their family name when creating a font.
      * 
      * @return an array of registration results, one for each font in the family
      * @throws IOException if an error occurs while downloading, loading, or
