@@ -7,6 +7,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -459,6 +460,7 @@ final class GFStyleCloudCollection implements CloudFontCollection {
      */
     private synchronized File[] downloadFonts(GFFont[] fonts) throws IOException {
         File[] localFiles = new File[fonts.length];
+        List<Runnable> tasks = null;
         for (int i=0; i<fonts.length; ++i) {
             final GFFont font = fonts[i];
             final String cloudPath = normalizeFontPath(font.getCloudPath());
@@ -469,12 +471,43 @@ final class GFStyleCloudCollection implements CloudFontCollection {
             if (dest.exists()) continue;
 
             // nope, get it from the cloud
-            dest.getParentFile().mkdirs();
-            download(connector.getUrlForFontPath(cloudPath), dest);
+            if (tasks == null) tasks = new LinkedList<>();
+            tasks.add(() -> {
+                try {
+                    dest.getParentFile().mkdirs();
+                    download(connector.getUrlForFontPath(cloudPath), dest);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
         }
-
+        if (tasks != null) {
+            if (tasks.size() == 1) {
+                try {
+                    tasks.get(0).run();
+                } catch (RuntimeException e) {
+                    throw new IOException("download failed", e.getCause());
+                }
+            } else {
+                final int numThreads = Settings.getUser().getInt("cloudfont-concurrent-downloads", 3);
+                var executor = Executors.newFixedThreadPool(numThreads);
+                try {
+                    for (Runnable task : tasks) {
+                        executor.submit(task);
+                    }
+                } finally {
+                    executor.shutdown();
+                    try {
+                        executor.awaitTermination(12L, java.util.concurrent.TimeUnit.HOURS);
+                    } catch (InterruptedException e) {
+                        throw new IOException("download interrupted", e);
+                    }
+                }
+            }
+        }
         return localFiles;
     }
+
 
     /**
      * Normalizes the font path by adding a leading "./" if necessary.
@@ -537,7 +570,7 @@ final class GFStyleCloudCollection implements CloudFontCollection {
                 try {
                     d.open(cacheRoot);
                     return;
-                } catch (Exception e) {
+                } catch (IOException e) {
                     log.log(Level.WARNING, "failed to open font cache", e);
                 }
             }
@@ -548,7 +581,7 @@ final class GFStyleCloudCollection implements CloudFontCollection {
     public static void main(String[] args) {
         try {
             GFStyleCloudCollection gfc = (GFStyleCloudCollection) CloudFonts.getDefaultCollection();
-            var f = gfc.getFamily("raleway");
+            var f = gfc.getFamily("ubuntu");
             f.register();
         } catch (Throwable t) {
             t.printStackTrace();

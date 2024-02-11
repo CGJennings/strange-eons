@@ -539,6 +539,8 @@ debug = no
 #cloudfont-fontbase-url = https://github.com/google/fonts/raw/main/
 #cloudfont-metadata-url = https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties
 
+# max number of font files to download simultaneously
+cloudfont-concurrent-downloads = 3
 
 
 ###########################################################
