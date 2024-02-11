@@ -41,13 +41,15 @@ import resources.ResourceKit;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 final class GFStyleCloudCollection implements CloudFontCollection {
+    /** How often to check if the font collection has been updated. */
     private static final long MAX_CACHE_AGE = 30L * 24 * 60 * 60 * 1000;
     private static final String HASHES = "hashes";
     private static final String METADATA = "metadata";
 
-    GFStyleCloudCollection(CloudFontConnector provider) {
-        this.connector = provider;
-        cacheRoot = provider.getLocalCacheRoot();
+    /** Creates a colleciton using the specified settings. */
+    GFStyleCloudCollection(CloudFontConnector connector) {
+        this.connector = connector;
+        cacheRoot = connector.getLocalCacheRoot();
 
         try(var reader = new EscapedLineReader(new File(cacheRoot, HASHES))) {
             String[] hashkv;
