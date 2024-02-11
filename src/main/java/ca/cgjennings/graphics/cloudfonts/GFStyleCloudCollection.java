@@ -10,15 +10,12 @@ import java.util.logging.Level;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.io.EscapedLineReader;
-import ca.cgjennings.io.EscapedLineWriter;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
-import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -43,46 +40,17 @@ import resources.ResourceKit;
 final class GFStyleCloudCollection implements CloudFontCollection {
     /** How often to check if the font collection has been updated. */
     private static final long MAX_CACHE_AGE = 30L * 24 * 60 * 60 * 1000;
-    private static final String HASHES = "hashes";
     private static final String METADATA = "metadata";
 
     /** Creates a colleciton using the specified settings. */
     GFStyleCloudCollection(CloudFontConnector connector) {
         this.connector = connector;
         cacheRoot = connector.getLocalCacheRoot();
-
-        try(var reader = new EscapedLineReader(new File(cacheRoot, HASHES))) {
-            String[] hashkv;
-            while ((hashkv = reader.readProperty()) != null) {
-                hashes.put(hashkv[0], hashkv[1]);
-            }
-        } catch (FileNotFoundException fnf) {
-            // never created, or intentionally deleted
-        } catch (IOException ex) {
-            StrangeEons.log.log(Level.WARNING, "could not read hashes", ex);
-        }
-    }
-
-    /**
-     * Write the list of hashes of locally cached files.
-     */
-    private void writeFileHashes() {
-        synchronized (this) {
-            try (var writer = new EscapedLineWriter(new File(cacheRoot, HASHES))) {
-                StrangeEons.log.info("writing local cache file hashes");
-                writer.writeProperties(hashes);
-            } catch (IOException ex ) {
-                StrangeEons.log.log(Level.WARNING, "could not write hashes", ex);
-            }
-        }
     }
 
     private final CloudFontConnector connector;
     private final File cacheRoot;
-    /** Map from cloud paths to the hash of a locally downloaded file. */
-    private final HashMap<String,String> hashes = new HashMap<>();
     private CloudFontFamily[] families;
-
 
     static class GoogleFont implements CloudFont, Comparable<GoogleFont> {
         protected GoogleFont(GoogleFontFamily family, String file) {
@@ -435,30 +403,19 @@ final class GFStyleCloudCollection implements CloudFontCollection {
      * @throws IOException if an error occurs while downloading or writing the fonts
      */
     private synchronized File[] downloadFonts(GoogleFont[] fonts) throws IOException {
-        boolean updatedHashes = false;
         File[] localFiles = new File[fonts.length];
         for (int i=0; i<fonts.length; ++i) {
             final GoogleFont font = fonts[i];
             final String cloudPath = normalizeFontPath(font.getCloudPath());
             final File localFile = fontPathToLocalCacheFile(cloudPath, font.family.getHash());
-            final String hash = font.family.getHash();
 
             localFiles[i] = localFile;
 
             // is already downloaded and up to date?
-            String localHash = hashes.get(cloudPath);
-            if (hash.equals(localHash) && localFile.exists()) {
-                continue;
-            }
+            if (localFile.exists()) continue;
     
             // nope, get it from the cloud
             download(connector.getUrlForFontPath(cloudPath), localFile);
-            hashes.put(cloudPath, hash);
-            updatedHashes = true;
-        }
-
-        if (updatedHashes) {
-            writeFileHashes();
         }
 
         return localFiles;
