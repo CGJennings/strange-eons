@@ -22,7 +22,7 @@ public interface CloudFontFamily {
      * 
      * @return the license type, such as OFL, or an empty string
      */
-    String getLicense();
+    String getLicenseType();
 
     /**
      * Returns the family name. Note that this is based on the file

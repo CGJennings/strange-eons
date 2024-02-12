@@ -7,7 +7,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -294,7 +297,7 @@ final class GFStyleCloudCollection implements CloudFontCollection {
         }
 
         @Override
-        public String getLicense() {
+        public String getLicenseType() {
             switch (key.substring(0, nameStart - 1)) {
                 case "apache":
                     return "Apache";
@@ -399,6 +402,8 @@ final class GFStyleCloudCollection implements CloudFontCollection {
 
     @Override
     public CloudFontFamily getFamily(String name) throws IOException {
+        if (families == null) getFamilies();
+        
         // filter out all chars but letters and numbers since we are matching against a path
         name = name.trim().toLowerCase(Locale.ROOT);
         name = name.replaceAll("[^-a-z0-9_ ]+", "");
@@ -431,16 +436,16 @@ final class GFStyleCloudCollection implements CloudFontCollection {
     public CloudFontFamily[] match(String description) throws IOException {
         List<CloudFontFamily> matches = new LinkedList<>();
         String[] tokens = description.trim().toLowerCase(Locale.ROOT).split("\\s+");
-        CloudFontFamily[] families = getFamilies(true);
-        for (int f=0; f<families.length; ++f) {
+        CloudFontFamily[] matchingFamilies = getFamilies(true);
+        for (int f=0; f<matchingFamilies.length; ++f) {
             int t=0;
             for (; t<tokens.length; ++t) {
-                if (!families[f].matchesTag(tokens[t])) {
+                if (!matchingFamilies[f].matchesTag(tokens[t])) {
                     break;
                 }
             }
             if (t == tokens.length) {
-                matches.add(families[f]);
+                matches.add(matchingFamilies[f]);
             }
         }
         return matches.toArray(CloudFontFamily[]::new);
@@ -485,22 +490,36 @@ final class GFStyleCloudCollection implements CloudFontCollection {
             if (tasks.size() == 1) {
                 try {
                     tasks.get(0).run();
-                } catch (RuntimeException e) {
-                    throw new IOException("download failed", e.getCause());
+                } catch (RuntimeException ex) {
+                    throw new IOException("download failed", ex.getCause());
                 }
             } else {
                 final int numThreads = Settings.getUser().getInt("cloudfont-concurrent-downloads", 3);
                 var executor = Executors.newFixedThreadPool(numThreads);
                 try {
+                    List<Future<?>> futures = new LinkedList<>();
                     for (Runnable task : tasks) {
-                        executor.submit(task);
+                        futures.add(executor.submit(task));
                     }
+                    for (Future<?> f : futures) {
+                        f.get();
+                    }
+                } catch (CancellationException|InterruptedException ex) {
+                    throw new AssertionError();
+                } catch (ExecutionException ex) {
+                    // expect an ExecutionException wrapping a RuntimeException wrapping an IOException
+                    Throwable nested = ex.getCause();
+                    if (nested instanceof RuntimeException && nested.getCause() instanceof IOException) {
+                        throw (IOException) nested.getCause();
+                    }
+                    throw new IOException("download failed", nested);
                 } finally {
                     executor.shutdown();
                     try {
                         executor.awaitTermination(12L, java.util.concurrent.TimeUnit.HOURS);
-                    } catch (InterruptedException e) {
-                        throw new IOException("download interrupted", e);
+                    } catch (InterruptedException ex) {
+                        // main thread interrupted
+                        throw new AssertionError();
                     }
                 }
             }
