@@ -47,11 +47,20 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
 
     private static final String KEY_FULL_UNICODE = "insert-chars-full-unicode";
 
+    public InsertCharsDialog(java.awt.Dialog parent, boolean modal) {
+        super(parent, modal);
+        initCommon();
+    }
+    
     /**
      * Creates new form InsertCharsDialog
      */
     public InsertCharsDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        initCommon();
+    }
+
+    private void initCommon() {
         rowMap = buildDynamicRowMap();
         setLimitedToBMP(false);
         initComponents();
@@ -67,7 +76,7 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
         if (!Settings.getUser().applyWindowSettings("insert-chars", this)) {
-            setLocationRelativeTo(parent);
+            setLocationRelativeTo(getParent());
         }
 
         gridBorder = BorderFactory.createMatteBorder(0, 0, 1, 1, charTable.getGridColor());
@@ -273,17 +282,27 @@ public final class InsertCharsDialog extends javax.swing.JDialog implements Agno
         return null;
     }
 
-    public static JDialog createFontViewer(Font f) {
-        InsertCharsDialog d = new InsertCharsDialog(StrangeEons.getWindow(), false);
-        d.isFontViewer = true;
-        d.instructionLabel.setVisible(false);
-        PlatformSupport.getAgnosticOK(true, d.okBtn, d.cancelBtn).setText(string("copy"));
-        PlatformSupport.getAgnosticCancel(true, d.okBtn, d.cancelBtn).setText(string("close"));
-        d.insertLabel.setText(string("copy"));
-        d.setTableFont(f.deriveFont(28f));
-        d.pack();
-        d.setTitle(string("icd-l-view-only", f.getFontName(Locale.getDefault())));
+    public static InsertCharsDialog createFontViewer(java.awt.Dialog parent, Font f) {
+        InsertCharsDialog d = new InsertCharsDialog(parent, true);
+        d.initFontViewerCommon(f);
         return d;
+    }
+
+    public static InsertCharsDialog createFontViewer(Font f) {
+        InsertCharsDialog d = new InsertCharsDialog(StrangeEons.getWindow(), false);
+        d.initFontViewerCommon(f);
+        return d;
+    }
+
+    private void initFontViewerCommon(Font f) {
+        isFontViewer = true;
+        instructionLabel.setVisible(false);
+        PlatformSupport.getAgnosticOK(true, okBtn, cancelBtn).setText(string("copy"));
+        PlatformSupport.getAgnosticCancel(true, okBtn, cancelBtn).setText(string("close"));
+        insertLabel.setText(string("copy"));
+        setTableFont(f.deriveFont(28f));
+        pack();
+        setTitle(string("icd-l-view-only", f.getFontName(Locale.getDefault())));
     }
     private boolean isFontViewer;
 

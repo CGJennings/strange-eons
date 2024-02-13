@@ -2852,7 +2852,7 @@ public class ResourceKit {
         private Font f;
         private boolean ok;
 
-        private FontRegistrationResult(Font font, boolean registered) {
+        public FontRegistrationResult(Font font, boolean registered) {
             if (font == null) {
                 throw new NullPointerException();
             }
@@ -2881,7 +2881,7 @@ public class ResourceKit {
          * @return the font's name
          */
         public String getFamily() {
-            return f.getFamily(); // f.getFontName();
+            return f.getFamily();
         }
 
         /**
@@ -2901,7 +2901,7 @@ public class ResourceKit {
 
         @Override
         public String toString() {
-            return "FontRegistrationResult{ font=" + f.getFontName() + ", registered=" + ok + " }";
+            return "FontRegistrationResult{ family=" + f.getFamily() + ", font=" + f.getFontName() + ", registered=" + ok + " }";
         }
     }
 }
