@@ -38,8 +38,7 @@ public interface CloudFontCollection {
     CloudFontFamily[] match(String description) throws IOException;
 
     /**
-     * Forces a refresh of the collection by downloading the most recent
-     * font metadata. Some collections may ignore this request.
+     * Requests that the collection refresh its metadata from the cloud.
      */
     void refresh() throws IOException;
 }

@@ -43,13 +43,13 @@ import resources.Settings;
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-final class GFCloudCollection implements CloudFontCollection {
+final class GFCloudFontCollection implements CloudFontCollection {
     /** How often to check if the font collection has been updated. */
     private static final long MAX_CACHE_AGE = 7L * 24 * 60 * 60 * 1000;
     private static final String METADATA = "metadata";
 
     /** Creates a collection using the specified settings. */
-    GFCloudCollection(CloudFontConnector connector) {
+    GFCloudFontCollection(CloudFontConnector connector) {
         this.connector = connector;
         cacheRoot = connector.getLocalCacheRoot();
     }
@@ -448,7 +448,7 @@ final class GFCloudCollection implements CloudFontCollection {
 
     public static void main(String[] args) {
         try {
-            GFCloudCollection gfc = (GFCloudCollection) CloudFonts.getDefaultCollection();
+            GFCloudFontCollection gfc = (GFCloudFontCollection) CloudFonts.getDefaultCollection();
             var f = gfc.getFamily("ubuntu");
             f.register();
         } catch (Throwable t) {
