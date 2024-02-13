@@ -23,7 +23,7 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
             "default",
             "cloud-font-cache",
             Settings.getShared().get("cloudfont-fontbase-url", "https://github.com/google/fonts/raw/main/"),
-            Settings.getShared().get("cloudfont-metadata-url", "https://github.com/CGJennings/gf-metadata/raw/main/metadata.properties")
+            Settings.getShared().get("cloudfont-metadata-url", "https://github.com/CGJennings/gf-metadata/raw/main/metadata.gz")
         );
     }
 
@@ -70,6 +70,6 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
 
     @Override
     public final CloudFontCollection createFontCollection() {
-        return new GFStyleCloudCollection(this);
+        return new GFCloudCollection(this);
     }
 }
