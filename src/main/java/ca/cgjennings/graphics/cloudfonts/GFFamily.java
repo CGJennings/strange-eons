@@ -1,5 +1,6 @@
 package ca.cgjennings.graphics.cloudfonts;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -7,26 +8,25 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import ca.cgjennings.apps.arkham.StrangeEons;
 import resources.ResourceKit;
 
 /**
- * Family implementation for {@link GFCloudCollection}.
+ * Family implementation for {@link GFCloudFontCollection}.
+ * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 final class GFFamily implements CloudFontFamily {
     
-    GFFamily(GFCloudCollection collection, String name, String path, String fileList, String catList, String axesList, String subsetList, String versionHash, WeakIntern intern) {
+    GFFamily(GFCloudFontCollection collection, String name, String path, String fileList, String catList, String axesList, String subsetList, String versionHash, WeakIntern intern) {
         coll = collection;
         this.name = name;
         this.path = intern.of(path);
-        this.sortKey = GFCloudCollection.toSortKey(name);
+        this.sortKey = GFCloudFontCollection.toSortKey(name);
         this.fileList = fileList;
         categoryBits = catList == null ? 0 : CategorySet.toBits(catList.split(","));
         this.axesList = axesList;
         if (subsetList == null) {
-            subsets = GFCloudCollection.EMPTY_STRING_ARRAY;
+            subsets = GFCloudFontCollection.EMPTY_STRING_ARRAY;
         } else {
             subsets = subsetList.split(",");
             for (int i = 0; i < subsets.length; ++i) {
@@ -47,7 +47,7 @@ final class GFFamily implements CloudFontFamily {
         hash = null;
     }
 
-    final GFCloudCollection coll;
+    final GFCloudFontCollection coll;
     private final String name;
     final String sortKey;
     final String path;
@@ -78,7 +78,7 @@ final class GFFamily implements CloudFontFamily {
     public Axis[] getAxes() {
         if (axes == null) {
             if (axesList == null) {
-                axes = GFCloudCollection.EMPTY_AXIS_ARRAY;
+                axes = GFCloudFontCollection.EMPTY_AXIS_ARRAY;
             } else {
                 String[] axisStrings = axesList.split("\\|");
                 axes = new Axis[axisStrings.length];
