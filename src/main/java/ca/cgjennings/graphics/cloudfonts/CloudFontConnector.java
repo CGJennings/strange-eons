@@ -9,6 +9,7 @@ import java.net.URL;
  * where the collection can be cached locally.
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public interface CloudFontConnector {
     /**

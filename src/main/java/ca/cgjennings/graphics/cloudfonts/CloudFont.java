@@ -8,9 +8,10 @@ import java.io.IOException;
  * 
  * <p>While some methods are included to obtain basic information about the font,
  * these may be provided without access to the actual font, and therefore 
- * are not definitive. 
+ * are not definitive since a remote font could change at any time. 
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public interface CloudFont {
     /**
@@ -40,11 +41,14 @@ public interface CloudFont {
      *
      * @return an array of font axes
      */
-    String[] getAxes();
+    Axis[] getAxes();
     
     /**
      * Returns an AWT font for this cloud font, downloading it
-     * from the cloud if necessary.
+     * from the cloud if necessary. If the entire font family
+     * should be downloaded, use
+     * {@link CloudFontFamily#download()} instead
+     * as it may download needed files more efficiently.
      * 
      * @return a font instance for this cloud font
      * @throws IOException if an error occurs while downloading, loading, or
