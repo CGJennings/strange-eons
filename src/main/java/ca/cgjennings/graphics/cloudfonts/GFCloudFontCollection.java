@@ -1,6 +1,5 @@
 package ca.cgjennings.graphics.cloudfonts;
 
-import java.awt.Desktop;
 import java.io.BufferedReader;
 import java.io.File;
 import java.net.URL;
@@ -61,7 +60,7 @@ final class GFCloudFontCollection implements CloudFontCollection {
     static final Axis[] EMPTY_AXIS_ARRAY = new Axis[0];
     static final String[] EMPTY_STRING_ARRAY = new String[0];
 
-    /** Convert a family to a sort key  */
+    /** Convert a family name to a sort key  */
     static String toSortKey(String familyName) {
         return familyName.toLowerCase(Locale.ROOT).replaceAll("[^-_a-z0-9]", "");
     }
@@ -85,12 +84,11 @@ final class GFCloudFontCollection implements CloudFontCollection {
     @Override
     public void refresh() throws IOException {
         synchronized (this) {
-            final String localVersion = Settings.getUser().get(metadataVersionSettingKey());
+            final String localVersionWas = Settings.getUser().get(metadataVersionSettingKey());
             final String remoteVersion = getMetadataVersion();
-            if (!Objects.equals(localVersion, remoteVersion)) {
+            updateMetadataCache(remoteVersion, new File(cacheRoot, METADATA));
+            if (!Objects.equals(localVersionWas, remoteVersion)) {
                 families = null;
-                validateLocalMetadata(true);
-                loadFamilies();
             }
         }
     }
@@ -133,7 +131,7 @@ final class GFCloudFontCollection implements CloudFontCollection {
      * @returns the (possibly changed) version string for the local version
      * @throws IOException
      */
-    private synchronized String validateLocalMetadata(boolean forceServerCheck) throws IOException {
+    private synchronized String validateMetadataCache(boolean forceServerCheck) throws IOException {
         File localCache = new File(cacheRoot, METADATA);
         String localVersion = Settings.getUser().get(metadataVersionSettingKey());
         final boolean cacheIsStale = forceServerCheck || (localCache.lastModified() < System.currentTimeMillis() - MAX_CACHE_AGE);
@@ -141,14 +139,15 @@ final class GFCloudFontCollection implements CloudFontCollection {
         if (localVersion == null || cacheIsStale || !cacheExists) {
             final String remoteVersion = getMetadataVersion();
             if (!remoteVersion.equals(localVersion) || !cacheExists) {
-                updateLocalMetadataFromServer(remoteVersion, localCache);
+                updateMetadataCache(remoteVersion, localCache);
                 localVersion = remoteVersion;
             }
         }
         return localVersion;
     }
     
-    private synchronized void updateLocalMetadataFromServer(String remoteVersion, File localCache) throws IOException {
+    /** Replaces the local metadata cache with the latest version on the server. */
+    private synchronized void updateMetadataCache(String remoteVersion, File localCache) throws IOException {
         log.log(Level.INFO, "getting new font metadata version \"{0}\"", remoteVersion);
         // download to a temporary file first, in case of failure
         File temp = new File(cacheRoot, METADATA + ".tmp");
@@ -162,8 +161,6 @@ final class GFCloudFontCollection implements CloudFontCollection {
      * Initializes the collection by parsing the metadata file that describes
      * the available font families. A local cache of the metadata may be used,
      * or if it is stale or unavailable, a copy will be downloaded from the server.
-     * 
-     * @throws IOException
      */
     private synchronized void loadFamilies() throws IOException {
         if (families != null) return;
@@ -178,12 +175,12 @@ final class GFCloudFontCollection implements CloudFontCollection {
             retry = true;
         }
         if (retry) {
-            validateLocalMetadata(true);
+            validateMetadataCache(true);
             loadFamiliesImpl(false);
         }
     }    
     private synchronized void loadFamiliesImpl(boolean throwOnVersionMismatch) throws IOException {
-        final String metadataVersion = validateLocalMetadata(false);
+        final String metadataVersion = validateMetadataCache(false);
         final File metadataFile = new File(cacheRoot, METADATA);
         final WeakIntern intern = new WeakIntern();
         java.util.LinkedList<ca.cgjennings.graphics.cloudfonts.GFFamily> familyList = new LinkedList<GFFamily>();
@@ -368,9 +365,6 @@ final class GFCloudFontCollection implements CloudFontCollection {
 
     /**
      * Normalizes a font path by adding a leading "./" if necessary.
-     * 
-     * @param fontPath the font path
-     * @return the normalized font path
      */
     private static String normalizeFontPath(String fontPath) {
         if (!fontPath.startsWith("./")) {
@@ -384,11 +378,8 @@ final class GFCloudFontCollection implements CloudFontCollection {
     }
 
     /**
-     * Given a font path, returns the location where the font's cached
-     * version will be found, if it exists.
-     * 
-     * @param fontPath the normalized font path
-     * @return the local cache file
+     * Given a font path and version hash, returns the location where
+     * the font's cached version will be found, if it exists.
      */
     File fontPathToLocalCacheFile(String fontPath, String hash) {
         // insert version hash in local file name
@@ -405,11 +396,8 @@ final class GFCloudFontCollection implements CloudFontCollection {
     }
     
     /**
-     * Low-level utility to download a URL to a local file.
-     * 
-     * @param source the remote URL
-     * @param dest the local file
-     * @throws IOException
+     * Low-level utility to download a URL to a local file. Uses GZIP
+     * decompression transparently if the URL ends with ".gz".
      */
     private static void download(URL source, File dest) throws IOException {
         try (InputStream in = source.openStream()) {
@@ -427,32 +415,6 @@ final class GFCloudFontCollection implements CloudFontCollection {
         } catch (IOException e) {
             log.log(Level.SEVERE, "download \"{0}\" -> \"{1}\" failed", new Object[] { source, dest });
             throw e;
-        }
-    }
-
-    /** Open the cache folder in explorer. */
-    public void showCacheFolder() {
-        if (Desktop.isDesktopSupported()) {
-            Desktop d = Desktop.getDesktop();
-            if (d.isSupported(Desktop.Action.OPEN)) {
-                try {
-                    d.open(cacheRoot);
-                    return;
-                } catch (IOException e) {
-                    log.log(Level.WARNING, "failed to open font cache", e);
-                }
-            }
-        }
-        log.log(Level.WARNING, "not supported on platform");
-    }
-
-    public static void main(String[] args) {
-        try {
-            GFCloudFontCollection gfc = (GFCloudFontCollection) CloudFonts.getDefaultCollection();
-            var f = gfc.getFamily("ubuntu");
-            f.register();
-        } catch (Throwable t) {
-            t.printStackTrace();
         }
     }
 

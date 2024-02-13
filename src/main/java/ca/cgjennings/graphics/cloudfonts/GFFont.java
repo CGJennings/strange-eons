@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 
 /**
- * Font implementation for {@link GFCloudCollection}.
+ * Font implementation for {@link GFCloudFontCollection}.
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */

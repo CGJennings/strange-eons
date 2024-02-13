@@ -70,6 +70,6 @@ public class DefaultCloudFontConnector implements CloudFontConnector {
 
     @Override
     public final CloudFontCollection createFontCollection() {
-        return new GFCloudCollection(this);
+        return new GFCloudFontCollection(this);
     }
 }
