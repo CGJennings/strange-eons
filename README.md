@@ -114,18 +114,24 @@ To build installers for deployment to Windows, macOS, and Linux, you can use:
 node deployment/deploy.js
 ```
 
-The script supports the following arguments:
+The following arguments can tailor the process:
 
-- `--noclean`: don't delete previous deployment artifacts
-- `--nosign`: don't try to sign any installers
-- `--beta`: mark the build as a beta release
-- `--alpha`: mark the build as an alpha release
-- `--dev`: mark the build as a development release
+ - `--version`: specify a version number for the build, such as 3.4a1 for "3.4 alpha 1"
+ - `--platform`: build one platform only: `windows`, `macos`, `linux` or `other`
+ - `--simulate`: don't actually build anything, just print what would be done
+ - `--noclean`: don't delete previous deployment artifacts
+
+For the full argument list, run `node deployment/deploy.js --help`.
+
+After the main build process, the directory `local-private` is
+checked for additional scripts to automate tasks like signing.
+See source for details if you need to use this feature. 
 
 This relies on a commercial third-party tool,
 [Install4J](https://www.ej-technologies.com/products/install4j/overview.html).
 The script will guess at the location of Install4J, but if that fails
-you can set the `INSTALL4J` environment variable to the path to `install4jc`.
+you can set the `INSTALL4J_BIN` environment variable to the path to the
+`bin` directory containing `install4jc`, or pass it with `--install4j`.
 
 ### Additional tools
 
