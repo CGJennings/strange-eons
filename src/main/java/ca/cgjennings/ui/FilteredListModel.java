@@ -116,7 +116,7 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
         return findex;
     }
 
-    public void setFilter(ListFilter f) {
+    public void setFilter(ListFilter<E> f) {
         filter = f;
         if (list.isEmpty()) {
             return;
@@ -142,18 +142,17 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
     /**
      * Returns true if the item is allowed by the current filter.
      */
-    private boolean test(Object o) {
+    private boolean test(E o) {
         if (filter == null) {
             return true;
         }
         return filter.include(this, o);
     }
 
-    private ListFilter filter;
+    private ListFilter<E> filter;
 
-    public interface ListFilter {
-
-        public boolean include(FilteredListModel model, Object item);
+    public interface ListFilter<E> {
+        public boolean include(FilteredListModel<E> model, E item);
     }
 
     /**
@@ -180,12 +179,12 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
         }
     }
 
-    public static ListFilter createRegexFilter(final String regex) {
-        return new ListFilter() {
+    public static <E extends Object> ListFilter<E> createRegexFilter(final String regex) {
+        return new ListFilter<E>() {
             Pattern p = Pattern.compile(regex);
 
             @Override
-            public boolean include(FilteredListModel model, Object item) {
+            public boolean include(FilteredListModel<E> model, E item) {
                 if (item == null) {
                     return false;
                 }
@@ -194,7 +193,7 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
         };
     }
 
-    public static ListFilter createStringFilter(String substring) {
+    public static <E> ListFilter<E> createStringFilter(String substring) {
         return createRegexFilter("(?i)(?u)" + Pattern.quote(substring));
     }
 
@@ -210,23 +209,38 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
      * the list
      * @param T the item type of the target list
      */
-    public <T> void linkTo(final JFilterField field, final JList<T> list, final boolean restoreSelection) {
+    public void linkTo(final JFilterField field, final JList<E> list, final boolean restoreSelection) {
         field.getDocument().addDocumentListener(new DocumentEventAdapter() {
             @Override
             public void changedUpdate(DocumentEvent e) {
-                List<T> selValues = restoreSelection ? list.getSelectedValuesList() : null;
+                List<E> stash = restoreSelection ? stashSelection(list) : null;
                 setFilter(createStringFilter(field.getText()));
-                if (selValues != null) {
-                    for (Object sel : selValues) {
-                        for (int i = 0; i < getSize(); ++i) {
-                            if (sel.equals(getElementAt(i))) {
-                                list.addSelectionInterval(i, i);
-                            }
-                        }
-                    }
-                }
+                if (stash != null) restoreSelection(list, stash);
             }
         });
+    }
+
+    /** Captures the current selection for use with {@link #restoreSelection(JList, List)}. */
+    public List<E> stashSelection(JList<E> list) {
+        return list.getSelectedValuesList();
+    }
+
+    /**
+     * Resores a previously stashed selection. This can be used to restore the selection
+     * after the filter has been updated.
+     * 
+     * @param list the list to restore the selection to
+     * @param selection the selection to restore
+     */
+    public void restoreSelection(JList<E> list, List<E> selection) {
+        list.clearSelection();
+        for (E sel : selection) {
+            for (int i = 0; i < getSize(); ++i) {
+                if (sel.equals(getElementAt(i))) {
+                    list.addSelectionInterval(i, i);
+                }
+            }
+        }
     }
 
     @Override

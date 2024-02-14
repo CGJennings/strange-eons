@@ -1080,52 +1080,23 @@ public abstract class Sheet<G extends GameComponent> {
     }
 
     /**
-     * Returns the size of the <em>designed</em> bleed margin included on each
-     * edge of the component, in points. A
-     * <a href="http://se3docs.cgjennings.ca/um-deck-pubmarks.html#bleed-margins">bleed
-     * margin</a>
-     * adds extra content to the edges of the component to allow for imperfect
-     * cuts when cutting the component from a larger sheet of paper. By
-     * returning a positive value, you indicate that your design already
-     * includes a bleed margin of the specified size. (Usually, the graphics for
-     * a designed bleed margin are built into the template image.)
+     * Returns the size of the bleed margin around the component edge that should be
+     * cropped off, measured in points. This bleed margin allows for slight misalignment
+     * when cutting the component from a larger sheet of paper. The bleed margin will be the same on
+     * all sides. The height and width of the component after cutting will be less than the original
+     * by twice this margin. If {@link #hasCropMarks()} returns {@code true}, then the automatic crop marks
+     * will be moved toward the inside of this component by an amount equal to the bleed margin.
      *
      * <p>
-     * By default, this method returns 0, meaning that the design includes no
-     * margin. When the designed margin is 0, or if its size if too small,
-     * Strange Eons will attempt to synthesize bleed margin graphics, with
-     * results of varying quality.
+     * The base class looks up the setting <i>templateKey</i>{@code -bleed-margin} to determine the bleed margin,
+     * defaulting to 0 if none is defined.
      *
      * <p>
-     * Strange Eons will not synthesize a bleed margin for transparent sheet
-     * images. (That is, if {@link #isTransparent()} is true.)
-     *
-     * <p>
-     *
-     * content as part o
-     *
-     *
-     * Returning a positive value * indicates that your component graphics
-     * include
-     *
-     *
-     *
-     *
-     *
-     * Returns the size of the margin around the component edge that should be
-     * cropped off, measured in points. (The bleed margin will be the same on
-     * all sides.) This allows you to create components with an extra margin
-     * that allows for slight misalignment when cutting. The height of the card
-     * after cutting will be the height of the card produced by the sheet, less
-     * twice this margin. Likewise for the width. If {@link #hasCropMarks()}
-     * returns {@code true}, then the automatic crop marks will be moved toward
-     * the inside of this card by an amount equal to the bleed margin.
-     * <p>
-     * In the example below, the actual card to be cut and kept is indicated by
-     * the blank area, while the X'd area indicates the bleed margin. Card
+     * In the example below, the actual component to be cut and kept is indicated by
+     * the blank area, while the X'd area indicates the bleed margin. Component
      * content covers the entire area, including the bleed margin, but nothing
      * important should appear in the bleed margin or within a distance about
-     * the same size as the bleed margin on the card interior.
+     * the same size as the bleed margin on the component interior.
      *
      * <pre>
      * XXXXXXXXXXXXXXXXXX
@@ -1133,7 +1104,7 @@ public abstract class Sheet<G extends GameComponent> {
      * X                X
      * X                X
      * X     Actual     X
-     * X      Card      X
+     * X    Component   X
      * X     Content    X
      * X       (tm)     X
      * X                X
@@ -1144,9 +1115,10 @@ public abstract class Sheet<G extends GameComponent> {
      * </pre>
      *
      * <p>
-     * The base class looks up the setting
-     * <i>templateKey</i>{@code -bleed-margin} to determine the bleed margin,
-     * defaulting to 0 if none is defined.
+     * By default, this method returns 0, meaning that the design includes no
+     * bleed margin. If the bleed margin is 0, Strange Eons will attempt to synthesize
+     * bleed margin graphics, with varying results. Note that Strange Eons will not synthesize a bleed margin
+     * for transparent sheet images (i.e., if {@link #isTransparent()} is true).
      *
      * @return the size of the bleed margin, in points (1 point = 1/72 inch)
      * @see #hasCropMarks
@@ -1168,6 +1140,14 @@ public abstract class Sheet<G extends GameComponent> {
      * component, measured in points. This allows you to specify how the corners
      * of the component will be rounded when the trimmed edge style is selected.
      * The default is a radius of 0, meaning there is no rounding.
+     * 
+     * <pre>
+     * XXXXXX------
+     * XX   |
+     * X    |
+     * X----• = radius
+     * |
+     * </pre>
      *
      * @return the size of the corner radius, in points (1 point = 1/72 inch)
      */

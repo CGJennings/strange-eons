@@ -1,5 +1,8 @@
 package ca.cgjennings.graphics.cloudfonts;
 
+import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.ui.BlankIcon;
+
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
@@ -8,11 +11,13 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ca.cgjennings.apps.arkham.StrangeEons;
+import javax.swing.Icon;
+
 import resources.ResourceKit;
 
 /**
  * Family implementation for {@link GFCloudFontCollection}.
+ * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 final class GFFamily implements CloudFontFamily {
@@ -156,6 +161,32 @@ final class GFFamily implements CloudFontFamily {
             return "Unknown";
         }
     }
+
+    @Override
+    public Icon getIcon() {
+        int downloaded = 0, registered = 0;
+        var cf = getCloudFonts();
+        for (int i=0; i<cf.length; ++i) {
+            if (cf[i].isDownloaded()) {
+                ++downloaded;
+            }
+            if (cf[i].isRegistered()) {
+                ++registered;
+            }
+        }
+        if (registered == cf.length) {
+            return ICON_REGISTERED;
+        } else if (downloaded == cf.length) {
+            return ICON_DOWNLOADED;
+        } else if (downloaded > 0) {
+            return ICON_PARTIAL;
+        }
+        return ICON_NONE;
+    }
+    private static Icon ICON_PARTIAL = ResourceKit.getIcon("cloud-font-partial-download");
+    private static Icon ICON_DOWNLOADED = ResourceKit.getIcon("cloud-font-download");
+    private static Icon ICON_REGISTERED = ResourceKit.getIcon("cloud-font-registered");
+    private static Icon ICON_NONE = new ca.cgjennings.ui.BlankIcon(ICON_PARTIAL.getIconWidth(), ICON_PARTIAL.getIconHeight());
 
     @Override
     public String toString() {

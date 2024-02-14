@@ -2,6 +2,8 @@ package ca.cgjennings.graphics.cloudfonts;
 
 import java.awt.Font;
 import java.io.IOException;
+
+import ca.cgjennings.ui.IconProvider;
 import resources.ResourceKit;
 
 /**
@@ -11,7 +13,7 @@ import resources.ResourceKit;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
-public interface CloudFontFamily {
+public interface CloudFontFamily extends IconProvider {
     /**
      * Returns the family name. Note that this is based on the file
      * name, as the actual fonts might not be downloaded. Therefore

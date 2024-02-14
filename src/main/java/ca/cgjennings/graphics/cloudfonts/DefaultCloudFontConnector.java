@@ -1,12 +1,11 @@
 package ca.cgjennings.graphics.cloudfonts;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import resources.Settings;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+import resources.Settings;
 
 /**
  * The connector used to implement {@link CloudFonts#getDefaultCollection()}.

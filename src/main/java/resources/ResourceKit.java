@@ -1217,7 +1217,12 @@ public class ResourceKit {
      * character set, and might not include distinct lower case letters.
      *
      * @return a font optimized for small size
+     * 
+     * @deprecated This is no longer used within the application, and it is
+     * recommended not to use it in plug-ins or other projects as it may
+     * be removed in a future version.
      */
+    @Deprecated
     public static synchronized Font getTinyFont() {
         if (localeIconFont == null) {
             InputStream in = null;

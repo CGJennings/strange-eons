@@ -14,19 +14,25 @@ import java.util.logging.Level;
  */
 final class GFFont implements CloudFont, Comparable<GFFont> {
     
-    protected GFFont(GFFamily family, String file) {
+    /**
+     * Creates a new font instance for the specified family and file name.
+     * 
+     * @param family the family that the font belongs to
+     * @param fileName the file name of the font on the server
+     */
+    protected GFFont(GFFamily family, String fileName) {
         this.family = family;
-        this.file = file;
+        this.fileName = fileName;
         String parsedStyle = "";
-        int oSquare = file.indexOf('[');
-        int styleEnd = oSquare < 0 ? file.lastIndexOf('.') : oSquare;
+        int oSquare = fileName.indexOf('[');
+        int styleEnd = oSquare < 0 ? fileName.lastIndexOf('.') : oSquare;
         if (styleEnd < 0) {
             throw new AssertionError("no extension");
         }
-        int lastHyphen = file.lastIndexOf('-', styleEnd);
+        int lastHyphen = fileName.lastIndexOf('-', styleEnd);
         parsedStyle = "";
         if (lastHyphen >= 0) {
-            parsedStyle = file.substring(lastHyphen + 1, styleEnd);
+            parsedStyle = fileName.substring(lastHyphen + 1, styleEnd);
             if (!parsedStyle.matches("(Black|Bold|Extra|Italic|Light|Medium|Regular|Semi|Thin)*")) {
                 parsedStyle = "";
             }
@@ -41,7 +47,7 @@ final class GFFont implements CloudFont, Comparable<GFFont> {
         }
     }
     final GFFamily family;
-    private final String file;
+    private final String fileName;
     private final String style;
     private Axis[] axes;
     private int sortKey;
@@ -76,7 +82,7 @@ final class GFFont implements CloudFont, Comparable<GFFont> {
                 Axis[] familyAxes = family.getAxes();
                 LinkedList<Axis> list = new LinkedList<>();
                 for (Axis a : familyAxes) {
-                    if (file.contains('[' + a.tag + ']')) {
+                    if (fileName.contains('[' + a.tag + ']')) {
                         list.add(a);
                     }
                 }
@@ -87,17 +93,27 @@ final class GFFont implements CloudFont, Comparable<GFFont> {
     }
 
     String getCloudPath() {
-        return family.path + '/' + file;
+        return family.path + '/' + fileName;
     }
 
     @Override
     public Font getFont() throws IOException {
         synchronized (family.coll) {
             if (font == null) {
-                fontFile = family.coll.downloadFont(this);
+                fontFile = getFontFile();
                 font = localFileToFont(fontFile);
             }
             return font;
+        }
+    }
+
+    @Override
+    public File getFontFile() throws IOException {
+        synchronized (family.coll) {
+            if (fontFile == null) {
+                fontFile = family.coll.downloadFont(this);
+            }
+            return fontFile;
         }
     }
 
@@ -148,7 +164,19 @@ final class GFFont implements CloudFont, Comparable<GFFont> {
         if (d != 0) {
             return d;
         }
-        d = file.compareTo(other.file);
+        d = fileName.compareTo(other.fileName);
+        if (d != 0) {
+            return d;
+        }
+        d = sortKey - other.sortKey;
+        if (d != 0) {
+            return d;
+        }
+        d = style.compareTo(other.style);
+        if (d != 0) {
+            return d;
+        }
+        d = fileName.compareTo(other.fileName);
         if (d != 0) {
             return d;
         }

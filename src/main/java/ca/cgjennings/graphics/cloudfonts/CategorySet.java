@@ -37,6 +37,8 @@ public final class CategorySet {
         }
     }
 
+    private int set;
+
     public boolean equals(CategorySet other) {
         return set == other.set;
     }
@@ -53,7 +55,21 @@ public final class CategorySet {
         return (set & other.set) == other.set;
     }
 
-    int set;
+    public CategorySet union(CategorySet other) {
+        return new CategorySet(set | other.set);
+    }
+
+    public CategorySet intersection(CategorySet other) {
+        return new CategorySet(set & other.set);
+    }
+
+    public boolean hasEmptyIntersectionWith(CategorySet other) {
+        return (set & other.set) == 0;
+    }
+
+    public boolean isEmpty() {
+        return set == 0;
+    }
 
     public boolean isDisplay() {
         return (set & DISPLAY) != 0;

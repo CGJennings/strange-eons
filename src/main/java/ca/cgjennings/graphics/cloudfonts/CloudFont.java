@@ -1,6 +1,7 @@
 package ca.cgjennings.graphics.cloudfonts;
 
 import java.awt.Font;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -55,6 +56,15 @@ public interface CloudFont {
      * decoding the font
      */
     Font getFont() throws IOException;
+
+    /**
+     * Returns the file of the downloaded font, downloading it
+     * from the cloud if necessary.
+     * 
+     * @return the local cache file for the font
+     * @throws IOException if an error occurs while downloading the font
+     */
+    File getFontFile() throws IOException;
 
     /**
      * Returns true if the font is downloaded locally.
