@@ -12,6 +12,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.font.TextAttribute;
+import java.util.Collections;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -20,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicButtonUI;
+
+import ca.cgjennings.ui.theme.Palette;
 import resources.ResourceKit;
 
 /**
@@ -169,18 +174,33 @@ public class TabCloseComponent extends JPanel {
     private TabButton closeButton;
     private JLabel label;
 
+    private Font cleanFont;
+
+    private static Font dirtyFont(Font f) {
+        return f.deriveFont(
+            Collections.singletonMap(TextAttribute.FOREGROUND, Palette.get.foreground.translucent.yellow)
+        );
+    }
+
     public boolean isDirty() {
         return closeButton.isDirty();
     }
 
     public void setDirty(boolean dirty) {
-        closeButton.setDirty(dirty);
+        if (dirty != closeButton.isDirty()) {
+            closeButton.setDirty(dirty);
+            if (!dirty && cleanFont == null) {
+                cleanFont = label.getFont();
+            }
+            label.setFont(dirty ? dirtyFont(cleanFont) : cleanFont);
+        }
     }
 
     @Override
     public void setFont(Font f) {
         if (label != null && f != null) {
-            label.setFont(f);
+            cleanFont = f;
+            label.setFont(isDirty() ? dirtyFont(f) : f);
         }
     }
 
