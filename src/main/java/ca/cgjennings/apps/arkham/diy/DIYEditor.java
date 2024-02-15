@@ -32,6 +32,7 @@ public class DIYEditor extends AbstractGameComponentEditor<DIY> {
 
         initializeSheetViewers(frontBackPane);
         populateFieldsFromComponent();
+        populateComponentFromDelayedFields();
         getGameComponent().markSaved();
         createTimer();
     }
