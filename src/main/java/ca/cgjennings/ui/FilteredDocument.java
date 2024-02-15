@@ -155,19 +155,19 @@ public class FilteredDocument extends PlainDocument {
      * @return a file name filtering document
      */
     public static final PlainDocument createFileNameDocument() {
-        return new FilteredDocument("?[]/\\=+<>:;\",*|^~");
+        return new FilteredDocument("<>\\\"|?*:/\\");
     }
 
     /**
      * Returns a new document that filters out characters that are illegal in
-     * Windows, *NIX file paths. This is identical to the filter created with
-     * {@link #createFileNameDocument()}, but it does not filter path characters
-     * (/, \, and :).
+     * Windows, *NIX file paths.
+     * This is identical to the filter created with {@link #createFileNameDocument()},
+     * but it does not filter path characters.
      *
      * @return a file path filtering document
      */
     public static final PlainDocument createFilePathDocument() {
-        return new FilteredDocument("?[]=+<>;\",*|^~");
+        return new FilteredDocument("<>\"|?*");
     }
 
     /**
