@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.component.AbstractPortrait;
 import ca.cgjennings.apps.arkham.component.DefaultPortrait;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.Portrait;
-import ca.cgjennings.apps.arkham.component.Portrait.Feature;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
@@ -386,6 +385,7 @@ public class DIY extends AbstractGameComponent implements Handler {
         try {
             createHandler();
             create(this);
+            markSaved();
         } finally {
             locked = true;
         }
@@ -1856,7 +1856,7 @@ public class DIY extends AbstractGameComponent implements Handler {
                         return explicitClip;
                     }
 
-//				if( getPortraitClipping() == false ) return null;
+                    @SuppressWarnings("rawtypes")
                     Sheet[] sheets = getSheets();
                     if (sheets == null || sheets.length == 0) {
                         return null;
@@ -1983,7 +1983,7 @@ public class DIY extends AbstractGameComponent implements Handler {
                         return explicitClip1;
                     }
 
-//				if( getMarkerClipping() == false ) return null;
+                    @SuppressWarnings("rawtypes")
                     Sheet[] sheets = getSheets();
                     if (sheets == null || sheets.length < 3) {
                         return null;
@@ -2145,6 +2145,7 @@ public class DIY extends AbstractGameComponent implements Handler {
      * @see #setFaceStyle
      */
     @Override
+    @SuppressWarnings("rawtypes")
     public Sheet[] createDefaultSheets() {
         switch (faceStyle) {
             case ONE_FACE:
