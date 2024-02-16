@@ -15,6 +15,7 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.layout.TextStyle;
+import resources.ResourceKit;
 import resources.Settings;
 import resources.Settings.Region;
 
@@ -36,9 +37,7 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         );
 
         markupRenderer = new MarkupRenderer(card.getTemplateResolution());
-        String title = card.getName().trim();
-        if (!title.isEmpty()) title = "<h1>" + title + "</h1>";
-        markupRenderer.setMarkupText(title + card.getText());
+        doStandardRendererInitialization(markupRenderer);
     }
 
     private final DefaultPortrait frontFace;
@@ -79,6 +78,9 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         Region textRegion = gc.getSettings().getRegion(
             gc.key(gc.isTextOnly() ? "-full-text" : "-text")
         );
+        String title = gc.getName().trim();
+        if (!title.isEmpty()) title = "<h1>" + title + "</h1>";
+        markupRenderer.setMarkupText(title + gc.getText());
         markupRenderer.draw(g, textRegion);
     }
 
@@ -143,6 +145,9 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         ts.add(TextAttribute.FAMILY, loadedTitleFamily);
         ts.add(TextAttribute.SIZE, baseSize * 1.2f);        
         ts.add(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+
+        // clear the cache so that the layout is rebuilt with the new styles
+        markupRenderer.setMarkupText("");
     }
     private String titleCache = null;
     private String textCache = null;
@@ -151,6 +156,7 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     private Color outlineColor = Color.WHITE;
 
     private static String loadCloudFont(String family) {
+        family = family.trim();
         if (family.startsWith("cloud:")) {
             family = family.substring(6);
             try {
@@ -158,6 +164,8 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
             } catch (IOException ex) {
                 StrangeEons.log.log(Level.WARNING, "failed to load cloud font: " + family, ex);
             }
+        } else if (family.isEmpty()) {
+            family = ResourceKit.getBodyFamily();
         }
         return family;
     }
