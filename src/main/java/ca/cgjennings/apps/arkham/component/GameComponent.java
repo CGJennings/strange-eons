@@ -108,6 +108,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * {@link #markChanged(int)}.
      * @see #getSheets
      */
+    @SuppressWarnings("rawtypes")
     public Sheet[] getSheets();
 
     /**
@@ -119,7 +120,7 @@ public interface GameComponent extends Serializable, Cloneable {
      * @see #getSheets
      * @see #createDefaultSheets
      */
-    public void setSheets(Sheet[] sheets);
+    public void setSheets(@SuppressWarnings("rawtypes") Sheet[] sheets);
 
     /**
      * Creates a set of default sheets that are compatible with this component
@@ -129,6 +130,7 @@ public interface GameComponent extends Serializable, Cloneable {
      *
      * @return the newly created sheets
      */
+    @SuppressWarnings("rawtypes")
     public Sheet[] createDefaultSheets();
 
     /**
@@ -179,9 +181,9 @@ public interface GameComponent extends Serializable, Cloneable {
      * sheet set is {@code null}), set a flag for use by {@link #hasChanged()},
      * and then call {@link #markUnsavedChanges()}.
      *
-     * @param i the index of the sheet that needs to be redrawn
+     * @param sheetIndex the index of the sheet that needs to be redrawn
      */
-    public void markChanged(int i);
+    public void markChanged(int sheetIndex);
 
     /**
      * Returns {@code true} if this component has been modified since the last
