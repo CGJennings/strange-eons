@@ -21,6 +21,7 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.util.SerialClone;
+import resources.Language;
 import resources.ResourceKit;
 import resources.Settings;
 import resources.Settings.Region;
@@ -82,20 +83,55 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
             throw new IllegalArgumentException("card dimensions must be at least 1 inch / 2.54 cm");
         }
 
+        // Explicitly set game:
+        // the component creation system sets this based on the class map,
+        // but given the nature of this class, some might want to create instances
+        // directly for various purposes
+        getSettings().set("game", "*");
+
         final int[] frontFace = new int[] {0};
         final int[] backFace = new int[] {1};
 
         initLayout();
         portrait = new DefaultPortrait(this, key(null));
+        portrait.setBackgroundFilled(false);
         portrait.setFacesToUpdate(frontFace);
         portrait.installDefault();
         frontFacePortrait = new DefaultPortrait(this, key("-front-face"));
+        frontFacePortrait.setBackgroundFilled(false);
         frontFacePortrait.setFacesToUpdate(frontFace);
         frontFacePortrait.installDefault();        
         backFacePortrait = new DefaultPortrait(this, key("-back-face"));
         backFacePortrait.setFacesToUpdate(backFace);
         backFacePortrait.installDefault();
         applyDefaults();
+    }
+
+    static { 
+        Language.getGame().addStrings("text/game/generic-card");
+    }
+  
+    /**
+     * Called to set up the default properties for a new card.
+     * Subclasses can override this to set up their own defaults.
+     */
+    protected void applyDefaults() {
+        textOnly = false;
+        setName(Language.getGame().get("generic-card-title"));
+        text = Language.getGame().get("generic-card-text");
+        textFamily = titleFamily = "";
+        baseFontSize = 10f;
+        fillInterior = true;
+    }
+
+    /**
+     * Clears the card content without affecting the card's
+     * design settings.
+     */
+    public void clearContent() {
+        setTitle("");
+        setText("");
+        portrait.installDefault();
     }
 
     @Override
@@ -117,31 +153,6 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     public GenericCardBase clone() {
         return SerialClone.clone(this);
     }    
-
-    /**
-     * Clears the card content without affecting the card's
-     * design settings.
-     */
-    public void clearContent() {
-        setTitle("");
-        setText("");
-        portrait.installDefault();
-    }
-
-    /**
-     * Called to set up the default properties for a new card.
-     * Subclasses can override this to set up their own defaults.
-     */
-    protected void applyDefaults() {
-        textOnly = false;
-        setName("Title");
-        text = "Holy hell, this is a generic card! That's so generic, it's like a generic card!\n\n"
-                +"This is placeholder text for a generic card. It's not very interesting, but it's here to fill up space.\n"
-                +"And fill up space it does! It's like a space-filling machine! It's like a space-filling machine that fills space!";
-        textFamily = titleFamily = ResourceKit.getBodyFamily();
-        baseFontSize = 10f;
-        fillInterior = true;
-    }
 
     String key(String suffix) {
         return "generic-" + id + (suffix == null ? "" : suffix);
@@ -482,7 +493,7 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
 
     @Override
     public AbstractGameComponentEditor<? extends GenericCardBase> createDefaultEditor() {
-        return null;
+        return new GenericCardEditor(this);
     }
 
     @Override
