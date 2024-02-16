@@ -91,7 +91,7 @@ public abstract class AbstractPortrait implements Portrait {
      */
     @Override
     public EnumSet<Feature> getFeatures() {
-        return Portrait.STANDARD_PORTRAIT_FEATURES;
+        return STANDARD_PORTRAIT_FEATURES;
     }
 
     /**
