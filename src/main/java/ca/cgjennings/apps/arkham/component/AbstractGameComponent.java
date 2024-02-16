@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import static resources.Language.string;
 import resources.Settings;
 import resources.StrangeImage;
@@ -18,7 +17,7 @@ import resources.StrangeImage;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public abstract class AbstractGameComponent implements Serializable, Cloneable, GameComponent {
+public abstract class AbstractGameComponent implements GameComponent {
 
     static final long serialVersionUID = -6569298078755650503L;
 
