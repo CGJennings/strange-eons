@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+
 import resources.ResourceKit;
 import resources.Settings;
 
@@ -62,7 +64,8 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * is a cover for {@code DefaultPortrait( gc, key, false )}.
      *
      * @param gc the game component that the portrait is used with
-     * @param key the key used to determine the basic properties of the portrait
+     * @param key the key used to determine the basic properties of the portrait;
+     * the various {@code -portrait-*} suffixes are appended automatically
      */
     public DefaultPortrait(GameComponent gc, String key) {
         this(gc, key, false);
@@ -72,35 +75,40 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
      * Creates a default portrait instance for a game component.
      *
      * @param gc the game component that the portrait is used with
-     * @param key the key used to determine the basic properties of the portrait
+     * @param key the key used to determine the basic properties of the portrait;
+     * the various {@code -portrait-*} suffixes are appended automatically
      * @param allowRotation if {@code true}, rotating the portrait is allowed
      */
     public DefaultPortrait(GameComponent gc, String key, boolean allowRotation) {
-        this.gc = gc;
-        this.key = key;
-        if (allowRotation) {
-            features = ROTATABLE_PORTRAIT_FEATURES;
-        } else {
-            features = STANDARD_PORTRAIT_FEATURES;
-        }
-        resetTransients();
+        this(gc, key, allowRotation ? ROTATABLE_PORTRAIT_FEATURES : STANDARD_PORTRAIT_FEATURES);
     }
 
     /**
      * Creates a default portrait instance for a game component.
      *
      * @param gc the game component that the portrait is used with
-     * @param key the key used to determine the basic properties of the portrait
+     * @param key the key used to determine the basic properties of the portrait;
+     * the various {@code -portrait-*} suffixes are appended automatically
      * @param portraitFeatures set of portrait features that the portrait will
      * report supporting
      * @see #setFeatures(java.util.EnumSet)
      */
     public DefaultPortrait(GameComponent gc, String key, EnumSet<Feature> portraitFeatures) {
-        this(gc, key, false);
-        if (portraitFeatures == null) {
-            throw new NullPointerException("portraitFeatures");
+        this.gc = Objects.requireNonNull(gc, "gc");
+        this.key = Objects.requireNonNull(key, "key");
+        features = Objects.requireNonNull(portraitFeatures, "portraitFeatures");
+
+        if (this.key.endsWith("-template")) {
+            this.key = key.substring(0, key.length() - 9);
         }
+        if (this.key.endsWith("-portrait")) {
+            this.key = key.substring(0, key.length() - 9);
+        }
+
+        this.gc = gc;
+        this.key = key;
         features = portraitFeatures;
+        resetTransients();
     }
 
     /**
@@ -347,6 +355,10 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         Settings s = gc.getSettings();
         if (parent == null) {
             source = null;
+            String template = s.get(key + "-portrait-template");
+            if (template == null) {
+                throw new NullPointerException("portrait template key not defined: " + key + "-portrait-template");
+            }
             setSource("res://" + s.get(key + "-portrait-template", "portraits/misc-portrait.jp2"));
             source = "";
         }
@@ -592,7 +604,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     @Override
     public double getRotation() {
         return angle;
-    }
+    }   
 
     /**
      * Sets whether this portrait should use the minimum fit scale when
@@ -703,6 +715,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         }
 
         // check if the sheet actually exists
+        @SuppressWarnings("rawtypes")
         final Sheet[] sheets = gc.getSheets();
         if (sheets == null || cachedClipSheetIndex >= sheets.length) {
             return null;
@@ -886,6 +899,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
             return;
         }
 
+        @SuppressWarnings("rawtypes")
         Sheet[] sheets = gc.getSheets();
         if (sheets == null) {
             return;
