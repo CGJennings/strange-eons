@@ -47,7 +47,6 @@ public final class Marker extends AbstractGameComponent {
     private String portraitImage;
     private double portraitScale, portraitPanX, portraitPanY;
     private transient BufferedImage portrait;
-//	private transient String idealSizeKey;
 
     public Marker() {
         clearAll();

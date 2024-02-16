@@ -117,7 +117,7 @@ public class PixelArtUpscalingFilter extends AbstractImageFilter {
         getARGB(src, 0, 0, w, 1, src1);
         src2 = Arrays.copyOf(src1, w);
 
-        for (int y = 0, dy = 0; y < h; ++y, dy += 2) {
+        for (int y = 0; y < h; ++y) {
             // shift source data up one row
             int[] temp = src0;
             src0 = src1;
