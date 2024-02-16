@@ -22,7 +22,6 @@ import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.util.SerialClone;
 import resources.Language;
-import resources.ResourceKit;
 import resources.Settings;
 import resources.Settings.Region;
 

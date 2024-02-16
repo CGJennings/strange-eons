@@ -4,6 +4,9 @@ import ca.cgjennings.apps.arkham.Length;
 
 /**
  * A 2.75" by 4.75" generic card.
+ * 
+ * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public final class GenericTarotSizeCard extends GenericCardBase {
     public GenericTarotSizeCard() {

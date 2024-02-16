@@ -9,6 +9,9 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 /**
  * The sheet implementation used to render the back face of
  * {@linkplain GenericCardBase generic cards}.
+ * 
+ * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public class GenericCardBackSheet extends Sheet<GenericCardBase>{
     public GenericCardBackSheet(GenericCardBase card) {

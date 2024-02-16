@@ -22,6 +22,9 @@ import resources.Settings.Region;
 /**
  * The sheet implementation used to render the front face of
  * {@linkplain GenericCardBase generic cards}.
+ * 
+ * @author Chris Jennings <https://cgjennings.ca/contact>
+ * @since 3.4
  */
 public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     public GenericCardFrontSheet(GenericCardBase card) {
