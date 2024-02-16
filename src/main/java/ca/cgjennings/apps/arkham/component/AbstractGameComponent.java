@@ -132,12 +132,14 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     }
 
     /**
-     * Set all character data to a neutral, blank state. Marks all character
-     * sheets as changed, as well as marking the character unsaved. * /**
+     * Set all game component data to a neutral, blank state. Marks all
+     * sheets as changed, as well as marking the component unsaved.
      * {@inheritDoc}
      *
      * <p>
-     * The base class implementation w
+     * The base class implementation will clear the name and comments,
+     * mark the sheets changed, clear any set expansion, and mark the
+     * component unsaved.
      */
     @Override
     public void clearAll() {
@@ -215,9 +217,9 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     private static String[] ST_FRONTBACKFRONTBACK = null;
 
     @Override
-    public void markChanged(int i) {
-        if (sheets != null && sheets[i] != null) {
-            sheets[i].markChanged();
+    public void markChanged(int sheetIndex) {
+        if (sheets != null && sheets[sheetIndex] != null) {
+            sheets[sheetIndex].markChanged();
         }
         markUnsavedChanges();
         hasUndrawnChanges = true;
