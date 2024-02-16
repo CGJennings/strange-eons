@@ -11,10 +11,10 @@ import resources.Settings.Region;
 
 /**
  * The sheet implementation used to render the back face of
- * {@linkplain AbstractGenericCard generic cards}.
+ * {@linkplain GenericCardBase generic cards}.
  */
-public class GenericCardBackSheet extends Sheet<AbstractGenericCard>{
-    public GenericCardBackSheet(AbstractGenericCard card) {
+public class GenericCardBackSheet extends Sheet<GenericCardBase>{
+    public GenericCardBackSheet(GenericCardBase card) {
         super(card);
         backFace = (DefaultPortrait) card.getPortrait(2);
         initializeTemplate(
@@ -26,11 +26,11 @@ public class GenericCardBackSheet extends Sheet<AbstractGenericCard>{
         );
     }
 
-    private DefaultPortrait backFace;
+    private final DefaultPortrait backFace;
 
     @Override
     protected void paintSheet(RenderTarget target) {
-        final AbstractGenericCard card = getGameComponent();
+        final GenericCardBase card = getGameComponent();
         final Settings s = card.getSettings();
         Graphics2D g = createGraphics();
         try {

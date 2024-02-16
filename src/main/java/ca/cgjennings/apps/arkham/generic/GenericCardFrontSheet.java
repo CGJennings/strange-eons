@@ -20,10 +20,10 @@ import resources.Settings.Region;
 
 /**
  * The sheet implementation used to render the front face of
- * {@linkplain AbstractGenericCard generic cards}.
+ * {@linkplain GenericCardBase generic cards}.
  */
-public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
-    public GenericCardFrontSheet(AbstractGenericCard card) {
+public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
+    public GenericCardFrontSheet(GenericCardBase card) {
         super(card);
         frontFace = (DefaultPortrait) card.getPortrait(1);
         portrait = (DefaultPortrait) card.getPortrait(0);
@@ -41,14 +41,14 @@ public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
         markupRenderer.setMarkupText(title + card.getText());
     }
 
-    private DefaultPortrait frontFace;
-    private DefaultPortrait portrait;
-    private MarkupRenderer markupRenderer;
-    private Color textColor = Color.BLACK;
+    private final DefaultPortrait frontFace;
+    private final DefaultPortrait portrait;
+    private final MarkupRenderer markupRenderer;
+    private final Color textColor = Color.BLACK;
 
     @Override
     protected void paintSheet(RenderTarget target) {
-        final AbstractGenericCard gc = getGameComponent();
+        final GenericCardBase gc = getGameComponent();
         final Settings s = gc.getSettings();
         Graphics2D g = createGraphics();
         try {
@@ -73,7 +73,7 @@ public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
         }
     }
 
-    protected void paintText(Graphics2D g, AbstractGenericCard gc) {
+    protected void paintText(Graphics2D g, GenericCardBase gc) {
         g.setColor(textColor);
         updateTextStyles();
         Region textRegion = gc.getSettings().getRegion(
@@ -82,7 +82,7 @@ public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
         markupRenderer.draw(g, textRegion);
     }
 
-    protected void paintPortrait(Graphics2D g, AbstractGenericCard gc, RenderTarget target) {
+    protected void paintPortrait(Graphics2D g, GenericCardBase gc, RenderTarget target) {
         if (gc.isTextOnly()) return;
         if (!gc.isPortraitUnderFace() && gc.isInteriorFilled()) {
             Shape oldClip = g.getClip();
@@ -94,7 +94,7 @@ public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
         }
     }
 
-    protected void paintInteriorFill(Graphics2D g, AbstractGenericCard gc) {
+    protected void paintInteriorFill(Graphics2D g, GenericCardBase gc) {
         if (!gc.isInteriorFilled()) return;
         g.setColor(interiorFillColor);
         g.fill(gc.isTextOnly() ? gc.fullTextClip : gc.textClip);
@@ -109,7 +109,7 @@ public class GenericCardFrontSheet extends Sheet<AbstractGenericCard>{
     private BasicStroke outlineStroke;
 
     private void updateTextStyles() {
-        final AbstractGenericCard gc = getGameComponent();
+        final GenericCardBase gc = getGameComponent();
         String titleFamily = gc.getTitleFamily();
         String textFamily = gc.getTextFamily();
         float baseSize = gc.getBaseFontSize();

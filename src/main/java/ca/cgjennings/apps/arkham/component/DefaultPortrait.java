@@ -33,6 +33,17 @@ import resources.Settings;
  * A default implementation of the {@link Portrait} interface that creates a
  * key-based portrait similar to that provided by the {@link DIY} system. This
  * implementation can be used with components that have up to 32 faces.
+ * 
+ * <p>
+ * Note: Compiled (non-DIY) game components that use this class must take
+ * care to implement cloning correctly. {@code DefaultPortrait} cannot
+ * implement {@link Cloneable} because of the complexities of cloning
+ * linked portraits. Instead, the game component must implement a
+ * {@code clone} method that correctly creates deep copies of its portraits.
+ * Otherwise, the portrait will end up shared between the original and the clone.
+ * Adjustments in the original will affect the clone when it is redrawn.
+ * A simple solution is to implement the game component's {@code clone} method
+ * to return {@code ca.cgjennings.util.SerialClone.clone(this)}.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -604,7 +615,24 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
     @Override
     public double getRotation() {
         return angle;
-    }   
+    }
+
+    /**
+     * Copies the basic state of this portrait to another portrait:
+     * the scale, pan, and rotation values, and the source image.
+     * 
+     * @param target the target to copy to
+     */
+    public void copyStateTo(DefaultPortrait target) {
+        target.x = x;
+        target.y = y;
+        target.scale = scale;
+        target.angle = angle;
+        target.source = source;
+        target.image = image;
+        target.firePortraitModified();
+        target.fireChildrenModified();
+    }    
 
     /**
      * Sets whether this portrait should use the minimum fit scale when

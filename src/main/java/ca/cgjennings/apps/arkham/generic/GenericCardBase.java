@@ -20,18 +20,19 @@ import ca.cgjennings.apps.arkham.component.PortraitProvider;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.graphics.shapes.ShapeUtilities;
+import ca.cgjennings.util.SerialClone;
 import resources.ResourceKit;
 import resources.Settings;
 import resources.Settings.Region;
 
 /**
- * The base class for generic cards. Each concrete base class implements
+ * The base class for generic cards. Each subclass implements
  * a specific size. 
  * 
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
-public abstract class AbstractGenericCard extends AbstractGameComponent implements Cloneable, PortraitProvider {
+public class GenericCardBase extends AbstractGameComponent implements PortraitProvider {
     static final long serialVersionUID = -45234524755650509L;
     
     private static final int PPI = 150;
@@ -41,7 +42,7 @@ public abstract class AbstractGenericCard extends AbstractGameComponent implemen
 
     /** Width, determined as a number of pixels at the resolution set by PPI. */
     private int width;
-    /** Height, determined as a number of pixels at the resoltion set by PPI. */
+    /** Height, determined as a number of pixels at the resolution set by PPI. */
     private int height;
     /** The card type ID set by the subclass. */
     private String id;
@@ -61,7 +62,7 @@ public abstract class AbstractGenericCard extends AbstractGameComponent implemen
     private DefaultPortrait backFacePortrait; 
 
     /**
-     * Creates a new generic card with the specified dimensions. Concerete
+     * Creates a new generic card with the specified dimensions. Concrete
      * subclasses pass an ID and a size. The card creates its own setting
      * keys without replying on any default settings, using a prefix of
      * {@code generic-} followed by the ID. Though not required, portrait
@@ -72,7 +73,7 @@ public abstract class AbstractGenericCard extends AbstractGameComponent implemen
      * @param width the width of the card
      * @param height the height of the card
      */
-    protected AbstractGenericCard(String id, Length width, Length height) {
+    protected GenericCardBase(String id, Length width, Length height) {
         super();
         this.id = Objects.requireNonNull(id);
         this.width = (int) Math.ceil(width.get(Length.IN) * (double) PPI);
@@ -111,6 +112,11 @@ public abstract class AbstractGenericCard extends AbstractGameComponent implemen
         backFacePortrait.installDefault();
         super.clearAll();
     }
+
+    @Override
+    public GenericCardBase clone() {
+        return SerialClone.clone(this);
+    }    
 
     /**
      * Clears the card content without affecting the card's
@@ -475,7 +481,7 @@ public abstract class AbstractGenericCard extends AbstractGameComponent implemen
     }
 
     @Override
-    public AbstractGameComponentEditor<? extends AbstractGenericCard> createDefaultEditor() {
+    public AbstractGameComponentEditor<? extends GenericCardBase> createDefaultEditor() {
         return null;
     }
 

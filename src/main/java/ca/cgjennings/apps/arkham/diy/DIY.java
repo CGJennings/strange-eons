@@ -19,6 +19,7 @@ import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.io.NewerVersionException;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
+import ca.cgjennings.util.SerialClone;
 import gamedata.Game;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -2588,6 +2589,10 @@ public class DIY extends AbstractGameComponent implements Handler {
     @Override
     public String toString() {
         return "DIY{script=" + getHandlerScript() + ", faceStyle=" + getFaceStyle() + '}';
+    }
+
+    public DIY clone() {
+        return SerialClone.clone(this);
     }
 
     private static final int CURRENT_VERSION = 9;

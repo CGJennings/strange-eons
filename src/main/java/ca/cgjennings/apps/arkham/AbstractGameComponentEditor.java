@@ -1190,7 +1190,18 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     @Override
     @SuppressWarnings("unchecked")
     protected StrangeEonsEditor spinOffImpl() {
-        G c = (G) getGameComponent().clone();
+        G c;
+        try {
+            c = (G) getGameComponent().clone();
+        } catch (Exception cloneFailEx) {
+            StrangeEons.log.log(Level.SEVERE, "failed to clone {0}, will try serialization", getGameComponent());
+            try {
+                c = ca.cgjennings.util.SerialClone.clone(getGameComponent());
+            } catch (AssertionError ex) {
+                StrangeEons.log.log(Level.SEVERE, "serialization failed", getGameComponent());
+                throw new AssertionError("clone failed", cloneFailEx);
+            }
+        }
         AbstractGameComponentEditor<G> editor = (AbstractGameComponentEditor<G>) c.createDefaultEditor();
         editor.setFrameIcon(getFrameIcon());
         // for backwards compatibility in case this wasn't done in createDefaultEditor
