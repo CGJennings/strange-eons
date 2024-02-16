@@ -834,7 +834,7 @@ public class DefaultPortrait extends AbstractPortrait implements Serializable {
         final boolean obeyClip = getClipping();
         if (obeyClip) {
             oldClip = g.getClip();
-            g.setClip(r);
+            g.clip(r);
         }
 
         if (isBackgroundFilled()) {
