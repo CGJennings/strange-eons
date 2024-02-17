@@ -520,7 +520,7 @@ public class ClassMap implements Iterable<Entry> {
                 ie.initCause(e);
                 throw ie;
             }
-            AbstractGameComponentEditor editor = gc.createDefaultEditor();
+            AbstractGameComponentEditor<?> editor = gc.createDefaultEditor();
             if (editor.getFrameIcon() == AbstractGameComponentEditor.DEFAULT_EDITOR_ICON) {
                 editor.setFrameIcon(getIcon());
             }
@@ -547,7 +547,7 @@ public class ClassMap implements Iterable<Entry> {
                 ie.initCause(e);
                 throw ie;
             }
-            AbstractGameComponentEditor editor = gc.createDefaultEditor();
+            AbstractGameComponentEditor<?> editor = gc.createDefaultEditor();
             if (editor.getFrameIcon() == AbstractGameComponentEditor.DEFAULT_EDITOR_ICON) {
                 editor.setFrameIcon(getIcon());
             }

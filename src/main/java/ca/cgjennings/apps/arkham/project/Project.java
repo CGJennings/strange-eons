@@ -80,6 +80,32 @@ public class Project extends TaskGroup {
         }
     }
 
+
+    /**
+     * Returns the {@link Member} instance pointed to by file or URL path
+     * in a string. This method is a scripting convenience that invokes either
+     * the {@link #findMember(java.io.File)} or {@link #findMember(java.net.URL)}
+     * method as appropriate.
+     * 
+     * @param path a file path or project URL
+     * @return the project member described by the path, or {@code null}
+     * @since 3.4
+     */
+    public Member findMember(String path) {
+        if (path == null) {
+            throw new NullPointerException("path");
+        }
+        if (path.startsWith("file:") || path.startsWith("project:")) {
+            try {
+                return findMember(new URL(path));
+            } catch (MalformedURLException e) {
+                StrangeEons.log.log(Level.WARNING, "invalid path: " + path, e);
+                return null;
+            }
+        }
+        return findMember(new File(path));
+    }
+
     /**
      * Returns the {@link Member} instance pointed to by a URL. The URL protocol
      * must either be {@code file:} or {@code project:}. If the file specified
@@ -103,7 +129,7 @@ public class Project extends TaskGroup {
             case "project":
                 String path = url.getHost() + '/' + url.getPath();
                 int skip;
-                for (skip = 0; path.charAt(skip) == '/'; ++skip);
+                for (skip = 0; skip < path.length() && path.charAt(skip) == '/'; ++skip);
                 path = path.substring(skip);
                 toFind = new File(getFile(), path.replace('/', File.separatorChar));
                 break;
@@ -123,6 +149,9 @@ public class Project extends TaskGroup {
     public Member findMember(File file) {
         if (file == null) {
             throw new NullPointerException("file");
+        }
+        if (!file.isAbsolute()) {
+            file = new File(getFile(), file.getPath());
         }
         try {
             file = file.getCanonicalFile();

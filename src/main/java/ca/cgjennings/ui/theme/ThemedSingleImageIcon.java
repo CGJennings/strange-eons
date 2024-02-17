@@ -147,7 +147,7 @@ public final class ThemedSingleImageIcon extends AbstractThemedIcon {
                 if ((source.getWidth() < HIGH_FREQ_LIMIT || source.getHeight() < HIGH_FREQ_LIMIT) && targetWidth > source.getWidth()) {
                     final BufferedImageOp scaler = new PixelArtUpscalingFilter();
                     while (targetWidth > scaled.getWidth()) {
-                        scaled = scaler.filter(source, null);
+                        scaled = scaler.filter(scaled, null);
                     }
                 }
                 scaled = ImageUtilities.resample(scaled, targetWidth, targetHeight);
