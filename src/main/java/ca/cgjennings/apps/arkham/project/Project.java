@@ -103,7 +103,7 @@ public class Project extends TaskGroup {
             case "project":
                 String path = url.getHost() + '/' + url.getPath();
                 int skip;
-                for (skip = 0; path.charAt(skip) == '/'; ++skip);
+                for (skip = 0; skip < path.length() && path.charAt(skip) == '/'; ++skip);
                 path = path.substring(skip);
                 toFind = new File(getFile(), path.replace('/', File.separatorChar));
                 break;
