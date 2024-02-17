@@ -2,8 +2,6 @@
 
 <Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="cardType">
-    </Component>
     <Component class="ca.cgjennings.ui.JFilterField" name="filterField">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -55,6 +53,10 @@
       <Properties>
         <Property name="name" type="java.lang.String" value="editTabs" noResource="true"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+      </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">
           <GridBagConstraints gridX="0" gridY="1" gridWidth="1" gridHeight="1" fill="0" ipadX="0" ipadY="0" insetsTop="0" insetsLeft="0" insetsBottom="0" insetsRight="0" anchor="18" weightX="0.0" weightY="0.0"/>
@@ -67,6 +69,10 @@
           <Properties>
             <Property name="name" type="java.lang.String" value="contentTab" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Content">
@@ -189,6 +195,10 @@
           <Properties>
             <Property name="name" type="java.lang.String" value="designTab" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Design">
@@ -205,7 +215,7 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel3" min="-2" max="32767" attributes="0"/>
+                          <Component id="designOptionPanel" min="-2" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="backDesignPortrait" alignment="0" max="32767" attributes="0"/>
@@ -222,7 +232,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                      <Component id="jPanel3" min="-2" max="-2" attributes="0"/>
+                      <Component id="designOptionPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="frontDesignPortrait" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -249,7 +259,7 @@
                 </Property>
               </Properties>
             </Component>
-            <Container class="javax.swing.JPanel" name="jPanel3">
+            <Container class="javax.swing.JPanel" name="designOptionPanel">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -258,7 +268,7 @@
                     </TitledBorder>
                   </Border>
                 </Property>
-                <Property name="name" type="java.lang.String" value="jPanel3" noResource="true"/>
+                <Property name="name" type="java.lang.String" value="designOptionPanel" noResource="true"/>
               </Properties>
 
               <Layout>
@@ -282,7 +292,7 @@
                                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="bodyFamily" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="titleLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="bodyLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
@@ -307,7 +317,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="titleLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="titleLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="bodyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="sizeLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
@@ -370,7 +380,7 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="familyFieldActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JLabel" name="titleLabel1">
+                <Component class="javax.swing.JLabel" name="bodyLabel">
                   <Properties>
                     <Property name="labelFor" type="java.awt.Component" editor="org.netbeans.modules.form.ComponentChooserEditor">
                       <ComponentRef name="bodyFamily"/>
@@ -378,7 +388,7 @@
                     <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
                       <ResourceString bundle="resources/text/interface/eons-text.properties" key="gencard-body-family" replaceFormat="string(&quot;{key}&quot;)"/>
                     </Property>
-                    <Property name="name" type="java.lang.String" value="titleLabel1" noResource="true"/>
+                    <Property name="name" type="java.lang.String" value="bodyLabel" noResource="true"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JSpinner" name="sizeSpinner">
@@ -433,6 +443,10 @@
           <Properties>
             <Property name="name" type="java.lang.String" value="commentTab" noResource="true"/>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+            <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+          </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
               <JTabbedPaneConstraints tabName="Comments">

@@ -91,30 +91,29 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        cardType = new javax.swing.ButtonGroup();
         filterField = new ca.cgjennings.ui.JFilterField();
-        editTabs = new javax.swing.JTabbedPane();
-        contentTab = new javax.swing.JPanel();
+        javax.swing.JTabbedPane editTabs = new javax.swing.JTabbedPane();
+        javax.swing.JPanel contentTab = new javax.swing.JPanel();
         javax.swing.JLabel nameLabel = new javax.swing.JLabel();
         titleField = new JSpellingTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         textField = new javax.swing.JTextArea();
         portraitPanel = new ca.cgjennings.apps.arkham.PortraitPanel();
         textOnlyCheck = new javax.swing.JCheckBox();
-        designTab = new javax.swing.JPanel();
+        javax.swing.JPanel designTab = new javax.swing.JPanel();
         frontDesignPortrait = new ca.cgjennings.apps.arkham.PortraitPanel();
         backDesignPortrait = new ca.cgjennings.apps.arkham.PortraitPanel();
-        jPanel3 = new javax.swing.JPanel();
+        designOptionPanel = new javax.swing.JPanel();
         javax.swing.JLabel typeLabel = new javax.swing.JLabel();
         titleFamily = new javax.swing.JTextField();
         titleLabel = new javax.swing.JLabel();
         bodyFamily = new javax.swing.JTextField();
-        titleLabel1 = new javax.swing.JLabel();
+        bodyLabel = new javax.swing.JLabel();
         sizeSpinner = new javax.swing.JSpinner();
         sizeLabel = new javax.swing.JLabel();
         fillCheck = new javax.swing.JCheckBox();
         portraitFirstCheck = new javax.swing.JCheckBox();
-        commentTab = new javax.swing.JPanel();
+        javax.swing.JPanel commentTab = new javax.swing.JPanel();
         rationalePanel = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
@@ -207,8 +206,8 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
         backDesignPortrait.setName("backDesignPortrait"); // NOI18N
         backDesignPortrait.setPanelTitle(string("gencard-back-design")); // NOI18N
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(string("me-front-text"))); // NOI18N
-        jPanel3.setName("jPanel3"); // NOI18N
+        designOptionPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string("me-front-text"))); // NOI18N
+        designOptionPanel.setName("designOptionPanel"); // NOI18N
 
         typeLabel.setText(string("gencard-typeface")); // NOI18N
         typeLabel.setName("typeLabel"); // NOI18N
@@ -243,9 +242,9 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
             }
         });
 
-        titleLabel1.setLabelFor(bodyFamily);
-        titleLabel1.setText(string("gencard-body-family")); // NOI18N
-        titleLabel1.setName("titleLabel1"); // NOI18N
+        bodyLabel.setLabelFor(bodyFamily);
+        bodyLabel.setText(string("gencard-body-family")); // NOI18N
+        bodyLabel.setName("bodyLabel"); // NOI18N
 
         sizeSpinner.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(8.0f), Float.valueOf(8.0f), Float.valueOf(18.0f), Float.valueOf(0.25f)));
         sizeSpinner.setName("sizeSpinner"); // NOI18N
@@ -275,46 +274,46 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout designOptionPanelLayout = new javax.swing.GroupLayout(designOptionPanel);
+        designOptionPanel.setLayout(designOptionPanelLayout);
+        designOptionPanelLayout.setHorizontalGroup(
+            designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(designOptionPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(designOptionPanelLayout.createSequentialGroup()
+                        .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(designOptionPanelLayout.createSequentialGroup()
                                 .addGap(56, 56, 56)
                                 .addComponent(titleLabel))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGroup(designOptionPanelLayout.createSequentialGroup()
                                 .addComponent(typeLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(titleFamily)))
                         .addGap(23, 23, 23)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(bodyFamily)
-                            .addComponent(titleLabel1))
+                            .addComponent(bodyLabel))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sizeLabel)
                             .addComponent(sizeSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                    .addGroup(designOptionPanelLayout.createSequentialGroup()
                         .addGap(54, 54, 54)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(portraitFirstCheck)
                             .addComponent(fillCheck))))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        designOptionPanelLayout.setVerticalGroup(
+            designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(designOptionPanelLayout.createSequentialGroup()
+                .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(titleLabel)
-                    .addComponent(titleLabel1)
+                    .addComponent(bodyLabel)
                     .addComponent(sizeLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(designOptionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(typeLabel)
                     .addComponent(titleFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(bodyFamily, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -333,7 +332,7 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
             .addGroup(designTabLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(designTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(designOptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(designTabLayout.createSequentialGroup()
                         .addGroup(designTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(backDesignPortrait, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -345,7 +344,7 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
             designTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(designTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(designOptionPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(frontDesignPortrait, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -467,18 +466,14 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private ca.cgjennings.apps.arkham.PortraitPanel backDesignPortrait;
     private javax.swing.JTextField bodyFamily;
-    private javax.swing.ButtonGroup cardType;
+    private javax.swing.JLabel bodyLabel;
     private javax.swing.JTextArea commentField;
-    private javax.swing.JPanel commentTab;
-    private javax.swing.JPanel contentTab;
-    private javax.swing.JPanel designTab;
-    private javax.swing.JTabbedPane editTabs;
+    private javax.swing.JPanel designOptionPanel;
     private javax.swing.JCheckBox fillCheck;
     private ca.cgjennings.ui.JFilterField filterField;
     private javax.swing.JTabbedPane frontBackPane;
     private ca.cgjennings.apps.arkham.PortraitPanel frontDesignPortrait;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JCheckBox portraitFirstCheck;
@@ -491,7 +486,6 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
     private javax.swing.JTextField titleFamily;
     private javax.swing.JTextField titleField;
     private javax.swing.JLabel titleLabel;
-    private javax.swing.JLabel titleLabel1;
     // End of variables declaration//GEN-END:variables
 
 }
