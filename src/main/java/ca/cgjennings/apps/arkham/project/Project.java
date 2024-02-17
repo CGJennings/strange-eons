@@ -150,6 +150,9 @@ public class Project extends TaskGroup {
         if (file == null) {
             throw new NullPointerException("file");
         }
+        if (!file.isAbsolute()) {
+            file = new File(getFile(), file.getPath());
+        }
         try {
             file = file.getCanonicalFile();
         } catch (IOException e) {
