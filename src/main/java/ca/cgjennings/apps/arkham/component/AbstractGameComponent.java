@@ -27,6 +27,7 @@ public abstract class AbstractGameComponent implements GameComponent {
 
     protected transient boolean hasUndrawnChanges;
     private transient boolean hasUnsavedChanges;
+    @SuppressWarnings("rawtypes")
     protected transient Sheet[] sheets;
 
     public AbstractGameComponent() {
@@ -58,9 +59,11 @@ public abstract class AbstractGameComponent implements GameComponent {
         }
         if (!this.name.equals(name)) {
             this.name = name;
+            @SuppressWarnings("rawtypes")
             Sheet[] sheets = getSheets();
             if (sheets != null) {
                 for (int i = 0; i < sheets.length; ++i) {
+                    @SuppressWarnings("rawtypes")
                     final Sheet s = sheets[i];
                     if (s != null && !(s instanceof UndecoratedCardBack)) {
                         markChanged(i);
@@ -153,17 +156,19 @@ public abstract class AbstractGameComponent implements GameComponent {
     }
 
     @Override
-    public void setSheets(Sheet[] sheets) {
+    public void setSheets(@SuppressWarnings("rawtypes") Sheet[] sheets) {
         this.sheets = sheets;
         hasUndrawnChanges = true;
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Sheet[] getSheets() {
         return sheets;
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public abstract Sheet[] createDefaultSheets();
 
     /**
