@@ -8,7 +8,7 @@ import ca.cgjennings.apps.arkham.Length;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
  */
-public final class GenericTarotSizeCard extends GenericCardBase {
+public final class GenericTarotSizeCard extends GenericCardBase {    
     public GenericTarotSizeCard() {
         super("tarot", new Length(2.75d, Length.IN), new Length(4.75d, Length.IN));
     }
