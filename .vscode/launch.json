@@ -10,6 +10,7 @@
             "request": "launch",
             "mainClass": "ca.cgjennings.apps.arkham.StrangeEons",
             "projectName": "strange-eons",
+            "args": "--loglevel info",
             "vmArgs": "-Xmx4g -Xms1g -Xss1m -javaagent:lib/local/jar-loader/1.0/jar-loader-1.0.jar"
         },
         {
