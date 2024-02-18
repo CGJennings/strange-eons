@@ -2,8 +2,6 @@ package ca.cgjennings.apps.arkham.generic;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -17,9 +15,9 @@ import ca.cgjennings.apps.arkham.Length;
 import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.DefaultPortrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
+import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;
-import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.util.SerialClone;
 import resources.Language;
 import resources.Settings;
@@ -35,6 +33,10 @@ import resources.Settings.Region;
 public class GenericCardBase extends AbstractGameComponent implements PortraitProvider {
     static final long serialVersionUID = -45234524755650509L;
     
+    /**
+     * When painting, the graphics context is scaled so that 1 unit = 1/PPI inches.
+     * Sheets can be rendered at any resolution regardless of the value.
+     */
     private static final int PPI = 150;
     private static final double MM_TO_PIXELS = 0.0393701d * PPI;
     private static final int BLEED_SIZE = (int) Math.ceil(3d * MM_TO_PIXELS);
@@ -115,12 +117,34 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      * Subclasses can override this to set up their own defaults.
      */
     protected void applyDefaults() {
-        textOnly = false;
         setName(Language.getGame().get("generic-card-title"));
         text = Language.getGame().get("generic-card-text");
-        textFamily = titleFamily = "";
-        baseFontSize = 10f;
+
+        titleFamily = "";
+        textFamily = "";
+        baseFontSize = getDefaultFontSize();
+
+        textOnly = false;
         fillInterior = true;
+        portraitUnderFace = false;
+    }
+
+    /**
+     * Returns the default font size to use for the card's text.
+     * The default font size is scaled according to the card's
+     * dimensions.
+     * 
+     * @return the default font size in points
+     */
+    protected float getDefaultFontSize() {
+        // linearly interpolate between 6 points
+        // at height of 1 inch, and 15 points at
+        // a height of 5.5 inches
+        float height = (float) this.height / (float) PPI;
+        float ratio = Math.max(0, Math.min(1, (height - 1f)/4.4f));
+        float size = 6f + ratio * 9f;
+        // round to nearest quarter pt
+        return Math.round(size * 4f) / 4f;
     }
 
     /**
@@ -138,7 +162,7 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
         text = "";
         titleFamily = "";
         textFamily = "";
-        baseFontSize = 14f;
+        baseFontSize = getDefaultFontSize();
         textOnly = false;
         fillInterior = true;
         portraitUnderFace = false;
@@ -393,88 +417,65 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      * store the results as private settings.
      */
     protected void initLayout() {
-        // the full design area, including the bleed margins
-        final Region bleedRegion = new Region(
-                -BLEED_SIZE,
-                -BLEED_SIZE,
-                width + BLEED_SIZE*2,
-                height + BLEED_SIZE*2
-        );
-
-        // the safe area, inset from the card edges by the bleed margin
-        final int safeWidth = width - BLEED_SIZE*2;
-        final int safeHeight = height - BLEED_SIZE*2;
-        final Region safeRegion = new Region(
-                BLEED_SIZE,
-                BLEED_SIZE,
-                safeWidth,
-                safeHeight
-        );
-
-        // the text margin inset from the safe area and portrait
-        final int textMargin = BLEED_SIZE;
-        final Region fullTextRegion = new Region(
-                safeRegion.x + textMargin,
-                safeRegion.y + textMargin,
-                safeRegion.width - textMargin*2,
-                safeRegion.height - textMargin*2
-        );
-
-
-        final Region expansionSymbol = new Region(
-            safeRegion.x + safeWidth - textMargin*3,
-            safeRegion.y + textMargin,
-            textMargin *2,
-            textMargin *2
-        );        
-
-        // the portrait covers the safe area horizontally;
-        // we calculate a 4:3 region, but limit the height to
-        // half the safe area height
-        final Region portraitRegion = new Region(
-                safeRegion.x,
-                safeRegion.y,
-                safeRegion.width,
-                Math.min(safeRegion.height/2 - textMargin, safeRegion.width * 3 / 4)
-        );
-
-        // the text region covers the remainder of the card
-        int textY = portraitRegion.y + portraitRegion.height + textMargin;
-        final Region textRegion = new Region(
-                fullTextRegion.x,
-                textY,
-                fullTextRegion.width,
-                safeHeight - textY - textMargin
-        );
-
-        fullTextClip = new RoundRectangle2D.Double(                
-                safeRegion.x, safeRegion.y,
-                safeRegion.width, safeRegion.height,
-                RADIUS, RADIUS
-        );
-
-        textClip = ShapeUtilities.intersect(
-            fullTextClip, new Region(
-                0, textY - textMargin,
-                width, height
-            ));
-
         final Settings s = getSettings();
-        s.setRegion(key("-front-expsym"), expansionSymbol);
-        s.setRegion(key("-bleed"), bleedRegion);
-        s.setRegion(key("-safe"), safeRegion);
-        s.setRegion(key("-text"), textRegion);
-        s.setRegion(key("-full-text"), fullTextRegion);
 
-        fillInPortraitSettings(key(null), portraitRegion, "portraits/generic-card-portrait.jp2", true);
+        // the card face area, excluding the bleed margins
+        final Region cardEdges = new Region(0, 0, width, height);
+        s.setRegion(key("-card-face"), new Region(0, 0, width, height));
+
+        // the full design area, including the bleed margins;
+        // this is the area that the card face design "portraits" will cover
+        final Region bleedRegion = new Region(cardEdges);
+        bleedRegion.grow(BLEED_SIZE, BLEED_SIZE);
+        s.setRegion(key("-bleed"), bleedRegion);
         fillInPortraitSettings(key("-front-face"), bleedRegion, "templates/generic-card-face.jp2", false);
         fillInPortraitSettings(key("-back-face"), bleedRegion, "templates/generic-card-face.jp2", false);
-    }
 
-    private static final double RADIUS = 5.5d * MM_TO_PIXELS;
-    transient Shape portraitClip;
-    transient Shape textClip;
-    transient Shape fullTextClip;
+        // the safe area, inset from the card edges by the bleed margin
+        // all important content is placed within this area
+        final Region safeRegion = new Region(cardEdges);
+        safeRegion.grow(-BLEED_SIZE, -BLEED_SIZE);
+        s.setRegion(key("-safe"), safeRegion);
+
+        // text will be inset by a small margin from the safe area edges
+        // and other content (e.g., the portrait)        
+        final int textMargin = BLEED_SIZE;
+        s.setInt(key("-text-margin"), textMargin);
+
+        // the portrait covers the safe area horizontally;
+        // to determine the height, we start by calculating what its
+        // height would be if it had a 4:3 aspect ratio, but then limit
+        // the maximum height to half of the safe area,
+        // less the gap the for the text margin
+        final Region portraitRegion = new Region(safeRegion);
+        portraitRegion.height = Math.min(
+            safeRegion.width * 3 / 4,
+            safeRegion.height/2 - textMargin
+        );
+        fillInPortraitSettings(key(null), portraitRegion, "portraits/generic-card-portrait.jp2", true);
+
+        // the text region used for "text-only" cards is just the safe area
+        // inset by the text margin
+        final Region fullTextRegion = new Region(safeRegion);
+        fullTextRegion.grow(-textMargin, -textMargin);
+        s.setRegion(key("-full-text"), fullTextRegion);
+
+        // the text region used with portraits is the same, but it starts at the
+        // bottom of the portrait region (plus the text margin)
+        final Region textRegion = new Region(fullTextRegion);
+        textRegion.y = portraitRegion.getY2() + textMargin;
+        textRegion.setY2(fullTextRegion.getY2());
+        s.setRegion(key("-text"), textRegion);
+
+        // the expansion symbol is placed along the bottom of the safe area
+        final Region expansionSymbol = new Region(
+            safeRegion.x,
+            fullTextRegion.y + fullTextRegion.height,
+            safeRegion.width,
+            textMargin
+        );
+        s.setRegion(key("-front-expsym"), expansionSymbol);
+    }
 
     private void fillInPortraitSettings(String baseName, Region region, String defaultImage, boolean rotation) {
         final Settings s = getSettings();
@@ -575,7 +576,6 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-
         /* final int version = */ in.readInt();
         read(in);
         id = (String) in.readObject();

@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.font.TextAttribute;
+import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.util.logging.Level;
 
@@ -13,6 +14,7 @@ import ca.cgjennings.apps.arkham.component.DefaultPortrait;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;
+import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.layout.TextStyle;
 import resources.ResourceKit;
@@ -41,12 +43,48 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
 
         markupRenderer = new MarkupRenderer(card.getTemplateResolution());
         doStandardRendererInitialization(markupRenderer);
+        initInteriorFillAndClipShapes();
     }
 
     private final DefaultPortrait frontFace;
     private final DefaultPortrait portrait;
     private final MarkupRenderer markupRenderer;
     private final Color textColor = Color.BLACK;
+
+    private Shape textFillClip;
+    private Shape fullTextFillClip;    
+
+    /**
+     * Initializes the shapes used to draw and clip to the
+     * the interior fill. Since the card's layout is fixed
+     * once constructed, we only create these once.
+     * 
+     * This means that if you want to "hack" the layout,
+     * you need to do it before the sheets are creates,
+     * or you need to create new sheets after each change.
+     */
+    private void initInteriorFillAndClipShapes() {
+        final double MM_TO_PIXELS = 0.0393701d * getTemplateResolution();
+        final double RADIUS = 5.5d * MM_TO_PIXELS;
+
+        final GenericCardBase gc = getGameComponent();
+        final Settings s = gc.getSettings();
+
+        final Region safeRegion = s.getRegion(gc.key("-safe"));
+        fullTextFillClip = new RoundRectangle2D.Double(
+            safeRegion.x, safeRegion.y,
+            safeRegion.width, safeRegion.height,
+            RADIUS, RADIUS
+        );
+
+        final Region portraitRegion = s.getRegion(gc.key("-portrait-clip"));
+        textFillClip = ShapeUtilities.intersect(
+            fullTextFillClip, new Region(
+                0, portraitRegion.getY2(),
+                getTemplateWidth(), getTemplateHeight()
+            )
+        );
+    }
 
     @Override
     protected void paintSheet(RenderTarget target) {
@@ -91,7 +129,7 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         if (gc.isTextOnly()) return;
         if (!gc.isPortraitUnderFace() && gc.isInteriorFilled()) {
             Shape oldClip = g.getClip();
-            g.clip(gc.fullTextClip);
+            g.clip(fullTextFillClip);
             portrait.paint(g, target);
             g.setClip(oldClip);
         } else {
@@ -102,14 +140,14 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     protected void paintInteriorFill(Graphics2D g, GenericCardBase gc) {
         if (!gc.isInteriorFilled()) return;
         g.setColor(interiorFillColor);
-        g.fill(gc.isTextOnly() ? gc.fullTextClip : gc.textClip);
+        g.fill(gc.isTextOnly() ? fullTextFillClip : textFillClip);
 
         if (outlineStroke == null) {
             outlineStroke = new BasicStroke((float) (2d/72d * getTemplateResolution()));
         }
         g.setStroke(outlineStroke);
         g.setColor(outlineColor);
-        g.draw(gc.fullTextClip);
+        g.draw(fullTextFillClip);
     }
     private BasicStroke outlineStroke;
 
