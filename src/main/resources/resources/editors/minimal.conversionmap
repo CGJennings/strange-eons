@@ -1,0 +1,29 @@
+##
+## minimal.conversionmap
+##
+
+#
+# This is the minimal conversion map for the components available when no games
+# have been installed. It allows any of the "generic" card types to be converted
+# to any other, to facilitate changing card sizes.
+#
+
+$generic-cards | @gencard-conv-group
+  @gencard-sz-am = ca.cgjennings.apps.arkham.generic.GenericAmericanGameSizeCard
+  @gencard-sz-am-mini = ca.cgjennings.apps.arkham.generic.GenericAmericanMiniSizeCard
+  @gencard-sz-bridge = ca.cgjennings.apps.arkham.generic.GenericBridgeSizeCard
+  @gencard-sz-business = ca.cgjennings.apps.arkham.generic.GenericBusinessSizeCard
+  @gencard-sz-crafting = ca.cgjennings.apps.arkham.generic.GenericCraftingSizeCard
+  @gencard-sz-domino = ca.cgjennings.apps.arkham.generic.GenericDominoSizeCard
+  @gencard-sz-eu-mini = ca.cgjennings.apps.arkham.generic.GenericEuropeanMiniSizeCard
+  @gencard-sz-jumbo = ca.cgjennings.apps.arkham.generic.GenericJumboSizeCard
+  @gencard-sz-micro = ca.cgjennings.apps.arkham.generic.GenericMicroSizeCard
+  @gencard-sz-mini = ca.cgjennings.apps.arkham.generic.GenericMiniSizeCard
+  @gencard-sz-poker = ca.cgjennings.apps.arkham.generic.GenericPokerSizeCard
+  @gencard-sz-skat = ca.cgjennings.apps.arkham.generic.GenericSkatSizeCard
+  @gencard-sz-sq200 = ca.cgjennings.apps.arkham.generic.GenericSquare2_00InSizeCard
+  @gencard-sz-sq250 = ca.cgjennings.apps.arkham.generic.GenericSquare2_50InSizeCard
+  @gencard-sz-sq275 = ca.cgjennings.apps.arkham.generic.GenericSquare2_75InSizeCard
+  @gencard-sz-tarot = ca.cgjennings.apps.arkham.generic.GenericTarotSizeCard
+  @gencard-sz-trading = ca.cgjennings.apps.arkham.generic.GenericTradingGameSizeCard
+  @gencard-sz-trump = ca.cgjennings.apps.arkham.generic.GenericTrumpSizeCard

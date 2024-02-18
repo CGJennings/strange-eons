@@ -54,6 +54,7 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
     
     @Override
     public void populateFieldsFromComponent() {
+        super.populateFieldsFromComponent();
         GenericCardBase gc = getGameComponent();
         fillCheck.setSelected(gc.isInteriorFilled());
         portraitFirstCheck.setSelected(gc.isPortraitUnderFace());
@@ -62,7 +63,6 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
         titleFamily.setText(gc.getTitleFamily());
         bodyFamily.setText(gc.getTextFamily());
         sizeSpinner.setValue(gc.getBaseFontSize());
-        super.populateFieldsFromComponent();
         
         DocumentEventAdapter dea = new DocumentEventAdapter() {
             @Override
@@ -246,7 +246,7 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
         bodyLabel.setText(string("gencard-body-family")); // NOI18N
         bodyLabel.setName("bodyLabel"); // NOI18N
 
-        sizeSpinner.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(8.0f), Float.valueOf(8.0f), Float.valueOf(18.0f), Float.valueOf(0.25f)));
+        sizeSpinner.setModel(new javax.swing.SpinnerNumberModel(Float.valueOf(8.0f), Float.valueOf(6.0f), Float.valueOf(72.0f), Float.valueOf(0.25f)));
         sizeSpinner.setName("sizeSpinner"); // NOI18N
         sizeSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {

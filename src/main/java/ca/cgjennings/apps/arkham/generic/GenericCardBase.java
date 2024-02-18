@@ -173,6 +173,22 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     }
 
     @Override
+    public void convertFrom(ConversionSession session) {
+        super.convertFrom(session);
+        GenericCardBase target = (GenericCardBase) session.getTarget();
+        target.text = text;
+        target.titleFamily = titleFamily;
+        target.textFamily = textFamily;
+        // use the component's default font size, which is scaled to the card size
+        // target.baseFontSize = baseFontSize;
+        target.textOnly = textOnly;
+        target.fillInterior = fillInterior;
+        target.portraitUnderFace = portraitUnderFace;
+        // copy portrait images but reset the layout to match the new size
+        session.copyAllPortraits(false);
+    }
+
+    @Override
     public GenericCardBase clone() {
         return SerialClone.clone(this);
     }    

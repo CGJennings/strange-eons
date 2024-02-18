@@ -394,7 +394,7 @@
                 <Component class="javax.swing.JSpinner" name="sizeSpinner">
                   <Properties>
                     <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-                      <SpinnerModel initial="8.0" maximum="18.0" minimum="8.0" numberType="java.lang.Float" stepSize="0.25" type="number"/>
+                      <SpinnerModel initial="8.0" maximum="72.0" minimum="6.0" numberType="java.lang.Float" stepSize="0.25" type="number"/>
                     </Property>
                     <Property name="name" type="java.lang.String" value="sizeSpinner" noResource="true"/>
                   </Properties>
