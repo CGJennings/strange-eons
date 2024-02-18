@@ -1137,7 +1137,7 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
             double oldY = portrait.getPanY();
             double oldRot = portrait.getRotation();
             // pop in a dummy image
-            portrait.setSource("res://icons/1x1");
+            portrait.setSource("res://icons/1x1.png");
             // put in the real image
             portrait.setSource(s);
             // if the new image has the same dimensions,
