@@ -41,7 +41,7 @@ public final class WarningErrorReporter implements ErrorReporter {
         }
         // this output follows the same format as an exception
         // so that double-clicking the console will display the file
-        final ConsolePrintWriter w = ScriptMonkey.getSharedConsole().getErrorWriter();
+        final ConsolePrintWriter w = ScriptMonkey.getSharedConsole().getWarningWriter();
         if (sourceName != null) {
             w.printf(
                     "WARNING: %s\n\tat %s:%d\n", message, sourceName, line

@@ -49,6 +49,7 @@ import javax.swing.Painter;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicTextPaneUI;
+import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.MutableAttributeSet;
@@ -88,11 +89,18 @@ import resources.Settings;
  */
 @SuppressWarnings("serial")
 public class ScriptConsole extends ToolWindow implements TrackedWindow {
+    private static enum StreamType {
+        OUT, INFO, WARN, ERROR;
 
-    private ConsolePrintWriter out, error;
-    private ConsoleWriter outcon, errcon;
-    private OutputStream outstream, errstream;
-    private Color outColor, errorColor, backgroundColor;
+        public boolean isError() {
+            return this.ordinal() >= WARN.ordinal();
+        }
+    }
+
+    private ConsolePrintWriter out, info, warn, error;
+    private ConsoleWriter outcon, infocon, warncon, errcon;
+    private OutputStream outstream, infostream, warnstream, errstream;
+    private Color outColor, errorColor, warnColor, infoColor, backgroundColor;
     private Painter<JComponent> bgpainter;
     
     private ConsoleInput conInput;
@@ -120,6 +128,14 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
                 Theme.CONSOLE_ERROR,
                 Palette.get.contrasting(backgroundColor.getRGB()).opaque.red
         );
+        warnColor = color(
+                Theme.CONSOLE_WARNING,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.yellow
+        );
+        infoColor = color(
+                Theme.CONSOLE_INFO,
+                Palette.get.contrasting(backgroundColor.getRGB()).opaque.blue
+        );
         console.setSelectionColor(color(
                 Theme.CONSOLE_SELECTION_BACKGROUND,
                 Palette.get.harmonizing(backgroundColor.getRGB()).opaque.yellow
@@ -136,6 +152,8 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         }        
         console.setFont(font);
         outcon.createStyles();
+        infocon.createStyles();
+        warncon.createStyles();
         errcon.createStyles();
     }
 
@@ -148,9 +166,13 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
         initComponents();
         setBody(scrollPane);
 
-        outcon = new ConsoleWriter(false);
-        errcon = new ConsoleWriter(true);
+        outcon = new ConsoleWriter(StreamType.OUT);
+        infocon = new ConsoleWriter(StreamType.INFO);
+        warncon = new ConsoleWriter(StreamType.WARN);
+        errcon = new ConsoleWriter(StreamType.ERROR);
         out = new ConsolePrintWriter(outcon);
+        info = new ConsolePrintWriter(infocon);
+        warn = new ConsolePrintWriter(warncon);
         error = new ConsolePrintWriter(errcon);
 
         if (StrangeEons.getWindow() != null) {
@@ -241,6 +263,32 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     }
 
     /**
+     * Returns an output stream that can be used to write to the stdout
+     * "information" stream of the console.
+     *
+     * @return the console's output stream
+     */
+    public synchronized OutputStream getInfoStream() {
+        if (infostream == null) {
+            infostream = new ConsoleOutputStream(infocon);
+        }
+        return infostream;
+    }
+
+    /**
+     * Returns an output stream that can be used to write to the stderr
+     * "warning" stream of the console.
+     *
+     * @return the console's output stream
+     */    
+    public synchronized OutputStream getWarningStream() {
+        if (warnstream == null) {
+            warnstream = new ConsoleOutputStream(warncon);
+        }
+        return warnstream;
+    }
+
+    /**
      * Returns an output stream that can be used to write to the stderr stream
      * of the console. No translation is performed on the bytes written to this
      * stream.
@@ -262,6 +310,26 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
      */
     public ConsolePrintWriter getWriter() {
         return out;
+    }
+
+    /**
+     * Returns a {@code PrintWriter} that can be used to write to the stdout
+     * "information" stream of the console.
+     *
+     * @return a print writer for {@link #getInfoStream()}
+     */
+    public ConsolePrintWriter getInfoWriter() {
+        return info;
+    }
+
+    /**
+     * Returns a {@code PrintWriter} that can be used to write to the stderr
+     * "warning" stream of the console.
+     *
+     * @return a print writer for {@link #getWarningStream()}
+     */
+    public ConsolePrintWriter getWarningWriter() {
+        return warn;
     }
 
     /**
@@ -434,9 +502,11 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     }
 
     public class ConsolePrintWriter extends PrintWriter {
+        private final StreamType stream;
 
         private ConsolePrintWriter(ConsoleWriter out) {
             super(out, true);
+            stream = out.stream;
         }
 
         public void insertImage(Color c) {
@@ -462,11 +532,11 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         }
 
         public void insertImage(Icon img) {
-            pending.add(new StreamFragment(false, img));
+            pending.add(new StreamFragment(stream, img));
         }
 
         public void insertComponent(Component c) {
-            pending.add(new StreamFragment(false, c));
+            pending.add(new StreamFragment(stream, c));
         }
 
         public void insertHTML(String html) {
@@ -583,41 +653,59 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
     // by the time a write gets here, we should already be in EDT
     private class ConsoleWriter extends Writer {
 
-        private boolean isError;
         private PrintStream companion;
         private MutableAttributeSet attr;
+        private StreamType stream;
 
-        public ConsoleWriter(boolean errorType) {
+        public ConsoleWriter(StreamType stream) {
             super(ScriptConsole.this);
-            isError = errorType;
-            companion = isError ? System.err : System.out;
+            this.stream = stream;
+            companion = stream.isError() ? System.err : System.out;
         }
 
         public void createStyles() {
             Font f = console.getFont();
             attr = new SimpleAttributeSet(console.getInputAttributes());
-            if (isError) {
-                StyleConstants.setForeground(attr, errorColor == null ? Palette.get.foreground.opaque.red : errorColor);
+            Color textColor;
+            switch(stream) {
+                case OUT:
+                    textColor = outColor == null ? Palette.get.foreground.opaque.text : outColor;
+                    break;
+                case INFO:
+                    textColor = infoColor == null ? Palette.get.foreground.opaque.blue : infoColor;
+                    break;
+                case WARN:
+                    textColor = warnColor == null ? Palette.get.foreground.opaque.yellow : warnColor;
+                    break;
+                case ERROR:
+                    textColor = errorColor == null ? Palette.get.foreground.opaque.red : errorColor;
+                    break;
+                default:
+                    throw new AssertionError();
+            }
+
+            if (stream.isError()) {
+                StyleConstants.setForeground(attr, textColor);
                 StyleConstants.setBold(attr, true);
             } else {
-                StyleConstants.setForeground(attr, outColor == null ? Palette.get.foreground.opaque.text : outColor);
+                StyleConstants.setForeground(attr, textColor);
                 StyleConstants.setBold(attr, f.isBold());
             }
         }
 
         @Override
         public void write(final char[] cbuff, final int off, final int len) throws IOException {
-            pending.add(new StreamFragment(isError, cbuff, off, len));
+            pending.add(new StreamFragment(stream, cbuff, off, len));
         }
 
         @Override
         public void write(final String str, final int off, final int len) throws IOException {
-            pending.add(new StreamFragment(isError, str, off, len));
+            pending.add(new StreamFragment(stream, str, off, len));
         }
 
         @Override
         public void write(final int c) throws IOException {
-            pending.add(new StreamFragment(isError, (char) c));
+            pending.add(new StreamFragment(stream, (char) c));
         }
 
         @Override
@@ -714,10 +802,12 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     private final class ConsoleOutputStream extends OutputStream {
 
-        private ConsoleWriter w;
+        private final ConsoleWriter w;
+        private final StreamType stream;
 
         public ConsoleOutputStream(ConsoleWriter w) {
             this.w = w;
+            this.stream = w.stream;
         }
 
         @Override
@@ -736,7 +826,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
         @Override
         public void write(byte[] b, int off, int len) throws IOException {
-            pending.add(new StreamFragment(w.isError, b, off, len));
+            pending.add(new StreamFragment(stream, b, off, len));
         }
     }
 
@@ -746,50 +836,50 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     private static final class StreamFragment {
 
-        private boolean isErr;
+        private StreamType stream;
         private FragType type;
         private int b;
         private Object buff;
         private int off, len;
 
-        public StreamFragment(boolean isErr, char ch) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, char ch) {
+            this.stream = stream;
             type = FragType.CHAR;
             this.b = ch;
         }
 
-        public StreamFragment(boolean isErr, byte[] bbuff, int off, int len) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, byte[] bbuff, int off, int len) {
+            this.stream = stream;
             type = FragType.BYTEBUFF;
             this.buff = bbuff.clone();
             this.off = off;
             this.len = len;
         }
 
-        public StreamFragment(boolean isErr, char[] cbuff, int off, int len) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, char[] cbuff, int off, int len) {
+            this.stream = stream;
             type = FragType.CHARBUFF;
             this.buff = cbuff.clone();
             this.off = off;
             this.len = len;
         }
 
-        public StreamFragment(boolean isErr, String str, int off, int len) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, String str, int off, int len) {
+            this.stream = stream;
             type = FragType.STRBUFF;
             this.buff = str;
             this.off = off;
             this.len = len;
         }
 
-        public StreamFragment(boolean isErr, Icon icon) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, Icon icon) {
+            this.stream = stream;
             this.type = FragType.ICON;
             this.buff = icon;
         }
 
-        public StreamFragment(boolean isErr, Component comp) {
-            this.isErr = isErr;
+        public StreamFragment(StreamType stream, Component comp) {
+            this.stream = stream;
             this.type = FragType.COMPONENT;
             this.buff = comp;
         }
@@ -820,20 +910,20 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             switch (f.type) {
                 case BYTE:
                 case CHAR:
-                    __insert(f.isErr, String.valueOf((char) f.b));
+                    __insert(f.stream, String.valueOf((char) f.b));
                     break;
                 case BYTEBUFF:
-                    __insert(f.isErr, new String((byte[]) f.buff, f.off, f.len));
+                    __insert(f.stream, new String((byte[]) f.buff, f.off, f.len));
                     break;
                 case CHARBUFF:
-                    __insert(f.isErr, new String((char[]) f.buff, f.off, f.len));
+                    __insert(f.stream, new String((char[]) f.buff, f.off, f.len));
                     break;
                 case STRBUFF:
                     String s = (String) f.buff;
                     if (f.len < s.length()) {
                         s = s.substring(f.off, f.off + f.len);
                     }
-                    __insert(f.isErr, s);
+                    __insert(f.stream, s);
                     break;
                 case COMPONENT:
                     int endOfDoc = console.getDocument().getLength();
@@ -886,17 +976,34 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     }
 
-    private void __insert(boolean isErr, String text) {
+    private void __insert(StreamType stream, String text) {
         if (text.length() == 0) {
             return;
+        
+        }
+        AttributeSet attr;
+        switch(stream) {
+            case OUT:
+                attr = outcon.attr;
+                break;
+            case INFO:
+                attr = infocon.attr;
+                break;
+            case WARN:
+                attr = warncon.attr;
+                break;
+            case ERROR:
+                attr = errcon.attr;
+                break;
+            default:
+                throw new AssertionError();
         }
         try {
             StyledDocument sd = console.getStyledDocument();
-            sd.insertString(sd.getLength(), text, isErr ? errcon.attr : outcon.attr);
+            sd.insertString(sd.getLength(), text, attr);
         } catch (BadLocationException e) {
         }
-
-        PrintStream companion = isErr ? errcon.companion : outcon.companion;
+        PrintStream companion = stream.isError() ? errcon.companion : outcon.companion;
         if (companion != null) {
             companion.print(text);
         }

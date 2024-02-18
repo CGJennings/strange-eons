@@ -162,7 +162,7 @@ public final class ConsoleInput extends javax.swing.JPanel {
         if (code.isEmpty()) return;
         
         inputField.setText(null);
-        con.getWriter().println("> " + code);
+        con.getInfoWriter().println("> " + code);
 
         if (partial != null) {
             code = partial + '\n' + code;
