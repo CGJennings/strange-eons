@@ -10,6 +10,6 @@ import ca.cgjennings.apps.arkham.Length;
  */
 public final class GenericAmericanGameSizeCard extends GenericCardBase {
     public GenericAmericanGameSizeCard() {
-        super("am-game", new Length(2.2d, Length.IN), new Length(3.43d, Length.IN));
+        super("am", new Length(2.2d, Length.IN), new Length(3.43d, Length.IN));
     }
 }

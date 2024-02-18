@@ -10,6 +10,6 @@ import ca.cgjennings.apps.arkham.Length;
  */
 public final class GenericSquare2_50InSizeCard extends GenericCardBase {
     public GenericSquare2_50InSizeCard() {
-        super("square250", new Length(2.5d, Length.IN), new Length(2.5d, Length.IN));
+        super("sq250", new Length(2.5d, Length.IN), new Length(2.5d, Length.IN));
     }
 }
