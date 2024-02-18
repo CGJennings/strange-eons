@@ -3594,7 +3594,7 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-            int version = in.readInt();
+            /* final int version = */ in.readInt();
             name = (String) in.readObject();
             p = (Properties) in.readObject();
         }

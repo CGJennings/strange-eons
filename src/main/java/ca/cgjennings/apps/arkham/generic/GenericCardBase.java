@@ -108,6 +108,21 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
         applyDefaults();
     }
 
+    /** Returns the full name of the card type, as shown in the New Component dialog. */
+    public String getLongName() {
+        return Language.string("gencard-sz-" + id);
+    }
+
+    /** Returns the short name of the card type. */
+    public String getShortName() {
+        return Language.string("gencard-sh-" + id);
+    }
+
+    @Override
+    public String toString() {
+        return "GenericCardBase{type=" + getLongName() + ", title=" + getName() + '}';
+    }
+
     static { 
         Language.getGame().addStrings("text/game/generic-card");
     }

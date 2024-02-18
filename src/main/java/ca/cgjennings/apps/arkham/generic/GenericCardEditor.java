@@ -79,7 +79,6 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
     
     @Override
     public void populateComponentFromDelayedFields() {
-        
     }
 
     /**
