@@ -193,19 +193,6 @@ public final class Marker extends AbstractGameComponent {
         }
     }
 
-    /**
-     * Set a portraitb directly to an image; the path is cleared as if for a
-     * default image.
-     */
-    private void setBackPortrait(BufferedImage i) {
-        portraitb = portrait;
-        portraitScaleb = 1;
-        portraitPanXb = 0;
-        portraitPanYb = 0;
-        portraitImageb = "";
-        portraitb = i;
-    }
-
     private String getBackPortrait() {
         return portraitImageb;
     }

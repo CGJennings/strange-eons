@@ -2881,6 +2881,44 @@ public class Settings implements Serializable, Iterable<String> {
         public Region() {
         }
 
+        /**
+         * Moves the right edge of the region to the specified x-coordinate
+         * by changing the width of the region.
+         * 
+         * @param x2 the new x-coordinate for the right edge
+         */
+        public void setX2(int x2) {
+            width = x2 - x;
+        }
+
+        /**
+         * Returns the x-coordinate of the right edge of the region.
+         * 
+         * @return the x-coordinate of the right edge
+         */
+        public int getX2() {
+            return x + width;
+        }
+
+        /**
+         * Moves the bottom edge of the region to the specified y-coordinate
+         * by changing the height of the region.
+         * 
+         * @param y2 the new y-coordinate for the bottom edge
+         */
+        public void setY2(int y2) {
+            height = y2 - y;
+        }
+
+        /**
+         * Returns the y-coordinate of the bottom edge of the region.
+         * 
+         * @return the y-coordinate of the bottom edge
+         */
+        public int getY2() {
+            return y + height;
+        }
+
         @Override
         public String toString() {
             StringBuilder b = new StringBuilder(20);
@@ -2944,6 +2982,71 @@ public class Settings implements Serializable, Iterable<String> {
         public Region toRegion() {
             return new Region((int) (x + 0.5d), (int) (y + 0.5d), (int) (width + 0.5d), (int) (height + 0.5d));
         }
+
+        /**
+         * Returns a new region that is inset by the specified amount.
+         * For example, if the region is (0,0,10,10) and you call
+         * {@code inset(2,2)}, the result will be (2,2,6,6).
+         * Passing a negative value will cause the region to grow.
+         * If the region is too small to be inset by the specified amount,
+         * the result will have a width or height of zero.
+         * 
+         * @param dx the amount to move the left and right edges inward
+         * @param dy the amount to move the top and bottom edges inward
+         * @return a new region that is inset by the specified amount
+         */
+        public Region2D inset(double dx, double dy) {
+            dx = Math.min(dx, width/2d);
+            dy = Math.min(dy, height/2d);            
+            return new Region2D(
+                    x + dx,
+                    y + dy,
+                    Math.max(0d, width - dx * 2d),
+                    Math.max(0d, height - dy * 2d)
+            );
+        }
+
+        /**
+         * Moves the right edge of the region to the specified x-coordinate
+         * by changing the width of the region.
+         * 
+         * @param x2 the new x-coordinate for the right edge
+         */
+        public void setX2(double x2) {
+            width = x2 - x;
+        }
+
+        /**
+         * Returns the x-coordinate of the right edge of the region.
+         * Equivalent to {@code getMaxX}, but provides consistency
+         * with {@code Region}.
+         * 
+         * @return the x-coordinate of the right edge
+         */
+        public double getX2() {
+            return x + width;
+        }
+
+        /**
+         * Moves the bottom edge of the region to the specified y-coordinate
+         * by changing the height of the region.
+         * 
+         * @param y2 the new y-coordinate for the bottom edge
+         */
+        public void setY2(double y2) {
+            height = y2 - y;
+        }
+
+        /**
+         * Returns the y-coordinate of the bottom edge of the region.
+         * Equivalent to {@code getMaxY}, but provides consistency
+         * with {@code Region}.
+         * 
+         * @return the y-coordinate of the bottom edge
+         */
+        public double getY2() {
+            return y + height;
+        }        
 
         /**
          * Returns a string value suitable for storing this region in a setting.
@@ -3491,7 +3594,7 @@ public class Settings implements Serializable, Iterable<String> {
         }
 
         private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-            int version = in.readInt();
+            /* final int version = */ in.readInt();
             name = (String) in.readObject();
             p = (Properties) in.readObject();
         }

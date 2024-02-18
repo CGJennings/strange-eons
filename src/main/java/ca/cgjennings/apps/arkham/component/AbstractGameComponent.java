@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import static resources.Language.string;
 import resources.Settings;
 import resources.StrangeImage;
@@ -18,7 +17,7 @@ import resources.StrangeImage;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public abstract class AbstractGameComponent implements Serializable, Cloneable, GameComponent {
+public abstract class AbstractGameComponent implements GameComponent {
 
     static final long serialVersionUID = -6569298078755650503L;
 
@@ -28,6 +27,7 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
 
     protected transient boolean hasUndrawnChanges;
     private transient boolean hasUnsavedChanges;
+    @SuppressWarnings("rawtypes")
     protected transient Sheet[] sheets;
 
     public AbstractGameComponent() {
@@ -59,9 +59,11 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
         }
         if (!this.name.equals(name)) {
             this.name = name;
+            @SuppressWarnings("rawtypes")
             Sheet[] sheets = getSheets();
             if (sheets != null) {
                 for (int i = 0; i < sheets.length; ++i) {
+                    @SuppressWarnings("rawtypes")
                     final Sheet s = sheets[i];
                     if (s != null && !(s instanceof UndecoratedCardBack)) {
                         markChanged(i);
@@ -132,12 +134,14 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     }
 
     /**
-     * Set all character data to a neutral, blank state. Marks all character
-     * sheets as changed, as well as marking the character unsaved. * /**
+     * Set all game component data to a neutral, blank state. Marks all
+     * sheets as changed, as well as marking the component unsaved.
      * {@inheritDoc}
      *
      * <p>
-     * The base class implementation w
+     * The base class implementation will clear the name and comments,
+     * mark the sheets changed, clear any set expansion, and mark the
+     * component unsaved.
      */
     @Override
     public void clearAll() {
@@ -152,17 +156,19 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     }
 
     @Override
-    public void setSheets(Sheet[] sheets) {
+    public void setSheets(@SuppressWarnings("rawtypes") Sheet[] sheets) {
         this.sheets = sheets;
         hasUndrawnChanges = true;
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Sheet[] getSheets() {
         return sheets;
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public abstract Sheet[] createDefaultSheets();
 
     /**
@@ -215,9 +221,9 @@ public abstract class AbstractGameComponent implements Serializable, Cloneable, 
     private static String[] ST_FRONTBACKFRONTBACK = null;
 
     @Override
-    public void markChanged(int i) {
-        if (sheets != null && sheets[i] != null) {
-            sheets[i].markChanged();
+    public void markChanged(int sheetIndex) {
+        if (sheets != null && sheets[sheetIndex] != null) {
+            sheets[sheetIndex].markChanged();
         }
         markUnsavedChanges();
         hasUndrawnChanges = true;

@@ -1485,7 +1485,6 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
 
         clippings = new PageItem[copyItems.length];
         for (int i = 0; i < copyItems.length; ++i) {
-            // TODO: when ready to end the shame, make a cloning method that can inherit (there are two other instance to fix)
             clippings[i] = copyItems[i].clone();
         }
     }

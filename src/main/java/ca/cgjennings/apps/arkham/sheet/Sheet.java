@@ -176,7 +176,7 @@ public abstract class Sheet<G extends GameComponent> {
      * <li> The template image is loaded using <i>templateKey</i>.
      * <li> If <i>templateKey</i> ends with {@code -template}, this is removed.
      * <li> The default region for drawing expansion symbols, if any, is read
-     * from <i>templateKey</i>{@code -expsym}.
+     * from <i>templateKey</i>{@code -expsym-region}.
      * <li> The template image resolution, in pixels per inch, is read from
      * <i>templateKey</i>@code -ppi}; if undefined, the default is 150 ppi. (The
      * suffix {@code -dpi} can also be used.)
@@ -253,7 +253,7 @@ public abstract class Sheet<G extends GameComponent> {
         if (template == null) {
             throw new NullPointerException("template");
         }
-        if (expsymKey == null) {
+        if (expansionSymbolKey == null) {
             throw new NullPointerException("expansionSymbolKey");
         }
         if (resolution <= 0d) {
@@ -2239,7 +2239,7 @@ public abstract class Sheet<G extends GameComponent> {
             }
 
             @Override
-            public Class getContentType() {
+            public Class<BufferedImage> getContentType() {
                 return BufferedImage.class;
             }
 

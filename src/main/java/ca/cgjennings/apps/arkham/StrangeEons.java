@@ -32,6 +32,7 @@ import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.theme.ThemeInstaller;
 import ca.cgjennings.util.BriefLogFormatter;
 import gamedata.ClassMap;
+import gamedata.ConversionMap;
 import gamedata.Lock;
 import gamedata.Silhouette;
 import java.awt.DisplayMode;
@@ -2516,6 +2517,7 @@ public final class StrangeEons {
     private void initBuiltinEditors() {
         try {
             ClassMap.add("editors/minimal.classmap");
+            ConversionMap.add("editors/minimal.conversionmap");
             splash.setPercent(45);
             Silhouette.add("silhouettes/standard.silhouettes");
         } catch (IOException | RuntimeException ex) {
