@@ -46,22 +46,18 @@ import resources.ResourceKit;
 public class ClassMap implements Iterable<Entry> {
 
     /**
-     * Creates a new class map that contains entries for all of the class map
-     * resources that have been added using {@link #add(java.lang.String)}.
-     */
-    public ClassMap() throws IOException {
-        this(getClassMapFiles());
-    }
-
-    /**
      * Creates a new class map that contains entries parsed from the specified
      * class map resources.
      *
-     * @param resources the class map resources to parse
+     * @param resources the class map resources to parse; if no resources are
+     * specified, the default class map files are used
      * @throws ResourceParserException if any of the class map files cannot be
      * parsed
      */
     public ClassMap(String... resources) throws IOException {
+        if (resources == null || resources.length == 0) {
+            resources = getClassMapFiles();
+        }
         for (String file : resources) {
             try (Parser parser = new Parser(file, false)) {
                 Entry entry;
