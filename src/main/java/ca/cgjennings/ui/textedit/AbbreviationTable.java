@@ -281,10 +281,6 @@ public class AbbreviationTable {
         return false;
     }
 
-    private static void insertExpansion(CodeEditorBase ed, String expansionText) {
-
-    }
-
     /**
      * Expands an abbreviation inline in a Swing text component. The context for
      * the expansion will be taken from the text immediately prior to the
