@@ -379,6 +379,14 @@ public abstract class Theme {
      */
     public static final String CONSOLE_ERROR = "eons-conerr";
     /**
+     * UI key for console warning text colour.
+     */
+    public static final String CONSOLE_WARNING = "eons-conwarn";
+    /**
+     * UI key for console information text colour.
+     */
+    public static final String CONSOLE_INFO = "eons-coninfo";
+    /**
      * UI key for console text selection background colour.
      */
     public static final String CONSOLE_SELECTION_BACKGROUND = "eons-conselbg";

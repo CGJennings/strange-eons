@@ -62,6 +62,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.EventListener;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -167,7 +168,30 @@ public final class StrangeEons {
      */
     public static final Logger log;
     // the field name "logBuffer" is looked up via reflection by dev tools plug-in
-    private static final StringBuffer logBuffer = new StringBuffer(16 * 1024);
+    // private static final StringBuffer logBuffer = new StringBuffer(16 * 1024);
+
+    private static final List<LogEntry> logEntries = new LinkedList<>() {
+        @Override
+        public String toString() {
+            StringBuilder b = new StringBuilder();
+            for (LogEntry e : this) {
+                b.append(e.message);
+            }
+            return b.toString();
+        }
+    };
+    private static final List<LogEntry> immutableLogEntries = Collections.unmodifiableList(logEntries);
+
+    /** A record added to the application log. */
+    public static final class LogEntry {
+        public final String message;
+        public final Level level;
+
+        public LogEntry(String message, Level level) {
+            this.message = message;
+            this.level = level;
+        }
+    }
 
     private static ScriptRunnerModeHelper scriptRunnerMode;
 
@@ -208,7 +232,7 @@ public final class StrangeEons {
                 try {
                     System.err.print(msg);
                     flush();
-                    logBuffer.append(msg);
+                    logEntries.add(new LogEntry(msg, record.getLevel()));
                 } catch (Exception ex) {
                     reportError(null, ex, ErrorManager.WRITE_FAILURE);
                 }
@@ -1662,13 +1686,13 @@ public final class StrangeEons {
 
     /**
      * Returns the current contents of the application log. The application log
-     * contains the messages posted to the logger except those filtered out
+     * contains the messages posted to the logger, except those filtered out
      * because of the logging level that was active at the time.
      *
      * @return the contents of the application log
      */
-    public static String getLogEntries() {
-        return logBuffer.toString();
+    public static List<LogEntry> getLogEntries() {
+        return immutableLogEntries;
     }
 
     /**
