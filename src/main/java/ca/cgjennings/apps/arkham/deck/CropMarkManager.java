@@ -323,14 +323,11 @@ final class CropMarkManager {
             this.rect = rect;
             this.type = type;
             line = new Line2D.Double(x1, y1, x2, y2);
-            this.x = x1;
-            this.y = y1;
         }
         PageItem card;
         Rectangle2D rect;
         Line2D line;
         int type;
-        double x, y;
         /**
          * A crop mark indicating a cut line.
          */
