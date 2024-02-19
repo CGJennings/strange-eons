@@ -16,7 +16,6 @@ import java.awt.Paint;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
@@ -46,7 +45,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     private DashPattern borderDash = DashPattern.SOLID;
     private int borderJoin = BasicStroke.JOIN_ROUND;
     private LineCap borderCap = LineCap.ROUND;
-    private transient Shape borderShape;
 
     private double margin = 4;
     private double width, height;
@@ -223,13 +221,7 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
                     g.fillRect(0, 0, pwidth, pheight);
                     g.setPaint(Color.BLACK);
                 }
-                g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                        (target != RenderTarget.FAST_PREVIEW)
-                                ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON
-                                : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF
-                );
-                g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-
+                target.applyTo(g);
                 MarkupRenderer r = createMarkupRenderer(resolution);
                 Rectangle2D.Double textRect = new Rectangle2D.Double(margin, margin, pwidth - margin * 2, pheight - margin * 2);
                 if (textRect.width >= 1d && textRect.height >= 1d) {
@@ -279,9 +271,14 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
         r.setScalingLimit(0.001d);
         r.setMarkBadBox(false);
         r.setTextFitting(shrinkToFit ? MarkupRenderer.FIT_SCALE_TEXT : MarkupRenderer.FIT_NONE);
+
+        // TODO: Regression
+        // Justified text currently looks terrible, disable it for now
         if (justifyText) {
-            r.setAlignment(MarkupRenderer.LAYOUT_JUSTIFY);
+            r.setAlignment(r.getAlignment() & ~MarkupRenderer.LAYOUT_JUSTIFY);
+            // r.setAlignment(MarkupRenderer.LAYOUT_JUSTIFY);
         }
+
         r.setMarkupText(getText());
         return r;
     }
@@ -308,7 +305,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
                 this.height = width;
             }
             clearCachedImages();
-            borderShape = null;
             itemChanged();
         }
     }
@@ -328,13 +324,11 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     @Override
     public void setX(double x) {
         super.setX(x);
-        borderShape = null;
     }
 
     @Override
     public void setY(double y) {
         super.setY(y);
-        borderShape = null;
     }
 
     @Override
@@ -362,7 +356,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     public void setOutlineWidth(float borderWidth) {
         if (this.borderWidth != borderWidth) {
             this.borderWidth = borderWidth;
-            borderShape = null;
             // changing the stroke width means the text margin
             // has to be updated, too
             clearCachedImages();
@@ -379,7 +372,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     public void setOutlineDashPattern(DashPattern pat) {
         if (borderDash != pat) {
             borderDash = pat;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -394,7 +386,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
         int bj = join.toInt();
         if (this.borderJoin != bj) {
             this.borderJoin = bj;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -403,7 +394,6 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
     public void setOutlineCap(LineCap cap) {
         if (borderCap != cap) {
             this.borderCap = cap;
-            borderShape = null;
             itemChanged();
         }
     }

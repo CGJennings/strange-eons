@@ -12,7 +12,6 @@ function createTextBox(text, x, y, width, height, page) {
     box.outlineWidth = 6;
     box.setLocation(x, y);
     box.setSize(width, height);
-    box.textJustified = true;
     if (page) {
         page.addCard(box, false);
         page.deck.addToSelection(box);
