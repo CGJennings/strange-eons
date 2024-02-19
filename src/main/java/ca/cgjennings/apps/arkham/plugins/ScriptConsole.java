@@ -482,7 +482,15 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 }//GEN-LAST:event_formWindowClosing
 
     private void logItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logItemActionPerformed
-        out.print(StrangeEons.getLogEntries());
+        for(var entry : StrangeEons.getLogEntries()) {
+            if (entry.level == Level.SEVERE) {
+                error.print(entry.message);
+            } else if (entry.level == Level.WARNING) {
+                warn.print(entry.message);
+            } else {
+                info.print(entry.message);
+            }
+        }
     }//GEN-LAST:event_logItemActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem clearItem;

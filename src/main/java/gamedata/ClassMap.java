@@ -38,15 +38,7 @@ import resources.ResourceKit;
  * maps those entries to their respective component classes (or scripts).
  * Primarily, this class is used by extensions to register new kinds of game
  * components {@linkplain #add from a class map file}. This class can also be
- * used to examine class map file entries programmatically. For example, the
- * following script code prints a list of entries and the class (or script) that
- * each entry maps to:
- * <pre>
- * var classMap = new gamedata.ClassMap();
- * for( let entry in Iterator( classMap.entries ) ) {
- *     println( entry.name + ' -&gt; ' + entry.mapping  );
- * }
- * </pre>
+ * used to examine class map file entries programmatically.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -71,16 +63,17 @@ public class ClassMap implements Iterable<Entry> {
      */
     public ClassMap(String... resources) throws IOException {
         for (String file : resources) {
-            Parser parser = new Parser(file, false);
-            Entry entry;
-            while ((entry = parser.next()) != null) {
-                if (entry.getType() != EntryType.CATEGORY) {
-                    TreeSet<Entry> set = catMap.get(entry.getCategory());
-                    if (set == null) {
-                        set = new TreeSet<>();
-                        catMap.put(entry.getCategory(), set);
+            try (Parser parser = new Parser(file, false)) {
+                Entry entry;
+                while ((entry = parser.next()) != null) {
+                    if (entry.getType() != EntryType.CATEGORY) {
+                        TreeSet<Entry> set = catMap.get(entry.getCategory());
+                        if (set == null) {
+                            set = new TreeSet<>();
+                            catMap.put(entry.getCategory(), set);
+                        }
+                        set.add(entry);
                     }
-                    set.add(entry);
                 }
             }
         }
