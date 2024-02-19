@@ -12,12 +12,11 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.Segment;
 import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.Completion;
-import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.CompletionProviderBase;
 import org.fife.ui.autocomplete.ParameterizedCompletion;
 
 /**
- * Code support for the plain text.
+ * Code support for plain text.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.4
@@ -25,8 +24,6 @@ import org.fife.ui.autocomplete.ParameterizedCompletion;
 public class PlainTextSupport extends DefaultCodeSupport {
 
     private AutoCompletion ac;
-
-    private CompletionProvider wordCompleter;
 
     @Override
     public void install(CodeEditorBase editor) {
