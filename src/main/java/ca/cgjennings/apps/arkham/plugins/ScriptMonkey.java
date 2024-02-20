@@ -165,6 +165,15 @@ public final class ScriptMonkey {
     }
 
     /**
+     * Attaches this script monkey to the shared console. Input from the console
+     * will be executed in the context of this monkey until the binding is
+     * changed.
+     */
+    public void bindToConsoleInput() {
+        console.getConsoleInput().setExecutionContext(this);
+    }
+
+    /**
      * The reserved variable name for the
      * {@linkplain StrangeEons application instance} ({@code Eons})
      */

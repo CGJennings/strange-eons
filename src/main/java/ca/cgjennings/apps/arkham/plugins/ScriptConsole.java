@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.plugins;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.ToolWindow;
 import ca.cgjennings.apps.arkham.TrackedWindow;
-import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.Color;
@@ -162,7 +161,6 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
      */
     public ScriptConsole(java.awt.Frame parent) {
         super(parent, false);
-        JUtilities.makeUtilityWindow(this);
         initComponents();
         setBody(scrollPane);
 
@@ -228,6 +226,10 @@ public class ScriptConsole extends ToolWindow implements TrackedWindow {
     private Timer flushTimer = new Timer(100, (ActionEvent e) -> {
         __flushAllPendingFragments();
     });
+
+    ConsoleInput getConsoleInput() {
+        return conInput;
+    }
 
     @Override
     public void setVisible(boolean visible) {

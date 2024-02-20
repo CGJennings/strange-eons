@@ -213,7 +213,8 @@ public class ToolWindow extends javax.swing.JDialog {
             if (SwingUtilities.isLeftMouseButton(evt) && titleDrag) {
                 int newX = evt.getXOnScreen();                
                 int newY = evt.getYOnScreen();
-                setLocation(newX - dragStartXInWindow, newY - dragStartYInWindow);
+                // setLocation(newX - dragStartXInWindow, newY - dragStartYInWindow);
+                setBounds(newX - dragStartXInWindow, newY - dragStartYInWindow, getWidth(), getHeight());
             }
 	}//GEN-LAST:event_titleLabelMouseDragged
 
@@ -443,8 +444,6 @@ public class ToolWindow extends javax.swing.JDialog {
                 final int y2 = y + height - 1;
 
                 g.drawLine(x2 - SIZE, y2, x2 - SIZE, y2 - DEPTH);
-//				g.drawLine( x2-SIZE, y2-DEPTH, x2-DEPTH, y2-DEPTH );
-//				g.drawLine( x2-DEPTH, y2-DEPTH, x2-DEPTH, y2-SIZE );
                 g.drawLine(x2 - DEPTH, y2 - SIZE, x2, y2 - SIZE);
 
                 g.drawRect(x, y, width - 1, height - 1);

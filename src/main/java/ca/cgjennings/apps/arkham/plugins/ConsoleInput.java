@@ -72,8 +72,22 @@ public final class ConsoleInput extends javax.swing.JPanel {
         });
     }
 
+    /**
+     * Sets the context used when evaluating input.
+     * If set to null, a new context will be created on the
+     * next input.
+     * 
+     * @param context the context that input will be
+     * run in, such as  the last Quickscript run
+     */
+    void setExecutionContext(ScriptMonkey context) {
+        synchronized (this) {
+            executionContext = context;
+        }
+    }
+
     private ScriptConsole con;
-    private ScriptMonkey m;
+    private ScriptMonkey executionContext;
     private boolean isVisible = false;
     private boolean installed = false;
     private List<String> history = new LinkedList<>();
@@ -182,14 +196,19 @@ public final class ConsoleInput extends javax.swing.JPanel {
         historyIndex = history.size();
         
         try {
-            if (m == null) {
-                m = new ScriptMonkey("console");
+            ScriptMonkey executionContext;
+            synchronized (this) {
+                if (this.executionContext == null) {
+                    this.executionContext = new ScriptMonkey("console");
+                }
+                executionContext = this.executionContext;
             }
-            m.bind("last", code);
-            Object retval = m.eval("print('⤷ ');println(eval(last));");
+            Object retval = executionContext.eval(code);
             if (retval != null) {
+                con.getInfoWriter().print("⤷ ");
                 con.getWriter().printObj(retval);
                 con.getWriter().println();
+                con.flush();
             }
         } catch (Exception ex) {
             StrangeEons.log.log(Level.WARNING, "exception running console input", ex);
