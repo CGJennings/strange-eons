@@ -13,7 +13,7 @@ import java.util.Set;
  * @since 3.0
  * @see TopologicalSorter
  */
-public interface DependencyRelation<T extends DependencyRelation> {
+public interface DependencyRelation<T extends DependencyRelation<T>> {
 
     /**
      * Returns a set of objects that this object depends upon. If this object

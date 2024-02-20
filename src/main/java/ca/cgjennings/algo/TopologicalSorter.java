@@ -21,15 +21,15 @@ import java.util.Set;
  * To create such an order, it is necessary that the dependency graph be
  * acyclic. That is, you cannot have a situation where A depends on B and B also
  * depends on A, directly or indirectly. For example, if A depends on B and C
- * and C depends on D and D depends on A, then there is a cycle A -&gt; C -&gt;
- * D -&gt; A. Attempting to sort a collection of objects that contain a cycle
+ * and C depends on D and D depends on A, then there is a cycle A → C →
+ * D → A. Attempting to sort a collection containing a cycle
  * will throw an exception.
  *
  * @param <T> the type of object that will be sorted
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-public class TopologicalSorter<T extends DependencyRelation> {
+public class TopologicalSorter<T extends DependencyRelation<T>> {
 
     private boolean lexSort = false;
     private boolean assumesAllPresent = false;
@@ -246,7 +246,7 @@ public class TopologicalSorter<T extends DependencyRelation> {
      * @throws GraphCycleException if there is a cycle in the dependency graph
      * @param <T> the type of the objects that depend on each other
      */
-    public static <T extends DependencyRelation> Set<T> getAllDependants(T object) {
+    public static <T extends DependencyRelation<T>> Set<T> getAllDependants(T object) {
         TopologicalSorter<T> s = new TopologicalSorter<>();
         HashSet<T> dependants = new HashSet<>(s.topSort(Collections.singleton(object)));
         dependants.remove(object);
