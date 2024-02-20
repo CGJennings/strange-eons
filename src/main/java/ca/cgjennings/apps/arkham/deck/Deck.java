@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
 import ca.cgjennings.apps.arkham.component.conversion.UpgradeConversionTrigger;
 import ca.cgjennings.apps.arkham.deck.item.BleedMarginStyle;
-import ca.cgjennings.apps.arkham.deck.item.CardFace;
 import ca.cgjennings.apps.arkham.deck.item.Curve;
 import ca.cgjennings.apps.arkham.deck.item.DependentPageItem;
 import ca.cgjennings.apps.arkham.deck.item.FlippablePageItem;
@@ -31,7 +30,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +48,7 @@ import resources.Settings;
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
-public class Deck implements Serializable, GameComponent, BleedMarginStyle, Cloneable {
+public class Deck implements GameComponent, BleedMarginStyle {
 
     static final long serialVersionUID = 4560886736606557242L;
 
@@ -354,44 +352,6 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
         fireSelectionChanged();
     }
 
-    @SuppressWarnings("serial")
-    private class SelectionGroupEdit extends DeckUndoable {
-
-        private final int g;
-        private final Page oPage;
-        private Page nPage;
-        private final LinkedHashSet oSel;
-        private LinkedHashSet nSel;
-
-        public SelectionGroupEdit(int group, Page newPage, LinkedHashSet newSel) {
-            super(Deck.this);
-            oPage = selectionGroupPage[group];
-            nPage = newPage;
-            oSel = selectionGroup[group];
-            nSel = newSel;
-            g = group;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void undoImpl() {
-            selectionGroupPage[g] = oPage;
-            selectionGroup[g] = oSel;
-        }
-
-        @Override
-        @SuppressWarnings("unchecked")
-        protected void redoImpl() {
-            selectionGroupPage[g] = nPage;
-            selectionGroup[g] = nSel;
-        }
-
-        @Override
-        public boolean isSignificant() {
-            return false;
-        }
-    }
-
     /**
      * Stores the current selection in a numbered memory cell. There are
      * guaranteed to be at least 10 general purpose cells available to the user.
@@ -410,9 +370,6 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
         }
 
         LinkedHashSet<PageItem> nSel = new LinkedHashSet<>(selection);
-//		if( undoIsActive == 0 ) {
-//			undoSupport.postEdit( new SelectionGroupEdit( group, selectionPage, nSel ) );
-//		}
         selectionGroupPage[group] = selectionPage;
         selectionGroup[group] = nSel;
     }
@@ -1172,7 +1129,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
             final Throwable[] loadException = new Throwable[1];
             try {
                 if (version >= 3) {
-                    int totalObjects = ois.readInt();
+                    /* final int totalObjects = */ ois.readInt();
                     int pageCount = ois.readInt();
                     pages = new ArrayList<>(Math.max(8, pageCount + 4));
                     for (int i = 0; i < pageCount; ++i) {
@@ -1378,7 +1335,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * {@code UnsupportedOperationException}.
      */
     @Override
-    public Sheet[] getSheets() {
+    public Sheet<?>[] getSheets() {
         throw new UnsupportedOperationException();
     }
 
@@ -1387,7 +1344,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * {@code UnsupportedOperationException}.
      */
     @Override
-    public void setSheets(Sheet[] sheets) {
+    public void setSheets(@SuppressWarnings("rawtypes") Sheet[] sheets) {
         throw new UnsupportedOperationException();
     }
 
@@ -1396,7 +1353,7 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
      * {@code UnsupportedOperationException}.
      */
     @Override
-    public Sheet[] createDefaultSheets() {
+    public Sheet<?>[] createDefaultSheets() {
         throw new UnsupportedOperationException();
     }
 
@@ -1805,51 +1762,20 @@ public class Deck implements Serializable, GameComponent, BleedMarginStyle, Clon
     }
 
     /**
-     * Sets whether synthetic bleed margins are enabled for components that do
-     * not have a built-in bleed margin. Changing this value updates the
-     * {@linkplain CardFace#setAutoBleedMarginEnabled(boolean) associated property}
-     * in each card face in the deck.
-     *
      * @deprecated Use
      * {@link #setFinishStyle(ca.cgjennings.apps.arkham.sheet.FinishStyle)} and
      * {@link #setBleedMarginWidth(double)}.
-     *
-     * @param enable the value to apply to the synthetic bleed margin property
-     * of card faces
-     * @see #isAutoBleedMarginEnabled()
      */
     @Deprecated
     public void setAutoBleedMarginEnabled(boolean enable) {
-//        if (enable != autoBleed) {
-//            autoBleed = enable;
-//            for (int i = 0; i < getPageCount(); ++i) {
-//                Page p = getPage(i);
-//                for (int j = 0; j < p.getCardCount(); ++j) {
-//                    PageItem pi = p.getCard(j);
-//                    if (pi instanceof CardFace) {
-//                        ((CardFace) pi).setAutoBleedMarginEnabled(enable);
-//                    }
-//                }
-//            }
-//            markUnsavedChanges();
-//            firePropertyChange("autoBleedMarginEnabled", !enable, enable);
-//        }
     }
 
     /**
-     * Returns {@code true} if synthetic bleed margins are the default for this
-     * deck.
-     *
      * @deprecated Use {@link #getFinishStyle()} and
      * {@link #getBleedMarginWidth()}.
-     *
-     * @return {@code true} if card faces should use synthetic bleed margins by
-     * default
-     * @see #setAutoBleedMarginEnabled(boolean)
      */
     @Deprecated
     public boolean isAutoBleedMarginEnabled() {
-//        return finish == FinishStyle.MARGIN;
         return false;
     }
 

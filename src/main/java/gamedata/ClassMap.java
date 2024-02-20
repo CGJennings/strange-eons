@@ -38,15 +38,7 @@ import resources.ResourceKit;
  * maps those entries to their respective component classes (or scripts).
  * Primarily, this class is used by extensions to register new kinds of game
  * components {@linkplain #add from a class map file}. This class can also be
- * used to examine class map file entries programmatically. For example, the
- * following script code prints a list of entries and the class (or script) that
- * each entry maps to:
- * <pre>
- * var classMap = new gamedata.ClassMap();
- * for( let entry in Iterator( classMap.entries ) ) {
- *     println( entry.name + ' -&gt; ' + entry.mapping  );
- * }
- * </pre>
+ * used to examine class map file entries programmatically.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
@@ -54,33 +46,30 @@ import resources.ResourceKit;
 public class ClassMap implements Iterable<Entry> {
 
     /**
-     * Creates a new class map that contains entries for all of the class map
-     * resources that have been added using {@link #add(java.lang.String)}.
-     */
-    public ClassMap() throws IOException {
-        this(getClassMapFiles());
-    }
-
-    /**
      * Creates a new class map that contains entries parsed from the specified
      * class map resources.
      *
-     * @param resources the class map resources to parse
+     * @param resources the class map resources to parse; if no resources are
+     * specified, the default class map files are used
      * @throws ResourceParserException if any of the class map files cannot be
      * parsed
      */
     public ClassMap(String... resources) throws IOException {
+        if (resources == null || resources.length == 0) {
+            resources = getClassMapFiles();
+        }
         for (String file : resources) {
-            Parser parser = new Parser(file, false);
-            Entry entry;
-            while ((entry = parser.next()) != null) {
-                if (entry.getType() != EntryType.CATEGORY) {
-                    TreeSet<Entry> set = catMap.get(entry.getCategory());
-                    if (set == null) {
-                        set = new TreeSet<>();
-                        catMap.put(entry.getCategory(), set);
+            try (Parser parser = new Parser(file, false)) {
+                Entry entry;
+                while ((entry = parser.next()) != null) {
+                    if (entry.getType() != EntryType.CATEGORY) {
+                        TreeSet<Entry> set = catMap.get(entry.getCategory());
+                        if (set == null) {
+                            set = new TreeSet<>();
+                            catMap.put(entry.getCategory(), set);
+                        }
+                        set.add(entry);
                     }
-                    set.add(entry);
                 }
             }
         }

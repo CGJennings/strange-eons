@@ -242,6 +242,11 @@ public class ThemedGlyphIcon extends AbstractThemedIcon {
         gi.height = newHeight;
         return gi;
     }
+    
+    @Override
+    public ThemedGlyphIcon derive(int newSize) {
+        return derive(newSize, newSize);
+    }
 
     /**
      * Returns a new icon with the same image as this icon, but "tagged" with a

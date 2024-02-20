@@ -72,9 +72,8 @@ public class JIconList<T> extends JList<T> {
     }
 
     public static class IconRenderer extends DefaultListCellRenderer {
-
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             Icon i = null;
             if (value instanceof IconProvider) {
@@ -82,7 +81,7 @@ public class JIconList<T> extends JList<T> {
             }
             if (i == null) {
                 if (list instanceof JIconList) {
-                    i = ((JIconList) list).getDefaultIcon();
+                    i = ((JIconList<?>) list).getDefaultIcon();
                 }
             }
             setIcon(i);

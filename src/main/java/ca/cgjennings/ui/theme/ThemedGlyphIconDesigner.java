@@ -2,11 +2,15 @@ package ca.cgjennings.ui.theme;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.ui.DocumentEventAdapter;
+
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
@@ -72,9 +76,11 @@ public class ThemedGlyphIconDesigner {
                             try {
                                 String desc = tf.getText().trim();
                                 if (!desc.isEmpty()) {
-                                    ThemedIcon icon = new ThemedGlyphIcon(desc);
+                                    Icon icon;
                                     if ("zoomed".equals(label.getName())) {
-                                        icon = icon.derive(256);
+                                        icon = new ZoomedGlyphIcon(desc);
+                                    } else {
+                                        icon = new ThemedGlyphIcon(desc);
                                     }
                                     label.setIcon(icon);
                                 }
@@ -98,17 +104,16 @@ public class ThemedGlyphIconDesigner {
             cp.addMouseWheelListener(new MouseWheelListener() {
                 @Override
                 public void mouseWheelMoved(MouseWheelEvent e) {
-                    ThemedIcon icon = (ThemedGlyphIcon) label.getIcon();
+                    Icon icon = label.getIcon();
                     if (icon == null) {
                         return;
                     }
                     final int clicks = e.getWheelRotation();
                     if (clicks < 0) {
-                        if (icon.getIconWidth() < 256) {
-                            icon = icon.derive(256);
-                            label.setIcon(icon);
+                        if (!"zoomed".equals(label.getName())) {
+                            label.setName("zoomed");
+                            tfHandler.changedUpdate(null);
                         }
-                        label.setName("zoomed");
                     } else if (clicks > 0) {
                         if ("zoomed".equals(label.getName())) {
                             label.setName("");
@@ -204,6 +209,39 @@ public class ThemedGlyphIconDesigner {
             f.setLocationByPlatform(true);
             f.setVisible(true);
         });
+    }
+    
+    private static class ZoomedGlyphIcon implements Icon {
+        private ThemedGlyphIcon tgi;
+        
+        public ZoomedGlyphIcon(String desc) {
+            tgi = new ThemedGlyphIcon(desc).derive(256);
+        }
+        
+        @Override
+        public void paintIcon(Component c, Graphics g1, int x, int y) {
+            Graphics2D g = (Graphics2D) g1;
+            g.setColor(new Color(0x77000000, true));
+            for (int i=1; i<24; ++i) {
+                int xy = (int) (256f / 24f * (float) i + 0.5f);
+                g.drawLine(xy + x, y, xy + x, 255 + y);
+                g.drawLine(0 + x, xy + y, 255 + x, xy + y);
+            }
+            g.setColor(Color.BLACK);
+            g.drawRect(x, y, 255, 255);
+            g.setColor(Color.WHITE);
+            g.setStroke(new BasicStroke(1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10f, new float[]{5f, 5f}, 0f));
+            g.drawRect(x, y, 255, 255);
+            tgi.paintIcon(c, g, x, y);
+        }
+        @Override
+        public int getIconWidth() {
+            return 256;
+        }
+        @Override
+        public int getIconHeight() {
+            return 256;
+        }
     }
 
     private static final int[] DEPRECATED = new int[]{

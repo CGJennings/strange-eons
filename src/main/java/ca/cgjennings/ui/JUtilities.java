@@ -7,6 +7,7 @@ import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.GraphicsConfiguration;
+import java.awt.IllegalComponentStateException;
 import java.awt.Insets;
 import java.awt.MouseInfo;
 import java.awt.Point;
@@ -39,6 +40,8 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
+
+import ca.cgjennings.apps.arkham.StrangeEons;
 import resources.ResourceKit;
 
 /**
@@ -540,7 +543,6 @@ public class JUtilities {
     private static final int[] BUTTON_MASKS;
 
     static {
-        // JAVA 7
         final int BTNS = MouseInfo.getNumberOfButtons();
         BUTTON_MASKS = new int[Math.max(3, BTNS)];
         BUTTON_MASKS[0] = MouseEvent.BUTTON1_DOWN_MASK;
@@ -549,29 +551,6 @@ public class JUtilities {
         for (int i = 3; i < BTNS; ++i) {
             BUTTON_MASKS[i] = MouseEvent.getMaskForButton(i + 1);
         }
-
-        // JAVA 6 and older:
-//		Method m = null;
-//		try {
-//			m = MouseEvent.class.getMethod( "getMaskForButton", int.class );
-//		} catch( NoSuchMethodException e ) {
-//			// Java 6 or earlier
-//		}
-//		BUTTON_MASKS = new int[
-//				m == null ? 3 : Math.max( 3, MouseInfo.getNumberOfButtons() )
-//		];
-//		BUTTON_MASKS[0] = MouseEvent.BUTTON1_DOWN_MASK;
-//		BUTTON_MASKS[1] = MouseEvent.BUTTON2_DOWN_MASK;
-//		BUTTON_MASKS[2] = MouseEvent.BUTTON3_DOWN_MASK;
-//		if( m != null ) {
-//			for( int i=3; i<BUTTON_MASKS.length; ++i ) {
-//				try {
-//					BUTTON_MASKS[i] = (Integer) m.invoke( null, Integer.valueOf(i+1) );
-//				} catch( Exception ex ) {
-//					BUTTON_MASKS[i] = 0;
-//				}
-//			}
-//		}
     }
 
     /**
@@ -584,30 +563,15 @@ public class JUtilities {
      * @return {@code true} if the attempt succeeds, {@code false} otherwise
      */
     public static boolean makeUtilityWindow(Window window) {
-        if (window == null) {
-            throw new NullPointerException("window");
+        // since we now require Java > 1.7, we no longer need reflection
+        try {
+            window.setType(Window.Type.UTILITY);
+        } catch (IllegalComponentStateException ex) {
+            StrangeEons.log.warning(ex.getMessage());
+            return false;
         }
-        if (assumeUtilitySupported) {
-            Class T;
-            Method m;
-            Object UTILITY;
-            try {
-                T = Class.forName("java.awt.Window$Type");
-                m = Window.class.getMethod("setType", T);
-                UTILITY = T.getField("UTILITY").get(null);
-            } catch (Throwable t) {
-                assumeUtilitySupported = false;
-                return false;
-            }
-            try {
-                m.invoke(window, UTILITY);
-                return true;
-            } catch (Throwable t) {
-            }
-        }
-        return false;
+        return true;
     }
-    private static boolean assumeUtilitySupported = true;
 
     /**
      * Throws an assertion if the calling thread is not the event dispatch

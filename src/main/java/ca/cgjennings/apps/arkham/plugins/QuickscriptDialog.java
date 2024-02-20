@@ -369,14 +369,14 @@ final class QuickscriptDialog extends javax.swing.JDialog {
 
                 PluginContext context = PluginContextFactory.createDummyContext(modifiers);
                 monkey.bind(context);
+                monkey.bindToConsoleInput();
                 monkey.setBreakpoint(debugRun);
                 Object result = monkey.eval(code);
                 if (result != null) {
-                    ScriptConsole.ConsolePrintWriter writer = console.getWriter();
-                    writer.print("⤷ ");
-                    writer.print(result);
-                    writer.println();
-                    writer.flush();
+                    console.getInfoWriter().print("⤷ ");
+                    console.getWriter().printObj(result);
+                    console.getWriter().println();
+                    console.flush();
                 }
             } finally {
                 runBtn.setEnabled(true);

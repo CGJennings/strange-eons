@@ -33,7 +33,7 @@ class Card implements Cloneable, Serializable {
         obsolete();
     }
 
-    public Card(String name, Sheet sheet, String sheetPath, int sheetIndex) {
+    public Card(String name, Sheet<?> sheet, String sheetPath, int sheetIndex) {
         obsolete();
     }
 
@@ -56,7 +56,7 @@ class Card implements Cloneable, Serializable {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
         StrangeEons.log.info("reading obsolete object");
 
         name = (String) in.readObject();

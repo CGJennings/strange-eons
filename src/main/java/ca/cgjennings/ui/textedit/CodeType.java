@@ -79,7 +79,7 @@ public enum CodeType {
     /**
      * Markdown document.
      */
-    MARKDOWN("md", "pa-new-markdown", ICON_MARKDOWN, DefaultCodeSupport.class, UTF8),
+    MARKDOWN("md", "pa-new-markdown", ICON_MARKDOWN, MarkdownSupport.class, UTF8),
     ;
 
     private final String fileExtension;
