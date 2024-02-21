@@ -188,7 +188,7 @@ final class GFCloudFontCollection implements CloudFontCollection {
         java.util.LinkedList<ca.cgjennings.graphics.cloudfonts.GFFamily> familyList = new LinkedList<GFFamily>();
         try (EscapedLineReader props = new EscapedLineReader(metadataFile)) {
             String[] prop;
-            String name = null, path = null, fileList = null, catList = null,
+            String name = null, designer = null, path = null, fileList = null, catList = null,
                     axesList = null, subsetList = null, versionHash = null;
             while ((prop = props.readProperty()) != null) {
                 try {
@@ -196,13 +196,17 @@ final class GFCloudFontCollection implements CloudFontCollection {
                         case "path": path = prop[1]; break;
                         case "list": fileList = prop[1]; break;
                         case "name": name = prop[1]; break;
+                        case "dsnr": designer = prop[1]; break;
                         case "cats": catList = prop[1]; break;
                         case "sets": subsetList = prop[1]; break;
                         case "axes": axesList = prop[1]; break;
                         case "hash":
                             // the end of a family must always be marked by a hash
                             versionHash = prop[1];
-                            GFFamily family = new GFFamily(this, name, path, fileList, catList, axesList, subsetList, versionHash, intern);
+                            GFFamily family = new GFFamily(
+                                this, name, designer, path, fileList, catList, axesList,
+                                subsetList, versionHash, intern
+                            );
                             familyList.add(family);
                             name = path = fileList = catList = axesList = subsetList = versionHash = null;
                             break;
@@ -214,9 +218,10 @@ final class GFCloudFontCollection implements CloudFontCollection {
                                 log.log(Level.WARNING, "expected version {0}, but metadata is version {1}",
                                         new Object[] { metadataVersion, prop[1] });
                             }
+                            break;
                         default:
                             // ignore unknown properties, assume they are for a compatible future version
-                            log.log(Level.INFO, "ignoring unknown metadata property: {0}", prop[0]);
+                            log.log(Level.INFO, "ignoring unknown property: {0}", prop[0]);
                     }
                 } catch (IllegalStateException ex) {
                     // indicates version mismatch

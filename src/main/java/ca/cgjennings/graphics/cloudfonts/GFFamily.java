@@ -23,9 +23,10 @@ import resources.ResourceKit;
  */
 final class GFFamily implements CloudFontFamily {
     
-    GFFamily(GFCloudFontCollection collection, String name, String path, String fileList, String catList, String axesList, String subsetList, String versionHash, WeakIntern intern) {
+    GFFamily(GFCloudFontCollection collection, String name, String designer, String path, String fileList, String catList, String axesList, String subsetList, String versionHash, WeakIntern intern) {
         coll = collection;
         this.name = name;
+        this.designer = intern.of(designer);
         this.path = intern.of(path);
         this.sortKey = GFCloudFontCollection.toSortKey(name);
         this.fileList = fileList;
@@ -47,6 +48,7 @@ final class GFFamily implements CloudFontFamily {
         this.sortKey = sortKey;
         coll = null;
         name = null;
+        designer = null;
         path = null;
         categoryBits = 0;
         subsets = null;
@@ -55,6 +57,7 @@ final class GFFamily implements CloudFontFamily {
 
     final GFCloudFontCollection coll;
     private final String name;
+    private final String designer;
     final String sortKey;
     final String path;
     private final int categoryBits;
@@ -114,6 +117,62 @@ final class GFFamily implements CloudFontFamily {
     }
 
     @Override
+    public boolean hasWeights() {
+        if (fonts == null) {
+            getCloudFonts();        
+        }
+        if (axes != null) {
+            for (int a=0; a<axes.length; ++a) {
+                if ("wght".equals(axes[a].tag)) {
+                    return true;
+                }
+            }
+        }
+        for (CloudFont f : fonts) {
+            final String style = f.getStyle();
+            // SemiBold DemiBold ExtraBold UltraBold all contain "Bold"
+            if (
+                style.contains("Bold") || style.contains("Black") || style.contains("Heavy")
+                 || style.contains("Thin") || style.contains("Medium")
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean hasItalics() {
+        if (fonts == null) {
+            getCloudFonts();        
+        }
+        if (axes != null) {
+            for (int a=0; a<axes.length; ++a) {
+                if ("ital".equals(axes[a].tag) || "slnt".equals(axes[a].tag)) {
+                    return true;
+                }
+            }
+        }
+        for (CloudFont f : fonts) {
+            final String style = f.getStyle();
+            if (
+                style.contains("Italic") || style.contains("Slant") || style.contains("Oblique")
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isVariable() {
+        if (fonts == null) {
+            getCloudFonts();        
+        }
+        return axes != null && axes.length > 0;
+    }
+
+    @Override
     public CloudFont[] getCloudFonts() {
         if (fonts == null) {
             String[] files = fileList.split("\\|");
@@ -167,15 +226,20 @@ final class GFFamily implements CloudFontFamily {
     }
 
     @Override
-    public String getLicenseType() {
+    public String getTypeDesigner() {
+        return designer == null ? "" : designer;
+    }
+
+    @Override
+    public String getLicenseType() {        
         if (path.startsWith("apache")) {
-            return "Apache";
+            return "ALv2";
         } else if (path.startsWith("ofl")) {
-            return "Open Font License";
+            return "OFL";
         } else if (path.startsWith("ufl")) {
-            return "Ubuntu Font License";
+            return "UFL";
         } else {
-            return "Unknown";
+            return "";
         }
     }
 
