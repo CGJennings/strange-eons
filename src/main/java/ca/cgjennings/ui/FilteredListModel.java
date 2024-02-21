@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import javax.swing.AbstractListModel;
 import javax.swing.Icon;
 import javax.swing.JList;
+import javax.swing.ListModel;
 import javax.swing.event.DocumentEvent;
 
 /**
@@ -221,7 +222,7 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
     }
 
     /** Captures the current selection for use with {@link #restoreSelection(JList, List)}. */
-    public List<E> stashSelection(JList<E> list) {
+    public static <E> List<E> stashSelection(JList<E> list) {
         return list.getSelectedValuesList();
     }
 
@@ -232,11 +233,12 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
      * @param list the list to restore the selection to
      * @param selection the selection to restore
      */
-    public void restoreSelection(JList<E> list, List<E> selection) {
+    public static <E> void restoreSelection(JList<E> list, List<E> selection) {
         list.clearSelection();
+        ListModel<E> model = list.getModel();
         for (E sel : selection) {
-            for (int i = 0; i < getSize(); ++i) {
-                if (sel.equals(getElementAt(i))) {
+            for (int i = 0; i < model.getSize(); ++i) {
+                if (sel.equals(model.getElementAt(i))) {
                     list.addSelectionInterval(i, i);
                 }
             }
@@ -253,6 +255,7 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
         return filtered.size();
     }
 
+    @SuppressWarnings("rawtypes")
     public static final ListFilter ACCEPT_ALL_FILTER = (FilteredListModel mode, Object item) -> true;
 
     public interface FilterChangeListener extends EventListener {
