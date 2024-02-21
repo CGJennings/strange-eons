@@ -142,6 +142,8 @@ final class GFCloudFontCollection implements CloudFontCollection {
                 updateMetadataCache(remoteVersion, localCache);
                 localVersion = remoteVersion;
             }
+        } else {
+            StrangeEons.log.info("using cached cloud font metadata");
         }
         return localVersion;
     }
