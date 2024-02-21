@@ -5,16 +5,19 @@ import ca.cgjennings.apps.arkham.dialog.InsertCharsDialog;
 import ca.cgjennings.ui.DocumentEventAdapter;
 import ca.cgjennings.ui.FilteredListModel;
 import ca.cgjennings.ui.theme.Palette;
+import resources.ResourceKit;
 
 import java.awt.CardLayout;
 
 import static resources.Language.string;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.font.TextAttribute;
 import java.io.IOException;
@@ -42,11 +45,13 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
      */
     public CloudFontExplorerPanel() {
         initComponents();
+        boldStyleLabel.setIcon(ResourceKit.getIcon("cloud-font-has-bold"));
+        italicStyleLabel.setIcon(ResourceKit.getIcon("cloud-font-has-italic"));
+        variableStyleLabel.setIcon(ResourceKit.getIcon("cloud-font-has-variable"));
         error(null); // init font colour and show empty panel
-        setPreviewText(previewLabel.getFont());
+        setPreviewText(null);
         showCard("init");
         initFiltering();
-        matchesLabel.setText(null);
     }
     
     private boolean fontListInitializeStarted = false;
@@ -102,19 +107,30 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
     /**
      * Adds a listener that is notified when the user's selected font families change.
      * @param l the listener to add
-     * @see #removeFamilySelectionListener(javax.swing.event.ListSelectionListener)
+     * @see #removeFamilySelectionListener(ActionListener)
      */
-    public void addFamilySelectionListener(javax.swing.event.ListSelectionListener l) {
-        familyList.addListSelectionListener(l);
+    public void addFamilySelectionListener(ActionListener l) {
+        familySelectionListeners.add(l);
     }
 
     /**
      * Removes a font family selection listener.
      * @param l the listener to remove
-     * @see #addFamilySelectionListener(javax.swing.event.ListSelectionListener)
+     * @see #addFamilySelectionListener(ActionListener)
      */
-    public void removeFamilySelectionListener(javax.swing.event.ListSelectionListener l) {
-        familyList.removeListSelectionListener(l);
+    public void removeFamilySelectionListener(ActionListener l) {
+        familySelectionListeners.remove(l);
+    }
+
+    // we need our own list since since we do not fire during filter updates
+    private List<ActionListener> familySelectionListeners = new ArrayList<>();
+
+    /** Notifies all listeners that the selected font family or families have changed. */
+    private void fireFamilySelectionChanged() {
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "familySelectionChanged");
+        for (ActionListener l : familySelectionListeners) {
+            l.actionPerformed(e);
+        }
     }
 
     /**
@@ -125,6 +141,48 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
         familyList.repaint();
     }
 
+    /**
+     * Returns the total number of font families available.
+     * @return the numebr of font families, including those that are not currently visible
+     */
+    public int getFamilyCount() {
+        return ((FilteredListModel<CloudFontFamily>) familyList.getModel()).getItemCount();
+    }
+
+    /**
+     * Returns the number of font families that are listed after filtering is applied.
+     * @return the number of visible font families
+     */
+    public int getFilteredFamilyCount() {
+        return familyList.getModel().getSize();
+    }
+
+    private List<ActionListener> filterChangedListeners = new ArrayList<>();
+
+    /**
+     * Adds a listener that is notified when the filter changes.
+     * @param l the listener to add
+     */
+    public void addFilterChangedListener(ActionListener l) {
+        filterChangedListeners.add(l);
+    }
+
+    /**
+     * Removes a filter changed listener.
+     * @param l the listener to remove
+     */
+    public void removeFilterChangedListener(ActionListener l) {
+        filterChangedListeners.remove(l);
+    }
+
+    /** Notifies all listeners that the filter has changed. */
+    private void fireFilterChanged() {
+        ActionEvent e = new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "filterChanged");
+        for (ActionListener l : filterChangedListeners) {
+            l.actionPerformed(e);
+        }
+    }
+    
     private void initFiltering() {
         fontFilter.getDocument().addDocumentListener(new DocumentEventAdapter() {
             @Override
@@ -143,46 +201,53 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
     }
     
     private void updateListFilter() {
-        if (!fontListInitializeFinished) return;
+        if (!fontListInitializeFinished || ignoreSelectEvent) return;
+        ignoreSelectEvent = true;
+        try {
+            boolean mustBeReserved = filterCheckReserved.isSelected();
+            List<String> subsets = subsetList.getSelectedValuesList();
+            List<CloudFontFamily> stash = FilteredListModel.stashSelection(familyList);
+            List<String> subsetStash = FilteredListModel.stashSelection(subsetList);
 
-        boolean mustBeReserved = filterCheckReserved.isSelected();
-        List<String> subsets = subsetList.getSelectedValuesList();
-        List<CloudFontFamily> stash = FilteredListModel.stashSelection(familyList);
-        List<String> subsetStash = FilteredListModel.stashSelection(subsetList);
+            CategorySet cats = new CategorySet(
+                    filterCheckDisplay.isSelected(),
+                    filterCheckHandwriting.isSelected(),
+                    filterCheckMono.isSelected(),
+                    filterCheckSans.isSelected(),
+                    filterCheckSerif.isSelected(),
+                    filterCheckSymbols.isSelected(),
+                    false
+            );
 
-        CategorySet cats = new CategorySet(
-                filterCheckDisplay.isSelected(),
-                filterCheckHandwriting.isSelected(),
-                filterCheckMono.isSelected(),
-                filterCheckSans.isSelected(),
-                filterCheckSerif.isSelected(),
-                filterCheckSymbols.isSelected(),
-                false
-        );
-
-        String query = fontFilter.getText().trim().replaceAll("\\s+", " ");
-        Pattern p = Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE);
-        filterModel.setFilter((model, item) -> {
-            CloudFontFamily cff = (CloudFontFamily) item;
-            if (mustBeReserved && !CloudFonts.isReservedFamily(cff)) {
-                return false;
-            }            
-            if (cats.hasEmptyIntersectionWith(cff.getCategories())) {
-                return false;
-            }
-            if (!subsets.isEmpty()) {
-                for (String subset : subsets) {
-                    if (!cff.hasSubset(subset)) {
-                        return false;
+            String query = fontFilter.getText().trim().replaceAll("\\s+", " ");
+            Pattern p = Pattern.compile(Pattern.quote(query), Pattern.CASE_INSENSITIVE|Pattern.UNICODE_CASE);
+            filterModel.setFilter((model, item) -> {
+                CloudFontFamily cff = (CloudFontFamily) item;
+                if (mustBeReserved && !CloudFonts.isReservedFamily(cff)) {
+                    return false;
+                }            
+                if (cats.hasEmptyIntersectionWith(cff.getCategories())) {
+                    return false;
+                }
+                if (!subsets.isEmpty()) {
+                    for (String subset : subsets) {
+                        if (!cff.hasSubset(subset)) {
+                            return false;
+                        }
                     }
                 }
-            }
-            return p.matcher(cff.getName()).find();
-        });
-        FilteredListModel.restoreSelection(subsetList, subsetStash);
-        FilteredListModel.restoreSelection(familyList, stash);
-        matchesLabel.setText(filterModel.getSize() + "/" + filterModel.getItemCount());
+                return p.matcher(cff.getName()).find();
+            });
+            FilteredListModel.restoreSelection(subsetList, subsetStash);
+            FilteredListModel.restoreSelection(familyList, stash);
+        } finally {
+            ignoreSelectEvent = false;
+        }
+        fireFilterChanged();
     }
+    // prevent spurious selection in external code and
+    // infinite loop from restoring subsetList selection
+    private boolean ignoreSelectEvent = false;
 
     private static String escape(String s) {
         return "<html>" + s.replace("<", "&lt;").replace("\n", "<br>");
@@ -362,7 +427,6 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
         filterCheckMono = new javax.swing.JCheckBox();
         filterAll = new javax.swing.JButton();
         filterNone = new javax.swing.JButton();
-        matchesLabel = new javax.swing.JLabel();
         fontFilter = new ca.cgjennings.ui.JFilterField();
         familyScroll = new javax.swing.JScrollPane();
         familyList = new ca.cgjennings.ui.JIconList<>();
@@ -375,10 +439,11 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
         infoPage = new javax.swing.JPanel();
         infoLabel = new javax.swing.JLabel();
         licenseLabel = new javax.swing.JLabel();
-        stylesLabel = new javax.swing.JLabel();
-        stylesCount = new javax.swing.JLabel();
         javax.swing.JScrollPane subsetScroll = new javax.swing.JScrollPane();
         subsetList = new javax.swing.JList<>();
+        boldStyleLabel = new javax.swing.JLabel();
+        variableStyleLabel = new javax.swing.JLabel();
+        italicStyleLabel = new javax.swing.JLabel();
         filterCheckReserved = new javax.swing.JCheckBox();
 
         categoryPanel.setBorder(javax.swing.BorderFactory.createTitledBorder(string("clf-cat-title"))); // NOI18N
@@ -432,11 +497,6 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             }
         });
 
-        matchesLabel.setFont(matchesLabel.getFont().deriveFont(matchesLabel.getFont().getSize()-2f));
-        matchesLabel.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
-        matchesLabel.setText("9999/9999");
-        matchesLabel.setName("matchesLabel"); // NOI18N
-
         javax.swing.GroupLayout categoryPanelLayout = new javax.swing.GroupLayout(categoryPanel);
         categoryPanel.setLayout(categoryPanelLayout);
         categoryPanelLayout.setHorizontalGroup(
@@ -453,15 +513,12 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
                         .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(filterCheckDisplay)
                             .addComponent(filterCheckHandwriting)
-                            .addComponent(filterCheckSymbols))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(filterCheckSymbols)))
                     .addGroup(categoryPanelLayout.createSequentialGroup()
                         .addComponent(filterAll)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(filterNone)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(matchesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(filterNone)))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         categoryPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {filterAll, filterNone});
@@ -481,15 +538,12 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
                 .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filterCheckMono)
                     .addComponent(filterCheckSymbols))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                 .addGroup(categoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filterAll)
-                    .addComponent(filterNone)
-                    .addComponent(matchesLabel))
+                    .addComponent(filterNone))
                 .addContainerGap())
         );
-
-        matchesLabel.getAccessibleContext().setAccessibleName("");
 
         fontFilter.setName("fontFilter"); // NOI18N
 
@@ -540,14 +594,14 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, 281, Short.MAX_VALUE)
+                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE)
                 .addContainerGap())
         );
         errorPanelLayout.setVerticalGroup(
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(errorPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+                .addComponent(errorText, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -560,15 +614,10 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
         infoLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 3, 2, 3));
         infoLabel.setName("infoLabel"); // NOI18N
 
+        licenseLabel.setFont(licenseLabel.getFont().deriveFont(licenseLabel.getFont().getSize()-2f));
         licenseLabel.setText("license");
         licenseLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 3, 2, 3));
         licenseLabel.setName("licenseLabel"); // NOI18N
-
-        stylesLabel.setText(string("clf-styles-info")); // NOI18N
-        stylesLabel.setName("stylesLabel"); // NOI18N
-
-        stylesCount.setText("0");
-        stylesCount.setName("stylesCount"); // NOI18N
 
         subsetScroll.setName("subsetScroll"); // NOI18N
 
@@ -583,6 +632,15 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
         });
         subsetScroll.setViewportView(subsetList);
 
+        boldStyleLabel.setName("boldStyleLabel"); // NOI18N
+        boldStyleLabel.setPreferredSize(new java.awt.Dimension(18, 18));
+
+        variableStyleLabel.setName("variableStyleLabel"); // NOI18N
+        variableStyleLabel.setPreferredSize(new java.awt.Dimension(18, 18));
+
+        italicStyleLabel.setName("italicStyleLabel"); // NOI18N
+        italicStyleLabel.setPreferredSize(new java.awt.Dimension(18, 18));
+
         javax.swing.GroupLayout infoPageLayout = new javax.swing.GroupLayout(infoPage);
         infoPage.setLayout(infoPageLayout);
         infoPageLayout.setHorizontalGroup(
@@ -590,14 +648,16 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             .addGroup(infoPageLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(infoPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(infoPageLayout.createSequentialGroup()
-                        .addComponent(stylesLabel)
+                        .addComponent(boldStyleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(stylesCount, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))
-                    .addComponent(licenseLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 126, Short.MAX_VALUE)
-                    .addComponent(infoLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(italicStyleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(variableStyleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(licenseLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(subsetScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addComponent(subsetScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                 .addContainerGap())
         );
         infoPageLayout.setVerticalGroup(
@@ -605,16 +665,17 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             .addGroup(infoPageLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(infoPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(subsetScroll)
                     .addGroup(infoPageLayout.createSequentialGroup()
                         .addComponent(infoLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(licenseLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(infoPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(stylesLabel)
-                            .addComponent(stylesCount))
-                        .addContainerGap(34, Short.MAX_VALUE))
-                    .addComponent(subsetScroll)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addGroup(infoPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(boldStyleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                            .addComponent(italicStyleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(variableStyleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
 
         infoPanel.add(infoPage, "info");
@@ -630,12 +691,10 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(familyScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
-                    .addComponent(fontFilter, javax.swing.GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+                    .addComponent(familyScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(fontFilter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(categoryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(filterCheckReserved)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(filterCheckReserved))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
@@ -652,8 +711,8 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(categoryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(infoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(categoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(filterCheckReserved)
@@ -662,6 +721,7 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(fontFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, 0)
                         .addComponent(familyScroll, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
                     .addComponent(previewScroll))
                 .addContainerGap())
@@ -669,40 +729,47 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {fontFilter, openFontViewerBtn});
 
+        layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {categoryPanel, infoPanel});
+
     }// </editor-fold>//GEN-END:initComponents
 
     private void familyListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_familyListValueChanged
+        if (ignoreSelectEvent) return;
+        
         CloudFontFamily cff = familyList.getSelectedValue();
         if (cff != null) {
             Font aFont = getSelectedFont();
             if (aFont != null) {
                 setPreviewText(aFont);
             } else {
-                previewLabel.setText("");
+                previewLabel.setText(null);
             }
+
+            boldStyleLabel.setEnabled(cff.hasWeights());
+            italicStyleLabel.setEnabled(cff.hasItalics());
+            variableStyleLabel.setEnabled(cff.isVariable());
             
-            // calc num styles as
-            //     number of fonts * number of standard variable axes            
-            int styles = cff.getCloudFonts().length;
-            int standardAxes = 1;
-            for (Axis a : cff.getAxes()) {
-                String tag = a.tag;
-                if (tag.equals("wght") || tag.equals("wdth")
-                        || tag.equals("ital") || tag.equals("slnt")
-                        || tag.equals("opsz") // doubt opsz actually supported
-                ) {
-                    ++standardAxes;
+            String designer = cff.getTypeDesigner();
+            String license = cff.getLicenseType();
+            if (!designer.isEmpty()) {
+                if (!license.isEmpty()) {
+                    designer += '/' + license;
                 }
+            } else {
+                designer = license;
             }
-            styles *= standardAxes;
-             
+            licenseLabel.setText(designer);
+            licenseLabel.setToolTipText(designer);
+
             infoLabel.setText(cff.getName());
-            licenseLabel.setText(cff.getLicenseType());
-            stylesCount.setText(String.valueOf(styles));
+            infoLabel.setToolTipText(cff.getName());
+
             DefaultListModel<String> subsets = new DefaultListModel<>();
             subsets.addAll(Arrays.asList(cff.getSubsets()));            
             subsetList.setModel(subsets);
             showCard("info");
+
+            fireFamilySelectionChanged();
         }
     }//GEN-LAST:event_familyListValueChanged
 
@@ -749,6 +816,7 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel boldStyleLabel;
     private javax.swing.JPanel categoryPanel;
     private javax.swing.JPanel errorPanel;
     private javax.swing.JLabel errorText;
@@ -767,13 +835,12 @@ public class CloudFontExplorerPanel extends javax.swing.JPanel {
     private javax.swing.JLabel infoLabel;
     private javax.swing.JPanel infoPage;
     private javax.swing.JPanel infoPanel;
+    private javax.swing.JLabel italicStyleLabel;
     private javax.swing.JLabel licenseLabel;
-    private javax.swing.JLabel matchesLabel;
     private javax.swing.JButton openFontViewerBtn;
     private javax.swing.JTextArea previewLabel;
     private javax.swing.JScrollPane previewScroll;
-    private javax.swing.JLabel stylesCount;
-    private javax.swing.JLabel stylesLabel;
     private javax.swing.JList<String> subsetList;
+    private javax.swing.JLabel variableStyleLabel;
     // End of variables declaration//GEN-END:variables
 }

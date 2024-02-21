@@ -30,6 +30,11 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
         reserveButton.setEnabled(false);
         reserveButton.addActionListener(this::reserveButtonPressed);
         cloudFontPanel.addFamilySelectionListener(this::selectionChanged);
+        cloudFontPanel.addFilterChangedListener(ev -> {
+            numMatchesLabel.setText(String.valueOf(cloudFontPanel.getFilteredFamilyCount()) + '/' + cloudFontPanel.getFamilyCount());
+        });
+        // TODO: for future use
+        refreshButton.setVisible(false);
     }
 
     private void reserveButtonPressed(ActionEvent e) {
@@ -48,14 +53,14 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
         }
     }
 
-    private void selectionChanged(ListSelectionEvent ev) {
+    private void selectionChanged(ActionEvent ev) {
         var sel = cloudFontPanel.getSelectedFamilies();
         if (sel == null || sel.isEmpty()) {
             reserveButton.setText(string("clf-reserve"));
             reserveButton.setEnabled(false);
         } else {
             if (allEntriesAreReserved(sel)) {
-                reserveButton.setText(string("clf-reserve"));
+                reserveButton.setText(string("clf-unreserve"));
             } else {
                 reserveButton.setText(string("clf-reserve"));
             }
@@ -85,6 +90,7 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
         reserveInfo = new javax.swing.JLabel();
         reserveButton = new javax.swing.JButton();
         refreshButton = new javax.swing.JButton();
+        numMatchesLabel = new javax.swing.JLabel();
 
         titleLabel.setFont(titleLabel.getFont().deriveFont(titleLabel.getFont().getStyle() | java.awt.Font.BOLD, titleLabel.getFont().getSize()+3));
         titleLabel.setForeground(new java.awt.Color(135, 103, 5));
@@ -103,6 +109,10 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
         refreshButton.setText(string("clf-refresh")); // NOI18N
         refreshButton.setName("refreshButton"); // NOI18N
 
+        numMatchesLabel.setText(" ");
+        numMatchesLabel.setToolTipText("");
+        numMatchesLabel.setName("numMatchesLabel"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,17 +121,20 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(reserveButton)
+                        .addComponent(reserveInfo)
                         .addGap(18, 18, 18)
                         .addComponent(refreshButton)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(reserveInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(reserveButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(numMatchesLabel))
                             .addComponent(titleLabel)
-                            .addComponent(cloudFontPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
-                        .addContainerGap())))
+                            .addComponent(cloudFontPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,13 +142,15 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
                 .addContainerGap()
                 .addComponent(titleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reserveInfo)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reserveInfo)
+                    .addComponent(refreshButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cloudFontPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(cloudFontPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reserveButton)
-                    .addComponent(refreshButton))
+                    .addComponent(numMatchesLabel))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -143,6 +158,7 @@ public class CatReservedCloudFonts extends javax.swing.JPanel implements Prefere
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private ca.cgjennings.graphics.cloudfonts.CloudFontExplorerPanel cloudFontPanel;
+    private javax.swing.JLabel numMatchesLabel;
     private javax.swing.JButton refreshButton;
     private javax.swing.JButton reserveButton;
     private javax.swing.JLabel reserveInfo;
