@@ -193,7 +193,7 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     private String titleCache = null;
     private String textCache = null;
     private float baseSizeCache = -1f;
-    private Color interiorFillColor = new Color(0xccffffff, true);
+    private Color interiorFillColor = new Color(0xaaffffff, true);
     private Color outlineColor = Color.WHITE;
 
     private static String loadCloudFont(String family) {
