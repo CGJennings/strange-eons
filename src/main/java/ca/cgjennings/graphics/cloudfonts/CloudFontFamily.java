@@ -15,6 +15,12 @@ import resources.ResourceKit;
  */
 public interface CloudFontFamily extends IconProvider {
     /**
+     * Returns the collection to which this family belongs.
+     * @return the collection containing this family
+     */
+    public CloudFontCollection getCollection();
+
+    /**
      * Returns the family name. Note that this is based on the file
      * name, as the actual fonts might not be downloaded. Therefore
      * this name may not exactly match the family name in the actual
@@ -25,8 +31,16 @@ public interface CloudFontFamily extends IconProvider {
     String getName();
 
     /**
-     * Returns the type of font license for this family, or an
-     * empty string if the license is unknown.
+     * Returns the name of the designer of the typeface,
+     * if available.
+     * 
+     * @return the typographer, or an empty string
+     */
+    String getTypeDesigner();
+
+    /**
+     * Returns the type of font license for this family,
+     * if available.
      * 
      * @return the license type, such as OFL, or an empty string
      */
@@ -49,11 +63,46 @@ public interface CloudFontFamily extends IconProvider {
     String[] getSubsets();
 
     /**
+     * Returns true if the font provides coverage for the specified
+     * subset.
+     * 
+     * @param subset the subset name
+     * @return true if the font provides coverage for the subset
+     */
+    boolean hasSubset(String subset);
+
+    /**
      * Returns the variable axes associated with fonts in this family.
      * 
      * @return an array of font axes
      */
     Axis[] getAxes();
+
+    /**
+     * Returns true if the family has at least one non-regular weight.
+     * 
+     * @return true if the family has weights other than regular
+     * @see CloudFont#getStyle()
+     * @see CloudFont#getAxes()
+     */
+    boolean hasWeights();
+
+    /**
+     * Returns true if the family has at least one italic or oblique variant.
+     * 
+     * @return true if the family has a slanted variant
+     * @see CloudFont#getStyle()
+     * @see CloudFont#getAxes()
+     */    
+    boolean hasItalics();
+
+    /**
+     * Returns true if the family has at least one variable axis.
+     * Note that the Java font API may not support all variable axes.
+     * 
+     * @return true if the family has at least one variable axis
+     */
+    boolean isVariable();
 
     /**
      * Returns the fonts that are part of this family.

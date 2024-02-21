@@ -6,7 +6,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.ConfigureUpdatesDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.NetworkProxy;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.logging.Level;
 import javax.swing.JComponent;
@@ -23,8 +22,6 @@ class CatPlugins extends FillInPreferenceCategory {
 
     public CatPlugins() {
         super(string("sd-l-plugins-cat"), ResourceKit.getIcon("plugin-prefs"));
-
-        Font fieldFont = new Font(Font.MONOSPACED, Font.PLAIN, 11);
 
         heading(string("sd-l-catalog"));
         label(string("sd-l-cat-options"));

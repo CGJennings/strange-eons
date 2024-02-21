@@ -542,6 +542,10 @@ debug = no
 # max number of font files to download simultaneously
 cloudfont-concurrent-downloads = 3
 
+# A list of font family names that will be kept available and up to
+# date by downloading (if required) and registering them on startup.
+cloudfont-reserved-families = 
+
 
 ###########################################################
 ##

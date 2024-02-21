@@ -38,23 +38,28 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
      */
     public Preferences() {
         super(StrangeEons.getWindow(), ModalityType.APPLICATION_MODAL);
-        initComponents();
+        StrangeEons.setWaitCursor(true);
+        try {
+            initComponents();
 
-        // to force naughty pref category names to a conformant width
-        categoryWidth = catScroll.getViewport().getWidth();
+            // to force naughty pref category names to a conformant width
+            categoryWidth = catScroll.getViewport().getWidth();
 
-        getRootPane().setDefaultButton(okBtn);
-        PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
+            getRootPane().setDefaultButton(okBtn);
+            PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
 
-        catList.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
-        catList.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
-        catList.setCellRenderer(new Renderer());
-        updateCategories();
-        catList.setSelectedIndex(0);
+            catList.setForeground(UIManager.getColor(Theme.PREFS_FOREGROUND));
+            catList.setBackground(UIManager.getColor(Theme.PREFS_BACKGROUND));
+            catList.setCellRenderer(new Renderer());
+            updateCategories();
+            catList.setSelectedIndex(0);
 
-        cardScroll.getVerticalScrollBar().setUnitIncrement(12);
+            cardScroll.getVerticalScrollBar().setUnitIncrement(12);
 
-        setLocationRelativeTo(StrangeEons.getWindow());
+            setLocationRelativeTo(StrangeEons.getWindow());
+        } finally {
+            StrangeEons.setWaitCursor(false);
+        }
     }
 
     private final int categoryWidth;
@@ -75,7 +80,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
      * @param name the title of the category to select
      */
     public void setSelectedCategory(String name) {
-        DefaultListModel m = (DefaultListModel) catList.getModel();
+        DefaultListModel<PreferenceCategory> m = (DefaultListModel<PreferenceCategory>) catList.getModel();
         int size = m.getSize();
         int sel = -1;
         for (int i = 0; i < size; ++i) {
@@ -194,6 +199,8 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         for (int type = 0; type < 2; ++type) {
             for (int i = 0; i < list.size(); ++i) {
                 try {
+                    StrangeEons.log.log(Level.INFO, "loading preference category: {0}", list.get(i).getTitle());
+                    long startTime = System.currentTimeMillis();
                     PreferenceCategory pc = list.get(i);
                     pc.loadSettings();
                     m.addElement(pc);
@@ -201,6 +208,12 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
                     panel.validate();
                     panel.setSize(panel.getPreferredSize());
                     prefCards.add(panel, String.valueOf(count++));
+                    long time = System.currentTimeMillis() - startTime;
+                    if (time > 500) {
+                        StrangeEons.log.warning("slow preference category " + pc.getTitle() + " (" + time + " ms)");
+                    } else {
+                        StrangeEons.log.log(Level.INFO, "loaded in {0} ms", time);
+                    }
                 } catch (Throwable t) {
                     StrangeEons.log.log(Level.SEVERE, "exception while loading preference category", t);
                 }
@@ -370,7 +383,7 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         }
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             PreferenceCategory cat = (PreferenceCategory) value;
             super.getListCellRendererComponent(list, cat.getTitle(), index, isSelected, cellHasFocus);
             setIcon(cat.getIcon());
@@ -438,13 +451,10 @@ public class Preferences extends javax.swing.JDialog implements AgnosticDialog {
         registerCategory(new CatLanguage(), false);
         registerCategory(new CatTheme(), false);
         registerCategory(new CatContextBar(), false);
+        registerCategory(new CatReservedCloudFonts(), false);
         registerCategory(new CatDesignSupport(), false);
         registerCategory(new CatDrawPerformance(), false);
         registerCategory(new CatPlugins(), false);
-    }
-
-    private static String T(String key) {
-        return string(key);
     }
 
     /**
