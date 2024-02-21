@@ -38,12 +38,9 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         recentFileField.getEditor().setOpaque(false);
     }
 
-    private static final String SYSTEM_LAF_VALUE = "Tcho-Tcho";
-
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        apiGroup = new javax.swing.ButtonGroup();
         themeLabel1 = new javax.swing.JLabel();
         javax.swing.JLabel themeSect = new javax.swing.JLabel();
         lightThemeBox = new javax.swing.JLabel();
@@ -332,7 +329,6 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup apiGroup;
     private javax.swing.JLabel darkScreenshot;
     private javax.swing.JLabel darkThemeBox;
     private javax.swing.JComboBox<InstalledTheme> darkThemeCombo;

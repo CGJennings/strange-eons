@@ -423,8 +423,7 @@ public class FillInPreferenceCategory implements PreferenceCategory {
      * @return the dropdown menu that was added
      */
     public SBDropDown<String> addDropDown(String key, String[] labels, String[] values) {
-        @SuppressWarnings("unchecked")
-        SBDropDown<String> b = new SBDropDown(labels, values);
+        SBDropDown<String> b = new SBDropDown<String>(labels, values);
         addAuto(key, b);
         addIndent(indent);
         panel.add(b, "");

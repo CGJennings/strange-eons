@@ -31,7 +31,6 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.TransferHandler;
-import javax.swing.TransferHandler.TransferSupport;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -48,20 +47,20 @@ import resources.Settings;
 public class CatContextBar extends javax.swing.JPanel implements PreferenceCategory {
 
     private final Color BAR_BACKGROUND;
-    private final Color BAR_FOREGROUND;
+    // private final Color BAR_FOREGROUND;
     private final Color BUTTON_BACKGROUND;
     private final Color BUTTON_ROLLOVER_BACKGROUND;
     private final Color BUTTON_ROLLOVER_FOREGROUND;
-    private final Color BUTTON_ARMED_FOREGROUND;
+    // private final Color BUTTON_ARMED_FOREGROUND;
 
     {
         UIDefaults uid = UIManager.getDefaults();
         BAR_BACKGROUND = uid.getColor(Theme.CONTEXT_BAR_BACKGROUND);
-        BAR_FOREGROUND = uid.getColor(Theme.CONTEXT_BAR_FOREGROUND);
+        // BAR_FOREGROUND = uid.getColor(Theme.CONTEXT_BAR_FOREGROUND);
         BUTTON_BACKGROUND = uid.getColor(Theme.CONTEXT_BAR_BUTTON_BACKGROUND);
         BUTTON_ROLLOVER_BACKGROUND = uid.getColor(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_BACKGROUND);
         BUTTON_ROLLOVER_FOREGROUND = uid.getColor(Theme.CONTEXT_BAR_BUTTON_ROLLOVER_OUTLINE_FOREGROUND);
-        BUTTON_ARMED_FOREGROUND = uid.getColor(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND);
+        // BUTTON_ARMED_FOREGROUND = uid.getColor(Theme.CONTEXT_BAR_BUTTON_ARMED_OUTLINE_FOREGROUND);
     }
 
     // used to prevent dragging from src list to rubbish
@@ -78,7 +77,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
 
         srcList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 Button b = (Button) value;
                 String label = b.getName();
                 if (label == null) {
@@ -120,7 +119,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
                     return;
                 }
 
-                ArrayList alist = getTransferData(data);
+                ArrayList<?> alist = getTransferData(data);
                 if (!alist.isEmpty() && alist.get(0) != fakeSeparatorButton) {
                     action = TransferHandler.MOVE;
                 } else {
@@ -180,7 +179,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
 
             @Override
             public boolean importData(TransferSupport transfer) {
-                final ArrayList list = getTransferData(transfer.getTransferable());
+                final ArrayList<?> list = getTransferData(transfer.getTransferable());
                 EventQueue.invokeLater(() -> {
                     for (Object o : list) {
                         deleteButton((Button) o);
@@ -336,7 +335,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     }// </editor-fold>//GEN-END:initComponents
 
 	private void removeAllBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeAllBtnActionPerformed
-            DefaultListModel model = (DefaultListModel) dstList.getModel();
+            DefaultListModel<Button> model = (DefaultListModel<Button>) dstList.getModel();
             for (int i = 0; i < model.getSize(); ++i) {
                 Object o = model.get(i);
                 deleteButton((Button) o);
@@ -443,7 +442,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
     public void storeSettings() {
         Settings s = Settings.getUser();
 
-        DefaultListModel m = (DefaultListModel) dstList.getModel();
+        DefaultListModel<Button> m = (DefaultListModel<Button>) dstList.getModel();
         Button[] buttons = new Button[m.getSize()];
         for (int i = 0; i < buttons.length; ++i) {
             Object o = m.get(i);
@@ -513,7 +512,7 @@ public class CatContextBar extends javax.swing.JPanel implements PreferenceCateg
 
     private DefaultListCellRenderer barRenderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             setText("");
             setIcon(fixIcon(((IconProvider) value).getIcon()));
             setOpaque(true);

@@ -17,7 +17,6 @@ public class LanguageCodeDescriptor implements IconProvider {
     private boolean disabled;
     
     public LanguageCodeDescriptor(Locale locale) {
-        this.disabled = disabled;
         if (locale == null) {
             throw new NullPointerException("locale");
         }
