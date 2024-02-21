@@ -19,6 +19,7 @@ import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
 import ca.cgjennings.apps.arkham.project.MetadataSource;
 import ca.cgjennings.apps.arkham.project.Project;
 import ca.cgjennings.apps.util.InstanceController;
+import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.imageio.JPEG2000;
 import ca.cgjennings.io.FileChangeMonitor;
 import ca.cgjennings.layout.MarkupRenderer;
@@ -2581,6 +2582,10 @@ public final class StrangeEons {
     private void startBackgroundInit() {
         final Runnable backgroundInit = () -> {
             try {
+                // Ensure cloud fonts user has reserved are up to date;
+                // if at least one, this will also update the font metadata
+                CloudFonts.installReservedFamilies();
+
                 // Dicionary loading is expensive and I/O bound, so probably
                 // a good candidate to do in parallel.
                 initSpellingDictionaries();
