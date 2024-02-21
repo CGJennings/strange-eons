@@ -1,13 +1,14 @@
 package ca.cgjennings.graphics.cloudfonts;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
-import ca.cgjennings.ui.BlankIcon;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -65,6 +66,11 @@ final class GFFamily implements CloudFontFamily {
     private Axis[] axes;
 
     @Override
+    public CloudFontCollection getCollection() {
+        return coll;
+    }
+
+    @Override
     public String getName() {
         return name;
     }
@@ -77,6 +83,17 @@ final class GFFamily implements CloudFontFamily {
     @Override
     public String[] getSubsets() {
         return subsets.clone();
+    }
+
+    @Override
+    public boolean hasSubset(String subset) {
+        subset = Objects.requireNonNull(subset, "subset").trim().toLowerCase(Locale.ROOT);
+        for (int s=0; s<subsets.length; ++s) {
+            if (subsets[s].equals(subset)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -175,6 +192,9 @@ final class GFFamily implements CloudFontFamily {
             }
         }
         if (registered == cf.length) {
+            if (CloudFonts.isReservedFamily(this)) {
+                return ICON_RESERVED;
+            }
             return ICON_REGISTERED;
         } else if (downloaded == cf.length) {
             return ICON_DOWNLOADED;
@@ -183,10 +203,11 @@ final class GFFamily implements CloudFontFamily {
         }
         return ICON_NONE;
     }
+    private static Icon ICON_NONE = ResourceKit.getIcon("cloud-font-uncached");
     private static Icon ICON_PARTIAL = ResourceKit.getIcon("cloud-font-partial-download");
     private static Icon ICON_DOWNLOADED = ResourceKit.getIcon("cloud-font-download");
     private static Icon ICON_REGISTERED = ResourceKit.getIcon("cloud-font-registered");
-    private static Icon ICON_NONE = new ca.cgjennings.ui.BlankIcon(ICON_PARTIAL.getIconWidth(), ICON_PARTIAL.getIconHeight());
+    private static Icon ICON_RESERVED = ResourceKit.getIcon("cloud-font-reserved");
 
     @Override
     public String toString() {
