@@ -15,6 +15,12 @@ import resources.ResourceKit;
  */
 public interface CloudFontFamily extends IconProvider {
     /**
+     * Returns the collection to which this family belongs.
+     * @return the collection containing this family
+     */
+    public CloudFontCollection getCollection();
+
+    /**
      * Returns the family name. Note that this is based on the file
      * name, as the actual fonts might not be downloaded. Therefore
      * this name may not exactly match the family name in the actual
@@ -47,6 +53,15 @@ public interface CloudFontFamily extends IconProvider {
      * @return an array of subset names
      */
     String[] getSubsets();
+
+    /**
+     * Returns true if the font provides coverage for the specified
+     * subset.
+     * 
+     * @param subset the subset name
+     * @return true if the font provides coverage for the subset
+     */
+    boolean hasSubset(String subset);
 
     /**
      * Returns the variable axes associated with fonts in this family.
