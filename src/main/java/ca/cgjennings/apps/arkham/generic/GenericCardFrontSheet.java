@@ -34,9 +34,9 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         frontFace = (DefaultPortrait) card.getPortrait(1);
         portrait = (DefaultPortrait) card.getPortrait(0);
         initializeTemplate(
-            "generic-" + card.getId(),
+            "generic-" + card.getId() + "-front",
             card.getTemplateImage(),
-            "generic-front-expsym",
+            "generic-" + card.getId() + "-front-expsym",
             card.getTemplateResolution(),
             1d
         );
