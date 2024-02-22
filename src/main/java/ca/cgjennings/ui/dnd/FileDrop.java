@@ -108,7 +108,7 @@ public class FileDrop {
      * @param components the components that will accept files
      * @see #setListener
      */
-    public FileDrop(JComponent borderOwner, Component... components) {
+    public FileDrop(JComponent borderOwner, Component[] components) {
         Objects.requireNonNull(components, "component");
         if (components.length == 0) {
             throw new IllegalArgumentException("empty component list");
@@ -119,6 +119,27 @@ public class FileDrop {
         for( Component c : components) {
             makeDropTarget(c, false);
         }
+    }
+
+    /**
+     * Creates and returns a new {@code FileDrop} on the specified components.
+     * The returned {@code FileDrop} will have no listener attached, but is can
+     * be set using builder-style method chaining.
+     * 
+     * <p>
+     * The method was added to deal with two issues:
+     * First, when this form was provided as a constrctor, it broke scripts as
+     * the script engine could not distinguish which overload to choose.
+     * Second, it avoids some compiler warnings as a common patern is to create
+     * a {@code FileDrop} in a constructor without storing a reference to it.
+     * 
+     * @param borderOwner if non-{@code null}, a component whose border will
+     * change to indicate that files are being dragged over the component
+     * @param components the components that will accept files
+     * @see #setListener
+     */
+    public static FileDrop of(JComponent borderOwner, Component... components) {
+        return new FileDrop(borderOwner, components);
     }
 
     /**
