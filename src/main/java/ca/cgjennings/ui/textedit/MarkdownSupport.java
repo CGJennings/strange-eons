@@ -21,12 +21,14 @@ public class MarkdownSupport extends DefaultCodeSupport {
 
     @Override
     public void install(CodeEditorBase editor) {
+        super.install(editor);
         ac = new AutoCompletion(new WordCompletionProvider());
         ac.install(editor.getTextArea());
     }
 
     @Override
     public void uninstall(CodeEditorBase editor) {
+        super.uninstall(editor);
         ac.uninstall();
         ac = null;
     }
