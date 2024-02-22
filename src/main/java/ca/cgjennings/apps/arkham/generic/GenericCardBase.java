@@ -500,10 +500,11 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
 
         // the expansion symbol is placed along the bottom of the safe area
         final Region expansionSymbol = new Region(
-            safeRegion.x,
+            // center horizontally
+            width / 2 - textMargin / 2 + 1,
             fullTextRegion.y + fullTextRegion.height,
-            safeRegion.width,
-            textMargin
+            textMargin-2,
+            textMargin-2
         );
         s.setRegion(key("-front-expsym"), expansionSymbol);
     }
