@@ -95,7 +95,7 @@ final class QuickscriptDialog extends javax.swing.JDialog {
             editor.setInitialText(recoveredCode);
         }
         
-        new FileDrop(
+        FileDrop.of(
                 getRootPane(),
                 getRootPane().getContentPane(),
                 clearCheck,

@@ -156,7 +156,7 @@ public class CodeEditor extends AbstractSupportEditor implements NavigationHost 
         };
         new FileDrop(navPanel, null, true, dropListener);
         new FileDrop(findPanel, null, true, dropListener);
-        new FileDrop(null, sideBarSplitter).setListener(dropListener);
+        FileDrop.of(null, sideBarSplitter).setListener(dropListener);
 
         editor.putClientProperty(ContextBar.BAR_INSIDE_PROPERTY, true);
         editor.addCaretListener(new CaretListener() {
