@@ -366,6 +366,7 @@ edit-font-family = default
 edit-font-pointsize = 13
 edit-font-bold = no
 edit-font-italic = no
+edit-font-ligatures = yes
 
 # If yes, insert chars/font previewer shows entire Unicode range by default
 insert-chars-full-unicode = no
