@@ -25,6 +25,8 @@ import ca.cgjennings.apps.arkham.project.TaskGroup;
 import ca.cgjennings.graphics.FilteredMultiResolutionImage;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.graphics.MultiResolutionImageResource;
+import ca.cgjennings.graphics.cloudfonts.CloudFontFamily;
+import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.graphics.shapes.AbstractVectorImage;
 import ca.cgjennings.graphics.shapes.SVGVectorImage;
 import ca.cgjennings.graphics.shapes.VectorIcon;
@@ -2451,6 +2453,43 @@ public class ResourceKit {
             }
         }
         return defaultFamily;
+    }
+
+    /**
+     * Normalizes a font family name provided by a user. This removes any
+     * leading or trailing whitespace from the family name. If the family name
+     * starts with the prefix "cloud:", then the
+     * remainder of the name is treated as a cloud font family name. The requested
+     * cloud font family is downloaded and registered, if required, and its
+     * family name is returned without the prefix, ready to use as a
+     * text attribute value.
+     * 
+     * @param family the family name to normalize
+     * @return the normalized name; returns an empty string on failure or if
+     * null is passed as the family name
+     * @since 3.4
+     */
+    public static String normalizeFontFamilyName(String family) {
+        if (family == null) {
+            return "";
+        }
+        family = family.trim();
+        if (family.startsWith("cloud:")) {
+            family = family.substring(6);
+            try {
+                CloudFontFamily cff = CloudFonts.getDefaultCollection().getFamily(family);
+                if (cff == null) {
+                    StrangeEons.log.log(Level.WARNING, "requested cloud font not found: {0}", family);
+                    return "";
+                }
+                cff.register();
+                return cff.getFonts()[0].getFamily();
+            } catch (IOException ex) {
+                StrangeEons.log.log(Level.WARNING, "failed to download/register cloud font: " + family, ex);
+                return "";
+            }
+        }
+        return family;
     }
 
     /**
