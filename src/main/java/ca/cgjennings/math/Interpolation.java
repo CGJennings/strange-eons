@@ -303,11 +303,10 @@ public final class Interpolation {
         }
 
         private void findCoefficients(double[] x, double[] y) {
-            int i, n = x.length;
+            final int N = x.length;
+            double xi, yi, Sx = 0d, Sxy = 0d, Sy = 0d, Sxsq = 0d;
 
-            double xi, yi, Sx = 0d, Sxy = 0d, Sy = 0d, Sxsq = 0d, N = n;
-
-            for (i = 0; i < n; ++i) {
+            for (int i = 0; i < N; ++i) {
                 xi = x[i];
                 Sx += xi;
                 Sxsq += (xi * xi);
@@ -316,8 +315,8 @@ public final class Interpolation {
                 Sy += y[i];
             }
 
-            a = (n * Sxy - Sx * Sy) / (n * Sxsq - Sx * Sx);
-            b = Sy / n - a * Sx / n;
+            a = (N * Sxy - Sx * Sy) / (N * Sxsq - Sx * Sx);
+            b = Sy / N - a * Sx / N;
         }
 
         @Override

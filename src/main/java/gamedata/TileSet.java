@@ -1,6 +1,5 @@
 package gamedata;
 
-//import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.deck.DeckEditor;
 import ca.cgjennings.apps.arkham.deck.item.DashPattern;
@@ -51,9 +50,8 @@ public class TileSet {
         }
         Lock.test();
         if (sets.add(resource)) {
-            try {
+            try (Parser p = new Parser(resource, true)) {
                 StrangeEons.log.log(Level.INFO, "Parsing tile set {0}", resource);
-                Parser p = new Parser(resource, true);
                 Entry en = p.next();
                 while (en != null) {
                     entries.add(en);

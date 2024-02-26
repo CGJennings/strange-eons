@@ -1,8 +1,6 @@
 package ca.cgjennings.graphics.filters;
 
 import ca.cgjennings.algo.SplitJoin;
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.getARGBSynch;
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.setARGBSynch;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;

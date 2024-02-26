@@ -74,7 +74,7 @@ public final class SymbolVariantUtilities {
         int[] pixels = AbstractImageFilter.getARGB(source, null);
         boolean hasAlpha = false;
 
-        int min = 255, max = 0, sum = 0;
+        int min = 255, max = 0;
         for (int i = 0; i < pixels.length; ++i) {
             if ((pixels[i] >>> 24) != 0xff) {
                 hasAlpha = true;
@@ -82,7 +82,6 @@ public final class SymbolVariantUtilities {
             final int bri = pixels[i] & 0xff;
             min = Math.min(min, bri);
             max = Math.max(max, bri);
-            sum += bri;
         }
         if (hasAlpha) {
             if (!alreadyGrey) {

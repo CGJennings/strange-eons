@@ -424,7 +424,6 @@ public class PageShape {
                     shapeBounds.getWidth(), sliceSize
             );
 
-            double y1 = dy;
             for (int i = 0; i < numSlices; ++i) {
                 Area sect = new Area(sliceRect);
                 sect.intersect(shape);

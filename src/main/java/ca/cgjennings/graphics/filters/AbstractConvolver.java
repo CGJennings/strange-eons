@@ -1,11 +1,5 @@
 package ca.cgjennings.graphics.filters;
 
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.clampBoth;
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.premultiply;
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.unpremultiply;
-import static ca.cgjennings.graphics.filters.EdgeHandling.REPEAT;
-import static ca.cgjennings.graphics.filters.EdgeHandling.WRAP;
-import static ca.cgjennings.graphics.filters.EdgeHandling.ZERO;
 import java.awt.image.Kernel;
 
 /**
@@ -153,13 +147,6 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
         final int rows = this.rows;
         final int cols = this.cols;
 
-//		if( rows == 1 ) {
-//			filterColumn( srcPixels, dstPixels, width, height, y0, rowsToFilter );
-//			return;
-//		} else if( cols == 1 ) {
-//			filterRow( srcPixels, dstPixels, width, height, y0, rowsToFilter );
-//			return;
-//		}
         final float[] matrix = this.matrix;
         final int rows2 = rows / 2;
         final int cols2 = cols / 2;
@@ -262,25 +249,4 @@ public abstract class AbstractConvolver extends AbstractImagewiseFilter {
         }
         return rows * cols;
     }
-
-//	public static void main(String[] args) {
-//		try {
-//			BufferedImage bi = ImageIO.read( new File("d:\\in.png") );
-//			bi = ImageUtilities.ensureIntRGBFormat( bi );
-//			
-//			Kernel k = new Kernel( 3, 3, new float[] {
-//				0f,    -1f,  0f,
-//				0f,    3f,  0f,
-//				0f,    -1f,  0f
-//			});
-//
-////			bi = new GaussianBlurFilter(1).filter( bi, null );
-//			bi = new ConvolveFilter(k).filter( bi, null );
-////			bi = new ConvolveOp(k).filter( bi, null );
-//
-//			ImageIO.write( bi, "png", new File("d:\\out.png") );
-//		} catch( Throwable t ) {
-//			t.printStackTrace();
-//		}
-//	}
 }

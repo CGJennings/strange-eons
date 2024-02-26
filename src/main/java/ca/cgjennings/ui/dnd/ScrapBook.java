@@ -199,7 +199,7 @@ public class ScrapBook {
     public static File[] getFiles() {
         Object listObj = get(DataFlavor.javaFileListFlavor);
         if (listObj != null) {
-            List fileList = (List) listObj;
+            List<?> fileList = (List<?>) listObj;
             File[] files = new File[fileList.size()];
             int i = 0;
             for (Object o : fileList) {
@@ -207,30 +207,6 @@ public class ScrapBook {
             }
             return files;
         }
-        // OPTION: try to parse text as list of files
-//		else {
-//			for( DataFlavor f : getClipboard().getAvailableDataFlavors() ) {
-//				if( f.isRepresentationClassReader() ) {
-//					Reader r = null;
-//					try {
-//						r = f.getReaderForText( getClipboard().getContents( null ) );
-//						List<File> files = new LinkedList<File>();
-//						BufferedReader lineReader = new BufferedReader( r );
-//						String line;
-//						while( (line = lineReader.readLine()) != null ) {
-//							// KDE may add this to end of list
-//							if( line.equals( "\0" ) ) continue;
-//							files.add( new File( line ) );
-//						}
-//						return files.toArray( new File[ files.size() ] );
-//					} catch( IOException e ) {
-//					} catch( UnsupportedFlavorException e ) {
-//					} finally {
-//						if( r != null ) try { r.close(); } catch( IOException e ) {}
-//					}
-//				}
-//			}
-//		}
         return new File[0];
     }
 
