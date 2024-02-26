@@ -212,7 +212,8 @@ public class ResourceKit {
      * installed plug-in bundles, in the order of installation.
      * <li>The {@code resources} folder (if any) of all task folders in the open
      * project. Note that this URL is typically only valid while the project is
-     * open.
+     * open. This is used when testing plug-in code in a project; resource paths
+     * in the code will locate the plug-in's resources as if it were installed.
      * </ol>
      *
      * <p>
@@ -283,7 +284,36 @@ public class ResourceKit {
 
         // 4. If there is an open project, search it for task folders that
         //    contain a "resources" folder and try to locate the resource
-        //    relative to those folders.
+        //    relative to those folders. Otherwise return null.
+        return findResourceInProject(resource);
+    }
+
+    private static final File userResourceFolder;
+
+    static {
+        // app is null when loading ResKit from, e.g., a GUI builder
+        StrangeEons app = StrangeEons.getApplication();
+        userResourceFolder = app == null ? null : app.getCommandLineArguments().resfolder;
+    }
+
+    /**
+     * Searches for a resource in the open project. This method can locate a
+     * resource within a project plug-in task folder by the same resource
+     * path that would be used to locate the resource if the plug-in
+     * were actually installed. This is essentially the final step
+     * in the algorithm used by {@link #composeResourceURL} before it gives up
+     * and returns null.
+     * 
+     * <p>
+     * The process of finding a resource in a project consists of checking
+     * each plug-in task folder in turn, looking for a {@code resources} folder
+     * and then locating the resource relative to the folder.
+     * 
+     * @param resource the resource path to search for
+     * @returna a URL for the resource, or {@code null} if the resource could
+     * not be found as a resource in a plug-in task of an open project
+     */
+    public static URL findResourceInProject(String resource) {
         StrangeEonsAppWindow af = StrangeEons.getWindow();
         if (af == null || af.getOpenProject() == null) {
             return null;
@@ -292,7 +322,8 @@ public class ResourceKit {
         if (proj == null) {
             return null;
         }
-
+        
+        resource = normalizeResourceIdentifier(resource);
         List<TaskGroup> stack = new LinkedList<>();
         stack.add(proj);
         while (!stack.isEmpty()) {
@@ -321,16 +352,8 @@ public class ResourceKit {
             }
         }
 
-        // 5. Resource not found
+        // no match found
         return null;
-    }
-
-    private static final File userResourceFolder;
-
-    static {
-        // app is null when loading ResKit from, e.g., a GUI builder
-        StrangeEons app = StrangeEons.getApplication();
-        userResourceFolder = app == null ? null : app.getCommandLineArguments().resfolder;
     }
     
     /**
