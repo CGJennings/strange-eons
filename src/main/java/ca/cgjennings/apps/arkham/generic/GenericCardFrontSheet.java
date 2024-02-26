@@ -6,14 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.font.TextAttribute;
 import java.awt.geom.RoundRectangle2D;
-import java.io.IOException;
-import java.util.logging.Level;
 
-import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.component.DefaultPortrait;
 import ca.cgjennings.apps.arkham.sheet.RenderTarget;
 import ca.cgjennings.apps.arkham.sheet.Sheet;
-import ca.cgjennings.graphics.cloudfonts.CloudFonts;
 import ca.cgjennings.graphics.shapes.ShapeUtilities;
 import ca.cgjennings.layout.MarkupRenderer;
 import ca.cgjennings.layout.TextStyle;
