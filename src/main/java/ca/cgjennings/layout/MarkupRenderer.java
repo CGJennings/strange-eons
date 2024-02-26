@@ -1493,9 +1493,6 @@ public class MarkupRenderer {
 
     @SuppressWarnings("fallthrough")
     protected StyledParagraph createStyledParagraph(String source) {
-        boolean quote = false;
-        boolean backslash = false;
-
         currentTagStartingIndex = 0;
         currentTightness = 0;
         currentHeadlineStatus = false;
@@ -1593,10 +1590,6 @@ public class MarkupRenderer {
                     break;
                 case TAGQBS:
                     // keep \ at this stage; getTagParameters will remove it
-
-//					if (c != '"' && c != '\\' ) {
-//						tag.append('\\');
-//					}
                     tag.append('\\');
                     tag.append(c);
                     state = TAGQ;
@@ -1621,9 +1614,6 @@ public class MarkupRenderer {
         }
         finishedStyles.clear();
 
-//		if( (currentJustification & LAYOUT_JUSTIFY) != 0 ) {
-//			TextStyle.JUSTIFY.applyStyle( line );
-//		}
         line.setAlignment(currentJustification);
         line.setLineTightness(currentTightness);
         line.setTitleLine(currentHeadlineStatus);
@@ -1891,17 +1881,7 @@ public class MarkupRenderer {
     }
 
     protected TextStyle adjustStyleForContext(TextStyle style) {
-        /*
-		// TODO: convert nested <i> to plain
-
-		// special handling for some built-in styles
-		if( style == TextStyle.ITALIC_STYLE ) {
-//			System.err.println( getStyleInCurrentContext( TextAttribute.POSTURE ) );
-			if( getStyleInCurrentContext( TextAttribute.POSTURE ) == TextAttribute.POSTURE_OBLIQUE ) {
-				style = TextStyle.UPRIGHT_STYLE;
-			}
-		}
-         */
+        // Possible future use to, e.g., convert nested <i> to plain
         return style;
     }
 

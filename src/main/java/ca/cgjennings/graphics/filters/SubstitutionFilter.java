@@ -1,6 +1,5 @@
 package ca.cgjennings.graphics.filters;
 
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.clampBoth;
 import static ca.cgjennings.math.Interpolation.lerp;
 
 /**

@@ -68,7 +68,7 @@ public class GameComponentPreviewer extends ImagePreviewer {
                 if (Thread.currentThread().isInterrupted()) {
                     return null;
                 }
-                Sheet[] sheets = null;
+                Sheet<?>[] sheets = null;
                 if ((gc == null) || (sheets = gc.createDefaultSheets()) == null || sheets.length == 0) {
                     return null;
                 }

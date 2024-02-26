@@ -23,7 +23,7 @@ import org.fife.ui.rsyntaxtextarea.*;
  * See {@code build-tools/README.md} for details.
  * </strong>
  */
-
+@SuppressWarnings("all")
 public class ResourceFileTokenMaker extends AbstractJFlexTokenMaker {
 
   /** This character denotes the end of file */

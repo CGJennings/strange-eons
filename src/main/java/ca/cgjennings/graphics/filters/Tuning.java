@@ -1,6 +1,5 @@
 package ca.cgjennings.graphics.filters;
 
-import ca.cgjennings.graphics.ImageUtilities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -90,15 +89,6 @@ public final class Tuning {
                 }
             }
         }
-    }
-
-    /**
-     * Updates the tuning parameters with platform-specific data by running a
-     * sequence of test operations. This is a cover for
-     * {@code update( 5, false )}.
-     */
-    private static void update() {
-        update(5, false);
     }
 
     /**
@@ -199,10 +189,7 @@ public final class Tuning {
 
     private static abstract class Test {
 
-        protected Object initObject;
-
         public long test(int reps, BufferedImage bi, boolean serial) {
-            initObject = bi;
             init(bi, serial);
 
             long min = Long.MAX_VALUE;
@@ -249,61 +236,7 @@ public final class Tuning {
         }
     }
 
-    private static class GetIntTest extends Test {
 
-        private final int t;
-
-        public GetIntTest(int type) {
-            t = type;
-        }
-
-        @Override
-        public void init(BufferedImage bi, boolean serial) {
-            initObject = ImageUtilities.ensureImageHasType(bi, t);
-        }
-
-        @Override
-        public void run() {
-            BufferedImage bi = (BufferedImage) initObject;
-            AbstractImageFilter.getARGB((BufferedImage) initObject, null);
-        }
-    }
-
-    private static class SetIntTest extends Test {
-
-        private final int t;
-        private int[] data;
-
-        public SetIntTest(int type) {
-            t = type;
-        }
-
-        @Override
-        public void init(BufferedImage bi, boolean serial) {
-            initObject = ImageUtilities.ensureImageHasType(bi, t);
-            data = AbstractImageFilter.getARGB((BufferedImage) initObject, null);
-        }
-
-        @Override
-        public void run() {
-            BufferedImage bi = (BufferedImage) initObject;
-            AbstractImageFilter.getARGB((BufferedImage) initObject, null);
-        }
-
-        @Override
-        public void dispose() {
-            data = null;
-        }
-
-    }
-
-    private static final Test _GET_INT_ARGB = new GetIntTest(BufferedImage.TYPE_INT_ARGB);
-    private static final Test _GET_INT_RGB = new GetIntTest(BufferedImage.TYPE_INT_RGB);
-    private static final Test _GET_INT_OTHER = new GetIntTest(BufferedImage.TYPE_INT_ARGB_PRE);
-
-    private static final Test _SET_INT_ARGB = new GetIntTest(BufferedImage.TYPE_INT_ARGB);
-    private static final Test _SET_INT_RGB = new GetIntTest(BufferedImage.TYPE_INT_RGB);
-    private static final Test _SET_INT_OTHER = new GetIntTest(BufferedImage.TYPE_INT_ARGB_PRE);
 
     public static void main(String[] args) {
         update(4, true);

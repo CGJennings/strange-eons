@@ -1,7 +1,6 @@
 package ca.cgjennings.graphics.filters;
 
 import ca.cgjennings.algo.SplitJoin;
-import static ca.cgjennings.graphics.filters.AbstractImageFilter.setARGB;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;

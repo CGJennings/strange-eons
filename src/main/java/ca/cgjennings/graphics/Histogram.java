@@ -226,9 +226,7 @@ public class Histogram {
         Graphics2D g = hImage.createGraphics();
         try {
             g.scale(GRAPH_SCALE, GRAPH_SCALE);
-//			if( GRAPH_SCALE > 1 ) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//			}
             g.setComposite(AlphaComposite.SrcOver.derive(0.8f));
             g.setColor(Color.BLACK);
             double max = hist.getMaximumCount();
@@ -264,11 +262,9 @@ public class Histogram {
 
         int[] pixels = AbstractImageFilter.getARGB(src, null);
         double max = 0d;
-        int mask = 0xff;
         for (int h = 0; h < 3; ++h) {
             hist[h].setChannelMask(0xff << (h * 8));
             hist[h].measure(pixels);
-            mask <<= 8;
             max = Math.max(max, hist[h].getMaximumCount());
         }
 
@@ -276,9 +272,7 @@ public class Histogram {
         try {
             g.scale(GRAPH_SCALE, GRAPH_SCALE);
             g.setComposite(AlphaComposite.SrcOver.derive(0.8f));
-//			if( GRAPH_SCALE > 1 ) {
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//			}
             g.setColor(new Color(0x77));
             Path2D path = new Path2D.Double();
             for (int h = 0; h < 3; ++h) {
@@ -305,27 +299,4 @@ public class Histogram {
         }
         return hImage;
     }
-
-//	private static void drawGrid( Graphics2D g ) {
-//		g.setColor( Color.GRAY );
-//		g.drawLine( 0,   0, 255,   0 );
-//		g.drawLine( 0, 100, 255, 100 );
-//		Stroke s = g.getStroke();
-//		g.setStroke( new BasicStroke( 1f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[] {4, 4}, 0f ) );
-//		g.drawLine( 0,  50, 255,  50 );
-////		g.drawLine( 0,  25, 255,  25 );
-////		g.drawLine( 0,  75, 255,  75 );
-//		g.setStroke( s );
-//	}
-//	public static void main( String[] args ) {
-//		try {
-//			BufferedImage t = ImageIO.read( new File("d:\\splash.png") );
-//			BufferedImage h = createHistogramImage( t );
-//			ImageIO.write( h, "png", new File("d:\\test-out.png") );
-//			h = createRGBHistogramImage( t );
-//			ImageIO.write( h, "png", new File("d:\\test-out2.png") );
-//		} catch( Exception e ) {
-//			e.printStackTrace();
-//		}
-//	}
 }

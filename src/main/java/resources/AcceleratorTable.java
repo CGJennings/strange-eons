@@ -285,23 +285,13 @@ public final class AcceleratorTable {
                     if (userFile.getParentFile().exists()) {
                         userFile.getParentFile().mkdirs();
                     }
-                    OutputStream out = null;
-                    try {
-                        out = new FileOutputStream(userFile);
+                    try (OutputStream out = new FileOutputStream(userFile)) {
                         EscapedLineWriter w = new EscapedLineWriter(out);
                         for (Entry<String, KeyStroke> entry : user.entrySet()) {
                             w.writeProperty(entry.getKey(), stringFromAccelerator(entry.getValue()));
                         }
                     } catch (IOException e) {
                         StrangeEons.log.log(Level.WARNING, null, e);
-                    } finally {
-                        if (out != null) {
-                            try {
-                                out.close();
-                            } catch (IOException ie) {
-                                StrangeEons.log.log(Level.WARNING, null, ie);
-                            }
-                        }
                     }
                 }
 

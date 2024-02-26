@@ -49,8 +49,8 @@ public class GenderAwareMarkupRenderer extends MarkupRenderer {
     /**
      * Set the segment of gender tags to be used. A gender tag may have any
      * number of segments/separated/by/slashes. This index indicates which
-     * segment to use. A common mapping is 0 = male, 1 = female, and 2 (if
-     * applicable) is neuter ("it").
+     * segment to use. A common mapping is 0 = male, 1 = female,
+     * 2 = plural ("they"), and 3 = neuter ("it").
      */
     public void setGender(int segmentToUse) {
         if (gender != segmentToUse) {
@@ -94,7 +94,6 @@ public class GenderAwareMarkupRenderer extends MarkupRenderer {
 
         int segment = gender;
 
-        boolean capitalize = false;
         int segmentStart = 0;
         int segmentEnd = i;
 

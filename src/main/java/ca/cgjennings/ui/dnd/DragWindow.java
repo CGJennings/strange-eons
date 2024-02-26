@@ -32,7 +32,7 @@ final class DragWindow extends JWindow {
                 : source.getGraphicsConfiguration();
     }
 
-    public DragWindow(JComponent source, DragToken token) {
+    public DragWindow(JComponent source, DragToken<?> token) {
         super(gc(source));
         BufferedImage bi = token.getImage();
         if (bi.getTransparency() != Transparency.OPAQUE && gc(source).isTranslucencyCapable()) {
@@ -79,30 +79,7 @@ final class DragWindow extends JWindow {
         return droppable;
     }
 
-//	public void setImage( BufferedImage bi ) {
-//		if( bi == null ) throw new NullPointerException("bi");
-//		BufferedImage oldImage = (BufferedImage) ((ImageIcon) label.getIcon()).getImage();
-//		if( oldImage != bi ) {
-//			label.setIcon( new ImageIcon( bi ) );
-//			setLocation( (oldImage.getWidth() - bi.getWidth())/2, (oldImage.getHeight() - bi.getHeight())/2 );
-//			pack();
-//		}		
-//	}
     public void updateLocation(Point cursorLocation) {
         setLocation(cursorLocation.x + xOff, cursorLocation.y + yOff);
     }
-
-//	public static void main(String[] args) throws Throwable {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//				BufferedImage bi = ImageIO.read( new File("d:/plugin.png") );
-//				DragWindow w = new DragWindow( null, bi );
-//				w.setLocation(600,600);
-//				w.setVisible(true);
-//				} catch( Throwable t ) {}
-//			}
-//		});
-//	}
 }

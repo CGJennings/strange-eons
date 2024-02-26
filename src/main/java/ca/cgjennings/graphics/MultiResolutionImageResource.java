@@ -38,11 +38,11 @@ public class MultiResolutionImageResource extends AbstractMultiResolutionImage {
 
     // labels for the scale variant indices to make the source code clearer:
     private static final int X1 = 0;
-    private static final int X1_25 = 1;
-    private static final int X1_5 = 2;
-    private static final int X1_75 = 3;
+    // private static final int X1_25 = 1;
+    // private static final int X1_5 = 2;
+    // private static final int X1_75 = 3;
     private static final int X2 = 4;
-    private static final int X2_25 = 5;
+    // private static final int X2_25 = 5;
     private static final int X2_5 = 6;
     private static final int X3 = 7;
     private static final int X3_5 = 8;

@@ -1,6 +1,5 @@
 package ca.cgjennings.layout;
 
-import ca.cgjennings.layout.MarkupRenderer.StyledParagraph;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.font.TextAttribute;
@@ -26,21 +25,43 @@ import resources.StrangeImage;
 public class MarkupToHTMLConverter extends MarkupRenderer {
 
     /**
-     *
+     * Creates a new converter with default settings.
      */
     public MarkupToHTMLConverter() {
         setHeadlineAlignment(LAYOUT_LEFT);
     }
     private static final int SWITCH_TO_UNICODE_ESCAPES_ABOVE = 127;
 
+    /**
+     * Converts the given markup to HTML. 
+     * 
+     * @param markup the markup to convert
+     * @return the HTML equivalent of the markup
+     */
     public String markupToHTML(String markup) {
         return markupToHTML(markup, null);
     }
 
+    /**
+     * Converts the given markup to HTML, using the given title for the HTML.
+     * 
+     * @param markup the markup to convert
+     * @param title the title to use in the HTML
+     * @return the HTML equivalent of the markup
+     */
     public String markupToHTML(String markup, String title) {
         return markupToHTML(markup, title, null);
     }
 
+    /**
+     * Converts the given markup to HTML, using the given title and style for the
+     * HTML.
+     * 
+     * @param markup the markup to convert
+     * @param title the title to use in the HTML
+     * @param style the CSS styles to include in the HTML
+     * @return the HTML equivalent of the markup
+     */
     public String markupToHTML(String markup, String title, String style) {
         setMarkupText(markup);
         createStyledText();

@@ -470,7 +470,6 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
             final int y0 = this.y0;
             final int y1 = this.y1;
             final BufferedImage src = source;
-            final int[] dst = dest;
             final int w = src.getWidth();
             final int[] pixelRow = new int[w];
             final int type = src.getType();
@@ -606,8 +605,6 @@ public abstract class AbstractImageFilter implements BufferedImageOp {
         public void run() {
             final int y0 = this.y0;
             final int y1 = this.y1;
-            final BufferedImage src = source;
-            final BufferedImage dst = dest;
             final int w = source.getWidth();
             final int[] pixelRow = new int[w];
             final int type = source.getType();
