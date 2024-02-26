@@ -33,6 +33,8 @@ public final class GenericCardEditor extends AbstractGameComponentEditor<Generic
      */
     public GenericCardEditor(GenericCardBase gc) {
         initComponents();
+        titleFamily.putClientProperty(ContextBar.BAR_DISABLE_PROPERTY, Boolean.TRUE);
+        bodyFamily.putClientProperty(ContextBar.BAR_DISABLE_PROPERTY, Boolean.TRUE);
         localizeForPlatform();
         if (gc == null) {
             gc = new GenericTarotSizeCard();
