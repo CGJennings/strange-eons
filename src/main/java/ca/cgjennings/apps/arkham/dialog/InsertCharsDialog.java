@@ -20,7 +20,6 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.Locale;
 import javax.swing.BorderFactory;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;

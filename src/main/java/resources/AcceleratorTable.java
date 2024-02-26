@@ -118,7 +118,7 @@ public final class AcceleratorTable {
     }
 
     private void addAcceleratorsImpl(InputStream in, boolean isUserSource) throws IOException {
-        try {
+        try (in) {
             EscapedLineReader r = new EscapedLineReader(in);
             String[] tokens;
             while ((tokens = r.readProperty()) != null) {
@@ -129,8 +129,6 @@ public final class AcceleratorTable {
                     loaded.put(tokens[0], v);
                 }
             }
-        } finally {
-            in.close();
         }
     }
 

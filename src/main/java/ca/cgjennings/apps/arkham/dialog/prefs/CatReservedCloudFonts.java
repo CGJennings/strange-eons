@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.JPanel;
-import javax.swing.event.ListSelectionEvent;
 
 import ca.cgjennings.graphics.cloudfonts.CloudFontFamily;
 import ca.cgjennings.graphics.cloudfonts.CloudFonts;

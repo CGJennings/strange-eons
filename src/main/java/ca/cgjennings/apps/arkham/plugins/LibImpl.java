@@ -107,8 +107,7 @@ public final class LibImpl {
         less the exceptions that would have been caused by our conversions.
          */
         StringBuilder b = new StringBuilder(format.length() + 16);
-        Formatter fmt = new Formatter(b, loc);
-        try {
+        try (Formatter fmt = new Formatter(b, loc)) {
             Matcher m = formatSpecPattern.matcher(format);
             // For args with no $ or <
             int independentIndex = 0;
@@ -221,8 +220,6 @@ public final class LibImpl {
             if (lastMatchEndedAt < format.length()) {
                 fmt.format(format.substring(lastMatchEndedAt, format.length()));
             }
-        } finally {
-            fmt.close();
         }
 
         return b.toString();
