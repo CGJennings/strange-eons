@@ -169,10 +169,10 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
         baseSizeCache = baseSize;
 
         TextStyle ts = markupRenderer.getDefaultStyle();
-        ts.add(TextAttribute.FAMILY, loadCloudFont(textFamily));
+        ts.add(TextAttribute.FAMILY, selectFontFamily(textFamily));
         ts.add(TextAttribute.SIZE, baseSize);
 
-        String loadedTitleFamily = loadCloudFont(titleFamily);
+        String loadedTitleFamily = selectFontFamily(titleFamily);
         ts = markupRenderer.getStyleForTag("h1");
         ts.add(TextAttribute.FAMILY, loadedTitleFamily);
         ts.add(TextAttribute.SIZE, baseSize * 1.44f);
@@ -196,16 +196,9 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     private Color interiorFillColor = new Color(0xaaffffff, true);
     private Color outlineColor = Color.WHITE;
 
-    private static String loadCloudFont(String family) {
-        family = family.trim();
-        if (family.startsWith("cloud:")) {
-            family = family.substring(6);
-            try {
-                CloudFonts.getDefaultCollection().getFamily(family).register();
-            } catch (IOException ex) {
-                StrangeEons.log.log(Level.WARNING, "failed to load cloud font: " + family, ex);
-            }
-        } else if (family.isEmpty()) {
+    private static String selectFontFamily(String family) {
+        family = ResourceKit.normalizeFontFamilyName(family);
+        if (family.isEmpty()) {
             family = ResourceKit.getBodyFamily();
         }
         return family;
