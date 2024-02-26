@@ -1079,14 +1079,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
         // find paragraph element for pos
         StyledDocument document = console.getStyledDocument();
         Element para = document.getParagraphElement(pos);
-
         ConsoleErrorLocation line = parseStackElementLine(document, para);
-//		if( line == null ) {
-//			int end = para.getEndOffset();
-//			if( end < document.getLength() ) {
-//				line = parseStackElementLine( document, document.getParagraphElement( end + 1 ) );
-//			}
-//		}
         return line;
     }
 

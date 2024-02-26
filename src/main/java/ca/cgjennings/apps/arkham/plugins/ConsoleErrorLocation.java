@@ -263,9 +263,20 @@ public final class ConsoleErrorLocation {
         if (id.equals("Quickscript")) {
             return findQuickscript();
         }
+
+        // true project file
         if (id.startsWith("project:")) {
             return findProjectFile(id.substring("project:".length()));
         }
+
+        // resource that is also found in the open project;
+        // prefer to open it as a project file as it will be editable
+        URL url = ResourceKit.findResourceInProject(id);
+        if (url != null) {
+            String projectPath = url.toExternalForm();
+            return findProjectFile(projectPath.substring("project:".length()));
+        }
+
         return findResourceScript(id);
     }
 
