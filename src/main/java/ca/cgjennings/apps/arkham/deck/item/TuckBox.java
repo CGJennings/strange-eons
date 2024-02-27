@@ -304,16 +304,25 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
     }
 
     private static BoxSizer[] sizers = new BoxSizer[]{
-        // small cards
-        new SimpleDepthwiseSizer(string("style-cb-box-0"), 41d, 63d, 5d, 12d / 30d, 15),
-        // large cards
-        new SimpleDepthwiseSizer(string("style-cb-box-1"), 56d, 87d, 5d, 12d / 30d, 15),
-        // mini eur
-        new SimpleDepthwiseSizer(string("style-cb-box-4"), 44d, 68d, 5d, 12d / 30d, 15),
-        // std eur
-        new SimpleDepthwiseSizer(string("style-cb-box-5"), 59, 92d, 5d, 12d / 30d, 15),
-        // std card game
-        new SimpleDepthwiseSizer(string("style-cb-box-6"), 63.5, 88d, 5d, 12d / 30d, 15),
+        // cards matching the generic card sizes
+        new SimpleDepthwiseSizer(string("gencard-sh-am"), 55.88d, 87.122d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-am-mini"), 40.894d, 62.992d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-bridge"), 57.15d, 88.9d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-business"), 50.8d, 88.9d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-crafting"), 67.564d, 119.38d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-domino"), 44.45d, 88.9d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-eu-mini"), 43.942d, 67.056d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-jumbo"), 88.9d, 139.7d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-micro"), 31.75d, 44.45d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-mini"), 44.45d, 63.5d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-poker"), 62.992d, 87.884d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-skat"), 58.928d, 90.932d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-sq200"), 50.8d, 50.8d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-sq250"), 63.5d, 63.5d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-sq275"), 69.85d, 69.85d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-tarot"), 69.85d, 120.65d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-trading"), 63.5d, 88.9d, 5d, 12d / 30d, 15),
+        new SimpleDepthwiseSizer(string("gencard-sh-trump"), 62.23d, 100.33d, 5d, 12d / 30d, 15),        
         // small tokens
         new SimpleHeightwiseSizer(string("style-cb-box-3"), 43d, 43d, 5d, 48d / 25d, 48),};
 
