@@ -31,7 +31,7 @@ public class AutocompletionDocument implements NestingDocument {
 
     private Document document;
     // the combo box to autocomplete
-    private JComboBox comboBox;
+    private JComboBox<?> comboBox;
     // the editor text component
     private JTextComponent editor;
     // whether autocompletion is currently enabled
@@ -52,7 +52,7 @@ public class AutocompletionDocument implements NestingDocument {
      * @throws IllegalArgumentException is the combo box's editor is not a
      * {@code JTextComponent}
      */
-    public AutocompletionDocument(JComboBox comboBox) {
+    public AutocompletionDocument(JComboBox<?> comboBox) {
         Component editorComponent = comboBox.getEditor().getEditorComponent();
         if (!(editorComponent instanceof JTextComponent)) {
             throw new IllegalArgumentException("The combo box's editor must be a subclass of JTextComponent");
@@ -91,7 +91,7 @@ public class AutocompletionDocument implements NestingDocument {
      *
      * @return the autocompleted combo box
      */
-    public JComboBox getComboBox() {
+    public JComboBox<?> getComboBox() {
         return comboBox;
     }
 
@@ -105,7 +105,7 @@ public class AutocompletionDocument implements NestingDocument {
      * otherwise {@code null} if it failed because the {@code JComboBox} is not
      * using a {@code JTextComponent}
      */
-    public static AutocompletionDocument install(JComboBox comboBox) {
+    public static AutocompletionDocument install(JComboBox<?> comboBox) {
         boolean wasEditable = comboBox.isEditable();
         if (!wasEditable) {
             comboBox.setEditable(true);
@@ -135,7 +135,7 @@ public class AutocompletionDocument implements NestingDocument {
      * otherwise {@code null} if it failed because the {@code JComboBox} is not
      * using a {@code JTextComponent}
      */
-    public static AutocompletionDocument install(JComboBox comboBox, boolean casesensitive) {
+    public static AutocompletionDocument install(JComboBox<?> comboBox, boolean casesensitive) {
         AutocompletionDocument document = install(comboBox);
         document.setCaseSensitive(casesensitive);
         return document;
@@ -200,7 +200,7 @@ public class AutocompletionDocument implements NestingDocument {
     private boolean isInserting = false;
 
     private Object findMatchingPrefix(String pattern) {
-        ComboBoxModel model = comboBox.getModel();
+        ComboBoxModel<?> model = comboBox.getModel();
         if (collator != null) {
             return findMatchingPrefixBinary(model, pattern);
         } else {
@@ -208,7 +208,7 @@ public class AutocompletionDocument implements NestingDocument {
         }
     }
 
-    private Object findMatchingPrefixLinear(ComboBoxModel model, String pattern) {
+    private Object findMatchingPrefixLinear(ComboBoxModel<?> model, String pattern) {
         String bestMatch = null;
         int shortest = Integer.MAX_VALUE;
         for (int i = 0, n = model.getSize(); i < n; ++i) {
@@ -255,11 +255,7 @@ public class AutocompletionDocument implements NestingDocument {
         this.collator = collator;
     }
 
-    private Object findMatchingPrefixBinary(ComboBoxModel model, String pattern) {
-        Object selectedItem = model.getSelectedItem();
-//	if( selectedItem != null && matches( pattern, selectedItem.toString() ) ) {
-//	    return selectedItem;
-//	}
+    private Object findMatchingPrefixBinary(ComboBoxModel<?> model, String pattern) {
         int lower = -1;
         int upper = model.getSize();
         int match;
@@ -361,33 +357,6 @@ public class AutocompletionDocument implements NestingDocument {
         document.render(r);
     }
 
-//	private static void createAndShowGUI() {
-//		// the combo box (add/modify items if you like to)
-//		final JComboBox comboBox = new JComboBox( new Object[] { "Ester", "Jordi", "Jordina", "Jordinalia", "Jorge", "Sergi", "Sergio" } );
-//		AutocompletionDocument doc = install( comboBox );
-////	doc.setCollator( Collator.getInstance() );
-//
-//		// create and show a window containing the combo box
-//		final JFrame frame = new JFrame();
-//		frame.setLayout( new java.awt.FlowLayout() );
-//		frame.setDefaultCloseOperation( 3 );
-//		frame.getContentPane().add( comboBox );
-//		frame.getContentPane().add( new JButton( "Do Nothing" ) );
-//		frame.pack();
-//		frame.setLocationByPlatform( true );
-//		frame.setVisible( true );
-//	}
-//
-//	public static void main(String[] args) {
-//
-//		javax.swing.SwingUtilities.invokeLater( new Runnable() {
-//
-//			public void run() {
-//				createAndShowGUI();
-//			}
-//		} );
-//
-//	}
     public boolean getAutocompletion() {
         return autocompletion;
     }

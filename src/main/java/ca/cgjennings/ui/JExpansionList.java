@@ -85,7 +85,7 @@ public class JExpansionList extends JIconList<Expansion> {
 
     public void setSelectedExpansionCodes(String[] selection) {
         clearSelection();
-        DefaultListModel m = (DefaultListModel) getModel();
+        DefaultListModel<Expansion> m = (DefaultListModel<Expansion>) getModel();
         for (String s : selection) {
             for (int i = 0; i < m.getSize(); ++i) {
                 Expansion e = (Expansion) m.get(i);
@@ -98,7 +98,7 @@ public class JExpansionList extends JIconList<Expansion> {
 
     public void setSelectedExpansions(Expansion[] selection) {
         clearSelection();
-        DefaultListModel m = (DefaultListModel) getModel();
+        DefaultListModel<Expansion> m = (DefaultListModel<Expansion>) getModel();
         for (Expansion s : selection) {
             for (int i = 0; i < m.getSize(); ++i) {
                 Expansion e = (Expansion) m.get(i);
