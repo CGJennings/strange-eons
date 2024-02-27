@@ -186,7 +186,7 @@ final class GFCloudFontCollection implements CloudFontCollection {
         final File metadataFile = new File(cacheRoot, METADATA);
         final WeakIntern intern = new WeakIntern();
         java.util.LinkedList<ca.cgjennings.graphics.cloudfonts.GFFamily> familyList = new LinkedList<GFFamily>();
-        try (EscapedLineReader props = new EscapedLineReader(metadataFile)) {
+        try (EscapedLineReader props = new EscapedLineReader(metadataFile, "UTF-8")) {
             String[] prop;
             String name = null, designer = null, path = null, fileList = null, catList = null,
                     axesList = null, subsetList = null, versionHash = null;
