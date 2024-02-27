@@ -2222,6 +2222,7 @@ public final class StrangeEons {
      * {@link #initCheckSystemConfig()} so that it can display a localized
      * dialog box.
      */
+    @SuppressWarnings("all") // comparison of possibly equal versions
     private void initCheckJREVersion(boolean fatalIfNotSupported) {
         int[] ver = getJavaVersion();
         final boolean isSupportedVersion = (ver[0] >= JAVA_VERSION_MIN) && (ver[0] <= JAVA_VERSION_MAX);

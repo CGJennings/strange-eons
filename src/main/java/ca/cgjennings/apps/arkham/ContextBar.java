@@ -964,14 +964,10 @@ public final class ContextBar {
 
         @Override
         protected void fireActionPerformed(ActionEvent event) {
-            // this sends a fake mouse exit event to clear the highlight;
-            // if a dialog opens then the tool bar never gets a mouse exited event
-//			rolloverListener.mouseExited( new MouseEvent( this, -1, -1L, 0, -1, -1, 0, false ) );
             super.fireActionPerformed(event);
 
             JComponent source = target;
             if (source != null) {
-                ActionEvent ae = new ActionEvent(source, event.getID(), event.getActionCommand(), event.getModifiers());
                 b.actionPerformed(event);
             }
         }

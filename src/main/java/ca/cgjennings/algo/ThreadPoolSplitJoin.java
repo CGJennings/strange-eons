@@ -46,7 +46,7 @@ class ThreadPoolSplitJoin extends SplitJoin {
             throw new NullPointerException("subproblems");
         }
 
-        Future[] futures = new Future[subproblems.length];
+        Future<?>[] futures = new Future[subproblems.length];
         for (int i = 0; i < subproblems.length; ++i) {
             futures[i] = threadPool.submit(subproblems[i]);
         }
@@ -66,7 +66,7 @@ class ThreadPoolSplitJoin extends SplitJoin {
         }
 
         final int size = subproblems.size();
-        Future[] futures = new Future[size];
+        Future<?>[] futures = new Future[size];
         int i = 0;
         for (Runnable r : subproblems) {
             futures[i++] = threadPool.submit(r);

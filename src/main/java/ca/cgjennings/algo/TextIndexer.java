@@ -1,7 +1,5 @@
 package ca.cgjennings.algo;
 
-import ca.cgjennings.algo.TextIndexer.DefaultTextMapper;
-import ca.cgjennings.algo.TextIndexer.TextMapper;
 import ca.cgjennings.apps.arkham.BusyDialog;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;

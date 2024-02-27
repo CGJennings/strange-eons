@@ -198,7 +198,7 @@ final class ExpansionSymbolMenu extends JMenu {
             }
         }
         gc.markUnsavedChanges();
-        ((AbstractGameComponentEditor) ed).redrawPreview();
+        ((AbstractGameComponentEditor<?>) ed).redrawPreview();
 
         if (multiSelect) {
             doClick(0);

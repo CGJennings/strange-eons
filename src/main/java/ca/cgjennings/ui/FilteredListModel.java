@@ -255,11 +255,28 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
         return filtered.size();
     }
 
+    /**
+     * A filter that accepts all items.
+     * 
+     * @deprecated Use {@link #acceptAllFilter()} to get a typed filter
+     * that accepts all items. 
+     */
+    @Deprecated
     @SuppressWarnings("rawtypes")
     public static final ListFilter ACCEPT_ALL_FILTER = (FilteredListModel mode, Object item) -> true;
 
-    public interface FilterChangeListener extends EventListener {
+    /**
+     * Returns a filter that accepts all items, of a type matching that of the list model.
+     * 
+     * @param <T> the type of the list model
+     * @return a filter that accepts all items
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ListFilter<T> acceptAllFilter() {
+        return ACCEPT_ALL_FILTER;
+    }
 
+    public interface FilterChangeListener extends EventListener {
         void filterChanged(Object source);
     }
 }
