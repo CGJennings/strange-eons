@@ -921,7 +921,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
             underTexture = new CheckeredPaint(4);
         }
 
-        Painter backPainter = (Graphics2D g1, Object c, int w, int h) -> {
+        Painter<?> backPainter = (Graphics2D g1, Object c, int w, int h) -> {
             g1.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             boolean enable = true;
             if (c instanceof JComponent) {
@@ -948,7 +948,7 @@ public class HSBPanel extends javax.swing.JPanel implements javax.swing.event.Ch
         slider.putClientProperty("Nimbus.Overrides", sliderDefaults);
     }
 
-    private static Painter thumbPainter;
+    private static Painter<?> thumbPainter;
 
     private Tintable tintable;
     private final float[] hsb = new float[3];

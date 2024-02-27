@@ -42,7 +42,7 @@ final class FinishStyleMenu extends JMenu {
                 boolean enable = false;
                 StrangeEonsEditor editor = StrangeEons.getActiveEditor();
                 if (editor instanceof AbstractGameComponentEditor) {
-                    AbstractGameComponentEditor ed = (AbstractGameComponentEditor) editor;
+                    AbstractGameComponentEditor<?> ed = (AbstractGameComponentEditor<?>) editor;
                     enable = ed.getGameComponent().isDeckLayoutSupported();
                 }
                 setEnabled(enable);

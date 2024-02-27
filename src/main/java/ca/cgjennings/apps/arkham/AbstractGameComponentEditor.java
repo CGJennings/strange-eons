@@ -83,12 +83,9 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     private final PropertyChangeListener pcl = new PropertyChangeListener() {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            // respond to changes in the selected preview background
-//			if( evt.getPropertyName().equals( StrangeEonsAppWindow.VIEW_QUALITY_PROPERTY ) ) {
             if (sheets != null && sheets.length > 0) {
                 repaint();
             }
-//			}
         }
     };
 
@@ -194,7 +191,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      *
      * @param ds the design support for this editor
      */
-    public void setDesignSupport(DesignSupport ds) {
+    public void setDesignSupport(DesignSupport<G> ds) {
         if (ds == designSupport) {
             StrangeEons.log.warning("set design support to current value: " + this);
             return;
@@ -252,7 +249,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     }
     // the installed support
-    private DesignSupport designSupport;
+    private DesignSupport<G> designSupport;
     // the split pane that the design support view is embedded in
     private JSplitPane designSupportSplitPane;
     // the scroll pane that the design support view is embedded in
@@ -395,7 +392,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
                 final int SAVE_AS = 0;
                 final int QUICKSAVE = 1;
-                final int SAVE_ANYWAY = 2;
+                // final int SAVE_ANYWAY = 2;
                 final int CANCEL = 3;
 
                 File newFile = new File(getFile().getParentFile(), getDefaultFileName());
@@ -438,6 +435,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
                     return;
                 }
             }
+            // selection == optionOffsets[SAVE_ANYWAY], or no name change
 
             componentNameAtLastSave = getGameComponent().getFullName();
             StrangeEons.setWaitCursor(true);
@@ -521,7 +519,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      *
      * @return the selected sheet
      */
-    public Sheet getSelectedSheet() {
+    public Sheet<G> getSelectedSheet() {
         if (getGameComponent() == null) {
             return null;
         }
@@ -631,7 +629,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
     protected void exportImpl() {
         final ImageExporter manager = ImageExporter.getSharedInstance();
         final GameComponent gcToExport = getGameComponent().clone();
-        final Sheet[] sheetsToExport = gcToExport.createDefaultSheets();
+        @SuppressWarnings("unchecked")
+        final Sheet<G>[] sheetsToExport = gcToExport.createDefaultSheets();
 
         boolean allowJoiningImages = sheetsToExport.length >= 2 && sheetsToExport[0] != sheetsToExport[1];
 
@@ -785,7 +784,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      */
     public void redrawPreview() {
         if (sheets != null) {
-            for (Sheet s : sheets) {
+            for (Sheet<G> s : sheets) {
                 s.markChanged();
             }
             for (SheetViewer v : viewers) {
@@ -805,7 +804,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
 
     private G gc;
 
-    protected Sheet[] sheets;
+    protected Sheet<G>[] sheets;
     protected SheetViewer[] viewers;
 
     /**
@@ -819,8 +818,9 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      *
      * @param container the control that will house previewers for the sheets
      */
+    @SuppressWarnings("unchecked")
     protected void initializeSheetViewers(JTabbedPane container) {
-        sheets = getGameComponent().createDefaultSheets();
+        sheets = (Sheet<G>[]) getGameComponent().createDefaultSheets();
         viewers = new SheetViewer[sheets.length];
         container.removeAll();
         String[] labels = getSheetLabels();
@@ -850,6 +850,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * altogether as if by calling
      * {@link #initializeSheetViewers(javax.swing.JTabbedPane)}.
      */
+    @SuppressWarnings("unchecked")
     protected void updateSheetViewers() {
         if (sheetPreviewerPane == null || gc == null) {
             return;
@@ -889,7 +890,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      * @throws IndexOutOfBoundsException if the index does not fall in
      * {@code 0 ... {@link #getSheetCount()}-1}, inclusive
      */
-    public Sheet getSheet(int index) {
+    public Sheet<G> getSheet(int index) {
         if (index < 0 || index >= getSheetCount()) {
             throw new IndexOutOfBoundsException("index: " + index);
         }
@@ -1059,7 +1060,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
      */
     @Override
     protected void printImpl(PrinterJob job) throws PrintException, PrinterException {
-        Sheet[] printSheets = getGameComponent().clone().createDefaultSheets();
+        @SuppressWarnings("unchecked")
+        Sheet<G>[] printSheets = getGameComponent().clone().createDefaultSheets();
         PrintSetupDialog printDialog = new PrintSetupDialog(this);
         printDialog.setUpForSheets(printSheets);
         if (!printDialog.showDialog()) {
@@ -1082,8 +1084,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         }
     }
 
-    private void createCompactPrintLayout(final DeckEditor destination, final BitSet faces, final Sheet[] sheets, final boolean doubleSided) {
-        DeckPacker p = new DeckPacker() {
+    private void createCompactPrintLayout(final DeckEditor destination, final BitSet faces, final Sheet<G>[] sheets, final boolean doubleSided) {
+        new DeckPacker() {
             {
                 final GameComponent gc = getGameComponent();
                 final File dummyFile = getFile() == null ? new File("dummy") : getFile();
@@ -1236,7 +1238,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         if (command == Commands.VIEW_INK_SAVER) {
             GameComponent gc = getGameComponent();
             if (gc != null) {
-                Sheet[] sheets = gc.getSheets();
+                @SuppressWarnings("unchecked")
+                Sheet<G>[] sheets = gc.getSheets();
                 if (sheets != null) {
                     boolean enable = Commands.VIEW_INK_SAVER.isSelected();
                     for (int i = 0; i < sheets.length; ++i) {
@@ -1281,8 +1284,7 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
             // No abbreviation could be applied for whatever reason, so the
             // fallback would be to insert a Tab. But the Tab is actually
             // already inserted by the keypress (it gets inserted before our
-            // action takes effect).
-//	    tc.replaceSelection( "\t" );
+            // action takes effect). So we do nothing.
         }
 
         private StrangeEonsEditor findEditor(Component c) {

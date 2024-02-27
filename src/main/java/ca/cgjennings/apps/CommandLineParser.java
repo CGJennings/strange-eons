@@ -386,7 +386,7 @@ public class CommandLineParser {
                 v = null;
                 Object[] enums = type.getEnumConstants();
                 for (int i = 0; i < enums.length; ++i) {
-                    String n = ((Enum) enums[i]).name();
+                    String n = ((Enum<?>) enums[i]).name();
                     if (n.equalsIgnoreCase(value)) {
                         v = enums[i];
                         break;
@@ -401,7 +401,7 @@ public class CommandLineParser {
             }
         } else {
             try {
-                Constructor c = type.getConstructor(String.class);
+                Constructor<?> c = type.getConstructor(String.class);
                 try {
                     v = c.newInstance(value);
                 } catch (InvocationTargetException ite) {

@@ -1737,7 +1737,7 @@ final class AppFrame extends StrangeEonsAppWindow {
     public void redrawPreviews() {
         for (StrangeEonsEditor ed : getEditors()) {
             if (ed instanceof AbstractGameComponentEditor) {
-                ((AbstractGameComponentEditor) ed).redrawPreview();
+                ((AbstractGameComponentEditor<?>) ed).redrawPreview();
             }
         }
     }
@@ -2091,6 +2091,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             return null;
         }
 
+        @SuppressWarnings("rawtypes")
         AbstractGameComponentEditor editor = gameComponent.createDefaultEditor();
         if (editor.getFrameIcon() == AbstractGameComponentEditor.DEFAULT_EDITOR_ICON) {
             editor.setFrameIcon(newEditorDialog.getIconForComponent(gameComponent));
@@ -2530,7 +2531,7 @@ final class AppFrame extends StrangeEonsAppWindow {
             return;
         }
 
-        final int MENUS = 0, PARENT = 1, INSERT = 2, SEPS = 3, COUNT = 4;
+        final int MENUS = 0, PARENT = 1, SEPS = 3, COUNT = 4;
         final int MENU_COUNT = appMenuGrid[0].length;
 
         // locate the index in appMenuGrid for parent

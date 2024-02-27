@@ -69,7 +69,6 @@ public class ImageExporter {
      * readme file.
      */
     private static final class ItemData {
-
         public String name;
         public String link;
         public PrintDimensions dimensions;
@@ -215,7 +214,7 @@ public class ImageExporter {
      * @param face the sheet to export
      * @throws IOException if an I/O error occurs
      */
-    public void exportSheet(String sheetSuffix, Sheet face) throws IOException {
+    public void exportSheet(String sheetSuffix, Sheet<?> face) throws IOException {
         if (state == ERROR) {
             throw new IllegalStateException("cannot proceed with session due to an error");
         }

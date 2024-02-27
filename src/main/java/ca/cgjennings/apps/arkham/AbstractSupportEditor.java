@@ -37,7 +37,7 @@ import resources.ResourceKit;
  * @since 3.0
  */
 @SuppressWarnings("serial")
-public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor implements StrangeEonsEditor {
+public abstract class AbstractSupportEditor extends AbstractStrangeEonsEditor {
 
     /**
      * Creates new form AbstractSupportEditor

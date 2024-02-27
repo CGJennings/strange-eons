@@ -118,7 +118,7 @@ final class ExpansionVariantMenu extends JMenu {
                 GameComponent gc = ed.getGameComponent();
                 gc.getSettings().set(Expansion.VARIANT_SETTING_KEY, String.valueOf(varNum));
                 gc.markUnsavedChanges();
-                ((AbstractGameComponentEditor) ed).redrawPreview();
+                ((AbstractGameComponentEditor<?>) ed).redrawPreview();
             }
         }
     }

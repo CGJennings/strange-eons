@@ -39,7 +39,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
         silListener = (Object instance, boolean isRegistration) -> {
             EventQueue.invokeLater(() -> {
                 Silhouette sel = (Silhouette) silList.getSelectedValue();
-                FilteredListModel m1 = updateListModel(Silhouette.getSilhouettes());
+                FilteredListModel<Silhouette> m1 = updateListModel(Silhouette.getSilhouettes());
                 if (sel != null) {
                     for (int i = 0; i < m1.getSize(); ++i) {
                         if (sel.equals(m1.getElementAt(i))) {
@@ -70,9 +70,8 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
         super.dispose();
     }
 
-    private FilteredListModel updateListModel(Silhouette[] silhouettes) {
-        @SuppressWarnings("unchecked")
-        FilteredListModel<Silhouette> m = new FilteredListModel(silhouettes);
+    private FilteredListModel<Silhouette> updateListModel(Silhouette[] silhouettes) {
+        FilteredListModel<Silhouette> m = new FilteredListModel<>(silhouettes);
         silList.setModel(m);
         m.linkTo(filterField, silList, true);
         return m;
@@ -93,7 +92,7 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
 
         String key = item.getStencilKey();
         FilteredListModel<Silhouette> model = (FilteredListModel<Silhouette>) silList.getModel();
-        model.setFilter(FilteredListModel.ACCEPT_ALL_FILTER);
+        model.setFilter(FilteredListModel.acceptAllFilter());
 
         int i = 0;
         for (; i < model.getSize(); ++i) {

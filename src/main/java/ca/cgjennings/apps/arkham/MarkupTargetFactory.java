@@ -172,101 +172,6 @@ public class MarkupTargetFactory {
         throw new AssertionError("unknown target type");
     }
 
-    private static MarkupTarget createTextComponentInstance(final JTextComponent c) {
-        final CodeEditorBase codeEditor = findCodeEditingParent(c);
-
-        return new AbstractMarkupTarget() {
-            @Override
-            public Object getTarget() {
-                return codeEditor == null ? c : codeEditor;
-            }
-
-            @Override
-            public String getText() {
-                return c.getText();
-            }
-
-            @Override
-            public int length() {
-                return c.getDocument().getLength();
-            }
-
-            @Override
-            public String getSelectedText() {
-                String s = c.getSelectedText();
-                return s == null ? "" : s;
-            }
-
-            @Override
-            protected String getTextImpl(int start, int length) {
-                try {
-                    return c.getText(start, length);
-                } catch (BadLocationException ex) {
-                    throw new AssertionError();
-                }
-            }
-
-            @Override
-            public int getSelectionEnd() {
-                return c.getSelectionEnd();
-            }
-
-            @Override
-            public int getSelectionStart() {
-                return c.getSelectionStart();
-            }
-
-            @Override
-            public int setSelectedText(String text) {
-                String t = MarkupTargetFactory.escapeUndisplayableChars(c.getFont(), text, true);
-                c.replaceSelection(t);
-                return t.length();
-            }
-
-            @Override
-            public void setSelectionEnd(int end) {
-                c.setSelectionEnd(clamp(end));
-            }
-
-            @Override
-            public void setSelectionStart(int start) {
-                c.setSelectionStart(clamp(start));
-            }
-
-            @Override
-            public void select(int start, int end) {
-                c.setCaretPosition(clamp(start));
-                c.moveCaretPosition(clamp(end));
-            }
-
-            @Override
-            public void selectNone() {
-                int p = c.getCaretPosition();
-                c.select(p, p);
-            }
-
-            @Override
-            public void copy() {
-                c.copy();
-            }
-
-            @Override
-            public void cut() {
-                c.cut();
-            }
-
-            @Override
-            public void paste() {
-                c.paste();
-            }
-
-            @Override
-            public boolean isCodeEditor() {
-                return codeEditor != null;
-            }
-        };
-    }
-
     private static abstract class AbstractMarkupTarget implements MarkupTarget {
 
         @Override
@@ -562,7 +467,7 @@ public class MarkupTargetFactory {
             throw new NullPointerException("target");
         }
         if (target instanceof JComboBox) {
-            target = (JComponent) ((JComboBox) target).getEditor().getEditorComponent();
+            target = (JComponent) ((JComboBox<?>) target).getEditor().getEditorComponent();
         }
         target.putClientProperty(MarkupTarget.FORCE_MARKUP_TARGET_PROPERTY, allow);
     }

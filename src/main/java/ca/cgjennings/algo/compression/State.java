@@ -9,6 +9,7 @@
  */
 package ca.cgjennings.algo.compression;
 
+@SuppressWarnings("unused") // to retain the original code
 final class State {
 
     static final int STATES = 12;
