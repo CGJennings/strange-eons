@@ -14,7 +14,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 /**
- * A <tt>JList</tt> of <tt>JCheckBox</tt> items.
+ * A {@code JList} of {@code JCheckBox} items.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
@@ -90,7 +90,7 @@ public class JCheckList extends JList<Object> {
     protected static class Renderer implements ListCellRenderer<Object> {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             System.err.println("called renderer");
             JCheckBox checkbox = (JCheckBox) value;
             checkbox.setBorderPaintedFlat(true);

@@ -28,18 +28,18 @@ import resources.Settings;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 @SuppressWarnings("serial")
-public class JGameFilterField extends JComboBox<Object> {
+public class JGameFilterField extends JComboBox<Game> {
 
     public JGameFilterField() {
         init();
     }
 
-    public JGameFilterField(Object[] items) {
+    public JGameFilterField(Game[] items) {
         super(items);
         init();
     }
 
-    public JGameFilterField(ComboBoxModel<Object> aModel) {
+    public JGameFilterField(ComboBoxModel<Game> aModel) {
         super(aModel);
         init();
     }
@@ -79,7 +79,7 @@ public class JGameFilterField extends JComboBox<Object> {
             setIcon(ResourceKit.getIcon("ui/find-sm.png"));
             setRenderer(new DefaultListCellRenderer() {
                 @Override
-                public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                     super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                     if (value instanceof Game) {
                         setIcon(((Game) value).getIcon());
@@ -132,22 +132,6 @@ public class JGameFilterField extends JComboBox<Object> {
         listenerList.remove(FilteredListModel.FilterChangeListener.class, l);
     }
 
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				try {
-//				UIManager.setLookAndFeel( "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel" );
-//				JFrame f = new JFrame();
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//				f.add( new JGameFilterField() );
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//				}catch(Throwable t){t.printStackTrace();}
-//			}
-//		});
-//	}
     /**
      * Returns the current filter value. This is either a {@link Game}, or a
      * filtering {@code String}, or {@code null} if the filter value is empty.
@@ -168,7 +152,7 @@ public class JGameFilterField extends JComboBox<Object> {
         if (v.isEmpty()) {
             return null;
         }
-        DefaultComboBoxModel m = (DefaultComboBoxModel) getModel();
+        DefaultComboBoxModel<Game> m = (DefaultComboBoxModel<Game>) getModel();
         for (int i = 0; i < m.getSize(); ++i) {
             String t = ((Game) m.getElementAt(i)).getUIName().trim();
             if (t.equalsIgnoreCase(v)) {

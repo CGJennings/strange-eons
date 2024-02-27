@@ -112,7 +112,7 @@ public class IconBorder extends AbstractBorder {
      */
     public Border install(JComponent c) {
         if (c instanceof JComboBox) {
-            JComboBox cb = (JComboBox) c;
+            JComboBox<?> cb = (JComboBox<?>) c;
             if (cb.isEditable() && cb.getEditor().getEditorComponent() instanceof JComponent) {
                 c = (JComponent) cb.getEditor().getEditorComponent();
             }

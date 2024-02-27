@@ -48,9 +48,6 @@ public class HueLabel extends JLabel {
                     hue = 0f;
                 }
                 g.setColor(new Color(Color.HSBtoRGB(hue, 1f, 1f)));
-                if (g.getColor().equals(Color.BLACK)) {
-                    int k = 8;
-                }
             } else {
                 float b = delta * i - 0.5f;
                 g.setColor(new Color(Color.HSBtoRGB(0f, 0f, (b < 0f ? -b : b) + 0.25f)));
@@ -59,12 +56,4 @@ public class HueLabel extends JLabel {
             r.x += segwidth;
         }
     }
-
-//	public static void main( String[] args ) {
-//		JFrame f = new JFrame();
-//		f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//		f.add( new HueLabel() );
-//		f.setSize( 320, 48 );
-//		f.setVisible( true );
-//	}
 }

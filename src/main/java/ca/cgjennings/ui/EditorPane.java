@@ -21,7 +21,6 @@ import javax.swing.text.html.BlockView;
 import javax.swing.text.html.CSS;
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.HTMLEditorKit.HTMLFactory;
 import javax.swing.text.html.StyleSheet;
 import resources.ResourceKit;
 
