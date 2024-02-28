@@ -26,6 +26,7 @@ import resources.Settings.Region;
 public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     public GenericCardFrontSheet(GenericCardBase card) {
         super(card);
+        setCornerRadius(GenericCardBase.DEFAULT_CORNER_RADIUS);
         frontFace = (DefaultPortrait) card.getPortrait(1);
         portrait = (DefaultPortrait) card.getPortrait(0);
         initializeTemplate(
@@ -35,7 +36,6 @@ public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
             card.getTemplateResolution(),
             1d
         );
-
         markupRenderer = new MarkupRenderer(card.getTemplateResolution());
         doStandardRendererInitialization(markupRenderer);
         initInteriorFillAndClipShapes();
