@@ -16,7 +16,7 @@ import ca.cgjennings.apps.arkham.sheet.Sheet;
 public class GenericCardBackSheet extends Sheet<GenericCardBase>{
     public GenericCardBackSheet(GenericCardBase card) {
         super(card);
-        setCornerRadius(GenericCardBase.DEFAULT_CORNER_RADIUS);
+        setCornerRadius(card.getCornerRadius());
         backFace = (DefaultPortrait) card.getPortrait(2);
         initializeTemplate(
             "generic-" + card.getId() + "-back",

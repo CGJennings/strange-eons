@@ -32,9 +32,6 @@ import resources.Settings.Region;
  */
 public class GenericCardBase extends AbstractGameComponent implements PortraitProvider {
     static final long serialVersionUID = -45234524755650509L;
-    
-    /** Default corner radius used by sheets. */
-    static final double DEFAULT_CORNER_RADIUS = 15d;
 
     /**
      * Resolution of the template in pixels per inch.
@@ -44,18 +41,18 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      */
     private static final int PPI = 150;
     /** Convert inch measurements to TPX. */
-    private static final double IN_TO_TPX = PPI;
+    protected static final double IN_TO_TPX = PPI;
     /** Convert TPX measurements to inches. */
-    private static final double TPX_TO_IN = 1d / PPI;
+    protected static final double TPX_TO_IN = 1d / PPI;
     /** Convert mm measurements to TPX. */
-    private static final double MM_TO_TPX = 0.0393701d * PPI;
+    protected static final double MM_TO_TPX = 0.0393701d * PPI;
     /** Convert points to TPX. */
-    private static final double PT_TO_TPX = IN_TO_TPX / 72d;
+    protected static final double PT_TO_TPX = IN_TO_TPX / 72d;
     /** Convert TPX to points. */
-    private static final double TPX_TO_PT = 72d / IN_TO_TPX;
+    protected static final double TPX_TO_PT = 72d / IN_TO_TPX;
 
     /** Bleed margin size in points. */
-    private static final int BLEED_MARGIN_PT = 9;
+    protected static final int BLEED_MARGIN_PT = 9;
     /** Bleed margin size in template "pixels". */
     private static final int BLEED_MARGIN_TPX = (int) Math.ceil((double) BLEED_MARGIN_PT * PT_TO_TPX);
 
@@ -139,6 +136,17 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
         backFacePortrait.setFacesToUpdate(backFace);
         backFacePortrait.installDefault();
         applyDefaults();
+    }
+
+    /**
+     * Returns the card's corner radius, in points.
+     * 
+     * <p>
+     * Subclasses can override this to change the corner radius.
+     * The base class returns 15 points.
+     */
+    public double getCornerRadius() {
+        return 15d;
     }
 
     /** Returns the full name of the card type, as shown in the New Component dialog. */

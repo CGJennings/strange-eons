@@ -26,7 +26,7 @@ import resources.Settings.Region;
 public class GenericCardFrontSheet extends Sheet<GenericCardBase>{
     public GenericCardFrontSheet(GenericCardBase card) {
         super(card);
-        setCornerRadius(GenericCardBase.DEFAULT_CORNER_RADIUS);
+        setCornerRadius(card.getCornerRadius());
         frontFace = (DefaultPortrait) card.getPortrait(1);
         portrait = (DefaultPortrait) card.getPortrait(0);
         initializeTemplate(
