@@ -480,7 +480,14 @@ public final class DIYSheet extends Sheet<DIY> {
         // could be anything... we'll have to render the image and then measure
         BufferedImage bi = paint(RenderTarget.PRINT, getTemplateResolution());
         double ppi = getPaintingResolution();
-        return new PrintDimensions(bi, ppi, getRenderedBleedMargin());
+        return new PrintDimensions(
+            bi,
+            ppi,
+            // the total finished bleed margin size
+            getRenderedBleedMargin(),
+            // the amount of margin supplied by the design
+            getBleedMargin()
+        );
     }
 
     @Override
