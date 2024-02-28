@@ -2,18 +2,25 @@ package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.ui.StyleUtilities;
 import ca.cgjennings.ui.anim.AnimationUtilities;
+import resources.Settings;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.awt.geom.AffineTransform;
+
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -209,10 +216,49 @@ public class ToolWindow extends javax.swing.JDialog {
             windowClosing();
 	}//GEN-LAST:event_closeBtnActionPerformed
 
+    public static boolean WINDOW_LOCATION_BUG_WORKAROUND = Settings.getShared().getYesNo("window-location-bug-workaround", true);
+
 	private void titleLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleLabelMouseDragged
             if (SwingUtilities.isLeftMouseButton(evt) && titleDrag) {
                 int newX = evt.getXOnScreen() - dragStartXInWindow;                
                 int newY = evt.getYOnScreen() - dragStartYInWindow;
+
+                // Workaround for dragging across high DPI screens:
+                //   setLocation is supposed to accept virtual coordinates, but when there are multiple
+                //   high DPI displays, that upper-left corner of each screen is in *unscaled* coordinates
+                //   while the size of each screen is in *scaled* coordinates. So if you have a 4k screen
+                //   at 200% scaling to the "left" of your primary screen, then your primary display
+                //   has x=0 and the secondary has x=-3840 but each has a width of 1920. This leaves
+                //   a "dead zone" between the two displays. This loop works around this, adjusting
+                //   newX and newY to make them relative to correct for the unscaled upper-left corner.
+                if (WINDOW_LOCATION_BUG_WORKAROUND) {
+                    GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+                    if (devices.length > 1) {
+                        // For each device:
+                        //   - get its bounds and then scale the (x,y) value by inverse of the device's scaling factor
+                        //   - check if the intended new location is within these adjusted bounds
+                        //   - if so, this is the device that contains with new window location:
+                        //        - calculate the delta from the new location to the scaled bounds
+                        //        - change the new location to make it relative to the *unscaled* (x,y) of the device
+                        //          by applying the delta to the original bounds
+                        for (GraphicsDevice device : devices) {
+                            Rectangle bounds = device.getDefaultConfiguration().getBounds();
+                            AffineTransform transform = device.getDefaultConfiguration().getDefaultTransform();
+                            bounds.x = (int) (bounds.x / transform.getScaleX());
+                            bounds.y = (int) (bounds.y / transform.getScaleY());
+                            if (bounds.contains(newX, newY)) {
+                                // make newX/newY relative to the *unscaled* upper-left corner of the device
+                                newX -= bounds.x;
+                                newY -= bounds.y;
+                                bounds = device.getDefaultConfiguration().getBounds();
+                                newX += bounds.x;
+                                newY += bounds.y;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 setLocation(newX, newY);
             }
 	}//GEN-LAST:event_titleLabelMouseDragged

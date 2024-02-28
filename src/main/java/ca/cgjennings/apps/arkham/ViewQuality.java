@@ -105,7 +105,7 @@ public enum ViewQuality {
      * @param sheet the sheet to determine the upsample factor for
      * @return the suggested upsample factor for the sheet at this quality level
      */
-    public double getSheetViewerUpsample(Sheet sheet) {
+    public double getSheetViewerUpsample(Sheet<?> sheet) {
         return Math.max(upsample, sheet.getSuggestedUpsampleFactor());
     }
 
