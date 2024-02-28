@@ -38,7 +38,7 @@ final class HExpClipCommand extends DelegatedCommand {
             } else {
                 s.set(Expansion.EXPANSION_SETTING_KEY, exp);
                 s.set(Expansion.VARIANT_SETTING_KEY, var);
-                ((AbstractGameComponentEditor) ed).redrawPreview();
+                ((AbstractGameComponentEditor<?>) ed).redrawPreview();
             }
         }
     }

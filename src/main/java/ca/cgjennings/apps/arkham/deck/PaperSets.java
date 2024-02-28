@@ -732,14 +732,14 @@ public final class PaperSets {
      * @return a set with the same papers as the model
      * @throws NullPointerException if the model is {@code null}
      */
-    public static Set<PaperProperties> modelToSet(ListModel model) {
+    public static Set<PaperProperties> modelToSet(ListModel<PaperProperties> model) {
         if (model == null) {
             throw new NullPointerException("model");
         }
 
         LinkedHashSet<PaperProperties> papers = new LinkedHashSet<>();
         for (int i = 0; i < model.getSize(); ++i) {
-            papers.add((PaperProperties) model.getElementAt(i));
+            papers.add(model.getElementAt(i));
         }
         return papers;
     }

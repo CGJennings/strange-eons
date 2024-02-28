@@ -5,7 +5,6 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
-import ca.cgjennings.apps.arkham.plugins.PluginBundle;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.io.ConnectionSupport;
 import ca.cgjennings.io.CountingInputStream;
@@ -608,7 +607,6 @@ public class Catalog {
                     dest = download(li, md5);
 
                     // if catalog gives an MD5, check it now
-                    PluginBundle pb = new PluginBundle(dest);
                     if (!md5.matches(li.getChecksum())) {
                         ChecksumInterrogator ci = new ChecksumInterrogator();
                         try {

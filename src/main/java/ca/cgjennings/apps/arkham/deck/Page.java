@@ -23,9 +23,6 @@ public final class Page implements Serializable, Cloneable {
 
     static final long serialVersionUID = 7253298809588649754L;
 
-    private Page() {
-    }
-
     /**
      *
      */

@@ -459,10 +459,8 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         private boolean modified = false;
         private final ArrayList<String> abrvs = new ArrayList<>(30);
         private final ArrayList<String> exps = new ArrayList<>(30);
-        private final AbbreviationTable at;
 
         public ATModel(AbbreviationTable at) {
-            this.at = at;
             if (at != null) {
                 String[] keys = at.keySet().toArray(new String[at.size()]);
                 java.util.Arrays.sort(keys, Language.getInterface().getCollator());
@@ -531,10 +529,6 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
         public boolean isModified() {
             return modified;
         }
-
-        public AbbreviationTable getTable() {
-            return at;
-        }
     }
 
     private HashMap<Object, ATModel> tables = new HashMap<>();
@@ -560,9 +554,9 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
             }
         }
 
-        ComboBoxModel model = gameCombo.getModel();
+        ComboBoxModel<Game> model = gameCombo.getModel();
         for (int i = 0; i < model.getSize(); ++i) {
-            Game g = (Game) model.getElementAt(i);
+            Game g = model.getElementAt(i);
             tables.put(g, new ATModel(AbbreviationTableManager.getTable(g.getCode())));
         }
         if (sel != null) {
@@ -601,7 +595,7 @@ public class AbbreviationEditor extends javax.swing.JDialog implements AgnosticD
 
     private final DefaultListCellRenderer listRenderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             CodeType t = (CodeType) value;
             super.getListCellRendererComponent(list, t.getDescription(), index, isSelected, cellHasFocus);
             setIcon(t.getIcon());

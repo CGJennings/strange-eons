@@ -18,7 +18,6 @@ import resources.AcceleratorTable;
 @SuppressWarnings("serial")
 class HSourceCommand extends DelegatedCommand {
 
-    private boolean comments;
     private boolean forEditorTab;
     private String forAction;
 
@@ -33,11 +32,6 @@ class HSourceCommand extends DelegatedCommand {
     public HSourceCommand(String nameKey, String iconResource, String forAction) {
         super(nameKey, iconResource);
         this.forAction = forAction;
-    }
-
-    public HSourceCommand forComments() {
-        comments = true;
-        return this;
     }
 
     public HSourceCommand forCodeEditor() {

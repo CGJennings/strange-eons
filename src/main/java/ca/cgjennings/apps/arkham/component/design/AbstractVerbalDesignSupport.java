@@ -22,7 +22,7 @@ import resources.Settings.Colour;
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
-public abstract class AbstractVerbalDesignSupport<G extends GameComponent> implements DesignSupport {
+public abstract class AbstractVerbalDesignSupport<G extends GameComponent> implements DesignSupport<G> {
 
     /**
      * Creates a new verbal design support that will support the specified
@@ -161,10 +161,6 @@ public abstract class AbstractVerbalDesignSupport<G extends GameComponent> imple
             } catch (Exception e) {
                 StrangeEons.log.log(Level.SEVERE, null, e);
             }            
-        }
-        
-        public String getContent() {
-            return content;
         }
 
         public View() {

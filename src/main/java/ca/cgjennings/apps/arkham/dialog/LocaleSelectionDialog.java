@@ -9,11 +9,9 @@ import java.util.Set;
 import java.util.TreeSet;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import resources.Language;
 import static resources.Language.string;
 
 /**
@@ -273,19 +271,16 @@ public class LocaleSelectionDialog extends javax.swing.JDialog implements Agnost
 
     private DefaultListCellRenderer locRenderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             if (value instanceof String) {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
             Locale loc = (Locale) value;
             String s;
-            Icon i;
             if (loc.getCountry().isEmpty()) {
                 s = loc.getLanguage() + " (" + loc.getDisplayLanguage() + ")";
-                i = Language.getIconForLanguage(loc);
             } else {
                 s = loc.getCountry() + " (" + loc.getDisplayCountry() + ")";
-                i = Language.getIconForCountry(loc);
             }
             super.getListCellRendererComponent(list, s, index, isSelected, cellHasFocus);
             return this;

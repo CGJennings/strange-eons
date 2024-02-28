@@ -78,7 +78,7 @@ public final class SEScriptEngine extends AbstractScriptEngine implements Invoca
     public Object eval(String script, ScriptContext scriptContext) throws ScriptException {
         Objects.requireNonNull(script, "script");
         final String fileName = EngineUtilities.fileNameFrom(scriptContext);
-        return eval(preprocessScript(FILENAME, new StringReader(script)), scriptContext);
+        return eval(preprocessScript(fileName, new StringReader(script)), scriptContext);
     }
 
     /**

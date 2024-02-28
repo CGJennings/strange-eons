@@ -523,9 +523,5 @@ public final class ErrorDialog extends javax.swing.JDialog {
         }
     }
 
-    private static String string(String key, Object... args) {
-        return String.format(string(key), args);
-    }
-
     private static boolean failedToLoad;
 }

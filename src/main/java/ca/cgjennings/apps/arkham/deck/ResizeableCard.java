@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 
 /**
  * An obsolete kind of deck object. This class is a skeleton that can is used
@@ -20,11 +19,12 @@ import java.io.Serializable;
  * of {@link ca.cgjennings.apps.arkham.deck.item.PageItem}.
  */
 @Deprecated
-class ResizeableCard extends Card implements Serializable, Cloneable {
+class ResizeableCard extends Card {
 
     static final long serialVersionUID = 2827360448649571724L;
     private String text;
     private Color background;
+    @SuppressWarnings("unused") // for backwards compatibility
     private double margin = 4;
 
     public ResizeableCard() {

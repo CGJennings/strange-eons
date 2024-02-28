@@ -770,7 +770,7 @@ public class PluginManager extends javax.swing.JDialog {
 
     private DefaultListCellRenderer renderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             if (section == null) {
@@ -875,7 +875,7 @@ public class PluginManager extends javax.swing.JDialog {
         }
 
         void repaint() {
-            DefaultListModel model = (DefaultListModel) pluginList.getModel();
+            DefaultListModel<Entry> model = (DefaultListModel<Entry>) pluginList.getModel();
             int index = model.indexOf(this);
             if (index >= 0) {
                 Rectangle paintRect = pluginList.getCellBounds(index, index);

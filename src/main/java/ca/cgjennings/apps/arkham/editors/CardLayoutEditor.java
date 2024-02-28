@@ -41,7 +41,6 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
@@ -1118,7 +1117,6 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
                 if (ProjectUtilities.matchExtension(f, "psd")) {
                     baseLayerName = baseLayerName.substring(0, baseLayerName.length() - 4);
                 }
-                String baseKeyName = baseLayerName.replace(' ', '-').toLowerCase(Locale.CANADA);
 
                 if (d.isReplaceSelected()) {
                     layers.clear();
@@ -1523,7 +1521,6 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
 
             switch (la.getType()) {
                 case IMAGE:
-                    String name = key + getImageKey(i, template, isFrontFace);
                     b.append("\t").append("drawImage( g, diy, \"").append(key).append("\" );\n\n");
                     hasImage = true;
                     break;
@@ -1538,6 +1535,9 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
                     }
                     b.append('\t').append(box).append(".draw( g, $").append(var(la)).append("_region.region );\n\n");
                     break;
+                case EXPSYM:
+                    // handled above
+                    throw new AssertionError();
             }
         }
         if (b.charAt(b.length() - 1) == '\n' && b.charAt(b.length() - 2) == '\n') {
@@ -2427,7 +2427,7 @@ public class CardLayoutEditor extends AbstractSupportEditor implements RegionPic
     private class LayerCellRenderer extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             final boolean isTemplate = index == getTemplateLayer();
 

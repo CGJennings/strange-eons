@@ -908,6 +908,7 @@ public final class DefaultScriptDebugger {
         }
     }
     
+    @SuppressWarnings("unused")
     private static String toJavaScriptStringLiteral(String s) {
         StringBuilder sb = new StringBuilder();
         sb.append('"');

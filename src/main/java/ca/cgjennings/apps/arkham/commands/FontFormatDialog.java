@@ -21,7 +21,6 @@ import static java.awt.font.TextAttribute.*;
 import java.text.Collator;
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Locale;
@@ -49,7 +48,7 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         private Font listFont, regListFont;
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             Font f = ((FontToken) value).getFont();
             String name = f.getFamily(Locale.getDefault());
 
@@ -723,10 +722,6 @@ class FontFormatDialog extends javax.swing.JDialog implements AgnosticDialog {
         if (box.isSelected()) {
             map.put(key, value);
         }
-    }
-
-    private Font apply(Font f, TextAttribute ta, Object value) {
-        return f.deriveFont(Collections.singletonMap(ta, value));
     }
 
     private void add(StringBuilder lhs, StringBuilder rhs, String open, String close) {
