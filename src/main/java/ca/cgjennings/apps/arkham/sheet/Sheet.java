@@ -648,7 +648,7 @@ public abstract class Sheet<G extends GameComponent> {
      * sheet. This may be less than the user bleed margin. The returned value is
      * always a physical width; if the user margin is negative, this will return
      * zero.
-     *
+     * 
      * @return a non-negative width in points
      * @see #setUserBleedMargin(double)
      */
@@ -1264,7 +1264,14 @@ public abstract class Sheet<G extends GameComponent> {
      */
     public PrintDimensions getPrintDimensions() {
         if (!isVariableSize()) {
-            return new PrintDimensions(template, getTemplateResolution(), getRenderedBleedMargin());
+            return new PrintDimensions(
+                template,
+                getTemplateResolution(),
+                // the total finished bleed margin size
+                getRenderedBleedMargin(),
+                // the amount of margin supplied by the design
+                getBleedMargin()
+            );
         }
 
         throw new UnsupportedOperationException("called base class getPrintDimensions() implementation on variable-size component: " + this);

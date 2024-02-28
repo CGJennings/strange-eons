@@ -69,7 +69,6 @@ public class ImageExporter {
      * readme file.
      */
     private static final class ItemData {
-        public String name;
         public String link;
         public PrintDimensions dimensions;
         public boolean joined;
@@ -338,9 +337,9 @@ public class ImageExporter {
         try {
             String fileName = makeFileName(sheetSuffix, format);
             ItemData data = new ItemData();
-            data.name = fileName;
             data.link = fileName;
-            data.dimensions = new PrintDimensions(image, targetDPI, 0d);
+            // actual dimensions of the image; hence the bleed margin values are 0
+            data.dimensions = new PrintDimensions(image, targetDPI, 0d, 0d);
             data.pixelWidth = image.getWidth();
             itemData.add(data);
             try {
