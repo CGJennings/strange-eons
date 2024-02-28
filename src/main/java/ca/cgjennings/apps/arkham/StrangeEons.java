@@ -43,6 +43,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.KeyboardFocusManager;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.datatransfer.StringSelection;
@@ -486,9 +487,9 @@ public final class StrangeEons {
                 enableAccel = false;
             }
             
-            applyGraphicsOptions(enableAccel, commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
-            applyTextAntialiasingOptions(commandLineArguments.xAAText);
-            initStage1();
+            String rendererLogMsg = applyGraphicsOptions(enableAccel, commandLineArguments.xOpenGL, commandLineArguments.xDisableAnimation);
+            String textAALogMsg = applyTextAntialiasingOptions(commandLineArguments.xAAText);
+            initStage1(rendererLogMsg, textAALogMsg);
         } catch (final Throwable t) {
             log.log(Level.SEVERE, "Uncaught Exception in Stage 1", t);
             EventQueue.invokeLater(() -> {
@@ -513,7 +514,7 @@ public final class StrangeEons {
      *
      * @param textAA the user-specified setting, or null for a platform default
      */    
-    private static void applyGraphicsOptions(boolean enableAcceleration, boolean preferOpenGl, boolean avoidAnimation) {
+    private static String applyGraphicsOptions(boolean enableAcceleration, boolean preferOpenGl, boolean avoidAnimation) {
         // start with all accelerated renderers disabled, then selectively enable
         boolean d3d = false, opengl = false, xrender = false, metal = false;
         if (enableAcceleration) {
@@ -538,13 +539,6 @@ public final class StrangeEons {
             }
         }
         
-        if (log.isLoggable(Level.INFO)) {
-            log.log(Level.INFO,
-                    "renderer selection matrix: Software=true, Direct3D={0}, Metal={1}, OpenGL={2}, XRender={3}",
-                    new Object[]{d3d, metal, opengl, xrender}
-            );
-        }
-        
         System.setProperty("sun.java2d.d3d", d3d ? "true" : "false");
         
         System.setProperty("sun.java2d.opengl", opengl ? "True" : "false");
@@ -557,6 +551,13 @@ public final class StrangeEons {
         if (avoidAnimation) {
             System.setProperty("ca.cgjennings.anim.enabled", "false");
         }
+
+        // compose the log message, but defer logging until later
+        if (log.isLoggable(Level.INFO)) {
+            return "renderer selection matrix: Software=true, Direct3D="
+                + d3d + ", Metal=" + metal + ", OpenGL=" + opengl + ", XRender=" + xrender;
+        }
+        return null;
     }
 
     /**
@@ -565,14 +566,14 @@ public final class StrangeEons {
      *
      * @param textAA the user-specified setting, or null for a platform default
      */
-    private static void applyTextAntialiasingOptions(String textAA) {
+    private static String applyTextAntialiasingOptions(String textAA) {
         if (textAA == null) {
             textAA = PlatformSupport.PLATFORM_IS_OTHER ? "lcd" : "auto";
         }
 
         // stick with Java's detected settings
         if (textAA.equals("auto")) {
-            return;
+            return null;
         }
 
         switch (textAA) {
@@ -598,7 +599,7 @@ public final class StrangeEons {
             System.setProperty("swing.aatext", "true");
         }
         
-        log.log(Level.INFO, "set text antialiasing mode to {0}", textAA);
+        return "text antialiasing mode: " + textAA;
     }
 
     /**
@@ -1854,7 +1855,7 @@ public final class StrangeEons {
      * @throws Throwable any unhandled exceptions will be caught by a top-level
      * catch
      */
-    private void initStage1() throws Throwable {
+    private void initStage1(String rendererLogMsg, String textAALogMsg) throws Throwable {
         if (EventQueue.isDispatchThread()) {
             throw new AssertionError("must NOT be called from EDT");
         }
@@ -1864,7 +1865,7 @@ public final class StrangeEons {
         // Adjust logger level from ALL to command line level
         log.setLevel(commandLineArguments.loglevel);
 
-        initCheckSystemConfig();
+        initCheckSystemConfig(rendererLogMsg, textAALogMsg);
 
         // if restarting the app, wait for the previous instance to exit
         if (commandLineArguments.xRestartLock != null) {
@@ -2175,7 +2176,7 @@ public final class StrangeEons {
      * Checks and logs basic system configuration: build, Java version, OS,
      * architecture and processor count.
      */
-    private static void initCheckSystemConfig() {
+    private static void initCheckSystemConfig(String rendererLogMsg, String textAALogMsg) {
         MemoryMXBean b = ManagementFactory.getMemoryMXBean();
         long heap = b.getHeapMemoryUsage().getMax();
         long nonHeap = b.getNonHeapMemoryUsage().getMax();
@@ -2191,13 +2192,28 @@ public final class StrangeEons {
             StrangeEons.log.log(Level.INFO, "User storage folder located at \"{0}\"", USER_STORAGE_FOLDER);
 
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            for (GraphicsDevice gd : ge.getScreenDevices()) {
+            GraphicsDevice[] devices = ge.getScreenDevices();
+            for (int dev=0; dev<devices.length; ++dev) {
+                final GraphicsDevice gd = devices[dev];
                 DisplayMode dm = gd.getDisplayMode();
                 GraphicsConfiguration gc = gd.getDefaultConfiguration();
+                Rectangle bounds = gc.getBounds();
+                double scale = Math.round(gc.getDefaultTransform().getScaleX() * 100d);
                 StrangeEons.log.log(Level.INFO,
-                        "{0} {1} x {2}, {3} bit, {4} Hz, {5}",
-                        new Object[]{gd, dm.getWidth(), dm.getHeight(), dm.getBitDepth(), dm.getRefreshRate(), gc.getColorModel()}
+                        "screen{0} x = {1} y = {2}, {3} × {4} @ {5}%, {6} bit, {7} Hz",
+                        new Object[]{
+                            dev, bounds.x, bounds.y, bounds.width, bounds.height, scale,
+                            dm.getBitDepth(), dm.getRefreshRate()
+                        }
                 );
+                StrangeEons.log.info(gc.getColorModel().toString());
+            }
+
+            if (rendererLogMsg != null) {
+                StrangeEons.log.log(Level.INFO, rendererLogMsg);
+            }
+            if (textAALogMsg != null) {
+                StrangeEons.log.log(Level.INFO, textAALogMsg);
             }
         }
 
