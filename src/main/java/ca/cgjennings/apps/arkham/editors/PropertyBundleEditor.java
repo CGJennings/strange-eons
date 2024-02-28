@@ -982,10 +982,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
 
     private void filterFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterFieldActionPerformed
         String search = filterField.getText();
-        if (search.isEmpty()) {
-            lastSearch = null;
-            return;
-        }
+        if (search.isEmpty()) return;
 
         Pattern searchText = Pattern.compile(Pattern.quote(search), Pattern.CASE_INSENSITIVE);
 
@@ -1019,7 +1016,6 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
         }
 
     }//GEN-LAST:event_filterFieldActionPerformed
-    private String lastSearch;
 
     private boolean matchKey(int index, Pattern searchText) {
         Key key = (Key) keyModel.get(index);
@@ -1285,7 +1281,7 @@ public class PropertyBundleEditor extends AbstractSupportEditor {
 
     private DefaultListCellRenderer keyRenderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             Color c;
             Key k = (Key) value;
