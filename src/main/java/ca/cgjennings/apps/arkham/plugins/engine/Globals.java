@@ -36,6 +36,7 @@ final class Globals {
         NAMES = names.toArray(String[]::new);
     }
 
+    @SuppressWarnings("unused") // for future use
     private static void defineConst(ScriptableObject global, String name, Scriptable value) {
         global.defineConst(name, global);
         global.putConst(name, global, value);
@@ -45,12 +46,14 @@ final class Globals {
         global.put(name, global, value);
     }
 
+    @SuppressWarnings("unused") // for future use
     private static void defineAlias(ScriptableObject global, String name, String alias) {
         define(global, alias, (Scriptable) global.get(name, global));
     }
 
+    @SuppressWarnings("unused") // for future use
     private static void defineClasses(ScriptableObject global, Class<?>... classes) {
-        for (Class c : classes) {
+        for (Class<?> c : classes) {
             final NativeJavaClass njc = new NativeJavaClass(global, c, false);
             define(global, c.getSimpleName(), njc);
         }

@@ -471,7 +471,7 @@ public class Commands {
         public void performDefaultAction(ActionEvent e) {
             StrangeEonsEditor ed = StrangeEons.getActiveEditor();
             if (ed instanceof AbstractGameComponentEditor) {
-                ExpansionSelectionDialog d = new ExpansionSelectionDialog((AbstractGameComponentEditor) ed);
+                ExpansionSelectionDialog d = new ExpansionSelectionDialog((AbstractGameComponentEditor<?>) ed);
                 d.setVisible(true);
             }
         }
@@ -1182,7 +1182,7 @@ public class Commands {
     /**
      * Comments out the selected lines in a code editor.
      */
-    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forComments().forAction(EditorAction.toggleComment).key("comment-selection");
+    public static final DelegatedCommand COMMENT_OUT = new HSourceCommand("app-comment", "toolbar/comment-out.png").forAction(EditorAction.toggleComment).key("comment-selection");
 
     /**
      * Removes trailing spaces from the ends of source lines.

@@ -92,6 +92,8 @@ public final class PaperProperties implements Comparable<PaperProperties>, IconP
             name = string(name.substring(1));
         }
         this.name = name;
+        checkPaperDimension(width);
+        checkPaperDimension(height);
         if (width > height) {
             double temp = width;
             width = height;

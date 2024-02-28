@@ -3,9 +3,6 @@ package ca.cgjennings.apps.arkham.plugins.debugging;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.TextEncoding;
 import static ca.cgjennings.apps.arkham.plugins.debugging.Command.escapeHTML;
-import ca.cgjennings.graphics.filters.AbstractPixelwiseFilter;
-import ca.cgjennings.graphics.filters.CompoundPixelwiseFilter;
-import ca.cgjennings.graphics.filters.GreyscaleFilter;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.DefaultTreeCellRenderer;
 import ca.cgjennings.ui.DocumentEventAdapter;
@@ -186,6 +183,7 @@ public final class Client extends javax.swing.JFrame {
      * use the default frame)
      * @return the value of the expression as a string, or {@code null}
      */
+    @SuppressWarnings("unused") // for future use
     private String eval(String expression, int stackFrame) {
         threadAssert();
         stackFrame = stackIndex(stackFrame);
@@ -216,6 +214,7 @@ public final class Client extends javax.swing.JFrame {
      *
      * @return if the server was available the last time the client checked
      */
+    @SuppressWarnings("unused") // for future use
     private boolean isConnected() {
         return connected;
     }
@@ -520,10 +519,6 @@ public final class Client extends javax.swing.JFrame {
         }
     }
 
-    private AbstractPixelwiseFilter disableFilter = new CompoundPixelwiseFilter(
-            /*new BrightnessContrastFilter( -0.3, -0.2 ),*/new GreyscaleFilter()
-    );
-
     private void fixButtonLook() {
         UIDefaults fixes = new UIDefaults();
         fixes.put("Button[Disabled].backgroundPainter", NO_OP_PAINTER);
@@ -539,8 +534,7 @@ public final class Client extends javax.swing.JFrame {
             b.updateUI();
         }
     }
-    private final Painter NO_OP_PAINTER = (Graphics2D g, Object object, int width1, int height1) -> {
-    };
+    private final Painter<?> NO_OP_PAINTER = (Graphics2D g, Object object, int width1, int height1) -> {};
     private final Border linkBorder = new MatteBorder(0, 2, 2, 2, Color.LIGHT_GRAY) {
         private final MatteBorder disabled = new MatteBorder(0, 2, 2, 2, new Color(72, 72, 72));
 
@@ -1669,6 +1663,7 @@ public final class Client extends javax.swing.JFrame {
         }
     }
 
+    @SuppressWarnings("unused") // for future use
     private String getPanel() {
         threadAssert();
         return panel;
@@ -1790,7 +1785,7 @@ public final class Client extends javax.swing.JFrame {
             // of stack outline and clear the stack frame
             else {
                 sourceTable.repaint();
-                ((DefaultListModel) stackList.getModel()).clear();
+                ((DefaultListModel<StackFrame>) stackList.getModel()).clear();
             }
         }
     }
@@ -2080,7 +2075,7 @@ public final class Client extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     private void applyInfoTableFilter() {
-        RowFilter f = null;
+        RowFilter<Object,Object> f = null;
         String criteria = filterField.getText().trim();
         if (!criteria.isEmpty()) {
             f = RowFilter.regexFilter("(?i)(?u)" + Pattern.quote(criteria));
@@ -2656,7 +2651,7 @@ public final class Client extends javax.swing.JFrame {
      */
     private final DefaultListCellRenderer fileListRenderer = new DefaultListCellRenderer() {
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             String text = value.toString();
             if (text.startsWith("jar:")) {
                 int excl = text.indexOf('!');
@@ -2974,10 +2969,12 @@ public final class Client extends javax.swing.JFrame {
             this.line = line;
         }
 
+        @SuppressWarnings("unused") // for future use
         public String getFile() {
             return file;
         }
 
+        @SuppressWarnings("unused") // for future use
         public int getLine() {
             return line;
         }
@@ -3479,6 +3476,7 @@ public final class Client extends javax.swing.JFrame {
          *
          * @param otherSplitPane the split pane to synchronize with
          */
+        @SuppressWarnings("unused")
         public void synchronizeDividerLocation(final JSplitPane otherSplitPane) {
             PropertyChangeListener li = (PropertyChangeEvent e) -> {
                 int pos = (Integer) e.getNewValue();

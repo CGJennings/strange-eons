@@ -6,7 +6,6 @@ import ca.cgjennings.ui.DocumentEventAdapter;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
 
@@ -40,13 +39,10 @@ class CLEImportLayersDialog extends javax.swing.JDialog implements AgnosticDialo
     }
 
     private void updateOKBtn() {
-        JButton ok = PlatformSupport.getAgnosticOK(true, okBtn, cancelBtn);
         boolean enable = true;
-
         if (!new File(fileField.getText()).exists()) {
             enable = false;
         }
-
         okBtn.setEnabled(enable);
     }
 

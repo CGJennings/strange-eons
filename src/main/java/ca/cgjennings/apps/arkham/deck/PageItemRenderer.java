@@ -23,7 +23,7 @@ final class PageItemRenderer extends DefaultListCellRenderer {
     }
 
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         PageItem item = (PageItem) value;
         super.getListCellRendererComponent(list, item.getName(), index, isSelected, cellHasFocus);
         setIcon(item.getThumbnailIcon());
@@ -36,12 +36,6 @@ final class PageItemRenderer extends DefaultListCellRenderer {
         return this;
     }
 
-//	@Override
-//	protected void paintComponent(Graphics g) {
-//		// this prevents the renderer from breaking long HTML labels over multiple lines
-//		setSize(100000, getHeight());
-//		super.paintComponent(g);
-//	}
     public String getSearchTerm() {
         return searchTerm;
     }

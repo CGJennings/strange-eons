@@ -72,7 +72,6 @@ class MessageDialog extends javax.swing.JDialog {
             iconLabel.setIcon(m.icon);
         }
 
-        int y = 0;
         messagePanel.setLayout(new RiverLayout(0, 2));
         if (m.message != null) {
             for (String s : m.message) {
@@ -152,8 +151,6 @@ class MessageDialog extends javax.swing.JDialog {
     }
 
     private ComponentAdapter parentMovementListener;
-
-    private static final int MAX_LEN = 75;
 
     private void updateWindowLocation() {
         Container parent = getParent();

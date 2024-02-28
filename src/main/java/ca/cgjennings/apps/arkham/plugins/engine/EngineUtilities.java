@@ -99,7 +99,7 @@ final class EngineUtilities {
                 new Class<?>[]{interfaceType},
                 (proxyInstance, method, args) -> {
                     final Object result = engine.invokeMethod(thisObject, method.getName(), args);
-                    final Class returnType = method.getReturnType();
+                    final Class<?> returnType = method.getReturnType();
                     return returnType == Void.TYPE ? null : Context.jsToJava(result, returnType);
                 }
         );

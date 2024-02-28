@@ -199,36 +199,6 @@ public final class CatalogDialog extends javax.swing.JDialog implements Agnostic
 
         rowSorter = new TableRowSorter<>((Model) table.getModel());
         rowSorter.setComparator(COL_ICON, new Comparator<Icon>() {
-            public int iconToInteger(Icon i) {
-                int v = -1;
-                if (i == ICON_INSTALLED_IS_NEWER) {
-                    v = 10;
-                } else if (i == CORE_ICON_INSTALLED_IS_NEWER) {
-                    v = 15;
-                } else if (i == ICON_NEW_PLUGIN) {
-                    v = 20;
-                } else if (i == CORE_ICON_NEW_PLUGIN) {
-                    v = 25;
-                } else if (i == ICON_APP_UPDATE) {
-                    v = 30;
-                } else if (i == CORE_ICON_APP_UPDATE) {
-                    v = 35;
-                } else if (i == ICON_UPDATE_AVAILABLE) {
-                    v = 40;
-                } else if (i == CORE_ICON_UPDATE_AVAILABLE) {
-                    v = 45;
-                } else if (i == ICON_NOT_INSTALLED) {
-                    v = 50;
-                } else if (i == CORE_ICON_NOT_INSTALLED) {
-                    v = 55;
-                } else if (i == ICON_UP_TO_DATE) {
-                    v = 60;
-                } else if (i == CORE_ICON_UP_TO_DATE) {
-                    v = 65;
-                }
-                return v;
-            }
-
             @Override
             public int compare(Icon o1, Icon o2) {
                 if (o1 == ICON_UP_TO_DATE) {

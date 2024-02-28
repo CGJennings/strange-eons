@@ -265,7 +265,7 @@ public class Tables {
                 Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
                 t.add("Display Size", format("%,d \u00d7 %,d", d.width, d.height));
                 try {
-                    java.awt.Robot test = new java.awt.Robot();
+                    new java.awt.Robot();
                     t.add("AWT Robots", "Yes");
                 } catch (java.awt.AWTException e) {
                     t.add("AWT Robots", "No");

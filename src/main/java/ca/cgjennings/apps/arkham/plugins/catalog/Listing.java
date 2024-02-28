@@ -35,9 +35,7 @@ import resources.Settings;
  * @since 2.1
  */
 public final class Listing implements Comparable<Listing> {
-
     private Properties p;
-    private URL absUrl;
 
     /**
      * Creates a new listing. The download location of the listed plug-in will
@@ -55,14 +53,6 @@ public final class Listing implements Comparable<Listing> {
         String missing = checkRequiredFields();
         if (missing != null) {
             throw new IllegalArgumentException("Missing required field: " + missing + " [" + p + "]");
-        }
-        if (baseURL != null) {
-            try {
-                String url = get(URL);
-                absUrl = new URL(baseURL, get(URL));
-            } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("Invalid URL: " + get(URL) + " [" + p + "]", e);
-            }
         }
     }
 
@@ -104,7 +94,6 @@ public final class Listing implements Comparable<Listing> {
 
         // Set the initial URL
         String name = f.getName();
-        absUrl = f.toURI().toURL();
         p.setProperty(URL, "./" + name);
 
         // If there still isn't a name, use the file name
@@ -222,18 +211,6 @@ public final class Listing implements Comparable<Listing> {
         return get(DIGEST);
     }
 
-//	public void updateMessageDigest() throws IOException {
-//		InputStream in = null;
-//		try {
-//			in = absUrl.openStream();
-//			p.setProperty( DIGEST, createDigest( in ) );
-//			System.err.println( p.getProperty( DIGEST ) );
-//		} catch( IOException e ) {
-//			if( in != null ) {
-//				in.close();
-//			}
-//		}
-//	}
     /**
      * Sets the checksum value for the listing from a computed checksum value,
      * or removes it if {@code null}. Checksums are computed on the actual

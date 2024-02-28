@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.script.Bindings;
 import org.mozilla.javascript.Context;

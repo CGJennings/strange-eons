@@ -460,9 +460,9 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
     public void selectBestPaper(double pageWidth, double pageHeight) {
         int match = -1;
         double minError = Double.MAX_VALUE;
-        ComboBoxModel m = paperSizeCombo.getModel();
+        ComboBoxModel<PaperProperties> m = paperSizeCombo.getModel();
         for (int i = 0; i < m.getSize(); ++i) {
-            PaperProperties pp = (PaperProperties) m.getElementAt(i);
+            PaperProperties pp = m.getElementAt(i);
             double dx = pageWidth - pp.getPageWidth();
             double dy = pageHeight - pp.getPageHeight();
             double errorSq = (dx * dx) + (dy * dy);
@@ -529,7 +529,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
             gameCombo.setSelectedItem(game);
 
             // ensure that the deck's paper size is the selected one
-            DefaultComboBoxModel m = (DefaultComboBoxModel) paperSizeCombo.getModel();
+            DefaultComboBoxModel<PaperProperties> m = (DefaultComboBoxModel<PaperProperties>) paperSizeCombo.getModel();
             Set<PaperProperties> set = PaperSets.modelToSet(m);
             PaperProperties sel = PaperSets.findBestPaper(deck.getPaperProperties(), set);
             paperSizeCombo.setSelectedItem(sel);
@@ -1875,7 +1875,7 @@ public final class DeckEditor extends AbstractGameComponentEditor<Deck> implemen
     private void remCardsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remCardsBtnActionPerformed
         int[] sel = facesList.getSelectedIndices();
         for (int i = sel.length - 1; i >= 0; --i) {
-            ((DefaultListModel) facesList.getModel()).remove(sel[i]);
+            ((DefaultListModel<PageItem>) facesList.getModel()).remove(sel[i]);
         }
     }//GEN-LAST:event_remCardsBtnActionPerformed
 
@@ -2114,9 +2114,9 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
         deck.setBleedMarginWidth((double) bleedMarginSpinner.getValue());
     }//GEN-LAST:event_bleedMarginSpinnerStateChanged
 
-    private boolean searchListIndices(String criteria, JList list, DefaultListModel model, int start, int end) {
+    private boolean searchListIndices(String criteria, JList<PageItem> list, DefaultListModel<PageItem> model, int start, int end) {
         for (int i = start; i < end; ++i) {
-            if (((PageItem) model.get(i)).getName().toLowerCase().contains(criteria)) {
+            if (model.get(i).getName().toLowerCase().contains(criteria)) {
                 list.setSelectedIndex(i);
                 list.scrollRectToVisible(list.getCellBounds(i, i));
                 return true;
@@ -2159,7 +2159,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
             GameComponent g = ResourceKit.getGameComponentFromFile(f);
 
             if (g != null) {
-                Sheet[] gcSheets = g.createDefaultSheets();
+                Sheet<?>[] gcSheets = g.createDefaultSheets();
 
                 if (gcSheets == null) {
                     ErrorDialog.displayError(string("de-err-add-nonsheet"), null);
@@ -2220,7 +2220,7 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
                         PageItem c = facesList.getModel().getElementAt(i);
                         if ((result = possiblyRefreshCard(f, c, gc1)) == REFRESH_INCOMPATIBLE) {
                             // delete this entry and decrement counter so next card not missed
-                            ((DefaultListModel) facesList.getModel()).remove(i--);
+                            ((DefaultListModel<PageItem>) facesList.getModel()).remove(i--);
                         }
                         updates += result;
                     }
@@ -2583,7 +2583,8 @@ private void cropPrintWeightFieldcropFieldStateChanged(javax.swing.event.ChangeE
 
         @Override
         public DragToken<PageItem> createDragToken(DragManager<PageItem> manager, JComponent dragSource, Point dragPoint) {
-            JList list = (JList) dragSource;
+            @SuppressWarnings("unchecked")
+            JList<PageItem> list = (JList<PageItem>) dragSource;
             PageItem sel = (PageItem) list.getSelectedValue();
             DragToken<PageItem> dragToken = null;
             if (sel != null) {

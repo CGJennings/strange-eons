@@ -188,6 +188,9 @@
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="policyChainComboActionPerformed"/>
               </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
             <Component class="ca.cgjennings.ui.JTip" name="jTip1">
               <Properties>
@@ -259,7 +262,7 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jWarningLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="199" max="32767" attributes="0"/>
+                      <EmptySpace pref="191" max="32767" attributes="0"/>
                       <Component id="optimizeBtn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -462,7 +465,7 @@
                 <Component class="javax.swing.JList" name="statList">
                   <Properties>
                     <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code=" new DefaultListModel() " type="code"/>
+                      <Connection code=" new DefaultListModel&lt;File&gt;() " type="code"/>
                     </Property>
                   </Properties>
                   <AuxValues>
@@ -538,9 +541,12 @@
             <Component class="javax.swing.JComboBox" name="corpusFormatCombo">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                  <Connection code=" new javax.swing.DefaultComboBoxModel( new String[] { string(&quot;dicted-freq-fmt-0&quot;), string(&quot;dicted-freq-fmt-1&quot;), string(&quot;dicted-freq-fmt-2&quot;) } ) " type="code"/>
+                  <Connection code=" new javax.swing.DefaultComboBoxModel&lt;String&gt;( new String[] { string(&quot;dicted-freq-fmt-0&quot;), string(&quot;dicted-freq-fmt-1&quot;), string(&quot;dicted-freq-fmt-2&quot;) } ) " type="code"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

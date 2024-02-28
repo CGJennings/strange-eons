@@ -48,7 +48,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
 
         ListCellRenderer<?> r = new JIconList.IconRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 boolean enable = true;
                 if (physicalOnly) {
@@ -114,10 +114,10 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
     }
 
     private void saveCustomPapers() {
-        ListModel m = paperList.getModel();
+        ListModel<PaperWrapper> m = paperList.getModel();
         LinkedHashSet<PaperProperties> unwrapped = new LinkedHashSet<>(m.getSize());
         for (int i = 0; i < m.getSize(); ++i) {
-            unwrapped.add(((PaperWrapper) m.getElementAt(i)).paper);
+            unwrapped.add((m.getElementAt(i)).paper);
         }
         PaperSets.setUserDefinedPapers(unwrapped);
     }
@@ -549,7 +549,7 @@ public class CustomPaperDialog extends javax.swing.JDialog implements AgnosticDi
             if (index >= 0) {
                 paperListValueChanged(null);
                 isEditingIndex = -1;
-                DefaultListModel m = (DefaultListModel) paperList.getModel();
+                DefaultListModel<PaperWrapper> m = (DefaultListModel<PaperWrapper>) paperList.getModel();
                 m.remove(index);
                 if (index < m.getSize()) {
                     paperList.setSelectedIndex(index);

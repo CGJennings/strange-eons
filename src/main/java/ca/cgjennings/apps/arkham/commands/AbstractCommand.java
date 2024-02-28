@@ -5,7 +5,6 @@ import ca.cgjennings.platform.PlatformSupport;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 import javax.swing.AbstractAction;
-import static javax.swing.Action.ACTION_COMMAND_KEY;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 import resources.AcceleratorTable;

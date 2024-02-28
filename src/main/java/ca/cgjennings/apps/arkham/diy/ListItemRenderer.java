@@ -35,7 +35,7 @@ public class ListItemRenderer extends DefaultListCellRenderer {
      * @return a component capable of painting list item
      */
     @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         String label;
         Icon icon;
 

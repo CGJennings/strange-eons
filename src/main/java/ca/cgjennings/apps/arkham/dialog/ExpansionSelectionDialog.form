@@ -107,6 +107,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value=" new JExpansionList() "/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Expansion&gt;"/>
           </AuxValues>
         </Component>
       </SubComponents>

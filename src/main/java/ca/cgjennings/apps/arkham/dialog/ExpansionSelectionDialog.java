@@ -38,7 +38,7 @@ import resources.Settings;
 @SuppressWarnings("serial")
 public class ExpansionSelectionDialog extends javax.swing.JDialog {
 
-    private final AbstractGameComponentEditor ed;
+    private final AbstractGameComponentEditor<?> ed;
     private final Settings settings;
     private final Game game;
     private final JExpansionList expList;
@@ -48,7 +48,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
     /**
      * Creates a new expansion selection dialog.
      */
-    public ExpansionSelectionDialog(AbstractGameComponentEditor ed) {
+    public ExpansionSelectionDialog(AbstractGameComponentEditor<?> ed) {
         super(editorFrame(ed), true);
         this.ed = ed;
 
@@ -96,7 +96,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
         JUtilities.snapToPointer(this);
     }
 
-    private static JFrame editorFrame(AbstractGameComponentEditor ed) {
+    private static JFrame editorFrame(AbstractGameComponentEditor<?> ed) {
         if (ed == null) {
             return StrangeEons.getWindow();
         }
@@ -114,7 +114,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
     private void initListUI() {
         expList.setCellRenderer(new JIconList.IconRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 // fake cell selection if we are dragging and this was selected
                 // before the drag started
                 if (selection != null) {
@@ -148,7 +148,8 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
                 if (c instanceof JList) {
                     selection = expList.getSelectedExpansions();
 
-                    JList source = (JList) c;
+                    @SuppressWarnings("unchecked")
+                    JList<Expansion> source = (JList<Expansion>) c;
                     int leadIndex = source.getSelectionModel().getLeadSelectionIndex();
                     if (leadIndex < 0) {
                         return null;
@@ -329,7 +330,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
 
     private void applyToComponent() {
         StringBuilder expCodes = new StringBuilder(32);
-        DefaultListModel model = (DefaultListModel) expList.getModel();
+        DefaultListModel<Expansion> model = (DefaultListModel<Expansion>) expList.getModel();
         for (int i = 0; i < model.getSize(); ++i) {
             if (expList.isSelectedIndex(i)) {
                 if (expCodes.length() > 0) {
@@ -374,7 +375,7 @@ public class ExpansionSelectionDialog extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane expScroll;
-    private javax.swing.JList expSelectionList;
+    private javax.swing.JList<Expansion> expSelectionList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

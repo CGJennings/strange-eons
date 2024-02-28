@@ -6,7 +6,6 @@ import org.mozilla.javascript.ConstProperties;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.NativeJavaClass;
 import org.mozilla.javascript.Scriptable;
-import static org.mozilla.javascript.Scriptable.NOT_FOUND;
 import org.mozilla.javascript.ScriptableObject;
 import org.mozilla.javascript.Symbol;
 import org.mozilla.javascript.SymbolScriptable;
@@ -206,7 +205,7 @@ final class BindingsScriptable implements Scriptable, ConstProperties, SymbolScr
     }
 
     @Override
-    public Object getDefaultValue(Class typeHint) {
+    public Object getDefaultValue(Class<?> typeHint) {
         return ScriptableObject.getDefaultValue(this, typeHint);
     }
 
