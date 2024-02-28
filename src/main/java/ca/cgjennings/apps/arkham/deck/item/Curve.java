@@ -158,7 +158,6 @@ public class Curve extends Line {
 
         @Override
         public void paintDragState(Graphics2D g) {
-            Curve c = (Curve) getOwner();
             curve.setCurve(line.getP1(), cp, line.getP2());
             g.draw(curve);
 
@@ -191,7 +190,6 @@ public class Curve extends Line {
 
         @Override
         public void paintDragState(Graphics2D g) {
-            Curve c = (Curve) getOwner();
             curve.setCurve(line.getP1(), cp, line.getP2());
             g.draw(curve);
             paintDragEndpoint(g, line.x1, line.y1);
@@ -222,7 +220,7 @@ public class Curve extends Line {
     protected void readImpl(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readImpl(in);
 
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
 
         cx = in.readDouble();
         cy = in.readDouble();

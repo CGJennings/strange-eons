@@ -49,12 +49,11 @@ public final class MarkerSheet extends Sheet<Marker> {
     public PrintDimensions getPrintDimensions() {
         final BufferedImage template = getTemplateImage();
         if (cachedDimensions == null || template != lastTemplateUsedToComputeDimensions) {
-            double rawDPI = getTemplateResolution();
-            double oldUpsamp = getScalingFactor();
-            BufferedImage trimmed = paint(RenderTarget.PRINT, getTemplateResolution());
+            final double templateRes = getTemplateResolution();
+            BufferedImage trimmed = paint(RenderTarget.PRINT, templateRes);
             cachedDimensions = new PrintDimensions(
-                    trimmed.getWidth() / 150d * 72d,
-                    trimmed.getHeight() / 150d * 72d
+                    trimmed.getWidth() / templateRes * 72d,
+                    trimmed.getHeight() / templateRes * 72d
             );
             lastTemplateUsedToComputeDimensions = template;
         }

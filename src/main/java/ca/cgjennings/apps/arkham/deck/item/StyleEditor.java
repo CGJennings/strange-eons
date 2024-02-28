@@ -107,11 +107,9 @@ public class StyleEditor extends javax.swing.JDialog implements AgnosticDialog {
 
         public PanelKit(StylePanel<? extends Style> panel, Class<? extends Style> style) {
             this.panel = panel;
-            this.style = style;
             this.conflicted = composite.isStyleInConflict(style);
         }
         private StylePanel<? extends Style> panel;
-        private final Class<? extends Style> style;
         private boolean conflicted;
 
         @Override

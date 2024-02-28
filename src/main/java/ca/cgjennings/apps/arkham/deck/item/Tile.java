@@ -246,7 +246,7 @@ public class Tile extends AbstractRenderedItem {
     protected void readImpl(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readImpl(in);
 
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
 
         setIdentifier((String) in.readObject());
         setName((String) in.readObject());

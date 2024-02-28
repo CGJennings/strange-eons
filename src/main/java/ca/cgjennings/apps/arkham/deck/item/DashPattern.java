@@ -130,14 +130,16 @@ public enum DashPattern {
      *
      * @return the modified combo box
      */
-    @SuppressWarnings("unchecked")
-    public static JComboBox<DashPattern> createSelector(JComboBox box) {
+    public static JComboBox<DashPattern> createSelector(JComboBox<?> comboBox) {
+        @SuppressWarnings("unchecked")
+        final JComboBox<DashPattern> box = (JComboBox<DashPattern>) comboBox;
+
         DefaultComboBoxModel<DashPattern> model = new DefaultComboBoxModel<>(DashPattern.values());
         box.setModel(model);
         box.setEditable(false);
         box.setRenderer(new DefaultListCellRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList list, final Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, final Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, "", index, isSelected, cellHasFocus);
                 setIcon(
                         new Icon() {

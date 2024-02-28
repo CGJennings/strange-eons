@@ -7,7 +7,6 @@ import java.util.HashMap;
  * A factory for creating the panels that are used to edit page item
  * {@link Style}s.
  *
- *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  * @see Style
@@ -21,14 +20,14 @@ public class StylePanelFactory {
     @SuppressWarnings("unchecked")
     public synchronized static <S extends Style> StylePanel<S> createStylePanel(Class<S> styleClass) {
         try {
-            Class panelClass = null;
+            Class<StylePanel<S>> panelClass = null;
             if (registry != null) {
-                panelClass = registry.get(styleClass);
+                panelClass = (Class<StylePanel<S>>) registry.get(styleClass);
             }
             if (panelClass == null) {
-                panelClass = Class.forName(styleClass.getName() + "Panel");
+                panelClass = (Class<StylePanel<S>>) Class.forName(styleClass.getName() + "Panel");
             }
-            return (StylePanel) panelClass.getConstructor().newInstance();
+            return (StylePanel<S>) panelClass.getConstructor().newInstance();
         } catch (IllegalAccessException | InvocationTargetException uex) {
             throw new RuntimeException("failed to instantiate panel class: " + styleClass, uex);
         } catch (ClassNotFoundException cnf) {
@@ -55,5 +54,5 @@ public class StylePanelFactory {
         registry.put(styleClass, panelClass);
     }
 
-    private static HashMap<Class, Class> registry;
+    private static HashMap<Class<? extends Style>, Class<? extends StylePanel<? extends Style>>> registry;
 }

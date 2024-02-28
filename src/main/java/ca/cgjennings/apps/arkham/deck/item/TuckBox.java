@@ -765,8 +765,6 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
     private transient double wFlapSize, hFlapSize, dFlapSize;
     private transient Path2D cutLines, foldLines, interiorCuts;
 
-    private static final double BOTTOM_FLAP_STYLE_THRESHOLD = 28d;
-
     private static final double SIDE_FLAP_MINIMUM_RATIO = 0.4d;
     private static final double SIDE_FLAP_MAXIMUM_RATIO = 0.8d;
     private static final double SIDE_FLAP_PREFERRED_WIDTH = 28d;
@@ -860,35 +858,6 @@ public final class TuckBox extends AbstractFlippableItem implements EditablePage
         return new BasicStroke(lineThickness, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0f, new float[]{lineThickness * 4f, lineThickness * 4f}, 0f);
     }
 
-//	public static void main( String[] args ) {
-//
-//		Scanner sc = new Scanner( System.in );
-//		TuckBox b = new TuckBox();
-//
-//		for(;;) {
-//			double w = sc.nextDouble();
-//			if( w < 0 ) break;
-//			double h = sc.nextDouble();
-//			if( h < 0 ) break;
-//			double d = sc.nextDouble();
-//			if( d < 0 ) break;
-//			b.setDimensions( w, h, d );
-//			b.setInteriorFill( null );
-//
-//
-//			BufferedImage i = new BufferedImage( 2*(int)Math.ceil(b.getWidth()), 2*(int)Math.ceil(b.getHeight()), BufferedImage.TYPE_INT_ARGB );
-//			Graphics2D g = i.createGraphics();
-//			g.scale(2,2);
-//			g.setRenderingHint( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
-//
-//			b.paint( g, 0, 72 );
-//			g.dispose();
-//			try {
-//			ImageIO.write( i, "PNG", new File("c:\\test.png") );
-//			} catch( Exception e ) { e.printStackTrace(); }
-//
-//		}
-//	}
     @Override
     public void beginEditing() {
         TuckBoxStyleDialog d = new TuckBoxStyleDialog(StrangeEons.getWindow(), this);

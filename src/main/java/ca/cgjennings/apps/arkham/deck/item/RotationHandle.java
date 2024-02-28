@@ -13,8 +13,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- *
- * @author Jennings
+ * A handle that can be dragged to rotate a rotatable tile.
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 class RotationHandle extends DragHandle {
 
@@ -135,7 +135,6 @@ class RotationHandle extends DragHandle {
     @Override
     public boolean hitTest(Point2D p) {
         Rectangle2D.Double r = getOwner().getRectangle();
-        Point2D.Double center = new Point2D.Double(r.getCenterX(), r.getCenterY());
         return p.distanceSq(r.getCenterX(), r.getCenterY()) <= handleSizeSq;
     }
     private static final double DEFAULT_HANDLE_SIZE = 6d;

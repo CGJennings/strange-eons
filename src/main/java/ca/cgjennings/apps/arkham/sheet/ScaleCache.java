@@ -129,7 +129,7 @@ public final class ScaleCache {
      * @param x the x-offset into the template to draw the image at
      * @param y the y-offset into the template to draw the image at
      */
-    public void draw(Graphics2D gScaled, Sheet sheet, RenderTarget target, int x, int y) {
+    public void draw(Graphics2D gScaled, Sheet<?> sheet, RenderTarget target, int x, int y) {
         BufferedImage bi = getScaledImage(target, templateToSourceRatio * (float) sheet.getScalingFactor());
 
         // the scaled image should be very close to the right size, so we can

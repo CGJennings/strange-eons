@@ -877,8 +877,8 @@ public class DIY extends AbstractGameComponent implements Handler {
      * Sets the high resolution image substitution mode used by the component.
      * When substitution is active, certain image drawing methods defined on
      * {@link DIYSheet} will automatically replace a standard resolution image
-     * with a resolution version. This setting is normally only changed from its
-     * default value for testing purposes.
+     * with a resolution version. This setting is normally only changed
+     * using this method for testing purposes.
      *
      * @param mode the high resolution image substitution mode for this
      * component

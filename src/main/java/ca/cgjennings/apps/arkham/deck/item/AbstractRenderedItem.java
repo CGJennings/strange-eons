@@ -292,9 +292,7 @@ public abstract class AbstractRenderedItem extends AbstractFlippableItem {
     @Override
     protected void readImpl(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readImpl(in);
-
-        int version = in.readInt();
-
+        /* final int version = */ in.readInt();
         clearCachedImages();
         setMipMapCacheEnabled(isMipMapCacheEnabledByDefault());
     }

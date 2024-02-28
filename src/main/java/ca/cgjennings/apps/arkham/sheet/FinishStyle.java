@@ -51,10 +51,10 @@ public enum FinishStyle implements IconProvider {
      *
      * @param target the non-null sheet to apply this option to
      */
-    public void applyTo(Sheet target) {
+    public void applyTo(Sheet<?> target) {
         double ubm = bleedBase;
         if (ubm > 0d) {
-            ubm = Settings.getUser().getDouble(KEY_DEFAULT_BLEED_MARGIN, 9d);
+            ubm = Settings.getUser().getDouble(KEY_DEFAULT_BLEED_MARGIN, ubm);
         }
         target.setUserBleedMargin(ubm);
     }
@@ -65,7 +65,7 @@ public enum FinishStyle implements IconProvider {
      *
      * @param target the non-null sheet to apply this option to
      */
-    public void applyTo(Sheet target, double marginSize) {
+    public void applyTo(Sheet<?> target, double marginSize) {
         double ubm = bleedBase;
         if (ubm > 0d) {
             ubm = Math.max(0d, marginSize);
@@ -122,7 +122,7 @@ public enum FinishStyle implements IconProvider {
      * @param s the non-null sheet to read
      * @return the sheet's finish style
      */
-    public static FinishStyle fromSheet(Sheet s) {
+    public static FinishStyle fromSheet(Sheet<?> s) {
         double ubm = s.getUserBleedMargin();
         if (ubm < 0d) {
             return ROUND;
@@ -148,7 +148,7 @@ public enum FinishStyle implements IconProvider {
      *
      * @param s the sheet to set the user-selected style upon
      */
-    public static void applyPreviewStyleToSheet(Sheet s) {
+    public static void applyPreviewStyleToSheet(Sheet<?> s) {
         getPreviewStyle().applyTo(s);
     }
 

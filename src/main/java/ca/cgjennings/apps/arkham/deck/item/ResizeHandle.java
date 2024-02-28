@@ -93,7 +93,6 @@ class ResizeHandle extends DragHandle {
     }
 
     public Rectangle2D.Double getRectangle() {
-        PageItem owner = getOwner();
         double width = HANDLE_SIZE + HANDLE_MARGIN;
         Rectangle2D.Double or = getOwner().getRectangle();
         Rectangle2D.Double r = new Rectangle2D.Double(or.x, or.y, width, width);

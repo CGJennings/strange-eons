@@ -43,7 +43,7 @@ final class TuckBoxStyleDialog extends javax.swing.JDialog implements AgnosticDi
         boxTypeCombo.setModel(new DefaultComboBoxModel<>(TuckBox.BoxType.values()));
         sleeveCombo.setRenderer(new RightAlignedListRenderer() {
             @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
                 setEnabled(sleeveCombo.isEnabled());
                 return this;

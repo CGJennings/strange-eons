@@ -250,6 +250,11 @@ public abstract class Sheet<G extends GameComponent> {
     protected final void initializeTemplate(String pseudoKey, BufferedImage template, String expansionSymbolKey, double resolution, double upsampleFactor) {
         templateKey = pseudoKey;
 
+        keybase = templateKey;
+        if (templateKey.endsWith("-template")) {
+            keybase = keybase.substring(0, keybase.length() - "-template".length());
+        }        
+
         if (template == null) {
             throw new NullPointerException("template");
         }

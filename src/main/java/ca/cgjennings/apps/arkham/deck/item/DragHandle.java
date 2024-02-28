@@ -21,9 +21,6 @@ public abstract class DragHandle {
     protected Point2D last;
     protected double dx, dy;
 
-    private DragHandle() {
-    }
-
     public DragHandle(PageItem owner) {
         this.owner = owner;
     }

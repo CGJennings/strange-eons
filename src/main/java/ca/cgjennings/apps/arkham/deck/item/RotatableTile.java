@@ -12,8 +12,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- *
- * @author Jennings
+ * A tile that can be rotated to an arbitrary angle.
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class RotatableTile extends Tile {
 
@@ -106,7 +106,7 @@ public class RotatableTile extends Tile {
     protected void readImpl(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readImpl(in);
 
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
 
         setRotation(in.readDouble());
         dragHandles = null;

@@ -79,7 +79,7 @@ public abstract class AbstractFlippableItem extends AbstractItem implements Flip
     protected void readImpl(ObjectInputStream in) throws IOException, ClassNotFoundException {
         super.readImpl(in);
 
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
 
         orientation = in.readInt();
     }

@@ -253,6 +253,7 @@ public class TextBox extends AbstractRenderedItem implements SizablePageItem, Ed
      * cachedQuality2
      */
     @Deprecated
+    @SuppressWarnings("unused")
     private int cachedQuality;
 
     private transient RenderTarget cachedQuality2 = null;

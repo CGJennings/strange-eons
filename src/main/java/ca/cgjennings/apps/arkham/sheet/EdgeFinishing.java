@@ -186,7 +186,7 @@ final class EdgeFinishing {
     /**
      * Synthesizes a solid border by sampling a single border pixel from the
      * source image. The source image will be scanned to see if it appears to
-     * have corner cuts, and if so they will be filled with the border colour.
+     * have corner cuts drawn on it, and if so they will be filled with the border colour.
      *
      * @param sheetImage the image to extend
      * @param m the margin to add to each edge in pixels
@@ -327,7 +327,7 @@ final class EdgeFinishing {
     }
 
     private static boolean similar(int rgb1, int rgb2) {
-        final int da = (rgb1 >>> 24) - (rgb2 >>> 24);
+        // final int da = (rgb1 >>> 24) - (rgb2 >>> 24);
         final int dr = ((rgb1 >> 16) & 0xff) - ((rgb2 >> 16) & 0xff);
         final int dg = ((rgb1 >> 8) & 0xff) - ((rgb2 >> 8) & 0xff);
         final int db = (rgb1 & 0xff) - (rgb2 & 0xff);

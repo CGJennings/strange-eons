@@ -12,7 +12,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Rectangle2D;
@@ -48,8 +47,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     private DashPattern borderDash = DashPattern.SOLID;
     private int borderJoin = BasicStroke.JOIN_ROUND;
     private LineCap borderCap = LineCap.ROUND;
-
-    private transient Shape borderShape;
 
     public CustomTile(String identifier, double dpi) {
         super(string("de-l-class-custom"), identifier, dpi);
@@ -181,7 +178,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
         BufferedImage im = getImageFromIdentifier();
         double dpi = getDPI();
         double w = im.getWidth() / dpi * 72d;
-        double h = im.getHeight() / dpi * 72d;
         // guess if the user only changed width or height, and if so make sure
         // we use that dimension for our conversion
         if (Math.abs(w - width) < 0.000001) {
@@ -244,7 +240,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     public void setOutlineWidth(float borderWidth) {
         if (this.borderWidth != borderWidth) {
             this.borderWidth = borderWidth;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -258,7 +253,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     public void setOutlineDashPattern(DashPattern pat) {
         if (borderDash != pat) {
             borderDash = pat;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -273,7 +267,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
         int joinInt = join.toInt();
         if (this.borderJoin != joinInt) {
             this.borderJoin = joinInt;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -282,7 +275,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     public void setOutlineCap(LineCap cap) {
         if (borderCap != cap) {
             this.borderCap = cap;
-            borderShape = null;
             itemChanged();
         }
     }
@@ -295,13 +287,11 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
     @Override
     public void setX(double x) {
         super.setX(x);
-        borderShape = null;
     }
 
     @Override
     public void setY(double y) {
         super.setY(y);
-        borderShape = null;
     }
 
     @Override
@@ -320,12 +310,6 @@ public class CustomTile extends Tile implements EditablePageItem, SizablePageIte
             g.setStroke(s);
             g.setPaint(p);
         }
-    }
-
-    @Override
-    public void clearCachedImages() {
-        borderShape = null;
-        super.clearCachedImages();
     }
 
     private boolean checkImageForChanges() {

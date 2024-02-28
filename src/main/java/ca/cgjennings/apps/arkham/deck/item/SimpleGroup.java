@@ -160,7 +160,7 @@ public class SimpleGroup implements Group {
 
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        final int version = in.readInt();
+        /* final int version = */ in.readInt();
         members = (LinkedHashSet<PageItem>) in.readObject();
     }
 }

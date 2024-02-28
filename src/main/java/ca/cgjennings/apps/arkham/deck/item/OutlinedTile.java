@@ -181,7 +181,7 @@ public class OutlinedTile extends Tile {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        int version = in.readInt();
+        /* final int version = */ in.readInt();
 
         borderColor = (Color) in.readObject();
         borderWidth = in.readFloat();
