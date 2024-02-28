@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.ToolWindow;
 import ca.cgjennings.apps.arkham.TrackedWindow;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.Theme;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -930,7 +931,7 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
                     break;
                 case STRBUFF:
                     String s = (String) f.buff;
-                    if (f.len < s.length()) {
+                    if (f.off > 0 || f.len < s.length()) {
                         s = s.substring(f.off, f.off + f.len);
                     }
                     __insert(f.stream, s);
@@ -952,13 +953,8 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
             }
         }
 
-        // repaint the console NOW --- otherwise printing done in a loop
-        //   will not appear until the script completes since the script
-        //   runs in the event loop
-        // (It might not actually happen NOW if we have repainted recently,
-        // in the last MIN_FLUSH_REPAINT_PERIOD ns, since too much repainting
-        // will slow down the aforementioned loops containing print statements.)
         if (System.nanoTime() - lastFlushRepaintTime > MIN_FLUSH_REPAINT_PERIOD) {
+            __postinsert();
             scrollPane.paintImmediately(0, 0, scrollPane.getWidth(), scrollPane.getHeight());
             lastFlushRepaintTime = System.nanoTime();
         }
@@ -966,9 +962,9 @@ private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:even
 
     private void __postinsert() {
         int endOfDoc = console.getDocument().getLength();
-
-        if (!isVisible() && (getOwner() == null || getOwner().isVisible())) {
+        if (!isVisible() && getOwner() != null && getOwner().isVisible()) {
             setVisible(true);
+            getRootPane().paintImmediately(0, 0, getWidth(), getHeight());
         }
 
         try {

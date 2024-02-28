@@ -366,7 +366,9 @@ edit-font-family = default
 edit-font-pointsize = 13
 edit-font-bold = no
 edit-font-italic = no
-edit-font-ligatures = yes
+# setting this to yes will significantly slow down text rendering with the font,
+# especially in the script console
+edit-font-ligatures = no
 
 # If yes, insert chars/font previewer shows entire Unicode range by default
 insert-chars-full-unicode = no

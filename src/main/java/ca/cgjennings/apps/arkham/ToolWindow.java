@@ -211,10 +211,9 @@ public class ToolWindow extends javax.swing.JDialog {
 
 	private void titleLabelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_titleLabelMouseDragged
             if (SwingUtilities.isLeftMouseButton(evt) && titleDrag) {
-                int newX = evt.getXOnScreen();                
-                int newY = evt.getYOnScreen();
-                // setLocation(newX - dragStartXInWindow, newY - dragStartYInWindow);
-                setBounds(newX - dragStartXInWindow, newY - dragStartYInWindow, getWidth(), getHeight());
+                int newX = evt.getXOnScreen() - dragStartXInWindow;                
+                int newY = evt.getYOnScreen() - dragStartYInWindow;
+                setLocation(newX, newY);
             }
 	}//GEN-LAST:event_titleLabelMouseDragged
 
