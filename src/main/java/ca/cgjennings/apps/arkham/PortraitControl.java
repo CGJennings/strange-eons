@@ -370,6 +370,7 @@ public final class PortraitControl extends JComponent {
         return v2m.transform(p, null);
     }
 
+    @SuppressWarnings("unused") // for future use
     private Point modelToView(Point2D p) {
         p = m2v.transform(p, null);
         return new Point((int) (p.getX() + 0.5d), (int) (p.getY() + 0.5d));

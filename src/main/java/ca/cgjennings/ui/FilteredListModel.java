@@ -67,7 +67,7 @@ public class FilteredListModel<E> extends AbstractListModel<E> {
      * @param index the model index
      * @return the item at the specified index
      */
-    public Object getItem(int index) {
+    public E getItem(int index) {
         return list.get(index);
     }
 

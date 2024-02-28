@@ -739,7 +739,6 @@ public class RegionPicker extends javax.swing.JDialog {
                         }
                         setRegion(r);
                     } else if (dragType == LOC_DRAG) {
-                        Rectangle newR = new Rectangle();
                         if ((dragCorner & 1) == 0) {
                             r.x = p.x;
                             r.width = dragX - p.x;
@@ -769,11 +768,6 @@ public class RegionPicker extends javax.swing.JDialog {
                         } else {
                             setRegion(r);
                         }
-
-//						r.width = p.x - r.x;
-//						r.height = p.y - r.y;
-//						if( r.width < 0 ) r.width = 0;
-//						if( r.height < 0 ) r.height = 0;
                     }
 
                     addKeyListener(new KeyAdapter() {

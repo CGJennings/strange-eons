@@ -463,7 +463,7 @@ class PrintSetupDialog extends javax.swing.JDialog implements AgnosticDialog {
      * @param printSheets the sheets to be printed
      * @throws NullPointerException if the array of sheets is {@code null}
      */
-    public void setUpForSheets(Sheet[] printSheets) {
+    public void setUpForSheets(Sheet<?>[] printSheets) {
         sheetCount = printSheets.length;
         if (sheetCount > 0) {
             name = printSheets[0].getGameComponent().getFullName();

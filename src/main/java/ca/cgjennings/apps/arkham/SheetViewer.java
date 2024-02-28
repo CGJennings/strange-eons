@@ -22,14 +22,14 @@ import resources.Settings;
 @SuppressWarnings("serial")
 public class SheetViewer extends AbstractViewer {
 
-    private Sheet sheet;
+    private Sheet<?> sheet;
     private double upsampleFactor;
 
     public SheetViewer() {
         super();
     }
 
-    public void setSheet(Sheet c) {
+    public void setSheet(Sheet<?> c) {
         sheet = c;
         if (sheet != null) {
             // pre-renders before trying to show window; prevents
@@ -39,7 +39,7 @@ public class SheetViewer extends AbstractViewer {
         repaint();
     }
 
-    public Sheet getSheet() {
+    public Sheet<?> getSheet() {
         return sheet;
     }
 

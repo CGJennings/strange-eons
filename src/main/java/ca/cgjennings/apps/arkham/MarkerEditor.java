@@ -137,7 +137,6 @@ public final class MarkerEditor extends AbstractGameComponentEditor<Marker> {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        cardType = new javax.swing.ButtonGroup();
         filterField = new ca.cgjennings.ui.JFilterField();
         editTabs = new javax.swing.JTabbedPane();
         silPanel = new javax.swing.JPanel();
@@ -482,7 +481,6 @@ private void silListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GE
     private javax.swing.JTextArea backField;
     private ca.cgjennings.apps.arkham.PortraitPanel backPortraitAdjPanel;
     private javax.swing.JPanel backTab;
-    private javax.swing.ButtonGroup cardType;
     private javax.swing.JTextArea commentField;
     private javax.swing.JPanel commentTab;
     private javax.swing.JTabbedPane editTabs;
