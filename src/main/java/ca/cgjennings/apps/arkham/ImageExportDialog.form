@@ -223,6 +223,7 @@
           </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_CreateCodePost" type="java.lang.String" value="Component dpiEdC = dpiCombo.getEditor().getEditorComponent();&#xd;&#xa;if( dpiEdC instanceof JTextField ) {&#xd;&#xa;&#x9;JTextField dpiEd = (JTextField) dpiEdC;&#xd;&#xa;&#x9;dpiEd.setHorizontalAlignment( SwingConstants.TRAILING );&#xd;&#xa;&#x9;dpiEd.setColumns( 4 );&#xd;&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.JCheckBox" name="joinImagesBox">
@@ -304,7 +305,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edgeFinishComboActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconComboBox(FinishStyle.values())"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JIconComboBox&lt;&gt;(FinishStyle.values())"/>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;FinishStyle&gt;"/>
           </AuxValues>
         </Component>

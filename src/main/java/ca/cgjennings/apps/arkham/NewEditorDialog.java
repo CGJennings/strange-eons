@@ -113,34 +113,34 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         }
         selectClassInComponentList(comp);
 
-        final ListFilter categoryFilter = (FilteredListModel mode, Object item) -> !hiddenCategories.contains((ComponentListItem) item);
+        final ListFilter<ComponentListItem> categoryFilter = (model, item) -> !hiddenCategories.contains(item);
         gameFilter.addFilterChangedListener((Object source) -> {
             Object filter = gameFilter.getFilterValue();
             // get the current selection, which we will try to recreate
             // after filtering
             List<ComponentListItem> selection = componentList.getSelectedValuesList();
             // determine which filter to use
-            ListFilter catFilter = null;
+            ListFilter<ComponentListItem> catFilter = null;
             if (filter instanceof String) {
                 catFilter = FilteredListModel.createStringFilter((String) filter);
             }
             if (filter instanceof Game) {
                 final Game game = (Game) filter;
-                catFilter = (FilteredListModel mode, Object item) -> {
+                catFilter = (model, item) -> {
                     if (item == null) {
                         return false;
                     }
-                    Game target = ((ComponentListItem) item).getGame();
+                    Game target = item.getGame();
                     return target != null && (game.equals(target) || target.getCode().equals(Game.ALL_GAMES_CODE));
                 };
             }
             // apply filter to all categories, track which categories become empty
             hiddenCategories.clear();
             for (int i = 0; i < categoryModel.getItemCount(); ++i) {
-                FilteredListModel m = componentLists.get(i);
+                FilteredListModel<ComponentListItem> m = componentLists.get(i);
                 m.setFilter(catFilter);
                 if (m.getSize() == 0) {
-                    hiddenCategories.add((ComponentListItem) categoryModel.getItem(i));
+                    hiddenCategories.add(categoryModel.getItem(i));
                 }
             }
             // apply category filter and restore selection
@@ -150,7 +150,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
                 categoryList.setSelectedValue(selectedCat, false);
                 // reselect any items not hidden by the filter
                 for (Object sel : selection) {
-                    FilteredListModel m = (FilteredListModel) componentList.getModel();
+                    FilteredListModel<ComponentListItem> m = (FilteredListModel<ComponentListItem>) componentList.getModel();
                     for (int i = 0; i < m.getSize(); ++i) {
                         if (sel == m.getElementAt(i)) {
                             componentList.addSelectionInterval(i, i);
@@ -188,7 +188,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         }
         gameFilter.setSelectedItem("");
         for (int i = 0; i < componentLists.size(); ++i) {
-            FilteredListModel list = componentLists.get(i);
+            FilteredListModel<ComponentListItem> list = componentLists.get(i);
             for (int j = 0; j < list.getItemCount(); ++j) {
                 ComponentListItem item = (ComponentListItem) list.getItem(j);
                 if (item.entry.getName().equals(mapping) || item.entry.getMapping().equals(mapping)) {
@@ -230,9 +230,9 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     public Icon getIconForComponent(GameComponent gc) {
         String targetClass = gc.getClass().getName();
         for (int i = 0; i < componentLists.size(); ++i) {
-            FilteredListModel list = componentLists.get(i);
+            FilteredListModel<ComponentListItem> list = componentLists.get(i);
             for (int j = 0; j < list.getItemCount(); ++j) {
-                ComponentListItem item = (ComponentListItem) list.getItem(j);
+                ComponentListItem item = list.getItem(j);
                 if (item.entry.getMapping().equals(targetClass)) {
                     return item.getIcon();
                 }
@@ -257,7 +257,7 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         if (sel == null) {
             return;
         }
-        int i = ((FilteredListModel) categoryList.getModel()).getUnfilteredIndex(sel);
+        int i = ((FilteredListModel<ComponentListItem>) categoryList.getModel()).getUnfilteredIndex(sel);
         if (i < 0) {
             throw new AssertionError("cat not in model");
         }
@@ -301,9 +301,9 @@ public final class NewEditorDialog extends javax.swing.JDialog {
         // create Everything category
         TreeSet<ComponentListItem> types = new TreeSet<>();
         for (int i = 0; i < categories.size(); ++i) {
-            FilteredListModel list = componentLists.get(i);
+            FilteredListModel<ComponentListItem> list = componentLists.get(i);
             for (int j = 0; j < list.getItemCount(); ++j) {
-                types.add((ComponentListItem) list.getItem(j));
+                types.add(list.getItem(j));
             }
         }
 
@@ -319,9 +319,8 @@ public final class NewEditorDialog extends javax.swing.JDialog {
     }
 
     private void parseEditorFile(String resource) {
-        try {
+        try (ClassMap.Parser parser = new ClassMap.Parser(resource, false)) {
             int category = -1;
-            ClassMap.Parser parser = new ClassMap.Parser(resource, false);
             ClassMap.Entry entry;
             while ((entry = parser.next()) != null) {
                 if (entry.getType() == ClassMap.EntryType.CATEGORY) {
@@ -713,10 +712,6 @@ public final class NewEditorDialog extends javax.swing.JDialog {
 
         public Game getGame() {
             return entry.getGame();
-        }
-
-        public ClassMap.Entry getClassMapEntry() {
-            return entry;
         }
 
         @Override

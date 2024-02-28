@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.logging.Level;
 import javax.imageio.ImageIO;
-import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
@@ -1170,7 +1169,6 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
 	}//GEN-LAST:event_rotationFieldFocusLost
 
 	private void tabPressed( java.awt.event.MouseEvent evt ) {//GEN-FIRST:event_tabPressed
-            JComponent tab = (JComponent) evt.getSource();
             swapActiveTab();
             if (parentPanel != null) {
                 parentPanel.swapActiveTab();
@@ -1365,9 +1363,10 @@ public class PortraitPanel extends javax.swing.JPanel implements java.awt.event.
                         }
                     }
                     if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                        List files = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+                        @SuppressWarnings("unchecked")
+                        List<File> files = (List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                         if (!files.isEmpty()) {
-                            setText(((File) files.get(0)).getAbsolutePath());
+                            setText((files.get(0)).getAbsolutePath());
                             fireActionPerformed();
                             return;
                         }

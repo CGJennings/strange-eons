@@ -63,7 +63,11 @@ final class Restarter {
      *
      * @throws IOException if the restart fails
      */
+    @SuppressWarnings("resource")
     static void launchRestartProcess() throws IOException {
+        // Create a lock file that will be used by the new process to detect when this
+        // process has exited; we intentionally do not close the file; when the process
+        // exits, the file lock will be released and the new process will detect this
         File restartFile = File.createTempFile("se-restart", ".lock");
         new FileOutputStream(restartFile);
 
@@ -151,6 +155,9 @@ final class Restarter {
         if (StrangeEons.log.isLoggable(Level.INFO)) {
             StringBuilder b = new StringBuilder("relaunch command:");
             for (String token : command) {
+                if (token.contains(" ")) {
+                    token = '"' + token + '"';
+                }
                 b.append(' ').append(token);
             }
             StrangeEons.log.info(b.toString());
