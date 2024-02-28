@@ -31,7 +31,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     private int sheetIndex;
     private FinishStyle finish = FinishStyle.SQUARE;
     private double bleedMargin = 9d;
-    protected transient Sheet sheet;
+    protected transient Sheet<?> sheet;
     protected transient String name;
 
     /**
@@ -61,7 +61,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
      * @param face the sheet to display
      * @param index the index of the sheet in its source component
      */
-    public CardFace(String name, Sheet face, int index) {
+    public CardFace(String name, Sheet<?> face, int index) {
         path = "";
         sheetIndex = index;
         this.sheet = face;
@@ -132,7 +132,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         return sheetIndex;
     }
 
-    public Sheet getSheet() {
+    public Sheet<?> getSheet() {
         return sheet;
     }
 
@@ -152,7 +152,7 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
         // this would either render the exact designed bleed margin, or,
         // if no designed margin, render no margin or a 9pt synthesized option
         // depending on a deck option; the synthesis option is indicated by
-        // setting the finishe to MARGIN (otherwise it is SQUARE)
+        // setting the finish to MARGIN (otherwise it is SQUARE)
         if (transitionAutoMarginOnFirstRender) {
             transitionAutoMarginOnFirstRender = false;
             double designedMargin = sheet.getBleedMargin();
@@ -194,7 +194,6 @@ public class CardFace extends AbstractRenderedItem implements DependentPageItem,
     @Override
     public void setPath(String path) {
         this.path = path;
-
     }
 
     /**

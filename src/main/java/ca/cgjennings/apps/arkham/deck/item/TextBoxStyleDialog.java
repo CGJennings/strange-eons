@@ -100,7 +100,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         endcapCombo = new javax.swing.JComboBox<>();
-        dashCombo = new javax.swing.JComboBox();
+        dashCombo = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         thicknessField = new javax.swing.JSpinner();
         jPanel2 = new javax.swing.JPanel();
@@ -173,7 +173,7 @@ class TextBoxStyleDialog extends javax.swing.JDialog implements AgnosticDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel5)
                     .addComponent(dashCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(string("style-li-appearance"))); // NOI18N
@@ -354,7 +354,7 @@ private void bgColourButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JButton cancelBtn;
     private javax.swing.JButton colourButton;
     private javax.swing.JButton colourLabel;
-    private javax.swing.JComboBox dashCombo;
+    private javax.swing.JComboBox<DashPattern> dashCombo;
     private javax.swing.JComboBox<String> endcapCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

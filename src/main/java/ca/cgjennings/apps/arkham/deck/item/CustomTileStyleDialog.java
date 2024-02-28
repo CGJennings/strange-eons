@@ -122,7 +122,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         endcapCombo = new javax.swing.JComboBox<>();
-        dashCombo = new javax.swing.JComboBox();
+        dashCombo = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         thicknessField = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
@@ -343,7 +343,7 @@ class CustomTileStyleDialog extends javax.swing.JDialog implements AgnosticDialo
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(colourLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(colourButton))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         jLabel7.setFont(jLabel7.getFont().deriveFont(jLabel7.getFont().getSize()-2f));
@@ -487,7 +487,7 @@ private void colourLabelcolourButtonActionPerformed(java.awt.event.ActionEvent e
     private javax.swing.JButton colourButton;
     private javax.swing.JButton colourLabel;
     private javax.swing.JCheckBox cropMarkBox;
-    private javax.swing.JComboBox dashCombo;
+    private javax.swing.JComboBox<DashPattern> dashCombo;
     private javax.swing.JComboBox<String> endcapCombo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

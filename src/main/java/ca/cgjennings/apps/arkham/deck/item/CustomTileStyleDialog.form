@@ -417,6 +417,9 @@
               <Properties>
                 <Property name="maximumRowCount" type="int" value="12"/>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DashPattern&gt;"/>
+              </AuxValues>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
               <Properties>
@@ -464,7 +467,7 @@
                           <Component id="colourLabel" alignment="2" min="-2" pref="24" max="-2" attributes="0"/>
                           <Component id="colourButton" alignment="2" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="70" max="32767" attributes="0"/>
+                      <EmptySpace pref="74" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
