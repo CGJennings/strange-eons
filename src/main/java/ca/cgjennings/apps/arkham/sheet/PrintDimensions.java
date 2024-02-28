@@ -48,11 +48,6 @@ public final class PrintDimensions {
         h = Math.max(0, imageHeight + bleedMarginAdjustment);
     }
 
-    // TEMPORARY: for testing, will give wrong results
-    public PrintDimensions(BufferedImage image, double pixelsPerInch, double finalBleedMargin) {
-        this(image, pixelsPerInch, finalBleedMargin, 0d);
-    }    
-
     /**
      * Returns the width of the printed item, in points.
      *
