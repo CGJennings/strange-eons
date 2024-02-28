@@ -4,56 +4,54 @@ import ca.cgjennings.apps.arkham.Length;
 import java.awt.image.BufferedImage;
 
 /**
- * An immutable representation of the printed size of a sheet, measured in
- * points.
+ * An immutable representation of the printed size of a sheet,
+ * measured in points.
  *
  * @author Chris Jennings <https://cgjennings.ca/contact>
  * @since 3.0
  */
 public final class PrintDimensions {
 
-    double w, h;
+    private final double w;
+    private final double h;
 
     /**
      * Creates a new print dimensions instance with the specified width and
      * height (in points).
      *
-     * @param width the print width, in points
-     * @param height the print height, in points
+     * @param width the print width, in points; must be non-negative
+     * @param height the print height, in points; must be non-negative
      */
     public PrintDimensions(double width, double height) {
+        if (width < 0d) throw new IllegalArgumentException("width < 0");
+        if (height < 0d) throw new IllegalArgumentException("height < 0");
         w = width;
         h = height;
     }
 
     /**
-     * Creates a new print dimensions instance based on dimensions measured in
-     * pixels.
-     *
-     * @param pixelWidth the width, in pixels
-     * @param pixelHeight the height, in pixels
-     * @param pixelsPerInch the print resolution, in pixels per inch
-     * @param bleedMargin the size of any additional bleed margin, measured in
-     * points
-     */
-    public PrintDimensions(int pixelWidth, int pixelHeight, double pixelsPerInch, double bleedMargin) {
-        bleedMargin *= 2d;
-        w = (pixelWidth / pixelsPerInch) * 72d + bleedMargin;
-        h = (pixelHeight / pixelsPerInch) * 72d + bleedMargin;
-    }
-
-    /**
-     * Creates a new print dimensions instance based on an image.
+     * Creates a new print dimensions instance based on a source image
+     * (typically, a rendering of a {@link Sheet}).
      *
      * @param image the image whose pixel width and height will be used
-     * @param pixelsPerInch the print resolution, in pixels per inch
-     * @param bleedMargin the size of any additional bleed margin, measured in
-     * points
+     * @param pixelsPerInch the image resolution, in pixels per inch
+     * @param finalBleedMargin the size of the final desired bleed margin, measured in points
+     * @param includedBleedMargin the size of any bleed margin already included in the image, measured in points
      * @throws NullPointerException if {@code image} is {@code null}
      */
-    public PrintDimensions(BufferedImage image, double pixelsPerInch, double bleedMargin) {
-        this(image.getWidth(), image.getHeight(), pixelsPerInch, bleedMargin);
+    public PrintDimensions(BufferedImage image, double pixelsPerInch, double finalBleedMargin, double includedBleedMargin) {
+        double bleedMargin = finalBleedMargin - includedBleedMargin;
+        double bleedMarginAdjustment = bleedMargin * 2d;
+        double imageWidth = (image.getWidth() / pixelsPerInch) * 72d;
+        double imageHeight = (image.getHeight() / pixelsPerInch) * 72d;
+        w = Math.max(0, imageWidth + bleedMarginAdjustment);
+        h = Math.max(0, imageHeight + bleedMarginAdjustment);
     }
+
+    // TEMPORARY: for testing, will give wrong results
+    public PrintDimensions(BufferedImage image, double pixelsPerInch, double finalBleedMargin) {
+        this(image, pixelsPerInch, finalBleedMargin, 0d);
+    }    
 
     /**
      * Returns the width of the printed item, in points.
