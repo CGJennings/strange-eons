@@ -33,14 +33,31 @@ import resources.Settings.Region;
 public class GenericCardBase extends AbstractGameComponent implements PortraitProvider {
     static final long serialVersionUID = -45234524755650509L;
     
+    /** Default corner radius used by sheets. */
+    static final double DEFAULT_CORNER_RADIUS = 15d;
+
     /**
+     * Resolution of the template in pixels per inch.
+     * This establishes the "template pixel unit" (TPX).
      * When painting, the graphics context is scaled so that 1 unit = 1/PPI inches.
-     * Sheets can be rendered at any resolution regardless of the value.
+     * (Sheets can be rendered at any resolution regardless of the value.)
      */
     private static final int PPI = 150;
-    private static final double MM_TO_PIXELS = 0.0393701d * PPI;
-    private static final int BLEED_SIZE = (int) Math.ceil(3d * MM_TO_PIXELS);
+    /** Convert inch measurements to TPX. */
+    private static final double IN_TO_TPX = PPI;
+    /** Convert TPX measurements to inches. */
+    private static final double TPX_TO_IN = 1d / PPI;
+    /** Convert mm measurements to TPX. */
+    private static final double MM_TO_TPX = 0.0393701d * PPI;
+    /** Convert points to TPX. */
+    private static final double PT_TO_TPX = IN_TO_TPX / 72d;
+    /** Convert TPX to points. */
+    private static final double TPX_TO_PT = 72d / IN_TO_TPX;
 
+    /** Bleed margin size in points. */
+    private static final int BLEED_MARGIN_PT = 9;
+    /** Bleed margin size in template "pixels". */
+    private static final int BLEED_MARGIN_TPX = (int) Math.ceil((double) BLEED_MARGIN_PT * PT_TO_TPX);
 
     /** Width, determined as a number of pixels at the resolution set by PPI. */
     private int width;
@@ -49,18 +66,25 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     /** The card type ID set by the subclass. */
     private String id;
 
+    /** Main body text (title is stored in the standard "name" property). */
     private String text;
-
+    /** Font family for headings. */
     private String titleFamily;
+    /** Font family for body text. */
     private String textFamily;
+    /** Base font size for body text. */
     private float baseFontSize;
-    
+    /** If true, no portrait is drawn and only text is displayed. */
     private boolean textOnly;
+    /** If true, the interior of the card is filled with a translucent overlay. */
     private boolean fillInterior;
+    /** If true, the portrait is drawn under the face of the card. */
     private boolean portraitUnderFace;
-
+    /** Portrait for the actual card portrait. */
     private DefaultPortrait portrait;
+    /** Portrait for the front face design. */
     private DefaultPortrait frontFacePortrait;
+    /** Portrait for the back face design. */
     private DefaultPortrait backFacePortrait; 
 
     /**
@@ -78,8 +102,17 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     protected GenericCardBase(String id, Length width, Length height) {
         super();
         this.id = Objects.requireNonNull(id);
-        this.width = (int) Math.ceil(width.get(Length.IN) * (double) PPI);
-        this.height = (int) Math.ceil(height.get(Length.IN) * (double) PPI);
+
+        // convert dimensions in TPX
+        double w = width.get(Length.IN) * IN_TO_TPX;
+        double h = height.get(Length.IN) * IN_TO_TPX;
+        // add space for the bleed margin
+        w += BLEED_MARGIN_TPX * 2;
+        h += BLEED_MARGIN_TPX * 2;
+        // store the final, rounded dimensions
+        this.width = (int) Math.ceil(w);
+        this.height = (int) Math.ceil(h);
+
         if (this.width < PPI || this.height < PPI) {
             throw new IllegalArgumentException("card dimensions must be at least 1 inch / 2.54 cm");
         }
@@ -217,14 +250,24 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
         return id;
     }
 
-    /** Returns the card width, excluding the bleed margin. */
+    /**
+     * Returns the card width, excluding the bleed margin.
+     * Due to rounding and other factors, this may not be exactly
+     * the same as the width used to create the card.
+     */
     public Length getWidthLength() {
-        return new Length((double) width / (double) PPI, Length.IN);
+        int tpx = width - 2 * BLEED_MARGIN_TPX;
+        return new Length(tpx * TPX_TO_IN, Length.IN);
     }
 
-    /** Returns the card height, excluding the bleed margin. */
+    /**
+     * Returns the card height, excluding the bleed margin.
+     * Due to rounding and other factors, this may not be exactly
+     * the same as the height used to create the card.
+     */
     public Length getHeightLength() {
-        return new Length((double) height / (double) PPI, Length.IN);
+        int tpx = height - 2 * BLEED_MARGIN_TPX;
+        return new Length(tpx * TPX_TO_IN, Length.IN);
     }
 
     /**
@@ -349,11 +392,10 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      */
     public void setBaseFontSize(float size) {
         size = Math.max(6f, Math.min(72f, size));
-        if (size == baseFontSize) {
-            return;
+        if (size != baseFontSize) {
+            baseFontSize = size;
+            markChanged(0);
         }
-        baseFontSize = size;
-        markChanged(0);
     }
 
     /**
@@ -374,11 +416,10 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      * @see #isTextOnly()
      */
     public void setTextOnly(boolean textOnly) {
-        if (this.textOnly == textOnly) {
-            return;
+        if (this.textOnly != textOnly) {
+            this.textOnly = textOnly;
+            markChanged(0);
         }
-        this.textOnly = textOnly;
-        markChanged(0);
     }
 
     /**
@@ -400,11 +441,10 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      * @see #isInteriorFilled()
      */
     public void setInteriorFilled(boolean fill) {
-        if (fill == fillInterior) {
-            return;
+        if (fill != fillInterior) {
+            fillInterior = fill;
+            markChanged(0);
         }
-        fillInterior = fill;
-        markChanged(0);
     }
 
     /**
@@ -428,10 +468,9 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
      */
     public void setPortraitUnderFace(boolean under) {
         if (under == portraitUnderFace) {
-            return;
+            portraitUnderFace = under;
+            markChanged(0);
         }
-        portraitUnderFace = under;
-        markChanged(0);
     }
 
     /**
@@ -450,27 +489,35 @@ public class GenericCardBase extends AbstractGameComponent implements PortraitPr
     protected void initLayout() {
         final Settings s = getSettings();
 
-        // the card face area, excluding the bleed margins
-        final Region cardEdges = new Region(0, 0, width, height);
-        s.setRegion(key("-card-face"), new Region(0, 0, width, height));
+        // set the bleed margin size using the key expected by the Sheet class
+        s.setDouble(key("-front-bleed-margin"), BLEED_MARGIN_PT);
+        s.setDouble(key("-back-bleed-margin"), BLEED_MARGIN_PT);        
 
         // the full design area, including the bleed margins;
         // this is the area that the card face design "portraits" will cover
-        final Region bleedRegion = new Region(cardEdges);
-        bleedRegion.grow(BLEED_SIZE, BLEED_SIZE);
+        //   the "-bleed-region" setting is for reference only
+        final Region bleedRegion = new Region(0, 0, width, height);
         s.setRegion(key("-bleed"), bleedRegion);
         fillInPortraitSettings(key("-front-face"), bleedRegion, "templates/generic-card-face.jp2", false);
         fillInPortraitSettings(key("-back-face"), bleedRegion, "templates/generic-card-face.jp2", false);
 
+        // the card face area, excluding the bleed margins
+        //   the "-card-face-region" setting is for reference only
+        final Region cardEdges = new Region(bleedRegion);
+        cardEdges.grow(-BLEED_MARGIN_TPX, -BLEED_MARGIN_TPX);
+        s.setRegion(key("-card-face"), cardEdges);
+
         // the safe area, inset from the card edges by the bleed margin
         // all important content is placed within this area
+        //   the "-safe-region" setting is for reference only
         final Region safeRegion = new Region(cardEdges);
-        safeRegion.grow(-BLEED_SIZE, -BLEED_SIZE);
+        safeRegion.grow(-BLEED_MARGIN_TPX, -BLEED_MARGIN_TPX);
         s.setRegion(key("-safe"), safeRegion);
 
         // text will be inset by a small margin from the safe area edges
-        // and other content (e.g., the portrait)        
-        final int textMargin = BLEED_SIZE;
+        // and other content (e.g., the portrait)
+        //   the "-text-margin" setting is for reference only
+        final int textMargin = BLEED_MARGIN_TPX;
         s.setInt(key("-text-margin"), textMargin);
 
         // the portrait covers the safe area horizontally;
