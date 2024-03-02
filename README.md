@@ -5,6 +5,8 @@ components for paper-based games. It started out as a research tool
 for investigating human creativity, but has since grown into a
 comprehensive toolset for game enthusiasts and creators.
 
+[![CI](https://github.com/CGJennings/strange-eons/actions/workflows/ci.yaml/badge.svg)](https://github.com/CGJennings/strange-eons/actions/workflows/ci.yaml)
+
 ## Features
 
 Strange Eons 3 is a free, open source tool for creating paper
