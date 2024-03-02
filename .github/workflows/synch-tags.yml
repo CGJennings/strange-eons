@@ -18,7 +18,7 @@ jobs:
             const repo = 'CGJennings/se3docs';
             const owner = 'CGJennings';
             const sha = context.sha;
-            await github.git.createRef({
+            await github.rest.git.createRef({
               owner,
               repo,
               ref: `refs/tags/${tagName}`,
