@@ -1195,25 +1195,30 @@ public class ResourceKit {
      */
     public synchronized static Font getEditorFont() {
         if (editorFont == null) {
-            Font baseFont;
-            String family = RawSettings.getSetting("edit-font-family");
+            final Settings prefs = Settings.getShared();
+            String family = prefs.get("edit-font-family");
             family = family == null ? "" : family.trim();
             if (family.isEmpty() || family.equalsIgnoreCase("default")) {
                 if (PlatformSupport.PLATFORM_IS_MAC) {
-                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "SF Mono", Font.MONOSPACED);
+                    editorFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "SF Mono", Font.MONOSPACED);
                 } else {
-                    baseFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Consolas", Font.MONOSPACED);
+                    editorFont = locateAvailableFont("Cascadia Code", "Cascadia Mono", "Consolas", Font.MONOSPACED);
                 }
             } else {
                 family = normalizeFontFamilyName(family);
-                baseFont = locateAvailableFont(family, Font.MONOSPACED);
+                editorFont = locateAvailableFont(family, Font.MONOSPACED);
             }
-            Settings rk = Settings.getShared();
-            editorFont = baseFont.deriveFont(
-                    (rk.getYesNo("edit-font-bold") ? Font.BOLD : 0)
-                    | (rk.getYesNo("edit-font-italic") ? Font.ITALIC : 0),
-                    rk.getPointSize("edit-font", 12f));
-            if (rk.getYesNo("edit-font-ligatures")) {
+            // remove any styles, if possible
+            editorFont = editorFont.deriveFont(
+                Font.PLAIN,
+                prefs.getPointSize("edit-font", 12f)
+            );
+            // apply user style options
+            int style = (prefs.getYesNo("edit-font-bold") ? Font.BOLD : 0) | (prefs.getYesNo("edit-font-italic") ? Font.ITALIC : 0);
+            if (style != 0) {
+                editorFont = editorFont.deriveFont(style);
+            }
+            if (prefs.getYesNo("edit-font-ligatures")) {
                 editorFont = editorFont.deriveFont(Collections.singletonMap(
                     TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON
                 ));
