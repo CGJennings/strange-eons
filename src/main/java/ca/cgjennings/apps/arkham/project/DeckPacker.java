@@ -44,7 +44,6 @@ public class DeckPacker {
     private boolean doubleSided;
     private final List<Card> cardList = new LinkedList<>();
     private PaperProperties paper;
-    private PaperProperties[] paperSizes;
     private boolean groupCardPairs = true;
     private boolean addBleedMargin = true;
 
@@ -130,7 +129,7 @@ public class DeckPacker {
      */
     protected void addImpl(File f, GameComponent gc) {
         String path = f.getAbsolutePath();
-        Sheet[] sheets = gc.getSheets() == null ? gc.createDefaultSheets() : gc.getSheets();
+        Sheet<?>[] sheets = gc.getSheets() == null ? gc.createDefaultSheets() : gc.getSheets();
         String klass = gc.getClass().getName();
         if (klass == null) {
             klass = "";
@@ -418,7 +417,6 @@ public class DeckPacker {
      * @return {@code true} if the card was placed successfully
      */
     private boolean tryToPlaceOnPage(Deck deck, int index, Card c, double w, double h) {
-        Page p = deck.getPage(index);
         Area a = getArea(index);
         double granularity = Math.min(FAST_QUALITIES[quality], c.height);
 
@@ -474,7 +472,6 @@ public class DeckPacker {
     };
 
     private boolean tryToPlaceOnPageAggressively(Deck deck, int index, Card c, double w, double h) {
-        Page p = deck.getPage(index);
         Area a = getArea(index);
         double granularity = Math.min(AGGRESSIVE_QUALITIES[quality], c.height);
 
@@ -693,11 +690,10 @@ public class DeckPacker {
         // if not side by side, but keeping the cards together makes them
         // not possible to fit on a page, then split them into separate cards
         if (!isLayoutDoubleSided()) {
-            double w = paper.getPageWidth() - paper.getMargin() * 2;
-            double h = paper.getPageHeight() - paper.getMargin() * 2;
+            final double usableWidth = paper.getPageWidth() - paper.getMargin() * 2;
             separatedCards = new LinkedList<>();
             for (Card c : cardList) {
-                if (c.back != null && c.width > w && c.front.getWidth() < w) {
+                if (c.back != null && c.width > usableWidth && c.front.getWidth() < usableWidth) {
                     Card c2 = new Card(c.file, c.sheetIndex + 1, c.klass, c.back, null);
                     c.back = null;
                     separatedCards.add(c);

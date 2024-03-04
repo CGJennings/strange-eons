@@ -2,10 +2,15 @@ package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.ui.textedit.CodeEditorBase;
+import ca.cgjennings.ui.theme.Palette;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.font.TextAttribute;
 import java.util.Collection;
+import java.util.Collections;
+
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -31,28 +36,42 @@ class DiffDialog extends javax.swing.JDialog {
         
         diffPanel.setLayout(new GridLayout(diff.size(), 1));
         
-        Font f = new CodeEditorBase().getFont();
+        Font fontUnchanged = new CodeEditorBase().getFont();
+        Font fontInserted = fontUnchanged.deriveFont(Font.ITALIC);
+        Font fontDeleted = fontUnchanged.deriveFont(Collections.singletonMap(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON));
+
         Border b = new EmptyBorder(0,4,1,4);
-        Color deleted = new Color(0xb71c1c);
-        Color inserted = new Color(0x33691e);
+
+        Color deleted = Palette.get.pastel.translucent.pink;
+        Color deletedBackground = Palette.get.dark.opaque.red;
+
+        Color inserted = Palette.get.light.translucent.white;
+        Color insertedBackground = Palette.get.dark.opaque.green;
         
         for (CompareFiles.DiffLine li : diff) {
             JLabel line = new JLabel(li.text);
-            line.setFont(f);
+            Font font = fontUnchanged;
+            Color fg = null;
+            Color bg = null;            
             line.setBorder(b);
-            line.setForeground(Color.WHITE);
             if (li.state < 0) {
-                line.setBackground(deleted);
-                line.setOpaque(true);
+                bg = deletedBackground;
+                fg = deleted;
+                font = fontDeleted;
             } else if (li.state > 0) {
-                line.setBackground(inserted);
+                bg = insertedBackground;
+                fg = inserted;
+                font = fontInserted;
+            }
+            line.setFont(font);
+            if (bg != null) {
                 line.setOpaque(true);
+                line.setBackground(bg);
+                line.setForeground(fg);
             }
             diffPanel.add(line);
         }
     }
-
-    private String otherDiff;
 
     /**
      * This method is called from within the constructor to initialize the form.

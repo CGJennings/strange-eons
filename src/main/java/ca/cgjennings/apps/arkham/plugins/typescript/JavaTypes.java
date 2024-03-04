@@ -73,7 +73,7 @@ public class JavaTypes {
                 return cached.value;
             }
 
-            Class klass;
+            Class<?> klass;
             try {
                 klass = Class.forName(importName);
             } catch (ClassNotFoundException cnf) {
@@ -95,7 +95,7 @@ public class JavaTypes {
         }
     }
     
-    private static String define(Class c) {
+    private static String define(Class<?> c) {
         String name = c.getSimpleName();
         return "declare type " + name + " = any;";
     }

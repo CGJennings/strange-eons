@@ -221,13 +221,6 @@ class ConvertImageDialog extends javax.swing.JDialog implements AgnosticDialog {
     private boolean previewIsOutOfDate = false;
     private NumberFormat previewFormatter;
 
-    private String getErrorMessage(Throwable t, File f) {
-        if (t instanceof IllegalArgumentException) {
-            return string("pa-ci-err-bitrate");
-        }
-        return string("prj-err-convert", f.getName());
-    }
-
     private class CompressPreviewer extends ResourcePreviewer {
 
         public CompressPreviewer() {

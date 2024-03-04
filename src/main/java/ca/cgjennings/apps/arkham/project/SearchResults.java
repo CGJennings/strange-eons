@@ -402,7 +402,7 @@ class SearchResults extends javax.swing.JDialog implements Searcher.ResultReceiv
         StrangeEonsEditor[] eds = StrangeEons.getWindow().getEditorsShowingFile(f);
         if (eds.length == 0) {
             try {
-                boolean ok = open.tryInternalOpen(proj, member, f);
+                /* boolean ok = */ open.tryInternalOpen(proj, member, f);
                 // if opening an .eon file it won't open until the queue cycles
                 StrangeEons.getWindow().openFile(f);
                 if (result.line < 1) {
@@ -435,7 +435,7 @@ class SearchResults extends javax.swing.JDialog implements Searcher.ResultReceiv
             super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
             if (value instanceof Node) {
                 Result r = (Result) ((Node) value).getUserObject();
-                setIcon(r.icon);
+                setIcon(r.getIcon());
             } else {
                 setIcon(findIcon);
             }

@@ -7,9 +7,9 @@ import java.util.List;
  * complete a complex editing operation.
  */
 public class CodeAction {
-    public String description;
-    public List<FileTextChanges> changes;
-    private Object jsActionInfo;
+    public final String description;
+    public final List<FileTextChanges> changes;
+    private final Object jsActionInfo;
     
     /**
      * Creates a code action with the specified description and changes, as well

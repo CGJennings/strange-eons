@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.project;
 import ca.cgjennings.apps.arkham.RegionPicker;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import static resources.Language.string;
@@ -43,8 +42,6 @@ public class DrawRegion extends TaskAction {
 
     @Override
     public boolean perform(Project project, Task task, Member member) {
-        Rectangle r = null;
-
         BufferedImage bi;
         try {
             bi = View.getSupportedImage(member.getFile());
@@ -56,9 +53,6 @@ public class DrawRegion extends TaskAction {
         RegionPicker rpd = new RegionPicker(StrangeEons.getWindow(), false);
         rpd.setImage(bi);
         rpd.setCloseMode(true);
-        if (r != null) {
-            rpd.setRegion(r);
-        }
         project.getView().moveToLocusOfAttention(rpd, cascade++);
         rpd.setVisible(true);
         return true;

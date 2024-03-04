@@ -22,8 +22,9 @@ import org.commonmark.renderer.html.HtmlRenderer;
 import org.commonmark.renderer.html.HtmlWriter;
 
 /**
- *
- * @author chris
+ * Converts Markdown content to HTML.
+ * 
+ * @author Chris Jennings <https://cgjennings.ca/contact>
  */
 public class MarkdownTransformer {
 
@@ -31,6 +32,9 @@ public class MarkdownTransformer {
     protected Renderer renderer;
     private String defaultLanguage = null;
 
+    /**
+     * Creates a new transformer.
+     */
     public MarkdownTransformer() {
         parser = Parser.builder()
                 .extensions(List.of(
@@ -46,34 +50,66 @@ public class MarkdownTransformer {
                 .build();
     }
 
+    /**
+     * Set the default language tag to use when rendering code blocks that do not
+     * specify a language.
+     * @param languageTag the language tag to use, which should be a file extension
+     * recognized as a {@link CodeType}; may be {@code null} to use no default
+     */
     public void setDefaultCodeBlockLanguage(String languageTag) {
         this.defaultLanguage = languageTag;
     }
 
+    /**
+     * Retruns the default langauge tag used to highlight code blocks
+     * that do not specify a language.
+     * @return the default language tag
+     */
     public String getDefaultCodeBlockLanguage() {
         return defaultLanguage;
     }
 
+    /**
+     * Render the input markdown as a complete HTML document with no title.
+     * @param markdownInput
+     * @return
+     */
     public String toHtmlDocument(String markdownInput) {
         return toHtmlDocument(markdownInput, null);
     }
 
+    /**
+     * Render the input markdown as a complete HTML document.
+     * 
+     * @param markdownInput the markdown to render
+     * @param title the title of the document, or {@code null} to omit the title
+     * @return the complete HTML document
+     */
     public String toHtmlDocument(String markdownInput, String title) {
         String titleElement = title == null ? ""
                 : "    <title>" + EscapeUtil.escapeHtml(title) + "</title>\n";
 
         return "<!DOCTYPE html>\n<html>\n"
-                + "  <head>\n" + title
+                + "  <head>\n" + titleElement
                 + "  </head>\n<body>\n"
                 + render(markdownInput).trim()
                 + "\n</body>\n</html>";
     }
 
+    /**
+     * Render the input markdown as a fragment of HTML.
+     * @param markdownInput the markdown to render
+     * @return the HTML fragment
+     */
     public String render(String markdownInput) {
         Node root = parser.parse(markdownInput);
         return renderer.render(root);
     }
 
+    /**
+     * A custom renderer for fenced code blocks that uses a {@link HtmlStyler}
+     * to syntax highlight the code.
+     */
     private class CodeBlockRenderer implements NodeRenderer {
 
         private final HtmlWriter html;

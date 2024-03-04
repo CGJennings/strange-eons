@@ -116,7 +116,7 @@ public class ListTransferHandler extends TransferHandler {
     @Override
     @SuppressWarnings("unchecked")
     public boolean importData(TransferSupport transfer) {
-        JList target = (JList) transfer.getComponent();
+        JList<?> target = (JList<?>) transfer.getComponent();
 
         int index = 0;
         if (transfer.isDrop()) {
@@ -144,7 +144,7 @@ public class ListTransferHandler extends TransferHandler {
             }
         }
 
-        DefaultListModel listModel = (DefaultListModel) target.getModel();
+        DefaultListModel<Object> listModel = (DefaultListModel<Object>) target.getModel();
         int max = listModel.getSize();
 
         if (index < -1) {
@@ -166,7 +166,8 @@ public class ListTransferHandler extends TransferHandler {
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         if ((action == MOVE) && (indices != null)) {
-            DefaultListModel model = (DefaultListModel) ((JList) c).getModel();
+            @SuppressWarnings("unchecked")
+            DefaultListModel<Object> model = (DefaultListModel<Object>) ((JList<?>) c).getModel();
 
             //If we are moving items around in the same list, we
             //need to adjust the indices accordingly since those
@@ -225,14 +226,13 @@ public class ListTransferHandler extends TransferHandler {
     @Override
     protected Transferable createTransferable(JComponent c) {
         if (c instanceof JList) {
-            JList source = (JList) c;
+            JList<?> source = (JList<?>) c;
             indices = source.getSelectedIndices();
-            List values = source.getSelectedValuesList();
+            List<?> values = source.getSelectedValuesList();
             if (values.isEmpty()) {
                 return null;
             }
-            @SuppressWarnings("unchecked")
-            ArrayList<?> alist = values instanceof ArrayList ? (ArrayList) values : new ArrayList<>(values);
+            ArrayList<?> alist = values instanceof ArrayList ? (ArrayList<?>) values : new ArrayList<>(values);
             return new ListTransferable(alist);
         }
         return null;
@@ -245,9 +245,9 @@ public class ListTransferHandler extends TransferHandler {
 
     public class ListTransferable implements Transferable {
 
-        ArrayList data;
+        ArrayList<?> data;
 
-        public ListTransferable(ArrayList alist) {
+        public ListTransferable(ArrayList<?> alist) {
             data = alist;
         }
 

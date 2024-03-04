@@ -153,17 +153,7 @@ public class MnemonicInstaller {
                     }
 
                     if (comp instanceof JComboBox) {
-                        JComboBox cb = (JComboBox) comp;
-//							if( cb.isEditable() ) {
-//								Component c = cb.getEditor().getEditorComponent();
-//								if( c instanceof JTextField ) {
-//									JTextField tf = (JTextField) c;
-//									Border b = tf.getBorder();
-//									if( b != null && ((b instanceof EmptyBorder) || b.getClass().getSimpleName().equals( "SynthBorder" ) ) ) {
-//										tf.setBorder( nimbusComboBoxBorder );
-//									}
-//								}
-//							}
+                        JComboBox<?> cb = (JComboBox<?>) comp;
                         if (cb.getMaximumRowCount() < 12) {
                             cb.setMaximumRowCount(12);
                         }
@@ -429,33 +419,4 @@ public class MnemonicInstaller {
     private static int index;
     private static char key;
     private static String text;
-
-//	public static void main( String[] args ) {
-//		EventQueue.invokeLater( new Runnable() {
-//			@Override
-//			public void run() {
-//				JFrame f = new JFrame();
-//				f.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-//
-//				MnemonicInstaller.setMask( ALL );
-//
-//				JTextField name = new JTextField( 8 );
-//				JLabel label = new JLabel( "&Name \\&tc" );
-//				label.setLabelFor( name );
-//				f.setLayout( new FlowLayout() );
-//
-//				f.add( label );
-//				f.add( name );
-//				f.add( new JButton( "The &Âccent" ) );
-//				f.add( new JButton( "post&" ) );
-//				f.add( new JButton( "sp& ace" ) );
-//				f.add( new JButton( "esc\\&ape" ) );
-//				f.add( new JButton( "esc\\&ap&e" ) );
-//
-//				f.pack();
-//				f.setLocationRelativeTo( null );
-//				f.setVisible( true );
-//			}
-//		});
-//	}
 }

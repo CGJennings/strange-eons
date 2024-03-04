@@ -43,9 +43,6 @@ public class Member implements IconProvider, Iterable<Member>, Comparable<Member
     private String extension;
     private String basename;
 
-    private Member() {
-    }
-
     Member(Member parent, File file, String name) {
         if (file == null) {
             throw new NullPointerException("file");

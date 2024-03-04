@@ -17,8 +17,6 @@ import java.io.IOException;
 @SuppressWarnings("serial")
 public class InvalidFileFormatException extends IOException {
 
-    private long offset = -1L;
-
     public InvalidFileFormatException(Throwable cause, long offset) {
         super(composeMessage(null, offset), cause);
     }

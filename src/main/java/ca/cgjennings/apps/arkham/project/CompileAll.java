@@ -33,9 +33,9 @@ public class CompileAll extends TaskAction {
         if (task == null) {
             return false;
         }
-        Settings s = task.getSettings();
-        return NewTaskType.PLUGIN_TYPE.equals(task.getSettings().get(Task.KEY_TYPE))
-                && (task.getSettings().getBoolean("java-source-hint") || project.getSettings().getBoolean("java-source-hint"));
+        final Settings taskSettings = task.getSettings();
+        return NewTaskType.PLUGIN_TYPE.equals(taskSettings.get(Task.KEY_TYPE))
+                && (taskSettings.getBoolean("java-source-hint") || project.getSettings().getBoolean("java-source-hint"));
     }
 
     @Override

@@ -406,16 +406,15 @@
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="catCreditsField" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="catHomeField" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="catNameField" alignment="0" max="32767" attributes="0"/>
+                                                  <Component id="catNameField" alignment="0" pref="574" max="32767" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Group type="102" attributes="0">
-                                              <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="515" max="32767" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="250" max="32767" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jLabel15" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              </Group>
+                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -1047,13 +1046,16 @@
                           <Properties>
                             <Property name="editable" type="boolean" value="true"/>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code=" new DefaultComboBoxModel( priority_keywords ) " type="code"/>
+                              <Connection code=" new DefaultComboBoxModel&lt;&gt;( priority_keywords ) " type="code"/>
                             </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="priorityComboActionPerformed"/>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="priorityComboFocusLost"/>
                           </Events>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JComboBox" name="installScript">
                           <Properties>
@@ -1176,12 +1178,15 @@
                           <Properties>
                             <Property name="editable" type="boolean" value="true"/>
                             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                              <Connection code=" new DefaultComboBoxModel( new Object[] { StrangeEons.getBuildNumber() } ) " type="code"/>
+                              <Connection code=" new DefaultComboBoxModel&lt;&gt;(new String[] { String.valueOf(StrangeEons.getBuildNumber()) } )" type="code"/>
                             </Property>
                           </Properties>
                           <Events>
                             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="buildComboFocusLost"/>
                           </Events>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel18">
                           <Properties>
