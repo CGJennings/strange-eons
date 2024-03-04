@@ -41,17 +41,17 @@ public class Diff<E> {
     public Diff() {
         li = new DiffListener<E>() {
             @Override
-            public void inserted(Object original, Object changed, int originalIndex, E element) {
+            public void inserted(E[] original, E[] changed, int originalIndex, E element) {
                 System.out.println("> " + element);
             }
 
             @Override
-            public void removed(Object original, Object changed, int originalIndex, E element) {
+            public void removed(E[] original, E[] changed, int originalIndex, E element) {
                 System.out.println("X " + element);
             }
 
             @Override
-            public void unchanged(Object original, Object changed, int originalIndex, E element) {
+            public void unchanged(E[] original, E[] changed, int originalIndex, E element) {
                 System.out.println("  " + element);
             }
         };

@@ -23,7 +23,7 @@ public interface DiffListener<E> {
      * event occurs
      * @param element the original element
      */
-    public void unchanged(Object original, Object changed, int originalIndex, E element);
+    public void unchanged(E[] original, E[] changed, int originalIndex, E element);
 
     /**
      * Called to indicate that an element has been inserted to create the
@@ -38,7 +38,7 @@ public interface DiffListener<E> {
      * @param insertedelement the element from the changed sequence that must be
      * inserted
      */
-    public void inserted(Object original, Object changed, int originalIndex, E insertedelement);
+    public void inserted(E[] original, E[] changed, int originalIndex, E insertedelement);
 
     /**
      * Called to indicate that an element has been removed to create the changed
@@ -53,5 +53,5 @@ public interface DiffListener<E> {
      * @param removedelement the element from the changed sequence that must be
      * inserted
      */
-    public void removed(Object original, Object changed, int originalIndex, E removedelement);
+    public void removed(E[] original, E[] changed, int originalIndex, E removedelement);
 }
