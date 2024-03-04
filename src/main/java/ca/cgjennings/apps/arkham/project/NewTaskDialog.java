@@ -267,7 +267,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
         try {
             getGlassPane().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
             getGlassPane().setVisible(true);
-            Task t = parent.addNewTask(ntt, name.getText());
+            parent.addNewTask(ntt, name.getText());
         } catch (IOException e) {
             ErrorDialog.displayError(string("prj-err-task"), e);
         }
@@ -296,7 +296,7 @@ class NewTaskDialog extends javax.swing.JDialog implements AgnosticDialog {
     private static class Renderer extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             NewTaskType ntt = (NewTaskType) value;
             setIcon(MetadataSource.getDefaultTaskIcon(ntt.getType(), ntt.getIconResource()));

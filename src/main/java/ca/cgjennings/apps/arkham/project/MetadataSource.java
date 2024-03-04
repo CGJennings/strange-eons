@@ -527,9 +527,6 @@ public class MetadataSource {
         public boolean isValid();
     }
 
-    private static String[] defaultIconExtensions;
-    private static Icon[] defaultIcons;
-
     private static final HashMap<String, ThemedIcon> DEFAULT_ICONS = new HashMap<>();
 
     private static void addIcons(Object... icons) {
@@ -1104,7 +1101,7 @@ public class MetadataSource {
                 // if this object can be placed in a deck (so it is a normal
                 // card-type component), try to create a thumbnail
                 if (cm.isDeckLayoutSupported()) {
-                    Sheet[] sheets = null;
+                    Sheet<?>[] sheets = null;
                     GameComponent gc = ResourceKit.getGameComponentFromFile(m.getFile(), false);
                     if (!pc.isValid()) {
                         return;

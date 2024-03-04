@@ -25,6 +25,7 @@ import java.io.Reader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
@@ -177,8 +178,9 @@ public class ProjectUtilities {
         if (target == null) {
             throw new NullPointerException("target");
         }
+        FileSystem fs = FileSystems.getDefault();
         Path targetPath = target.toPath();
-        for (Path root : FileSystems.getDefault().getRootDirectories()) {
+        for (Path root : fs.getRootDirectories()) {
             if (targetPath.equals(root)) {
                 throw new IllegalArgumentException("cannot delete file system root " + target);
             }

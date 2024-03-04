@@ -15,7 +15,6 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -299,8 +298,6 @@ public class PluginWizardDialog extends javax.swing.JDialog {
         controller = new Controller(nextBtn, backBtn, okBtn, panel, model);
         fixDialogSize();
     }//GEN-LAST:event_nextBtnPressedOnKitPage
-
-    private BufferedImage plainBanner;
 
     public boolean showDialog() {
         ok = false;

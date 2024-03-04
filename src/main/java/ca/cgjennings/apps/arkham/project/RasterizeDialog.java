@@ -18,7 +18,6 @@ import resources.ResourceKit;
 @SuppressWarnings("serial")
 class RasterizeDialog extends javax.swing.JDialog implements AgnosticDialog {
 
-    private VectorImage image;
     private final double wh;
     private double hw;
 

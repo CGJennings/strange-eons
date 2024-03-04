@@ -5,6 +5,7 @@ import ca.cgjennings.ui.JUtilities;
 import java.text.NumberFormat;
 import java.util.Hashtable;
 import javax.imageio.ImageWriteParam;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -641,7 +642,7 @@ public class IIOWritePanel extends javax.swing.JPanel {
 
         String type = s.get(key(format, "type"));
         if (type != null) {
-            DefaultComboBoxModel model = (DefaultComboBoxModel) typeCombo.getModel();
+            ComboBoxModel<String> model = typeCombo.getModel();
             for (int i = 0; i < model.getSize(); ++i) {
                 String target = model.getElementAt(i).toString();
                 if (target.equals(type)) {

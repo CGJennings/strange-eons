@@ -54,7 +54,7 @@ public class PublishBundle extends TaskAction {
 
         final File f = member.getFile();
 
-        BusyDialog d = new BusyDialog(StrangeEons.getWindow(), string("pa-pub-bundle-busy"), () -> {
+        new BusyDialog(StrangeEons.getWindow(), string("pa-pub-bundle-busy"), () -> {
             StrangeEonsAppWindow af = StrangeEons.getWindow();
             try {
                 af.setWaitCursor();

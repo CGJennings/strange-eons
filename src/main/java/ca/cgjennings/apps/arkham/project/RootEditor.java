@@ -385,12 +385,12 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
         fillingInView = true;
 
         // MAIN TAB
-        DefaultListModel model = (DefaultListModel) scriptList.getModel();
+        DefaultListModel<Entry> model = (DefaultListModel<Entry>) scriptList.getModel();
         for (String plugin : pluginRoot.getPluginIdentifiers()) {
             plugin = PluginRoot.decoratePluginIdentifier(plugin);
             int s;
             for (s = 0; s < model.size(); ++s) {
-                if (((Entry) model.getElementAt(s)).getCode().equals(plugin)) {
+                if (model.getElementAt(s).getCode().equals(plugin)) {
                     scriptList.addSelectionInterval(s, s);
                     break;
                 }
@@ -405,9 +405,10 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
             installScript.setSelectedIndex(0);
         } else {
             install = PluginRoot.decoratePluginIdentifier(install);
-            DefaultComboBoxModel installModel = (DefaultComboBoxModel) installScript.getModel();
+            @SuppressWarnings("unchecked")
+            DefaultListModel<Entry> installModel = (DefaultListModel<Entry>) installScript.getModel();
             for (int is = 0; is < installModel.getSize(); ++is) {
-                if (((Entry) installModel.getElementAt(is)).getCode().equals(install)) {
+                if (installModel.getElementAt(is).getCode().equals(install)) {
                     installScript.setSelectedIndex(is);
                     break;
                 }
@@ -1479,9 +1480,9 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
                 game = Game.ALL_GAMES_CODE;
             }
 
-            DefaultComboBoxModel gm = (DefaultComboBoxModel) gameCombo.getModel();
+            DefaultComboBoxModel<Game> gm = (DefaultComboBoxModel<Game>) gameCombo.getModel();
             for (int i = 0; i < gm.getSize(); ++i) {
-                Game g = (Game) gm.getElementAt(i);
+                Game g = gm.getElementAt(i);
                 if (g.getCode().equals(game)) {
                     gameCombo.setSelectedIndex(i);
                     break;
@@ -1752,7 +1753,7 @@ public final class RootEditor extends javax.swing.JDialog implements AgnosticDia
     private class ScriptEntryRenderer extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             Icon i;

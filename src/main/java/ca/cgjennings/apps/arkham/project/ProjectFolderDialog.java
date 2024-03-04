@@ -404,11 +404,6 @@ public class ProjectFolderDialog extends javax.swing.JDialog implements Agnostic
     }
 
     private class ProjectTree extends FolderTree {
-
-        public ProjectTree(File root) {
-            super(root);
-        }
-
         public ProjectTree() {
         }
 

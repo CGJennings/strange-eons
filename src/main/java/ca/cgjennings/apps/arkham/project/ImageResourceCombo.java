@@ -116,8 +116,6 @@ public class ImageResourceCombo extends JIconComboBox<Object> {
     }
 
     private static class Resource implements IconProvider {
-
-        File f;
         String path;
         Icon i;
 
@@ -127,7 +125,6 @@ public class ImageResourceCombo extends JIconComboBox<Object> {
             } else {
                 i = new DeferredIcon(imgFile);
             }
-            f = imgFile;
             path = respath;
         }
 
