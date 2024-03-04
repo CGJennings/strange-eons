@@ -4,6 +4,8 @@ import java.io.File;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
+import org.fife.ui.rsyntaxtextarea.folding.FoldParser;
+import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
 
 /**
  * Default code support; adds basic syntax highlighting based on the editor's
@@ -20,19 +22,28 @@ public class DefaultCodeSupport implements CodeSupport {
         AbstractTokenMakerFactory factory = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
         factory.putMapping(SYNTAX_SE_JAVASCRIPT, SEJavaScriptTokenMaker.class.getName());
         factory.putMapping(SYNTAX_RESOURCE_FILE, ResourceFileTokenMaker.class.getName());
+
+        // register fold parsers
+        FoldParserManager fpm = FoldParserManager.get();
+        FoldParser jsLike = fpm.getFoldParser(SyntaxConstants.SYNTAX_STYLE_JAVASCRIPT);
+        fpm.addFoldParserMapping(SYNTAX_SE_JAVASCRIPT, jsLike);
     }
 
     @Override
     public void install(CodeEditorBase editor) {
         final SyntaxTextArea ta = editor.getTextArea();
+        ta.clearParsers();
 
         String id = languageIdFor(editor);
         if (id == null) {
             id = SyntaxConstants.SYNTAX_STYLE_NONE;
         }
 
-        ta.clearParsers();
         ta.setSyntaxEditingStyle(id);
+
+        boolean enableFolding = editor.isCodeFoldingEnabled();
+        ta.setCodeFoldingEnabled(!enableFolding);
+        ta.setCodeFoldingEnabled(enableFolding);
     }
 
     @Override

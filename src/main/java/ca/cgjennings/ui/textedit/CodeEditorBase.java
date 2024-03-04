@@ -69,17 +69,16 @@ public class CodeEditorBase extends JPanel {
             // we can ignore and keep default font
         }
 
-        setCodeType(null);
-
         scroll = new RTextScrollPane(textArea);
         scroll.setIconRowHeaderEnabled(true);
+        // scroll.setFoldIndicatorEnabled(true);
         add(scroll, BorderLayout.CENTER);
-
+        
         errorStrip = new ErrorStrip(textArea);
         add(errorStrip, BorderLayout.LINE_END);
-
-        addKeyBindings();
         
+        addKeyBindings();
+        setCodeType(null);
         ready = true;
     }
 
@@ -1072,11 +1071,15 @@ public class CodeEditorBase extends JPanel {
      * @see #isCodeFoldingEnabled() 
      */
     public void setCodeFoldingEnabled(boolean enable) {
-        if (enable == isCodeFoldingEnabled()) return;
-        
+        if (enable == codeFoldingEnabled) return;
+        codeFoldingEnabled = enable;
+        // force reset since parser may have been cleared
+        textArea.setCodeFoldingEnabled(!enable);
         textArea.setCodeFoldingEnabled(enable);
-        scroll.setFoldIndicatorEnabled(enable);
     }
+
+    // the text area's code folding state may not always match the intended state
+    private boolean codeFoldingEnabled = true;
     
     /**
      * Returns whether or not code folding is enabled for supported code types.
@@ -1085,7 +1088,7 @@ public class CodeEditorBase extends JPanel {
      * @see #setCodeFoldingEnabled(boolean) 
      */    
     public boolean isCodeFoldingEnabled() {
-        return textArea.isCodeFoldingEnabled();
+        return codeFoldingEnabled;
     }
 
     /**
