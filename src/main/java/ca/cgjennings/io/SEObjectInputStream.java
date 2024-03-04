@@ -68,9 +68,11 @@ public class SEObjectInputStream extends ObjectInputStream {
                     throw new IOException("failed to upgrade from old file format", e);
                 }
             } else if (obj instanceof ca.cgjennings.apps.arkham.sheet.ComponentFace.DeckSnappingHint) {
-                return ca.cgjennings.apps.arkham.sheet.Sheet.DeckSnappingHint.valueOf(((Enum) obj).name());
+                final String name = ((ca.cgjennings.apps.arkham.sheet.ComponentFace.DeckSnappingHint) obj).name();
+                return ca.cgjennings.apps.arkham.sheet.Sheet.DeckSnappingHint.valueOf(name);
             } else if (obj instanceof ca.cgjennings.apps.arkham.sheet.CharacterSheet.DeckSnappingHint) {
-                return ca.cgjennings.apps.arkham.sheet.Sheet.DeckSnappingHint.valueOf(((Enum) obj).name());
+                final String name = ((ca.cgjennings.apps.arkham.sheet.CharacterSheet.DeckSnappingHint) obj).name();
+                return ca.cgjennings.apps.arkham.sheet.Sheet.DeckSnappingHint.valueOf(name);
             }
         }
         return obj;
