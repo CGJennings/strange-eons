@@ -130,7 +130,7 @@ public final class TSLanguageServices {
      */
     public void dispose() {
         StrangeEons.log.info("shutting down");
-        go(DISPOSE, null);
+        invoke(DISPOSE, null);
     }
     
     private void disposeImpl() {
@@ -152,7 +152,7 @@ public final class TSLanguageServices {
      * @param cb the callback that will receive the result
      */
     public void getVersion(Consumer<String> cb) {
-        go(VERSION, cb);
+        invoke(VERSION, cb);
     }
 
     /**
@@ -160,7 +160,7 @@ public final class TSLanguageServices {
      * @return the version
      */    
     public String getVersion() {
-        return goSync(VERSION, (Object[]) null);
+        return invokeSync(VERSION, (Object[]) null);
     }
     
     private static final int VERSION = 1;
@@ -171,7 +171,7 @@ public final class TSLanguageServices {
      * @param cb the callback that will receive the result
      */
     public void getServicesLib(Consumer<Object> cb) {
-        go(GET_LIB, cb);
+        invoke(GET_LIB, cb);
     }
 
     /**
@@ -181,7 +181,7 @@ public final class TSLanguageServices {
      * @return the TS services library
      */    
     public Object getServicesLib() {
-        return goSync(GET_LIB);
+        return invokeSync(GET_LIB);
     }
 
     private static final int GET_LIB = 2;
@@ -218,7 +218,7 @@ public final class TSLanguageServices {
      * @param cb the callback that will receive the result 
      */
     public void transpile(String fileName, String script, Consumer<String> cb) {
-        go(TRANSPILE_SIMPLE, cb, fileName, script);
+        invoke(TRANSPILE_SIMPLE, cb, fileName, script);
     }
     
     /**
@@ -230,7 +230,7 @@ public final class TSLanguageServices {
      * @return the JavaScript equivalent of the specified script text
      */    
     public String transpile(String fileName, String script) {
-        return goSync(TRANSPILE_SIMPLE, fileName, script);
+        return invokeSync(TRANSPILE_SIMPLE, fileName, script);
     }    
     
     private static final int TRANSPILE_SIMPLE = 3;
@@ -242,7 +242,7 @@ public final class TSLanguageServices {
      * @return the snapshot object
      */
     public Object createSnapshot(String script) {
-        return goSync(CREATE_SNAPSHOT, script);
+        return invokeSync(CREATE_SNAPSHOT, script);
     }
     
     private static final int CREATE_SNAPSHOT = 4;
@@ -253,7 +253,7 @@ public final class TSLanguageServices {
      * @return a language service host
      */
     public Object createLanguageServiceHost(CompilationRoot root) {
-        return goSync(CREATE_HOST, root);
+        return invokeSync(CREATE_HOST, root);
     }
     
     private static final int CREATE_HOST = 5;
@@ -264,7 +264,7 @@ public final class TSLanguageServices {
      * @return a language service
      */
     public Object createLanguageService(CompilationRoot root) {
-        return goSync(CREATE_SERVICE, root);
+        return invokeSync(CREATE_SERVICE, root);
     }
     
     /**
@@ -273,7 +273,7 @@ public final class TSLanguageServices {
      * @return a language service
      */
     public Object createLanguageService(Object languageServiceHost) {
-        return goSync(CREATE_SERVICE, languageServiceHost);
+        return invokeSync(CREATE_SERVICE, languageServiceHost);
     }    
 
     private static final int CREATE_SERVICE = 6;
@@ -286,7 +286,7 @@ public final class TSLanguageServices {
      * @return the compilation output
      */
     public void compile(Object languageService, String fileName, Consumer<CompiledSource> cb) {
-        go(COMPILE, cb, languageService, fileName);
+        invoke(COMPILE, cb, languageService, fileName);
     }  
     
     /**
@@ -296,7 +296,7 @@ public final class TSLanguageServices {
      * @return the compilation output
      */
     public CompiledSource compile(Object languageService, String fileName) {
-        return goSync(COMPILE, languageService, fileName);
+        return invokeSync(COMPILE, languageService, fileName);
     }
     
     private static final int COMPILE = 7;
@@ -311,7 +311,7 @@ public final class TSLanguageServices {
      * @return a list of diagnostics, or null
      */    
     public void getDiagnostics(Object languageService, String fileName, boolean includeSyntactic, boolean includeSemantic, Consumer<List<Diagnostic>> cb) {
-        go(GET_DIAGNOSTICS, cb, languageService, fileName, includeSyntactic, includeSemantic);
+        invoke(GET_DIAGNOSTICS, cb, languageService, fileName, includeSyntactic, includeSemantic);
     }
     
     /**
@@ -324,7 +324,7 @@ public final class TSLanguageServices {
      * @return a list of diagnostics, or null
      */    
     public List<Diagnostic> getDiagnostics(Object languageService, String fileName, boolean includeSyntactic, boolean includeSemantic) {
-        return goSync(GET_DIAGNOSTICS, languageService, fileName, includeSyntactic, includeSemantic);
+        return invokeSync(GET_DIAGNOSTICS, languageService, fileName, includeSyntactic, includeSemantic);
     }
     
     private static final int GET_DIAGNOSTICS = 8;
@@ -338,7 +338,7 @@ public final class TSLanguageServices {
      * @param position the offset into the source file
      */
     public CompletionInfo getCodeCompletions(Object languageService, String fileName, int position) {
-        return goSync(GET_COMPLETIONS, languageService, fileName, position);
+        return invokeSync(GET_COMPLETIONS, languageService, fileName, position);
     }
     
     private static final int GET_COMPLETIONS = 9;
@@ -354,7 +354,7 @@ public final class TSLanguageServices {
      * @return the additional details, such as signature and doc comments
      */
     public CompletionInfo.EntryDetails getCodeCompletionDetails(Object languageService, String fileName, int position, CompletionInfo.Entry completion) {
-        return goSync(GET_COMPLETION_DETAILS, languageService, fileName, position, completion);
+        return invokeSync(GET_COMPLETION_DETAILS, languageService, fileName, position, completion);
     }
     
     private static final int GET_COMPLETION_DETAILS = 10;
@@ -366,7 +366,7 @@ public final class TSLanguageServices {
      * @param fileName the file name to get diagnostics for
      */
     public void getNavigationTree(Object languageService, String fileName, Consumer<NavigationTree> callback) {
-        go(GET_NAVIGATION_TREE, callback, languageService, fileName);
+        invoke(GET_NAVIGATION_TREE, callback, languageService, fileName);
     }    
     
     /**
@@ -377,7 +377,7 @@ public final class TSLanguageServices {
      * @return the file's current navigation tree
      */
     public NavigationTree getNavigationTree(Object languageService, String fileName) {
-        return goSync(GET_NAVIGATION_TREE, languageService, fileName);
+        return invokeSync(GET_NAVIGATION_TREE, languageService, fileName);
     }
 
     private static final int GET_NAVIGATION_TREE = 11;
@@ -390,7 +390,7 @@ public final class TSLanguageServices {
      * @param position the offset into the source file
      */
     public Overview getOverview(Object languageService, String fileName, int position) {
-        return goSync(GET_OVERVIEW, languageService, fileName, position);
+        return invokeSync(GET_OVERVIEW, languageService, fileName, position);
     }
     
     private static final int GET_OVERVIEW = 12;
@@ -469,9 +469,8 @@ public final class TSLanguageServices {
      * @param callback the callback to invoke with a return value
      * @param args the arguments needed to complete the request
      */
-    @SuppressWarnings("unchecked")
-    private <T> void go(int type, Consumer<T> callback, Object... args) {
-        queue.add(new Request(type, callback, args));
+    private <T> void invoke(int type, Consumer<T> callback, Object... args) {
+        queue.add(new Request<T>(type, callback, args));
     }
 
     /**
@@ -482,7 +481,7 @@ public final class TSLanguageServices {
      * @param args the arguments needed to complete the request
      * @return the return value of the request, or null
      */    
-    private <T> T goSync(int type, Object... args) {
+    private <T> T invokeSync(int type, Object... args) {
         Request<T> r = new Request<>(-type, null, args);
         // if we are called from the worker thread, handle the request
         // directly without putting it on the queue; this allows
