@@ -84,7 +84,6 @@ import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -93,7 +92,6 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Highlighter.HighlightPainter;
@@ -2343,26 +2341,6 @@ public final class ProjectView extends javax.swing.JPanel {
 
     private static class HeaderlessTable extends JTable {
 
-        public HeaderlessTable(Object[][] rowData, Object[] columnNames) {
-            super(rowData, columnNames);
-        }
-
-        public HeaderlessTable(int numRows, int numColumns) {
-            super(numRows, numColumns);
-        }
-
-        public HeaderlessTable(TableModel dm, TableColumnModel cm, ListSelectionModel sm) {
-            super(dm, cm, sm);
-        }
-
-        public HeaderlessTable(TableModel dm, TableColumnModel cm) {
-            super(dm, cm);
-        }
-
-        public HeaderlessTable(TableModel dm) {
-            super(dm);
-        }
-
         public HeaderlessTable() {
         }
 
@@ -2380,9 +2358,6 @@ public final class ProjectView extends javax.swing.JPanel {
                     if (viewport == null || viewport.getView() != this) {
                         return;
                     }
-                    //                scrollPane.setColumnHeaderView(getTableHeader());
-                    // configure the scrollpane for any LAF dependent settings
-                    //configureEnclosingScrollPaneUI();
                 }
             }
         }
