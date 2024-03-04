@@ -32,7 +32,6 @@ public class CompareFiles extends TaskAction {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public boolean performOnSelection(Member[] members) {
         if (!appliesToSelection(members)) {
             return false;
@@ -48,19 +47,19 @@ public class CompareFiles extends TaskAction {
         }
         
         final Collection<DiffLine> diff = new LinkedList<>();
-        new Diff(new DiffListener<String>() {
+        new Diff<String>(new DiffListener<String>() {
             @Override
-            public void unchanged(Object original, Object changed, int originalIndex, String element) {
+            public void unchanged(String[] original, String[] changed, int originalIndex, String element) {
                 diff.add(new DiffLine(0, element));
             }
 
             @Override
-            public void inserted(Object original, Object changed, int originalIndex, String insertedelement) {
+            public void inserted(String[] original, String[] changed, int originalIndex, String insertedelement) {
                 diff.add(new DiffLine(1, insertedelement));
             }
 
             @Override
-            public void removed(Object original, Object changed, int originalIndex, String removedelement) {
+            public void removed(String[] original, String[] changed, int originalIndex, String removedelement) {
                 diff.add(new DiffLine(-1, removedelement));
             }
         }).findChanges(li1, li2);

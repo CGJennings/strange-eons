@@ -129,7 +129,7 @@ class ChangeIconDialog extends javax.swing.JDialog implements AgnosticDialog {
     static class TaskIconRenderer extends DefaultListCellRenderer {
 
         @Override
-        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             setText(null);
             setPreferredSize(ICON_CELL_SIZE);
