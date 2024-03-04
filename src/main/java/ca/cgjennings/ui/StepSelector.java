@@ -13,9 +13,6 @@ public class StepSelector {
 
     private double[] steps;
 
-    private StepSelector() {
-    }
-
     public StepSelector(double[] steps) {
         steps = steps.clone();
         Arrays.sort(steps);

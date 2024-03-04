@@ -23,40 +23,11 @@ public class StyleUtilities {
     public static String REGULAR = "regular";
     public static String LARGE = "large";
 
-    private static final String SIZE = "JComponent.sizeVariant";
-
-//	private static String[] SEARCH_FIELD_KEYS = new String[] {
-//		"Quaqua.TextField.style",
-//		"JTextField.variant"
-//	};
-//
-//	private static String[] SEARCH_FIELD_VALUES = new String[] {
-//		"search",
-//		"search"
-//	};
-//
-//	public static void searchField( JTextField searchField, JLabel labelToHide ) {
-//		if( PlatformSupport.isUsingAquaDerivedLookAndFeel() ) {
-//			for( int i=0; i<SEARCH_FIELD_KEYS.length; ++i ) {
-//				searchField.putClientProperty( SEARCH_FIELD_KEYS[i], SEARCH_FIELD_VALUES[i] );
-//			}
-//			if( labelToHide != null ) {
-//				labelToHide.setVisible( false );
-//			}
-//		} else {
-//			labelToHide.setIcon( new ImageIcon( findIconURL ) );
-//			labelToHide.setText( " " );
-//			labelToHide.setIconTextGap( 0 );
-//		}
-//	}
     public static void colorWell(JButton button) {
         button.putClientProperty("Quaqua.Button.style", "colorWell");
     }
 
     public static void size(JComponent comp, Object sizeValue) {
-        // WORKAROUND: weird jumping font size bug in Nimbus
-//        comp.putClientProperty(SIZE, sizeValue);
-
         float adjust = 0f;
         if (sizeValue.equals(SMALL) || sizeValue.equals(MINI)) {
             adjust = -1f;

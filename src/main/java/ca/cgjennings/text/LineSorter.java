@@ -4,6 +4,7 @@ import java.text.Collator;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Locale;
@@ -48,7 +49,7 @@ public class LineSorter {
     }
 
     @SuppressWarnings("unchecked")
-    protected String[] sortTagged(String[] lines, TaggedLine[] tagged, Comparator cmp) {
+    protected String[] sortTagged(String[] lines, TaggedLine[] tagged, Comparator<?> cmp) {
         if (tagged == null) {
             Arrays.sort(lines, (Comparator<String>) cmp);
         } else {
@@ -63,7 +64,6 @@ public class LineSorter {
     }
 
     protected interface TaggedLine {
-
         public int getIndex();
     }
 
@@ -86,11 +86,14 @@ public class LineSorter {
             coll.setDecomposition(Collator.CANONICAL_DECOMPOSITION);
             comparator = coll;
             if (descending) {
-                comparator = new ReverseComparator<>(comparator);
+                comparator = Collections.reverseOrder(comparator);
             }
         }
     }
 
+    /**
+     * A line sorter that sorts lines semantically, treating numbers as numbers.
+     */
     public static class SemanticSorter extends LocalizedSorter {
 
         private Comparator<Object> stringComparator;
@@ -191,20 +194,6 @@ public class LineSorter {
         @Override
         public int getIndex() {
             return index;
-        }
-    }
-
-    private static class ReverseComparator<T> implements Comparator<T> {
-
-        private final Comparator<T> cmp;
-
-        public ReverseComparator(Comparator<T> c) {
-            cmp = c;
-        }
-
-        @Override
-        public int compare(T o1, T o2) {
-            return -cmp.compare(o1, o2);
         }
     }
 }
