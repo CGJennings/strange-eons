@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark-ext-image-attributes</artifactId>
-            <version>0.21.0</version>
+            <version>0.22.0</version>
         </dependency>
 
         <!-- Layout tools used to implement script libraries -->
