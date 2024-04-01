@@ -16,7 +16,7 @@
         <dependency>
           <groupId>com.formdev</groupId>
           <artifactId>flatlaf</artifactId>
-          <version>3.4</version>
+          <version>3.4.1</version>
         </dependency>
 
         <!-- Syntax editing -->
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark</artifactId>
-            <version>0.21.0</version>
+            <version>0.22.0</version>
         </dependency>
         <dependency>
             <groupId>org.commonmark</groupId>
@@ -61,7 +61,7 @@
         <dependency>
             <groupId>org.commonmark</groupId>
             <artifactId>commonmark-ext-image-attributes</artifactId>
-            <version>0.21.0</version>
+            <version>0.22.0</version>
         </dependency>
 
         <!-- Layout tools used to implement script libraries -->
