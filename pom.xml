@@ -68,7 +68,7 @@
         <dependency>
             <groupId>com.miglayout</groupId>
             <artifactId>miglayout-swing</artifactId>
-            <version>11.3</version>
+            <version>11.4</version>
         </dependency>        
 
         <!-- Local "proprietary" libs -->
