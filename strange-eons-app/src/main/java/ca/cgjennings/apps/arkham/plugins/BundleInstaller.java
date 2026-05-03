@@ -850,16 +850,23 @@ public class BundleInstaller {
                 }
             }
 
-            // Merge the bundle with the application class path. Bundles
-            // that opt into per-plug-in isolation (classloader = isolated
-            // in the eons-plugin manifest) are recorded for lazy URL-
-            // classloader creation instead of going onto system CL.
-            if ("isolated".equalsIgnoreCase(root.getClientProperty("classloader"))) {
-                isolatedBundleFiles.add(bundleFile);
-                discoveredBundles.put(bundleFile, pluginBundle);
-                StrangeEons.log.log(Level.FINE, "isolated-classloader bundle: {0}", bundleFile);
-            } else {
-                linkPluginBundle(pluginBundle);
+            // Dispatch on the effective classloader policy. Type-driven
+            // default: libraries and themes load into the shared
+            // LibraryClassLoader (and, in parallel, jar-loader's system
+            // CL until that path is removed); plug-ins and extensions
+            // get a per-bundle URLClassLoader. The eons-plugin
+            // manifest's "classloader" key overrides the default
+            // ("isolated" or "shared").
+            switch (effectiveClassLoaderPolicy(root, pluginType)) {
+                case ISOLATED:
+                    isolatedBundleFiles.add(bundleFile);
+                    discoveredBundles.put(bundleFile, pluginBundle);
+                    StrangeEons.log.log(Level.FINE, "isolated-classloader bundle: {0}", bundleFile);
+                    break;
+                case SHARED:
+                    linkPluginBundle(pluginBundle);
+                    addToLibraryClassLoader(bundleFile);
+                    break;
             }
 
             // pluginSet == null ==> we are scanning libraries (so we are just
@@ -959,7 +966,11 @@ public class BundleInstaller {
 
     /**
      * Adds the plug-in bundle to the class path. The bundle must be in plain
-     * format.
+     * format. When jar-loader instrumentation is unavailable (e.g., the
+     * agent wasn't attached), the bundle is recorded as discovered but not
+     * appended to the system classloader; the shared
+     * {@linkplain #getLibraryClassLoader() library classloader} populated
+     * in parallel keeps the bundle reachable to plug-in CLs.
      *
      * @param pluginBundle the bundle to link
      * @throws PluginException if linking fails
@@ -974,9 +985,15 @@ public class BundleInstaller {
 
         File bundleFile = pluginBundle.getFile();
         try {
-            JarLoader.addToClassPath(bundleFile);
+            if (JarLoader.isSupported()) {
+                JarLoader.addToClassPath(bundleFile);
+                StrangeEons.log.log(Level.FINE, "dynamically linked to plug-in bundle {0}", bundleFile);
+            } else {
+                StrangeEons.log.log(Level.FINE,
+                        "jar-loader unavailable; bundle reachable via library classloader only: {0}",
+                        bundleFile);
+            }
             discoveredBundles.put(bundleFile, pluginBundle);
-            StrangeEons.log.log(Level.FINE, "dynamically linked to plug-in bundle {0}", bundleFile);
         } catch (IOException ioe) {
             throw new PluginException("failed to load bundle", ioe);
         } catch (Throwable t) {
@@ -1135,11 +1152,75 @@ public class BundleInstaller {
         }
     }
 
-    // --- isolated-classloader registry --------------------------------------
+    // --- per-bundle classloader registries ----------------------------------
 
     private static final Set<File> isolatedBundleFiles = ConcurrentHashMap.newKeySet();
     private static final Map<File, URLClassLoader> isolatedClassLoaders =
             new ConcurrentHashMap<>();
+
+    /**
+     * Effective classloader policy for a bundle, after combining its
+     * type-driven default with any {@code classloader} key in the
+     * {@code eons-plugin} manifest.
+     */
+    private enum ClassLoaderPolicy { ISOLATED, SHARED }
+
+    private static ClassLoaderPolicy effectiveClassLoaderPolicy(PluginRoot root, int pluginType) {
+        String override = root.getClientProperty("classloader");
+        if ("isolated".equalsIgnoreCase(override)) {
+            return ClassLoaderPolicy.ISOLATED;
+        }
+        if ("shared".equalsIgnoreCase(override)) {
+            return ClassLoaderPolicy.SHARED;
+        }
+        switch (pluginType) {
+            case PluginBundle.TYPE_LIBRARY:
+            case PluginBundle.TYPE_THEME:
+                return ClassLoaderPolicy.SHARED;
+            case PluginBundle.TYPE_EXTENSION:
+            case PluginBundle.TYPE_PLUGIN:
+            default:
+                return ClassLoaderPolicy.ISOLATED;
+        }
+    }
+
+    /**
+     * Shared classloader holding the URLs of all bundles that resolved to
+     * the {@link ClassLoaderPolicy#SHARED} policy. Parented to the system
+     * classloader so library and theme bundles linked via {@code jar-loader}
+     * remain visible during the parallel-loading transition.
+     */
+    private static final class LibraryClassLoader extends URLClassLoader {
+        LibraryClassLoader(ClassLoader parent) {
+            super(new URL[0], parent);
+        }
+
+        void register(URL url) {
+            addURL(url);
+        }
+    }
+
+    private static final LibraryClassLoader libraryClassLoader =
+            new LibraryClassLoader(ClassLoader.getSystemClassLoader());
+
+    private static void addToLibraryClassLoader(File bundleFile) {
+        try {
+            libraryClassLoader.register(bundleFile.toURI().toURL());
+        } catch (MalformedURLException e) {
+            throw new IllegalStateException("could not form URL for " + bundleFile, e);
+        }
+    }
+
+    /**
+     * Returns the shared classloader that holds {@code .selibrary},
+     * {@code .setheme}, and any other bundle whose effective policy
+     * resolves to {@link ClassLoaderPolicy#SHARED}. Isolated per-bundle
+     * classloaders are parented to it so consumer plug-ins can resolve
+     * library types via the standard delegation chain.
+     */
+    public static ClassLoader getLibraryClassLoader() {
+        return libraryClassLoader;
+    }
 
     /**
      * Returns whether the given bundle file was recorded as opting into
@@ -1153,9 +1234,9 @@ public class BundleInstaller {
     /**
      * Returns the per-plug-in {@link URLClassLoader} for an isolated
      * bundle, creating one on first use. The classloader's parent is the
-     * unfiltered system classloader, so isolated plug-ins still see core
-     * types and any non-isolated bundles' classes through the parent
-     * chain.
+     * shared {@linkplain #getLibraryClassLoader() library classloader}, so
+     * isolated plug-ins resolve library and core types through the
+     * standard delegation chain.
      *
      * @throws IllegalArgumentException if {@code bundleFile} is not a
      *     registered isolated bundle
@@ -1167,7 +1248,7 @@ public class BundleInstaller {
         return isolatedClassLoaders.computeIfAbsent(bundleFile, f -> {
             try {
                 URL[] urls = {f.toURI().toURL()};
-                return new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
+                return new URLClassLoader(urls, libraryClassLoader);
             } catch (MalformedURLException e) {
                 throw new IllegalStateException("could not form URL for " + f, e);
             }

@@ -14,6 +14,7 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import static ca.cgjennings.apps.arkham.dialog.ErrorDialog.displayError;
 import ca.cgjennings.apps.arkham.dialog.InsertCharsDialog;
 import ca.cgjennings.apps.arkham.dialog.Messenger;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog;
 import ca.cgjennings.apps.arkham.plugins.catalog.Catalog.VersioningState;
@@ -282,6 +283,21 @@ public class ResourceKit {
         URL url = ResourceKit.class.getResource(resource);
         if (url != null) {
             return url;
+        }
+
+        // 3a. Walk per-bundle classloaders for plug-ins / extensions
+        //     that loaded under classloader = isolated. Mirrors the
+        //     package-prefix semantics of ResourceKit.class.getResource:
+        //     leading "/" means absolute classpath, otherwise the path
+        //     is relative to the resources package.
+        String clName = resource.startsWith("/")
+                ? resource.substring(1)
+                : "resources/" + resource;
+        for (ClassLoader cl : BundleInstaller.getIsolatedClassLoaders()) {
+            URL u = cl.getResource(clName);
+            if (u != null) {
+                return u;
+            }
         }
 
         // 4. If there is an open project, search it for task folders that

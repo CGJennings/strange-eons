@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,6 +88,8 @@ class IsolatedBundleTest {
         URLClassLoader cl = BundleInstaller.classLoaderFor(bundleFile.toFile());
         assertNotNull(cl);
         assertNotSame(ClassLoader.getSystemClassLoader(), cl);
+        assertSame(BundleInstaller.getLibraryClassLoader(), cl.getParent(),
+                "isolated CLs should parent to the shared library classloader");
         // Same instance on subsequent lookups.
         assertEquals(cl, BundleInstaller.classLoaderFor(bundleFile.toFile()));
         assertTrue(BundleInstaller.getIsolatedClassLoaders().contains(cl));
