@@ -1044,6 +1044,86 @@ public class BundleInstaller {
     }
 
     /**
+     * Resolves the bundles transitively required by {@code bundleFile} via its
+     * {@code catalog-requires} manifest entry. Each entry should be a
+     * {@code CATALOGUEID{...}} reference or a bare UUID; entries are looked up
+     * against the currently-installed bundle registry. Required bundles whose
+     * UUIDs are not installed are skipped with a logged warning.
+     *
+     * <p>The returned list contains each required bundle file at most once and
+     * does not include {@code bundleFile} itself. Order is the breadth-first
+     * traversal order of the dependency graph.
+     *
+     * @param bundleFile the bundle to resolve requirements for
+     * @return the list of installed bundle files transitively required by
+     *     {@code bundleFile}
+     */
+    public static List<File> resolveBundleRequirements(File bundleFile) {
+        if (bundleFile == null) {
+            throw new NullPointerException("bundleFile");
+        }
+        List<File> resolved = new LinkedList<>();
+        Set<UUID> visited = new HashSet<>();
+        LinkedList<File> queue = new LinkedList<>();
+        queue.add(bundleFile);
+        while (!queue.isEmpty()) {
+            File current = queue.removeFirst();
+            String requires;
+            try {
+                PluginRoot root = new PluginBundle(current).getPluginRoot();
+                if (root == null) {
+                    continue;
+                }
+                requires = root.getClientProperty("catalog-requires");
+            } catch (IOException ioe) {
+                StrangeEons.log.log(Level.WARNING, "could not read manifest for " + current, ioe);
+                continue;
+            }
+            if (requires == null || requires.isEmpty()) {
+                continue;
+            }
+            for (String token : requires.split("\\s*,\\s*")) {
+                token = token.trim();
+                if (token.isEmpty()) {
+                    continue;
+                }
+                UUID uuid = parseRequirementUUID(token);
+                if (uuid == null) {
+                    StrangeEons.log.log(Level.WARNING,
+                            "ignoring bad catalog-requires entry in {0}: {1}",
+                            new Object[]{current.getName(), token});
+                    continue;
+                }
+                if (!visited.add(uuid)) {
+                    continue;
+                }
+                File required = uuidToFileMap.get(uuid);
+                if (required == null) {
+                    StrangeEons.log.log(Level.WARNING,
+                            "{0} requires bundle that is not installed: {1}",
+                            new Object[]{current.getName(), token});
+                    continue;
+                }
+                resolved.add(required);
+                queue.add(required);
+            }
+        }
+        return resolved;
+    }
+
+    private static UUID parseRequirementUUID(String token) {
+        CatalogID id = CatalogID.extractCatalogID(token);
+        if (id != null) {
+            return id.getUUID();
+        }
+        try {
+            return UUID.fromString(token);
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+    }
+
+    /**
      * Returns the {@link PluginBundle PluginBundle} associated with a loaded
      * plug-in bundle, or {@code null} if the file is not a loaded bundle.
      *

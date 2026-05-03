@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.dialog.prefs.LanguageCodeDescriptor;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.JIconComboBox;
@@ -379,13 +380,25 @@ class TestBundleDialog extends javax.swing.JDialog implements AgnosticDialog {
             // add the VM arguments
             appendArgField(testArgs, "test-bundle-vm-args", jvmField.getText());
 
+            // Build the --plugintest argument: the test bundle plus any
+            // bundles it transitively requires via catalog-requires. Without
+            // this, "Do not load plug-ins" mode (which the dialog defaults to)
+            // skips the user's plug-ins folder, hiding required libraries
+            // such as alternate scripting-language runtimes from the test
+            // process.
+            StringBuilder testBundles = new StringBuilder(bundle.getAbsolutePath());
+            for (File required : BundleInstaller.resolveBundleRequirements(bundle)) {
+                testBundles.append(File.pathSeparator).append(required.getAbsolutePath());
+                StrangeEons.log.log(Level.INFO, "test bundle requires {0}", required.getName());
+            }
+
             // add the command and dialog arguments
             testArgs.addAll(Arrays.asList(new String[]{
                 "strangeeons",
                 "--glang", gLang,
                 "--ulang", uLang,
                 "--loglevel", loglevel,
-                "--plugintest", bundle.getAbsolutePath(),}));
+                "--plugintest", testBundles.toString(),}));
             if (doNotLoadPluginsCheck.isSelected()) {
                 testArgs.add("--xDisablePluginLoading");
             }
