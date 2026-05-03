@@ -210,7 +210,9 @@ public class ThemeInstaller {
         }
 
         try {
-            theme = (Theme) Class.forName(themeClass).getConstructor().newInstance();
+            theme = (Theme) Class.forName(themeClass, true,
+                    ca.cgjennings.apps.arkham.plugins.BundleInstaller.getLibraryClassLoader())
+                    .getConstructor().newInstance();
         } catch (Throwable t) {
             StrangeEons.log.log(Level.WARNING, "failed to instantiate theme " + themeClass, t);
             theme = new HydraTheme();
@@ -226,7 +228,8 @@ public class ThemeInstaller {
         LookAndFeel laf;
         String lafClassName = theme.getLookAndFeelClassName();
         if (lafClassName != null) {
-            Class<?> lafClass = Class.forName(lafClassName);
+            Class<?> lafClass = Class.forName(lafClassName, true,
+                    ca.cgjennings.apps.arkham.plugins.BundleInstaller.getLibraryClassLoader());
             if (lafClass.getModule().isNamed()) {
                 // LaF lives in a JDK module (e.g. com.apple.laf.AquaLookAndFeel
                 // in java.desktop for the system-L&F TchoTchoTheme on macOS).

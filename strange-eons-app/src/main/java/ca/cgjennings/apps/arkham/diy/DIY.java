@@ -5,6 +5,7 @@ import ca.cgjennings.apps.arkham.component.AbstractGameComponent;
 import ca.cgjennings.apps.arkham.component.AbstractPortrait;
 import ca.cgjennings.apps.arkham.component.DefaultPortrait;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.component.Portrait;
 import ca.cgjennings.apps.arkham.component.PortraitProvider;
 import ca.cgjennings.apps.arkham.component.conversion.ConversionSession;
@@ -324,7 +325,7 @@ public class DIY extends AbstractGameComponent implements Handler {
         if (!handlerScript.endsWith(".js")) {
             try {
                 // try to create the handler from a class
-                handler = (Handler) Class.forName(handlerScript).getConstructor().newInstance();
+                handler = (Handler) BundleInstaller.findClassAcrossBundles(handlerScript).getConstructor().newInstance();
                 return;
             } catch (ClassNotFoundException ex) {
                 // doesn't exist, will try to load this as a script

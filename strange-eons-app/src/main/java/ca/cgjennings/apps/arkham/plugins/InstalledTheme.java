@@ -99,10 +99,10 @@ public final class InstalledTheme extends InstalledBundleObject {
      */    
     public URL getScreenshotUrl() {
         try {
-            Class<?> cl = Class.forName(className);            
+            Class<?> cl = Class.forName(className, true, BundleInstaller.classLoaderForBundle(getBundle()));
             URL url = cl.getResource(cl.getSimpleName() + "_screenshot.png");
             return url;
-        } catch (ClassNotFoundException ex) { 
+        } catch (ClassNotFoundException ex) {
             StrangeEons.log.log(Level.SEVERE, null, ex);
         }
         return null;
@@ -128,7 +128,8 @@ public final class InstalledTheme extends InstalledBundleObject {
 
     private void collectPluginInfo() throws PluginException {
         try {
-            Theme theme = (Theme) Class.forName(className).getConstructor().newInstance();
+            ClassLoader cl = BundleInstaller.classLoaderForBundle(getBundle());
+            Theme theme = (Theme) Class.forName(className, true, cl).getConstructor().newInstance();
             name = theme.getThemeName();
             if (name == null) {
                 name = className;
@@ -137,7 +138,7 @@ public final class InstalledTheme extends InstalledBundleObject {
             // (this will eliminate themes based on Nimbus when Java 6u10 is not installed)
             try {
                 if (theme.getLookAndFeelClassName() != null) {
-                    Class.forName(theme.getLookAndFeelClassName(), false, ClassLoader.getSystemClassLoader());
+                    Class.forName(theme.getLookAndFeelClassName(), false, cl);
                 }
             } catch (Throwable t) {
                 throw new MissingCoreComponentException("theme's underlying Look and feel unavailable: " + theme.getLookAndFeelClassName());

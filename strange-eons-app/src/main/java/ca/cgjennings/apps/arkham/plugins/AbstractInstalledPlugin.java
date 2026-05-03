@@ -4,7 +4,6 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
-import java.io.File;
 import java.io.IOException;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -280,14 +279,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
      * to the system classloader.
      */
     private ClassLoader bundleClassLoader() {
-        PluginBundle bundle = getBundle();
-        if (bundle != null) {
-            File f = bundle.getFile();
-            if (f != null && BundleInstaller.isIsolatedBundle(f)) {
-                return BundleInstaller.classLoaderFor(f);
-            }
-        }
-        return getClass().getClassLoader();
+        return BundleInstaller.classLoaderForBundle(getBundle());
     }
 
     static ScriptLanguage lookupScriptLanguage(String id) {

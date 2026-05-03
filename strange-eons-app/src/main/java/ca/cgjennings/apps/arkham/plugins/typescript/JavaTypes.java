@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.plugins.typescript;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -75,7 +76,7 @@ public class JavaTypes {
 
             Class<?> klass;
             try {
-                klass = Class.forName(importName);
+                klass = BundleInstaller.findClassAcrossBundles(importName);
             } catch (ClassNotFoundException cnf) {
                 // do not cache: might be added to classpath later
                 return null;

@@ -565,7 +565,10 @@ public final class ScriptMonkey {
         try {
             ScriptMonkey monkey = new ScriptMonkey(resource);
             monkey.bind(PluginContextFactory.createDummyContext());
-            in = ResourceKit.class.getResourceAsStream(resource);
+            URL resourceURL = ResourceKit.composeResourceURL(resource);
+            if (resourceURL != null) {
+                in = resourceURL.openStream();
+            }
             if (in != null) {
                 StrangeEons.setWaitCursor(true);
                 monkey.evaluate(new BufferedReader(new InputStreamReader(in, SCRIPT_FILE_ENCODING)));
@@ -575,6 +578,8 @@ public final class ScriptMonkey {
             }
         } catch (ScriptException se) {
             scriptError(se);
+        } catch (IOException ioe) {
+            ErrorDialog.displayError(string("rk-err-missing-script", resource), ioe);
         } finally {
             if (in != null) {
                 try {

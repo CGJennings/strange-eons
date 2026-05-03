@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.component;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.diy.DIY;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.io.SEObjectInputStream;
 import ca.cgjennings.io.SEObjectOutputStream;
 import java.io.File;
@@ -110,7 +111,7 @@ public class ComponentMetadata {
         if (data == null) {
             return null;
         }
-        return (Class<? extends GameComponent>) Class.forName(data[CLASS]);
+        return (Class<? extends GameComponent>) BundleInstaller.findClassAcrossBundles(data[CLASS]);
     }
 
     /**

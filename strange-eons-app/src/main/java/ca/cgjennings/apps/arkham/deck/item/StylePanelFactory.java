@@ -25,7 +25,8 @@ public class StylePanelFactory {
                 panelClass = (Class<StylePanel<S>>) registry.get(styleClass);
             }
             if (panelClass == null) {
-                panelClass = (Class<StylePanel<S>>) Class.forName(styleClass.getName() + "Panel");
+                panelClass = (Class<StylePanel<S>>) Class.forName(
+                        styleClass.getName() + "Panel", true, styleClass.getClassLoader());
             }
             return (StylePanel<S>) panelClass.getConstructor().newInstance();
         } catch (IllegalAccessException | InvocationTargetException uex) {

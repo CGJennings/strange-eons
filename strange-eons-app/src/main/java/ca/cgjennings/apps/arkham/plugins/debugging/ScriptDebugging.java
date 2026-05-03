@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.DefaultCommandFormatter;
 import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.Subprocess;
 import ca.cgjennings.apps.arkham.TextEncoding;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.util.CommandFormatter;
@@ -73,7 +74,7 @@ public class ScriptDebugging {
      */
     public static synchronized void setInstaller(String className) {
         try {
-            DebuggerInstaller i = (DebuggerInstaller) Class.forName(className).getConstructor().newInstance();
+            DebuggerInstaller i = (DebuggerInstaller) BundleInstaller.findClassAcrossBundles(className).getConstructor().newInstance();
             setInstaller(i);
         } catch (Throwable t) {
             throw new IllegalArgumentException("unable to create " + className, t);

@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham.dialog;
 
 import ca.cgjennings.apps.arkham.StrangeEons;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
 import ca.cgjennings.platform.AgnosticDialog;
 import ca.cgjennings.platform.PlatformSupport;
@@ -838,7 +839,7 @@ public final class DictionaryEditor extends javax.swing.JDialog implements Agnos
                 if (classes[i].indexOf('.') < 0) {
                     classes[i] = "ca.cgjennings.spelling.policy." + classes[i];
                 }
-                policies[i] = (WordPolicy) Class.forName(classes[i]).getConstructor().newInstance();
+                policies[i] = (WordPolicy) BundleInstaller.findClassAcrossBundles(classes[i]).getConstructor().newInstance();
             }
             policy = PolicyChain.createPolicyChain(policies);
             updateTestResults();

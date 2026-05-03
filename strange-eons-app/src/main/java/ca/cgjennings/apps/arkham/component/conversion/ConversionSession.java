@@ -518,7 +518,7 @@ public class ConversionSession {
             if (className.startsWith("diy:")) {
                 return new DIY(className.substring("diy:".length()), null, false);
             } else {
-                return (GameComponent) Class.forName(className).getConstructor().newInstance();
+                return (GameComponent) BundleInstaller.findClassAcrossBundles(className).getConstructor().newInstance();
             }
         } catch (Exception e) {
             throw new ConversionException("unable to create a new instance of " + className, e);

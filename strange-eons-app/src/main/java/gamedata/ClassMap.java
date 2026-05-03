@@ -8,6 +8,7 @@ import ca.cgjennings.apps.arkham.StrangeEonsEditor;
 import ca.cgjennings.apps.arkham.component.GameComponent;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.diy.DIY;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.plugins.ScriptMonkey;
 import ca.cgjennings.apps.arkham.plugins.debugging.Client;
 import ca.cgjennings.apps.arkham.plugins.debugging.ScriptDebugging;
@@ -420,7 +421,7 @@ public class ClassMap implements Iterable<Entry> {
             if (iconURL == null) {
                 iconURL = "editors/" + (key.startsWith("@") ? key.substring(1) : key) + ".png";
             }
-            if (!iconURL.isEmpty() && resources.ResourceKit.class.getResource(iconURL) != null) {
+            if (!iconURL.isEmpty() && resources.ResourceKit.composeResourceURL(iconURL) != null) {
                 icon = new ThemedImageIcon(iconURL, true);
             }
         }
@@ -520,7 +521,7 @@ public class ClassMap implements Iterable<Entry> {
         private StrangeEonsEditor createClassBasedItem() throws InstantiationException {
             GameComponent gc = null;
             try {
-                gc = (GameComponent) Class.forName(className).getConstructor().newInstance();
+                gc = (GameComponent) BundleInstaller.findClassAcrossBundles(className).getConstructor().newInstance();
                 if (game != null) {
                     gc.getSettings().set(Game.GAME_SETTING_KEY, game.getCode());
                 }

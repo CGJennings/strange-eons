@@ -2,6 +2,7 @@ package ca.cgjennings.apps.arkham.project;
 
 import ca.cgjennings.apps.arkham.NewEditorDialog;
 import ca.cgjennings.apps.arkham.component.GameComponent;
+import ca.cgjennings.apps.arkham.plugins.BundleInstaller;
 import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.graphics.ImageUtilities;
 import ca.cgjennings.ui.theme.ThemedIcon;
@@ -417,7 +418,7 @@ public class New extends TaskActionTree {
             this.taskType = taskType;
             this.taskSubtype = taskSubtype;
             try {
-                Class.forName(klass, false, getClass().getClassLoader());
+                BundleInstaller.findClassAcrossBundles(klass);
             } catch (ClassNotFoundException e) {
                 throw new IllegalArgumentException("no such class: " + klass);
             }
@@ -433,7 +434,7 @@ public class New extends TaskActionTree {
             try {
                 File f = new File(task.getFile(), docname);
                 f = ProjectUtilities.getAvailableFile(f);
-                GameComponent gc = (GameComponent) Class.forName(klass).getConstructor().newInstance();
+                GameComponent gc = (GameComponent) BundleInstaller.findClassAcrossBundles(klass).getConstructor().newInstance();
                 ResourceKit.writeGameComponentToFile(f, gc);
                 task.synchronize();
                 TaskAction rename = Actions.findActionByName("rename");

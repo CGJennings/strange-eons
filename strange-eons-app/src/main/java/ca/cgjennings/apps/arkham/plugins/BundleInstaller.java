@@ -1271,6 +1271,56 @@ public class BundleInstaller {
     }
 
     /**
+     * Returns the classloader that should be used to load classes and
+     * resources from the given bundle. Returns the bundle's per-plug-in
+     * isolated classloader for isolated bundles, the shared library
+     * classloader for shared-tier bundles, and the system classloader
+     * when {@code bundle} is {@code null} (e.g., for built-in themes).
+     */
+    public static ClassLoader classLoaderForBundle(PluginBundle bundle) {
+        if (bundle == null) {
+            return ClassLoader.getSystemClassLoader();
+        }
+        File f = bundle.getFile();
+        if (f != null && isolatedBundleFiles.contains(f)) {
+            return classLoaderFor(f);
+        }
+        return libraryClassLoader;
+    }
+
+    /**
+     * Resolves a class by name across the bundle classloader hierarchy.
+     * Searches the system classloader (core types), the shared
+     * {@linkplain #getLibraryClassLoader() library classloader}
+     * (libraries and themes), and each per-bundle isolated classloader
+     * in turn. Useful for sites that load a class from data — saved
+     * file metadata, class maps, scripts — where the owning bundle
+     * isn't known a priori.
+     *
+     * @param name the binary class name
+     * @return the resolved {@code Class} object
+     * @throws ClassNotFoundException if no classloader can resolve the
+     *     name
+     */
+    public static Class<?> findClassAcrossBundles(String name) throws ClassNotFoundException {
+        try {
+            return Class.forName(name, true, ClassLoader.getSystemClassLoader());
+        } catch (ClassNotFoundException ignore) {
+        }
+        try {
+            return Class.forName(name, true, libraryClassLoader);
+        } catch (ClassNotFoundException ignore) {
+        }
+        for (ClassLoader cl : getIsolatedClassLoaders()) {
+            try {
+                return Class.forName(name, true, cl);
+            } catch (ClassNotFoundException ignore) {
+            }
+        }
+        throw new ClassNotFoundException(name);
+    }
+
+    /**
      * Returns the {@link PluginBundle PluginBundle} associated with a loaded
      * plug-in bundle, or {@code null} if the file is not a loaded bundle.
      *
@@ -1755,7 +1805,8 @@ public class BundleInstaller {
             installer = sm.implement(InstallationActions.class);
         } else {
             try {
-                installer = (InstallationActions) Class.forName(PluginRoot.normalizePluginIdentifier(script)).getConstructor().newInstance();
+                ClassLoader cl = classLoaderForBundle(root.getBundle());
+                installer = (InstallationActions) Class.forName(PluginRoot.normalizePluginIdentifier(script), true, cl).getConstructor().newInstance();
             } catch (ClassNotFoundException ex) {
                 StrangeEons.log.log(Level.SEVERE, "installer class not found: {0}", script);
             } catch (Exception ex) {
