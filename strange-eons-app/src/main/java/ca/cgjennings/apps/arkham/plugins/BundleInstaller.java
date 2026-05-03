@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -29,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Level;
@@ -773,7 +776,7 @@ public class BundleInstaller {
      * @param pluginType the type of bundle being scanned for
      */
     @SuppressWarnings("unchecked")
-    private static void scanBundle(Set<? extends InstalledBundleObject> pluginSet, File bundleFile, int pluginType) {
+    static void scanBundle(Set<? extends InstalledBundleObject> pluginSet, File bundleFile, int pluginType) {
         // stop if the bundle is not a file with the correct extension
         if (bundleFile == null || !bundleFile.exists() || bundleFile.isDirectory()) {
             return;
@@ -847,8 +850,17 @@ public class BundleInstaller {
                 }
             }
 
-            // Merge the bundle with the application class path
-            linkPluginBundle(pluginBundle);
+            // Merge the bundle with the application class path. Bundles
+            // that opt into per-plug-in isolation (classloader = isolated
+            // in the eons-plugin manifest) are recorded for lazy URL-
+            // classloader creation instead of going onto system CL.
+            if ("isolated".equalsIgnoreCase(root.getClientProperty("classloader"))) {
+                isolatedBundleFiles.add(bundleFile);
+                discoveredBundles.put(bundleFile, pluginBundle);
+                StrangeEons.log.log(Level.FINE, "isolated-classloader bundle: {0}", bundleFile);
+            } else {
+                linkPluginBundle(pluginBundle);
+            }
 
             // pluginSet == null ==> we are scanning libraries (so we are just
             // linking, not collecting plug-in lists). Note: if this is a theme
@@ -1121,6 +1133,60 @@ public class BundleInstaller {
         } catch (IllegalArgumentException e) {
             return null;
         }
+    }
+
+    // --- isolated-classloader registry --------------------------------------
+
+    private static final Set<File> isolatedBundleFiles = ConcurrentHashMap.newKeySet();
+    private static final Map<File, URLClassLoader> isolatedClassLoaders =
+            new ConcurrentHashMap<>();
+
+    /**
+     * Returns whether the given bundle file was recorded as opting into
+     * per-plug-in classloader isolation via the {@code classloader =
+     * isolated} manifest key.
+     */
+    public static boolean isIsolatedBundle(File bundleFile) {
+        return isolatedBundleFiles.contains(bundleFile);
+    }
+
+    /**
+     * Returns the per-plug-in {@link URLClassLoader} for an isolated
+     * bundle, creating one on first use. The classloader's parent is the
+     * unfiltered system classloader, so isolated plug-ins still see core
+     * types and any non-isolated bundles' classes through the parent
+     * chain.
+     *
+     * @throws IllegalArgumentException if {@code bundleFile} is not a
+     *     registered isolated bundle
+     */
+    public static URLClassLoader classLoaderFor(File bundleFile) {
+        if (!isolatedBundleFiles.contains(bundleFile)) {
+            throw new IllegalArgumentException("not an isolated bundle: " + bundleFile);
+        }
+        return isolatedClassLoaders.computeIfAbsent(bundleFile, f -> {
+            try {
+                URL[] urls = {f.toURI().toURL()};
+                return new URLClassLoader(urls, ClassLoader.getSystemClassLoader());
+            } catch (MalformedURLException e) {
+                throw new IllegalStateException("could not form URL for " + f, e);
+            }
+        });
+    }
+
+    /**
+     * Returns a snapshot of every isolated classloader that has been
+     * materialized so far. Useful for {@link java.util.ServiceLoader}
+     * lookups that need to scan plug-in classloaders in addition to the
+     * system classloader.
+     */
+    public static List<ClassLoader> getIsolatedClassLoaders() {
+        // Materialize any isolated bundle that hasn't already had its
+        // classloader created so service-loader lookups see them.
+        for (File f : isolatedBundleFiles) {
+            classLoaderFor(f);
+        }
+        return new ArrayList<>(isolatedClassLoaders.values());
     }
 
     /**

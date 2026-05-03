@@ -4,6 +4,7 @@ import ca.cgjennings.apps.arkham.StrangeEons;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
+import java.io.File;
 import java.io.IOException;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
@@ -230,7 +231,8 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
                     p = new ScriptLanguagePlugin(lang, id);
                 }
             } else {
-                p = (Plugin) Class.forName(id).getConstructor().newInstance();
+                ClassLoader cl = bundleClassLoader();
+                p = (Plugin) Class.forName(id, true, cl).getConstructor().newInstance();
             }
             PluginContext context;
 
@@ -270,10 +272,37 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
         return root.getClientProperty("script-language");
     }
 
-    private static ScriptLanguage lookupScriptLanguage(String id) {
+    /**
+     * Returns the classloader to use for loading this plug-in's class.
+     * Bundles that opt into per-plug-in isolation
+     * ({@code classloader = isolated} in {@code eons-plugin}) get their
+     * own {@link java.net.URLClassLoader}; everything else falls through
+     * to the system classloader.
+     */
+    private ClassLoader bundleClassLoader() {
+        PluginBundle bundle = getBundle();
+        if (bundle != null) {
+            File f = bundle.getFile();
+            if (f != null && BundleInstaller.isIsolatedBundle(f)) {
+                return BundleInstaller.classLoaderFor(f);
+            }
+        }
+        return getClass().getClassLoader();
+    }
+
+    static ScriptLanguage lookupScriptLanguage(String id) {
+        // System CL first (catches the existing .selibrary path).
         for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class)) {
             if (id.equals(lang.id())) {
                 return lang;
+            }
+        }
+        // Then per-bundle isolated classloaders.
+        for (ClassLoader cl : BundleInstaller.getIsolatedClassLoaders()) {
+            for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class, cl)) {
+                if (id.equals(lang.id())) {
+                    return lang;
+                }
             }
         }
         return null;
