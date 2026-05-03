@@ -11,7 +11,9 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
+  pull_request:
+    branches: ["main"]
 
 permissions:
   contents: write
@@ -38,6 +40,24 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          # Non-tag runs (pull_request, workflow_dispatch, …) bypass the
+          # tag-format check and emit placeholder outputs so the build matrix
+          # can run end-to-end against the signing/notarization chain. The
+          # release job is tag-only anyway; nothing publishes from a PR run.
+          if [[ "${GITHUB_REF}" != refs/tags/v* ]]; then
+            echo "Non-tag ref ${GITHUB_REF}; using placeholder version metadata."
+            {
+              echo "major=0"
+              echo "minor=0"
+              echo "patch=0"
+              echo "build=99999"
+              echo "type=DEVELOPMENT"
+              echo "version=0.0.0"
+              echo "suffix="
+              echo "tag=PR"
+            } >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           RAW="${GITHUB_REF#refs/tags/v}"
           if [[ ! "$RAW" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)(-(.+))?$ ]]; then
             echo "::error::Version '$RAW' does not match v<major>.<minor>.<patch>[-<type>]"
@@ -91,28 +111,28 @@ jobs:
             artifact: strange-eons-linux
             extra_setup: sudo apt-get update && sudo apt-get install -y rpm fakeroot xvfb
             mvn_prefix: xvfb-run -a
-          - os: macos-15-intel
-            profile: jpackage-mac
-            artifact: strange-eons-macos-x64
-            extra_setup: ''
-            mvn_prefix: ''
+          # - os: macos-15-intel
+          #   profile: jpackage-mac
+          #   artifact: strange-eons-macos-x64
+          #   extra_setup: ''
+          #   mvn_prefix: ''
           - os: macos-15
             profile: jpackage-mac
             artifact: strange-eons-macos-aarch64
-            extra_setup: ''
-            mvn_prefix: ''
-          - os: windows-latest
-            profile: jpackage-win
-            artifact: strange-eons-windows
-            extra_setup: ''
-            mvn_prefix: ''
+            extra_setup: ""
+            mvn_prefix: ""
+          # - os: windows-latest
+          #   profile: jpackage-win
+          #   artifact: strange-eons-windows
+          #   extra_setup: ''
+          #   mvn_prefix: ''
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
         with:
-          java-version: '25'
-          distribution: 'temurin'
+          java-version: "25"
+          distribution: "temurin"
           cache: maven
       - name: Extra setup for runner
         if: matrix.extra_setup != ''
@@ -232,76 +252,76 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  release:
-    needs: [parse-version, build]
-    runs-on: ubuntu-latest
-    environment: release
-    steps:
-      - name: Download all installer artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-      - name: Rename to canonical asset names
-        # The registry's asset_globs match these exact suffixes. Stable
-        # releases get a bare version; pre-releases carry the tag suffix
-        # (e.g. -alpha2) so multiple in-flight pre-releases coexist.
-        shell: bash
-        env:
-          VER: ${{ needs.parse-version.outputs.version }}
-          SUFFIX: ${{ needs.parse-version.outputs.suffix }}
-        run: |
-          set -euo pipefail
-          DS=""
-          [[ -n "$SUFFIX" ]] && DS="-$SUFFIX"
-          mkdir -p release-assets
-          rename_one() {
-            local src_dir="$1" pattern="$2" dest_name="$3"
-            local found
-            found="$(find "artifacts/$src_dir" -type f -name "$pattern" -print -quit 2>/dev/null || true)"
-            if [[ -z "$found" ]]; then
-              echo "::warning::no $pattern under artifacts/$src_dir"
-              return
-            fi
-            mv "$found" "release-assets/$dest_name"
-            echo "  $dest_name <- $found"
-          }
-          rename_one strange-eons-macos-aarch64 "*.dmg"           "strange-eons-${VER}${DS}-macos-aarch64.dmg"
-          rename_one strange-eons-macos-x64     "*.dmg"           "strange-eons-${VER}${DS}-macos-x64.dmg"
-          rename_one strange-eons-windows       "*.msi"           "strange-eons-${VER}${DS}-windows.msi"
-          rename_one strange-eons-linux         "*.deb"           "strange-eons-${VER}${DS}.deb"
-          rename_one strange-eons-linux         "*.rpm"           "strange-eons-${VER}${DS}.rpm"
-          rename_one strange-eons-linux         "strange-eons-linux.tar.gz" "strange-eons-${VER}${DS}-linux.tar.gz"
-          echo
-          echo "Release assets:"
-          ls -la release-assets
-      - name: Publish GitHub Release
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          TAG: ${{ needs.parse-version.outputs.tag }}
-          SUFFIX: ${{ needs.parse-version.outputs.suffix }}
-          VER: ${{ needs.parse-version.outputs.version }}
-          BUILD: ${{ needs.parse-version.outputs.build }}
-          TYPE: ${{ needs.parse-version.outputs.type }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          PRERELEASE_FLAG=""
-          [[ -n "$SUFFIX" ]] && PRERELEASE_FLAG="--prerelease"
-          TITLE="Strange Eons ${VER}${SUFFIX:+-$SUFFIX} (build ${BUILD})"
-          # `--target` only takes effect when the tag doesn't already exist;
-          # for tag-push triggers the tag is already at the commit we want.
-          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
-            echo "Release $TAG already exists; uploading assets only."
-            gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber release-assets/*
-          else
-            gh release create "$TAG" \
-              --repo "$GITHUB_REPOSITORY" \
-              --target "${GITHUB_SHA}" \
-              --title "$TITLE" \
-              --generate-notes \
-              $PRERELEASE_FLAG \
-              release-assets/*
-          fi
-          echo
-          echo "Release URL:"
-          gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json url --jq .url
+  # release:
+  #   needs: [parse-version, build]
+  #   runs-on: ubuntu-latest
+  #   environment: release
+  #   steps:
+  #     - name: Download all installer artifacts
+  #       uses: actions/download-artifact@v8
+  #       with:
+  #         path: artifacts
+  #     - name: Rename to canonical asset names
+  #       # The registry's asset_globs match these exact suffixes. Stable
+  #       # releases get a bare version; pre-releases carry the tag suffix
+  #       # (e.g. -alpha2) so multiple in-flight pre-releases coexist.
+  #       shell: bash
+  #       env:
+  #         VER: ${{ needs.parse-version.outputs.version }}
+  #         SUFFIX: ${{ needs.parse-version.outputs.suffix }}
+  #       run: |
+  #         set -euo pipefail
+  #         DS=""
+  #         [[ -n "$SUFFIX" ]] && DS="-$SUFFIX"
+  #         mkdir -p release-assets
+  #         rename_one() {
+  #           local src_dir="$1" pattern="$2" dest_name="$3"
+  #           local found
+  #           found="$(find "artifacts/$src_dir" -type f -name "$pattern" -print -quit 2>/dev/null || true)"
+  #           if [[ -z "$found" ]]; then
+  #             echo "::warning::no $pattern under artifacts/$src_dir"
+  #             return
+  #           fi
+  #           mv "$found" "release-assets/$dest_name"
+  #           echo "  $dest_name <- $found"
+  #         }
+  #         rename_one strange-eons-macos-aarch64 "*.dmg"           "strange-eons-${VER}${DS}-macos-aarch64.dmg"
+  #         rename_one strange-eons-macos-x64     "*.dmg"           "strange-eons-${VER}${DS}-macos-x64.dmg"
+  #         rename_one strange-eons-windows       "*.msi"           "strange-eons-${VER}${DS}-windows.msi"
+  #         rename_one strange-eons-linux         "*.deb"           "strange-eons-${VER}${DS}.deb"
+  #         rename_one strange-eons-linux         "*.rpm"           "strange-eons-${VER}${DS}.rpm"
+  #         rename_one strange-eons-linux         "strange-eons-linux.tar.gz" "strange-eons-${VER}${DS}-linux.tar.gz"
+  #         echo
+  #         echo "Release assets:"
+  #         ls -la release-assets
+  #     - name: Publish GitHub Release
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         TAG: ${{ needs.parse-version.outputs.tag }}
+  #         SUFFIX: ${{ needs.parse-version.outputs.suffix }}
+  #         VER: ${{ needs.parse-version.outputs.version }}
+  #         BUILD: ${{ needs.parse-version.outputs.build }}
+  #         TYPE: ${{ needs.parse-version.outputs.type }}
+  #       shell: bash
+  #       run: |
+  #         set -euo pipefail
+  #         PRERELEASE_FLAG=""
+  #         [[ -n "$SUFFIX" ]] && PRERELEASE_FLAG="--prerelease"
+  #         TITLE="Strange Eons ${VER}${SUFFIX:+-$SUFFIX} (build ${BUILD})"
+  #         # `--target` only takes effect when the tag doesn't already exist;
+  #         # for tag-push triggers the tag is already at the commit we want.
+  #         if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+  #           echo "Release $TAG already exists; uploading assets only."
+  #           gh release upload "$TAG" --repo "$GITHUB_REPOSITORY" --clobber release-assets/*
+  #         else
+  #           gh release create "$TAG" \
+  #             --repo "$GITHUB_REPOSITORY" \
+  #             --target "${GITHUB_SHA}" \
+  #             --title "$TITLE" \
+  #             --generate-notes \
+  #             $PRERELEASE_FLAG \
+  #             release-assets/*
+  #         fi
+  #         echo
+  #         echo "Release URL:"
+  #         gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json url --jq .url
