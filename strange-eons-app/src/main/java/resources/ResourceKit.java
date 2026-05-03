@@ -285,14 +285,19 @@ public class ResourceKit {
             return url;
         }
 
-        // 3a. Walk per-bundle classloaders for plug-ins / extensions
-        //     that loaded under classloader = isolated. Mirrors the
-        //     package-prefix semantics of ResourceKit.class.getResource:
-        //     leading "/" means absolute classpath, otherwise the path
-        //     is relative to the resources package.
+        // 3a. Walk per-bundle classloaders. Mirrors the package-prefix
+        //     semantics of ResourceKit.class.getResource: leading "/"
+        //     means absolute classpath, otherwise the path is relative
+        //     to the resources package. Searches the shared library
+        //     classloader (.selibrary / .setheme bundles) and then each
+        //     isolated bundle classloader.
         String clName = resource.startsWith("/")
                 ? resource.substring(1)
                 : "resources/" + resource;
+        URL libUrl = BundleInstaller.getLibraryClassLoader().getResource(clName);
+        if (libUrl != null) {
+            return libUrl;
+        }
         for (ClassLoader cl : BundleInstaller.getIsolatedClassLoaders()) {
             URL u = cl.getResource(clName);
             if (u != null) {

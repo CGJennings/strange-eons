@@ -7,7 +7,6 @@ import ca.cgjennings.apps.arkham.dialog.ErrorDialog;
 import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.apps.arkham.plugins.catalog.PluginBundlePublisher;
 import ca.cgjennings.apps.arkham.project.ProjectUtilities;
-import ca.cgjennings.jvm.JarLoader;
 import ca.cgjennings.ui.JUtilities;
 import ca.cgjennings.ui.theme.Theme;
 import java.awt.EventQueue;
@@ -965,40 +964,22 @@ public class BundleInstaller {
     }
 
     /**
-     * Adds the plug-in bundle to the class path. The bundle must be in plain
-     * format. When jar-loader instrumentation is unavailable (e.g., the
-     * agent wasn't attached), the bundle is recorded as discovered but not
-     * appended to the system classloader; the shared
-     * {@linkplain #getLibraryClassLoader() library classloader} populated
-     * in parallel keeps the bundle reachable to plug-in CLs.
+     * Records the bundle as discovered. Shared-tier bundles separately
+     * register their URL into the {@linkplain #getLibraryClassLoader()
+     * library classloader} via {@link #addToLibraryClassLoader}; the
+     * combination replaces jar-loader's previous "append to system CL"
+     * behavior.
      *
-     * @param pluginBundle the bundle to link
-     * @throws PluginException if linking fails
+     * @param pluginBundle the bundle to record
      */
-    private static void linkPluginBundle(PluginBundle pluginBundle) throws PluginException {
+    private static void linkPluginBundle(PluginBundle pluginBundle) {
         if (pluginBundle == null) {
             throw new NullPointerException("pluginBundle");
         }
         if (pluginBundle.getFormat() != PluginBundle.FORMAT_PLAIN) {
             throw new IllegalArgumentException("bundle must be FORMAT_PLAIN");
         }
-
-        File bundleFile = pluginBundle.getFile();
-        try {
-            if (JarLoader.isSupported()) {
-                JarLoader.addToClassPath(bundleFile);
-                StrangeEons.log.log(Level.FINE, "dynamically linked to plug-in bundle {0}", bundleFile);
-            } else {
-                StrangeEons.log.log(Level.FINE,
-                        "jar-loader unavailable; bundle reachable via library classloader only: {0}",
-                        bundleFile);
-            }
-            discoveredBundles.put(bundleFile, pluginBundle);
-        } catch (IOException ioe) {
-            throw new PluginException("failed to load bundle", ioe);
-        } catch (Throwable t) {
-            throw new PluginException("bundle link error", t);
-        }
+        discoveredBundles.put(pluginBundle.getFile(), pluginBundle);
     }
 
     /**
@@ -1422,14 +1403,7 @@ public class BundleInstaller {
     }
 
     private static void init() {
-        if (!JarLoader.isSupported()) {
-            ErrorDialog.displayFatalError(
-                    "Unable to link to plug-in bundles; add <tt>-javaagent:strange-eons.jar</tt> to the command line",
-                    null
-            );
-        }
-
-        StrangeEons.log.log(Level.INFO, "loading dynamic bundles via {0}", JarLoader.getStrategy());
+        StrangeEons.log.log(Level.INFO, "loading bundles via per-bundle classloaders");
         deprecatedBundles = null;
         String ignoreValue = Settings.getShared().get("deprecated-bundles");
         if (ignoreValue != null) {

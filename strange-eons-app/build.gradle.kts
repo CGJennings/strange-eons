@@ -37,13 +37,6 @@ application {
     mainClass = "ca.cgjennings.apps.arkham.StrangeEons"
 }
 
-// Pull jar-loader through a dedicated configuration so we can pin it onto the
-// -javaagent line for both run and the packaged jar.
-val javaagent: Configuration by configurations.creating
-dependencies {
-    javaagent(project(mapOf("path" to ":vendor", "configuration" to "javaagent")))
-}
-
 // Filter src/build/templates/rev with the app.* properties from gradle.properties
 // (overrideable from the CLI). Writes the resolved file into the layout the
 // runtime expects: ca/cgjennings/apps/arkham/rev on the classpath.
@@ -77,9 +70,6 @@ tasks.named<JavaExec>("run") {
         "--add-opens=java.desktop/javax.swing.table=ALL-UNNAMED",
         "--enable-native-access=ALL-UNNAMED",
     )
-    doFirst {
-        jvmArgs("-javaagent:${javaagent.singleFile.absolutePath}")
-    }
     args("--xDisableJreCheck")
 }
 
@@ -108,8 +98,7 @@ tasks.named<Test>("test") {
     jvmArgs("-Xshare:off", "-javaagent:${mockitoJar.absolutePath}")
 }
 
-// Single fat jar at deployment/assembled/strange-eons.jar with the
-// PreMain/Agent-Class entries so it doubles as the runtime -javaagent.
+// Single fat jar at deployment/assembled/strange-eons.jar.
 tasks.named<ShadowJar>("shadowJar") {
     archiveBaseName = "strange-eons"
     archiveClassifier = ""
@@ -118,8 +107,6 @@ tasks.named<ShadowJar>("shadowJar") {
     manifest {
         attributes(
             "Main-Class" to "ca.cgjennings.apps.arkham.StrangeEons",
-            "PreMain-Class" to "ca.cgjennings.jvm.JarLoader",
-            "Agent-Class" to "ca.cgjennings.jvm.JarLoader",
         )
     }
     exclude(
@@ -167,7 +154,6 @@ fun commonJpackageArgs(): List<String> = listOf(
     "--main-jar", "strange-eons.jar",
     "--main-class", "ca.cgjennings.apps.arkham.StrangeEons",
     "--runtime-image", System.getProperty("java.home"),
-    "--java-options", "-javaagent:\$APPDIR/strange-eons.jar",
     "--java-options", "--add-opens=java.desktop/javax.swing.table=ALL-UNNAMED",
     "--java-options", "--enable-native-access=ALL-UNNAMED",
     "--java-options", "-Xmx4g",
