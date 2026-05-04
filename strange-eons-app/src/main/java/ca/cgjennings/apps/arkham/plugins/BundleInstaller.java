@@ -853,11 +853,10 @@ public class BundleInstaller {
 
             // Dispatch on the effective classloader policy. Type-driven
             // default: libraries and themes load into the shared
-            // LibraryClassLoader (and, in parallel, jar-loader's system
-            // CL until that path is removed); plug-ins and extensions
-            // get a per-bundle URLClassLoader. The eons-plugin
-            // manifest's "classloader" key overrides the default
-            // ("isolated" or "shared").
+            // LibraryClassLoader; plug-ins and extensions get a
+            // per-bundle URLClassLoader. The eons-plugin manifest's
+            // "classloader" key overrides the default ("isolated" or
+            // "shared").
             switch (effectiveClassLoaderPolicy(root, pluginType)) {
                 case ISOLATED:
                     isolatedBundleFiles.add(bundleFile);
@@ -972,9 +971,7 @@ public class BundleInstaller {
     /**
      * Records the bundle as discovered. Shared-tier bundles separately
      * register their URL into the {@linkplain #getLibraryClassLoader()
-     * library classloader} via {@link #addToLibraryClassLoader}; the
-     * combination replaces jar-loader's previous "append to system CL"
-     * behavior.
+     * library classloader} via {@link #addToLibraryClassLoader}.
      *
      * @param pluginBundle the bundle to record
      */
@@ -1176,8 +1173,8 @@ public class BundleInstaller {
     /**
      * Shared classloader holding the URLs of all bundles that resolved to
      * the {@link ClassLoaderPolicy#SHARED} policy. Parented to the system
-     * classloader so library and theme bundles linked via {@code jar-loader}
-     * remain visible during the parallel-loading transition.
+     * classloader so library and theme bundles delegate to core for any
+     * type they don't define themselves.
      */
     private static final class LibraryClassLoader extends URLClassLoader {
         LibraryClassLoader(ClassLoader parent) {

@@ -21,16 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Step 2 — verifies that a bundle declaring
- * {@code classloader = isolated} in its eons-plugin manifest is held in
- * its own {@link URLClassLoader} and that
+ * Verifies that a bundle declaring {@code classloader = isolated} in its
+ * eons-plugin manifest is held in its own classloader (parented to the
+ * shared library classloader) and that
  * {@link AbstractInstalledPlugin#lookupScriptLanguage(String)} discovers
  * services registered through that classloader's
  * {@code META-INF/services}.
- *
- * <p>Bundles that don't opt in still go through the legacy jar-loader
- * path; that path requires the JVM to be launched with the jar-loader
- * agent and is therefore exercised in a separate path-dependent test.
  */
 class IsolatedBundleTest {
 
