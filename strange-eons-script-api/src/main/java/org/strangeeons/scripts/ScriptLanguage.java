@@ -1,5 +1,6 @@
 package org.strangeeons.scripts;
 
+import java.net.URL;
 import java.util.Set;
 
 /**
@@ -44,4 +45,30 @@ public interface ScriptLanguage {
      * Creates a new isolated execution session for this language.
      */
     ScriptSession createSession();
+
+    /**
+     * Wraps a bundle's classloader so the language can resolve types
+     * from script source on demand. The default implementation returns
+     * {@code baseCl} unchanged. Languages whose runtime can compile
+     * source files into Java classes (Groovy, Kotlin scripting) override
+     * this to return a classloader that performs that compilation when
+     * a class name resolves to a script resource on the classpath.
+     *
+     * <p>The host calls this exactly once per bundle that declares
+     * {@code script-language = <id>} in its {@code eons-plugin}
+     * manifest, when constructing the bundle's per-plug-in classloader.
+     * The returned classloader becomes the bundle's effective CL for
+     * all subsequent class and resource lookups.
+     *
+     * @param bundle the URL of the bundle whose classloader is being
+     *     constructed
+     * @param baseCl the classloader the host would otherwise use for
+     *     this bundle (typically a {@link java.net.URLClassLoader} over
+     *     the bundle's URL, parented to the shared library tier)
+     * @return a classloader that delegates to {@code baseCl}; the
+     *     default implementation returns {@code baseCl} unchanged
+     */
+    default ClassLoader wrapBundleClassLoader(URL bundle, ClassLoader baseCl) {
+        return baseCl;
+    }
 }

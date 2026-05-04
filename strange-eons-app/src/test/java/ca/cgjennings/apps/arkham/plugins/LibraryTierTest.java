@@ -43,6 +43,7 @@ class LibraryTierTest {
         }
         clearStaticCollection("isolatedBundleFiles");
         clearStaticCollection("isolatedClassLoaders");
+        clearStaticCollection("isolatedBundleLanguages");
         clearStaticCollection("discoveredBundles");
         clearStaticCollection("catalogIDMap");
         clearStaticCollection("uuidToFileMap");
@@ -87,7 +88,7 @@ class LibraryTierTest {
         assertTrue(BundleInstaller.isIsolatedBundle(bundle.toFile()),
                 "classloader = isolated should force ISOLATED policy regardless of type");
 
-        URLClassLoader cl = BundleInstaller.classLoaderFor(bundle.toFile());
+        ClassLoader cl = BundleInstaller.classLoaderFor(bundle.toFile());
         assertSame(BundleInstaller.getLibraryClassLoader(), cl.getParent(),
                 "isolated CLs should parent to the shared library classloader");
     }

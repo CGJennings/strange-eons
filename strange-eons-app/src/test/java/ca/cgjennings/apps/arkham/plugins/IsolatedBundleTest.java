@@ -3,7 +3,6 @@ package ca.cgjennings.apps.arkham.plugins;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.jar.JarEntry;
@@ -54,6 +53,7 @@ class IsolatedBundleTest {
 
         clearStaticCollection("isolatedBundleFiles");
         clearStaticCollection("isolatedClassLoaders");
+        clearStaticCollection("isolatedBundleLanguages");
         clearStaticCollection("discoveredBundles");
         clearStaticCollection("catalogIDMap");
         clearStaticCollection("uuidToFileMap");
@@ -85,7 +85,7 @@ class IsolatedBundleTest {
         assertTrue(BundleInstaller.isIsolatedBundle(bundleFile.toFile()),
                 "isIsolatedBundle should return true for a bundle that opted in");
 
-        URLClassLoader cl = BundleInstaller.classLoaderFor(bundleFile.toFile());
+        ClassLoader cl = BundleInstaller.classLoaderFor(bundleFile.toFile());
         assertNotNull(cl);
         assertNotSame(ClassLoader.getSystemClassLoader(), cl);
         assertSame(BundleInstaller.getLibraryClassLoader(), cl.getParent(),
@@ -108,7 +108,7 @@ class IsolatedBundleTest {
         bundleFile = writeIsolatedBundle();
         scanAsLibrary(bundleFile);
 
-        URLClassLoader cl = BundleInstaller.classLoaderFor(bundleFile.toFile());
+        ClassLoader cl = BundleInstaller.classLoaderFor(bundleFile.toFile());
         // Sanity: the JAR-internal services file is reachable from the
         // isolated classloader.
         java.net.URL svcUrl = cl.getResource(

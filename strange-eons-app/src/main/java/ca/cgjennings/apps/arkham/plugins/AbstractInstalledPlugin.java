@@ -5,7 +5,6 @@ import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.IOException;
-import java.util.ServiceLoader;
 import java.util.logging.Level;
 import org.strangeeons.scripts.ScriptLanguage;
 import static resources.Language.string;
@@ -283,21 +282,7 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
     }
 
     static ScriptLanguage lookupScriptLanguage(String id) {
-        // System CL first (catches the existing .selibrary path).
-        for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class)) {
-            if (id.equals(lang.id())) {
-                return lang;
-            }
-        }
-        // Then per-bundle isolated classloaders.
-        for (ClassLoader cl : BundleInstaller.getIsolatedClassLoaders()) {
-            for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class, cl)) {
-                if (id.equals(lang.id())) {
-                    return lang;
-                }
-            }
-        }
-        return null;
+        return BundleInstaller.lookupScriptLanguage(id);
     }
 
     private void stopPluginImpl(Plugin p) throws PluginException {

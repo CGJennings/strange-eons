@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ServiceLoader;
+import org.strangeeons.scripts.ScriptLanguage;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -859,6 +861,10 @@ public class BundleInstaller {
             switch (effectiveClassLoaderPolicy(root, pluginType)) {
                 case ISOLATED:
                     isolatedBundleFiles.add(bundleFile);
+                    String langId = root.getClientProperty("script-language");
+                    if (langId != null && !langId.isEmpty()) {
+                        isolatedBundleLanguages.put(bundleFile, langId);
+                    }
                     discoveredBundles.put(bundleFile, pluginBundle);
                     StrangeEons.log.log(Level.FINE, "isolated-classloader bundle: {0}", bundleFile);
                     break;
@@ -1136,7 +1142,9 @@ public class BundleInstaller {
     // --- per-bundle classloader registries ----------------------------------
 
     private static final Set<File> isolatedBundleFiles = ConcurrentHashMap.newKeySet();
-    private static final Map<File, URLClassLoader> isolatedClassLoaders =
+    private static final Map<File, ClassLoader> isolatedClassLoaders =
+            new ConcurrentHashMap<>();
+    private static final Map<File, String> isolatedBundleLanguages =
             new ConcurrentHashMap<>();
 
     /**
@@ -1213,27 +1221,79 @@ public class BundleInstaller {
     }
 
     /**
-     * Returns the per-plug-in {@link URLClassLoader} for an isolated
-     * bundle, creating one on first use. The classloader's parent is the
-     * shared {@linkplain #getLibraryClassLoader() library classloader}, so
-     * isolated plug-ins resolve library and core types through the
-     * standard delegation chain.
+     * Returns the per-plug-in classloader for an isolated bundle,
+     * creating one on first use. The base classloader is a
+     * {@link URLClassLoader} parented to the shared
+     * {@linkplain #getLibraryClassLoader() library classloader}; if the
+     * bundle declared {@code script-language = X} in its manifest and
+     * the corresponding {@link ScriptLanguage} provides a
+     * {@link ScriptLanguage#wrapBundleClassLoader wrapping}, the wrapped
+     * result is returned instead.
      *
      * @throws IllegalArgumentException if {@code bundleFile} is not a
      *     registered isolated bundle
      */
-    public static URLClassLoader classLoaderFor(File bundleFile) {
+    public static ClassLoader classLoaderFor(File bundleFile) {
         if (!isolatedBundleFiles.contains(bundleFile)) {
             throw new IllegalArgumentException("not an isolated bundle: " + bundleFile);
         }
         return isolatedClassLoaders.computeIfAbsent(bundleFile, f -> {
             try {
-                URL[] urls = {f.toURI().toURL()};
-                return new URLClassLoader(urls, libraryClassLoader);
+                URL bundleUrl = f.toURI().toURL();
+                URLClassLoader base = new URLClassLoader(new URL[]{bundleUrl}, libraryClassLoader);
+                String langId = isolatedBundleLanguages.get(f);
+                if (langId != null) {
+                    ScriptLanguage lang = lookupScriptLanguage(langId);
+                    if (lang != null) {
+                        ClassLoader wrapped = lang.wrapBundleClassLoader(bundleUrl, base);
+                        if (wrapped != null && wrapped != base) {
+                            StrangeEons.log.log(Level.FINE,
+                                    "wrapped {0} classloader via ScriptLanguage \"{1}\" for {2}",
+                                    new Object[]{wrapped.getClass().getSimpleName(), langId, f});
+                            return wrapped;
+                        }
+                    } else {
+                        StrangeEons.log.log(Level.WARNING,
+                                "bundle declares script-language = {0} but no ScriptLanguage is registered for that id: {1}",
+                                new Object[]{langId, f});
+                    }
+                }
+                return base;
             } catch (MalformedURLException e) {
                 throw new IllegalStateException("could not form URL for " + f, e);
             }
         });
+    }
+
+    /**
+     * Resolves a {@link ScriptLanguage} by its {@code id}, searching
+     * the system classloader, the shared library classloader, and any
+     * isolated bundle classloaders that have already been materialized.
+     * Returns {@code null} if no implementation is registered. Used by
+     * {@link #classLoaderFor} to wrap bundle classloaders and by the
+     * plug-in starter to dispatch scripted plug-ins to a language.
+     */
+    static ScriptLanguage lookupScriptLanguage(String id) {
+        for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class)) {
+            if (id.equals(lang.id())) {
+                return lang;
+            }
+        }
+        for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class, libraryClassLoader)) {
+            if (id.equals(lang.id())) {
+                return lang;
+            }
+        }
+        // Walk only already-materialized isolated CLs to avoid recursing
+        // into classLoaderFor() while we're inside its computeIfAbsent.
+        for (ClassLoader cl : isolatedClassLoaders.values()) {
+            for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class, cl)) {
+                if (id.equals(lang.id())) {
+                    return lang;
+                }
+            }
+        }
+        return null;
     }
 
     /**
