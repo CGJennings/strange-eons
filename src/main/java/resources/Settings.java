@@ -2645,6 +2645,13 @@ public class Settings implements Serializable, Iterable<String> {
                         stored = bounds;
                     }
 
+                    // if the stored bounds do not intersect any current display
+                    // (e.g. the monitor it was last placed on is no longer attached),
+                    // discard them so the caller can apply its default placement
+                    if (clipped.width <= 0 || clipped.height <= 0) {
+                        return false;
+                    }
+
                     if (getYesNo("clip-window-extents")) {
                         window.setBounds(clipped);
                     } else {
