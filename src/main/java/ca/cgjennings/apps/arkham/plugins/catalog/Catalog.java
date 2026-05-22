@@ -166,12 +166,15 @@ public class Catalog {
             synchronized (CACHE_FILE) {
                 if (CACHE_FILE.exists() && (new Date().getTime() - CACHE_FILE.lastModified()) < CACHE_EXPIRY_TIME) {
                     try {
-                        this.base = base;
-                        int size = (int) CACHE_FILE.length();
-                        try (InputStream in = new FileInputStream(CACHE_FILE)) {
-                            readCatalog(in, feedback, size);
+                        if (cacheBelongsTo(base)) {
+                            this.base = base;
+                            int size = (int) CACHE_FILE.length();
+                            try (InputStream in = new FileInputStream(CACHE_FILE)) {
+                                readCatalog(in, feedback, size);
+                            }
+                            return;
                         }
-                        return;
+                        StrangeEons.log.fine("cached catalog source URL does not match current primary; ignoring cache");
                     } catch (Throwable t) {
                         // if anything goes wrong, download the real thing
                         StrangeEons.log.log(Level.WARNING, "exception reading cached catalog", t);
@@ -191,6 +194,7 @@ public class Catalog {
                 OutputStream out = null;
                 try {
                     out = new FileOutputStream(CACHE_FILE);
+                    writeCacheHeader(out, base);
                     write(out);
                 } catch (Throwable t) {
                     // the cache file may be garbled, try very hard to delete it
@@ -226,10 +230,14 @@ public class Catalog {
         synchronized (CACHE_FILE) {
             if (CACHE_FILE.exists()) {
                 try {
+                    URL primary = new URL(Settings.getShared().get("catalog-url-1"));
+                    if (!cacheBelongsTo(primary)) {
+                        return null;
+                    }
                     Catalog c = new Catalog();
                     try (InputStream in = new FileInputStream(CACHE_FILE)) {
                         c.readCatalog(in, null, (int) CACHE_FILE.length());
-                        c.base = new URL(Settings.getShared().get("catalog-url-1"));
+                        c.base = primary;
                         return c;
                     }
                 } catch (Throwable e) {
@@ -249,6 +257,42 @@ public class Catalog {
      * milliseconds.
      */
     private static final long CACHE_EXPIRY_TIME = 23L * 60L * 60L * 1_000L;
+    /**
+     * Comment-line prefix used to stamp the source URL into the cache file so
+     * a cache written for one primary URL isn't misused after the URL changes.
+     */
+    private static final String CACHE_SOURCE_KEY = "#se-cache-source:";
+
+    /**
+     * Writes the cache source-URL header line to the cache stream. The header
+     * is a single comment line so older readers that ignored it still parsed
+     * the file; current readers gate cache reuse on this line matching the
+     * configured primary URL.
+     */
+    static void writeCacheHeader(OutputStream out, URL source) throws IOException {
+        String line = CACHE_SOURCE_KEY + ' ' + source.toExternalForm() + '\n';
+        out.write(line.getBytes(TextEncoding.CATALOG_CS));
+    }
+
+    private static boolean cacheBelongsTo(URL expected) throws IOException {
+        return cacheBelongsTo(CACHE_FILE, expected);
+    }
+
+    /**
+     * Returns true if {@code cacheFile} carries a source-URL header matching
+     * {@code expected}. Caches without the header (or with a different URL)
+     * are treated as belonging to a different source and must be re-downloaded.
+     */
+    static boolean cacheBelongsTo(File cacheFile, URL expected) throws IOException {
+        try (BufferedReader r = new BufferedReader(
+                new InputStreamReader(new FileInputStream(cacheFile), TextEncoding.CATALOG_CS))) {
+            String first = r.readLine();
+            if (first == null || !first.startsWith(CACHE_SOURCE_KEY)) {
+                return false;
+            }
+            return first.substring(CACHE_SOURCE_KEY.length()).trim().equals(expected.toExternalForm());
+        }
+    }
 
     /**
      * Returns the base URL used to resolve the location of plug-in bundles
