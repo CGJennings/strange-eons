@@ -13,24 +13,22 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # Per-OS smoke: tests + the matching jpackage profile so we catch
-          # host-specific regressions in shade + jpackage early. Signing and
-          # notarization are release-only; CI produces an unsigned DMG by
-          # omitting `strange-eons.apple.signing.identity`. Linux installs
-          # rpm + fakeroot so jpackage-linux can build .deb and .rpm in the
-          # same package phase.
+          # Per-OS smoke: tests + one jpackage type so we catch host-specific
+          # regressions in shadowJar + jpackage early. Signing/notarization is
+          # release-only; CI produces an unsigned DMG by omitting the
+          # `strange-eons.apple.signing.identity` Gradle property.
           - os: ubuntu-latest
-            profile: jpackage-linux
+            jpackage_task: ":strange-eons-app:jpackageDeb"
             extra_setup: sudo apt-get update && sudo apt-get install -y rpm fakeroot xvfb
-            mvn_prefix: xvfb-run -a
+            gradle_prefix: xvfb-run -a
           - os: macos-15
-            profile: jpackage-mac
+            jpackage_task: ":strange-eons-app:jpackageDmg"
             extra_setup: ""
-            mvn_prefix: ""
+            gradle_prefix: ""
           - os: windows-latest
-            profile: jpackage-win
+            jpackage_task: ":strange-eons-app:jpackageMsi"
             extra_setup: ""
-            mvn_prefix: ""
+            gradle_prefix: ""
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -39,7 +37,7 @@ jobs:
         with:
           java-version: '25'
           distribution: 'temurin'
-          cache: maven
+          cache: gradle
       - name: Extra setup for runner
         if: matrix.extra_setup != ''
         shell: bash
@@ -53,4 +51,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ${{ matrix.mvn_prefix }} mvn -B -Pdeploy,${{ matrix.profile }} verify
+          ${{ matrix.gradle_prefix }} ./gradlew --no-daemon \
+            :strange-eons-app:check ${{ matrix.jpackage_task }}

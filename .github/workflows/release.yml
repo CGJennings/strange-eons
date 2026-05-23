@@ -85,29 +85,32 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # mvn_prefix wraps the build invocation; only Linux needs Xvfb to
-          # provide a display for static initializers that touch AWT (see
-          # issue #4). Empty on macOS/Windows where AWT is available natively.
+          # gradle_prefix wraps the build invocation; only Linux needs Xvfb
+          # to provide a display for static initializers that touch AWT (see
+          # issue #4). The Linux runner also needs rpm + fakeroot so jpackage
+          # can produce an .rpm alongside the .deb. jpackage_tasks lists the
+          # platform-specific targets; the version-bearing -P props apply
+          # uniformly.
           - os: ubuntu-latest
-            profile: jpackage-linux
+            jpackage_tasks: ":strange-eons-app:jpackageDeb :strange-eons-app:jpackageRpm :strange-eons-app:jpackageAppImage"
             artifact: strange-eons-linux
             extra_setup: sudo apt-get update && sudo apt-get install -y rpm fakeroot xvfb
-            mvn_prefix: xvfb-run -a
+            gradle_prefix: xvfb-run -a
           - os: macos-15-intel
-            profile: jpackage-mac
+            jpackage_tasks: ":strange-eons-app:jpackageDmg"
             artifact: strange-eons-macos-x64
             extra_setup: ""
-            mvn_prefix: ""
+            gradle_prefix: ""
           - os: macos-15
-            profile: jpackage-mac
+            jpackage_tasks: ":strange-eons-app:jpackageDmg"
             artifact: strange-eons-macos-aarch64
             extra_setup: ""
-            mvn_prefix: ""
+            gradle_prefix: ""
           - os: windows-latest
-            profile: jpackage-win
+            jpackage_tasks: ":strange-eons-app:jpackageMsi"
             artifact: strange-eons-windows
             extra_setup: ""
-            mvn_prefix: ""
+            gradle_prefix: ""
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -115,7 +118,7 @@ jobs:
         with:
           java-version: "25"
           distribution: "temurin"
-          cache: maven
+          cache: gradle
       - name: Extra setup for runner
         if: matrix.extra_setup != ''
         shell: bash
@@ -136,7 +139,7 @@ jobs:
           security default-keychain -s build.keychain
           security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
           # 6h timeout: defeats the default 5min auto-lock that would break
-          # long Maven builds halfway through signing the bundled JRE.
+          # long builds halfway through signing the bundled JRE.
           security set-keychain-settings -lut 21600 build.keychain
           security import certificate.p12 -k build.keychain \
             -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign -T /usr/bin/productbuild
@@ -166,22 +169,24 @@ jobs:
             # before searching the keychain. Strip that prefix and the trailing
             # " (TEAMID)" suffix (Team IDs are exactly 10 alphanumerics) so the
             # APPLE_SIGNING_IDENTITY secret can stay in its full canonical form
-            # ("Developer ID Application: Name (TEAMID)"). Maven property is
-            # namespaced; see pom.xml profile id "jpackage-mac-sign".
+            # ("Developer ID Application: Name (TEAMID)"). Gradle property is
+            # namespaced; see strange-eons-app/build.gradle.kts jpackageDmg.
             JPACKAGE_SIGN_NAME=$(echo "$APPLE_SIGNING_IDENTITY" \
               | sed -E 's/^Developer ID Application: //; s/ \([A-Z0-9]{10}\)$//')
-            EXTRA+=("-Dstrange-eons.apple.signing.identity=$JPACKAGE_SIGN_NAME")
+            EXTRA+=("-Pstrange-eons.apple.signing.identity=$JPACKAGE_SIGN_NAME")
           fi
-          # ${EXTRA[@]+...} guards against bash 3.2 (default on macOS runners)
-          # treating an empty array under `set -u` as an unbound variable.
-          ${{ matrix.mvn_prefix }} mvn -B \
-            -Dapp.major=${{ needs.parse-version.outputs.major }} \
-            -Dapp.minor=${{ needs.parse-version.outputs.minor }} \
-            -Dapp.patch=${{ needs.parse-version.outputs.patch }} \
-            -Dapp.build=${{ needs.parse-version.outputs.build }} \
-            -Dapp.type=${{ needs.parse-version.outputs.type }} \
+          # First produce the shaded jar (shadowJar) — this is the input to
+          # every jpackage task. ${EXTRA[@]+...} guards against bash 3.2
+          # (default on macOS runners) treating an empty array under `set -u`
+          # as an unbound variable.
+          ${{ matrix.gradle_prefix }} ./gradlew --no-daemon \
+            -Papp.major=${{ needs.parse-version.outputs.major }} \
+            -Papp.minor=${{ needs.parse-version.outputs.minor }} \
+            -Papp.patch=${{ needs.parse-version.outputs.patch }} \
+            -Papp.build=${{ needs.parse-version.outputs.build }} \
+            -Papp.type=${{ needs.parse-version.outputs.type }} \
             ${EXTRA[@]+"${EXTRA[@]}"} \
-            -Pdeploy,${{ matrix.profile }} package
+            :strange-eons-app:shadowJar ${{ matrix.jpackage_tasks }}
       # macOS-only: notarize each produced .dmg synchronously, then staple
       # the ticket so Gatekeeper can validate offline. notarytool returns
       # exit 0 even on rejection in some xcrun builds, hence the explicit
