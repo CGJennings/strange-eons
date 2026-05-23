@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.5.1
+
+- Register `.eon` and `.se*` file associations on the macOS, Windows, and Linux installers, which the jpackage migration had dropped.
+- Note in installer config that the macOS bundle identifier and Windows MSI upgrade GUID changed between install4j and the v3.5.0 jpackage build; upgrading from a pre-3.5 install4j build is a fresh install on both platforms.
+
 ## 3.5.0
 
 - Migrate stored YuggothTheme preferences to DagonTheme on upgrade.

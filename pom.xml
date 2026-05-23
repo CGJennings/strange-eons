@@ -463,6 +463,14 @@
                                 <option>-Xss1m</option>
                             </javaOptions>
                             <macPackageName>Strange Eons</macPackageName>
+                            <!-- Bundle identifier shipped at v3.5.0; do not
+                                 change. Pre-3.5 install4j builds used the
+                                 auto-derived com.install4j.0581-5195-2362-0248.29,
+                                 so the upgrade from install4j is already a
+                                 fresh install for those users. Changing this
+                                 value now would break upgrades from 3.5.0
+                                 onward. macPackageSigningPrefix below must
+                                 mirror this identifier with a trailing dot. -->
                             <macPackageIdentifier>ca.cgjennings.strange-eons</macPackageIdentifier>
                             <fileAssociations>
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/eon.properties</fileAssociation>
@@ -558,6 +566,11 @@
                             <winMenu>true</winMenu>
                             <winMenuGroup>Strange Eons</winMenuGroup>
                             <winDirChooser>true</winDirChooser>
+                            <!-- MSI upgrade GUID shipped at v3.5.0; do not
+                                 change. Install4j MSIs used a different GUID
+                                 so install4j installs do not upgrade in place
+                                 to 3.5.x. Changing this value now would also
+                                 break the 3.5.0 -> 3.5.x upgrade path. -->
                             <winUpgradeUuid>9f5b1c30-0d2e-4f7a-8e1b-3a4d6b8e9c10</winUpgradeUuid>
                             <fileAssociations>
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/eon.properties</fileAssociation>
