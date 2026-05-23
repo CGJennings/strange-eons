@@ -1,5 +1,17 @@
 # Changelog
 
+## 2026-05-22
+
+- Migrate stored `theme` / `dark-theme` user preferences pointing at the
+  removed `ca.cgjennings.ui.theme.YuggothTheme` over to `DagonTheme`
+  (which absorbed Yuggoth in 3b2d33d). Without this, users upgrading a
+  3.3 install to the 3.5 beta silently dropped from their chosen dark
+  theme to the default Hydra fallback because `Class.forName` failed in
+  `ThemeInstaller.instantiateTheme`. Also fixes `CatTheme`'s hardcoded
+  in-code default for `dark-theme`, which still pointed at
+  `YuggothTheme` and so seeded the prefs UI with a dead class name when
+  no override was set.
+
 ## 2026-05-01
 
 - Share the Rhino standard-objects scope across all `SEScriptEngine`

@@ -429,7 +429,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
 
         loadCheck("auto-select-dark-theme", useDarkCheck);
 
-        String darkTheme = user.get("dark-theme", "ca.cgjennings.ui.theme.YuggothTheme");
+        String darkTheme = user.get("dark-theme", "ca.cgjennings.ui.theme.DagonTheme");
         DefaultComboBoxModel<InstalledTheme> darkThemeModel = new DefaultComboBoxModel<>(themes);
         darkThemeCombo.setModel(darkThemeModel);
         darkThemeCombo.setSelectedIndex(indexOfTheme(darkTheme, themes));

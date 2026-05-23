@@ -41,6 +41,8 @@ public class ThemeInstaller {
     private static final String KEY_AUTO_DARK = "auto-select-dark-theme";
     private static final String KEY_USE_TEST_THEME = "test-bundle-use-testing-theme";
 
+    static final String LEGACY_YUGGOTH_THEME_CLASS = "ca.cgjennings.ui.theme.YuggothTheme";
+
     private static Object platformHelper;
 
     /* Instantiates a platform-specific helper, if one exists, and stores it
@@ -64,6 +66,22 @@ public class ThemeInstaller {
     }
 
     private static Theme installed;
+
+    /**
+     * Rewrites a user preference still pointing at the removed YuggothTheme
+     * class so that the user lands on Dagon (its successor) instead of being
+     * silently dropped to the default.
+     */
+    static void migrateLegacyThemePreferences(Settings user) {
+        String replacement = DagonTheme.class.getName();
+        for (String key : new String[]{KEY_THEME_CLASS, KEY_DARK_THEME_CLASS}) {
+            if (LEGACY_YUGGOTH_THEME_CLASS.equals(user.getOverride(key))) {
+                user.set(key, replacement);
+                StrangeEons.log.log(Level.INFO,
+                        "migrated user setting \"{0}\" from YuggothTheme to DagonTheme", key);
+            }
+        }
+    }
 
     /**
      * Returns the installed theme.
@@ -152,6 +170,7 @@ public class ThemeInstaller {
                 && StrangeEons.getApplication().getCommandLineArguments().xDisableTheme) {
             return new NoTheme();
         }
+        migrateLegacyThemePreferences(Settings.getUser());
         String themeClass = Settings.getShared().get(KEY_THEME_CLASS);;
         if (Settings.getShared().getYesNo(KEY_AUTO_DARK)) {
             if (new DarkModeDetector().detect()) {
