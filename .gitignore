@@ -3,6 +3,12 @@ deployment/dist
 deployment/assembled
 deployment/installers
 
+### Gradle
+.gradle/
+/build/
+/*/build/
+!gradle/wrapper/
+
 ### Maven
 target/
 pom.xml.tag
