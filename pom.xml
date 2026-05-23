@@ -399,6 +399,12 @@
                                         <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
                                         <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
                                     </fileAssociations>
+                                    <launchers>
+                                        <launcher>
+                                            <name>sedebug</name>
+                                            <file>${project.basedir}/deployment/jpackage/launchers/linux/debugger.properties</file>
+                                        </launcher>
+                                    </launchers>
                                 </configuration>
                             </execution>
                             <execution>
@@ -419,6 +425,12 @@
                                         <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
                                         <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
                                     </fileAssociations>
+                                    <launchers>
+                                        <launcher>
+                                            <name>sedebug</name>
+                                            <file>${project.basedir}/deployment/jpackage/launchers/linux/debugger.properties</file>
+                                        </launcher>
+                                    </launchers>
                                 </configuration>
                             </execution>
                             <execution>
@@ -480,6 +492,16 @@
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/selibrary.properties</fileAssociation>
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seproject.properties</fileAssociation>
                             </fileAssociations>
+                            <!-- macOS bundles allow only one Launchpad/Dock
+                                 entry per .app, so sedebug ships as a secondary
+                                 binary in Contents/MacOS/ and must be invoked
+                                 directly (no menu entry). -->
+                            <launchers>
+                                <launcher>
+                                    <name>sedebug</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/mac/debugger.properties</file>
+                                </launcher>
+                            </launchers>
                         </configuration>
                         <executions>
                             <execution>
@@ -580,6 +602,16 @@
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/selibrary.properties</fileAssociation>
                                 <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seproject.properties</fileAssociation>
                             </fileAssociations>
+                            <launchers>
+                                <launcher>
+                                    <name>sedebug</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/win/debugger.properties</file>
+                                </launcher>
+                                <launcher>
+                                    <name>eons</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/win/eons-console.properties</file>
+                                </launcher>
+                            </launchers>
                         </configuration>
                         <executions>
                             <execution>
