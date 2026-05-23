@@ -386,6 +386,19 @@
                                     <linuxAppCategory>Graphics</linuxAppCategory>
                                     <linuxMenuGroup>Graphics</linuxMenuGroup>
                                     <linuxShortcut>true</linuxShortcut>
+                                    <!-- Scoped per-execution: jpackage rejects file
+                                         associations for type=app-image. Icon paths in
+                                         each .properties file are resolved relative to
+                                         that file's directory. -->
+
+                                    <fileAssociations>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/eon.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seplugin.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seext.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/setheme.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
+                                    </fileAssociations>
                                 </configuration>
                             </execution>
                             <execution>
@@ -398,6 +411,14 @@
                                     <linuxAppCategory>Graphics</linuxAppCategory>
                                     <linuxMenuGroup>Graphics</linuxMenuGroup>
                                     <linuxShortcut>true</linuxShortcut>
+                                    <fileAssociations>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/eon.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seplugin.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seext.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/setheme.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
+                                    </fileAssociations>
                                 </configuration>
                             </execution>
                             <execution>
@@ -443,6 +464,14 @@
                             </javaOptions>
                             <macPackageName>Strange Eons</macPackageName>
                             <macPackageIdentifier>ca.cgjennings.strange-eons</macPackageIdentifier>
+                            <fileAssociations>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/eon.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seplugin.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seext.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/setheme.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/selibrary.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seproject.properties</fileAssociation>
+                            </fileAssociations>
                         </configuration>
                         <executions>
                             <execution>
@@ -530,6 +559,14 @@
                             <winMenuGroup>Strange Eons</winMenuGroup>
                             <winDirChooser>true</winDirChooser>
                             <winUpgradeUuid>9f5b1c30-0d2e-4f7a-8e1b-3a4d6b8e9c10</winUpgradeUuid>
+                            <fileAssociations>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/eon.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seplugin.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seext.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/setheme.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/selibrary.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seproject.properties</fileAssociation>
+                            </fileAssociations>
                         </configuration>
                         <executions>
                             <execution>
