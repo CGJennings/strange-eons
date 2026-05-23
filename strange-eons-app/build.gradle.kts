@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.internal.os.OperatingSystem
 
 plugins {
     java
@@ -111,5 +112,208 @@ tasks.named<ShadowJar>("shadowJar") {
         "META-INF/LICENSE",
         "META-INF/LICENSE.txt",
         "META-INF/maven/**",
+    )
+}
+
+// ---------------------------------------------------------------------------
+// jpackage tasks
+//
+// Mirror the old Maven jpackage-{linux,mac,win} profiles: each task invokes
+// the JDK 25 toolchain's jpackage tool against the shaded jar from shadowJar.
+// CI activates one task per matrix runner (e.g. ./gradlew jpackageDeb on
+// Linux, jpackageDmg on macOS). Output lands in deployment/installers/.
+// ---------------------------------------------------------------------------
+
+val javaToolchains = the<JavaToolchainService>()
+val jpackageExecutable = javaToolchains.launcherFor {
+    languageVersion = JavaLanguageVersion.of(25)
+}.map {
+    it.executablePath.asFile.parentFile.resolve("jpackage").absolutePath
+}
+
+val assembledDir = rootProject.layout.projectDirectory.dir("deployment/assembled")
+val installersDir = rootProject.layout.projectDirectory.dir("deployment/installers")
+val iconsDir = rootProject.layout.projectDirectory.dir("deployment/assets/icons/app")
+val entitlementsPlist = rootProject.layout.projectDirectory.file("deployment/entitlements.plist")
+
+fun appVersionString(): String =
+    "${project.findProperty("app.major") ?: 3}." +
+    "${project.findProperty("app.minor") ?: 6}." +
+    "${project.findProperty("app.patch") ?: 0}"
+
+fun commonJpackageArgs(): List<String> = listOf(
+    "--name", "Strange Eons",
+    "--app-version", appVersionString(),
+    "--vendor", (project.findProperty("app.vendor") as String?) ?: "Christopher Currie",
+    "--copyright", (project.findProperty("app.copyright") as String?)
+        ?: "Copyright Christopher Jennings and contributors",
+    "--input", assembledDir.asFile.absolutePath,
+    "--dest", installersDir.asFile.absolutePath,
+    "--main-jar", "strange-eons.jar",
+    "--main-class", "ca.cgjennings.apps.arkham.StrangeEons",
+    "--runtime-image", System.getProperty("java.home"),
+    "--java-options", "-javaagent:\$APPDIR/strange-eons.jar",
+    "--java-options", "--add-opens=java.desktop/javax.swing.table=ALL-UNNAMED",
+    "--java-options", "--enable-native-access=ALL-UNNAMED",
+    "--java-options", "-Xmx4g",
+    "--java-options", "-Xms1g",
+    "--java-options", "-Xss1m",
+)
+
+// Per-platform asset helpers. icon= paths inside the .properties files are
+// resolved by jpackage relative to its CWD, so each jpackage Exec task must
+// set workingDir = rootProject.projectDir for these references to find their
+// targets under deployment/assets/.
+val jpackageAssetsDir = rootProject.layout.projectDirectory.dir("deployment/jpackage")
+
+fun fileAssociationArgs(platform: String): List<String> {
+    val dir = jpackageAssetsDir.dir("file-associations/$platform").asFile
+    return listOf("eon", "seplugin", "seext", "setheme", "selibrary", "seproject").flatMap {
+        listOf("--file-associations", dir.resolve("$it.properties").absolutePath)
+    }
+}
+
+fun launcherArg(name: String, platform: String, file: String): List<String> =
+    listOf("--add-launcher", "$name=" + jpackageAssetsDir.file("launchers/$platform/$file").asFile.absolutePath)
+
+// jpackage refuses to write into a non-empty --dest dir; clear it first.
+val cleanInstallers = tasks.register<Delete>("cleanInstallers") {
+    delete(installersDir)
+}
+
+// --- Linux ---------------------------------------------------------------
+
+val linuxIcon = iconsDir.file("48.png").asFile.absolutePath
+val linuxPackageArgs = listOf(
+    "--linux-package-name", "strange-eons",
+    "--linux-app-category", "Graphics",
+    "--linux-menu-group", "Graphics",
+    "--linux-shortcut",
+)
+
+tasks.register<Exec>("jpackageDeb") {
+    group = "distribution"
+    description = "Build a .deb installer (Linux only)."
+    dependsOn("shadowJar", cleanInstallers)
+    onlyIf { OperatingSystem.current().isLinux }
+    doFirst { installersDir.asFile.mkdirs() }
+    workingDir = rootProject.projectDir
+    executable = jpackageExecutable.get()
+    args(
+        commonJpackageArgs()
+            + listOf("--type", "deb", "--icon", linuxIcon)
+            + linuxPackageArgs
+            + fileAssociationArgs("linux")
+            + launcherArg("sedebug", "linux", "debugger.properties"),
+    )
+}
+
+tasks.register<Exec>("jpackageRpm") {
+    group = "distribution"
+    description = "Build a .rpm installer (Linux only)."
+    dependsOn("shadowJar", cleanInstallers)
+    onlyIf { OperatingSystem.current().isLinux }
+    doFirst { installersDir.asFile.mkdirs() }
+    workingDir = rootProject.projectDir
+    executable = jpackageExecutable.get()
+    args(
+        commonJpackageArgs()
+            + listOf("--type", "rpm", "--icon", linuxIcon)
+            + linuxPackageArgs
+            + fileAssociationArgs("linux")
+            + launcherArg("sedebug", "linux", "debugger.properties"),
+    )
+}
+
+tasks.register<Exec>("jpackageAppImage") {
+    group = "distribution"
+    description = "Build a Linux app-image directory."
+    dependsOn("shadowJar", cleanInstallers)
+    onlyIf { OperatingSystem.current().isLinux }
+    doFirst { installersDir.asFile.mkdirs() }
+    executable = jpackageExecutable.get()
+    args(commonJpackageArgs() + listOf("--type", "app-image", "--icon", linuxIcon))
+}
+
+// --- macOS ---------------------------------------------------------------
+
+// Pre-sign Mach-O dylibs (FlatLaf natives) embedded in the shaded jar before
+// jpackage bundles them — Apple notarization rejects unsigned natives. The
+// shell script no-ops when not on macOS or when no identity is provided, so
+// it's safe to wire unconditionally.
+val signJarNatives = tasks.register<Exec>("signJarNatives") {
+    group = "distribution"
+    description = "Sign Mach-O dylibs embedded in deployment/assembled/strange-eons.jar."
+    dependsOn("shadowJar")
+    workingDir = rootProject.projectDir
+    val identity = (project.findProperty("strange-eons.apple.signing.identity") as String?) ?: ""
+    onlyIf {
+        OperatingSystem.current().isMacOsX && identity.isNotBlank()
+    }
+    commandLine(
+        "deployment/scripts/sign-jar-natives.sh",
+        "deployment/assembled/strange-eons.jar",
+        identity,
+        entitlementsPlist.asFile.absolutePath,
+    )
+}
+
+tasks.register<Exec>("jpackageDmg") {
+    group = "distribution"
+    description = "Build a .dmg installer (macOS only)."
+    dependsOn("shadowJar", signJarNatives, cleanInstallers)
+    onlyIf { OperatingSystem.current().isMacOsX }
+    doFirst { installersDir.asFile.mkdirs() }
+    workingDir = rootProject.projectDir
+    executable = jpackageExecutable.get()
+    val identity = (project.findProperty("strange-eons.apple.signing.identity") as String?) ?: ""
+    val macArgs = mutableListOf(
+        "--type", "dmg",
+        "--icon", iconsDir.file("application.icns").asFile.absolutePath,
+        "--mac-package-name", "Strange Eons",
+        "--mac-package-identifier", "ca.cgjennings.strange-eons",
+    )
+    if (identity.isNotBlank()) {
+        // jpackage prepends "Developer ID Application: " before keychain
+        // lookup, so callers pass just the team/user fragment here.
+        macArgs += listOf(
+            "--mac-sign",
+            "--mac-signing-key-user-name", identity,
+            "--mac-entitlements", entitlementsPlist.asFile.absolutePath,
+            "--mac-package-signing-prefix", "ca.cgjennings.strange-eons.",
+        )
+    }
+    args(
+        commonJpackageArgs()
+            + macArgs
+            + fileAssociationArgs("mac")
+            + launcherArg("sedebug", "mac", "debugger.properties"),
+    )
+}
+
+// --- Windows -------------------------------------------------------------
+
+tasks.register<Exec>("jpackageMsi") {
+    group = "distribution"
+    description = "Build a .msi installer (Windows only)."
+    dependsOn("shadowJar", cleanInstallers)
+    onlyIf { OperatingSystem.current().isWindows }
+    doFirst { installersDir.asFile.mkdirs() }
+    workingDir = rootProject.projectDir
+    executable = jpackageExecutable.get()
+    args(
+        commonJpackageArgs()
+            + listOf(
+                "--type", "msi",
+                "--icon", iconsDir.file("application.ico").asFile.absolutePath,
+                "--win-shortcut",
+                "--win-menu",
+                "--win-menu-group", "Strange Eons",
+                "--win-dir-chooser",
+                "--win-upgrade-uuid", "9f5b1c30-0d2e-4f7a-8e1b-3a4d6b8e9c10",
+            )
+            + fileAssociationArgs("win")
+            + launcherArg("sedebug", "win", "debugger.properties")
+            + launcherArg("eons", "win", "eons-console.properties"),
     )
 }
