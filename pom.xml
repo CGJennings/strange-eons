@@ -388,7 +388,7 @@
                                     <!-- Scoped per-execution: jpackage rejects file
                                          associations for type=app-image. Icon paths in
                                          each .properties file are resolved relative to
-                                         that file's directory. -->
+                                         the Maven working directory (project root). -->
 
                                     <fileAssociations>
                                         <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/eon.properties</fileAssociation>
