@@ -218,15 +218,14 @@
         </profile>
         <profile>
             <!--
-                When packaging, using the deploy profile (mvn package -Pdeploy) will
-                create a single JAR file that contains all of the dependencies
-                under deployment/assembled. This JAR can then be used to create
-                installers or other deployment packages. Creating such packages
-                is not part of the standard build process since it relies on a
-                third-party tool (install4j) that contributors may not have
-                available. To build the app and create deployment packages, run:
+                mvn package -Pdeploy assembles a single shaded jar at
+                deployment/assembled/strange-eons.jar containing all dependencies.
+                The jpackage-{linux,mac,win} profiles consume that jar to build
+                native installers, so a full build is:
 
-                node deployment/deploy.js
+                    mvn package -Pdeploy,jpackage-linux   (on Linux)
+                    mvn package -Pdeploy,jpackage-mac     (on macOS)
+                    mvn package -Pdeploy,jpackage-win     (on Windows)
              -->
             <id>deploy</id>
             <build>
