@@ -218,15 +218,14 @@
         </profile>
         <profile>
             <!--
-                When packaging, using the deploy profile (mvn package -Pdeploy) will
-                create a single JAR file that contains all of the dependencies
-                under deployment/assembled. This JAR can then be used to create
-                installers or other deployment packages. Creating such packages
-                is not part of the standard build process since it relies on a
-                third-party tool (install4j) that contributors may not have
-                available. To build the app and create deployment packages, run:
+                mvn package -Pdeploy assembles a single shaded jar at
+                deployment/assembled/strange-eons.jar containing all dependencies.
+                The jpackage-{linux,mac,win} profiles consume that jar to build
+                native installers, so a full build is:
 
-                node deployment/deploy.js
+                    mvn package -Pdeploy,jpackage-linux   (on Linux)
+                    mvn package -Pdeploy,jpackage-mac     (on macOS)
+                    mvn package -Pdeploy,jpackage-win     (on Windows)
              -->
             <id>deploy</id>
             <build>
@@ -386,6 +385,25 @@
                                     <linuxAppCategory>Graphics</linuxAppCategory>
                                     <linuxMenuGroup>Graphics</linuxMenuGroup>
                                     <linuxShortcut>true</linuxShortcut>
+                                    <!-- Scoped per-execution: jpackage rejects file
+                                         associations for type=app-image. Icon paths in
+                                         each .properties file are resolved relative to
+                                         the Maven working directory (project root). -->
+
+                                    <fileAssociations>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/eon.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seplugin.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seext.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/setheme.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
+                                    </fileAssociations>
+                                    <launchers>
+                                        <launcher>
+                                            <name>sedebug</name>
+                                            <file>${project.basedir}/deployment/jpackage/launchers/linux/debugger.properties</file>
+                                        </launcher>
+                                    </launchers>
                                 </configuration>
                             </execution>
                             <execution>
@@ -398,6 +416,20 @@
                                     <linuxAppCategory>Graphics</linuxAppCategory>
                                     <linuxMenuGroup>Graphics</linuxMenuGroup>
                                     <linuxShortcut>true</linuxShortcut>
+                                    <fileAssociations>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/eon.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seplugin.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seext.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/setheme.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/selibrary.properties</fileAssociation>
+                                        <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/linux/seproject.properties</fileAssociation>
+                                    </fileAssociations>
+                                    <launchers>
+                                        <launcher>
+                                            <name>sedebug</name>
+                                            <file>${project.basedir}/deployment/jpackage/launchers/linux/debugger.properties</file>
+                                        </launcher>
+                                    </launchers>
                                 </configuration>
                             </execution>
                             <execution>
@@ -442,7 +474,33 @@
                                 <option>-Xss1m</option>
                             </javaOptions>
                             <macPackageName>Strange Eons</macPackageName>
+                            <!-- Bundle identifier shipped at v3.5.0; do not
+                                 change. Pre-3.5 install4j builds used the
+                                 auto-derived com.install4j.0581-5195-2362-0248.29,
+                                 so the upgrade from install4j is already a
+                                 fresh install for those users. Changing this
+                                 value now would break upgrades from 3.5.0
+                                 onward. macPackageSigningPrefix below must
+                                 mirror this identifier with a trailing dot. -->
                             <macPackageIdentifier>ca.cgjennings.strange-eons</macPackageIdentifier>
+                            <fileAssociations>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/eon.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seplugin.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seext.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/setheme.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/selibrary.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/mac/seproject.properties</fileAssociation>
+                            </fileAssociations>
+                            <!-- macOS bundles allow only one Launchpad/Dock
+                                 entry per .app, so sedebug ships as a secondary
+                                 binary in Contents/MacOS/ and must be invoked
+                                 directly (no menu entry). -->
+                            <launchers>
+                                <launcher>
+                                    <name>sedebug</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/mac/debugger.properties</file>
+                                </launcher>
+                            </launchers>
                         </configuration>
                         <executions>
                             <execution>
@@ -529,7 +587,30 @@
                             <winMenu>true</winMenu>
                             <winMenuGroup>Strange Eons</winMenuGroup>
                             <winDirChooser>true</winDirChooser>
+                            <!-- MSI upgrade GUID shipped at v3.5.0; do not
+                                 change. Install4j MSIs used a different GUID
+                                 so install4j installs do not upgrade in place
+                                 to 3.5.x. Changing this value now would also
+                                 break the 3.5.0 -> 3.5.x upgrade path. -->
                             <winUpgradeUuid>9f5b1c30-0d2e-4f7a-8e1b-3a4d6b8e9c10</winUpgradeUuid>
+                            <fileAssociations>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/eon.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seplugin.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seext.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/setheme.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/selibrary.properties</fileAssociation>
+                                <fileAssociation>${project.basedir}/deployment/jpackage/file-associations/win/seproject.properties</fileAssociation>
+                            </fileAssociations>
+                            <launchers>
+                                <launcher>
+                                    <name>sedebug</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/win/debugger.properties</file>
+                                </launcher>
+                                <launcher>
+                                    <name>eons</name>
+                                    <file>${project.basedir}/deployment/jpackage/launchers/win/eons-console.properties</file>
+                                </launcher>
+                            </launchers>
                         </configuration>
                         <executions>
                             <execution>
