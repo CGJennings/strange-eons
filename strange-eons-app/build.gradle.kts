@@ -89,6 +89,13 @@ tasks.register<JavaExec>("runDebugger") {
     mainClass = "ca.cgjennings.apps.arkham.plugins.debugging.Client"
 }
 
+tasks.register<JavaExec>("iconDesigner") {
+    description = "Runs the themed glyph icon designer tool."
+    group = "application"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "ca.cgjennings.ui.theme.ThemedGlyphIconDesigner"
+}
+
 // Pre-load Mockito as a JVM agent so JDK doesn't warn (and eventually refuse
 // per JEP 451) on dynamic agent attachment. -Xshare:off mutes the CDS warning
 // caused by the agent appending to the bootstrap classpath.
