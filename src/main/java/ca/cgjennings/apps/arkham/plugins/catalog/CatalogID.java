@@ -5,13 +5,7 @@ import ca.cgjennings.apps.arkham.plugins.PluginBundle;
 import ca.cgjennings.apps.arkham.plugins.PluginRoot;
 import java.io.File;
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Objects;
@@ -31,7 +25,7 @@ import java.util.regex.Pattern;
 public final class CatalogID {
 
     private UUID uuid;
-    private Instant date;
+    private GregorianCalendar date;
 
     /**
      * Creates an ID with a new UUID and the current time. This is used when
@@ -61,13 +55,12 @@ public final class CatalogID {
         this(uuid, null);
     }
 
-    // Visible for tests
-    CatalogID(UUID uuid, Instant date) {
+    protected CatalogID(UUID uuid, GregorianCalendar date) {
         if (uuid == null) {
             uuid = UUID.randomUUID();
         }
         if (date == null) {
-            date = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+            date = (GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
         }
         this.uuid = uuid;
         this.date = date;
@@ -78,14 +71,8 @@ public final class CatalogID {
         return "CATALOGUEID{" + toUUIDString() + ":" + toDateString() + "}";
     }
 
-    private static final DateTimeFormatter DATE_FORMAT =
-            DateTimeFormatter.ofPattern("yyyy-M-d-H-m-s-SSS", Locale.ROOT).withZone(ZoneOffset.UTC);
-
-    private static final DateTimeFormatter DATE_FORMAT_NO_MILLIS =
-            DateTimeFormatter.ofPattern("yyyy-M-d-H-m-s", Locale.ROOT);
-
     public String toDateString() {
-        return DATE_FORMAT.format(date);
+        return "" + date.get(Calendar.YEAR) + "-" + date.get(Calendar.MONTH) + "-" + date.get(Calendar.DAY_OF_MONTH) + "-" + date.get(Calendar.HOUR_OF_DAY) + "-" + date.get(Calendar.MINUTE) + "-" + date.get(Calendar.SECOND) + "-" + date.get(Calendar.MILLISECOND);
     }
 
     public String toUUIDString() {
@@ -96,24 +83,20 @@ public final class CatalogID {
         return UUID.fromString(uuid.toLowerCase(Locale.CANADA));
     }
 
-    private static Instant parseDateString(String date) {
-        LocalDateTime ldt;
-        int legacyMillis = 0;
-        try {
-            ldt = LocalDateTime.parse(date, DATE_FORMAT);
-        } catch (DateTimeParseException primary) {
-            int lastHyphen = date.lastIndexOf('-');
-            if (lastHyphen < 0) {
-                throw new IllegalArgumentException("invalid date: " + date, primary);
-            }
-            try {
-                ldt = LocalDateTime.parse(date.substring(0, lastHyphen), DATE_FORMAT_NO_MILLIS);
-                legacyMillis = Integer.parseInt(date.substring(lastHyphen + 1));
-            } catch (DateTimeParseException | NumberFormatException fallback) {
-                throw new IllegalArgumentException("invalid date: " + date, fallback);
-            }
+    private static GregorianCalendar parseDateString(String date) {
+        String[] tokens = date.split("-");
+        if (tokens.length != 7) {
+            throw new IllegalArgumentException("invalid date: " + date);
         }
-        return ldt.toInstant(ZoneOffset.UTC).plusMillis(legacyMillis);
+        GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
+        c.set(Calendar.YEAR, Integer.valueOf(tokens[0]));
+        c.set(Calendar.MONTH, Integer.valueOf(tokens[1]));
+        c.set(Calendar.DAY_OF_MONTH, Integer.valueOf(tokens[2]));
+        c.set(Calendar.HOUR_OF_DAY, Integer.valueOf(tokens[3]));
+        c.set(Calendar.MINUTE, Integer.valueOf(tokens[4]));
+        c.set(Calendar.SECOND, Integer.valueOf(tokens[5]));
+        c.set(Calendar.MILLISECOND, Integer.valueOf(tokens[6]));
+        return c;
     }
 
     /**
@@ -125,7 +108,7 @@ public final class CatalogID {
     public String getFormattedDate() {
         return String.format(
                 "%1$ta %1$tb %1$td %1$tT %1$tL ms %1$tZ %1$tY",
-                asCalendar()
+                date
         );
     }
 
@@ -175,12 +158,13 @@ public final class CatalogID {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof CatalogID rhs)) {
+        if (obj == null || !(obj instanceof CatalogID)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
+        CatalogID rhs = (CatalogID) obj;
         return sameUUID(rhs) && (compareDates(rhs) == 0);
     }
 
@@ -203,7 +187,7 @@ public final class CatalogID {
      */
     public boolean isOlderThan(CatalogID rhs) {
         if (sameUUID(rhs)) {
-            return date.isBefore(rhs.date);
+            return date.before(rhs.date);
         }
         return false;
     }
@@ -241,13 +225,7 @@ public final class CatalogID {
      * @return this ID's date part
      */
     public GregorianCalendar getDate() {
-        return asCalendar();
-    }
-
-    private GregorianCalendar asCalendar() {
-        GregorianCalendar c = (GregorianCalendar) GregorianCalendar.getInstance(TimeZone.getTimeZone("UTC"));
-        c.setTimeInMillis(date.toEpochMilli());
-        return c;
+        return date;
     }
 
     /**
