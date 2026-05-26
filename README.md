@@ -61,55 +61,38 @@ easier to use than the command line.
 You can download a suitable JDK from
 [Adoptium](https://adoptium.net/temurin/releases/?version=25).
 
-3. **Maven**. Maven is used to build the project. Again, this may
-already be included with your IDE if you use one. If not, you can
-[install it separately](https://maven.apache.org/download.cgi).
+The project ships with the Gradle Wrapper (`gradlew`), so no separate
+Gradle installation is needed.
 
 To build the project from the command line, you can use the
 following commands:
 
 Build the project:
 ```bash
-mvn package
+./gradlew :strange-eons-app:build
 ```
 
 Start the main application:
 ```bash
-mvn exec:exec -Papp
+./gradlew :strange-eons-app:run
 ```
-
-> This will run the application with an argument that causes it to
-> skip the usual Java version checks. You may encounter errors
-> or the application may not run at all if your default Java version
-> doesn't match the version used to build the project.
 
 Start the script debugging client:
 ```bash
-mvn exec:exec -Pdebugger
+./gradlew :strange-eons-app:runDebugger
 ```
 
 > **Note:** The script debugging client is used to debug script code
 > in Strange Eons, typically plug-in code. This does not start a Java
-> debugging session to debug the main application. Do that
-> as you normally would with your IDE. 
+> debugging session to debug the main application. Do that as you
+> normally would with your IDE.
 
-See `pom.xml` for additional `-P` profiles for other tools.
+See `build.gradle.kts` for additional tasks.
 
-To work with the project in an IDE, you will likely need to configure
-"launch options" to run the project. In particular, you will need to
-add a VM argument to enable a "Java agent". Refer to `.vscode/launch.json`
-(under the property `vmArgs`) for the current recommended arguments.
-
-Configurations for
-[Visual Studio Code](https://code.visualstudio.com/) and
-[NetBeans](https://netbeans.apache.org/)
-are included in this repository:
-
-**In NetBeans,** open the project (**File/Open Project**) then select and run it
-(**Run/Run Project**, default key F6).
-
-**In VS Code,** open the project folder (**File/Open Folder**) then select and
-run the project (**Run/Run Without Debugging**, default key Ctrl+F5).
+To work with the project in an IDE, import it as a Gradle project and
+let the IDE drive the build through Gradle's tooling API. Any IDE that
+understands Gradle should pick up the JDK 25 toolchain, the JUnit 5
+test classpath, and the `:strange-eons-app:run` task automatically.
 
 ### Additional tools
 
@@ -134,7 +117,7 @@ for "other" operating systems than Windows, macOS, and Linux amd64/arm64)
 by running the following command:
 
 ```bash
-mvn package -Pdeploy
+./gradlew :strange-eons-app:shadowJar
 ```
 
 The JAR file will be found at `deployment/assembled/strange-eons.jar`.

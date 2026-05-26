@@ -82,6 +82,13 @@ tasks.named<JavaExec>("run") {
     args("--xDisableJreCheck")
 }
 
+tasks.register<JavaExec>("runDebugger") {
+    description = "Runs the Strange Eons script debugging client."
+    group = "application"
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass = "ca.cgjennings.apps.arkham.plugins.debugging.Client"
+}
+
 // Pre-load Mockito as a JVM agent so JDK doesn't warn (and eventually refuse
 // per JEP 451) on dynamic agent attachment. -Xshare:off mutes the CDS warning
 // caused by the agent appending to the bootstrap classpath.
