@@ -5,7 +5,9 @@ import ca.cgjennings.apps.arkham.plugins.catalog.CatalogID;
 import ca.cgjennings.ui.theme.ThemedGlyphIcon;
 import ca.cgjennings.ui.theme.ThemedIcon;
 import java.io.IOException;
+import java.util.ServiceLoader;
 import java.util.logging.Level;
+import org.strangeeons.scripts.ScriptLanguage;
 import static resources.Language.string;
 import resources.ResourceKit;
 import resources.Settings;
@@ -217,7 +219,16 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
         Plugin p;
         try {
             if (id.startsWith("script:")) {
-                p = new DefaultScriptedPlugin(id);
+                String langId = scriptLanguageId();
+                if (langId == null || langId.isEmpty() || "javascript".equalsIgnoreCase(langId)) {
+                    p = new DefaultScriptedPlugin(id);
+                } else {
+                    ScriptLanguage lang = lookupScriptLanguage(langId);
+                    if (lang == null) {
+                        throw new PluginException("no ScriptLanguage registered for id \"" + langId + "\": " + id);
+                    }
+                    p = new ScriptLanguagePlugin(lang, id);
+                }
             } else {
                 p = (Plugin) Class.forName(id).getConstructor().newInstance();
             }
@@ -240,6 +251,32 @@ public abstract class AbstractInstalledPlugin extends InstalledBundleObject {
             throw new PluginException("uncaught exception while starting plug-in: " + id, t);
         }
         return p;
+    }
+
+    private String scriptLanguageId() {
+        PluginBundle bundle = getBundle();
+        if (bundle == null) {
+            return null;
+        }
+        PluginRoot root;
+        try {
+            root = bundle.getPluginRoot();
+        } catch (IOException ioe) {
+            return null;
+        }
+        if (root == null) {
+            return null;
+        }
+        return root.getClientProperty("script-language");
+    }
+
+    private static ScriptLanguage lookupScriptLanguage(String id) {
+        for (ScriptLanguage lang : ServiceLoader.load(ScriptLanguage.class)) {
+            if (id.equals(lang.id())) {
+                return lang;
+            }
+        }
+        return null;
     }
 
     private void stopPluginImpl(Plugin p) throws PluginException {

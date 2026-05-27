@@ -39,6 +39,19 @@ public interface ScriptSession extends AutoCloseable {
     Object call(String name, Object... args) throws ScriptException;
 
     /**
+     * Invokes a function as in {@link #call} if it is defined, otherwise
+     * returns {@code null}. Used by the host to invoke optional lifecycle
+     * hooks such as {@code initialize()} or {@code unload()} without
+     * forcing the script to define them.
+     *
+     * @return the function's return value, or {@code null} if the function
+     *     is not defined
+     * @throws ScriptException if the function exists but raises an error
+     *     during execution
+     */
+    Object callIfDefined(String name, Object... args) throws ScriptException;
+
+    /**
      * Binds {@code value} to {@code name} in the session's global scope so
      * subsequent {@link #eval} or {@link #call} calls can access it. The
      * legal name space is up to the implementation.
