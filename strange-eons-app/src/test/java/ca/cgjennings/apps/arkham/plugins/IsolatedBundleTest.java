@@ -69,6 +69,12 @@ class IsolatedBundleTest {
     @AfterEach
     void cleanup() throws IOException {
         if (bundleFile != null) {
+            // Windows cannot delete a JAR that a class loader still holds open
+            for (ClassLoader cl : BundleInstaller.getIsolatedClassLoaders()) {
+                if (cl instanceof java.io.Closeable c) {
+                    c.close();
+                }
+            }
             Files.deleteIfExists(bundleFile);
         }
     }

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.strangeeons.scripts.ScriptLanguage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -47,6 +48,19 @@ class ScriptLanguagePluginTest {
             }
         }
         assertNotNull(found, "TestScriptLanguage should be discoverable via ServiceLoader");
+    }
+
+    @Test
+    void scriptNamesWithSchemesAreURLs() {
+        assertTrue(ScriptLanguagePlugin.isURL("res://plugin/script.js"));
+        assertTrue(ScriptLanguagePlugin.isURL("file:/tmp/script.js"));
+    }
+
+    @Test
+    void filePathsAreNotURLs() {
+        assertFalse(ScriptLanguagePlugin.isURL("/tmp/script.js"));
+        assertFalse(ScriptLanguagePlugin.isURL("C:\\Users\\me\\script.js"));
+        assertFalse(ScriptLanguagePlugin.isURL("script.js"));
     }
 
     /**

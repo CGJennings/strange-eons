@@ -70,12 +70,19 @@ public class ScriptLanguagePlugin implements Plugin {
     }
 
     private InputStream openSource() throws IOException {
-        // Same convention as DefaultScriptedPlugin: a colon in the name
-        // means a URL, otherwise treat it as a file path.
-        if (scriptFile.indexOf(':') >= 0) {
+        if (isURL(scriptFile)) {
             return new URL(scriptFile).openStream();
         }
         return new FileInputStream(scriptFile);
+    }
+
+    /**
+     * Returns whether a script name is a URL rather than a file path: it has
+     * a scheme before a colon. A single letter before the colon is a Windows
+     * drive.
+     */
+    static boolean isURL(String scriptName) {
+        return scriptName.indexOf(':') > 1;
     }
 
     private Object optionalCall(String fn, Object... args) {
