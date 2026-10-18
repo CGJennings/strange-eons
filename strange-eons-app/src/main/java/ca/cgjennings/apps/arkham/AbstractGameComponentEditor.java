@@ -830,10 +830,8 @@ public abstract class AbstractGameComponentEditor<G extends GameComponent> exten
         try {
             accepted = manager.beginExport(
                     gcToExport.getFullName(),
-                    gcToExport.getComment(), sheetsToExport[0].getPaintingResolution(),
-                    sheetsToExport[0].getPrintDimensions(),
-                    allowJoiningImages, sheetsToExport.length > 1,
-                    sheetsToExport.length == 3
+                    gcToExport.getComment(), sheetsToExport,
+                    allowJoiningImages, sheetsToExport.length == 3
             );
         } catch (IOException e) {
             ErrorDialog.displayError(string("rk-err-export"), e);

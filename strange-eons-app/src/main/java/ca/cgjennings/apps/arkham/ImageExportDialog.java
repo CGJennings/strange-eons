@@ -1,6 +1,7 @@
 package ca.cgjennings.apps.arkham;
 
 import ca.cgjennings.apps.arkham.sheet.FinishStyle;
+import ca.cgjennings.apps.arkham.sheet.Sheet;
 import ca.cgjennings.imageio.SimpleImageWriter;
 import ca.cgjennings.imageio.WritableImageFormat;
 import ca.cgjennings.platform.AgnosticDialog;
@@ -13,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
@@ -38,6 +40,8 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private boolean largeFormatHint;
     private boolean allowJoinHint;
     private boolean multipleFacesHint;
+    private double designedBleedMargin;
+    private double hiresResolution;
 
     private SimpleImageWriter writer(int index) {
         if (writers[index] == null) {
@@ -51,11 +55,33 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     }
 
     public ImageExportDialog(int defaultDPI, boolean largeFormatHint, boolean allowJoinHint, boolean multipleFacesHint) {
+        this(defaultDPI, largeFormatHint, allowJoinHint, multipleFacesHint, 0d, 0d);
+    }
+
+    /**
+     * Creates an export dialog whose print and custom defaults take into
+     * account the component being exported.
+     *
+     * @param defaultDPI suggested default resolution
+     * @param largeFormatHint a hint that the images are large and a lower
+     * resolution may be appropriate
+     * @param allowJoinHint a hint that an option to join the images should be
+     * enabled
+     * @param multipleFacesHint a hint that the export will consist of a card
+     * with multiple faces
+     * @param designedBleedMargin the bleed margin designed into the templates,
+     * in points, or 0 if none
+     * @param hiresResolution the highest high resolution template resolution
+     * of the exported sheets, or 0 if unknown
+     */
+    public ImageExportDialog(int defaultDPI, boolean largeFormatHint, boolean allowJoinHint, boolean multipleFacesHint, double designedBleedMargin, double hiresResolution) {
         super(StrangeEons.getWindow(), true);
 
         this.largeFormatHint = largeFormatHint;
         this.allowJoinHint = allowJoinHint;
         this.multipleFacesHint = multipleFacesHint;
+        this.designedBleedMargin = designedBleedMargin;
+        this.hiresResolution = hiresResolution;
         initComponents();
         getRootPane().setDefaultButton(okBtn);
         PlatformSupport.makeAgnosticDialog(this, okBtn, cancelBtn);
@@ -629,9 +655,9 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
                 case 1:
                     setFormat("png");
                     iowpPanel.setProgressiveScanEnabled(false);
-                    setResolution(300);
+                    setResolution(printResolution(hiresResolution));
                     edgeFinishCombo.setSelectedItem(FinishStyle.MARGIN);
-                    bleedWidthField.setValue(9d);
+                    bleedWidthField.setValue(designedBleedMargin > 0d ? designedBleedMargin : 9d);
                     JUtilities.enableTree(customPanel, false);
                     break;
                 case 2:
@@ -668,15 +694,16 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
 
     private void loadCustomSettings() {
         Settings s = Settings.getUser();
+        Set<String> userKeys = s.getKeySet();
         setFormat(s.get(KEY_FORMAT));
         iowpPanel.setCompressionQuality(s.getFloat(KEY_QUALITY));
         iowpPanel.setProgressiveScanEnabled(s.getYesNo(KEY_SCAN));
-        setResolution(s.getInt(KEY_DPI));
+        setResolution(suggests(userKeys, KEY_DPI, hiresResolution) ? printResolution(hiresResolution) : s.getInt(KEY_DPI));
         joinImagesBox.setSelected(s.getYesNo(KEY_COMBINE));
         suppressBackBtn.setSelected(s.getYesNo(KEY_SUPPRESS));
-        edgeFinishCombo.setSelectedItem(FinishStyle.fromSetting(s.get(KEY_FINISH_STYLE)));
+        edgeFinishCombo.setSelectedItem(suggests(userKeys, KEY_FINISH_STYLE, designedBleedMargin) ? FinishStyle.MARGIN : FinishStyle.fromSetting(s.get(KEY_FINISH_STYLE)));
         try {
-            bleedWidthField.setValue(s.getDouble(KEY_BLEED_MARGIN, 9d));
+            bleedWidthField.setValue(suggests(userKeys, KEY_BLEED_MARGIN, designedBleedMargin) ? designedBleedMargin : s.getDouble(KEY_BLEED_MARGIN, 9d));
         } catch (IllegalArgumentException iae) {
             bleedWidthField.setValue(9d);
         }
@@ -706,6 +733,23 @@ class ImageExportDialog extends javax.swing.JDialog implements AgnosticDialog {
     private static final String KEY_SUPPRESS = "imexport-suppress-backs";
     private static final String KEY_FINISH_STYLE = "imexport-finish";
     private static final String KEY_BLEED_MARGIN = "imexport-bleed-margin";
+
+    /**
+     * Returns the print resolution: the high resolution template resolution,
+     * if it is greater than the standard print resolution.
+     */
+    static int printResolution(double hiresResolution) {
+        return Math.max(Sheet.DEFAULT_HIGH_RESOLUTION_PPI, (int) Math.round(hiresResolution));
+    }
+
+    /**
+     * Returns whether a custom setting should use the component's value
+     * instead of the user's: the component has one and the user has not set
+     * the key.
+     */
+    static boolean suggests(Set<String> userKeys, String key, double componentValue) {
+        return componentValue > 0d && !userKeys.contains(key);
+    }
 
 	private void unitComboActionPerformed( java.awt.event.ActionEvent evt ) {//GEN-FIRST:event_unitComboActionPerformed
             int unit = unitCombo.getSelectedIndex();

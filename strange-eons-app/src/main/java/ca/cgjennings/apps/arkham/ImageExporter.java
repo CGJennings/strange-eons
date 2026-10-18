@@ -130,20 +130,24 @@ public class ImageExporter {
      * @throws IOException if an I/O error occurs
      */
     public boolean beginExport(String baseSheetName, String comments, double defaultDPI, boolean largeFormat, boolean allowJoining, boolean multipleFaces, boolean hasMarker) throws IOException {
+        return beginExport(baseSheetName, comments, defaultDPI, largeFormat, allowJoining, multipleFaces, hasMarker, 0d, 0d);
+    }
+
+    private boolean beginExport(String baseSheetName, String comments, double defaultDPI, boolean largeFormat, boolean allowJoining, boolean multipleFaces, boolean hasMarker, double designedBleedMargin, double hiresDPI) throws IOException {
         if (state != NOINIT) {
             throw new IllegalStateException("must end previous export before starting a new one");
         }
 
         StrangeEons.log.info(String.format(
-                "exporting %s@%.0f, large format %b, allow joining %b, multiple faces %b, has marker %b",
-                baseSheetName, defaultDPI, largeFormat, allowJoining, multipleFaces, hasMarker
+                "exporting %s@%.0f, large format %b, allow joining %b, multiple faces %b, has marker %b, bleed %.2f, hires %.0f",
+                baseSheetName, defaultDPI, largeFormat, allowJoining, multipleFaces, hasMarker, designedBleedMargin, hiresDPI
         ));
 
         this.hasMarker = hasMarker;
         usedSheetSuffixes.clear();
         imageWriter = null;
 
-        ImageExportDialog efd = new ImageExportDialog((int) (defaultDPI + 0.5d), largeFormat, allowJoining, multipleFaces);
+        ImageExportDialog efd = new ImageExportDialog((int) (defaultDPI + 0.5d), largeFormat, allowJoining, multipleFaces, designedBleedMargin, hiresDPI);
         if (!efd.showDialog()) {
             return false;
         }
@@ -200,9 +204,43 @@ public class ImageExporter {
      * @throws IOException if an I/O error occurs
      */
     public boolean beginExport(String baseSheetName, String comments, double defaultDPI, PrintDimensions sizeInPoints, boolean allowJoining, boolean multipleFaces, boolean hasMarker) throws IOException {
-        return beginExport(baseSheetName, comments, defaultDPI,
-                sizeInPoints.getWidth() > 4.5 * 72 || sizeInPoints.getHeight() > 5.5 * 72,
+        return beginExport(baseSheetName, comments, defaultDPI, isLargeFormat(sizeInPoints),
                 allowJoining, multipleFaces, hasMarker);
+    }
+
+    /**
+     * Begin an export operation for the sheets of a component. This is
+     * equivalent to the other {@code beginExport} methods, except that the
+     * resolution, size, and face hints are determined from the sheets, and the
+     * default export settings take into account the bleed margin designed into
+     * the first sheet and the highest
+     * {@linkplain Sheet#getHighResolutionTemplateResolution() high resolution
+     * template resolution} of all of the sheets.
+     *
+     * @param baseSheetName a base name for the exported files
+     * @param comments notes that may optionally be included in the export
+     * @param sheets the non-empty array of sheets that will be exported
+     * @param allowJoining a hint that an option to join the images should be
+     * enabled
+     * @param hasMarker a hint that the final sheet is a marker
+     * @return {@code false} if the export was cancelled
+     * @throws IOException if an I/O error occurs
+     */
+    public boolean beginExport(String baseSheetName, String comments, Sheet<?>[] sheets, boolean allowJoining, boolean hasMarker) throws IOException {
+        if (sheets.length == 0) {
+            throw new IllegalArgumentException("no sheets");
+        }
+        double hiresDPI = 0d;
+        for (Sheet<?> sheet : sheets) {
+            hiresDPI = Math.max(hiresDPI, sheet.getHighResolutionTemplateResolution());
+        }
+        return beginExport(baseSheetName, comments, sheets[0].getPaintingResolution(),
+                isLargeFormat(sheets[0].getPrintDimensions()), allowJoining, sheets.length > 1, hasMarker,
+                sheets[0].getBleedMargin(), hiresDPI);
+    }
+
+    private static boolean isLargeFormat(PrintDimensions sizeInPoints) {
+        return sizeInPoints.getWidth() > 4.5 * 72 || sizeInPoints.getHeight() > 5.5 * 72;
     }
 
     /**

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Add the `<keybase>-hires-ppi` (or `-hires-dpi`) sheet setting for the resolution of a template's high resolution substitute (default 300).
+- Image export print and custom defaults use the component's designed bleed margin and, above 300 ppi, its high resolution template resolution. Saved custom settings still take precedence.
+
 ## 3.5.1
 
 - Register `.eon` and `.se*` file associations on the macOS, Windows, and Linux installers, which the jpackage migration had dropped.

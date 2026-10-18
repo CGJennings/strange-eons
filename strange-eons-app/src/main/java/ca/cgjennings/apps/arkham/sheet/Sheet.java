@@ -86,12 +86,19 @@ public abstract class Sheet<G extends GameComponent> {
      */
     public static final String ON_PAINT_EVENT_METHOD = "onPaint";
 
+    /**
+     * The resolution assumed for high resolution template images when none is
+     * set, in pixels per inch. This is also the standard print resolution.
+     */
+    public static final int DEFAULT_HIGH_RESOLUTION_PPI = 300;
+
     private G gameComponent;
 
     private BufferedImage template;
     private BufferedImage image;
     private BufferedImage finishedImage;
     private double dpi;
+    private double hiresDpi;
     private double upsampleFactor = 1d;
     private double preferredUpsample = 1d;
     // the ideal user-preferred bleed margin width in points
@@ -180,6 +187,10 @@ public abstract class Sheet<G extends GameComponent> {
      * <li> The template image resolution, in pixels per inch, is read from
      * <i>templateKey</i>@code -ppi}; if undefined, the default is 150 ppi. (The
      * suffix {@code -dpi} can also be used.)
+     * <li> The resolution of the high resolution substitute for the template
+     * image, if any, is read from <i>templateKey</i>{@code -hires-ppi}; if
+     * undefined, the default is 300 ppi. (The suffix {@code -hires-dpi} can
+     * also be used.)
      * <li> The preferred display upsample factor is read from
      * <i>templateKey</i>{@code -upsample}; if undefined, the default is 1; this
      * is multiplied by the template resolution to determine the default
@@ -221,6 +232,8 @@ public abstract class Sheet<G extends GameComponent> {
             dpi = 150d;
         }
 
+        hiresDpi = readHighResolutionTemplateResolution(settings, keybase);
+
         if (settings.get(keybase + "-upsample") != null) {
             preferredUpsample = settings.getDouble(keybase + "-upsample");
         }
@@ -253,7 +266,7 @@ public abstract class Sheet<G extends GameComponent> {
         keybase = templateKey;
         if (templateKey.endsWith("-template")) {
             keybase = keybase.substring(0, keybase.length() - "-template".length());
-        }        
+        }
 
         if (template == null) {
             throw new NullPointerException("template");
@@ -271,6 +284,7 @@ public abstract class Sheet<G extends GameComponent> {
         this.template = template;
         expsymKey = expansionSymbolKey;
         dpi = resolution;
+        hiresDpi = DEFAULT_HIGH_RESOLUTION_PPI;
         preferredUpsample = upsampleFactor;
 
         image = null;
@@ -646,7 +660,7 @@ public abstract class Sheet<G extends GameComponent> {
      * sheet. This may be less than the user bleed margin. The returned value is
      * always a physical width; if the user margin is negative, this will return
      * zero.
-     * 
+     *
      * @return a non-negative width in points
      * @see #setUserBleedMargin(double)
      */
@@ -1143,7 +1157,7 @@ public abstract class Sheet<G extends GameComponent> {
      * component, measured in points. This allows you to specify how the corners
      * of the component will be rounded when the trimmed edge style is selected.
      * The default is a radius of 0, meaning there is no rounding.
-     * 
+     *
      * <pre>
      * XXXXXX------
      * XX   |
@@ -1360,6 +1374,29 @@ public abstract class Sheet<G extends GameComponent> {
      */
     public final double getTemplateResolution() {
         return dpi;
+    }
+
+    /**
+     * Returns the resolution of the high resolution substitute for the
+     * template image, in pixels per inch (ppi). This is determined from the
+     * value of the {@code <i>templateKey</i>-hires-ppi} key, and is used to
+     * suggest a resolution when exporting the sheet. If this key is not
+     * defined, the default is 300 ppi.
+     *
+     * @return the resolution of the high resolution template image, in pixels
+     * per inch
+     */
+    public final double getHighResolutionTemplateResolution() {
+        return hiresDpi;
+    }
+
+    static double readHighResolutionTemplateResolution(Settings settings, String keybase) {
+        double ppi = settings.getDouble(keybase + "-hires-ppi", settings.getDouble(keybase + "-hires-dpi", DEFAULT_HIGH_RESOLUTION_PPI));
+        if (!(ppi > 0d)) {
+            StrangeEons.log.log(Level.WARNING, "ignoring invalid high resolution template resolution: {0} ({1})", new Object[]{keybase, ppi});
+            return DEFAULT_HIGH_RESOLUTION_PPI;
+        }
+        return ppi;
     }
 
     /**
