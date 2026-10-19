@@ -2133,22 +2133,12 @@ public class ResourceKit {
         } else {
             request.directoriesOnly(true).filter(projectFileFilter);
         }
-        FileDialogResult r = fileDialogs.open(parent, fileDialogProvider(projectFileChooser), KEY, false, request);
-        if (r == null) {
-            return null;
-        }
-        File project;
-        try {
-            project = FileDialogSupport.projectFor(r.getFile());
-        } catch (IOException e) {
-            StrangeEons.log.log(Level.WARNING, null, e);
-            return null;
-        }
-        if (project != null) {
-            // start the next dialog beside this project
-            fileDialogs.remember(KEY, project.getParentFile());
-        }
-        return project;
+        return fileDialogs.openProject(parent, fileDialogProvider(projectFileChooser), KEY, request, (key, f, cause) -> {
+            if (cause != null) {
+                StrangeEons.log.log(Level.WARNING, null, cause);
+            }
+            displayError(string(key, f.getName()), cause);
+        });
     }
 
     public static File showFolderDialog(Component parent, String title, String okText) {

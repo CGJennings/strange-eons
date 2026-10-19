@@ -164,6 +164,47 @@ final class FileDialogSupport {
     };
 
     /**
+     * Reports a problem with a chosen file.
+     */
+    interface ErrorReporter {
+
+        /**
+         * @param key the message key; the message takes the file name
+         * @param f the file
+         * @param cause the cause, or {@code null}
+         */
+        void report(String key, File f, Throwable cause);
+    }
+
+    /**
+     * Shows a dialog for choosing a project and returns the project folder or
+     * package. If the choice is not a project, an error is reported. The
+     * folder containing the project is stored under the key.
+     *
+     * @return the project, or {@code null} if cancelled or not a project
+     */
+    File openProject(Component parent, FileDialogProvider provider, String key, FileDialogRequest request, ErrorReporter errors) {
+        FileDialogResult r = open(parent, provider, key, false, request);
+        if (r == null) {
+            return null;
+        }
+        File chosen = r.getFile();
+        File project;
+        try {
+            project = projectFor(chosen);
+        } catch (IOException e) {
+            errors.report("prj-err-open", chosen, e);
+            return null;
+        }
+        if (project == null) {
+            errors.report("prj-err-not-proj", chosen, null);
+            return null;
+        }
+        remember(key, project.getParentFile());
+        return project;
+    }
+
+    /**
      * Returns the project to open for a file chosen in a project dialog: the
      * folder containing a project settings file, or a packaged project.
      *

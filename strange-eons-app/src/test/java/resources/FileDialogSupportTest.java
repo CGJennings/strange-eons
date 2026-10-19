@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class FileDialogSupportTest {
 
@@ -329,6 +330,48 @@ class FileDialogSupportTest {
         assertTrue(task.mkdir());
         java.nio.file.Files.writeString(task.toPath().resolve("seproject"), "type = FACTORY\n");
         assertNull(FileDialogSupport.projectFor(new File(task, "seproject")));
+    }
+
+    private final List<String> reports = new ArrayList<>();
+
+    private final FileDialogSupport.ErrorReporter reporter = (key, f, cause) ->
+            reports.add(key + ':' + f.getName() + ':' + (cause != null));
+
+    @Test
+    void openProjectFromSettingsFileRemembersParent() throws IOException {
+        File project = projectFolder("p");
+        provider.answers.add(new File(project, "seproject"));
+
+        assertEquals(project, support.openProject(null, provider, "k", open(), reporter));
+        assertEquals(tmp.toFile().getAbsolutePath(), folders.get("k"));
+        assertTrue(reports.isEmpty());
+    }
+
+    @Test
+    void openProjectCancelled() {
+        assertNull(support.openProject(null, provider, "k", open(), reporter));
+        assertTrue(reports.isEmpty());
+        assertFalse(folders.containsKey("k"));
+    }
+
+    @Test
+    void openProjectReportsOtherFiles() throws IOException {
+        provider.answers.add(existing("card.eon"));
+
+        assertNull(support.openProject(null, provider, "k", open(), reporter));
+        assertEquals(List.of("prj-err-not-proj:card.eon:false"), reports);
+        assertFalse(folders.containsKey("k"));
+    }
+
+    @Test
+    void openProjectReportsUnreadableSettings() throws IOException {
+        File broken = projectFolder("broken");
+        File settings = new File(broken, "seproject");
+        assumeTrue(settings.setReadable(false) && !settings.canRead());
+        provider.answers.add(settings);
+
+        assertNull(support.openProject(null, provider, "k", open(), reporter));
+        assertEquals(List.of("prj-err-open:seproject:true"), reports);
     }
 
     @Test
