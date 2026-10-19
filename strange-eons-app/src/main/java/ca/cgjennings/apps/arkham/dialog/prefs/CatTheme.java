@@ -64,6 +64,8 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         javax.swing.JLabel darkThemeLabel1 = new javax.swing.JLabel();
         darkScreenshot = new javax.swing.JLabel();
         lightScreenshot = new javax.swing.JLabel();
+        javax.swing.JLabel experimentalSect = new javax.swing.JLabel();
+        nativeFileDialogsCheck = new javax.swing.JCheckBox();
 
         setBackground(java.awt.Color.white);
 
@@ -162,6 +164,15 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
 
         lightScreenshot.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
 
+        experimentalSect.setFont(experimentalSect.getFont().deriveFont(experimentalSect.getFont().getStyle() | java.awt.Font.BOLD, experimentalSect.getFont().getSize()+3));
+        experimentalSect.setForeground(new java.awt.Color(135, 103, 5));
+        experimentalSect.setText(string("sd-l-experimental")); // NOI18N
+
+        nativeFileDialogsCheck.setForeground(new java.awt.Color(0, 4, 0));
+        nativeFileDialogsCheck.setText(string("sd-b-native-file-dialogs")); // NOI18N
+        nativeFileDialogsCheck.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        nativeFileDialogsCheck.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -201,6 +212,10 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
                                 .addComponent(recentFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(hideRecentFileLabel))))
+                    .addComponent(experimentalSect)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(nativeFileDialogsCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -266,6 +281,10 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hideRecentFileLabel)
                     .addComponent(recentFileField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(experimentalSect)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nativeFileDialogsCheck, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -340,6 +359,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
     private javax.swing.JComboBox<String> markupFamily;
     private javax.swing.JCheckBox markupItalic;
     private javax.swing.JSpinner markupSize;
+    javax.swing.JCheckBox nativeFileDialogsCheck;
     private javax.swing.JCheckBox openZipCheck;
     private javax.swing.JSpinner recentFileField;
     private javax.swing.JCheckBox singleInstanceCheck;
@@ -454,6 +474,8 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         recentFileField.setValue(
                 Math.max(0, Math.min(25, user.getInt("recent-file-menu-length")))
         );
+
+        loadCheck("use-native-file-dialogs", nativeFileDialogsCheck);
     }
 
     private void loadCheck(String key, JCheckBox box) {
@@ -490,5 +512,7 @@ class CatTheme extends javax.swing.JPanel implements PreferenceCategory {
         saveCheck("open-zip-after-export", openZipCheck);
         saveCheck("limit-to-single-instance", singleInstanceCheck);
         user.set("recent-file-menu-length", String.valueOf(((Number) recentFileField.getValue()).intValue()));
+
+        saveCheck("use-native-file-dialogs", nativeFileDialogsCheck);
     }
 }
