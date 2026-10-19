@@ -27,6 +27,17 @@ dependencies {
     implementation("org.commonmark:commonmark-ext-image-attributes:0.22.0")
     implementation("com.miglayout:miglayout-swing:11.3")
 
+    // Native file dialogs on Windows and Linux; macOS uses java.awt.FileDialog,
+    // so no macOS natives are bundled.
+    val lwjglVersion = "3.4.3"
+    implementation("org.lwjgl:lwjgl:$lwjglVersion")
+    implementation("org.lwjgl:lwjgl-nfd:$lwjglVersion")
+    implementation("org.lwjgl:lwjgl-jawt:$lwjglVersion")
+    for (platform in listOf("linux", "linux-arm64", "windows", "windows-arm64")) {
+        runtimeOnly("org.lwjgl:lwjgl:$lwjglVersion:natives-$platform")
+        runtimeOnly("org.lwjgl:lwjgl-nfd:$lwjglVersion:natives-$platform")
+    }
+
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
     testImplementation("org.mockito:mockito-core:5.18.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.18.0")
@@ -95,7 +106,7 @@ tasks.named<Test>("test") {
         .resolvedConfiguration.resolvedArtifacts
         .first { it.moduleVersion.id.group == "org.mockito" && it.moduleVersion.id.name == "mockito-core" }
         .file
-    jvmArgs("-Xshare:off", "-javaagent:${mockitoJar.absolutePath}")
+    jvmArgs("-Xshare:off", "-javaagent:${mockitoJar.absolutePath}", "--enable-native-access=ALL-UNNAMED")
 }
 
 // Single fat jar at deployment/assembled/strange-eons.jar.
