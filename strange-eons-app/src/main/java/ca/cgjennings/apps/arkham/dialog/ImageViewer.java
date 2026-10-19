@@ -17,10 +17,12 @@ import java.io.IOException;
 import java.lang.ref.SoftReference;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.event.DocumentEvent;
 import static resources.Language.string;
 import resources.RawSettings;
+import resources.ResourceKit;
 import resources.Settings;
 
 /**
@@ -313,22 +315,9 @@ public class ImageViewer extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
 private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBtnActionPerformed
-    JFileChooser fc = getFileChooser();
-    if (fc.showSaveDialog(saveBtn) == JFileChooser.APPROVE_OPTION) {
-        String fileName = fc.getSelectedFile().getName();
-        String type = "png";
-        int i = fileName.lastIndexOf('.');
-        if (i >= 0) {
-            type = fileName.substring(i + 1);
-        }
-
-        WritableImageFormat found = null;
-        for (WritableImageFormat wif : SimpleImageWriter.getImageFormats()) {
-            if (wif.getExtension().equals(type)) {
-                found = wif;
-                break;
-            }
-        }
+    File target = ResourceKit.showGenericSaveDialog(saveBtn, null, string("rk-filter-image"), writableExtensions());
+    if (target != null) {
+        WritableImageFormat found = formatFor(target);
 
         SimpleImageWriter iw = null;
         try {
@@ -336,7 +325,7 @@ private void saveBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST
             iw.setEncodingHint("file-source", true);
             iw.setCompressionQuality(0.75f);
             iw.setPixelsPerInch((float) dpi);
-            iw.write(imageViewer.getImage(), fc.getSelectedFile());
+            iw.write(imageViewer.getImage(), target);
         } catch (IOException e) {
             ErrorDialog.displayError(string("rk-err-export"), e);
         } finally {
@@ -374,6 +363,34 @@ private void unitComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 	}//GEN-LAST:event_copyBtnActionPerformed
 
     private File original;
+
+    /**
+     * Returns the extensions of the writable image formats, in preference
+     * order.
+     */
+    static String[] writableExtensions() {
+        WritableImageFormat[] formats = SimpleImageWriter.getImageFormats();
+        String[] exts = new String[formats.length];
+        for (int i = 0; i < formats.length; ++i) {
+            exts[i] = formats[i].getExtension();
+        }
+        return exts;
+    }
+
+    /**
+     * Returns the writable format matching a file's extension, or the first
+     * format if none matches.
+     */
+    static WritableImageFormat formatFor(File f) {
+        WritableImageFormat[] formats = SimpleImageWriter.getImageFormats();
+        String name = f.getName().toLowerCase(Locale.ROOT);
+        for (WritableImageFormat wif : formats) {
+            if (name.endsWith('.' + wif.getExtension())) {
+                return wif;
+            }
+        }
+        return formats[0];
+    }
 
     /**
      * Returns a file chooser suited to saving a copy of an image file.
