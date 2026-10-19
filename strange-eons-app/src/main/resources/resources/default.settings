@@ -446,6 +446,11 @@ exclude-from-projects = Thumbs.db,_vti_cnf,.hg*,.svn*,.git*
 # to no for a basic directory chooser.
 use-project-folder-selector = yes
 
+# If yes, the system file dialogs are used if OS support is added.
+# These do not show component or image previews; set to no for the
+# built-in dialogs.
+use-native-file-dialogs = yes
+
 # If true, Make Bundle will automatically touch catalogue ID timestamps
 make-bundle-autotouch = yes
 
@@ -536,7 +541,7 @@ debug = no
 ## Cloud Font Data
 ##
 
-# The URLs needed to access cloud font data. These settings 
+# The URLs needed to access cloud font data. These settings
 # only need to be set in the event that the default locations
 # become inaccessible.
 
@@ -548,7 +553,7 @@ cloudfont-concurrent-downloads = 3
 
 # A list of font family names that will be kept available and up to
 # date by downloading (if required) and registering them on startup.
-cloudfont-reserved-families = 
+cloudfont-reserved-families =
 
 
 ###########################################################
