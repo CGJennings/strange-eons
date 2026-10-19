@@ -10,6 +10,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -295,13 +296,19 @@ class NfdFileDialogProviderTest {
     @Test
     void interruptedWaitIsAnError() {
         NfdFileDialogProvider p = provider();
+        // the task must still be running when the wait starts
+        CountDownLatch release = new CountDownLatch(1);
         Thread.currentThread().interrupt();
         try {
-            Outcome o = p.call(Outcome::cancel);
+            Outcome o = p.call(() -> {
+                release.await();
+                return Outcome.cancel();
+            });
             assertEquals(Outcome.Status.ERROR, o.status());
             assertTrue(Thread.interrupted());
         } finally {
             Thread.interrupted();
+            release.countDown();
         }
     }
 

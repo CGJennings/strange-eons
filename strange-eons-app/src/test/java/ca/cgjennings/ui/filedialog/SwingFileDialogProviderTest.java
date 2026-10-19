@@ -107,7 +107,7 @@ class SwingFileDialogProviderTest {
     }
 
     @Test
-    void leavesChooserStateWhenRequestOmitsIt() {
+    void leavesChooserStateWhenRequestOmitsIt() throws Exception {
         JFileChooser fc = new JFileChooser(tmp.toFile());
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Scripts", "js");
         fc.setFileFilter(filter);
@@ -115,7 +115,7 @@ class SwingFileDialogProviderTest {
         new SwingFileDialogProvider(fc).configure(new FileDialogRequest(FileDialogRequest.Mode.OPEN));
 
         assertSame(filter, fc.getFileFilter());
-        assertEquals(tmp.toFile().getAbsoluteFile(), fc.getCurrentDirectory().getAbsoluteFile());
+        assertEquals(tmp.toFile().getCanonicalFile(), fc.getCurrentDirectory().getCanonicalFile());
     }
 
     @Test
