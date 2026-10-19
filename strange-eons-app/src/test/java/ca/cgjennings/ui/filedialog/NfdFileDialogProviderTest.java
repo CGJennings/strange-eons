@@ -160,6 +160,19 @@ class NfdFileDialogProviderTest {
     }
 
     @Test
+    void withFallbackSharesInitialization() {
+        backend.initError = "no portal";
+        NfdFileDialogProvider p = provider();
+        FallbackProvider other = new FallbackProvider();
+        NfdFileDialogProvider q = p.withFallback(other);
+
+        assertSame(fallback.answer, p.show(null, open()));
+        assertSame(other.answer, q.show(null, open()));
+        assertEquals(1, backend.initCalls);
+        assertThrows(NullPointerException.class, () -> p.withFallback(null));
+    }
+
+    @Test
     void opensMultipleFiles() {
         backend.outcome = Outcome.ok(List.of("/x/a.eon", "/x/b.eon"));
 

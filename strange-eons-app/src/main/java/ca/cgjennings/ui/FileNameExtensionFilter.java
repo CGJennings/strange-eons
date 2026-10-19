@@ -162,6 +162,16 @@ public final class FileNameExtensionFilter extends FileFilter {
     }
 
     /**
+     * Returns the extensions accepted by this filter, in lower case. An empty
+     * extension matches files without an extension.
+     *
+     * @return a copy of the filter's extensions
+     */
+    public String[] getExtensions() {
+        return exts.clone();
+    }
+
+    /**
      * Returns a string description of the filter for debugging purposes.
      *
      * @return a string describing the filter

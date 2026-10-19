@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.function.Function;
 import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Shows file dialogs using the operating system's own dialogs through
@@ -186,11 +185,12 @@ public final class NativeFileDialogProvider implements FileDialogProvider {
      * {@code null} if the filter is not extension based.
      */
     static String windowsPattern(FileFilter filter) {
-        if (!(filter instanceof FileNameExtensionFilter)) {
+        String[] exts = FileFilters.extensions(filter);
+        if (exts == null) {
             return null;
         }
         StringBuilder b = new StringBuilder();
-        for (String ext : ((FileNameExtensionFilter) filter).getExtensions()) {
+        for (String ext : exts) {
             if (b.length() > 0) {
                 b.append(';');
             }

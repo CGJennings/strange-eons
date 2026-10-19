@@ -41,6 +41,12 @@ import ca.cgjennings.platform.PlatformSupport;
 import ca.cgjennings.ui.AnimatedIcon;
 import ca.cgjennings.ui.FileNameExtensionFilter;
 import ca.cgjennings.ui.JUtilities;
+import ca.cgjennings.ui.filedialog.FileDialogProvider;
+import ca.cgjennings.ui.filedialog.FileDialogRequest;
+import ca.cgjennings.ui.filedialog.FileDialogResult;
+import ca.cgjennings.ui.filedialog.NativeFileDialogProvider;
+import ca.cgjennings.ui.filedialog.NfdFileDialogProvider;
+import ca.cgjennings.ui.filedialog.SwingFileDialogProvider;
 import ca.cgjennings.ui.theme.Palette;
 import ca.cgjennings.ui.theme.TaskIcon;
 import ca.cgjennings.ui.theme.Theme;
@@ -1783,6 +1789,71 @@ public class ResourceKit {
         folderFileChooser.setAcceptAllFileFilterUsed(true);
     }
 
+    private static final FileDialogSupport fileDialogs = new FileDialogSupport(
+            new FileDialogSupport.FolderStore() {
+        @Override
+        public String get(String key) {
+            return RawSettings.getUserSetting(key);
+        }
+
+        @Override
+        public void set(String key, String path) {
+            RawSettings.setUserSetting(key, path);
+            RawSettings.writeUserSettings();
+        }
+    },
+            ResourceKit::confirmFileReplace
+    );
+
+    private static NfdFileDialogProvider nfdFileDialogs;
+
+    /**
+     * Returns whether the system file dialogs are used instead of the built-in
+     * dialogs.
+     */
+    private static boolean isNativeFileDialogEnabled() {
+        return Settings.getShared().getYesNo("use-native-file-dialogs");
+    }
+
+    /**
+     * Returns the provider that shows dialogs for one of the resource kit
+     * file choosers.
+     */
+    private static FileDialogProvider fileDialogProvider(JFileChooser chooser) {
+        return FileDialogSupport.select(
+                new SwingFileDialogProvider(chooser),
+                isNativeFileDialogEnabled(),
+                NativeFileDialogProvider.Platform.current(),
+                ResourceKit::nfdFileDialogs
+        );
+    }
+
+    private static synchronized NfdFileDialogProvider nfdFileDialogs() {
+        if (nfdFileDialogs == null) {
+            nfdFileDialogs = new NfdFileDialogProvider(
+                    new NativeFileDialogProvider(new SwingFileDialogProvider(folderFileChooser))
+            );
+        }
+        return nfdFileDialogs;
+    }
+
+    private static FileDialogRequest openRequest(String title, String approveText) {
+        return new FileDialogRequest(FileDialogRequest.Mode.OPEN).title(title).approveText(approveText);
+    }
+
+    private static FileDialogRequest saveRequest(String title, String approveText) {
+        return new FileDialogRequest(FileDialogRequest.Mode.SAVE).title(title).approveText(approveText);
+    }
+
+    private static File openSingle(Component parent, JFileChooser chooser, FileDialogRequest request) {
+        FileDialogResult r = fileDialogs.open(parent, fileDialogProvider(chooser), getFolderKey(chooser), true, request);
+        return r == null ? null : r.getFile();
+    }
+
+    private static File save(Component parent, JFileChooser chooser, File unconfirmed, FileDialogRequest request) {
+        return fileDialogs.save(parent, fileDialogProvider(chooser), getFolderKey(chooser), unconfirmed, request);
+    }
+
     /**
      * Displays a file dialog for opening a single game component.
      *
@@ -1796,17 +1867,7 @@ public class ResourceKit {
             parent = StrangeEons.getWindow();
         }
         String verb = string("rk-dialog-open");
-        openFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        openFileChooser.setDialogTitle(verb);
-        openFileChooser.setFileFilter(fileFilter);
-        openFileChooser.setMultiSelectionEnabled(false);
-        openFileChooser.setApproveButtonText(verb);
-
-        if (openFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(openFileChooser);
-            return openFileChooser.getSelectedFile();
-        }
-        return null;
+        return openSingle(parent, openFileChooser, openRequest(verb, verb).filter(fileFilter));
     }
 
     /**
@@ -1822,18 +1883,9 @@ public class ResourceKit {
             parent = StrangeEons.getWindow();
         }
         String verb = string("rk-dialog-open");
-        openFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        openFileChooser.setDialogTitle(verb);
-        openFileChooser.setFileFilter(fileFilter);
-        openFileChooser.setApproveButtonText(verb);
-        openFileChooser.setMultiSelectionEnabled(true);
-
-        if (openFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(openFileChooser);
-            return openFileChooser.getSelectedFiles();
-        }
-
-        return null;
+        FileDialogResult r = fileDialogs.open(parent, fileDialogProvider(openFileChooser), getFolderKey(openFileChooser), true,
+                openRequest(verb, verb).filter(fileFilter).multiSelection(true));
+        return r == null ? null : r.getFiles();
     }
 
     /**
@@ -1852,34 +1904,8 @@ public class ResourceKit {
             parent = StrangeEons.getWindow();
         }
         String verb = string("rk-dialog-save");
-        saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        saveFileChooser.setDialogTitle(verb);
-        saveFileChooser.setFileFilter(fileFilter);
-        saveFileChooser.setSelectedFile(new File(baseName));
-        saveFileChooser.setApproveButtonText(verb);
-
-        File selectedFile;
-        boolean askAgain;
-        do {
-            askAgain = false;
-            if (saveFileChooser.showSaveDialog(parent) != JFileChooser.APPROVE_OPTION) {
-                return null;
-            }
-
-            selectedFile = saveFileChooser.getSelectedFile();
-            if (selectedFile.exists()) {
-                int confirm = confirmFileReplace(selectedFile);
-                if (confirm == JOptionPane.CANCEL_OPTION) {
-                    return null;
-                }
-                if (confirm == JOptionPane.NO_OPTION) {
-                    askAgain = true;
-                }
-            }
-        } while (askAgain);
-
-        saveDefaultFolder(saveFileChooser);
-        return selectedFile;
+        return save(parent, saveFileChooser, null,
+                saveRequest(verb, verb).filter(fileFilter).selectedFile(new File(baseName)));
     }
 
     /**
@@ -1895,16 +1921,9 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        imageFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        imageFileChooser.setFileFilter(SVGVectorImage.isSupported() ? bitmapVectorFileFilter : bitmapImageFileFilter);
-        imageFileChooser.setDialogTitle(string("rk-dialog-portrait"));
-        imageFileChooser.setApproveButtonText(string("rk-dialog-open"));
-
-        if (imageFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(imageFileChooser);
-            return imageFileChooser.getSelectedFile();
-        }
-        return null;
+        return openSingle(parent, imageFileChooser,
+                openRequest(string("rk-dialog-portrait"), string("rk-dialog-open"))
+                        .filter(SVGVectorImage.isSupported() ? bitmapVectorFileFilter : bitmapImageFileFilter));
     }
 
     /**
@@ -1922,16 +1941,8 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        imageFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        imageFileChooser.setFileFilter(bitmapImageFileFilter);
-        imageFileChooser.setDialogTitle(string("rk-dialog-portrait"));
-        imageFileChooser.setApproveButtonText(string("rk-dialog-open"));
-
-        if (imageFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(imageFileChooser);
-            return imageFileChooser.getSelectedFile();
-        }
-        return null;
+        return openSingle(parent, imageFileChooser,
+                openRequest(string("rk-dialog-portrait"), string("rk-dialog-open")).filter(bitmapImageFileFilter));
     }
 
     /**
@@ -1949,34 +1960,10 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        exportFileChooser.setDialogTitle(string("rk-dialog-zip"));
-        exportFileChooser.setSelectedFile(new File(makeStringFileSafe(baseName.replace(" ", "") + ".zip")));
-        exportFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        exportFileChooser.setFileFilter(exportFileFilter);
-        exportFileChooser.setApproveButtonText(string("rk-dialog-export"));
-
-        File selectedFile;
-        boolean askAgain;
-        do {
-            askAgain = false;
-            if (exportFileChooser.showSaveDialog(parent) != JFileChooser.APPROVE_OPTION) {
-                return null;
-            }
-
-            selectedFile = exportFileChooser.getSelectedFile();
-            if (selectedFile.exists()) {
-                int confirm = confirmFileReplace(selectedFile);
-                if (confirm == JOptionPane.CANCEL_OPTION) {
-                    return null;
-                }
-                if (confirm == JOptionPane.NO_OPTION) {
-                    askAgain = true;
-                }
-            }
-        } while (askAgain);
-
-        saveDefaultFolder(exportFileChooser);
-        return selectedFile;
+        return save(parent, exportFileChooser, null,
+                saveRequest(string("rk-dialog-zip"), string("rk-dialog-export"))
+                        .filter(exportFileFilter)
+                        .selectedFile(new File(makeStringFileSafe(baseName.replace(" ", "") + ".zip"))));
     }
 
     /**
@@ -2003,34 +1990,10 @@ public class ResourceKit {
         }
 
         String verb = string("rk-dialog-save");
-        saveFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        saveFileChooser.setDialogTitle(verb);
-        saveFileChooser.setSelectedFile(base);
-        saveFileChooser.setFileFilter(new FileNameExtensionFilter(fileTypeDescription, fileNameExtensions));
-        saveFileChooser.setApproveButtonText(verb);
-
-        File selectedFile;
-        boolean askAgain;
-        do {
-            askAgain = false;
-            if (saveFileChooser.showSaveDialog(parent) != JFileChooser.APPROVE_OPTION) {
-                return null;
-            }
-
-            selectedFile = saveFileChooser.getSelectedFile();
-            if (selectedFile.exists() && !selectedFile.equals(base)) {
-                int confirm = confirmFileReplace(selectedFile);
-                if (confirm == JOptionPane.CANCEL_OPTION) {
-                    return null;
-                }
-                if (confirm == JOptionPane.NO_OPTION) {
-                    askAgain = true;
-                }
-            }
-        } while (askAgain);
-
-        saveDefaultFolder(saveFileChooser);
-        return selectedFile;
+        FileDialogRequest request = saveRequest(verb, verb)
+                .filter(new FileNameExtensionFilter(fileTypeDescription, fileNameExtensions));
+        startFrom(request, base);
+        return save(parent, saveFileChooser, base, request);
     }
 
     /**
@@ -2049,17 +2012,26 @@ public class ResourceKit {
             parent = StrangeEons.getWindow();
         }
         String verb = string("rk-dialog-open");
-        saveFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        saveFileChooser.setDialogTitle(verb);
-        saveFileChooser.setSelectedFile(base);
-        saveFileChooser.setFileFilter(new FileNameExtensionFilter(fileType, fileExtensions));
-        saveFileChooser.setApproveButtonText(verb);
+        FileDialogRequest request = openRequest(verb, verb)
+                .filter(new FileNameExtensionFilter(fileType, fileExtensions));
+        startFrom(request, base);
+        FileDialogResult r = fileDialogs.open(parent, fileDialogProvider(saveFileChooser), getFolderKey(saveFileChooser), false, request);
+        return r == null ? null : r.getFile();
+    }
 
-        if (saveFileChooser.showOpenDialog(parent) != JFileChooser.APPROVE_OPTION) {
-            return null;
+    /**
+     * Starts a dialog at a base location: in a folder, or with a file
+     * selected.
+     */
+    private static void startFrom(FileDialogRequest request, File base) {
+        if (base == null) {
+            return;
         }
-
-        return saveFileChooser.getSelectedFile();
+        if (base.isDirectory()) {
+            request.directory(base);
+        } else {
+            request.selectedFile(base);
+        }
     }
 
     /**
@@ -2078,34 +2050,10 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        exportFileChooser.setDialogTitle(string("rk-dialog-export"));
-        exportFileChooser.setSelectedFile(new File(makeStringFileSafe(basename.replace(" ", "") + "." + fileExtension)));
-        exportFileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
-        exportFileChooser.setFileFilter(new FileNameExtensionFilter(fileType, fileExtension));
-        exportFileChooser.setApproveButtonText(string("rk-dialog-export"));
-
-        File selectedFile;
-        boolean askAgain;
-        do {
-            askAgain = false;
-            if (exportFileChooser.showSaveDialog(parent) != JFileChooser.APPROVE_OPTION) {
-                return null;
-            }
-
-            selectedFile = exportFileChooser.getSelectedFile();
-            if (selectedFile.exists()) {
-                int confirm = confirmFileReplace(selectedFile);
-                if (confirm == JOptionPane.CANCEL_OPTION) {
-                    return null;
-                }
-                if (confirm == JOptionPane.NO_OPTION) {
-                    askAgain = true;
-                }
-            }
-        } while (askAgain);
-
-        saveDefaultFolder(exportFileChooser);
-        return selectedFile;
+        return save(parent, exportFileChooser, null,
+                saveRequest(string("rk-dialog-export"), string("rk-dialog-export"))
+                        .filter(new FileNameExtensionFilter(fileType, fileExtension))
+                        .selectedFile(new File(makeStringFileSafe(basename.replace(" ", "") + "." + fileExtension))));
     }
 
     /**
@@ -2120,16 +2068,8 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        scriptFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        scriptFileChooser.setFileFilter(scriptFileFilter);
-        scriptFileChooser.setDialogTitle(string("rk-dialog-script"));
-        scriptFileChooser.setApproveButtonText(string("rk-dialog-open"));
-
-        if (scriptFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(scriptFileChooser);
-            return scriptFileChooser.getSelectedFile();
-        }
-        return null;
+        return openSingle(parent, scriptFileChooser,
+                openRequest(string("rk-dialog-script"), string("rk-dialog-open")).filter(scriptFileFilter));
     }
 
     /**
@@ -2144,16 +2084,8 @@ public class ResourceKit {
         if (parent == null) {
             parent = StrangeEons.getWindow();
         }
-        scriptFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
-        scriptFileChooser.setFileFilter(pluginFileFilter);
-        scriptFileChooser.setDialogTitle(string("rk-dialog-plugin"));
-        scriptFileChooser.setApproveButtonText(string("rk-dialog-open"));
-
-        if (scriptFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            saveDefaultFolder(scriptFileChooser);
-            return scriptFileChooser.getSelectedFile();
-        }
-        return null;
+        return openSingle(parent, scriptFileChooser,
+                openRequest(string("rk-dialog-plugin"), string("rk-dialog-open")).filter(pluginFileFilter));
     }
 
     /**
@@ -2169,9 +2101,9 @@ public class ResourceKit {
             parent = StrangeEons.getWindow();
         }
 
-        // use PFD if enabled
-        if (ProjectFolderDialog.isFolderDialogEnabled()) {
-            final String KEY = getFolderKey(projectFileChooser);
+        // use PFD if enabled, unless the system dialogs are preferred
+        final String KEY = getFolderKey(projectFileChooser);
+        if (ProjectFolderDialog.isFolderDialogEnabled() && !isNativeFileDialogEnabled()) {
             ProjectFolderDialog d = new ProjectFolderDialog(StrangeEons.getWindow(), ProjectFolderDialog.Mode.SELECT_PROJECT);
 
             if (RawSettings.getUserSetting(KEY) != null) {
@@ -2193,35 +2125,35 @@ public class ResourceKit {
             return folder;
         }
 
-        // otherwise use default dialog
-        projectFileChooser.setDialogTitle(string("prj-dc-open"));
-        if (projectFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            File f = projectFileChooser.getSelectedFile();
-            try {
-                if (!Project.isProjectFolder(f)) {
-                    return null;
-                }
-            } catch (IOException e) {
-                StrangeEons.log.log(Level.WARNING, null, e);
-                return null;
-            }
-            projectFileChooser.setSelectedFile(f.getParentFile());
-            saveDefaultFolder(projectFileChooser);
-            projectFileChooser.ensureFileIsVisible(f);
-            return f;
+        // the system dialogs choose the project's settings file or package;
+        // the built-in dialog chooses the project folder
+        FileDialogRequest request = openRequest(string("prj-dc-open"), null);
+        if (isNativeFileDialogEnabled()) {
+            request.filter(FileDialogSupport.PROJECT_FILE_FILTER);
+        } else {
+            request.directoriesOnly(true).filter(projectFileFilter);
         }
-        return null;
+        FileDialogResult r = fileDialogs.open(parent, fileDialogProvider(projectFileChooser), KEY, false, request);
+        if (r == null) {
+            return null;
+        }
+        File project;
+        try {
+            project = FileDialogSupport.projectFor(r.getFile());
+        } catch (IOException e) {
+            StrangeEons.log.log(Level.WARNING, null, e);
+            return null;
+        }
+        if (project != null) {
+            // start the next dialog beside this project
+            fileDialogs.remember(KEY, project.getParentFile());
+        }
+        return project;
     }
 
     public static File showFolderDialog(Component parent, String title, String okText) {
-        folderFileChooser.setDialogTitle(title);
-        folderFileChooser.setApproveButtonText(okText);
-        if (folderFileChooser.showOpenDialog(parent) == JFileChooser.APPROVE_OPTION) {
-            File f = folderFileChooser.getSelectedFile();
-            saveDefaultFolder(folderFileChooser);
-            return f;
-        }
-        return null;
+        initializeFileDialogs();
+        return openSingle(parent, folderFileChooser, openRequest(title, okText).directoriesOnly(true));
     }
 
     private static int confirmFileReplace(File f) {
@@ -2321,24 +2253,6 @@ public class ResourceKit {
             throw new AssertionError("Unknown dialog for getting folder key: " + d);
         }
         return key;
-    }
-
-    /**
-     * Stores the current location of the file chooser to that choosers settings
-     * key.
-     *
-     * @param d the chooser to save the folder for
-     */
-    private static void saveDefaultFolder(JFileChooser d) {
-        File dir = d.getCurrentDirectory();
-        if (d.isDirectorySelectionEnabled()) {
-            File sel = d.getSelectedFile();
-            if (sel.isDirectory()) {
-                dir = sel;
-            }
-        }
-        RawSettings.setUserSetting(getFolderKey(d), dir.getAbsolutePath());
-        RawSettings.writeUserSettings();
     }
 
     /**

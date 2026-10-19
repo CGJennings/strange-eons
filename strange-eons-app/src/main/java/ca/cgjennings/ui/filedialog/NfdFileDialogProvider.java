@@ -16,7 +16,6 @@ import java.util.concurrent.Future;
 import java.util.function.ToLongFunction;
 import java.util.logging.Level;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Shows file dialogs through nativefiledialog-extended. On Windows this is the
@@ -84,7 +83,16 @@ public final class NfdFileDialogProvider implements FileDialogProvider {
     private final ToLongFunction<Window> windowHandles;
     private final ExecutorService dialogThread;
     private final FileDialogProvider fallback;
-    private Boolean available;
+    private final Availability availability;
+
+    /**
+     * Whether the native library initialized, shared by providers created
+     * with {@link #withFallback}.
+     */
+    private static final class Availability {
+
+        private Boolean available;
+    }
 
     /**
      * Creates a provider for the current platform.
@@ -96,10 +104,26 @@ public final class NfdFileDialogProvider implements FileDialogProvider {
     }
 
     NfdFileDialogProvider(Backend backend, ToLongFunction<Window> windowHandles, ExecutorService dialogThread, FileDialogProvider fallback) {
+        this(backend, windowHandles, dialogThread, fallback, new Availability());
+    }
+
+    private NfdFileDialogProvider(Backend backend, ToLongFunction<Window> windowHandles, ExecutorService dialogThread, FileDialogProvider fallback, Availability availability) {
         this.backend = Objects.requireNonNull(backend, "backend");
         this.windowHandles = Objects.requireNonNull(windowHandles, "windowHandles");
         this.dialogThread = Objects.requireNonNull(dialogThread, "dialogThread");
         this.fallback = Objects.requireNonNull(fallback, "fallback");
+        this.availability = availability;
+    }
+
+    /**
+     * Returns a provider that shares this provider's native library and
+     * dialog thread but uses a different fallback.
+     *
+     * @param fallback shows requests that cannot be shown natively
+     * @return a provider using the fallback
+     */
+    public NfdFileDialogProvider withFallback(FileDialogProvider fallback) {
+        return new NfdFileDialogProvider(backend, windowHandles, dialogThread, fallback, availability);
     }
 
     private static ExecutorService createDialogThread() {
@@ -141,7 +165,14 @@ public final class NfdFileDialogProvider implements FileDialogProvider {
      * Returns whether the native library initialized. Initialization is
      * attempted once, on first use.
      */
-    synchronized boolean isAvailable() {
+    boolean isAvailable() {
+        synchronized (availability) {
+            return checkAvailable();
+        }
+    }
+
+    private boolean checkAvailable() {
+        Boolean available = availability.available;
         if (available == null) {
             Outcome init = call(() -> {
                 String error = backend.init();
@@ -151,6 +182,7 @@ public final class NfdFileDialogProvider implements FileDialogProvider {
             if (!available) {
                 StrangeEons.log.log(Level.WARNING, "native file dialogs unavailable: {0}", init.error());
             }
+            availability.available = available;
         }
         return available;
     }
@@ -206,11 +238,11 @@ public final class NfdFileDialogProvider implements FileDialogProvider {
     }
 
     static List<Filter> filters(FileFilter filter) {
-        if (!(filter instanceof FileNameExtensionFilter)) {
+        String[] exts = FileFilters.extensions(filter);
+        if (exts == null) {
             return List.of();
         }
-        FileNameExtensionFilter ef = (FileNameExtensionFilter) filter;
-        return List.of(new Filter(ef.getDescription(), String.join(",", ef.getExtensions())));
+        return List.of(new Filter(filter.getDescription(), String.join(",", exts)));
     }
 
     static FileDialogResult result(Outcome outcome, FileDialogRequest request) {
