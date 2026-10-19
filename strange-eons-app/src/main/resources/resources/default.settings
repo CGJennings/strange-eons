@@ -449,7 +449,7 @@ use-project-folder-selector = yes
 # If yes, the system file dialogs are used if OS support is added.
 # These do not show component or image previews; set to no for the
 # built-in dialogs.
-use-native-file-dialogs = yes
+use-native-file-dialogs = no
 
 # If true, Make Bundle will automatically touch catalogue ID timestamps
 make-bundle-autotouch = yes
